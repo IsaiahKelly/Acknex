@@ -1,0 +1,15 @@
+{
+    "name": "Acknex",
+    "references": [
+        "GUID:582652416d5c3de40ac2eed8e845e045"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

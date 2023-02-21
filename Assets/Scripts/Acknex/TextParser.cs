@@ -427,6 +427,18 @@ namespace Acknex
                             World.Instance.WaysByName.Add(name, (Way)_openObject);
                             break;
                         }
+                        case "THING":
+                        {
+                            var name = tokens[1];
+                            if (World.Instance.ThingsByName.ContainsKey(name))
+                            {
+                                Debug.LogWarning("Thing [" + name + "] already registered.");
+                                continue;
+                            }
+                            _openObject = World.Instance.CreateThing(name);
+                            World.Instance.ThingsByName.Add(name, (Thing)_openObject);
+                            break;
+                        }
                         default:
                             {
                                 if (!handledCompilerDirective)
@@ -502,9 +514,20 @@ namespace Acknex
                                 var angle = ParseSingle(tokens[3]);
                                 var region = ParseInt(tokens[4]);
                                 var playerRegion = World.Instance.RegionsByIndex[region];
-                                GamePlayer.Instance.transform.SetPositionAndRotation(new Vector3(x, playerRegion.FLOOR_HGT, y), Quaternion.Euler(0f, angle * Mathf.Rad2Deg, 0f));
+                                GamePlayer.Instance.transform.SetPositionAndRotation(playerRegion.ProjectPosition(x,y), Quaternion.Euler(0f, angle * Mathf.Rad2Deg, 0f));
                                 break;
                             }
+                        case "THING":
+                        {
+                            var x = ParseSingle(tokens[2]);
+                            var y = ParseSingle(tokens[3]);
+                            var angle = ParseSingle(tokens[4]);
+                            var region = ParseInt(tokens[5]);
+                            var thingRegion = World.Instance.RegionsByIndex[region];
+                            var thing = World.Instance.CreateThing(tokens[1]);
+                            thing.transform.SetPositionAndRotation(thingRegion.ProjectPosition(x,y), Quaternion.Euler(0f, angle * Mathf.Rad2Deg, 0f));
+                            break;
+                        }
                         case "VERTEX":
                             {
                                 var x = ParseSingle(tokens[1]);

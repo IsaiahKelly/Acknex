@@ -23,6 +23,7 @@ namespace Acknex
         public readonly Dictionary<string, Texture> TexturesByName = new Dictionary<string, Texture>();
         public readonly Dictionary<string, string> StringsByName = new Dictionary<string, string>();
         public readonly Dictionary<string, Way> WaysByName = new Dictionary<string, Way>();
+        public readonly Dictionary<string, Thing> ThingsByName = new Dictionary<string, Thing>();
 
         public readonly List<string> Paths = new List<string>();
 
@@ -50,6 +51,7 @@ namespace Acknex
             SynonymsByName.Add("#TOUCH_TEXT", new Synonym());
         }
 
+        //todo: generic method?
         public Region CreateRegion(string name)
         {
             var newGameObject = new GameObject(name);
@@ -59,6 +61,7 @@ namespace Acknex
             return newRegion;
         }
 
+        //todo: generic method?
         public Wall CreateWall(string name)
         {
             var newGameObject = new GameObject(name );
@@ -68,6 +71,7 @@ namespace Acknex
             return newWall;
         }
 
+        //todo: generic method?
         public Way CreateWay(string name)
         {
             var newGameObject = new GameObject(name);
@@ -77,6 +81,16 @@ namespace Acknex
             return newWay;
         }
 
+        //todo: generic method?
+        public Thing CreateThing(string name)
+        {
+            var newGameObject = new GameObject(name);
+            newGameObject.transform.SetParent(transform, false);
+            var newThing = newGameObject.AddComponent<Thing>();
+            newThing.NAME = name;
+            return newThing;
+        }
+		
         public void BuildWallMesh(List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<string, List<int>> allTriangles, GameObject gameObject)
         {
             var mesh = new Mesh();

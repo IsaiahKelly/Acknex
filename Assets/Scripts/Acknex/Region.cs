@@ -106,5 +106,15 @@ namespace Acknex
             //}
             return true;
         }
+
+        public Vector3 ProjectPosition(float x, float y)
+        {
+            var point = new Vector3(x, FLOOR_HGT + 10000f, y);
+            if (!Physics.Raycast(new Ray(point , Vector3.down), out var bottomHit, 20000f) || bottomHit.collider != _meshCollider)
+            {
+                return new Vector3(x, FLOOR_HGT, y);
+            }
+            return bottomHit.point;
+        }
     }
 }

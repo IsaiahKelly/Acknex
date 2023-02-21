@@ -10,5 +10,10 @@ namespace Acknex
             var side2 = c - a;
             return Vector3.Cross(side1, side2).normalized;
         }
+
+        public static Vector3 ToXZ(Vector2 point)
+        {
+            return new Vector3(point.x, 0f, point.y);
+        }
     }
 }
