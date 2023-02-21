@@ -134,13 +134,7 @@ namespace Acknex
                 material = new Material(textureObject.FLAGS.Contains("SKY")
                     ? Shader.Find("Acknex/Sky")
                     : Shader.Find("Standard"));
-                if (textureObject.BMAPS != null && textureObject.BMAPS.Count > 0)
-                {
-                    if (Instance.BitmapsByName.TryGetValue(textureObject.BMAPS[0], out var bitmapObject))
-                    {
-                        material.mainTexture = bitmapObject.Texture2D;
-                    }
-                }
+                material.mainTexture = GetFirstBitmap(textureObject);
             }
             else
             {
@@ -148,6 +142,18 @@ namespace Acknex
             }
             material.SetFloat("_Glossiness", 0f);
             return material;
+        }
+
+        public Texture2D GetFirstBitmap(Texture textureObject)
+        {
+            if (textureObject.BMAPS != null && textureObject.BMAPS.Count > 0)
+            {
+                if (Instance.BitmapsByName.TryGetValue(textureObject.BMAPS[0], out var bitmapObject))
+                {
+                    return bitmapObject.Texture2D;
+                }
+            }
+            return null;
         }
 
         public void BuildFloorMesh(List<Vector3> allVertices, List<Vector2> allUVS, Dictionary<int, List<int>> allTriangles,

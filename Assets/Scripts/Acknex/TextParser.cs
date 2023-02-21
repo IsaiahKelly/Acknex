@@ -73,22 +73,22 @@ namespace Acknex
                 {
                     case '#':
                     case '/' when streamReader.Peek() == '/':
-                    {
-                        while (read > -1 && read != '\n')
                         {
-                            read = streamReader.Read();
+                            while (read > -1 && read != '\n')
+                            {
+                                read = streamReader.Read();
+                            }
+                            return _tokens;
                         }
-                        return _tokens;
-                    }
                     case '/' when streamReader.Peek() == '*':
-                    {
-                        while (read > -1 && !(read == '*' && streamReader.Peek() == '/'))
                         {
-                            read = streamReader.Read();
+                            while (read > -1 && !(read == '*' && streamReader.Peek() == '/'))
+                            {
+                                read = streamReader.Read();
+                            }
+                            streamReader.Read();
+                            return _tokens;
                         }
-                        streamReader.Read();
-                        return _tokens;
-                    }
                 }
                 switch (read)
                 {
@@ -180,9 +180,11 @@ namespace Acknex
                 var keyword = tokens[0];
                 if (_openObject != null && keyword == "}")
                 {
-                    if (_openObject is Action gameAction)
+                    switch (_openObject)
                     {
-                        gameAction.CloseAndCompile();
+                        case Action gameAction:
+                            gameAction.CloseAndCompile();
+                            break;
                     }
                     _openObject = null;
                 }
@@ -193,6 +195,24 @@ namespace Acknex
                 if (_openObject is Action action)
                 {
                     action.ParseAction(tokens, streamReader, ParseNextStatement);
+                }
+                else if (_openObject is Thing thing)
+                {
+                    switch (keyword)
+                    {
+                        case "TEXTURE":
+                            thing.TEXTURE = tokens[1];
+                            break;
+                        case "HEIGHT":
+                            thing.HEIGHT = ParseSingle(tokens[1]);
+                            break;
+                        case "FLAGS":
+                            thing.FLAGS = ParseFlags(tokens);
+                            break;
+                        case "DIST":
+                            thing.DIST = ParseSingle(tokens[1]);
+                            break;
+                    }
                 }
                 else if (_openObject is Synonym synonym)
                 {
@@ -267,6 +287,16 @@ namespace Acknex
                                 texture.SCALE_Y = ParseSingle(tokens[2]);
                                 break;
                             }
+                        case "SCALE_X":
+                        {
+                            texture.SCALE_X = ParseSingle(tokens[1]);
+                            break;
+                        }
+                        case "SCALE_Y":
+                        {
+                            texture.SCALE_Y = ParseSingle(tokens[1]);
+                            break;
+                        }
                         case "BMAPS":
                             {
                                 texture.BMAPS = new List<string>();
@@ -288,10 +318,10 @@ namespace Acknex
                                 break;
                             }
                         case "FLAGS":
-                        {
-                            texture.FLAGS = ParseFlags(tokens); //todo: remove linq
-                            break;
-                        }
+                            {
+                                texture.FLAGS = ParseFlags(tokens); //todo: remove linq
+                                break;
+                            }
                     }
                 }
                 else
@@ -314,21 +344,21 @@ namespace Acknex
                             ParseWDL(ParseDir(tokens[1]));
                             break;
                         case "STRING":
-                        {
-                            var name = tokens[1];
-                            //todo: remove
-                            if (tokens.Count < 3)
                             {
-                                continue;
+                                var name = tokens[1];
+                                //todo: remove
+                                if (tokens.Count < 3)
+                                {
+                                    continue;
+                                }
+                                if (World.Instance.StringsByName.ContainsKey(name))
+                                {
+                                    Debug.LogWarning("String [" + name + "] already registered.");
+                                    continue;
+                                }
+                                World.Instance.StringsByName.Add(name, tokens[2]);
+                                break;
                             }
-                            if (World.Instance.StringsByName.ContainsKey(name))
-                            {
-                                Debug.LogWarning("String [" + name + "] already registered.");
-                                continue;
-                            }
-                            World.Instance.StringsByName.Add(name, tokens[2]);
-                            break;
-                        }
                         case "ACTION":
                             {
                                 var name = tokens[1];
@@ -416,29 +446,29 @@ namespace Acknex
                                 break;
                             }
                         case "WAY":
-                        {
-                            var name = tokens[1];
-                            if (World.Instance.WaysByName.ContainsKey(name))
                             {
-                                Debug.LogWarning("Way [" + name + "] already registered.");
-                                continue;
+                                var name = tokens[1];
+                                if (World.Instance.WaysByName.ContainsKey(name))
+                                {
+                                    Debug.LogWarning("Way [" + name + "] already registered.");
+                                    continue;
+                                }
+                                _openObject = World.Instance.CreateWay(name);
+                                World.Instance.WaysByName.Add(name, (Way)_openObject);
+                                break;
                             }
-                            _openObject = World.Instance.CreateWay(name);
-                            World.Instance.WaysByName.Add(name, (Way)_openObject);
-                            break;
-                        }
                         case "THING":
-                        {
-                            var name = tokens[1];
-                            if (World.Instance.ThingsByName.ContainsKey(name))
                             {
-                                Debug.LogWarning("Thing [" + name + "] already registered.");
-                                continue;
+                                var name = tokens[1];
+                                if (World.Instance.ThingsByName.ContainsKey(name))
+                                {
+                                    Debug.LogWarning("Thing [" + name + "] already registered.");
+                                    continue;
+                                }
+                                _openObject = World.Instance.CreateThing(name);
+                                World.Instance.ThingsByName.Add(name, (Thing)_openObject);
+                                break;
                             }
-                            _openObject = World.Instance.CreateThing(name);
-                            World.Instance.ThingsByName.Add(name, (Thing)_openObject);
-                            break;
-                        }
                         default:
                             {
                                 if (!handledCompilerDirective)
@@ -514,20 +544,20 @@ namespace Acknex
                                 var angle = ParseSingle(tokens[3]);
                                 var region = ParseInt(tokens[4]);
                                 var playerRegion = World.Instance.RegionsByIndex[region];
-                                GamePlayer.Instance.transform.SetPositionAndRotation(playerRegion.ProjectPosition(x,y), Quaternion.Euler(0f, angle * Mathf.Rad2Deg, 0f));
+                                GamePlayer.Instance.transform.SetPositionAndRotation(playerRegion.ProjectPosition(x, y), Quaternion.Euler(0f, angle * Mathf.Rad2Deg, 0f));
                                 break;
                             }
                         case "THING":
-                        {
-                            var x = ParseSingle(tokens[2]);
-                            var y = ParseSingle(tokens[3]);
-                            var angle = ParseSingle(tokens[4]);
-                            var region = ParseInt(tokens[5]);
-                            var thingRegion = World.Instance.RegionsByIndex[region];
-                            var thing = World.Instance.CreateThing(tokens[1]);
-                            thing.transform.SetPositionAndRotation(thingRegion.ProjectPosition(x,y), Quaternion.Euler(0f, angle * Mathf.Rad2Deg, 0f));
-                            break;
-                        }
+                            {
+                                var x = ParseSingle(tokens[2]);
+                                var y = ParseSingle(tokens[3]);
+                                var angle = ParseSingle(tokens[4]);
+                                var region = ParseInt(tokens[5]);
+                                var thingRegion = World.Instance.RegionsByIndex[region];
+                                var thing = World.Instance.CreateThing(tokens[1]);
+                                thing.transform.SetPositionAndRotation(thingRegion.ProjectPosition(x, y), Quaternion.Euler(0f, angle * Mathf.Rad2Deg, 0f));
+                                break;
+                            }
                         case "VERTEX":
                             {
                                 var x = ParseSingle(tokens[1]);
@@ -566,17 +596,17 @@ namespace Acknex
                                 break;
                             }
                         case "WAY":
-                        {
-                            var wayName = tokens[1];
-                            var way = World.Instance.CreateWay(wayName);
-                            for (var i = 2; i < tokens.Count-2; i+=2)
                             {
-                                var point = new Vector2(ParseSingle(tokens[i]), ParseSingle(tokens[i + 1]));
-                                way.Points.Add(point);
+                                var wayName = tokens[1];
+                                var way = World.Instance.CreateWay(wayName);
+                                for (var i = 2; i < tokens.Count - 2; i += 2)
+                                {
+                                    var point = new Vector2(ParseSingle(tokens[i]), ParseSingle(tokens[i + 1]));
+                                    way.Points.Add(point);
+                                }
+                                //todo: add to list?
+                                break;
                             }
-                            //todo: add to list?
-                            break;
-                        }
                     }
                 }
 

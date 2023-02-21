@@ -121,8 +121,8 @@ namespace Acknex
         16 pixels per step in each direction. The keyword does not apply to SKY
         textures.
         */
-        public float SCALE_X;
-        public float SCALE_Y;
+        public float SCALE_X = 16f;
+        public float SCALE_Y = 16f;
 
         /*The ATTACH texture appears at the pixel positions given by these keywords
         relative to the upper left corner of the original texture. If both POS_X and
