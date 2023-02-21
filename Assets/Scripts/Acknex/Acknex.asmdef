@@ -1,7 +1,8 @@
 {
     "name": "Acknex",
     "references": [
-        "GUID:582652416d5c3de40ac2eed8e845e045"
+        "GUID:582652416d5c3de40ac2eed8e845e045",
+        "GUID:6f253f55571ef004d8ba5609f343db2c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
