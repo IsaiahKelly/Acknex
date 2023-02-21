@@ -469,6 +469,7 @@ namespace Acknex
                                     continue;
                                 }
                                 _openObject = World.Instance.CreateThing(name + "_DEFINITION");
+                                _openObject.Disable();
                                 World.Instance.ThingsByName.Add(name, (Thing)_openObject);
                                 break;
                             }
