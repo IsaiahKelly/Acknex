@@ -4,5 +4,9 @@
     {
         public string TYPE;
         public string DEFAULT;
+        public void Disable()
+        {
+            
+        }
     }
 }

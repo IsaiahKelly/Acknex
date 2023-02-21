@@ -5,5 +5,9 @@
         public float VAL;
         public float MIN;
         public float MAX;
+        public void Disable()
+        {
+            
+        }
     }
 }

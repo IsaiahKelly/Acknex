@@ -407,11 +407,11 @@ namespace Acknex
             var initialVertex = vertices[inversed ? wallA.VERTEX2 : wallA.VERTEX1];
             initialVertex = new ContourVertex(initialVertex.Position, new WallWithSide(wallA, inversed));
             contourVertices.Add(initialVertex);
-            wallA.processed = true;
+            wallA.Processed = true;
             var foundPair = false;
             foreach (var wallB in kvp.Value)
             {
-                if (wallB.processed)
+                if (wallB.Processed)
                 {
                     continue;
                 }

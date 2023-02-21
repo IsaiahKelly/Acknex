@@ -136,5 +136,9 @@ namespace Acknex
         public List<string> FLAGS = new List<string>();
 
         public string NAME;
+        public void Disable()
+        {
+            
+        }
     }
 }

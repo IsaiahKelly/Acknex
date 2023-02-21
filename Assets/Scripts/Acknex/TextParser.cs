@@ -368,6 +368,7 @@ namespace Acknex
                                     continue;
                                 }
                                 _openObject = World.Instance.gameObject.AddComponent<Action>();
+                                _openObject.Disable();
                                 World.Instance.ActionsByName.Add(name, (Action)_openObject);
                                 break;
                             }
@@ -399,6 +400,7 @@ namespace Acknex
                             {
                                 var name = tokens[1];
                                 _openObject = World.Instance.CreateRegion(name + "_DEFINITION");
+                                _openObject.Disable();
                                 World.Instance.RegionsByName.Add(name, (Region)_openObject);
                                 break;
                             }
@@ -406,6 +408,7 @@ namespace Acknex
                             {
                                 var name = tokens[1];
                                 _openObject = World.Instance.CreateWall(name + "_DEFINITION");
+                                _openObject.Disable();
                                 World.Instance.WallsByName.Add(name, (Wall)_openObject);
                                 break;
                             }
@@ -419,15 +422,14 @@ namespace Acknex
                                 }
                                 var filename = ParseDir(tokens[2]);
                                 //filename = $"{PathUtils.GetFileDirectory(importedAsset)}/{filename}";
-                                var bitmap = new Bitmap() { Keyword = name, Filename = filename };
+                                var bitmap = new Bitmap() { NAME = name, FILENAME = filename };
                                 if (tokens.Count > 4)
                                 {
-                                    bitmap.x = ParseInt(tokens[3]);
-                                    bitmap.y = ParseInt(tokens[4]);
-                                    bitmap.dx = ParseInt(tokens[5]);
-                                    bitmap.dy = ParseInt(tokens[6]);
+                                    bitmap.X = ParseInt(tokens[3]);
+                                    bitmap.Y = ParseInt(tokens[4]);
+                                    bitmap.DX = ParseInt(tokens[5]);
+                                    bitmap.DY = ParseInt(tokens[6]);
                                 }
-
                                 World.Instance.BitmapsByName.Add(name, bitmap);
                                 bitmap.Setup();
                                 break;
@@ -453,7 +455,8 @@ namespace Acknex
                                     Debug.LogWarning("Way [" + name + "] already registered.");
                                     continue;
                                 }
-                                _openObject = World.Instance.CreateWay(name);
+                                _openObject = World.Instance.CreateWay(name + "_DEFINITION");
+                                _openObject.Disable();
                                 World.Instance.WaysByName.Add(name, (Way)_openObject);
                                 break;
                             }
@@ -465,7 +468,7 @@ namespace Acknex
                                     Debug.LogWarning("Thing [" + name + "] already registered.");
                                     continue;
                                 }
-                                _openObject = World.Instance.CreateThing(name);
+                                _openObject = World.Instance.CreateThing(name + "_DEFINITION");
                                 World.Instance.ThingsByName.Add(name, (Thing)_openObject);
                                 break;
                             }
@@ -615,11 +618,11 @@ namespace Acknex
                 {
                     foreach (var wall in kvp.Value)
                     {
-                        wall.processed = false;
+                        wall.Processed = false;
                     }
                     foreach (var wall in kvp.Value)
                     {
-                        if (wall.processed)
+                        if (wall.Processed)
                         {
                             continue;
                         }

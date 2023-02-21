@@ -67,5 +67,10 @@ namespace Acknex
             eulerAngles.y = Camera.current.transform.eulerAngles.y;
             transform.eulerAngles = eulerAngles;
         }
+
+        public void Disable()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

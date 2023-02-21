@@ -116,5 +116,10 @@ namespace Acknex
             }
             return bottomHit.point;
         }
+
+        public void Disable()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

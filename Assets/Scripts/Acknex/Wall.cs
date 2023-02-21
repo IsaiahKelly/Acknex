@@ -28,7 +28,7 @@ namespace Acknex
         public bool LiftedFloorLeft;
         public bool LiftedCeilLeft;
 
-        public bool processed;
+        public bool Processed;
 
         public Wall Definition
         {
@@ -43,9 +43,11 @@ namespace Acknex
             }
         }
 
-        public string Texture
+        public string Texture => Definition != null ? Definition.TEXTURE : TEXTURE;
+
+        public void Disable()
         {
-            get { return TEXTURE ?? Definition?.TEXTURE; }
+            gameObject.SetActive(false);
         }
     }
 }

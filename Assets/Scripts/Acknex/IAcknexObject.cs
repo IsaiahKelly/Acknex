@@ -2,5 +2,6 @@
 {
     public interface IAcknexObject
     {
+        void Disable();
     }
 }

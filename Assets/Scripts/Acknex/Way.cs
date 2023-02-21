@@ -29,5 +29,10 @@ namespace Acknex
                 Gizmos.DrawLine(MeshUtils.ToXZ(Points[i-1]), MeshUtils.ToXZ(Points[i]));
             }
         }
+
+        public void Disable()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

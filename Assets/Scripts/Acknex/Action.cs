@@ -321,5 +321,9 @@ namespace Acknex
             Application.Quit();
         }
 
+        public void Disable()
+        {
+            
+        }
     }
 }
