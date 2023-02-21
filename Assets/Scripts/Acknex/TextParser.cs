@@ -486,7 +486,7 @@ namespace Acknex
             }
         }
 
-        //todo: remove linq?
+        //todo: remove linq??
         private static List<string> ParseFlags(List<string> tokens)
         {
             return tokens.Skip(1).Take(tokens.Count - 1).ToList();
