@@ -42,6 +42,10 @@ namespace Acknex
                 return;
             }
             var bitmap = World.Instance.GetFirstBitmap(textureObject);
+            if (bitmap == null)
+            {
+                return;
+            }
             var mesh = MeshUtils.CreateQuadMesh();
             _meshFilter.sharedMesh = mesh;
             _meshRenderer.material = new Material(Shader.Find("Acknex/Sprite"));
