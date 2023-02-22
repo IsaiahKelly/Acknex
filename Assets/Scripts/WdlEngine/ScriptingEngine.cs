@@ -10,10 +10,10 @@ namespace WdlEngine
 {
     public sealed class ScriptingEngine
     {
-        public void Test(TextReader reader)
+        public void Test(string rootPath, TextReader reader)
         {
             var lexedTokens = Lexer.Lex(CommentStyle.DoubleSlash, reader);
-            var preprocessedTokens = Preprocessor.Process(lexedTokens);
+            var preprocessedTokens = Preprocessor.Process(rootPath, lexedTokens);
             foreach (var token in preprocessedTokens)
             {
                 Debug.Log($"{token.Type} - {token.Value}");

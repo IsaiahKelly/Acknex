@@ -1,6 +1,7 @@
 ﻿using PlasticPipe.PlasticProtocol.Messages;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +10,9 @@ namespace WdlEngine
 {
     internal sealed class Preprocessor
     {
-        public static IEnumerable<Token> Process(IEnumerable<Token> tokens)
+        public static IEnumerable<Token> Process(string rootPath, IEnumerable<Token> tokens)
         {
-            var preprocessor = new Preprocessor(tokens);
+            var preprocessor = new Preprocessor(rootPath, tokens);
             while (true)
             {
                 var token = preprocessor.Next();
@@ -30,12 +31,14 @@ namespace WdlEngine
         private readonly List<Token> _peekBuffer = new List<Token>();
         private readonly Dictionary<string, Token> _defines = new Dictionary<string, Token>();
         private readonly Stack<ConditionState> _conditionStack = new Stack<ConditionState>();
+        private readonly string _rootPath;
         private readonly IEnumerator<Token> _tokens;
 
         private bool ConditionIsTrue => _conditionStack.Count == 0 || _conditionStack.Peek() == ConditionState.True;
 
-        private Preprocessor(IEnumerable<Token> tokens)
+        private Preprocessor(string rootPath, IEnumerable<Token> tokens)
         {
+            _rootPath = rootPath;
             _tokens = tokens.GetEnumerator();
         }
 
@@ -48,6 +51,24 @@ namespace WdlEngine
                 var text = token.ValueString;
                 switch (text)
                 {
+                case "INCLUDE" when ConditionIsTrue:
+                {
+                    // We implement include by eating every part of the include directive
+                    // And then we append the included tokens to the start of the peek buffer
+                    var filename = Expect(TokenType.String);
+                    Expect(TokenType.Semicolon);
+                    var filePath = Path.Combine(_rootPath, filename.ValueString);
+                    using (var streamReader = new StreamReader(File.OpenRead(filePath)))
+                    {
+                        var tokens = Lexer.Lex(CommentStyle.DoubleSlash, streamReader).ToList();
+                        // Chop off end of input
+                        if (tokens[tokens.Count - 1].Type == TokenType.EndOfInput) tokens.RemoveAt(tokens.Count - 1);
+                        // Prepend
+                        _peekBuffer.InsertRange(0, tokens);
+                    }
+                    goto start;
+                }
+
                 case "DEFINE" when ConditionIsTrue:
                 {
                     var name = Expect(TokenType.Identifier);

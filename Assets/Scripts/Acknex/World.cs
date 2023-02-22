@@ -42,7 +42,7 @@ namespace Acknex
             // TODO: Temporary
             using (var streamReader = new StreamReader(File.OpenRead(_wdlPath)))
             {
-                new ScriptingEngine().Test(streamReader);
+                new ScriptingEngine().Test("Assets\\Data", streamReader);
             }
 
             _textParser.ParseWDL(_wdlPath);
