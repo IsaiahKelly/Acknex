@@ -30,6 +30,11 @@ namespace WdlEngine
             var peek = Peek();
 
             Debug.LogError($"Unknown construct {peek.Type}, {peek.Value}");
+            SkipStructure();
+        }
+
+        private void SkipStructure()
+        {
             var depth = 0;
             while (true)
             {
