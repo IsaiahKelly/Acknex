@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using WdlEngine;
 using LibTessDotNet;
 using UnityEngine;
 
@@ -36,6 +38,13 @@ namespace Acknex
         private void Start()
         {
             Instance = this;
+
+            // TODO: Temporary
+            using (var streamReader = new StreamReader(File.OpenRead(_wdlPath)))
+            {
+                new ScriptingEngine().Test(streamReader);
+            }
+
             _textParser.ParseWDL(_wdlPath);
             foreach (var mapFile in MapFiles)
             {

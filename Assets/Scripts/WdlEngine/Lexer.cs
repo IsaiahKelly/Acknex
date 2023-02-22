@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.WdlEngine
+namespace WdlEngine
 {
     internal sealed class Lexer
     {
