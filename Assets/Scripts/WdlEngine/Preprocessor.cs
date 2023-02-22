@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WdlEngine
 {
-    internal sealed class Preprocessor
+    internal sealed class Preprocessor : TokenConsumerBase
     {
         public static IEnumerable<Token> Process(string rootPath, IEnumerable<Token> tokens)
         {
@@ -28,18 +28,16 @@ namespace WdlEngine
             FalseBelow,
         }
 
-        private readonly List<Token> _peekBuffer = new List<Token>();
         private readonly Dictionary<string, Token> _defines = new Dictionary<string, Token>();
         private readonly Stack<ConditionState> _conditionStack = new Stack<ConditionState>();
         private readonly string _rootPath;
-        private readonly IEnumerator<Token> _tokens;
 
         private bool ConditionIsTrue => _conditionStack.Count == 0 || _conditionStack.Peek() == ConditionState.True;
 
         private Preprocessor(string rootPath, IEnumerable<Token> tokens)
+            : base(tokens.GetEnumerator())
         {
             _rootPath = rootPath;
-            _tokens = tokens.GetEnumerator();
         }
 
         private Token Next()
@@ -64,7 +62,7 @@ namespace WdlEngine
                         // Chop off end of input
                         if (tokens[tokens.Count - 1].Type == TokenType.EndOfInput) tokens.RemoveAt(tokens.Count - 1);
                         // Prepend
-                        _peekBuffer.InsertRange(0, tokens);
+                        PeekBuffer.InsertRange(0, tokens);
                     }
                     goto start;
                 }
@@ -155,45 +153,6 @@ namespace WdlEngine
 
             // Otherwise we are free to return it
             return token;
-        }
-
-        private Token Expect(TokenType type)
-        {
-            if (!Matches(type, out var token)) throw new InvalidOperationException($"expected token {type} but got {Peek().Type}");
-            return token;
-        }
-
-        private bool Matches(TokenType type) => Matches(type, out _);
-
-        private bool Matches(TokenType type, out Token token)
-        {
-            if (Peek().Type == type)
-            {
-                token = Consume();
-                return true;
-            }
-            else
-            {
-                token = default;
-                return false;
-            }
-        }
-
-        private Token Consume()
-        {
-            var peeked = Peek();
-            _peekBuffer.RemoveAt(0);
-            return peeked;
-        }
-
-        private Token Peek(int offset = 0)
-        {
-            while (_peekBuffer.Count <= offset)
-            {
-                if (!_tokens.MoveNext()) return new Token(TokenType.EndOfInput, null);
-                _peekBuffer.Add(_tokens.Current);
-            }
-            return _peekBuffer[offset];
         }
     }
 }

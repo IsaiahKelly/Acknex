@@ -14,10 +14,7 @@ namespace WdlEngine
         {
             var lexedTokens = Lexer.Lex(CommentStyle.DoubleSlash, reader);
             var preprocessedTokens = Preprocessor.Process(rootPath, lexedTokens);
-            foreach (var token in preprocessedTokens)
-            {
-                Debug.Log($"{token.Type} - {token.Value}");
-            }
+            Parser.Parse(preprocessedTokens);
         }
     }
 }
