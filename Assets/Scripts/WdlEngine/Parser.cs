@@ -9,15 +9,18 @@ namespace WdlEngine
 {
     internal sealed class Parser : TokenConsumerBase
     {
-        public static void Parse(IEnumerable<Token> tokens)
+        private readonly IGameEngine _engine;
+
+        public static void Parse(IGameEngine engine, IEnumerable<Token> tokens)
         {
-            var parser = new Parser(tokens);
+            var parser = new Parser(engine, tokens);
             parser.Parse();
         }
 
-        private Parser(IEnumerable<Token> tokens) 
+        private Parser(IGameEngine engine, IEnumerable<Token> tokens) 
             : base(tokens.GetEnumerator())
         {
+            _engine = engine;
         }
 
         private void Parse()
@@ -27,7 +30,46 @@ namespace WdlEngine
 
         private void ParseSingle()
         {
-            var peek = Peek();
+            var peek = Consume();
+            if (peek.Type == TokenType.Identifier)
+            {
+                var text = peek.ValueString;
+                switch (text)
+                {
+                case "PATH":
+                {
+                    var path = Expect(TokenType.String);
+                    Expect(TokenType.Semicolon);
+                    // TODO: Do we even want to handle this?
+                    // It's just an additional search path, we might not want to call out, but add it here?
+                    // Will scripts use the info or the engine in some way?
+                    return;
+                }
+                case "SKILL":
+                {
+                    var name = Expect(TokenType.Identifier);
+                    Expect(TokenType.OpenBrace);
+                    while (!Matches(TokenType.CloseBrace))
+                    {
+                        var property = Expect(TokenType.Identifier);
+                        var value = Consume();
+                        Expect(TokenType.Semicolon);
+                        // TODO: handle property
+                    }
+                    // TODO: handle skill
+                    return;
+                }
+                case "STRING":
+                {
+                    var name = Expect(TokenType.Identifier);
+                    Expect(TokenType.Comma);
+                    var value = Expect(TokenType.String);
+                    Expect(TokenType.Semicolon);
+                    // TODO: Again, where to handle this?
+                    return;
+                }
+                }
+            }
 
             Debug.LogError($"Unknown construct {peek.Type}, {peek.Value}");
             SkipStructure();

@@ -101,6 +101,32 @@ namespace WdlEngine
                 return new Token(TokenType.String, result.ToString());
             }
 
+            // Numeric
+            // NOTE: We check it here so the possible minus sign doesn't have a chance to be reinterpreted later
+            var isNegative = ch == '-';
+            if (char.IsDigit(Peek(isNegative ? 1 : 0)))
+            {
+                // Must be a number
+                var offset = isNegative ? 2 : 1;
+                var type = TokenType.Integer;
+                while (char.IsDigit(Peek(offset))) ++offset;
+
+                // Check if there's a real part
+                if (Peek(offset) == '.')
+                {
+                    // Real
+                    type = TokenType.Real;
+                    ++offset;
+                    while (char.IsDigit(Peek(offset))) ++offset;
+                }
+
+                var text = Take(offset);
+                var value = type == TokenType.Integer
+                    ? int.Parse(text)
+                    : double.Parse(text, CultureInfo.InvariantCulture);
+                return new Token(type, value);
+            }
+
             // Single- and two-character tokens
             switch (ch)
             {
@@ -144,31 +170,6 @@ namespace WdlEngine
             case '=': return Peek(1) == '='
                 ? Advance(TokenType.Equal, 2)
                 : Advance(TokenType.Assign, 1);
-            }
-
-            // Numeric
-            var isNegative = ch == '-';
-            if (char.IsDigit(Peek(isNegative ? 1 : 0)))
-            {
-                // Must be a number
-                var offset = isNegative ? 2 : 1;
-                var type = TokenType.Integer;
-                while (char.IsDigit(Peek(offset))) ++offset;
-
-                // Check if there's a real part
-                if (Peek(offset) == '.')
-                {
-                    // Real
-                    type = TokenType.Real;
-                    ++offset;
-                    while (char.IsDigit(Peek(offset))) ++offset;
-                }
-
-                var text = Take(offset);
-                var value = type == TokenType.Integer
-                    ? int.Parse(text)
-                    : double.Parse(text, CultureInfo.InvariantCulture);
-                return new Token(type, value);
             }
 
             // Identifier
