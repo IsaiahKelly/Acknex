@@ -206,6 +206,9 @@ namespace Acknex
                         case "HEIGHT":
                             thing.HEIGHT = ParseSingle(tokens[1]);
                             break;
+                        case "ATTACH":
+                            thing.ATTACH = tokens[1];
+                            break;
                         case "FLAGS":
                             ParseFlags(ref thing.FLAGS, tokens);
                             break;

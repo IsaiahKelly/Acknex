@@ -103,13 +103,8 @@ namespace Acknex
 
         public Vector3 ProjectPosition(float x, float y, bool ground = false)
         {
-            var point = new Vector3(x, FLOOR_HGT + 10000f, y);
-            if (!Physics.Raycast(new Ray(point , Vector3.down), out var bottomHit, 20000f) || 
-                bottomHit.collider != ground ? GetGroundRegion(this)._meshCollider : _meshCollider)
-            {
-                return new Vector3(x, FLOOR_HGT, y);
-            }
-            return bottomHit.point;
+            var point = new Vector3(x, CEIL_HGT, y);
+            return !ground && _meshCollider != null && _meshCollider.Raycast(new Ray(point, Vector3.down), out var bottomHit, Mathf.Infinity) ? bottomHit.point : new Vector3(x, 0f, y);
         }
 
         private Region GetGroundRegion(Region region)

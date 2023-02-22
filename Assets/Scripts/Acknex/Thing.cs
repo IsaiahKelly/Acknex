@@ -14,11 +14,13 @@ namespace Acknex
         public float Y;
         public float ANGLE;
         public int REGION;
+        public string ATTACH;
 
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
-        private GameObject _innerGameObject;
+        private GameObject _thingGameObject;
         private SphereCollider _sphereCollider;
+        private GameObject _attached;
         private bool _set;
 
         public Thing Definition
@@ -36,7 +38,7 @@ namespace Acknex
 
         public Texture TextureObject => !World.Instance.TexturesByName.TryGetValue(Texture, out var textureObject) ? null : textureObject;
 
-        public Texture2D BitmapImage => TextureObject.GetFirstBitmapImage();
+        public Texture2D BitmapImage => TextureObject?.GetFirstBitmapImage();
 
         public string Texture => Definition != null ? Definition.TEXTURE : TEXTURE;
 
@@ -46,21 +48,30 @@ namespace Acknex
 
         public Region Region => World.Instance.RegionsByIndex[REGION];
 
+        public string Attach => Definition != null ? Definition.ATTACH : ATTACH;
+
         public void Start()
         {
-            _innerGameObject = new GameObject("Inner");
-            _innerGameObject.transform.SetParent(transform, false);
-            _meshFilter = _innerGameObject.AddComponent<MeshFilter>();
-            _meshRenderer = _innerGameObject.AddComponent<MeshRenderer>();
+            _thingGameObject = BuildInnerGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
+        }
 
-            if (TextureObject == null || BitmapImage == null)
+        private GameObject BuildInnerGameObject(Transform parent, string name,Texture2D bitmap, out MeshFilter meshFilter, out MeshRenderer meshRenderer)
+        {
+            var innerGameObject = new GameObject(name);
+            innerGameObject.transform.SetParent(parent, false);
+            meshFilter = innerGameObject.AddComponent<MeshFilter>();
+            meshRenderer = innerGameObject.AddComponent<MeshRenderer>();
+            if (bitmap == null)
             {
-                return;
+                meshFilter = null;
+                meshRenderer = null;
+                return innerGameObject;
             }
             var mesh = MeshUtils.CreateQuadMesh();
-            _meshFilter.sharedMesh = mesh;
-            _meshRenderer.material = new Material(Shader.Find("Acknex/Sprite"));
-            _meshRenderer.material.mainTexture = BitmapImage;
+            meshFilter.sharedMesh = mesh;
+            meshRenderer.material = new Material(Shader.Find("Acknex/Sprite"));
+            meshRenderer.material.mainTexture = bitmap;
+            return innerGameObject;
         }
 
         private void LateUpdate()
@@ -89,19 +100,17 @@ namespace Acknex
         {
             var bitmapImage = BitmapImage;
             var textureObject = TextureObject;
-            _innerGameObject.transform.localScale = new Vector3(bitmapImage.width / textureObject.SCALE_X,
-                bitmapImage.height / textureObject.SCALE_Y, 1f);
-            var transformLocalPosition = _innerGameObject.transform.localPosition;
+            UpdateScale(_thingGameObject.transform, bitmapImage, textureObject);
+            var transformLocalPosition = _thingGameObject.transform.localPosition;
             transformLocalPosition.y = Height;
-            _innerGameObject.transform.localPosition = transformLocalPosition;
+            _thingGameObject.transform.localPosition = transformLocalPosition;
             if (!Flags.Contains("PASSABLE"))
             {
                 if (_sphereCollider == null)
                 {
-                    _sphereCollider = gameObject.AddComponent<SphereCollider>();
+                    _sphereCollider = _thingGameObject.AddComponent<SphereCollider>();
                     _sphereCollider.isTrigger = true;
                 }
-
                 _sphereCollider.radius = Dist;
             }
             else
@@ -111,12 +120,27 @@ namespace Acknex
                     Destroy(_sphereCollider);
                 }
             }
-
             if (!_set)
             {
                 SetPositionAngleRegion();
                 _set = true;
             }
+            if (Attach != null && _attached == null && World.Instance.TexturesByName.TryGetValue(Attach, out var toAttachTextureObject))
+            {
+                var toAttachBitmapImage = toAttachTextureObject.GetFirstBitmapImage();
+                _attached = BuildInnerGameObject(gameObject.transform, toAttachTextureObject.NAME, toAttachBitmapImage, out _, out _);
+                UpdateScale(_attached.transform, toAttachBitmapImage, toAttachTextureObject);
+                //disabling shadow objects as Unity is already projecting shadows
+                if (toAttachTextureObject.Flags.Contains("SHADOW"))
+                {
+                    _attached.gameObject.SetActive(false);
+                }
+            }
+        }
+
+        private void UpdateScale(Transform transform, Texture2D bitmapImage, Texture textureObject)
+        {
+            transform.localScale = new Vector3(bitmapImage.width / textureObject.SCALE_X, bitmapImage.height / textureObject.SCALE_Y, 1f);
         }
 
         //todo: fix
