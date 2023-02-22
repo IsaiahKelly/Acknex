@@ -1,4 +1,6 @@
-﻿namespace Acknex
+﻿using Acknex.Interfaces;
+
+namespace Acknex
 {
     public class Synonym : IAcknexObjectContainer
     {

@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.NetworkInformation;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using Acknex.Interfaces;
 using UnityEngine;
 
 namespace Acknex
