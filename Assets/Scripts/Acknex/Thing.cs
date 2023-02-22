@@ -3,18 +3,29 @@ using UnityEngine;
 
 namespace Acknex
 {
-    public class Thing : MonoBehaviour, IAcknexObject
+    public class Thing : MonoBehaviour, IAcknexObjectContainer
     {
-        public string NAME;
-        public string TEXTURE;
-        public float HEIGHT;
-        public List<string> FLAGS = new List<string>();
-        public float DIST;
-        public float X;
-        public float Y;
-        public float ANGLE;
-        public int REGION;
-        public string ATTACH;
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+
+        private static IAcknexObject GetDefinitionCallback(string name)
+        {
+            if (World.Instance.ThingsByName.TryGetValue(name, out var definition))
+            {
+                return definition.AcknexObject;
+            }
+            return null;
+        }
+
+        //public string NAME;
+        //public string TEXTURE;
+        //public float HEIGHT;
+        //public List<string> FLAGS = new List<string>();
+        //public float DIST;
+        //public float X;
+        //public float Y;
+        //public float ANGLE;
+        //public int REGION;
+        //public string ATTACH;
 
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
@@ -23,32 +34,45 @@ namespace Acknex
         private GameObject _attached;
         private bool _set;
 
-        public Thing Definition
+        //public Thing Definition
+        //{
+        //    get
+        //    {
+        //        if (World.Instance.ThingsByName.TryGetValue(AcknexObject.Get<string>("NAME"), out var thing))
+        //        {
+        //            return thing;
+        //        }
+        //        return null;
+        //    }
+        //}
+        public List<string> Flags
         {
             get
             {
-                if (World.Instance.ThingsByName.TryGetValue(NAME, out var thing))
+                if (AcknexObject.TryGet("FLAGS", out List<string> flags))
                 {
-                    return thing;
+                    return flags;
                 }
-                return null;
+                flags = new List<string>();
+                AcknexObject["FLAGS"] = flags;
+                return flags;
             }
         }
-        public List<string> Flags => Definition?.FLAGS ?? FLAGS;
 
-        public Texture TextureObject => !World.Instance.TexturesByName.TryGetValue(Texture, out var textureObject) ? null : textureObject;
+        public Texture TextureObject => !World.Instance.TexturesByName.TryGetValue(AcknexObject.Get<string>("TEXTURE"), out var textureObject) ? null : textureObject;
 
         public Texture2D BitmapImage => TextureObject?.GetFirstBitmapImage();
 
-        public string Texture => Definition != null ? Definition.TEXTURE : TEXTURE;
+        //public string Texture => AcknexObject.Get<string>("TEXTURE");
+        //
+        //public float Height => AcknexObject.Get<float>("HEIGHT");
+        //
+        //public float Dist =>  AcknexObject.Get<float>("DIST");
 
-        public float Height => Definition != null ? Definition.HEIGHT : HEIGHT;
+        public Region Region => World.Instance.RegionsByIndex[AcknexObject.Get<int>("REGION")];
 
-        public float Dist => Definition != null ? Definition.DIST : DIST;
+        //public string Attach => AcknexObject.Get<string>("ATTACH");
 
-        public Region Region => World.Instance.RegionsByIndex[REGION];
-
-        public string Attach => Definition != null ? Definition.ATTACH : ATTACH;
 
         public void Start()
         {
@@ -102,19 +126,19 @@ namespace Acknex
         {
             UpdateScale(_thingGameObject.transform, BitmapImage, TextureObject);
             var transformLocalPosition = _thingGameObject.transform.localPosition;
-            transformLocalPosition.y = Height;
+            transformLocalPosition.y = AcknexObject.Get<float>("HEIGHT");
             _thingGameObject.transform.localPosition = transformLocalPosition;
             _collider.isTrigger = Flags.Contains("PASSABLE");
-            _collider.radius = Dist > 0f ? Dist * 0.5f : 0.5f;
+            _collider.radius = AcknexObject.Get<float>("DIST") > 0f ? AcknexObject.Get<float>("DIST") * 0.5f : 0.5f;
             if (!_set)
             {
                 SetPositionAngleRegion();
                 _set = true;
             }
-            if (Attach != null && _attached == null && World.Instance.TexturesByName.TryGetValue(Attach, out var toAttachTextureObject))
+            if (AcknexObject.Get<string>("ATTACH") != null && _attached == null && World.Instance.TexturesByName.TryGetValue(AcknexObject.Get<string>("ATTACH"), out var toAttachTextureObject))
             {
                 var toAttachBitmapImage = toAttachTextureObject.GetFirstBitmapImage();
-                _attached = BuildInnerGameObject(gameObject.transform, toAttachTextureObject.NAME, toAttachBitmapImage, out _, out _);
+                _attached = BuildInnerGameObject(gameObject.transform, toAttachTextureObject.AcknexObject.Get<string>("NAME"), toAttachBitmapImage, out _, out _);
                 UpdateScale(_attached.transform, toAttachBitmapImage, toAttachTextureObject);
                 //disabling shadow objects as Unity is already projecting shadows
                 if (toAttachTextureObject.Flags.Contains("SHADOW"))
@@ -135,14 +159,14 @@ namespace Acknex
             {
                 return Vector3.one;
             }
-            return new Vector3(bitmapImage.width / textureObject.SCALE_X, bitmapImage.height / textureObject.SCALE_Y, 1f);
+            return new Vector3(bitmapImage.width / textureObject.AcknexObject.Get<float>("SCALE_X"), bitmapImage.height / textureObject.AcknexObject.Get<float>("SCALE_Y"), 1f);
         }
 
         //todo: fix
 
         public void SetPositionAngleRegion()
         {
-            transform.SetPositionAndRotation(Region.ProjectPosition(X, Y, Flags.Contains("GROUND")), Quaternion.Euler(0f, ANGLE * Mathf.Rad2Deg, 0f));
+            transform.SetPositionAndRotation(Region.ProjectPosition(AcknexObject.Get<float>("X"), AcknexObject.Get<float>("Y"), Flags.Contains("GROUND")), Quaternion.Euler(0f, AcknexObject.Get<float>("ANGLE") * Mathf.Rad2Deg, 0f));
         }
     }
 }

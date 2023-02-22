@@ -3,22 +3,33 @@ using UnityEngine;
 
 namespace Acknex
 {
-    public class Way : MonoBehaviour, IAcknexObject
+    public class Way : MonoBehaviour, IAcknexObjectContainer
     {
-        public List<Vector2> Points = new List<Vector2>();
-        public string NAME;
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
 
-        public Way Definition
+        private static IAcknexObject GetDefinitionCallback(string name)
         {
-            get
+            if (World.Instance.WaysByName.TryGetValue(name, out var definition))
             {
-                if (World.Instance.WaysByName.TryGetValue(NAME, out var way))
-                {
-                    return way;
-                }
-                return null;
+                return definition.AcknexObject;
             }
+            return null;
         }
+
+        public List<Vector2> Points = new List<Vector2>();
+        //public string NAME;
+
+        //public Way Definition
+        //{
+        //    get
+        //    {
+        //        if (World.Instance.WaysByName.TryGetValue(AcknexObject.Get<string>("NAME"), out var way))
+        //        {
+        //            return way;
+        //        }
+        //        return null;
+        //    }
+        //}
 
 
         public void OnDrawGizmos()

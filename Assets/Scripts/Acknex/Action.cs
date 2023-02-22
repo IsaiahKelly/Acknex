@@ -6,8 +6,15 @@ using UnityEngine;
 
 namespace Acknex
 {
-    public class Action : MonoBehaviour, IAcknexObject
+    public class Action : MonoBehaviour, IAcknexObjectContainer
     {
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+
+        private static IAcknexObject GetDefinitionCallback(string name)
+        {
+            return null;
+        }
+
         public readonly Dictionary<string, LabelTarget> LabelsByName = new Dictionary<string, LabelTarget>();
         private readonly List<Expression> _expressions = new List<Expression>();
         public System.Action FinalAction;

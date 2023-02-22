@@ -6,40 +6,65 @@ using UnityEngine;
 namespace Acknex
 {
     //todo: some refactored methods dont need to receive this class instance anymore
-    public class Region : MonoBehaviour, IAcknexObject
+    public class Region : MonoBehaviour, IAcknexObjectContainer
     {
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+
+        private static IAcknexObject GetDefinitionCallback(string name)
+        {
+            if (World.Instance.RegionsByName.TryGetValue(name, out var region))
+            {
+                return region.AcknexObject;
+            }
+            return null;
+        }
+
         private MeshFilter _meshFilter;
         private MeshCollider _meshCollider;
-
-        public string NAME;
-        public float FLOOR_HGT;
-        public float CEIL_HGT;
-        public float AMBIENT;
-        public List<string> FLAGS = new List<string>();
-        public string BELOW;
-        public string FLOOR_TEX;
-        public string CEIL_TEX;
-        public ContouredRegion ContouredRegion;
         private Region _belowOverride;
+
+        //public string NAME;
+        //public float FLOOR_HGT;
+        //public float CEIL_HGT;
+        //public float AMBIENT;
+        //public List<string> FLAGS = new List<string>();
+        //public string BELOW;
+        //public string FLOOR_TEX;
+        //public string CEIL_TEX;
+
+        public ContouredRegion ContouredRegion;
 
         private void Start()
         {
             _meshFilter = GetComponent<MeshFilter>();
             _meshCollider = GetComponent<MeshCollider>();
         }
-        public Region Definition
+
+        //public Region Definition
+        //{
+        //    get
+        //    {
+        //        if (World.Instance.RegionsByName.TryGetValue(AcknexObject.Get<string>("NAME"), out var region))
+        //        {
+        //            return region;
+        //        }
+        //        return null;
+        //    }
+        //}
+
+        public List<string> Flags
         {
             get
             {
-                if (World.Instance.RegionsByName.TryGetValue(NAME, out var region))
+                if (AcknexObject.TryGet("FLAGS", out List<string> flags))
                 {
-                    return region;
+                    return flags;
                 }
-                return null;
+                flags = new List<string>();
+                AcknexObject["FLAGS"] = flags;
+                return flags;
             }
         }
-
-        public List<string> Flags => Definition?.FLAGS ?? FLAGS;
 
         public bool CellLifted => Flags.Contains("CEIL_LIFTED");
 
@@ -53,7 +78,7 @@ namespace Acknex
                 {
                     return _belowOverride;
                 }
-                var below = BELOW ?? Definition?.BELOW;
+                var below = AcknexObject.Get<string>("BELOW");
                 if (below != null && World.Instance.RegionsByName.TryGetValue(below, out var region))
                 {
                     return region;
@@ -63,8 +88,8 @@ namespace Acknex
             set => _belowOverride = value;
         }
 
-        public string CeilTexture => CEIL_TEX ?? Definition?.CEIL_TEX;
-        public string FloorTexture => FLOOR_TEX ?? Definition?.FLOOR_TEX;
+        //public string CeilTexture => AcknexObject.Get<string>("CEIL_TEX");
+        //public string FloorTexture => AcknexObject.Get<string>("FLOOR_TEX");
 
         //todo: Y/Z flipped on engine
         //todo: check by convex hull?
@@ -103,7 +128,7 @@ namespace Acknex
 
         public Vector3 ProjectPosition(float x, float y, bool ground = false)
         {
-            var point = new Vector3(x, CEIL_HGT, y);
+            var point = new Vector3(x, AcknexObject.Get<float>("CEIL_HGT"), y);
             return !ground && _meshCollider != null && _meshCollider.Raycast(new Ray(point, Vector3.down), out var bottomHit, Mathf.Infinity) ? bottomHit.point : new Vector3(x, 0f, y);
         }
 
@@ -175,7 +200,7 @@ namespace Acknex
             var allTriangles = new Dictionary<int, List<int>>();
             BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex);
             BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex, true);
-            region.BuildFloorMesh(allVertices, allUVs, allTriangles, region.gameObject, region.CeilTexture, region.FloorTexture);
+            region.BuildFloorMesh(allVertices, allUVs, allTriangles, region.gameObject, region.AcknexObject.Get<string>("CEIL_TEX"), region.AcknexObject.Get<string>("FLOOR_TEX"));
             region.Enable();
             if (region.Below != null)
             {
@@ -198,7 +223,7 @@ namespace Acknex
             tess.Tessellate();
             var floorVertices = new Vector3[tess.VertexCount];
             //var height = regionDefinition != null ? (ceil ? regionDefinition.CEIL_HGT : regionDefinition.FLOOR_HGT) : (ceil ? region.CEIL_HGT : region.FLOOR_HGT);
-            var height = (ceil ? region.CEIL_HGT : region.FLOOR_HGT);
+            var height = (ceil ? region.AcknexObject.Get<float>("CEIL_HGT") : region.AcknexObject.Get<float>("FLOOR_HGT"));
             for (var i = 0; i < tess.VertexCount; i++)
             {
                 var vertex = tess.Vertices[i];

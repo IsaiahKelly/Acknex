@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using UnityEngine;
 
@@ -11,7 +13,7 @@ namespace Acknex
 {
     public class TextParser
     {
-        private IAcknexObject _openObject;
+        private IAcknexObjectContainer _openObject;
 
         private readonly List<string> _tokens = new List<string>();
         private readonly StringBuilder _tokenStringBuilder = new StringBuilder();
@@ -201,19 +203,19 @@ namespace Acknex
                     switch (keyword)
                     {
                         case "TEXTURE":
-                            thing.TEXTURE = tokens[1];
+                            thing.AcknexObject[keyword] = tokens[1];
                             break;
                         case "HEIGHT":
-                            thing.HEIGHT = ParseSingle(tokens[1]);
+                            thing.AcknexObject[keyword] = ParseSingle(tokens[1]);
                             break;
                         case "ATTACH":
-                            thing.ATTACH = tokens[1];
+                            thing.AcknexObject[keyword] = tokens[1];
                             break;
                         case "FLAGS":
-                            ParseFlags(ref thing.FLAGS, tokens);
+                            ParseList(keyword, thing, tokens);
                             break;
                         case "DIST":
-                            thing.DIST = ParseSingle(tokens[1]);
+                            thing.AcknexObject[keyword] = ParseSingle(tokens[1]);
                             break;
                     }
                 }
@@ -222,10 +224,10 @@ namespace Acknex
                     switch (keyword)
                     {
                         case "TYPE":
-                            synonym.TYPE = tokens[1];
+                            synonym.AcknexObject[keyword] = tokens[1];
                             break;
                         case "DEFAULT":
-                            synonym.DEFAULT = tokens[1];
+                            synonym.AcknexObject[keyword] = tokens[1];
                             break;
                     }
                 }
@@ -234,13 +236,13 @@ namespace Acknex
                     switch (keyword)
                     {
                         case "VAL":
-                            skill.VAL = ParseSingle(tokens[1]);
+                            skill.AcknexObject[keyword] = ParseSingle(tokens[1]);
                             break;
                         case "MIN":
-                            skill.MIN = ParseSingle(tokens[1]);
+                            skill.AcknexObject[keyword] = ParseSingle(tokens[1]);
                             break;
                         case "MAX":
-                            skill.MAX = ParseSingle(tokens[1]);
+                            skill.AcknexObject[keyword] = ParseSingle(tokens[1]);
                             break;
                     }
                 }
@@ -249,25 +251,25 @@ namespace Acknex
                     switch (keyword)
                     {
                         case "FLOOR_HGT":
-                            region.FLOOR_HGT = ParseSingle(tokens[1]);
+                            region.AcknexObject[keyword] = ParseSingle(tokens[1]);
                             break;
                         case "CEIL_HGT":
-                            region.CEIL_HGT = ParseSingle(tokens[1]);
+                            region.AcknexObject[keyword] = ParseSingle(tokens[1]);
                             break;
                         case "AMBIENT":
-                            region.AMBIENT = ParseSingle(tokens[1]);
+                            region.AcknexObject[keyword] = ParseSingle(tokens[1]);
                             break;
                         case "FLAGS":
-                            ParseFlags(ref region.FLAGS, tokens); //todo: remove linq
+                            ParseList(keyword, region, tokens); //todo: remove linq
                             break;
                         case "BELOW":
-                            region.BELOW = tokens[1];
+                            region.AcknexObject[keyword] = tokens[1];
                             break;
                         case "FLOOR_TEX":
-                            region.FLOOR_TEX = tokens[1];
+                            region.AcknexObject[keyword] = tokens[1];
                             break;
                         case "CEIL_TEX":
-                            region.CEIL_TEX = tokens[1];
+                            region.AcknexObject[keyword] = tokens[1];
                             break;
                     }
                 }
@@ -276,7 +278,7 @@ namespace Acknex
                     switch (keyword)
                     {
                         case "TEXTURE":
-                            wall.TEXTURE = tokens[1];
+                            wall.AcknexObject[keyword] = tokens[1];
                             break;
                     }
                 }
@@ -286,42 +288,38 @@ namespace Acknex
                     {
                         case "SCALE_XY":
                             {
-                                texture.SCALE_X = ParseSingle(tokens[1]);
-                                texture.SCALE_Y = ParseSingle(tokens[2]);
+                                texture.AcknexObject["SCALE_X"] = ParseSingle(tokens[1]);
+                                texture.AcknexObject["SCALE_Y"] = ParseSingle(tokens[2]);
                                 break;
                             }
                         case "SCALE_X":
                             {
-                                texture.SCALE_X = ParseSingle(tokens[1]);
+                                texture.AcknexObject[keyword] = ParseSingle(tokens[1]);
                                 break;
                             }
                         case "SCALE_Y":
                             {
-                                texture.SCALE_Y = ParseSingle(tokens[1]);
+                                texture.AcknexObject[keyword] = ParseSingle(tokens[1]);
                                 break;
                             }
                         case "BMAPS":
                         {
-                                texture.BMAPS.Clear();
-                                for (var i = 1; i < tokens.Count; i++)
-                                {
-                                    texture.BMAPS.Add(tokens[i]);
-                                }
+                                ParseList(keyword, texture, tokens);
                                 break;
                             }
                         case "POS_X":
                             {
-                                texture.POS_X = ParseInt(tokens[1]);
+                                texture.AcknexObject[keyword] = ParseInt(tokens[1]);
                                 break;
                             }
                         case "POS_Y":
                             {
-                                texture.POS_Y = ParseInt(tokens[1]);
+                                texture.AcknexObject[keyword] = ParseInt(tokens[1]);
                                 break;
                             }
                         case "FLAGS":
                             {
-                                ParseFlags(ref texture.FLAGS, tokens); //todo: remove linq
+                                ParseList(keyword, texture, tokens);
                                 break;
                             }
                     }
@@ -333,14 +331,8 @@ namespace Acknex
                         case "PATH":
                             World.Instance.Paths.Add(tokens[1]);
                             break;
-                        case "LIGHT_ANGLE":
-                            GameLight.LIGHT_ANGLE = ParseSingle(tokens[1]);
-                            break;
                         case "MAPFILE":
                             World.Instance.MapFiles.Add(ParseDir(tokens[1]));
-                            break;
-                        case "CLIP_DIST":
-                            GameCamera.CLIP_DIST = ParseSingle(tokens[1]);
                             break;
                         case "INCLUDE":
                             ParseWDL(ParseDir(tokens[1]));
@@ -424,13 +416,15 @@ namespace Acknex
                                 }
                                 var filename = ParseDir(tokens[2]);
                                 //filename = $"{PathUtils.GetFileDirectory(importedAsset)}/{filename}";
-                                var bitmap = new Bitmap() { NAME = name, FILENAME = filename };
+                                var bitmap = new Bitmap();
+                                bitmap.AcknexObject["FILENAME"] = filename;
+                                bitmap.AcknexObject["NAME"] = name;
                                 if (tokens.Count > 4)
                                 {
-                                    bitmap.X = ParseInt(tokens[3]);
-                                    bitmap.Y = ParseInt(tokens[4]);
-                                    bitmap.DX = ParseInt(tokens[5]);
-                                    bitmap.DY = ParseInt(tokens[6]);
+                                    bitmap.AcknexObject["X"] = ParseSingle(tokens[3]);
+                                    bitmap.AcknexObject["Y"] = ParseSingle(tokens[4]);
+                                    bitmap.AcknexObject["DX"] = ParseSingle(tokens[5]);
+                                    bitmap.AcknexObject["DY"] = ParseSingle(tokens[6]);
                                 }
                                 World.Instance.BitmapsByName.Add(name, bitmap);
                                 bitmap.Setup();
@@ -445,7 +439,7 @@ namespace Acknex
                                     continue;
                                 }
                                 _openObject = new Texture();
-                                ((Texture)_openObject).NAME = name;
+                                ((Texture)_openObject).AcknexObject["NAME"] = name;
                                 World.Instance.TexturesByName.Add(name, (Texture)_openObject);
                                 break;
                             }
@@ -489,10 +483,16 @@ namespace Acknex
         }
 
         //todo: remove linq??
-        private static void ParseFlags(ref List<string> flags, List<string> tokens)
+        private static void ParseList(string propertyName, IAcknexObjectContainer container, List<string> tokens)
         {
-            flags.Clear();
-            flags.AddRange(tokens.Skip(1).Take(tokens.Count - 1));
+            if (container.AcknexObject.TryGet(propertyName, out List<string> list))
+            {
+                list.AddRange(tokens.Skip(1).Take(tokens.Count - 1));
+            }
+            else
+            {
+                container.AcknexObject[propertyName] = tokens.Skip(1).Take(tokens.Count - 1).ToList();
+            }
         }
 
         private List<string> ParseNextStatement(StreamReader textReader)
@@ -558,10 +558,10 @@ namespace Acknex
                         case "THING":
                             {
                                 var thing = World.Instance.CreateThing(tokens[1]);
-                                thing.X = ParseSingle(tokens[2]);
-                                thing.Y = ParseSingle(tokens[3]);
-                                thing.ANGLE = ParseSingle(tokens[4]);
-                                thing.REGION = ParseInt(tokens[5]);
+                                thing.AcknexObject["X"] = ParseSingle(tokens[2]);
+                                thing.AcknexObject["Y"] = ParseSingle(tokens[3]);
+                                thing.AcknexObject["ANGLE"] = ParseSingle(tokens[4]);
+                                thing.AcknexObject["REGION"] = ParseInt(tokens[5]);
                                 break;
                             }
                         case "VERTEX":
@@ -576,9 +576,9 @@ namespace Acknex
                             {
                                 var regionName = tokens[1];
                                 var region = World.Instance.CreateRegion(regionName);
-                                region.NAME = regionName;
-                                region.FLOOR_HGT = ParseSingle(tokens[2]);
-                                region.CEIL_HGT = ParseSingle(tokens[3]);
+                                region.AcknexObject["NAME"] = regionName;
+                                region.AcknexObject["FLOOR_HGT"] = ParseSingle(tokens[2]);
+                                region.AcknexObject["CEIL_HGT"] = ParseSingle(tokens[3]);
                                 World.Instance.RegionsByIndex.Add(region);
                                 //Debug.Log("Region WMP:" + regionName);
                                 break;
@@ -588,16 +588,16 @@ namespace Acknex
                                 var wallName = tokens[1];
                                 var wallGameObject = new GameObject(wallName);
                                 var wall = wallGameObject.AddComponent<Wall>();
-                                wall.NAME = wallName;
-                                wall.VERTEX1 = Convert.ToInt32(tokens[3]);
-                                wall.VERTEX2 = Convert.ToInt32(tokens[2]);
-                                wall.REGION1 = Convert.ToInt32(tokens[4]);
-                                wall.REGION2 = Convert.ToInt32(tokens[5]);
-                                wall.OFFSETX = ParseSingle(tokens[6]);
-                                wall.OFFSETY = ParseSingle(tokens[7]); ;
+                                wall.AcknexObject["NAME"] = wallName;
+                                wall.AcknexObject["VERTEX1"] = Convert.ToInt32(tokens[3]);
+                                wall.AcknexObject["VERTEX2"] = Convert.ToInt32(tokens[2]);
+                                wall.AcknexObject["REGION1"] = Convert.ToInt32(tokens[4]);
+                                wall.AcknexObject["REGION2"] = Convert.ToInt32(tokens[5]);
+                                wall.AcknexObject["OFFSETX"] = ParseSingle(tokens[6]);
+                                wall.AcknexObject["OFFSETY"] = ParseSingle(tokens[7]); ;
                                 wall.transform.SetParent(World.Instance.transform, false);
-                                regionWalls.GetWallsList(wall.REGION1).Add(wall);
-                                regionWalls.GetWallsList(wall.REGION2).Add(wall);
+                                regionWalls.GetWallsList(wall.AcknexObject.Get<int>("REGION1")).Add(wall);
+                                regionWalls.GetWallsList(wall.AcknexObject.Get<int>("REGION2")).Add(wall);
                                 World.Instance.Walls.Add(wall);
                                 break;
                             }
@@ -631,7 +631,7 @@ namespace Acknex
                         }
                         var rightRegion = contouredRegions.GetContouredRegion(kvp.Key);
                         var allContourVertices = rightRegion.GetNew();
-                        wall.ProcessWall(allContourVertices, contourVertices, wall, kvp, ref vertexCount, wall.REGION2 == kvp.Key);
+                        wall.ProcessWall(allContourVertices, contourVertices, wall, kvp, ref vertexCount, wall.AcknexObject.Get<int>("REGION2") == kvp.Key);
                     }
                 }
                 foreach (var kvp in contouredRegions)

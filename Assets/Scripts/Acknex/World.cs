@@ -57,7 +57,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newRegion = newGameObject.AddComponent<Region>();
-            newRegion.NAME = name;
+            newRegion.AcknexObject.Set("NAME", name);
             return newRegion;
         }
 
@@ -67,7 +67,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newWall = newGameObject.AddComponent<Wall>();
-            newWall.NAME = name;
+            newWall.AcknexObject.Set("NAME", name);
             return newWall;
         }
 
@@ -77,7 +77,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newWay = newGameObject.AddComponent<Way>();
-            newWay.NAME = name;
+            newWay.AcknexObject.Set("NAME", name);
             return newWay;
         }
 
@@ -87,7 +87,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newThing = newGameObject.AddComponent<Thing>();
-            newThing.NAME = name;
+            newThing.AcknexObject.Set("NAME", name);
             return newThing;
         }
 

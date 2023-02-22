@@ -1,9 +1,17 @@
 ﻿namespace Acknex
 {
-    public class Synonym : IAcknexObject
+    public class Synonym : IAcknexObjectContainer
     {
-        public string TYPE;
-        public string DEFAULT;
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+
+        private static IAcknexObject GetDefinitionCallback(string name)
+        {
+            return null;
+        }
+
+        //public string TYPE;
+        //public string DEFAULT;
+
         public void UpdateObject()
         {
             throw new System.NotImplementedException();
@@ -18,5 +26,6 @@
         {
             
         }
+
     }
 }
