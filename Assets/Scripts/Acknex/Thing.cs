@@ -19,7 +19,7 @@ namespace Acknex
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
         private GameObject _thingGameObject;
-        private SphereCollider _sphereCollider;
+        private CapsuleCollider _collider;
         private GameObject _attached;
         private bool _set;
 
@@ -53,6 +53,8 @@ namespace Acknex
         public void Start()
         {
             _thingGameObject = BuildInnerGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
+            _collider = _thingGameObject.AddComponent<CapsuleCollider>();
+            _collider.height = 1f;
         }
 
         private GameObject BuildInnerGameObject(Transform parent, string name,Texture2D bitmap, out MeshFilter meshFilter, out MeshRenderer meshRenderer)
@@ -98,28 +100,12 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            var bitmapImage = BitmapImage;
-            var textureObject = TextureObject;
-            UpdateScale(_thingGameObject.transform, bitmapImage, textureObject);
+            UpdateScale(_thingGameObject.transform, BitmapImage, TextureObject);
             var transformLocalPosition = _thingGameObject.transform.localPosition;
             transformLocalPosition.y = Height;
             _thingGameObject.transform.localPosition = transformLocalPosition;
-            if (!Flags.Contains("PASSABLE"))
-            {
-                if (_sphereCollider == null)
-                {
-                    _sphereCollider = _thingGameObject.AddComponent<SphereCollider>();
-                    _sphereCollider.isTrigger = true;
-                }
-                _sphereCollider.radius = Dist;
-            }
-            else
-            {
-                if (_sphereCollider != null)
-                {
-                    Destroy(_sphereCollider);
-                }
-            }
+            _collider.isTrigger = Flags.Contains("PASSABLE");
+            _collider.radius = Dist > 0f ? Dist * 0.5f : 0.5f;
             if (!_set)
             {
                 SetPositionAngleRegion();
@@ -140,11 +126,16 @@ namespace Acknex
 
         private void UpdateScale(Transform transform, Texture2D bitmapImage, Texture textureObject)
         {
+            transform.localScale = CalculateObjectSize(bitmapImage, textureObject);
+        }
+
+        private Vector3 CalculateObjectSize(Texture2D bitmapImage, Texture textureObject)
+        {
             if (bitmapImage == null || textureObject == null)
             {
-                return;
+                return Vector3.one;
             }
-            transform.localScale = new Vector3(bitmapImage.width / textureObject.SCALE_X, bitmapImage.height / textureObject.SCALE_Y, 1f);
+            return new Vector3(bitmapImage.width / textureObject.SCALE_X, bitmapImage.height / textureObject.SCALE_Y, 1f);
         }
 
         //todo: fix
