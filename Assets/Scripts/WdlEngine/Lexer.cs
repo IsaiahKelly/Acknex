@@ -122,8 +122,8 @@ namespace WdlEngine
 
                 var text = Take(offset);
                 var value = type == TokenType.Integer
-                    ? int.Parse(text)
-                    : double.Parse(text, CultureInfo.InvariantCulture);
+                    ? int.Parse(text) as object
+                    : float.Parse(text, CultureInfo.InvariantCulture);
                 return new Token(type, value);
             }
 

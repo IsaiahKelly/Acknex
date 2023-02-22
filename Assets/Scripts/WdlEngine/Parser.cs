@@ -36,6 +36,20 @@ namespace WdlEngine
                 var text = peek.ValueString;
                 switch (text)
                 {
+                case "LIGHT_ANGLE":
+                {
+                    var value = ParseNumber();
+                    Expect(TokenType.Semicolon);
+                    // TODO: Handle
+                    return;
+                }
+                case "NEXUS":
+                {
+                    var value = Expect(TokenType.Integer);
+                    Expect(TokenType.Semicolon);
+                    // TODO: Handle
+                    return;
+                }
                 case "PATH":
                 {
                     var path = Expect(TokenType.String);
@@ -68,11 +82,25 @@ namespace WdlEngine
                     // TODO: Again, where to handle this?
                     return;
                 }
+                case "VIDEO":
+                {
+                    var type = Expect(TokenType.Identifier);
+                    Expect(TokenType.Semicolon);
+                    // TODO: Again, where to handle this?
+                    return;
+                }
                 }
             }
 
             Debug.LogError($"Unknown construct {peek.Type}, {peek.Value}");
             SkipStructure();
+        }
+
+        private float ParseNumber()
+        {
+            if (Matches(TokenType.Integer, out var integer)) return (int)integer.Value;
+            if (Matches(TokenType.Real, out var real)) return (float)real.Value;
+            throw new InvalidOperationException($"expected number, but got {Peek().Type}");
         }
 
         private void SkipStructure()
