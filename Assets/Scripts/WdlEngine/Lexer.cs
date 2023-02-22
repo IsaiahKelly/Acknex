@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -166,7 +167,7 @@ namespace WdlEngine
                 var text = Take(offset);
                 var value = type == TokenType.Integer
                     ? int.Parse(text)
-                    : double.Parse(text);
+                    : double.Parse(text, CultureInfo.InvariantCulture);
                 return new Token(type, value);
             }
 
