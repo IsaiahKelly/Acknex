@@ -6,6 +6,7 @@ namespace Acknex
 {
     public class Thing : MonoBehaviour, IAcknexObjectContainer
     {
+        [field: SerializeField]
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
 
         private static IAcknexObject GetDefinitionCallback(string name)

@@ -4,6 +4,7 @@ using Acknex.Interfaces;
 
 namespace Acknex
 {
+    [Serializable]
     public class AcknexObject : IAcknexObject
     {
         public Dictionary<string, object> Properties = new Dictionary<string, object>();
