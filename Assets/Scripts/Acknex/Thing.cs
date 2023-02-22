@@ -140,6 +140,10 @@ namespace Acknex
 
         private void UpdateScale(Transform transform, Texture2D bitmapImage, Texture textureObject)
         {
+            if (bitmapImage == null || textureObject == null)
+            {
+                return;
+            }
             transform.localScale = new Vector3(bitmapImage.width / textureObject.SCALE_X, bitmapImage.height / textureObject.SCALE_Y, 1f);
         }
 
