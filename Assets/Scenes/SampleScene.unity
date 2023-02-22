@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b52af5bca98fed4c9690969a13ed559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wdlPath: Assets\Data\Contato.WDL
+  _wdlPath: Assets\Data\Contato.wdl
 --- !u!1 &1477033080
 GameObject:
   m_ObjectHideFlags: 0

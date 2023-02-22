@@ -376,6 +376,7 @@ namespace DmitryBrant.ImageFormats
                 Debug.Log("Error while processing PCX file: " + e.Message);
             }
 
+            bmpData = ImageUtils.MagentaToTransparent(bmpData);
             bmpData = ImageUtils.FlipPixelsVertically(bmpData, imgWidth, imgHeight);
 
             var texture2D = new Texture2D(imgWidth, imgHeight, GraphicsFormat.B8G8R8A8_UNorm, TextureCreationFlags.None);

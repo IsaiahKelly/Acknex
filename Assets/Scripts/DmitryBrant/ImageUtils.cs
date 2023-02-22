@@ -29,5 +29,21 @@ namespace DmitryBrant.ImageFormats
             }
             return data;
         }
+
+        public static byte[] MagentaToTransparent(byte[] bmpData)
+        {
+            //bgra
+            for (var i = 0; i < bmpData.Length; i += 4)
+            {
+                var b = bmpData[i];
+                var g = bmpData[i + 1];
+                var r = bmpData[i + 2];
+                if (b != 255 || r != 255 || g != 0)
+                {
+                    bmpData[i + 3] = 255;
+                };
+            }
+            return bmpData;
+        }
     }
 }

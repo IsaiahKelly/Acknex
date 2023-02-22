@@ -2,19 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
+using Acknex.Interfaces;
 using UnityEngine;
 
 namespace Acknex
 {
-    public class Action : MonoBehaviour, IAcknexObject
+    public class Action : MonoBehaviour, IAcknexObjectContainer
     {
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+
+        private static IAcknexObject GetDefinitionCallback(string name)
+        {
+            return null;
+        }
+
         public readonly Dictionary<string, LabelTarget> LabelsByName = new Dictionary<string, LabelTarget>();
         private readonly List<Expression> _expressions = new List<Expression>();
         public System.Action FinalAction;
 
         private void Update()
         {
-            //todo:EACH_CYCLE and EACH_TICK can be triggered?
         }
 
         public void ParseAction(List<string> tokens, StreamReader streamReader, Func<StreamReader, List<string>> parseNextStatement)
@@ -27,8 +34,6 @@ namespace Acknex
             }
         }
 
-        //todo: WAIT and WAITT
-        //todo: replace string parameters by objects, the object type can be get from the keyword, and the lookup is made against actors, things, and skills located on World.Instance
         private Expression ParseExpression(ref bool canContinue, List<string> tokens, StreamReader streamReader, Func<StreamReader, List<string>> parseNextStatement)
         {
             var keyword = tokens[0];
@@ -69,7 +74,6 @@ namespace Acknex
                     }
                 case "RULE":
                     {
-                        //todo: parse math and create varaible
                         var a = tokens[1];
                         break;
                     }
@@ -110,7 +114,7 @@ namespace Acknex
                     }
                 case "WAIT":
                 case "WAITT":
-                case "BRANCH": //todo: is branch same as call?
+                case "BRANCH":      
                 case "CALL":
                 case "INKEY":
                     {
@@ -321,5 +325,19 @@ namespace Acknex
             Application.Quit();
         }
 
+        public void UpdateObject()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Enable()
+        {
+            
+        }
+
+        public void Disable()
+        {
+            
+        }
     }
 }
