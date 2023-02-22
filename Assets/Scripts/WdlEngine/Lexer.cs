@@ -20,9 +20,25 @@ namespace WdlEngine
             }
         }
 
+        private enum Mode
+        {
+            Normal,
+            AngleBracketString,
+        }
+
+        private static string[] CommandsWithAngleBracketStrings = new[]
+        {
+            "BIND",
+            "INCLUDE",
+            "MAPFILE",
+            "PALFILE",
+        };
+
         private readonly StringBuilder _peekBuffer = new StringBuilder();
         private readonly CommentStyle _commentStyle;
         private readonly TextReader _sourceReader;
+
+        private Mode _mode = Mode.Normal;
 
         public Lexer(CommentStyle commentStyle, TextReader sourceReader)
         {
@@ -52,6 +68,38 @@ namespace WdlEngine
                 goto start;
             }
 
+            // String literal
+            // NOTE: We check it here so angle brackets don't have a chance to be reinterpreted later
+            var (stringOpen, stringClose) = _mode == Mode.Normal
+                ? ('"', '"')
+                : ('<', '>');
+            if (ch == stringOpen)
+            {
+                Advance();
+                var result = new StringBuilder();
+                while (true)
+                {
+                    ch = Peek(0, stringClose);
+                    if (ch == '\0') break;
+                    if (ch == stringClose)
+                    {
+                        Advance();
+                        break;
+                    }
+                    if (ch == '\\')
+                    {
+                        Advance();
+                        var toEscape = Peek();
+                        if (toEscape != '\0') Advance();
+                        result.Append(Escape(toEscape));
+                        continue;
+                    }
+                    result.Append(ch);
+                    Advance();
+                }
+                return new Token(TokenType.String, result.ToString());
+            }
+
             // Single- and two-character tokens
             switch (ch)
             {
@@ -60,7 +108,11 @@ namespace WdlEngine
             case '.': return Advance(TokenType.Dot, 1);
             case ',': return Advance(TokenType.Comma, 1);
             case ':': return Advance(TokenType.Colon, 1);
-            case ';': return Advance(TokenType.Semicolon, 1);
+            case ';':
+                // End of the current command, reset the mode
+                // The next command will decide if we need to switch back or not
+                _mode = Mode.Normal;
+                return Advance(TokenType.Semicolon, 1);
             case '+': return Peek(1) == '=' 
                 ? Advance(TokenType.PlusAssign, 2)
                 : Advance(TokenType.Plus, 1);
@@ -118,40 +170,14 @@ namespace WdlEngine
                 return new Token(type, value);
             }
 
-            // String literal
-            if (ch == '"')
-            {
-                Advance();
-                var result = new StringBuilder();
-                while (true)
-                {
-                    ch = Peek();
-                    if (ch == '\0') break;
-                    if (ch == '"')
-                    {
-                        Advance();
-                        break;
-                    }
-                    if (ch == '\\')
-                    {
-                        Advance();
-                        var toEscape = Peek();
-                        if (toEscape != '\0') Advance();
-                        result.Append(Escape(toEscape));
-                        continue;
-                    }
-                    result.Append(ch);
-                    Advance();
-                }
-                return new Token(TokenType.String, result.ToString());
-            }
-
             // Identifier
             if (IsIdentifier(ch))
             {
                 var offset = 1;
                 while (IsIdentifier(Peek(offset))) ++offset;
-                return Take(TokenType.Identifier, offset);
+                var result = Take(TokenType.Identifier, offset);
+                if (CommandsWithAngleBracketStrings.Contains(result.Value.ToString())) _mode = Mode.AngleBracketString;
+                return result;
             }
 
             // Unknown
