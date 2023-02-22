@@ -118,6 +118,14 @@ namespace WdlEngine
                     goto start;
                 }
                 }
+
+                // Our token was an identifier, but not for preprocessing
+                // There is a chance it's a DEFINEd value, try look it up
+                if (_defines.TryGetValue(token.ValueString, out var definedValue))
+                {
+                    // Yes it is, swap out token
+                    token = definedValue;
+                }
             }
 
             // Here we have a token that does not relate to preprocessing
