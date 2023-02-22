@@ -321,6 +321,16 @@ namespace Acknex
             Application.Quit();
         }
 
+        public void UpdateObject()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Enable()
+        {
+            
+        }
+
         public void Disable()
         {
             

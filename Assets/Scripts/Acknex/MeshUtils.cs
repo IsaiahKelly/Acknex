@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Acknex
 {
@@ -14,6 +15,23 @@ namespace Acknex
         public static Vector3 ToXZ(Vector2 point)
         {
             return new Vector3(point.x, 0f, point.y);
+        }
+
+        public static void AddQuad(int a, int b, int c, int d, Dictionary<string, List<int>> allTriangles, string texture, int baseIndex = 0)
+        {
+            if (texture == null)
+            {
+                texture = "__default__";
+            }
+            if (!allTriangles.TryGetValue(texture, out var indices))
+            {
+                indices = new List<int>();
+                allTriangles[texture] = indices;
+            }
+            indices.Add(baseIndex + a);
+            indices.Add(baseIndex + b);
+            indices.Add(baseIndex + c);
+            indices.Add(baseIndex + d);
         }
 
         public static Mesh CreateQuadMesh()

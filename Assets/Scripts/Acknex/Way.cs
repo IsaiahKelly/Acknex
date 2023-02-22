@@ -30,6 +30,16 @@ namespace Acknex
             }
         }
 
+        public void UpdateObject()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Enable()
+        {
+            
+        }
+
         public void Disable()
         {
             gameObject.SetActive(false);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Acknex
 {
@@ -59,7 +60,7 @@ namespace Acknex
         texture's border exceeds the top or bottom pixel line of the sky bitmap, the
         rest of the sky is automatically filled with this pixel line; so the first and last
         line of the sky bitmap should be monochrome*/
-        public List<string> BMAPS;
+        public List<string> BMAPS = new List<string>();
 
         /*Texture FLIC animation, alternative to BMAPS (professional version only).
         Flic is a previously defined keyword denoting a FLI/FLC file. The size of the
@@ -136,9 +137,34 @@ namespace Acknex
         public List<string> FLAGS = new List<string>();
 
         public string NAME;
+
+        public List<string> Flags => FLAGS;
+
+        public void UpdateObject()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Enable()
+        {
+            
+        }
+
         public void Disable()
         {
             
+        }
+
+        public Texture2D GetFirstBitmapImage()
+        {
+            if (BMAPS.Count > 0)
+            {
+                if (World.Instance.BitmapsByName.TryGetValue(BMAPS[0], out var bitmapObject))
+                {
+                    return bitmapObject.Texture2D;
+                }
+            }
+            return null;
         }
     }
 }

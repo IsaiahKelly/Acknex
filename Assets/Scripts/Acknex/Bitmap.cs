@@ -28,9 +28,19 @@ namespace Acknex
             //}
         }
 
-        public void Disable()
+        public void UpdateObject()
         {
             throw new NotImplementedException();
+        }
+
+        public void Enable()
+        {
+            
+        }
+
+        public void Disable()
+        {
+            
         }
     }
 }

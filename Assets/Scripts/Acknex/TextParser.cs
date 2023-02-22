@@ -207,7 +207,7 @@ namespace Acknex
                             thing.HEIGHT = ParseSingle(tokens[1]);
                             break;
                         case "FLAGS":
-                            thing.FLAGS = ParseFlags(tokens);
+                            ParseFlags(ref thing.FLAGS, tokens);
                             break;
                         case "DIST":
                             thing.DIST = ParseSingle(tokens[1]);
@@ -255,7 +255,7 @@ namespace Acknex
                             region.AMBIENT = ParseSingle(tokens[1]);
                             break;
                         case "FLAGS":
-                            region.FLAGS = ParseFlags(tokens); //todo: remove linq
+                            ParseFlags(ref region.FLAGS, tokens); //todo: remove linq
                             break;
                         case "BELOW":
                             region.BELOW = tokens[1];
@@ -288,23 +288,22 @@ namespace Acknex
                                 break;
                             }
                         case "SCALE_X":
-                        {
-                            texture.SCALE_X = ParseSingle(tokens[1]);
-                            break;
-                        }
-                        case "SCALE_Y":
-                        {
-                            texture.SCALE_Y = ParseSingle(tokens[1]);
-                            break;
-                        }
-                        case "BMAPS":
                             {
-                                texture.BMAPS = new List<string>();
+                                texture.SCALE_X = ParseSingle(tokens[1]);
+                                break;
+                            }
+                        case "SCALE_Y":
+                            {
+                                texture.SCALE_Y = ParseSingle(tokens[1]);
+                                break;
+                            }
+                        case "BMAPS":
+                        {
+                                texture.BMAPS.Clear();
                                 for (var i = 1; i < tokens.Count; i++)
                                 {
                                     texture.BMAPS.Add(tokens[i]);
                                 }
-
                                 break;
                             }
                         case "POS_X":
@@ -319,7 +318,7 @@ namespace Acknex
                             }
                         case "FLAGS":
                             {
-                                texture.FLAGS = ParseFlags(tokens); //todo: remove linq
+                                ParseFlags(ref texture.FLAGS, tokens); //todo: remove linq
                                 break;
                             }
                     }
@@ -487,9 +486,10 @@ namespace Acknex
         }
 
         //todo: remove linq??
-        private static List<string> ParseFlags(List<string> tokens)
+        private static void ParseFlags(ref List<string> flags, List<string> tokens)
         {
-            return tokens.Skip(1).Take(tokens.Count - 1).ToList();
+            flags.Clear();
+            flags.AddRange(tokens.Skip(1).Take(tokens.Count - 1));
         }
 
         private List<string> ParseNextStatement(StreamReader textReader)
@@ -528,7 +528,7 @@ namespace Acknex
 
             using (var streamReader = new StreamReader(File.OpenRead(wmpFilename)))
             {
-                var vertices = new List<ContourVertex>();
+                var contourVertices = new List<ContourVertex>();
                 var regionWalls = new RegionWalls();
                 var vertexCount = 0;
                 while (!streamReader.EndOfStream)
@@ -543,6 +543,7 @@ namespace Acknex
                     {
                         case "PLAYER_START":
                             {
+                                //todo: setpositionangleregion
                                 var x = ParseSingle(tokens[1]);
                                 var y = ParseSingle(tokens[2]);
                                 var angle = ParseSingle(tokens[3]);
@@ -553,13 +554,11 @@ namespace Acknex
                             }
                         case "THING":
                             {
-                                var x = ParseSingle(tokens[2]);
-                                var y = ParseSingle(tokens[3]);
-                                var angle = ParseSingle(tokens[4]);
-                                var region = ParseInt(tokens[5]);
-                                var thingRegion = World.Instance.RegionsByIndex[region];
                                 var thing = World.Instance.CreateThing(tokens[1]);
-                                thing.transform.SetPositionAndRotation(thingRegion.ProjectPosition(x, y), Quaternion.Euler(0f, angle * Mathf.Rad2Deg, 0f));
+                                thing.X = ParseSingle(tokens[2]);
+                                thing.Y = ParseSingle(tokens[3]);
+                                thing.ANGLE = ParseSingle(tokens[4]);
+                                thing.REGION = ParseInt(tokens[5]);
                                 break;
                             }
                         case "VERTEX":
@@ -567,7 +566,7 @@ namespace Acknex
                                 var x = ParseSingle(tokens[1]);
                                 var y = ParseSingle(tokens[2]);
                                 var z = ParseSingle(tokens[3]);
-                                vertices.Add(new ContourVertex(new Vec3(x, y, z)));
+                                contourVertices.Add(new ContourVertex(new Vec3(x, y, z)));
                                 break;
                             }
                         case "REGION":
@@ -628,31 +627,18 @@ namespace Acknex
                             continue;
                         }
                         var rightRegion = contouredRegions.GetContouredRegion(kvp.Key);
-                        var contourVertices = rightRegion.GetNew();
-                        World.Instance.ProcessWall(contourVertices, vertices, wall, kvp, ref vertexCount, wall.REGION2 == kvp.Key);
+                        var allContourVertices = rightRegion.GetNew();
+                        wall.ProcessWall(allContourVertices, contourVertices, wall, kvp, ref vertexCount, wall.REGION2 == kvp.Key);
                     }
                 }
                 foreach (var kvp in contouredRegions)
                 {
-                    var meshIndex = 0;
-                    var allVertices = new List<Vector3>();
-                    var allUVs = new List<Vector2>();
-                    var allTriangles = new Dictionary<int, List<int>>();
                     var region = World.Instance.RegionsByIndex[kvp.Key];
-                    region.ContouredRegion = kvp.Value;
-                    World.Instance.BuildFloor(kvp.Value, region, allVertices, allUVs, allTriangles, ref meshIndex);
-                    World.Instance.BuildFloor(kvp.Value, region, allVertices, allUVs, allTriangles, ref meshIndex, true);
-                    World.Instance.BuildFloorMesh(allVertices, allUVs, allTriangles, region.gameObject, region.CeilTexture, region.FloorTexture);
+                    region.BuildRegionFloorAndCeiling(region, kvp.Value);
                 }
                 foreach (var wall in World.Instance.Walls)
                 {
-                    var allVertices = new List<Vector3>();
-                    var allUVs = new List<Vector2>();
-                    var allTriangles = new Dictionary<string, List<int>>();
-                    var rightRegion = World.Instance.RegionsByIndex[wall.REGION1];
-                    var leftRegion = World.Instance.RegionsByIndex[wall.REGION2];
-                    World.Instance.BuildWall(wall, rightRegion, leftRegion, vertices, allVertices, allUVs, allTriangles);
-                    World.Instance.BuildWallMesh(allVertices, allUVs, allTriangles, wall.gameObject);
+                    wall.BuildWallAndMesh(wall, contourVertices);
                 }
             }
         }

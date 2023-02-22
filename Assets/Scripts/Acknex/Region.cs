@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using LibTessDotNet;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace Acknex
 {
+    //todo: some refactored methods dont need to receive this class instance anymore
     public class Region : MonoBehaviour, IAcknexObject
     {
         private MeshFilter _meshFilter;
@@ -13,36 +15,18 @@ namespace Acknex
         public float FLOOR_HGT;
         public float CEIL_HGT;
         public float AMBIENT;
-        public List<string> FLAGS;
+        public List<string> FLAGS = new List<string>();
         public string BELOW;
         public string FLOOR_TEX;
         public string CEIL_TEX;
         public ContouredRegion ContouredRegion;
+        private Region _belowOverride;
 
         private void Start()
         {
             _meshFilter = GetComponent<MeshFilter>();
             _meshCollider = GetComponent<MeshCollider>();
         }
-
-        public bool CellLifted
-        {
-            get
-            {
-                var flags = FLAGS ?? Definition?.FLAGS;
-                return flags != null && flags.Contains("CEIL_LIFTED");
-            }
-        }
-
-        public bool FloorLifted
-        {
-            get
-            {
-                var flags = FLAGS ?? Definition?.FLAGS;
-                return flags != null && flags.Contains("FLOOR_LIFTED");
-            }
-        }
-
         public Region Definition
         {
             get
@@ -55,18 +39,28 @@ namespace Acknex
             }
         }
 
+        public List<string> Flags => Definition?.FLAGS ?? FLAGS;
+
+        public bool CellLifted => Flags.Contains("CEIL_LIFTED");
+
+        public bool FloorLifted => Flags.Contains("FLOOR_LIFTED");
+
         public Region Below
         {
             get
             {
+                if (_belowOverride != null)
+                {
+                    return _belowOverride;
+                }
                 var below = BELOW ?? Definition?.BELOW;
                 if (below != null && World.Instance.RegionsByName.TryGetValue(below, out var region))
                 {
                     return region;
                 }
-
                 return null;
             }
+            set => _belowOverride = value;
         }
 
         public string CeilTexture => CEIL_TEX ?? Definition?.CEIL_TEX;
@@ -107,19 +101,150 @@ namespace Acknex
             return true;
         }
 
-        public Vector3 ProjectPosition(float x, float y)
+        public Vector3 ProjectPosition(float x, float y, bool ground = false)
         {
             var point = new Vector3(x, FLOOR_HGT + 10000f, y);
-            if (!Physics.Raycast(new Ray(point , Vector3.down), out var bottomHit, 20000f) || bottomHit.collider != _meshCollider)
+            if (!Physics.Raycast(new Ray(point , Vector3.down), out var bottomHit, 20000f) || 
+                bottomHit.collider != ground ? GetGroundRegion(this)._meshCollider : _meshCollider)
             {
                 return new Vector3(x, FLOOR_HGT, y);
             }
             return bottomHit.point;
         }
 
+        private Region GetGroundRegion(Region region)
+        {
+            while (region.Below != null)
+            {
+                region = region.Below;
+            }
+            return region;
+        }
+
+        public void UpdateObject()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Enable()
+        {
+            gameObject.SetActive(true);
+        }
+
         public void Disable()
         {
             gameObject.SetActive(false);
+        }
+
+        public void BuildFloorMesh(List<Vector3> allVertices, List<Vector2> allUVS, Dictionary<int, List<int>> allTriangles,
+            GameObject floorGameObject, string ceilTexture, string floorTexture)
+        {
+            var mesh = new Mesh();
+            mesh.SetVertices(allVertices);
+            mesh.SetUVs(0, allUVS);
+
+            mesh.subMeshCount = allTriangles.Count;
+            foreach (var kvp in allTriangles)
+            {
+                mesh.SetTriangles(kvp.Value, kvp.Key);
+            }
+
+            mesh.RecalculateNormals();
+            mesh.UploadMeshData(true);
+
+            var meshFilter = floorGameObject.AddComponent<MeshFilter>();
+            meshFilter.sharedMesh = mesh;
+
+            var meshRenderer = floorGameObject.AddComponent<MeshRenderer>();
+            var materials = new Material[mesh.subMeshCount];
+
+            for (var i = 0; i < materials.Length; i++)
+            {
+                var textureName = i == 0 ? floorTexture : ceilTexture;
+                var material = World.Instance.BuildMaterial(textureName);
+                materials[i] = material;
+            }
+
+            meshRenderer.sharedMaterials = materials;
+
+            var meshCollider = floorGameObject.AddComponent<MeshCollider>();
+            meshCollider.sharedMesh = mesh;
+        }
+
+        public void BuildRegionFloorAndCeiling(Region region, ContouredRegion contouredRegion)
+        {
+            region.ContouredRegion = contouredRegion;
+            var meshIndex = 0;
+            var allVertices = new List<Vector3>();
+            var allUVs = new List<Vector2>();
+            var allTriangles = new Dictionary<int, List<int>>();
+            BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex);
+            BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex, true);
+            region.BuildFloorMesh(allVertices, allUVs, allTriangles, region.gameObject, region.CeilTexture, region.FloorTexture);
+            region.Enable();
+            if (region.Below != null)
+            {
+                var newRegion = Instantiate(region.Below.gameObject).GetComponent<Region>();
+                newRegion.name = region.Below.name;
+                region.Below = newRegion;
+                BuildRegionFloorAndCeiling(newRegion, contouredRegion);
+            }
+        }
+
+        public void BuildFloor(ContouredRegion contouredRegion, Region region, List<Vector3> allVertices, List<Vector2> allUVs,
+            Dictionary<int, List<int>> allTriangles, ref int meshIndex, bool ceil = false)
+        {
+            var tess = new Tess();
+            foreach (var contouredList in contouredRegion)
+            {
+                tess.AddContour(contouredList);
+            }
+
+            tess.Tessellate();
+            var floorVertices = new Vector3[tess.VertexCount];
+            //var height = regionDefinition != null ? (ceil ? regionDefinition.CEIL_HGT : regionDefinition.FLOOR_HGT) : (ceil ? region.CEIL_HGT : region.FLOOR_HGT);
+            var height = (ceil ? region.CEIL_HGT : region.FLOOR_HGT);
+            for (var i = 0; i < tess.VertexCount; i++)
+            {
+                var vertex = tess.Vertices[i];
+                var lifted = false;
+                //if (region.Definition != null)
+                {
+                    if (ceil && region.CellLifted || !ceil && region.FloorLifted)
+                    {
+                        lifted = true;
+                        floorVertices[i] = new Vector3(vertex.Position.X, vertex.Position.Z + height,
+                            vertex.Position.Y);
+                    }
+                }
+
+                if (!lifted)
+                {
+                    floorVertices[i] = new Vector3(vertex.Position.X, height, vertex.Position.Y);
+                }
+            }
+
+            var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(Vector3.up));
+            for (var i = 0; i < floorVertices.Length; i++)
+            {
+                allUVs.Add(unRotateNormal * floorVertices[i]);
+            }
+
+            var vertexIndex = allVertices.Count;
+            allVertices.AddRange(floorVertices);
+            for (var i = 0; i < tess.Elements.Length; i++)
+            {
+                tess.Elements[i] += vertexIndex;
+            }
+
+            var elements = tess.Elements.ToList();
+            if (ceil)
+            {
+                elements.Reverse();
+            }
+
+            allTriangles.Add(meshIndex, elements);
+            meshIndex++;
         }
     }
 }
