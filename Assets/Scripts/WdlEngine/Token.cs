@@ -11,6 +11,8 @@ namespace WdlEngine
         public readonly TokenType Type;
         public readonly object Value;
 
+        public string ValueString => Value.ToString();
+
         public Token(TokenType type, object value)
         {
             Type = type;

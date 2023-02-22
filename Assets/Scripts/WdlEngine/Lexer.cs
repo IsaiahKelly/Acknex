@@ -40,7 +40,7 @@ namespace WdlEngine
 
         private Mode _mode = Mode.Normal;
 
-        public Lexer(CommentStyle commentStyle, TextReader sourceReader)
+        private Lexer(CommentStyle commentStyle, TextReader sourceReader)
         {
             _commentStyle = commentStyle;
             _sourceReader = sourceReader;
@@ -176,7 +176,7 @@ namespace WdlEngine
                 var offset = 1;
                 while (IsIdentifier(Peek(offset))) ++offset;
                 var result = Take(TokenType.Identifier, offset);
-                if (CommandsWithAngleBracketStrings.Contains(result.Value.ToString())) _mode = Mode.AngleBracketString;
+                if (CommandsWithAngleBracketStrings.Contains(result.ValueString)) _mode = Mode.AngleBracketString;
                 return result;
             }
 
