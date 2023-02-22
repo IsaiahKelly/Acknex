@@ -191,8 +191,8 @@ namespace Acknex
                         heightLeft = Mathf.Min(heightLeft, rightRegionAbove.AcknexObject.Get<float>("FLOOR_HGT", false));
                     }
 
-                    var liftedLeft = leftRegion.FloorLifted && leftRegionAbove == null;
-                    var liftedRight = rightRegion.FloorLifted && rightRegionAbove == null;
+                    var liftedLeft = leftRegion.Flags.Contains("FLOOR_LIFTED") && leftRegionAbove == null;
+                    var liftedRight = rightRegion.Flags.Contains("FLOOR_LIFTED") && rightRegionAbove == null;
                     var v0 = new Vector3(vertexA.Position.X, heightLeft + (liftedLeft ? vertexA.Position.Z : 0), vertexA.Position.Y);
                     var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
@@ -224,8 +224,8 @@ namespace Acknex
                         heightLeft = Mathf.Min(heightLeft, rightRegionAbove.AcknexObject.Get<float>("FLOOR_HGT", false));
                     }
 
-                    var liftedLeft = leftRegion.CellLifted && leftRegionAbove == null;
-                    var liftedRight = rightRegion.CellLifted && rightRegionAbove == null;
+                    var liftedLeft = leftRegion.Flags.Contains("CEIL_LIFTED") && leftRegionAbove == null;
+                    var liftedRight = rightRegion.Flags.Contains("CEIL_LIFTED") && rightRegionAbove == null;
                     var v0 = new Vector3(vertexA.Position.X, heightLeft + (liftedLeft ? vertexA.Position.Z : 0), vertexA.Position.Y);
                     var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);

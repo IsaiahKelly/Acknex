@@ -45,10 +45,6 @@ namespace Acknex
             }
         }
 
-        public bool CellLifted => Flags.Contains("CEIL_LIFTED");
-
-        public bool FloorLifted => Flags.Contains("FLOOR_LIFTED");
-
         public Region Below
         {
             get
@@ -182,7 +178,7 @@ namespace Acknex
                 var vertex = tess.Vertices[i];
                 var lifted = false;
                 {
-                    if (ceil && region.CellLifted || !ceil && region.FloorLifted)
+                    if (ceil && region.Flags.Contains("CEIL_LIFTED") || !ceil && region.Flags.Contains("FLOOR_LIFTED"))
                     {
                         lifted = true;
                         floorVertices[i] = new Vector3(vertex.Position.X, vertex.Position.Z + height,

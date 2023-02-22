@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Acknex.Interfaces;
+using UnityEngine;
 
 namespace Acknex
 {
@@ -17,14 +18,6 @@ namespace Acknex
 
         public T Get<T>(string propertyName, bool fromDefinition = true)
         {
-            if (fromDefinition && _getDefinitionCallback != null && Properties.TryGetValue("NAME", out var name))
-            {
-                var definition = _getDefinitionCallback(name.ToString());
-                if (definition != null && definition.TryGet<T>(propertyName, out var definitionProperty))
-                {
-                    return definitionProperty;
-                }
-            }
             if (Properties.TryGetValue(propertyName, out var property))
             {
                 try
@@ -34,6 +27,15 @@ namespace Acknex
                 }
                 catch (Exception e)
                 {
+                    Debug.LogWarning($"Cannot cast {propertyName}({property.GetType()}) to ({typeof(T)})");
+                }
+            }
+            if (fromDefinition && _getDefinitionCallback != null && Properties.TryGetValue("NAME", out var name))
+            {
+                var definition = _getDefinitionCallback(name.ToString());
+                if (definition != null && definition.TryGet<T>(propertyName, out var definitionProperty))
+                {
+                    return definitionProperty;
                 }
             }
             return default;
