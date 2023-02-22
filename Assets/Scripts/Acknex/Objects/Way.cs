@@ -18,20 +18,6 @@ namespace Acknex
         }
 
         public List<Vector2> Points = new List<Vector2>();
-        //public string NAME;
-
-        //public Way Definition
-        //{
-        //    get
-        //    {
-        //        if (World.Instance.WaysByName.TryGetValue(AcknexObject.Get<string>("NAME"), out var way))
-        //        {
-        //            return way;
-        //        }
-        //        return null;
-        //    }
-        //}
-
 
         public void OnDrawGizmos()
         {

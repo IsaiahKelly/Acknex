@@ -22,7 +22,6 @@ namespace Acknex
 
         private void Update()
         {
-            //todo:EACH_CYCLE and EACH_TICK can be triggered?
         }
 
         public void ParseAction(List<string> tokens, StreamReader streamReader, Func<StreamReader, List<string>> parseNextStatement)
@@ -35,8 +34,6 @@ namespace Acknex
             }
         }
 
-        //todo: WAIT and WAITT
-        //todo: replace string parameters by objects, the object type can be get from the keyword, and the lookup is made against actors, things, and skills located on World.Instance
         private Expression ParseExpression(ref bool canContinue, List<string> tokens, StreamReader streamReader, Func<StreamReader, List<string>> parseNextStatement)
         {
             var keyword = tokens[0];
@@ -77,7 +74,6 @@ namespace Acknex
                     }
                 case "RULE":
                     {
-                        //todo: parse math and create varaible
                         var a = tokens[1];
                         break;
                     }
@@ -118,7 +114,7 @@ namespace Acknex
                     }
                 case "WAIT":
                 case "WAITT":
-                case "BRANCH": //todo: is branch same as call?
+                case "BRANCH":      
                 case "CALL":
                 case "INKEY":
                     {

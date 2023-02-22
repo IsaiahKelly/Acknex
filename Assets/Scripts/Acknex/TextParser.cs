@@ -123,7 +123,6 @@ namespace Acknex
             }
         }
 
-        //todo: this needs to be put into a stack, as one compiler IF might be inside other, so replacing the canContinue param with the stack
         public static bool HandleCompilerDirectives(
             ref bool canContinue,
             List<string> tokens,
@@ -172,7 +171,6 @@ namespace Acknex
             while (!streamReader.EndOfStream)
             {
                 var tokens = ParseNextStatement(streamReader);
-                //Debug.Log(String.Join("|", tokens));
                 if (tokens.Count == 0)
                 {
                     continue;
@@ -259,7 +257,7 @@ namespace Acknex
                             region.AcknexObject[keyword] = ParseSingle(tokens[1]);
                             break;
                         case "FLAGS":
-                            ParseList(keyword, region, tokens); //todo: remove linq
+                            ParseList(keyword, region, tokens);   
                             break;
                         case "BELOW":
                             region.AcknexObject[keyword] = tokens[1];
@@ -339,7 +337,6 @@ namespace Acknex
                         case "STRING":
                             {
                                 var name = tokens[1];
-                                //todo: remove
                                 if (tokens.Count < 3)
                                 {
                                     continue;
@@ -414,7 +411,6 @@ namespace Acknex
                                     continue;
                                 }
                                 var filename = ParseDir(tokens[2]);
-                                //filename = $"{PathUtils.GetFileDirectory(importedAsset)}/{filename}";
                                 var bitmap = new Bitmap();
                                 bitmap.AcknexObject["FILENAME"] = filename;
                                 bitmap.AcknexObject["NAME"] = name;
@@ -472,7 +468,7 @@ namespace Acknex
                             {
                                 if (!handledCompilerDirective)
                                 {
-                                    Debug.LogError("Unknown WDL keyword[" + keyword + "]");//(" + string.Join("|", tokens) + ")");
+                                    Debug.LogError("Unknown WDL keyword[" + keyword + "]");     
                                 }
                                 break;
                             }
@@ -481,7 +477,6 @@ namespace Acknex
             }
         }
 
-        //todo: remove linq??
         private static void ParseList(string propertyName, IAcknexObjectContainer container, List<string> tokens)
         {
             if (container.AcknexObject.TryGet(propertyName, out List<string> list))
@@ -511,7 +506,6 @@ namespace Acknex
 
         private static string ParseDir(string token)
         {
-            //token = token.TrimStart(new char[] { '<' }).TrimEnd(new char[] { '>' });
             token = token.Substring(1, token.Length - 2);
             var file = $"Assets/Data/{token}";
             if (File.Exists(file))
@@ -536,7 +530,6 @@ namespace Acknex
                 while (!streamReader.EndOfStream)
                 {
                     var tokens = ParseNextStatement(streamReader);
-                    //Debug.Log(String.Join("|", tokens));
                     if (tokens.Count == 0)
                     {
                         continue;
@@ -545,7 +538,6 @@ namespace Acknex
                     {
                         case "PLAYER_START":
                             {
-                                //todo: setpositionangleregion
                                 var x = ParseSingle(tokens[1]);
                                 var y = ParseSingle(tokens[2]);
                                 var angle = ParseSingle(tokens[3]);
@@ -579,7 +571,6 @@ namespace Acknex
                                 region.AcknexObject["FLOOR_HGT"] = ParseSingle(tokens[2]);
                                 region.AcknexObject["CEIL_HGT"] = ParseSingle(tokens[3]);
                                 World.Instance.RegionsByIndex.Add(region);
-                                //Debug.Log("Region WMP:" + regionName);
                                 break;
                             }
                         case "WALL":
@@ -609,7 +600,6 @@ namespace Acknex
                                     var point = new Vector2(ParseSingle(tokens[i]), ParseSingle(tokens[i + 1]));
                                     way.Points.Add(point);
                                 }
-                                //todo: add to list?
                                 break;
                             }
                     }

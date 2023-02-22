@@ -2,7 +2,7 @@
 
 namespace Acknex
 {
-    public class Skill : IAcknexObjectContainer
+    public class Synonym : IAcknexObjectContainer
     {
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
 
@@ -11,9 +11,6 @@ namespace Acknex
             return null;
         }
 
-        //public float VAL;
-        //public float MIN;
-        //public float MAX;
         public void UpdateObject()
         {
             throw new System.NotImplementedException();
@@ -28,5 +25,6 @@ namespace Acknex
         {
             
         }
+
     }
 }

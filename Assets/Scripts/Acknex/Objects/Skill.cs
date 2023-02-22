@@ -2,7 +2,7 @@
 
 namespace Acknex
 {
-    public class Synonym : IAcknexObjectContainer
+    public class Skill : IAcknexObjectContainer
     {
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
 
@@ -10,9 +10,6 @@ namespace Acknex
         {
             return null;
         }
-
-        //public string TYPE;
-        //public string DEFAULT;
 
         public void UpdateObject()
         {
@@ -28,6 +25,5 @@ namespace Acknex
         {
             
         }
-
     }
 }

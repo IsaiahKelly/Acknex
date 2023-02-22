@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using LibTessDotNet;
 using UnityEngine;
 
 namespace Acknex

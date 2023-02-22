@@ -18,17 +18,6 @@ namespace Acknex
             return null;
         }
 
-        //public string NAME;
-        //public string TEXTURE;
-        //public float HEIGHT;
-        //public List<string> FLAGS = new List<string>();
-        //public float DIST;
-        //public float X;
-        //public float Y;
-        //public float ANGLE;
-        //public int REGION;
-        //public string ATTACH;
-
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
         private GameObject _thingGameObject;
@@ -36,17 +25,6 @@ namespace Acknex
         private GameObject _attached;
         private bool _set;
 
-        //public Thing Definition
-        //{
-        //    get
-        //    {
-        //        if (World.Instance.ThingsByName.TryGetValue(AcknexObject.Get<string>("NAME"), out var thing))
-        //        {
-        //            return thing;
-        //        }
-        //        return null;
-        //    }
-        //}
         public List<string> Flags
         {
             get
@@ -65,15 +43,7 @@ namespace Acknex
 
         public Texture2D BitmapImage => TextureObject?.GetFirstBitmapImage();
 
-        //public string Texture => AcknexObject.Get<string>("TEXTURE");
-        //
-        //public float Height => AcknexObject.Get<float>("HEIGHT");
-        //
-        //public float Dist =>  AcknexObject.Get<float>("DIST");
-
         public Region Region => World.Instance.RegionsByIndex[AcknexObject.Get<int>("REGION")];
-
-        //public string Attach => AcknexObject.Get<string>("ATTACH");
 
 
         public void Start()
@@ -142,7 +112,6 @@ namespace Acknex
                 var toAttachBitmapImage = toAttachTextureObject.GetFirstBitmapImage();
                 _attached = BuildInnerGameObject(gameObject.transform, toAttachTextureObject.AcknexObject.Get<string>("NAME"), toAttachBitmapImage, out _, out _);
                 UpdateScale(_attached.transform, toAttachBitmapImage, toAttachTextureObject);
-                //disabling shadow objects as Unity is already projecting shadows
                 if (toAttachTextureObject.Flags.Contains("SHADOW"))
                 {
                     _attached.gameObject.SetActive(false);
@@ -163,8 +132,6 @@ namespace Acknex
             }
             return new Vector3(bitmapImage.width / textureObject.AcknexObject.Get<float>("SCALE_X"), bitmapImage.height / textureObject.AcknexObject.Get<float>("SCALE_Y"), 1f);
         }
-
-        //todo: fix
 
         public void SetPositionAngleRegion()
         {

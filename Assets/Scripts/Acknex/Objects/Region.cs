@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace Acknex
 {
-    //todo: some refactored methods dont need to receive this class instance anymore
     public class Region : MonoBehaviour, IAcknexObjectContainer
     {
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
@@ -24,15 +23,6 @@ namespace Acknex
         private MeshCollider _meshCollider;
         private Region _belowOverride;
 
-        //public string NAME;
-        //public float FLOOR_HGT;
-        //public float CEIL_HGT;
-        //public float AMBIENT;
-        //public List<string> FLAGS = new List<string>();
-        //public string BELOW;
-        //public string FLOOR_TEX;
-        //public string CEIL_TEX;
-
         public ContouredRegion ContouredRegion;
 
         private void Start()
@@ -40,18 +30,6 @@ namespace Acknex
             _meshFilter = GetComponent<MeshFilter>();
             _meshCollider = GetComponent<MeshCollider>();
         }
-
-        //public Region Definition
-        //{
-        //    get
-        //    {
-        //        if (World.Instance.RegionsByName.TryGetValue(AcknexObject.Get<string>("NAME"), out var region))
-        //        {
-        //            return region;
-        //        }
-        //        return null;
-        //    }
-        //}
 
         public List<string> Flags
         {
@@ -89,11 +67,6 @@ namespace Acknex
             set => _belowOverride = value;
         }
 
-        //public string CeilTexture => AcknexObject.Get<string>("CEIL_TEX");
-        //public string FloorTexture => AcknexObject.Get<string>("FLOOR_TEX");
-
-        //todo: Y/Z flipped on engine
-        //todo: check by convex hull?
         public bool IsPointInsideRegion(Vector3 point)
         {
             if (!Physics.Raycast(new Ray(point  + new Vector3(0f, 1f, 0f), Vector3.down), out var bottomHit, 20000f) || bottomHit.collider != _meshCollider)
@@ -104,26 +77,6 @@ namespace Acknex
             {
                 return false;
             }
-            //for (var i = 0; i < ContouredRegion.Count; i++)
-            //{
-            //    var vertices = ContouredRegion[i];
-            //    for (var j = 1; j < vertices.Count; j++)
-            //    {
-            //        var a = vertices[j - 1];
-            //        var b = vertices[j];
-            //        var vectorA = new Vector3(b.Position.X,
-            //            b.Position.Z,
-            //            b.Position.Y);
-            //        var vectorB = new Vector3(a.Position.X,
-            //            a.Position.Z,
-            //            a.Position.Y);
-            //        var right =
-            //            vectorA -
-            //            vectorB;
-            //        var forward = -Vector3.Cross(right, Vector3.up).normalized;
-            //        DebugExtension.DrawArrow(Vector3.Lerp(vectorA, vectorB, 0.5f), forward, Color.magenta);
-            //    }
-            //}
             return true;
         }
 
@@ -223,13 +176,11 @@ namespace Acknex
 
             tess.Tessellate();
             var floorVertices = new Vector3[tess.VertexCount];
-            //var height = regionDefinition != null ? (ceil ? regionDefinition.CEIL_HGT : regionDefinition.FLOOR_HGT) : (ceil ? region.CEIL_HGT : region.FLOOR_HGT);
-            var height = (ceil ? region.AcknexObject.Get<float>("CEIL_HGT") : region.AcknexObject.Get<float>("FLOOR_HGT"));
+            var height = (ceil ? region.AcknexObject.Get<float>("CEIL_HGT", false) : region.AcknexObject.Get<float>("FLOOR_HGT", false));
             for (var i = 0; i < tess.VertexCount; i++)
             {
                 var vertex = tess.Vertices[i];
                 var lifted = false;
-                //if (region.Definition != null)
                 {
                     if (ceil && region.CellLifted || !ceil && region.FloorLifted)
                     {
