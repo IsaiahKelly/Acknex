@@ -309,12 +309,12 @@ namespace Acknex
                             }
                         case "POS_X":
                             {
-                                texture.AcknexObject[keyword] = ParseInt(tokens[1]);
+                                texture.AcknexObject[keyword] = ParseSingle(tokens[1]);
                                 break;
                             }
                         case "POS_Y":
                             {
-                                texture.AcknexObject[keyword] = ParseInt(tokens[1]);
+                                texture.AcknexObject[keyword] = ParseSingle(tokens[1]);
                                 break;
                             }
                         case "FLAGS":
@@ -404,6 +404,11 @@ namespace Acknex
                         case "REGION":
                             {
                                 var name = tokens[1];
+                                if (World.Instance.RegionsByName.ContainsKey(name))
+                                {
+                                    Debug.LogWarning("Region [" + name + "] already registered.");
+                                    continue;
+                                }
                                 _openObject = World.Instance.CreateRegion(name, true);
                                 _openObject.Disable();
                                 World.Instance.RegionsByName.Add(name, (Region)_openObject);
@@ -412,6 +417,11 @@ namespace Acknex
                         case "WALL":
                             {
                                 var name = tokens[1];
+                                if (World.Instance.WallsByName.ContainsKey(name))
+                                {
+                                    Debug.LogWarning("Wall [" + name + "] already registered.");
+                                    continue;
+                                }
                                 _openObject = World.Instance.CreateWall(name, true);
                                 _openObject.Disable();
                                 World.Instance.WallsByName.Add(name, (Wall)_openObject);
