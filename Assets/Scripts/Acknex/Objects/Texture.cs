@@ -55,13 +55,13 @@ namespace Acknex
             
         }
 
-        public Texture2D GetFirstBitmapImage()
+        public Bitmap GetBitmapAt(int index = 0)
         {
-            if (BMaps.Count > 0)
+            if (BMaps.Count > index)
             {
-                if (World.Instance.BitmapsByName.TryGetValue(BMaps[0], out var bitmapObject))
+                if (World.Instance.BitmapsByName.TryGetValue(BMaps[index], out var bitmapObject))
                 {
-                    return bitmapObject.Texture2D;
+                    return bitmapObject;
                 }
             }
             return null;

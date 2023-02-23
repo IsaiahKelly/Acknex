@@ -158,7 +158,7 @@ namespace Acknex
                     {
                         if (!handledCompilerDirective)
                         {
-                            Debug.LogError("Unknown keyword[" + keyword + "]");
+                            Debug.LogWarning("Unknown keyword[" + keyword + "]");
                         }
                         break;
                     }

@@ -195,24 +195,27 @@ namespace Acknex
                 {
                     action.ParseAction(tokens, streamReader, ParseNextStatement);
                 }
-                else if (_openObject is Thing thing)
+                else if (_openObject is Thing || _openObject is Actor)
                 {
                     switch (keyword)
                     {
                         case "TEXTURE":
-                            thing.AcknexObject[keyword] = tokens[1];
+                            _openObject.AcknexObject[keyword] = tokens[1];
                             break;
                         case "HEIGHT":
-                            thing.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                            _openObject.AcknexObject[keyword] = ParseSingle(tokens[1]);
                             break;
                         case "ATTACH":
-                            thing.AcknexObject[keyword] = tokens[1];
+                            _openObject.AcknexObject[keyword] = tokens[1];
                             break;
                         case "FLAGS":
-                            ParseList(keyword, thing, tokens);
+                            ParseList(keyword, _openObject, tokens);
                             break;
                         case "DIST":
-                            thing.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                            _openObject.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                            break;
+                        case "SPEED":
+                            _openObject.AcknexObject[keyword] = ParseSingle(tokens[1]);
                             break;
                     }
                 }
@@ -319,6 +322,18 @@ namespace Acknex
                                 ParseList(keyword, texture, tokens);
                                 break;
                             }
+                        case "DELAY":
+                        case "MIRROR":
+                        {
+                            ParseList(keyword, texture, tokens);
+                            break;
+                        }
+                        case "SIDES":
+                        case "CYCLES":
+                        {
+                            texture.AcknexObject[keyword] = ParseInt(tokens[1]);
+                                break;
+                        }
                     }
                 }
                 else
@@ -464,11 +479,24 @@ namespace Acknex
                                 World.Instance.ThingsByName.Add(name, (Thing)_openObject);
                                 break;
                             }
+                        case "ACTOR":
+                        {
+                            var name = tokens[1];
+                            if (World.Instance.ActorsByName.ContainsKey(name))
+                            {
+                                Debug.LogWarning("Actor [" + name + "] already registered.");
+                                continue;
+                            }
+                            _openObject = World.Instance.CreateActor(name + "_DEFINITION");
+                            _openObject.Disable();
+                            World.Instance.ActorsByName.Add(name, (Actor)_openObject);
+                            break;
+                        }
                         default:
                             {
                                 if (!handledCompilerDirective)
                                 {
-                                    Debug.LogError("Unknown WDL keyword[" + keyword + "]");     
+                                    Debug.LogWarning("Unknown WDL keyword[" + keyword + "]");     
                                 }
                                 break;
                             }
@@ -534,7 +562,8 @@ namespace Acknex
                     {
                         continue;
                     }
-                    switch (tokens[0])
+                    var keyword = tokens[0];
+                    switch (keyword)
                     {
                         case "PLAYER_START":
                             {
@@ -547,8 +576,9 @@ namespace Acknex
                                 break;
                             }
                         case "THING":
+                        case "ACTOR":
                             {
-                                var thing = World.Instance.CreateThing(tokens[1]);
+                                var thing = (IAcknexObjectContainer)(keyword== "ACTOR" ? World.Instance.CreateActor(tokens[1]) :World.Instance.CreateThing(tokens[1]));
                                 thing.AcknexObject["X"] = ParseSingle(tokens[2]);
                                 thing.AcknexObject["Y"] = ParseSingle(tokens[3]);
                                 thing.AcknexObject["ANGLE"] = ParseSingle(tokens[4]);

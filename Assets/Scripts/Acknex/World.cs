@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Acknex.Interfaces;
 using UnityEngine;
 
 namespace Acknex
 {
-    public class World : MonoBehaviour
+    public class World : MonoBehaviour, IAcknexWorld
     {
         public static World Instance { get; private set; }
 
@@ -21,7 +22,9 @@ namespace Acknex
         public readonly Dictionary<string, Texture> TexturesByName = new Dictionary<string, Texture>();
         public readonly Dictionary<string, string> StringsByName = new Dictionary<string, string>();
         public readonly Dictionary<string, Way> WaysByName = new Dictionary<string, Way>();
+        public readonly Dictionary<string, Actor> ActorsByName = new Dictionary<string, Actor>();
         public readonly Dictionary<string, Thing> ThingsByName = new Dictionary<string, Thing>();
+        public readonly Dictionary<string, Texture2D> TextureCache = new Dictionary<string, Texture2D>();
 
         public readonly List<string> Paths = new List<string>();
 
@@ -89,6 +92,16 @@ namespace Acknex
             return newThing;
         }
 
+        //todo: generic method?
+        public Thing CreateActor(string name)
+        {
+            var newGameObject = new GameObject(name);
+            newGameObject.transform.SetParent(transform, false);
+            var newActor = newGameObject.AddComponent<Actor>();
+            newActor.AcknexObject.Set("NAME", name);
+            return newActor;
+        }
+
         public Material BuildMaterial(string textureName)
         {
             Material material;
@@ -97,7 +110,7 @@ namespace Acknex
                 material = new Material(textureObject.Flags.Contains("SKY")
                     ? Shader.Find("Acknex/Sky")
                     : Shader.Find("Standard"));
-                material.mainTexture = textureObject.GetFirstBitmapImage();
+                material.mainTexture = textureObject.GetBitmapAt()?.Texture2D;
             }
             else
             {
@@ -105,6 +118,16 @@ namespace Acknex
             }
             material.SetFloat("_Glossiness", 0f);
             return material;
+        }
+
+        public IAcknexObject CreateObject(ObjectType type, string name)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IAcknexObject GetObject(ObjectType type, string name)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -28,7 +28,10 @@ public class AcknexObjectEditor : Editor
         }
     }
 }
-
+[UnityEditor.CustomEditor(typeof(Actor))]
+public class Actorditor : AcknexObjectEditor
+{
+}
 [UnityEditor.CustomEditor(typeof(Region))]
 public class RegionEditor : AcknexObjectEditor
 {
