@@ -260,7 +260,7 @@ namespace Acknex
                             region.AcknexObject[keyword] = ParseSingle(tokens[1]);
                             break;
                         case "FLAGS":
-                            ParseList(keyword, region, tokens);   
+                            ParseList(keyword, region, tokens);
                             break;
                         case "BELOW":
                             region.AcknexObject[keyword] = tokens[1];
@@ -303,7 +303,7 @@ namespace Acknex
                                 break;
                             }
                         case "BMAPS":
-                        {
+                            {
                                 ParseList(keyword, texture, tokens);
                                 break;
                             }
@@ -324,16 +324,16 @@ namespace Acknex
                             }
                         case "DELAY":
                         case "MIRROR":
-                        {
-                            ParseList(keyword, texture, tokens);
-                            break;
-                        }
+                            {
+                                ParseList(keyword, texture, tokens);
+                                break;
+                            }
                         case "SIDES":
                         case "CYCLES":
-                        {
-                            texture.AcknexObject[keyword] = ParseInt(tokens[1]);
+                            {
+                                texture.AcknexObject[keyword] = ParseInt(tokens[1]);
                                 break;
-                        }
+                            }
                     }
                 }
                 else
@@ -404,7 +404,7 @@ namespace Acknex
                         case "REGION":
                             {
                                 var name = tokens[1];
-                                _openObject = World.Instance.CreateRegion(name + "_DEFINITION");
+                                _openObject = World.Instance.CreateRegion(name, true);
                                 _openObject.Disable();
                                 World.Instance.RegionsByName.Add(name, (Region)_openObject);
                                 break;
@@ -412,7 +412,7 @@ namespace Acknex
                         case "WALL":
                             {
                                 var name = tokens[1];
-                                _openObject = World.Instance.CreateWall(name + "_DEFINITION");
+                                _openObject = World.Instance.CreateWall(name, true);
                                 _openObject.Disable();
                                 World.Instance.WallsByName.Add(name, (Wall)_openObject);
                                 break;
@@ -461,7 +461,7 @@ namespace Acknex
                                     Debug.LogWarning("Way [" + name + "] already registered.");
                                     continue;
                                 }
-                                _openObject = World.Instance.CreateWay(name + "_DEFINITION");
+                                _openObject = World.Instance.CreateWay(name, true);
                                 _openObject.Disable();
                                 World.Instance.WaysByName.Add(name, (Way)_openObject);
                                 break;
@@ -474,29 +474,29 @@ namespace Acknex
                                     Debug.LogWarning("Thing [" + name + "] already registered.");
                                     continue;
                                 }
-                                _openObject = World.Instance.CreateThing(name + "_DEFINITION");
+                                _openObject = World.Instance.CreateThing(name, true);
                                 _openObject.Disable();
                                 World.Instance.ThingsByName.Add(name, (Thing)_openObject);
                                 break;
                             }
                         case "ACTOR":
-                        {
-                            var name = tokens[1];
-                            if (World.Instance.ActorsByName.ContainsKey(name))
                             {
-                                Debug.LogWarning("Actor [" + name + "] already registered.");
-                                continue;
+                                var name = tokens[1];
+                                if (World.Instance.ActorsByName.ContainsKey(name))
+                                {
+                                    Debug.LogWarning("Actor [" + name + "] already registered.");
+                                    continue;
+                                }
+                                _openObject = World.Instance.CreateActor(name, true);
+                                _openObject.Disable();
+                                World.Instance.ActorsByName.Add(name, (Actor)_openObject);
+                                break;
                             }
-                            _openObject = World.Instance.CreateActor(name + "_DEFINITION");
-                            _openObject.Disable();
-                            World.Instance.ActorsByName.Add(name, (Actor)_openObject);
-                            break;
-                        }
                         default:
                             {
                                 if (!handledCompilerDirective)
                                 {
-                                    Debug.LogWarning("Unknown WDL keyword[" + keyword + "]");     
+                                    Debug.LogWarning("Unknown WDL keyword[" + keyword + "]");
                                 }
                                 break;
                             }
@@ -578,7 +578,7 @@ namespace Acknex
                         case "THING":
                         case "ACTOR":
                             {
-                                var thing = (IAcknexObjectContainer)(keyword== "ACTOR" ? World.Instance.CreateActor(tokens[1]) :World.Instance.CreateThing(tokens[1]));
+                                var thing = (IAcknexObjectContainer)(keyword == "ACTOR" ? World.Instance.CreateActor(tokens[1]) : World.Instance.CreateThing(tokens[1]));
                                 thing.AcknexObject["X"] = ParseSingle(tokens[2]);
                                 thing.AcknexObject["Y"] = ParseSingle(tokens[3]);
                                 thing.AcknexObject["ANGLE"] = ParseSingle(tokens[4]);
@@ -597,7 +597,7 @@ namespace Acknex
                             {
                                 var regionName = tokens[1];
                                 var region = World.Instance.CreateRegion(regionName);
-                                region.AcknexObject["NAME"] = regionName;
+                                //region.AcknexObject["NAME"] = regionName;
                                 region.AcknexObject["FLOOR_HGT"] = ParseSingle(tokens[2]);
                                 region.AcknexObject["CEIL_HGT"] = ParseSingle(tokens[3]);
                                 World.Instance.RegionsByIndex.Add(region);
@@ -606,9 +606,10 @@ namespace Acknex
                         case "WALL":
                             {
                                 var wallName = tokens[1];
-                                var wallGameObject = new GameObject(wallName);
-                                var wall = wallGameObject.AddComponent<Wall>();
-                                wall.AcknexObject["NAME"] = wallName;
+                                //var wallGameObject = new GameObject(wallName);
+                                //var wall = wallGameObject.AddComponent<Wall>();
+                                //wall.AcknexObject["NAME"] = wallName;
+                                var wall = World.Instance.CreateWall(wallName);
                                 wall.AcknexObject["VERTEX1"] = Convert.ToInt32(tokens[3]);
                                 wall.AcknexObject["VERTEX2"] = Convert.ToInt32(tokens[2]);
                                 wall.AcknexObject["REGION1"] = Convert.ToInt32(tokens[4]);

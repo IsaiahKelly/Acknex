@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Acknex.Interfaces;
 using UnityEngine;
 
@@ -53,9 +54,13 @@ namespace Acknex
         }
 
         //todo: generic method?
-        public Region CreateRegion(string name)
+        public Region CreateRegion(string name, bool definition = false)
         {
-            var newGameObject = new GameObject(name);
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            var newGameObject = new GameObject(definition ? name + "_DEFINITION" : name);
             newGameObject.transform.SetParent(transform, false);
             var newRegion = newGameObject.AddComponent<Region>();
             newRegion.AcknexObject.Set("NAME", name);
@@ -63,9 +68,13 @@ namespace Acknex
         }
 
         //todo: generic method?
-        public Wall CreateWall(string name)
+        public Wall CreateWall(string name, bool definition = false)
         {
-            var newGameObject = new GameObject(name);
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            var newGameObject = new GameObject(definition ? name + "_DEFINITION" : name);
             newGameObject.transform.SetParent(transform, false);
             var newWall = newGameObject.AddComponent<Wall>();
             newWall.AcknexObject.Set("NAME", name);
@@ -73,9 +82,13 @@ namespace Acknex
         }
 
         //todo: generic method?
-        public Way CreateWay(string name)
+        public Way CreateWay(string name, bool definition = false)
         {
-            var newGameObject = new GameObject(name);
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            var newGameObject = new GameObject(definition ? name + "_DEFINITION" : name);
             newGameObject.transform.SetParent(transform, false);
             var newWay = newGameObject.AddComponent<Way>();
             newWay.AcknexObject.Set("NAME", name);
@@ -83,9 +96,13 @@ namespace Acknex
         }
 
         //todo: generic method?
-        public Thing CreateThing(string name)
+        public Thing CreateThing(string name, bool definition = false)
         {
-            var newGameObject = new GameObject(name);
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            var newGameObject = new GameObject(definition ? name + "_DEFINITION" : name);
             newGameObject.transform.SetParent(transform, false);
             var newThing = newGameObject.AddComponent<Thing>();
             newThing.AcknexObject.Set("NAME", name);
@@ -93,9 +110,13 @@ namespace Acknex
         }
 
         //todo: generic method?
-        public Thing CreateActor(string name)
+        public Thing CreateActor(string name, bool definition = false)
         {
-            var newGameObject = new GameObject(name);
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            var newGameObject = new GameObject(definition ? name + "_DEFINITION" : name);
             newGameObject.transform.SetParent(transform, false);
             var newActor = newGameObject.AddComponent<Actor>();
             newActor.AcknexObject.Set("NAME", name);

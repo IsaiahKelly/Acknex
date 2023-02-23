@@ -5,11 +5,9 @@ using UnityEngine;
 
 namespace Acknex
 {
-    [Serializable]
     public class AcknexObject : IAcknexObject
     {
         public Dictionary<string, object> Properties = new Dictionary<string, object>();
-        private readonly Func<string, IAcknexObject> _getDefinitionCallback;
 
         public void Set<T>(string propertyName, T value)
         {
@@ -30,10 +28,10 @@ namespace Acknex
                     Debug.LogWarning($"Cannot cast {propertyName}({property.GetType()}) to ({typeof(T)})");
                 }
             }
-            if (fromDefinition && _getDefinitionCallback != null && Properties.TryGetValue("NAME", out var name))
+            if (fromDefinition && GetDefinitionCallback != null && Properties.TryGetValue("NAME", out var name))
             {
-                var definition = _getDefinitionCallback(name.ToString());
-                if (definition != null && definition.TryGet<T>(propertyName, out var definitionProperty))
+                var definition = GetDefinitionCallback(name.ToString());
+                if (definition != null && definition.TryGet<T>(propertyName, out var definitionProperty, false))
                 {
                     return definitionProperty;
                 }
@@ -44,15 +42,6 @@ namespace Acknex
         public bool TryGet<T>(string propertyName, out T result, bool fromDefinition = true)
         {
             result = default;
-            if (fromDefinition && _getDefinitionCallback != null && Properties.TryGetValue("NAME", out var name))
-            {
-                var definition = _getDefinitionCallback(name.ToString());
-                if (definition != null && definition.TryGet<T>(propertyName, out var definitionProperty))
-                {
-                    result = definitionProperty;
-                    return true;
-                }
-            }
             if (Properties.TryGetValue(propertyName, out var property))
             {
                 try
@@ -62,6 +51,15 @@ namespace Acknex
                 }
                 catch (Exception e)
                 {
+                }
+            }
+            if (fromDefinition && GetDefinitionCallback != null && Properties.TryGetValue("NAME", out var name))
+            {
+                var definition = GetDefinitionCallback(name.ToString());
+                if (definition != null && definition.TryGet<T>(propertyName, out var definitionProperty, false))
+                {
+                    result = definitionProperty;
+                    return true;
                 }
             }
             return default;
@@ -84,7 +82,7 @@ namespace Acknex
 
         public AcknexObject(Func<string, IAcknexObject> getDefinitionCallback)
         {
-            _getDefinitionCallback = getDefinitionCallback;
+            GetDefinitionCallback = getDefinitionCallback;
         }
 
         public object this[string propertyName]
@@ -92,5 +90,7 @@ namespace Acknex
             get => Get<object>(propertyName);
             set => Set(propertyName, value);
         }
+
+        public Func<string, IAcknexObject> GetDefinitionCallback { get; }
     }
 }

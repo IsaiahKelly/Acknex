@@ -8,9 +8,9 @@ public class AcknexObjectEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        var container = target as IAcknexObjectContainer;
-        if (container != null)
+        if (target is IAcknexObjectContainer container)
         {
+            EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Instance");
             foreach (var property in ((AcknexObject)container.AcknexObject).Properties)
             {
                 EditorGUILayout.BeginHorizontal();
@@ -24,6 +24,30 @@ public class AcknexObjectEditor : Editor
                     EditorGUILayout.LabelField(property.Value.ToString());
                 }
                 EditorGUILayout.EndHorizontal();
+            }
+            EditorGUILayout.EndFoldoutHeaderGroup();
+            if (container.AcknexObject.GetDefinitionCallback != null && container.AcknexObject.TryGet<string>("NAME", out var name))
+            {
+                var definition = container.AcknexObject.GetDefinitionCallback(name);
+                if (definition != null)
+                {
+                    EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Definition");
+                    foreach (var property in ((AcknexObject)definition).Properties)
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField(property.Key);
+                        if (property.Value is System.Collections.Generic.List<string> list)
+                        {
+                            EditorGUILayout.LabelField(string.Join(",", list));
+                        }
+                        else
+                        {
+                            EditorGUILayout.LabelField(property.Value.ToString());
+                        }
+                        EditorGUILayout.EndHorizontal();
+                    }
+                    EditorGUILayout.EndFoldoutHeaderGroup();
+                }
             }
         }
     }

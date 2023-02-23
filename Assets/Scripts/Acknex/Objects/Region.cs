@@ -155,7 +155,8 @@ namespace Acknex
             if (region.Below != null)
             {
                 var newRegion = Instantiate(region.Below.gameObject).GetComponent<Region>();
-                newRegion.name = region.Below.name;
+                newRegion.name = region.Below.name + "_INSTANCE";
+                ((AcknexObject)newRegion.AcknexObject).Properties = new Dictionary<string, object>(((AcknexObject)region.Below.AcknexObject).Properties);
                 region.Below = newRegion;
                 BuildRegionFloorAndCeiling(newRegion, contouredRegion);
             }
@@ -172,7 +173,7 @@ namespace Acknex
 
             tess.Tessellate();
             var floorVertices = new Vector3[tess.VertexCount];
-            var height = (ceil ? region.AcknexObject.Get<float>("CEIL_HGT", false) : region.AcknexObject.Get<float>("FLOOR_HGT", false));
+            var height = (ceil ? region.AcknexObject.Get<float>("CEIL_HGT") : region.AcknexObject.Get<float>("FLOOR_HGT"));
             for (var i = 0; i < tess.VertexCount; i++)
             {
                 var vertex = tess.Vertices[i];
