@@ -159,9 +159,10 @@ namespace Acknex
         private void UpdateAngleFrameScale(Texture texture, MeshRenderer meshRenderer, int cycles, int sides, int animFrame, List<string> mirror)
         {
             //int side;
-            if (Camera.current != null)
+            var camera = CameraExtensions.GetLastActiveCamera();
+            if (camera != null)
             {
-                cameraToThingDirection = Quaternion.LookRotation(To2D(Camera.current.transform.position-_thingGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
+                cameraToThingDirection = Quaternion.LookRotation(To2D(camera.transform.position-_thingGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
                 thingDirection = Quaternion.Euler(0f, AcknexObject.Get<float>("ANGLE"), 0f) * Vector3.right;
                 angle = Angle(thingDirection, cameraToThingDirection);
                 normalizedAngle = angle / 360f;
@@ -208,12 +209,13 @@ namespace Acknex
         protected virtual void Update()
         {
             UpdateObject();
-            if (Camera.current == null)
+            var camera = CameraExtensions.GetLastActiveCamera();
+            if (camera == null)
             {
                 return;
             }
             var eulerAngles = transform.eulerAngles;
-            eulerAngles.y = Camera.current.transform.eulerAngles.y;
+            eulerAngles.y = camera.transform.eulerAngles.y;
             transform.eulerAngles = eulerAngles;
         }
 
