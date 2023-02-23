@@ -143,10 +143,10 @@ namespace Acknex
         {
             while (true)
             {
-                if (wall.AcknexObject.Get<string>("NAME") == "NullWall")
-                {
-                    return;
-                }
+                //if (wall.AcknexObject.Get<string>("NAME") == "NullWall")
+                //{
+                //    return;
+                //}
 
                 var vertexA = vertices[wall.AcknexObject.Get<int>("VERTEX1")];
                 var vertexB = vertices[wall.AcknexObject.Get<int>("VERTEX2")];
