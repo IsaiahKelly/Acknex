@@ -31,7 +31,7 @@ namespace Acknex
 
         public void Enable()
         {
-            
+
         }
 
         public void Disable()
@@ -40,11 +40,11 @@ namespace Acknex
         }
 
         public void ProcessWall(
-            List<ContourVertex> allContourVertices, 
-            List<ContourVertex> contourVertices, 
+            List<ContourVertex> allContourVertices,
+            List<ContourVertex> contourVertices,
             Wall wallA,
-            KeyValuePair<int, RegionWall> kvp, 
-            ref int vertexCount, 
+            KeyValuePair<int, RegionWall> kvp,
+            ref int vertexCount,
             bool inversed = false)
         {
             vertexCount++;
@@ -172,32 +172,38 @@ namespace Acknex
                         heightLeft = Mathf.Max(heightLeft, leftRegion.Below.AcknexObject.Get<float>("CEIL_HGT"));
                         heightRight = Mathf.Max(heightRight, leftRegion.Below.AcknexObject.Get<float>("CEIL_HGT"));
                     }
-
                     if (rightRegion.Below != null)
                     {
                         heightRight = Mathf.Max(heightRight, rightRegion.Below.AcknexObject.Get<float>("CEIL_HGT"));
                         heightLeft = Mathf.Max(heightLeft, rightRegion.Below.AcknexObject.Get<float>("CEIL_HGT"));
                     }
-
                     if (leftRegionAbove != null)
                     {
                         heightLeft = Mathf.Min(heightLeft, leftRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
                         heightRight = Mathf.Min(heightRight, leftRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
                     }
-
                     if (rightRegionAbove != null)
                     {
                         heightRight = Mathf.Min(heightRight, rightRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
                         heightLeft = Mathf.Min(heightLeft, rightRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
                     }
-
-                    var liftedLeft = leftRegion.Flags.Contains("FLOOR_LIFTED") && leftRegionAbove == null;
-                    var liftedRight = rightRegion.Flags.Contains("FLOOR_LIFTED") && rightRegionAbove == null;
+                    var liftedLeft = /*leftRegionAbove != null && leftRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ leftRegionAbove == null && leftRegion.Flags.Contains("FLOOR_LIFTED");
+                    var liftedRight = /*rightRegionAbove != null && rightRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ rightRegionAbove == null && rightRegion.Flags.Contains("FLOOR_LIFTED");
                     var v0 = new Vector3(vertexA.Position.X, heightLeft + (liftedLeft ? vertexA.Position.Z : 0), vertexA.Position.Y);
                     var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v3 = new Vector3(vertexA.Position.X, heightRight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
                     MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, wall.Texture, allVertices.Count);
+                    //if (liftedLeft)
+                    //{
+                    //    Debug.DrawLine(v0 - new Vector3(0f, vertexA.Position.Z, 0f), v0, Color.red, 1000f);
+                    //    Debug.DrawLine(v1 - new Vector3(0f, vertexB.Position.Z, 0f), v1, Color.green, 1000f);
+                    //}
+                    //if (liftedRight)
+                    //{
+                    //    Debug.DrawLine(v2 - new Vector3(0f, vertexA.Position.Z, 0f), v2, Color.blue, 1000f);
+                    //    Debug.DrawLine(v3 - new Vector3(0f, vertexB.Position.Z, 0f), v3, Color.yellow, 1000f);
+                    //}
                     allVertices.Add(v0);
                     allVertices.Add(v1);
                     allVertices.Add(v2);
@@ -252,7 +258,6 @@ namespace Acknex
                     leftRegionAbove = leftRegion1;
                     continue;
                 }
-
                 if (leftRegion.Below != null)
                 {
                     var rightRegion1 = rightRegion;
@@ -263,7 +268,6 @@ namespace Acknex
                     leftRegionAbove = leftRegion1;
                     continue;
                 }
-
                 if (rightRegion.Below != null)
                 {
                     var rightRegion1 = rightRegion;
@@ -286,7 +290,7 @@ namespace Acknex
             var rightRegion = World.Instance.RegionsByIndex[wall.AcknexObject.Get<int>("REGION1")];
             var leftRegion = World.Instance.RegionsByIndex[wall.AcknexObject.Get<int>("REGION2")];
             wall.BuildWall(wall, rightRegion, leftRegion, contourVertices, allVertices, allUVs, allTriangles);
-            wall.BuildWallMesh(allVertices, allUVs, allTriangles, wall.gameObject); 
+            wall.BuildWallMesh(allVertices, allUVs, allTriangles, wall.gameObject);
         }
     }
 }

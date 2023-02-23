@@ -182,8 +182,7 @@ namespace Acknex
                     if (ceil && region.Flags.Contains("CEIL_LIFTED") || !ceil && region.Flags.Contains("FLOOR_LIFTED"))
                     {
                         lifted = true;
-                        floorVertices[i] = new Vector3(vertex.Position.X, vertex.Position.Z + height,
-                            vertex.Position.Y);
+                        floorVertices[i] = new Vector3(vertex.Position.X, ceil ? (height - vertex.Position.Z) : (height + vertex.Position.Z), vertex.Position.Y);
                     }
                 }
 
