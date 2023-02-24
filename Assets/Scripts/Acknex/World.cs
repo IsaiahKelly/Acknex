@@ -99,13 +99,13 @@ namespace Acknex
         private void Start()
         {
             Instance = this;
+            CreateDefaultSynonyms();
+            CreateDefaultSkills();
             _textParser.ParseWDL(_wdlPath);
             foreach (var mapFile in MapFiles)
             {
                 _textParser.ParseWMP(mapFile);
             }
-            CreateDefaultSynonyms();
-            CreateDefaultSkills();
         }
 
         //todo: generic method?
@@ -223,10 +223,9 @@ namespace Acknex
 
         public Skill CreateSkill(string name, float value = 0f, float min = 0f, float max = 0f)
         {
-            if (SkillsByName.ContainsKey(name))
+            if (SkillsByName.TryGetValue(name, out var existingSkill))
             {
-                Debug.LogWarning("Skill [" + name + "] already registered.");
-                return null;
+                return existingSkill;
             }
             var skill = new Skill();
             skill.AcknexObject["MIN"] = min;
@@ -247,10 +246,9 @@ namespace Acknex
 
         public Synonym CreateSynonym(string name, string type = null)
         {
-            if (SynonymsByName.ContainsKey(name))
+            if (SynonymsByName.TryGetValue(name, out var existingSynonym))
             {
-                Debug.LogWarning("Synonym [" + name + "] already registered.");
-                return null;
+                return existingSynonym;
             }
             var synonym = new Synonym();
             synonym.AcknexObject["TYPE"] = type;
