@@ -91,3 +91,40 @@ public class TextureEditor : AcknexObjectEditor
 public class OverlayEditor : AcknexObjectEditor
 {
 }
+
+[CustomEditor(typeof(World))]
+public class WorldEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        var world = target as World;
+        base.OnInspectorGUI();
+        EditorGUILayout.BeginFoldoutHeaderGroup(true, "Strings");
+        foreach (var kvp in world.StringsByName)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(kvp.Key);
+            EditorGUILayout.LabelField(kvp.Value);
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+        EditorGUILayout.BeginFoldoutHeaderGroup(true, "Skills");
+        foreach (var kvp in world.SkillsByName)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(kvp.Key);
+            EditorGUILayout.LabelField(kvp.Value.AcknexObject.Get<string>("VAL"));
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup(); 
+        EditorGUILayout.BeginFoldoutHeaderGroup(true, "Synonym");
+        foreach (var kvp in world.SynonymsByName)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(kvp.Key);
+            EditorGUILayout.LabelField(kvp.Value.AcknexObject.Get<string>("TYPE"));
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+    }
+}
