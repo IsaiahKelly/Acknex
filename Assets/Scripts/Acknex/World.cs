@@ -141,14 +141,14 @@ namespace Acknex
             return material;
         }
 
-        public IAcknexObject CreateObject(ObjectType type, string name)
+        public IAcknexObject CreateObject(ObjectType type, string name, bool fromWDL)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public IAcknexObject GetObject(ObjectType type, string name)
+        public IAcknexObject GetObject(ObjectType type, string name, bool fromWDL)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
