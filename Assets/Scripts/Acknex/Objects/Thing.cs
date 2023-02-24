@@ -8,6 +8,7 @@ namespace Acknex
 {
     //todo: CYCLE PROP
     //todo: UPDATE BITMAP
+    //todo: remove debug fields
     public class Thing : MonoBehaviour, IAcknexObjectContainer
     {
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
@@ -131,15 +132,14 @@ namespace Acknex
             {
                 //UpdateFrameAngleScale(texture, meshRenderer, cycles, sides, cycle, mirror);
                 var currentDelay = delay != null && delay.Count > cycle ? TimeUtils.TicksToTime(int.Parse(delay[cycle])) : Mathf.Infinity;
-                var elapsed = 0f;
-                while (elapsed < currentDelay)
-                {
-                    UpdateAngleFrameScale(texture, meshRenderer, cycles, sides, cycle, mirror);
-                    elapsed += Time.deltaTime;
-                    yield return null;
-                }
+                //var elapsed = 0f;
+                //while (elapsed < currentDelay)
+                //{
+                UpdateAngleFrameScale(texture, meshRenderer, cycles, sides, cycle, mirror);
+                    //elapsed += Time.deltaTime;
+                yield return new WaitForSeconds(currentDelay);
+                //}
                 cycle = (int)Mathf.Repeat(cycle + 1, cycles);
-                yield return null;
             }
         }
 
