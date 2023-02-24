@@ -1,6 +1,5 @@
 ﻿using Acknex;
 using Acknex.Interfaces;
-using Boo.Lang;
 using UnityEditor;
 
 public class AcknexObjectEditor : Editor
@@ -86,5 +85,9 @@ public class BitmapEditor : AcknexObjectEditor
 }
 [UnityEditor.CustomEditor(typeof(Texture))]
 public class TextureEditor : AcknexObjectEditor
+{
+}
+[UnityEditor.CustomEditor(typeof(Overlay))]
+public class OverlayEditor : AcknexObjectEditor
 {
 }

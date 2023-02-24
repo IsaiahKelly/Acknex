@@ -22,7 +22,7 @@ namespace Acknex
             return Convert.ToInt32(token);
         }
 
-        private static float ParseSingle(string token)
+        private static float ParseFloat(string token)
         {
             return Convert.ToSingle(token, CultureInfo.InvariantCulture);
         }
@@ -203,7 +203,7 @@ namespace Acknex
                             _openObject.AcknexObject[keyword] = tokens[1];
                             break;
                         case "HEIGHT":
-                            _openObject.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                            _openObject.AcknexObject[keyword] = ParseFloat(tokens[1]);
                             break;
                         case "ATTACH":
                             _openObject.AcknexObject[keyword] = tokens[1];
@@ -212,10 +212,40 @@ namespace Acknex
                             ParseList(keyword, _openObject, tokens);
                             break;
                         case "DIST":
-                            _openObject.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                            _openObject.AcknexObject[keyword] = ParseFloat(tokens[1]);
                             break;
                         case "SPEED":
-                            _openObject.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                            _openObject.AcknexObject[keyword] = ParseFloat(tokens[1]);
+                            break;
+                    }
+                }
+                else if (_openObject is Overlay overlay)
+                {
+                    switch (keyword)
+                    {
+                        case "LAYER":
+                            overlay.AcknexObject[keyword] = ParseInt(tokens[1]);
+                            break;
+                        case "POS_X":
+                            overlay.AcknexObject[keyword] = ParseFloat(tokens[1]);
+                            break;
+                        case "POS_Y":
+                            overlay.AcknexObject[keyword] = ParseFloat(tokens[1]);
+                            break;
+                        case "SIZE_X":
+                            overlay.AcknexObject[keyword] = ParseFloat(tokens[1]);
+                            break;
+                        case "SIZE_Y":
+                            overlay.AcknexObject[keyword] = ParseFloat(tokens[1]);
+                            break;
+                        case "FLAGS":
+                            ParseList(tokens[1], overlay, tokens);
+                            break;
+                        case "OVLYS":
+                            overlay.AcknexObject[keyword] = tokens[1];
+                            break;
+                        case "MSPRITE":
+                            overlay.AcknexObject[keyword] = tokens[1];
                             break;
                     }
                 }
@@ -236,13 +266,13 @@ namespace Acknex
                     switch (keyword)
                     {
                         case "VAL":
-                            skill.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                            skill.AcknexObject[keyword] = ParseFloat(tokens[1]);
                             break;
                         case "MIN":
-                            skill.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                            skill.AcknexObject[keyword] = ParseFloat(tokens[1]);
                             break;
                         case "MAX":
-                            skill.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                            skill.AcknexObject[keyword] = ParseFloat(tokens[1]);
                             break;
                     }
                 }
@@ -251,13 +281,13 @@ namespace Acknex
                     switch (keyword)
                     {
                         case "FLOOR_HGT":
-                            region.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                            region.AcknexObject[keyword] = ParseFloat(tokens[1]);
                             break;
                         case "CEIL_HGT":
-                            region.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                            region.AcknexObject[keyword] = ParseFloat(tokens[1]);
                             break;
                         case "AMBIENT":
-                            region.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                            region.AcknexObject[keyword] = ParseFloat(tokens[1]);
                             break;
                         case "FLAGS":
                             ParseList(keyword, region, tokens);
@@ -288,18 +318,18 @@ namespace Acknex
                     {
                         case "SCALE_XY":
                             {
-                                texture.AcknexObject["SCALE_X"] = ParseSingle(tokens[1]);
-                                texture.AcknexObject["SCALE_Y"] = ParseSingle(tokens[2]);
+                                texture.AcknexObject["SCALE_X"] = ParseFloat(tokens[1]);
+                                texture.AcknexObject["SCALE_Y"] = ParseFloat(tokens[2]);
                                 break;
                             }
                         case "SCALE_X":
                             {
-                                texture.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                                texture.AcknexObject[keyword] = ParseFloat(tokens[1]);
                                 break;
                             }
                         case "SCALE_Y":
                             {
-                                texture.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                                texture.AcknexObject[keyword] = ParseFloat(tokens[1]);
                                 break;
                             }
                         case "BMAPS":
@@ -309,12 +339,12 @@ namespace Acknex
                             }
                         case "POS_X":
                             {
-                                texture.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                                texture.AcknexObject[keyword] = ParseFloat(tokens[1]);
                                 break;
                             }
                         case "POS_Y":
                             {
-                                texture.AcknexObject[keyword] = ParseSingle(tokens[1]);
+                                texture.AcknexObject[keyword] = ParseFloat(tokens[1]);
                                 break;
                             }
                         case "FLAGS":
@@ -340,6 +370,28 @@ namespace Acknex
                 {
                     switch (keyword)
                     {
+                        case "VIDEO":
+                        {
+                            switch (tokens[1])
+                            {
+                                    case "320X200":
+                                        World.Instance.Resolution1 = Resolution.Res320x200;
+                                        break;
+                                    case "X320X240":
+                                        World.Instance.Resolution1 = Resolution.ResX320x240;
+                                        break;
+                                    case "X320X400":
+                                        World.Instance.Resolution1 = Resolution.ResX320x400;
+                                        break;
+                                    case "S640X480":
+                                        World.Instance.Resolution1 = Resolution.ResS640x480;
+                                        break;
+                                    case "S800X600":
+                                        World.Instance.Resolution1 = Resolution.ResS800x600;
+                                        break;
+                            }
+                            break;
+                        }
                         case "PATH":
                             World.Instance.Paths.Add(tokens[1]);
                             break;
@@ -380,25 +432,13 @@ namespace Acknex
                         case "SYNONYM":
                             {
                                 var name = tokens[1];
-                                if (World.Instance.SynonymsByName.ContainsKey(name))
-                                {
-                                    Debug.LogWarning("SYNONYM [" + name + "] already registered.");
-                                    continue;
-                                }
-                                _openObject = new Synonym();
-                                World.Instance.SynonymsByName.Add(name, (Synonym)_openObject);
+                                _openObject = World.Instance.CreateSynonym(name);
                                 break;
                             }
                         case "SKILL":
                             {
                                 var name = tokens[1];
-                                if (World.Instance.SkillsByName.ContainsKey(name))
-                                {
-                                    Debug.LogWarning("Skill [" + name + "] already registered.");
-                                    continue;
-                                }
-                                _openObject = new Skill();
-                                World.Instance.SkillsByName.Add(name, (Skill)_openObject);
+                                _openObject = World.Instance.CreateSkill(name, 0, 0, 0);
                                 break;
                             }
                         case "REGION":
@@ -428,6 +468,7 @@ namespace Acknex
                                 break;
                             }
                         case "BMAP":
+                        case "OVLY":
                             {
                                 var name = tokens[1];
                                 if (World.Instance.BitmapsByName.ContainsKey(name))
@@ -441,10 +482,10 @@ namespace Acknex
                                 bitmap.AcknexObject["NAME"] = name;
                                 if (tokens.Count > 4)
                                 {
-                                    bitmap.AcknexObject["X"] = ParseSingle(tokens[3]);
-                                    bitmap.AcknexObject["Y"] = ParseSingle(tokens[4]);
-                                    bitmap.AcknexObject["DX"] = ParseSingle(tokens[5]);
-                                    bitmap.AcknexObject["DY"] = ParseSingle(tokens[6]);
+                                    bitmap.AcknexObject["X"] = ParseFloat(tokens[3]);
+                                    bitmap.AcknexObject["Y"] = ParseFloat(tokens[4]);
+                                    bitmap.AcknexObject["DX"] = ParseFloat(tokens[5]);
+                                    bitmap.AcknexObject["DY"] = ParseFloat(tokens[6]);
                                 }
                                 World.Instance.BitmapsByName.Add(name, bitmap);
                                 bitmap.Setup();
@@ -502,6 +543,19 @@ namespace Acknex
                                 World.Instance.ActorsByName.Add(name, (Actor)_openObject);
                                 break;
                             }
+                        case "OVERLAY":
+                        {
+                            var name = tokens[1];
+                            if (World.Instance.OverlaysByName.ContainsKey(name))
+                            {
+                                Debug.LogWarning("Overlay [" + name + "] already registered.");
+                                continue;
+                            }
+                            _openObject = World.Instance.CreateOverlay(name, true);
+                            _openObject.Disable();
+                            World.Instance.OverlaysByName.Add(name, (Overlay)_openObject);
+                            break;
+                        }
                         default:
                             {
                                 if (!handledCompilerDirective)
@@ -577,9 +631,9 @@ namespace Acknex
                     {
                         case "PLAYER_START":
                             {
-                                var x = ParseSingle(tokens[1]);
-                                var y = ParseSingle(tokens[2]);
-                                var angle = ParseSingle(tokens[3]);
+                                var x = ParseFloat(tokens[1]);
+                                var y = ParseFloat(tokens[2]);
+                                var angle = ParseFloat(tokens[3]);
                                 var region = ParseInt(tokens[4]);
                                 var playerRegion = World.Instance.RegionsByIndex[region];
                                 GamePlayer.Instance.transform.SetPositionAndRotation(playerRegion.ProjectPosition(x, y), Quaternion.Euler(0f, angle * Mathf.Rad2Deg, 0f));
@@ -589,17 +643,17 @@ namespace Acknex
                         case "ACTOR":
                             {
                                 var thing = (IAcknexObjectContainer)(keyword == "ACTOR" ? World.Instance.CreateActor(tokens[1]) : World.Instance.CreateThing(tokens[1]));
-                                thing.AcknexObject["X"] = ParseSingle(tokens[2]);
-                                thing.AcknexObject["Y"] = ParseSingle(tokens[3]);
-                                thing.AcknexObject["ANGLE"] = ParseSingle(tokens[4]);
+                                thing.AcknexObject["X"] = ParseFloat(tokens[2]);
+                                thing.AcknexObject["Y"] = ParseFloat(tokens[3]);
+                                thing.AcknexObject["ANGLE"] = ParseFloat(tokens[4]);
                                 thing.AcknexObject["REGION"] = ParseInt(tokens[5]);
                                 break;
                             }
                         case "VERTEX":
                             {
-                                var x = ParseSingle(tokens[1]);
-                                var y = ParseSingle(tokens[2]);
-                                var z = ParseSingle(tokens[3]);
+                                var x = ParseFloat(tokens[1]);
+                                var y = ParseFloat(tokens[2]);
+                                var z = ParseFloat(tokens[3]);
                                 contourVertices.Add(new ContourVertex(new Vec3(x, y, z)));
                                 break;
                             }
@@ -608,8 +662,8 @@ namespace Acknex
                                 var regionName = tokens[1];
                                 var region = World.Instance.CreateRegion(regionName);
                                 //region.AcknexObject["NAME"] = regionName;
-                                region.AcknexObject["FLOOR_HGT"] = ParseSingle(tokens[2]);
-                                region.AcknexObject["CEIL_HGT"] = ParseSingle(tokens[3]);
+                                region.AcknexObject["FLOOR_HGT"] = ParseFloat(tokens[2]);
+                                region.AcknexObject["CEIL_HGT"] = ParseFloat(tokens[3]);
                                 World.Instance.RegionsByIndex.Add(region);
                                 break;
                             }
@@ -624,8 +678,8 @@ namespace Acknex
                                 wall.AcknexObject["VERTEX2"] = Convert.ToInt32(tokens[2]);
                                 wall.AcknexObject["REGION1"] = Convert.ToInt32(tokens[4]);
                                 wall.AcknexObject["REGION2"] = Convert.ToInt32(tokens[5]);
-                                wall.AcknexObject["OFFSETX"] = ParseSingle(tokens[6]);
-                                wall.AcknexObject["OFFSETY"] = ParseSingle(tokens[7]); ;
+                                wall.AcknexObject["OFFSETX"] = ParseFloat(tokens[6]);
+                                wall.AcknexObject["OFFSETY"] = ParseFloat(tokens[7]); ;
                                 wall.transform.SetParent(World.Instance.transform, false);
                                 regionWalls.GetWallsList(wall.AcknexObject.Get<int>("REGION1")).Add(wall);
                                 regionWalls.GetWallsList(wall.AcknexObject.Get<int>("REGION2")).Add(wall);
@@ -638,7 +692,7 @@ namespace Acknex
                                 var way = World.Instance.CreateWay(wayName);
                                 for (var i = 2; i < tokens.Count - 2; i += 2)
                                 {
-                                    var point = new Vector2(ParseSingle(tokens[i]), ParseSingle(tokens[i + 1]));
+                                    var point = new Vector2(ParseFloat(tokens[i]), ParseFloat(tokens[i + 1]));
                                     way.Points.Add(point);
                                 }
                                 break;

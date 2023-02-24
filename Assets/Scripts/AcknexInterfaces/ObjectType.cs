@@ -11,6 +11,8 @@
         Texture,
         Thing,
         Wall,
-        Way
+        Way,
+        Overlay,
+        View
     }
 }

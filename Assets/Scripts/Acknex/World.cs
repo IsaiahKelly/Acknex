@@ -2,12 +2,19 @@
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Acknex
 {
-    public class World : MonoBehaviour, IAcknexWorld
+    public partial class World : MonoBehaviour, IAcknexWorld
     {
         public static World Instance { get; private set; }
+
+        public Resolution Resolution1
+        {
+            get => Resolution;
+            set => Resolution = value;
+        }
 
         [SerializeField]
         private string _wdlPath;
@@ -24,6 +31,7 @@ namespace Acknex
         public readonly Dictionary<string, string> StringsByName = new Dictionary<string, string>();
         public readonly Dictionary<string, Way> WaysByName = new Dictionary<string, Way>();
         public readonly Dictionary<string, Actor> ActorsByName = new Dictionary<string, Actor>();
+        public readonly Dictionary<string, Overlay> OverlaysByName = new Dictionary<string, Overlay>();
         public readonly Dictionary<string, Thing> ThingsByName = new Dictionary<string, Thing>();
         public readonly Dictionary<string, Texture2D> TextureCache = new Dictionary<string, Texture2D>();
 
@@ -32,6 +40,59 @@ namespace Acknex
         public readonly List<string> MapFiles = new List<string>();
 
         public readonly List<Wall> Walls = new List<Wall>();
+
+        public Canvas Canvas;
+
+        private Resolution _resolution = Resolution.Res320x200;
+        public Resolution Resolution
+        {
+            get => _resolution;
+            set
+            {
+                var canvasScaler = Canvas.GetComponent<CanvasScaler>();
+                var referenceResolution = canvasScaler.referenceResolution;
+                switch (value)
+                {
+                    case Resolution.Res320x200:
+                    {
+                        referenceResolution.x = 320f;
+                        referenceResolution.y = 200f;
+                        break;
+                    }
+                    case Resolution.ResX320x240:
+                    {
+                        referenceResolution.x = 320f;
+                        referenceResolution.y = 240f;
+                        break;
+                    }
+                    case Resolution.ResX320x400:
+                    {
+                        referenceResolution.x = 320f;
+                        referenceResolution.y = 400f;
+                        break;
+                    }
+                    case Resolution.ResS640x480:
+                    {
+                        referenceResolution.x = 640f;
+                        referenceResolution.y = 480f;
+                        break;
+                    }
+                    case Resolution.ResS800x600:
+                    {
+                        referenceResolution.x = 800f;
+                        referenceResolution.y = 600f;
+                        break;
+                    }
+                }
+                UpdateSkill("SCREEN_WIDTH", referenceResolution.x);
+                UpdateSkill("SCREEN_HGT", referenceResolution.y);
+                canvasScaler.referenceResolution = referenceResolution;
+                _resolution = value;
+            }
+        }
+
+        //todo: how to calculate this?
+        public float CanvasWidthRatio = 2f;
 
         private readonly TextParser _textParser = new TextParser();
 
@@ -43,14 +104,22 @@ namespace Acknex
             {
                 _textParser.ParseWMP(mapFile);
             }
-            SynonymsByName.Add("HERE", new Synonym());
-            SynonymsByName.Add("THERE", new Synonym());
-            SynonymsByName.Add("MY", new Synonym());
-            SynonymsByName.Add("#HIT", new Synonym());
-            SynonymsByName.Add("#TOUCHED", new Synonym());
-            SynonymsByName.Add("#TOUCH_TEX", new Synonym());
-            SynonymsByName.Add("#TOUCH_REG", new Synonym());
-            SynonymsByName.Add("#TOUCH_TEXT", new Synonym());
+            CreateDefaultSynonyms();
+            CreateDefaultSkills();
+        }
+
+        //todo: generic method?
+        public Overlay CreateOverlay(string name, bool definition = false)
+        {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            var newGameObject = new GameObject(definition ? name + "_DEFINITION" : name);
+            newGameObject.transform.SetParent(transform, false);
+            var newOverlay = newGameObject.AddComponent<Overlay>();
+            newOverlay.AcknexObject.Set("NAME", name);
+            return newOverlay;
         }
 
         //todo: generic method?
@@ -149,6 +218,44 @@ namespace Acknex
         public IAcknexObject GetObject(ObjectType type, string name, bool fromWDL)
         {
             throw new NotImplementedException();
+        }
+
+
+        public Skill CreateSkill(string name, float value = 0f, float min = 0f, float max = 0f)
+        {
+            if (SkillsByName.ContainsKey(name))
+            {
+                Debug.LogWarning("Skill [" + name + "] already registered.");
+                return null;
+            }
+            var skill = new Skill();
+            skill.AcknexObject["MIN"] = min;
+            skill.AcknexObject["MAX"] = max;
+            skill.AcknexObject["VAL"] = value;
+            SkillsByName.Add(name, skill);
+            return skill;
+        }
+
+        //todo: clamp
+        public void UpdateSkill(string name, float value)
+        {
+            if (SkillsByName.TryGetValue(name, out var skill))
+            {
+                skill.AcknexObject["VAL"] = value;
+            }
+        }
+
+        public Synonym CreateSynonym(string name, string type = null)
+        {
+            if (SynonymsByName.ContainsKey(name))
+            {
+                Debug.LogWarning("Synonym [" + name + "] already registered.");
+                return null;
+            }
+            var synonym = new Synonym();
+            synonym.AcknexObject["TYPE"] = type;
+            SynonymsByName.Add(name, synonym);
+            return synonym;
         }
     }
 }

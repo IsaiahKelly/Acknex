@@ -7,6 +7,7 @@ using Utils;
 namespace Acknex
 {
     //todo: CYCLE PROP
+    //todo: UPDATE BITMAP
     public class Thing : MonoBehaviour, IAcknexObjectContainer
     {
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
@@ -194,11 +195,7 @@ namespace Acknex
 
         private static void UpdateFrame(Bitmap bitmap, MeshRenderer meshRenderer, bool mirror = false)
         {
-            meshRenderer.material.SetFloat("_X0", mirror ? bitmap.X + bitmap.Width : bitmap.X);
-            meshRenderer.material.SetFloat("_Y0", bitmap.Y);
-            meshRenderer.material.SetFloat("_X1", mirror ? bitmap.X : bitmap.X + bitmap.Width);
-            meshRenderer.material.SetFloat("_Y1", bitmap.Y + bitmap.Height);
-            meshRenderer.material.mainTexture = bitmap.Texture2D;
+            bitmap.UpdateMaterial(meshRenderer.material, mirror);
         }
 
         private static void UpdateScale(Transform transform, Bitmap bitmap, Texture textureObject)

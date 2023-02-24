@@ -155,6 +155,7 @@ namespace Acknex
             if (region.Below != null)
             {
                 var newRegion = Instantiate(region.Below.gameObject).GetComponent<Region>();
+                newRegion.transform.SetParent(World.Instance.transform, false);
                 newRegion.name = region.Below.name + "_INSTANCE";
                 ((AcknexObject)newRegion.AcknexObject).Properties = new Dictionary<string, object>(((AcknexObject)region.Below.AcknexObject).Properties);
                 region.Below = newRegion;
