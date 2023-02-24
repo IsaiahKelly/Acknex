@@ -108,6 +108,12 @@ namespace Acknex
             }
         }
 
+
+        private void Update()
+        {
+            UpdateSkills();
+        }
+        
         //todo: generic method?
         public Overlay CreateOverlay(string name, bool definition = false)
         {

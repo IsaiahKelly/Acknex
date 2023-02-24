@@ -1,4 +1,6 @@
-﻿namespace Acknex
+﻿using UnityEngine;
+
+namespace Acknex
 {
     public partial class World
     {
@@ -43,8 +45,7 @@
             CreateSkill("COLOR_BORDER", 244, 0, 0); //todo
             CreateSkill("MOUSE_MODE", 0, 0, 2); //todo
             CreateSkill("TOUCH_MODE", 1, 0, 1); //todo
-            //#MOUSE_-
-            //MOVING ??
+            CreateSkill("MOUSE_MOVING", 0, 0, 0); //todo
             CreateSkill("MOUSE_CALM", 3, 0, 0); //todo <- can apply
             CreateSkill("MOUSE_TIME", 4, 0, 0); //todo <- can apply
             CreateSkill("MICKEY_X", 0, 0, 0); //todo <- can apply
@@ -95,9 +96,51 @@
             CreateSkill("FRICTION", 0.5f, 0.0f, 1.0f); //todo <- move friction IMPORTANT
             CreateSkill("INERTIA", 1f, 0.0f, 0); //todo <- move inertia IMPORTANT
             CreateSkill("SHOOT_RANGE", 500f, 0.0f, 0); //todo <- shoot distance IMPORTANT
-            CreateSkill("SHOOT_RANGE", 500f, 0.0f, 0); //todo <- shoot distance IMPORTANT
-            //SHOOT_ -
-            //    SECTOR ??
+            CreateSkill("SHOOT_SECTOR", 0, 0.0f, 0); //todo
+            CreateSkill("SHOOT_FAC", 1, 0, 1); //todo <- shoot strength
+            CreateSkill("SHOOT_X", 0, 0, 1); //todo <- shoot deviation
+            CreateSkill("SHOOT_Y", 0, 0, 1); //todo <- shoot deviation
+            CreateSkill("HIT_DIST", 0, 0, 0); //todo <- last shoot dist
+            CreateSkill("HIT_MINDIST", 0, 0, 0); //todo <- explosion dist
+            CreateSkill("RESULT", 0, 0, 1); //todo <- hit power
+            CreateSkill("SHOOT_ANGLE", 0, 0, 0); //todo <- shoot angle relative to 
+            CreateSkill("HIT_X", 0, 0, 0); //todo <- hit x pixel point relative to upper left texture
+            CreateSkill("HIT_Y", 0, 0, 0); //todo <- hit x pixel point relative to upper left texture
+            CreateSkill("SKIP_FRAMES", 5, 0, 0); //todo 
+            CreateSkill("ACTOR_CLIMB", 1, 0, 0); //todo 
+            CreateSkill("ACTOR_WIDTH", 1, 0, 0); //todo <- width multiplier for collision detection IMPORTANT
+            CreateSkill("THING_WIDTH", 1, 0, 0); //todo <- width multiplier for collision detection IMPORTANT
+            CreateSkill("ACTOR_IMPACT_VX", 0, 0, 0); //todo
+            CreateSkill("ACTOR_IMPACT_VY", 0, 0, 0); //todo
+            CreateSkill("ACTOR_IMPACT_VZ", 0, 0, 0); //todo
+            CreateSkill("ACTOR_FLOOR_HGT", 0, 0, 0); //todo <- height of the floor actor is in IMPORTANT
+            CreateSkill("ACTOR_CEIL_HGT", 0, 0, 0); //todo <- height of the floor actor is in IMPORTANT
+            CreateSkill("PLAYER_X", 0, 0, 0); //todo <- player pos IMPORTANT
+            CreateSkill("PLAYER_Y", 0, 0, 0); //todo <- player pos IMPORTANT
+            CreateSkill("PLAYER_Z", 0, 0, 0); //todo <- player pos IMPORTANT
+            CreateSkill("PLAYER_ANGLE", 0, 0, 0); //todo <- player angle IMPORTANT
+            CreateSkill("PLAYER_SIN", 0, 0, 0); //todo <- player angle sin IMPORTANT
+            CreateSkill("PLAYER_COS", 0, 0, 0); //todo <- player angle cos IMPORTANT
+            CreateSkill("PLAYER_SPEED", 0, 0, 0); //todo <- player speed IMPORTANT
         }
+
+        private Vector3 _lastMousePosition;
+        private void UpdateSkills()
+        {
+            var mousePosition = Input.mousePosition;
+            mousePosition.x = (Input.mousePosition.x / Screen.width) *
+                              SkillsByName["SCREEN_WIDTH"].AcknexObject.Get<float>("VAL");
+            mousePosition.y = (Input.mousePosition.y / Screen.height) *
+                              SkillsByName["SCREEN_HGT"].AcknexObject.Get<float>("VAL");
+            var deltaMousePosition = mousePosition - _lastMousePosition;
+            UpdateSkill("MICKEY_X", deltaMousePosition.x);
+            UpdateSkill("MICKEY_Y", deltaMousePosition.y);
+            UpdateSkill("MOUSE_X", mousePosition.x);
+            UpdateSkill("MOUSE_Y", mousePosition.y);
+            UpdateSkill("JOYSTICK_X", Input.GetAxis("Horizontal") / 255f);
+            UpdateSkill("JOYSTICK_Y", Input.GetAxis("Vertical") / 255f);
+            _lastMousePosition = mousePosition;
+        }
+
     }
 }
