@@ -20,6 +20,11 @@ namespace Acknex
             return Mathf.Repeat(Mathf.Rad2Deg * (acknexAngle * TimeUtils.TimeToTicks(Time.deltaTime)) - 180f, 360f);
         }
 
+        public static Vector3 To2D(Vector3 position)
+        {
+            return new Vector3(position.x, 0f, position.z);
+        }
+
         //public static Vector3 ConvertVector(Vector3 vector)
         //{
         //    return new Vector3(vector.x, vector.z, vector.y);

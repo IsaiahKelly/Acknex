@@ -367,6 +367,11 @@ namespace Acknex
                                 texture.AcknexObject[keyword] = ParseInt(tokens[1]);
                                 break;
                             }
+                        case "ATTACH":
+                        {
+                            texture.AcknexObject[keyword] = tokens[1];
+                            break;
+                        }
                     }
                 }
                 else

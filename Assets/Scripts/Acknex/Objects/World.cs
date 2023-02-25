@@ -156,7 +156,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
-            var newGameObject = new GameObject(definition ? name + "_DEFINITION" : name);
+            var newGameObject = new GameObject(/*definition ? name + "_DEFINITION" : */name);
             newGameObject.transform.SetParent(transform, false);
             var newOverlay = newGameObject.AddComponent<Overlay>();
             newOverlay.AcknexObject.Set("NAME", name);
@@ -170,7 +170,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
-            var newGameObject = new GameObject(definition ? name + "_DEFINITION" : name);
+            var newGameObject = new GameObject(/*definition ? name + "_DEFINITION" : */name);
             newGameObject.transform.SetParent(transform, false);
             var newRegion = newGameObject.AddComponent<Region>();
             newRegion.AcknexObject.Set("NAME", name);
@@ -184,7 +184,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
-            var newGameObject = new GameObject(definition ? name + "_DEFINITION" : name);
+            var newGameObject = new GameObject(/*definition ? name + "_DEFINITION" : */name);
             newGameObject.transform.SetParent(transform, false);
             var newWall = newGameObject.AddComponent<Wall>();
             newWall.AcknexObject.Set("NAME", name);
@@ -198,7 +198,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
-            var newGameObject = new GameObject(definition ? name + "_DEFINITION" : name);
+            var newGameObject = new GameObject(/*definition ? name + "_DEFINITION" : */name);
             newGameObject.transform.SetParent(transform, false);
             var newWay = newGameObject.AddComponent<Way>();
             newWay.AcknexObject.Set("NAME", name);
@@ -212,7 +212,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
-            var newGameObject = new GameObject(definition ? name + "_DEFINITION" : name);
+            var newGameObject = new GameObject(/*definition ? name + "_DEFINITION" : */name);
             newGameObject.transform.SetParent(transform, false);
             var newThing = newGameObject.AddComponent<Thing>();
             newThing.AcknexObject.Set("NAME", name);
@@ -226,7 +226,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
-            var newGameObject = new GameObject(definition ? name + "_DEFINITION" : name);
+            var newGameObject = new GameObject(/*definition ? name + "_DEFINITION" : */name);
             newGameObject.transform.SetParent(transform, false);
             var newActor = newGameObject.AddComponent<Actor>();
             newActor.AcknexObject.Set("NAME", name);

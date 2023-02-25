@@ -18,12 +18,18 @@ namespace Acknex
             }
             return null;
         }
-        public Region RightRegion { get; set; }
-        public Region LeftRegion { get; set; }
+        public Region RightRegion;
+        public Region LeftRegion;
+
         public bool Processed;
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
         private MeshCollider _meshCollider;
+        private GameObject _attached;
+        private Matrix4x4 _bottomQuad;
+        private Matrix4x4 _topQuad;
+        private Vector3 _bottomNormal;
+        private Vector3 _topNormal;
 
         public Texture TextureObject => AcknexObject.Get<string>("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.Get<string>("TEXTURE"), out var textureObject) ? textureObject : null;
 
@@ -36,7 +42,12 @@ namespace Acknex
 
         public void UpdateObject()
         {
+            //todo: the position follows the same rule as the wall and floor textures, this is going to be tricky :P
+            var position = _bottomQuad.GetColumn(0);
+            var rotation = Quaternion.LookRotation(-_bottomNormal);
+            TextureUtils.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject.AcknexObject, position, rotation);
             BitmapImage?.UpdateMaterial(_meshRenderer.material, false, TextureObject.AcknexObject.Get<float>("AMBIENT") /** AcknexObject.Get<float>("AMBIENT")*/);
+            //todo: update <X1, <Y1, <Z1 <X2, <Y2, <Z2, DISTANCE, LENGTH, SIZE_X, LEFT, RIGHT,
         }
 
         public void Enable()
@@ -161,6 +172,15 @@ namespace Acknex
                 var vertexA = vertices[wall.AcknexObject.Get<int>("VERTEX1")];
                 var vertexB = vertices[wall.AcknexObject.Get<int>("VERTEX2")];
 
+                wall.AcknexObject.Set<float>("X1", vertexA.Position.X);
+                wall.AcknexObject.Set<float>("Y1", vertexA.Position.Y);
+                wall.AcknexObject.Set<float>("Z1", vertexA.Position.Z);
+
+
+                wall.AcknexObject.Set<float>("X2", vertexB.Position.X);
+                wall.AcknexObject.Set<float>("Y2", vertexB.Position.Y);
+                wall.AcknexObject.Set<float>("Z2", vertexB.Position.Z);
+
                 if (leftRegion == null)
                 {
                     leftRegion = leftRegionAbove;
@@ -203,6 +223,7 @@ namespace Acknex
                     var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v3 = new Vector3(vertexA.Position.X, heightRight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
+                    wall._bottomQuad = new Matrix4x4(v0, v1, v2, v3);
                     MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, wall.AcknexObject.Get<string>("TEXTURE"), allVertices.Count);
                     //if (liftedLeft)
                     //{
@@ -219,6 +240,7 @@ namespace Acknex
                     allVertices.Add(v2);
                     allVertices.Add(v3);
                     var normal = MeshUtils.GetNormal(v0, v1, v2, v3);
+                    wall._bottomNormal = normal;
                     var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(normal));
                     allUVs.Add(unRotateNormal * v0);
                     allUVs.Add(unRotateNormal * v1);
@@ -246,12 +268,14 @@ namespace Acknex
                     var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v3 = new Vector3(vertexA.Position.X, heightRight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
+                    wall._topQuad = new Matrix4x4(v0, v1, v2, v3);
                     MeshUtils.AddQuad(3, 2, 1, 0, allTriangles, wall.AcknexObject.Get<string>("TEXTURE"), allVertices.Count);
                     allVertices.Add(v0);
                     allVertices.Add(v1);
                     allVertices.Add(v2);
                     allVertices.Add(v3);
                     var normal = MeshUtils.GetNormal(v0, v1, v2, v3);
+                    wall._topNormal = normal;
                     var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(normal));
                     allUVs.Add(unRotateNormal * v0);
                     allUVs.Add(unRotateNormal * v1);
@@ -291,7 +315,6 @@ namespace Acknex
                 break;
             }
         }
-
         public static void BuildWallAndMesh(Wall wall, List<ContourVertex> contourVertices)
         {
             var allVertices = new List<Vector3>();
