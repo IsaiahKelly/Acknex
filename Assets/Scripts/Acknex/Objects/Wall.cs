@@ -21,12 +21,22 @@ namespace Acknex
         public Region RightRegion { get; set; }
         public Region LeftRegion { get; set; }
         public bool Processed;
+        private MeshFilter _meshFilter;
+        private MeshRenderer _meshRenderer;
+        private MeshCollider _meshCollider;
 
-        public string Texture => AcknexObject.Get<string>("TEXTURE");
+        public Texture TextureObject => AcknexObject.Get<string>("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.Get<string>("TEXTURE"), out var textureObject) ? textureObject : null;
+
+        public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
+
+        private void Update()
+        {
+            UpdateObject();
+        }
 
         public void UpdateObject()
         {
-            throw new System.NotImplementedException();
+            BitmapImage?.UpdateMaterial(_meshRenderer.material, false, TextureObject.AcknexObject.Get<float>("AMBIENT") /** AcknexObject.Get<float>("AMBIENT")*/);
         }
 
         public void Enable()
@@ -104,7 +114,7 @@ namespace Acknex
             }
         }
 
-        public void BuildWallMesh(List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<string, List<int>> allTriangles, GameObject wallGameObject)
+        private static void BuildWallMesh(List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<string, List<int>> allTriangles, Wall wall)
         {
             var mesh = new Mesh();
             mesh.SetVertices(allVertices);
@@ -129,17 +139,17 @@ namespace Acknex
                 materials[i] = material;
             }
 
-            var meshFilter = wallGameObject.AddComponent<MeshFilter>();
-            meshFilter.sharedMesh = mesh;
+            wall._meshFilter = wall.gameObject.AddComponent<MeshFilter>();
+            wall._meshFilter.sharedMesh = mesh;
 
-            var meshRenderer = wallGameObject.AddComponent<MeshRenderer>();
-            meshRenderer.sharedMaterials = materials;
+            wall._meshRenderer = wall.gameObject.AddComponent<MeshRenderer>();
+            wall._meshRenderer.sharedMaterials = materials;
 
-            var meshCollider = wallGameObject.AddComponent<MeshCollider>();
-            meshCollider.sharedMesh = mesh;
+            wall._meshCollider = wall.gameObject.AddComponent<MeshCollider>();
+            wall._meshCollider.sharedMesh = mesh;
         }
 
-        public void BuildWall(Wall wall, Region rightRegion, Region leftRegion, List<ContourVertex> vertices, List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<string, List<int>> allTriangles, Region rightRegionAbove = null, Region leftRegionAbove = null)
+        private static void BuildWall(Wall wall, Region rightRegion, Region leftRegion, List<ContourVertex> vertices, List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<string, List<int>> allTriangles, Region rightRegionAbove = null, Region leftRegionAbove = null)
         {
             while (true)
             {
@@ -193,7 +203,7 @@ namespace Acknex
                     var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v3 = new Vector3(vertexA.Position.X, heightRight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                    MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, wall.Texture, allVertices.Count);
+                    MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, wall.AcknexObject.Get<string>("TEXTURE"), allVertices.Count);
                     //if (liftedLeft)
                     //{
                     //    Debug.DrawLine(v0 - new Vector3(0f, vertexA.Position.Z, 0f), v0, Color.red, 1000f);
@@ -236,7 +246,7 @@ namespace Acknex
                     var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v3 = new Vector3(vertexA.Position.X, heightRight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                    MeshUtils.AddQuad(3, 2, 1, 0, allTriangles, wall.Texture, allVertices.Count);
+                    MeshUtils.AddQuad(3, 2, 1, 0, allTriangles, wall.AcknexObject.Get<string>("TEXTURE"), allVertices.Count);
                     allVertices.Add(v0);
                     allVertices.Add(v1);
                     allVertices.Add(v2);
@@ -282,15 +292,15 @@ namespace Acknex
             }
         }
 
-        public void BuildWallAndMesh(Wall wall, List<ContourVertex> contourVertices)
+        public static void BuildWallAndMesh(Wall wall, List<ContourVertex> contourVertices)
         {
             var allVertices = new List<Vector3>();
             var allUVs = new List<Vector2>();
             var allTriangles = new Dictionary<string, List<int>>();
             var rightRegion = World.Instance.RegionsByIndex[wall.AcknexObject.Get<int>("REGION1")];
             var leftRegion = World.Instance.RegionsByIndex[wall.AcknexObject.Get<int>("REGION2")];
-            wall.BuildWall(wall, rightRegion, leftRegion, contourVertices, allVertices, allUVs, allTriangles);
-            wall.BuildWallMesh(allVertices, allUVs, allTriangles, wall.gameObject);
+            BuildWall(wall, rightRegion, leftRegion, contourVertices, allVertices, allUVs, allTriangles);
+            BuildWallMesh(allVertices, allUVs, allTriangles, wall);
         }
     }
 }

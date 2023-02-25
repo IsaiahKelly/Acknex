@@ -46,12 +46,13 @@ namespace Acknex
             
         }
 
-        public void UpdateMaterial(Material material, bool mirror)
+        public void UpdateMaterial(Material material, bool mirror = false, float ambient = 1.0f)
         {
             material.SetFloat("_X0", mirror ? X + Width : X);
             material.SetFloat("_Y0", Y);
             material.SetFloat("_X1", mirror ? X : X + Width);
             material.SetFloat("_Y1", Y + Height);
+            material.SetFloat("_AMBIENT", ambient);
             material.mainTexture = Texture2D;
         }
     }

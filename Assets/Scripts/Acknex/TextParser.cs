@@ -310,6 +310,9 @@ namespace Acknex
                         case "TEXTURE":
                             wall.AcknexObject[keyword] = tokens[1];
                             break;
+                        case "AMBIENT":
+                            wall.AcknexObject[keyword] = ParseFloat(tokens[1]);
+                            break;
                     }
                 }
                 else if (_openObject is Texture texture)
@@ -392,6 +395,12 @@ namespace Acknex
                             }
                             break;
                         }
+                        case "AMBIENT":
+                            World.Instance.AcknexObject.Set(keyword, ParseFloat(tokens[1]));
+                            break;
+                        case "LIGHT_ANGLE":
+                            World.Instance.AcknexObject.Set(keyword, ParseFloat(tokens[1]));
+                            break;
                         case "PATH":
                             World.Instance.Paths.Add(tokens[1]);
                             break;
@@ -721,11 +730,11 @@ namespace Acknex
                 foreach (var kvp in contouredRegions)
                 {
                     var region = World.Instance.RegionsByIndex[kvp.Key];
-                    region.BuildRegionFloorAndCeiling(region, kvp.Value);
+                    Region.BuildRegionFloorAndCeiling(region, kvp.Value);
                 }
                 foreach (var wall in World.Instance.Walls)
                 {
-                    wall.BuildWallAndMesh(wall, contourVertices);
+                    Wall.BuildWallAndMesh(wall, contourVertices);
                 }
             }
         }

@@ -50,6 +50,7 @@ namespace Acknex
                 _overlaySprite = overlaySprite;
             }
             _overlayGraphic.enabled = Flags.Contains("VISIBLE");
+            _overlayGraphic.transform.SetSiblingIndex(_overlayGraphic.transform.parent.childCount - 1 - AcknexObject.Get<int>("LAYER"));
         }
 
         public void Enable()

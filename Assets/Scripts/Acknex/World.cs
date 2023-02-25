@@ -6,8 +6,31 @@ using UnityEngine.UI;
 
 namespace Acknex
 {
-    public partial class World : MonoBehaviour, IAcknexWorld
+    public partial class World : MonoBehaviour, IAcknexObjectContainer, IAcknexWorld
     {
+        public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+        public void UpdateObject()
+        {
+            AmbientLight.transform.rotation = Quaternion.Euler(0f, 90f - (Mathf.Rad2Deg * AcknexObject.Get<float>("LIGHT_ANGLE")), 0f) *
+                                              Quaternion.Euler(45f, 0f, 0f);
+            UpdateSkills();
+        }
+
+        public void Enable()
+        {
+            
+        }
+
+        public void Disable()
+        {
+           
+        }
+
+        private static IAcknexObject GetDefinitionCallback(string name)
+        {
+            return null;
+        }
+
         public static World Instance { get; private set; }
 
         public Resolution Resolution1
@@ -42,6 +65,7 @@ namespace Acknex
         public readonly List<Wall> Walls = new List<Wall>();
 
         public Canvas Canvas;
+        public Light AmbientLight;
 
         private Resolution _resolution = Resolution.Res320x200;
         public Resolution Resolution
@@ -111,7 +135,7 @@ namespace Acknex
 
         private void Update()
         {
-            UpdateSkills();
+            UpdateObject();
         }
         
         //todo: generic method?
@@ -205,12 +229,12 @@ namespace Acknex
             {
                 material = new Material(textureObject.Flags.Contains("SKY")
                     ? Shader.Find("Acknex/Sky")
-                    : Shader.Find("Standard"));
+                    : Shader.Find("Acknex/Surfaces"));
                 material.mainTexture = textureObject.GetBitmapAt()?.Texture2D;
             }
             else
             {
-                material = new Material(Shader.Find("Standard"));
+                material = new Material(Shader.Find("Acknex/Surfaces"));
             }
             material.SetFloat("_Glossiness", 0f);
             return material;

@@ -4,6 +4,11 @@
 	{
 		_MainTex("Texture", 2D) = "white" {}
 		_Cutoff("Alpha cutoff", Range(0,1)) = 0.9
+		_AMBIENT("_AMBIENT", Float) = 1.0
+		_X0("_X0", Float) = 0.0
+		_X1("_X1", Float) = 0.0
+		_Y0("_Y0", Float) = 0.0
+		_Y1("_Y1", Float) = 0.0
 	}
 		SubShader
 		{
@@ -44,6 +49,7 @@
 			float _Y0;
 			float _X1;
 			float _Y1;
+			float _AMBIENT;
 
 			v2f vert(appdata v)
 			{
