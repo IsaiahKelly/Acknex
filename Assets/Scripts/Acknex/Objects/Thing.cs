@@ -28,7 +28,8 @@ namespace Acknex
         private GameObject _thingGameObject;
         private CapsuleCollider _collider;
         private GameObject _attached;
-        private bool _set;
+
+        //todo: debug vars
         public int side;
         public int angleFrame;
         public int cycles;
@@ -234,11 +235,10 @@ namespace Acknex
             transformLocalPosition.y = AcknexObject.Get<float>("HEIGHT");
             _thingGameObject.transform.localPosition = transformLocalPosition;
             _collider.isTrigger = Flags.Contains("PASSABLE");
-            _collider.radius = AcknexObject.Get<float>("DIST") > 0f ? AcknexObject.Get<float>("DIST") * 0.5f : 0.5f;
-            //if (!_set)
-            //{
-            //    _set = true;
-            //}
+            
+            //todo: how to?
+            //_collider.radius = AcknexObject.Get<float>("DIST") > 0f ? AcknexObject.Get<float>("DIST") * 0.5f : 0.5f;
+
             if (AcknexObject.Get<string>("ATTACH") != null && _attached == null && World.Instance.TexturesByName.TryGetValue(AcknexObject.Get<string>("ATTACH"), out var toAttachTextureObject))
             {
                 var toAttachBitmapImage = toAttachTextureObject.GetBitmapAt();
