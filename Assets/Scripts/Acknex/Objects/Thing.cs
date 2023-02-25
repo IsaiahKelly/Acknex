@@ -9,6 +9,7 @@ namespace Acknex
     //todo: CYCLE PROP
     //todo: UPDATE BITMAP
     //todo: remove debug fields
+    //todo: skill ACTOR_WIDTH & THING_WIDTH
     public class Thing : MonoBehaviour, IAcknexObjectContainer
     {
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);

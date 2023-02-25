@@ -640,12 +640,12 @@ namespace Acknex
                     {
                         case "PLAYER_START":
                             {
-                                var x = ParseFloat(tokens[1]);
-                                var y = ParseFloat(tokens[2]);
-                                var angle = ParseFloat(tokens[3]);
-                                var region = ParseInt(tokens[4]);
-                                var playerRegion = World.Instance.RegionsByIndex[region];
-                                GamePlayer.Instance.transform.SetPositionAndRotation(playerRegion.ProjectPosition(x, y), Quaternion.Euler(0f, angle * Mathf.Rad2Deg, 0f));
+                                World.Instance.UpdateSkillValue("PLAYER_X", ParseFloat(tokens[1]));
+                                World.Instance.UpdateSkillValue("PLAYER_Y", ParseFloat(tokens[2]));
+                                World.Instance.UpdateSkillValue("PLAYER_ANGLE", ParseFloat(tokens[3]));
+                                Player.Instance.AcknexObject["REGION"] = ParseInt(tokens[4]);
+                                //World.Instance.UpdateSkill("PLAYER_REGION", playerRegion);
+                                //Player.Instance.transform.SetPositionAndRotation(playerRegion.ProjectPosition(x, y), Quaternion.Euler(0f, AxisUtils.ConvertAcknexToUnityAngle(angle), 0f));
                                 break;
                             }
                         case "THING":
@@ -655,7 +655,7 @@ namespace Acknex
                                 thing.AcknexObject["X"] = ParseFloat(tokens[2]);
                                 thing.AcknexObject["Y"] = ParseFloat(tokens[3]);
                                 thing.AcknexObject["ANGLE"] = ParseFloat(tokens[4]);
-                                thing.AcknexObject["REGION"] = ParseInt(tokens[5]);
+                                thing.AcknexObject["REGION"] = ParseInt(tokens[5]);  //todo: sometimes it comes as strings
                                 break;
                             }
                         case "VERTEX":

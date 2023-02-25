@@ -1,4 +1,6 @@
-﻿namespace Acknex
+﻿using Acknex.Interfaces;
+
+namespace Acknex
 {
     public partial class World
     {
@@ -12,6 +14,15 @@
             CreateSynonym("#TOUCH_TEX");
             CreateSynonym("#TOUCH_REG");
             CreateSynonym("#TOUCH_TEXT");
+        }
+
+        //todo: clamp
+        public void UpdateSynonymValue(string name, IAcknexObject value)
+        {
+            if (SynonymsByName.TryGetValue(name, out var synonym))
+            {
+                synonym.AcknexObject.Set("VAL", value);
+            }
         }
     }
 }

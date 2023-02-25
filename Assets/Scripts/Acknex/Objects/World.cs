@@ -9,9 +9,16 @@ namespace Acknex
     public partial class World : MonoBehaviour, IAcknexObjectContainer, IAcknexWorld
     {
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+
+        private static IAcknexObject GetDefinitionCallback(string name)
+        {
+            return null;
+        }
+
+
         public void UpdateObject()
         {
-            AmbientLight.transform.rotation = Quaternion.Euler(0f, 90f - (Mathf.Rad2Deg * AcknexObject.Get<float>("LIGHT_ANGLE")), 0f) *
+            AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.Get<float>("LIGHT_ANGLE")), 0f) *
                                               Quaternion.Euler(45f, 0f, 0f);
             UpdateSkills();
         }
@@ -26,9 +33,14 @@ namespace Acknex
            
         }
 
-        private static IAcknexObject GetDefinitionCallback(string name)
+        public IAcknexObject CreateObject(ObjectType type, string name, bool fromWDL)
         {
-            return null;
+            throw new NotImplementedException();
+        }
+
+        public IAcknexObject GetObject(ObjectType type, string name, bool fromWDL)
+        {
+            throw new NotImplementedException();
         }
 
         public static World Instance { get; private set; }
@@ -108,8 +120,8 @@ namespace Acknex
                         break;
                     }
                 }
-                UpdateSkill("SCREEN_WIDTH", referenceResolution.x);
-                UpdateSkill("SCREEN_HGT", referenceResolution.y);
+                UpdateSkillValue("SCREEN_WIDTH", referenceResolution.x);
+                UpdateSkillValue("SCREEN_HGT", referenceResolution.y);
                 canvasScaler.referenceResolution = referenceResolution;
                 _resolution = value;
             }
@@ -131,7 +143,6 @@ namespace Acknex
                 _textParser.ParseWMP(mapFile);
             }
         }
-
 
         private void Update()
         {
@@ -240,17 +251,6 @@ namespace Acknex
             return material;
         }
 
-        public IAcknexObject CreateObject(ObjectType type, string name, bool fromWDL)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IAcknexObject GetObject(ObjectType type, string name, bool fromWDL)
-        {
-            throw new NotImplementedException();
-        }
-
-
         public Skill CreateSkill(string name, float value = 0f, float min = 0f, float max = 0f)
         {
             if (SkillsByName.TryGetValue(name, out var existingSkill))
@@ -263,15 +263,6 @@ namespace Acknex
             skill.AcknexObject["VAL"] = value;
             SkillsByName.Add(name, skill);
             return skill;
-        }
-
-        //todo: clamp
-        public void UpdateSkill(string name, float value)
-        {
-            if (SkillsByName.TryGetValue(name, out var skill))
-            {
-                skill.AcknexObject["VAL"] = value;
-            }
         }
 
         public Synonym CreateSynonym(string name, string type = null)

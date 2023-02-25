@@ -92,6 +92,11 @@ public class OverlayEditor : AcknexObjectEditor
 {
 }
 
+[UnityEditor.CustomEditor(typeof(Player))]
+public class PlayerEditor : AcknexObjectEditor
+{
+}
+
 [CustomEditor(typeof(World))]
 public class WorldEditor : Editor
 {

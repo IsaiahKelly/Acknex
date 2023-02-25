@@ -122,6 +122,17 @@ namespace Acknex
             CreateSkill("PLAYER_SIN", 0, 0, 0); //todo <- player angle sin IMPORTANT
             CreateSkill("PLAYER_COS", 0, 0, 0); //todo <- player angle cos IMPORTANT
             CreateSkill("PLAYER_SPEED", 0, 0, 0); //todo <- player speed IMPORTANT
+            //...
+
+            CreateSkill("PLAYER_DEPTH", 0, 0, 0); //todo <- player depth inside water IMPORTANT
+            CreateSkill("PLAYER_LAST_X", 0, 0, 0); //todo <- player last pos IMPORTANT
+            CreateSkill("PLAYER_LAST_Y", 0, 0, 0); //todo <- player last pos IMPORTANT
+            CreateSkill("TICKS", 0, 0, 0); //todo <- ticks IMPORTANT
+            CreateSkill("SECS", 0, 0, 0); //todo <- time in seconds IMPORTANT
+            CreateSkill("MOUSE_LEFT", 0, 0, 1); //todo <-  mouse button down IMPORTANT
+            CreateSkill("MOUSE_MIDDLE", 0, 0, 1); //todo <-  mouse button down IMPORTANT
+            CreateSkill("MOUSE_RIGHT", 0, 0, 1); //todo <-  mouse button down IMPORTANT
+            CreateSkill("KEY_ANY", 0, 0, 1); //todo <- key down IMPORTANT
         }
 
         private Vector3 _lastMousePosition;
@@ -133,14 +144,39 @@ namespace Acknex
             mousePosition.y = (Input.mousePosition.y / Screen.height) *
                               SkillsByName["SCREEN_HGT"].AcknexObject.Get<float>("VAL");
             var deltaMousePosition = mousePosition - _lastMousePosition;
-            UpdateSkill("MICKEY_X", deltaMousePosition.x);
-            UpdateSkill("MICKEY_Y", deltaMousePosition.y);
-            UpdateSkill("MOUSE_X", mousePosition.x);
-            UpdateSkill("MOUSE_Y", mousePosition.y);
-            UpdateSkill("JOYSTICK_X", Input.GetAxis("Horizontal") / 255f);
-            UpdateSkill("JOYSTICK_Y", Input.GetAxis("Vertical") / 255f);
+            UpdateSkillValue("MICKEY_X", deltaMousePosition.x);
+            UpdateSkillValue("MICKEY_Y", deltaMousePosition.y);
+            UpdateSkillValue("MOUSE_X", mousePosition.x);
+            UpdateSkillValue("MOUSE_Y", mousePosition.y);
+            UpdateSkillValue("MOUSE_LEFT", Input.GetMouseButtonDown(0) ? 1 : 0);
+            UpdateSkillValue("MOUSE_MIDDLE", Input.GetMouseButtonDown(1) ? 1 : 0);
+            UpdateSkillValue("MOUSE_RIGHT", Input.GetMouseButtonDown(2) ? 1 : 0);
+            UpdateSkillValue("KEY_ANY", Input.anyKey ? 1 : 0);
+            UpdateSkillValue("JOYSTICK_X", Input.GetAxis("Horizontal") / 255f);
+            UpdateSkillValue("JOYSTICK_Y", Input.GetAxis("Vertical") / 255f);
+            UpdateSkillValue("TICKS", TimeUtils.TimeToTicks(Time.time));
+            UpdateSkillValue("SECS", (int)Time.time);
             _lastMousePosition = mousePosition;
         }
 
+
+        //todo: clamp
+        public void UpdateSkillValue(string name, float value)
+        {
+            if (SkillsByName.TryGetValue(name, out var skill))
+            {
+                skill.AcknexObject.Set("VAL", value);
+            }
+        }
+
+        //todo: clamp
+        public float GetSkillValue(string name)
+        {
+            if (SkillsByName.TryGetValue(name, out var skill))
+            {
+                return skill.AcknexObject.Get<float>("VAL");
+            }
+            return default;
+        }
     }
 }

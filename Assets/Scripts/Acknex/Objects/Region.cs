@@ -19,13 +19,15 @@ namespace Acknex
             return null;
         }
 
+        private const float MaxHeightCheck = 20000f;
+
         private MeshFilter _meshFilter;
         private MeshCollider _meshCollider;
         private MeshRenderer _meshRenderer;
 
         private Region _belowOverride;
-        public ContouredRegion ContouredRegion;
 
+        public ContouredRegion ContouredRegion;
 
         private void Update()
         {
@@ -86,13 +88,29 @@ namespace Acknex
             set => _belowOverride = value;
         }
 
+        public MeshCollider MeshCollider
+        {
+            get
+            {
+                if (_meshCollider != null)
+                {
+                    return _meshCollider;
+                }
+                if (World.Instance.RegionsByName.TryGetValue(AcknexObject.Get<string>("NAME"), out var definition))
+                {
+                    return definition._meshCollider;
+                }
+                return null;
+            }
+        }
+
         public bool IsPointInsideRegion(Vector3 point)
         {
-            if (!Physics.Raycast(new Ray(point  + new Vector3(0f, 1f, 0f), Vector3.down), out var bottomHit, 20000f) || bottomHit.collider != _meshCollider)
+            if (!Physics.Raycast(new Ray(point  + new Vector3(0f, 1f, 0f), Vector3.down), out var bottomHit, MaxHeightCheck) || bottomHit.collider != _meshCollider)
             {
                 return false;
             }
-            if (!Physics.Raycast(new Ray(point  - new Vector3(0f, 1f, 0f), Vector3.up), out var topHit, 20000f) || topHit.collider != _meshCollider)
+            if (!Physics.Raycast(new Ray(point  - new Vector3(0f, 1f, 0f), Vector3.up), out var topHit, MaxHeightCheck) || topHit.collider != _meshCollider)
             {
                 return false;
             }
@@ -103,6 +121,12 @@ namespace Acknex
         {
             var point = new Vector3(x, AcknexObject.Get<float>("CEIL_HGT"), y);
             return !ground && _meshCollider != null && _meshCollider.Raycast(new Ray(point, Vector3.down), out var bottomHit, Mathf.Infinity) ? bottomHit.point : new Vector3(x, 0f, y);
+        }
+
+        public float ProjectHeight(float x, float y, bool ground = false)
+        {
+            var point = new Vector3(x, AcknexObject.Get<float>("CEIL_HGT"), y);
+            return !ground && _meshCollider != null && _meshCollider.Raycast(new Ray(point, Vector3.down), out var bottomHit, Mathf.Infinity) ? bottomHit.point.y : 0f;
         }
 
         private Region GetGroundRegion(Region region)
