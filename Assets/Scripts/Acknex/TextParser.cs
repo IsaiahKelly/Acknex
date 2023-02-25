@@ -642,7 +642,7 @@ namespace Acknex
                             {
                                 World.Instance.UpdateSkillValue("PLAYER_X", ParseFloat(tokens[1]));
                                 World.Instance.UpdateSkillValue("PLAYER_Y", ParseFloat(tokens[2]));
-                                World.Instance.UpdateSkillValue("PLAYER_ANGLE", ParseFloat(tokens[3]));
+                                World.Instance.UpdateSkillValue("PLAYER_ANGLE", Mathf.Deg2Rad * ParseFloat(tokens[3]));
                                 Player.Instance.AcknexObject["REGION"] = ParseInt(tokens[4]);
                                 //World.Instance.UpdateSkill("PLAYER_REGION", playerRegion);
                                 //Player.Instance.transform.SetPositionAndRotation(playerRegion.ProjectPosition(x, y), Quaternion.Euler(0f, AxisUtils.ConvertAcknexToUnityAngle(angle), 0f));
@@ -655,7 +655,7 @@ namespace Acknex
                                 thing.AcknexObject["X"] = ParseFloat(tokens[2]);
                                 thing.AcknexObject["Y"] = ParseFloat(tokens[3]);
                                 thing.AcknexObject["ANGLE"] = ParseFloat(tokens[4]);
-                                thing.AcknexObject["REGION"] = ParseInt(tokens[5]);  //todo: sometimes it comes as strings
+                                thing.AcknexObject["REGION"] = Mathf.Deg2Rad * ParseInt(tokens[5]);  //todo: sometimes it comes as strings
                                 break;
                             }
                         case "VERTEX":

@@ -9,7 +9,7 @@ namespace Acknex
             return Mathf.Repeat(Mathf.Deg2Rad * (unityAngle + 180f), 360f);
         }
 
-        
+
         public static float ConvertAcknexToUnityAngle(float acknexAngle)
         {
             return Mathf.Repeat(Mathf.Rad2Deg * acknexAngle - 180f, 360f);
