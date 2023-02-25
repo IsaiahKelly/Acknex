@@ -654,8 +654,8 @@ namespace Acknex
                                 var thing = (IAcknexObjectContainer)(keyword == "ACTOR" ? World.Instance.CreateActor(tokens[1]) : World.Instance.CreateThing(tokens[1]));
                                 thing.AcknexObject["X"] = ParseFloat(tokens[2]);
                                 thing.AcknexObject["Y"] = ParseFloat(tokens[3]);
-                                thing.AcknexObject["ANGLE"] = ParseFloat(tokens[4]);
-                                thing.AcknexObject["REGION"] = Mathf.Deg2Rad * ParseInt(tokens[5]);  //todo: sometimes it comes as strings
+                                thing.AcknexObject["ANGLE"] = Mathf.Deg2Rad * ParseFloat(tokens[4]);
+                                thing.AcknexObject["REGION"] = ParseInt(tokens[5]);  //todo: sometimes it comes as strings
                                 break;
                             }
                         case "VERTEX":

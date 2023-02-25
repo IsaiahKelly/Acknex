@@ -230,7 +230,15 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            UpdatePosition();
+            var thingX = AcknexObject.Get<float>("X");
+            var thingY = AcknexObject.Get<float>("Y");
+            var thingZ = AcknexObject.Get<float>("Z");
+
+
+            //todo: this block should only run on carefully flagged
+            StickToTheGround(thingX, thingY, ref thingZ);
+            transform.position = new Vector3(thingX, thingZ, thingY);
+
             var transformLocalPosition = _thingGameObject.transform.localPosition;
             transformLocalPosition.y = AcknexObject.Get<float>("HEIGHT");
             _thingGameObject.transform.localPosition = transformLocalPosition;
@@ -260,9 +268,12 @@ namespace Acknex
             return new Vector3(bitmap.Width / textureObject.AcknexObject.Get<float>("SCALE_X"), bitmap.Height / textureObject.AcknexObject.Get<float>("SCALE_Y"), 1f);
         }
 
-        public void UpdatePosition()
+        public void StickToTheGround(float thingX, float thingY, ref float thingZ)
         {
-            transform.position = Region.ProjectPosition(AcknexObject.Get<float>("X"), AcknexObject.Get<float>("Y"), Flags.Contains("GROUND")/* || !Flags.Contains("CAREFULLY")*/);
+            var thingRegion = World.Instance.RegionsByIndex[AcknexObject.Get<int>("REGION")];
+            thingZ = thingRegion.ProjectHeight(thingX, thingY, false);
+            AcknexObject.Set("Z", thingZ);
+            //transform.position = Region.ProjectPosition(A, , Flags.Contains("GROUND")/* || !Flags.Contains("CAREFULLY")*/);
         }
     }
 }

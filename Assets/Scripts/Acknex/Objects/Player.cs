@@ -22,9 +22,7 @@ namespace Acknex
             var playerZ = World.Instance.GetSkillValue("PLAYER_Z");
 
             //todo: this block should only run on carefully flagged
-            var playerRegion = World.Instance.RegionsByIndex[AcknexObject.Get<int>("REGION")];
-            playerZ = playerRegion.ProjectHeight(playerX, playerY, false);
-            World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
+            var playerRegion = StickToTheGround(playerX, playerY, out playerZ);
 
             var playerAngle = World.Instance.GetSkillValue("PLAYER_ANGLE");
             var unityPlayerAngle = AngleUtils.ConvertAcknexToUnityAngle(playerAngle);
@@ -62,6 +60,14 @@ namespace Acknex
             World.Instance.UpdateSynonymValue("HERE", playerRegion.AcknexObject);
             //DebugExtension.DebugArrow(transform.position, Vector3.forward, Color.blue, 100f);
             //DebugExtension.DebugArrow(transform.position, Vector3.right, Color.red, 100f);
+        }
+
+        private Region StickToTheGround(float playerX, float playerY, out float playerZ)
+        {
+            var playerRegion = World.Instance.RegionsByIndex[AcknexObject.Get<int>("REGION")];
+            playerZ = playerRegion.ProjectHeight(playerX, playerY, false);
+            World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
+            return playerRegion;
         }
 
         public void Enable()
