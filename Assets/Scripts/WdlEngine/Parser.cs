@@ -9,18 +9,15 @@ namespace WdlEngine
 {
     internal sealed class Parser : TokenConsumerBase
     {
-        private readonly IGameEngine _engine;
-
-        public static void Parse(IGameEngine engine, IEnumerable<Token> tokens)
+        public static void Parse(IEnumerable<Token> tokens)
         {
-            var parser = new Parser(engine, tokens);
+            var parser = new Parser(tokens);
             parser.Parse();
         }
 
-        private Parser(IGameEngine engine, IEnumerable<Token> tokens) 
+        private Parser(IEnumerable<Token> tokens) 
             : base(tokens.GetEnumerator())
         {
-            _engine = engine;
         }
 
         private void Parse()
