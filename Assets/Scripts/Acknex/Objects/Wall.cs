@@ -47,8 +47,8 @@ namespace Acknex
             //todo: the position follows the same rule as the wall and floor textures, this is going to be tricky :P
             var position = _bottomQuad.GetColumn(0);
             var rotation = Quaternion.LookRotation(-_bottomNormal);
-            TextureUtils.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject.AcknexObject, position, rotation);
-            BitmapImage?.UpdateMaterial(_meshRenderer.material, TextureObject, 0, false, TextureObject.AcknexObject.Get<float>("AMBIENT"), AcknexObject);
+            TextureUtils.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject?.AcknexObject, position, rotation);
+            BitmapImage?.UpdateMaterial(_meshRenderer.material, TextureObject, 0, false, AcknexObject);
             //todo: update <X1, <Y1, <Z1 <X2, <Y2, <Z2, DISTANCE, LENGTH, SIZE_X, LEFT, RIGHT,
         }
 

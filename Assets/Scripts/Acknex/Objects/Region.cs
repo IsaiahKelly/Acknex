@@ -42,7 +42,7 @@ namespace Acknex
                 var bitmapImage = floorTextureObject.GetBitmapAt(0);
                 if (bitmapImage != null)
                 {
-                    bitmapImage.UpdateMaterial(_meshRenderer.materials[0], floorTextureObject, 0, false, floorTextureObject.AcknexObject.Get<float>("AMBIENT") *  AcknexObject.Get<float>("AMBIENT"), AcknexObject);
+                    bitmapImage.UpdateMaterial(_meshRenderer.materials[0], floorTextureObject, 0, false, AcknexObject);
                 }
             }
             var ceilTexture = AcknexObject.Get<string>("CEIL_TEX");
@@ -51,7 +51,7 @@ namespace Acknex
                 var bitmapImage = ceilTextureObject.GetBitmapAt(0);
                 if (bitmapImage != null)
                 {
-                    bitmapImage.UpdateMaterial(_meshRenderer.materials[1], ceilTextureObject, 0, false, ceilTextureObject.AcknexObject.Get<float>("AMBIENT") * AcknexObject.Get<float>("AMBIENT"), AcknexObject);
+                    bitmapImage.UpdateMaterial(_meshRenderer.materials[1], ceilTextureObject, 0, false, AcknexObject);
                 }
             }
         }

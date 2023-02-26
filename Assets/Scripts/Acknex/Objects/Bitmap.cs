@@ -47,7 +47,7 @@ namespace Acknex
 
         }
 
-        public void UpdateMaterial(Material material, Texture texture = null, int index = 0, bool mirror = false, float ambient = 1.0f, IAcknexObject wallOrRegion = null)
+        public void UpdateMaterial(Material material, Texture texture = null, int index = 0, bool mirror = false, IAcknexObject wallOrRegion = null)
         {
             var x = X;
             var y = Y;
@@ -88,7 +88,7 @@ namespace Acknex
             material.SetFloat("_Y0", y0);
             material.SetFloat("_X1", x1);
             material.SetFloat("_Y1", y1);
-            material.SetFloat("_AMBIENT", ambient);
+            //material.SetFloat("_AMBIENT", ambient);
             material.mainTexture = Texture2D;
         }
     }

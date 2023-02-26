@@ -42,7 +42,7 @@ namespace Acknex
         public static void HandleAttachment(ref GameObject attached, GameObject parent, IAcknexObject acknexObject, IAcknexObject textureObject, Vector3? position = null , Quaternion? rotation = null, bool pivotAtLeft = false)
         {
             var attach = acknexObject.Get<string>("ATTACH");
-            if (attach == null)
+            if (attach == null && textureObject != null)
             {
                 attach = textureObject.Get<string>("ATTACH");
             }
