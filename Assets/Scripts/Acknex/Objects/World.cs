@@ -43,6 +43,11 @@ namespace Acknex
             throw new NotImplementedException();
         }
 
+        public IAcknexObject GetWorld()
+        {
+            throw new NotImplementedException();
+        }
+
         public static World Instance { get; private set; }
 
         public Resolution Resolution1
@@ -137,6 +142,8 @@ namespace Acknex
             Instance = this;
             CreateDefaultSynonyms();
             CreateDefaultSkills();
+            var baseDir = PathUtils.GetFileDirectory(_wdlPath);
+            _textParser.BaseDir = baseDir;
             _textParser.ParseWDL(_wdlPath);
             foreach (var mapFile in MapFiles)
             {

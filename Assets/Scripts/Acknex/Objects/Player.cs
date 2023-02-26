@@ -57,14 +57,23 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_COS", Mathf.Cos(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(transform.eulerAngles.y));
 
-            World.Instance.UpdateSynonymValue("HERE", playerRegion.AcknexObject);
+            if (playerRegion != null)
+            {
+                World.Instance.UpdateSynonymValue("HERE", playerRegion.AcknexObject);
+            }
             //DebugExtension.DebugArrow(transform.position, Vector3.forward, Color.blue, 100f);
-            //DebugExtension.DebugArrow(transform.position, Vector3.right, Color.red, 100f);
-        }
+                //DebugExtension.DebugArrow(transform.position, Vector3.right, Color.red, 100f);
+            }
 
-        private Region StickToTheGround(float playerX, float playerY, out float playerZ)
+            private Region StickToTheGround(float playerX, float playerY, out float playerZ)
         {
-            var playerRegion = World.Instance.RegionsByIndex[AcknexObject.Get<int>("REGION")];
+            var regionIndex = AcknexObject.Get<int>("REGION");
+            if (regionIndex > World.Instance.RegionsByIndex.Count - 1)
+            {
+                playerZ = 0f;
+                return null;
+            }
+            var playerRegion = World.Instance.RegionsByIndex[regionIndex];
             playerZ = playerRegion.ProjectHeight(playerX, playerY, false);
             World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
             return playerRegion;
