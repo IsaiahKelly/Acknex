@@ -59,8 +59,6 @@ namespace Acknex
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
 
-        //public Region Region => World.Instance.RegionsByIndex[AcknexObject.Get<int>("REGION")];
-
         protected virtual void Start()
         {
             _thingGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
@@ -114,27 +112,11 @@ namespace Acknex
             var cycle = 0;
             while (true)
             {
-                //UpdateFrameAngleScale(texture, meshRenderer, cycles, sides, cycle, mirror);
                 var currentDelay = delay != null && delay.Count > cycle ? TimeUtils.TicksToTime(int.Parse(delay[cycle])) : Mathf.Infinity;
-                //var elapsed = 0f;
-                //while (elapsed < currentDelay)
-                //{
                 UpdateAngleFrameScale(texture, meshRenderer, cycles, sides, cycle, mirror);
-                //elapsed += Time.deltaTime;
                 yield return new WaitForSeconds(currentDelay);
-                //}
                 cycle = (int)Mathf.Repeat(cycle + 1, cycles);
             }
-        }
-
-        public static float Angle(Vector3 from, Vector3 to)
-        {
-            var angle = Vector3.SignedAngle(to, from, Vector3.up);
-            if (angle < 0)
-            {
-                angle = 360 - angle * -1f;
-            }
-            return angle;
         }
 
         private void UpdateAngleFrameScale(Texture texture, MeshRenderer meshRenderer, int cycles, int sides, int animFrame, List<string> mirror)
@@ -145,7 +127,7 @@ namespace Acknex
             {
                 cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(camera.transform.position - _thingGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
                 thingDirection = Quaternion.Euler(0f, AcknexObject.Get<float>("ANGLE"), 0f) * Vector3.back;
-                angle = Angle(thingDirection, cameraToThingDirection);
+                angle = AngleUtils.Angle(thingDirection, cameraToThingDirection);
                 normalizedAngle = angle / 360f;
                 side = Mathf.RoundToInt(Mathf.Lerp(0, sides - 1, normalizedAngle));
             }
@@ -209,7 +191,6 @@ namespace Acknex
             var thingY = AcknexObject.Get<float>("Y");
             var thingZ = AcknexObject.Get<float>("Z");
 
-
             //todo: this block should only run on carefully flagged
             StickToTheGround(thingX, thingY, ref thingZ);
             transform.position = new Vector3(thingX, thingZ, thingY);
@@ -230,7 +211,6 @@ namespace Acknex
             var thingRegion = World.Instance.RegionsByIndex[AcknexObject.Get<int>("REGION")];
             thingZ = thingRegion.ProjectHeight(thingX, thingY, false);
             AcknexObject.Set("Z", thingZ);
-            //transform.position = Region.ProjectPosition(A, , Flags.Contains("GROUND")/* || !Flags.Contains("CAREFULLY")*/);
         }
     }
 }

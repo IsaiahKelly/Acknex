@@ -1,4 +1,5 @@
-﻿using LibTessDotNet;
+﻿using System;
+using LibTessDotNet;
 using System.Collections.Generic;
 using System.Linq;
 using Acknex.Interfaces;
@@ -36,6 +37,10 @@ namespace Acknex
 
         public void UpdateObject()
         {
+            if (_meshRenderer == null)
+            {
+                return;
+            }
             var floorTexture = AcknexObject.Get<string>("FLOOR_TEX");
             if (floorTexture != null && World.Instance.TexturesByName.TryGetValue(floorTexture, out var floorTextureObject))
             {
@@ -190,9 +195,12 @@ namespace Acknex
             var allVertices = new List<Vector3>();
             var allUVs = new List<Vector2>();
             var allTriangles = new Dictionary<int, List<int>>();
-            BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex);
-            BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex, true);
-            BuildFloorMesh(allVertices, allUVs, allTriangles, region, region.AcknexObject.Get<string>("CEIL_TEX"), region.AcknexObject.Get<string>("FLOOR_TEX"));
+            if (Math.Abs(region.AcknexObject.Get<float>("CEIL_HGT") - region.AcknexObject.Get<float>("FLOOR_HGT")) > Mathf.Epsilon)
+            {
+                BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex);
+                BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex, true);
+                BuildFloorMesh(allVertices, allUVs, allTriangles, region, region.AcknexObject.Get<string>("CEIL_TEX"), region.AcknexObject.Get<string>("FLOOR_TEX"));
+            }
             region.Enable();
             if (region.Below != null)
             {
