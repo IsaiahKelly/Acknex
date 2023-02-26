@@ -2,8 +2,12 @@
 using LibTessDotNet;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Acknex.Interfaces;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Acknex
 {
@@ -244,7 +248,7 @@ namespace Acknex
                 }
             }
 
-            var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(Vector3.up));
+            var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(ceil ? Vector3.up : Vector3.down));
             for (var i = 0; i < floorVertices.Length; i++)
             {
                 allUVs.Add(unRotateNormal * floorVertices[i]);
