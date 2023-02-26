@@ -14,7 +14,7 @@ namespace WdlEngine
         {
             var lexedTokens = Lexer.Lex(reader);
             var preprocessedTokens = Preprocessor.Process(rootPath, lexedTokens);
-            Parser.Parse(preprocessedTokens);
+            WdlParser.Parse(null, preprocessedTokens);
         }
     }
 }
