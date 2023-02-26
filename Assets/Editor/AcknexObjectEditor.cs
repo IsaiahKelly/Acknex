@@ -1,6 +1,8 @@
 ﻿using Acknex;
 using Acknex.Interfaces;
 using UnityEditor;
+using UnityEngine;
+using Texture = Acknex.Texture;
 
 public class AcknexObjectEditor : Editor
 {
@@ -131,5 +133,22 @@ public class WorldEditor : Editor
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+    }
+}
+
+public class WRSExtractorEditor : Editor
+{
+    [MenuItem("ACKNEX/Extract WRS")]
+    private static void ExtractWDS()
+    {
+        var inputFolder = EditorUtility.OpenFilePanel("Extract WRS", Application.persistentDataPath, "WRS");
+        if (!string.IsNullOrWhiteSpace(inputFolder))
+        {
+            var outputFolder = EditorUtility.OpenFolderPanel("Select the folder to extract the data", Application.persistentDataPath, "");
+            if (!string.IsNullOrWhiteSpace(outputFolder))
+            {
+                WRSExtractor.ExtractWRS(inputFolder, outputFolder);
+            }
+        }
     }
 }

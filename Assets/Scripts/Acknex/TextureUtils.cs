@@ -6,7 +6,6 @@ namespace Acknex
 {
     public static class TextureUtils
     {
-
         private static Vector3 CalculateObjectSize(Bitmap bitmap, Texture textureObject)
         {
             if (bitmap == null || textureObject == null)
@@ -65,6 +64,9 @@ namespace Acknex
                     {
                         attached.transform.rotation = rotation.Value;
                     }
+                    var transformLocalPosition = attached.transform.localPosition;
+                    transformLocalPosition.z -= 0.01f;
+                    attached.transform.localPosition = transformLocalPosition;
                     var attachment = attached.AddComponent<Attachment>();
                     attachment.AcknexObject = acknexObject;
                     attachment.TextureObject = toAttachTextureObject;

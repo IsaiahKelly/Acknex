@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Acknex.Interfaces;
 using DmitryBrant.ImageFormats;
 using UnityEngine;
@@ -38,20 +39,55 @@ namespace Acknex
 
         public void Enable()
         {
-            
+
         }
 
         public void Disable()
         {
-            
+
         }
 
-        public void UpdateMaterial(Material material, bool mirror = false, float ambient = 1.0f)
+        public void UpdateMaterial(Material material, Texture texture = null, int index = 0, bool mirror = false, float ambient = 1.0f, IAcknexObject wallOrRegion = null)
         {
-            material.SetFloat("_X0", mirror ? X + Width : X);
-            material.SetFloat("_Y0", Y);
-            material.SetFloat("_X1", mirror ? X : X + Width);
-            material.SetFloat("_Y1", Y + Height);
+            var x = X;
+            var y = Y;
+            var width = Width;
+            var height = Height;
+            //if (texture != null || wallOrRegion != null)
+            {
+                if (wallOrRegion != null && wallOrRegion.TryGet<float>("OFFSET_X", out var offsetX))
+                {
+                    x = offsetX;
+                }
+                if (wallOrRegion != null && wallOrRegion.TryGet<float>("OFFSET_Y", out var offsetY))
+                {
+                    y = offsetY;
+                }
+                if (texture != null && texture.AcknexObject.TryGet<List<float>>("OFFSET_X", out var offsetXList))
+                {
+                    x = offsetXList[index];
+                }
+                if (texture != null && texture.AcknexObject.TryGet<List<float>>("OFFSET_Y", out var offsetYList))
+                {
+                    y = offsetYList[index];
+                }
+                if (texture != null && texture.AcknexObject.TryGet<float>("SCALE_X", out var scaleX))
+                {
+                    width = scaleX;
+                }
+                if (texture != null && texture.AcknexObject.TryGet<float>("SCALE_Y", out var scaleY))
+                {
+                    height = scaleY;
+                }
+            }
+            var x0 = mirror ? x + width : x;
+            var y0 = y;
+            var x1 = mirror ? x : x + width;
+            var y1 = y + height;
+            material.SetFloat("_X0", x0);
+            material.SetFloat("_Y0", y0);
+            material.SetFloat("_X1", x1);
+            material.SetFloat("_Y1", y1);
             material.SetFloat("_AMBIENT", ambient);
             material.mainTexture = Texture2D;
         }

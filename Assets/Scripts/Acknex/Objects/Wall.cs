@@ -40,13 +40,15 @@ namespace Acknex
             UpdateObject();
         }
 
+        public bool DebugMarked;
+
         public void UpdateObject()
         {
             //todo: the position follows the same rule as the wall and floor textures, this is going to be tricky :P
             var position = _bottomQuad.GetColumn(0);
             var rotation = Quaternion.LookRotation(-_bottomNormal);
             TextureUtils.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject.AcknexObject, position, rotation);
-            BitmapImage?.UpdateMaterial(_meshRenderer.material, false, TextureObject.AcknexObject.Get<float>("AMBIENT") /** AcknexObject.Get<float>("AMBIENT")*/);
+            BitmapImage?.UpdateMaterial(_meshRenderer.material, TextureObject, 0, false, TextureObject.AcknexObject.Get<float>("AMBIENT"), AcknexObject);
             //todo: update <X1, <Y1, <Z1 <X2, <Y2, <Z2, DISTANCE, LENGTH, SIZE_X, LEFT, RIGHT,
         }
 
@@ -239,8 +241,9 @@ namespace Acknex
                     allVertices.Add(v1);
                     allVertices.Add(v2);
                     allVertices.Add(v3);
+                    //todo: calculate normal with source points on fallback?
                     var normal = MeshUtils.GetNormal(v0, v1, v2, v3);
-                    wall._bottomNormal = normal;
+                    wall._bottomNormal = normal.magnitude > 0f ? normal : Vector3.forward;
                     var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(normal));
                     allUVs.Add(unRotateNormal * v0);
                     allUVs.Add(unRotateNormal * v1);
@@ -274,8 +277,9 @@ namespace Acknex
                     allVertices.Add(v1);
                     allVertices.Add(v2);
                     allVertices.Add(v3);
+                    //todo: calculate normal with source points on fallback?
                     var normal = MeshUtils.GetNormal(v0, v1, v2, v3);
-                    wall._topNormal = normal;
+                    wall._topNormal = normal.magnitude > 0f ? normal : Vector3.forward;
                     var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(normal));
                     allUVs.Add(unRotateNormal * v0);
                     allUVs.Add(unRotateNormal * v1);

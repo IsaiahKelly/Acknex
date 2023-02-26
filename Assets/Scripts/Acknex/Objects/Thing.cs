@@ -159,22 +159,25 @@ namespace Acknex
             {
                 mirrored = true;
                 angleFrame = side * cycles;
-                bitmap = texture.GetBitmapAt(angleFrame + animFrame);
-                UpdateFrame(bitmap, meshRenderer, true);
+                var frame = angleFrame + animFrame;
+                bitmap = texture.GetBitmapAt(frame);
+                UpdateFrame(bitmap, texture, meshRenderer, true, frame);
             }
             else
             {
                 mirrored = false;
                 angleFrame = side * cycles;
-                bitmap = texture.GetBitmapAt(angleFrame + animFrame);
-                UpdateFrame(bitmap, meshRenderer);
+                var frame = angleFrame + animFrame;
+                bitmap = texture.GetBitmapAt(frame);
+                UpdateFrame(bitmap, texture, meshRenderer, false, frame);
             }
             TextureUtils.UpdateScale(meshRenderer.transform, bitmap, texture);
         }
 
-        private static void UpdateFrame(Bitmap bitmap, MeshRenderer meshRenderer, bool mirror = false)
+        private static void UpdateFrame(Bitmap bitmap, Texture textureObject, MeshRenderer meshRenderer, bool mirror = false, int frameIndex = 0)
         {
-            bitmap.UpdateMaterial(meshRenderer.material, mirror);
+            //todo: null here to avoid scale
+            bitmap.UpdateMaterial(meshRenderer.material, null, frameIndex, mirror);
         }
 
         protected virtual void Update()

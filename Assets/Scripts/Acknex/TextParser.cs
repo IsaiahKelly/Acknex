@@ -692,8 +692,8 @@ namespace Acknex
                                 wall.AcknexObject["VERTEX2"] = Convert.ToInt32(tokens[2]);
                                 wall.AcknexObject["REGION1"] = Convert.ToInt32(tokens[4]);
                                 wall.AcknexObject["REGION2"] = Convert.ToInt32(tokens[5]);
-                                wall.AcknexObject["OFFSETX"] = ParseFloat(tokens[6]);
-                                wall.AcknexObject["OFFSETY"] = ParseFloat(tokens[7]); ;
+                                wall.AcknexObject["OFFSET_X"] = ParseFloat(tokens[6]);
+                                wall.AcknexObject["OFFSET_Y"] = ParseFloat(tokens[7]); ;
                                 wall.transform.SetParent(World.Instance.transform, false);
                                 regionWalls.GetWallsList(wall.AcknexObject.Get<int>("REGION1")).Add(wall);
                                 regionWalls.GetWallsList(wall.AcknexObject.Get<int>("REGION2")).Add(wall);
