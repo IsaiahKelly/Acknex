@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using DmitryBrant.ImageFormats;
+using IffParserNS;
 using UnityEngine;
 
 namespace Acknex
@@ -23,12 +24,31 @@ namespace Acknex
 
         public void Setup()
         {
-            var fileName = AcknexObject.Get<string>("FILENAME");
-            if (!World.Instance.TextureCache.TryGetValue(fileName, out Texture2D))
+            var filename = AcknexObject.Get<string>("FILENAME");
+            if (!World.Instance.TextureCache.TryGetValue(filename, out Texture2D))
             {
-                Texture2D = PcxReader.Load(fileName);
-                Texture2D.name = AcknexObject.Get<string>("NAME");
-                World.Instance.TextureCache.Add(fileName, Texture2D);
+                var lowerInvariant = filename.ToLowerInvariant();
+                if (lowerInvariant.EndsWith("pcx"))
+                {
+                    Texture2D = PcxReader.Load(filename);
+                    Texture2D.name = AcknexObject.Get<string>("NAME");
+                    World.Instance.TextureCache.Add(filename, Texture2D);
+                } else if (lowerInvariant.EndsWith("lbm"))
+                {
+                    var parser = new IlbmReaderTest.IffReader();
+                    var iff = parser.Read(filename);
+                    if (iff.Ilbms.Count > 0)
+                    {
+                        Texture2D = iff.Ilbms[0].Texture2D;
+                        Texture2D.name = AcknexObject.Get<string>("NAME");
+                        World.Instance.TextureCache.Add(filename, Texture2D);
+                    }
+                    //var iff = new IFF();
+                    //iff.Parse(fileName);
+                    //Texture2D = iff.Texture2D;
+                    //Texture2D.name = AcknexObject.Get<string>("NAME");
+                    //World.Instance.TextureCache.Add(filename, Texture2D);
+                }
             }
         }
 

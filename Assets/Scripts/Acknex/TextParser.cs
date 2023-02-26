@@ -691,8 +691,8 @@ namespace Acknex
                                 var wall = World.Instance.CreateWall(wallName);
                                 wall.AcknexObject["VERTEX1"] = Convert.ToInt32(tokens[3]);
                                 wall.AcknexObject["VERTEX2"] = Convert.ToInt32(tokens[2]);
-                                wall.AcknexObject["REGION1"] = Convert.ToInt32(tokens[4]);
-                                wall.AcknexObject["REGION2"] = Convert.ToInt32(tokens[5]);
+                                wall.AcknexObject["REGION1"] = ParseRegionIndex(tokens[4]);
+                                wall.AcknexObject["REGION2"] = ParseRegionIndex(tokens[5]);
                                 wall.AcknexObject["OFFSET_X"] = ParseFloat(tokens[6]);
                                 wall.AcknexObject["OFFSET_Y"] = ParseFloat(tokens[7]); ;
                                 wall.transform.SetParent(World.Instance.transform, false);
@@ -743,6 +743,19 @@ namespace Acknex
                     Wall.BuildWallAndMesh(wall, contourVertices);
                 }
             }
+        }
+
+        private static int ParseRegionIndex(string name)
+        {
+            if (int.TryParse(name, out var result))
+            {
+                return result;
+            }
+            if (World.Instance.RegionsByName.TryGetValue(name, out var region))
+            {
+                return World.Instance.RegionsByIndex.IndexOf(region);
+            }
+            return 0;
         }
     }
 }

@@ -43,6 +43,11 @@ namespace Acknex
             throw new NotImplementedException();
         }
 
+        public IAcknexObject GetWorld()
+        {
+            throw new NotImplementedException();
+        }
+
         public static World Instance { get; private set; }
 
         public Resolution Resolution1

@@ -13,6 +13,7 @@
         Wall,
         Way,
         Overlay,
-        View
+        View,
+        World
     }
 }
