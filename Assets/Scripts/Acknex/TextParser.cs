@@ -16,7 +16,14 @@ namespace Acknex
 
         private readonly List<string> _tokens = new List<string>();
         private readonly StringBuilder _tokenStringBuilder = new StringBuilder();
-        public string BaseDir;
+        private string _baseDir;
+        private readonly bool _wmpContainsRegionsByName;
+
+        public TextParser(string baseDir, bool wmpContainsRegionsByName)
+        {
+            _baseDir = baseDir;
+            _wmpContainsRegionsByName = wmpContainsRegionsByName;
+        }
 
         private static int ParseInt(string token)
         {
@@ -467,6 +474,10 @@ namespace Acknex
                                 _openObject = World.Instance.CreateRegion(name, true);
                                 _openObject.Disable();
                                 World.Instance.RegionsByName.Add(name, (Region)_openObject);
+                                if (_wmpContainsRegionsByName)
+                                {
+                                    World.Instance.RegionsByIndex.Add((Region)_openObject);
+                                }
                                 break;
                             }
                         case "WALL":
@@ -614,7 +625,7 @@ namespace Acknex
         private string ParseDir(string token)
         {
             token = token.Substring(1, token.Length - 2);
-            var file = $"{BaseDir}/{token}";
+            var file = $"{_baseDir}/{token}";
             if (File.Exists(file))
             {
                 return file;
@@ -649,7 +660,7 @@ namespace Acknex
                                 World.Instance.UpdateSkillValue("PLAYER_X", ParseFloat(tokens[1]));
                                 World.Instance.UpdateSkillValue("PLAYER_Y", ParseFloat(tokens[2]));
                                 World.Instance.UpdateSkillValue("PLAYER_ANGLE", Mathf.Deg2Rad * ParseFloat(tokens[3]));
-                                Player.Instance.AcknexObject["REGION"] = ParseInt(tokens[4]);
+                                Player.Instance.AcknexObject["REGION"] = ParseRegionIndex(tokens[4]);
                                 //World.Instance.UpdateSkill("PLAYER_REGION", playerRegion);
                                 //Player.Instance.transform.SetPositionAndRotation(playerRegion.ProjectPosition(x, y), Quaternion.Euler(0f, AxisUtils.ConvertAcknexToUnityAngle(angle), 0f));
                                 break;
@@ -661,7 +672,7 @@ namespace Acknex
                                 thing.AcknexObject["X"] = ParseFloat(tokens[2]);
                                 thing.AcknexObject["Y"] = ParseFloat(tokens[3]);
                                 thing.AcknexObject["ANGLE"] = Mathf.Deg2Rad * ParseFloat(tokens[4]);
-                                thing.AcknexObject["REGION"] = ParseInt(tokens[5]);  //todo: sometimes it comes as strings
+                                thing.AcknexObject["REGION"] = ParseRegionIndex(tokens[5]);  //todo: sometimes it comes as strings
                                 break;
                             }
                         case "VERTEX":
@@ -679,7 +690,10 @@ namespace Acknex
                                 //region.AcknexObject["NAME"] = regionName;
                                 region.AcknexObject["FLOOR_HGT"] = ParseFloat(tokens[2]);
                                 region.AcknexObject["CEIL_HGT"] = ParseFloat(tokens[3]);
-                                World.Instance.RegionsByIndex.Add(region);
+                                if (!_wmpContainsRegionsByName)
+                                {
+                                    World.Instance.RegionsByIndex.Add(region);
+                                }
                                 break;
                             }
                         case "WALL":
@@ -745,13 +759,13 @@ namespace Acknex
             }
         }
 
-        private static int ParseRegionIndex(string name)
+        private int ParseRegionIndex(string value)
         {
-            if (int.TryParse(name, out var result))
+            if (!_wmpContainsRegionsByName)
             {
-                return result;
+                return int.Parse(value);
             }
-            if (World.Instance.RegionsByName.TryGetValue(name, out var region))
+            if (World.Instance.RegionsByName.TryGetValue(value, out var region))
             {
                 return World.Instance.RegionsByIndex.IndexOf(region);
             }

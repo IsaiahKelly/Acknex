@@ -61,8 +61,11 @@ namespace Acknex
             set => Resolution = value;
         }
 
-        [SerializeField]
-        private string _wdlPath;
+        public string WDLPath;
+
+        //todo: how to calculate this?
+        public float CanvasWidthRatio = 2f;
+        public bool WMPContainsRegionsByName;
 
         public readonly List<Region> RegionsByIndex = new List<Region>();
         public readonly HashSet<string> DefinitionsByName = new HashSet<string>();
@@ -137,19 +140,16 @@ namespace Acknex
             }
         }
 
-        //todo: how to calculate this?
-        public float CanvasWidthRatio = 2f;
-
-        private readonly TextParser _textParser = new TextParser();
+        private TextParser _textParser;
 
         private void Start()
         {
             Instance = this;
             CreateDefaultSynonyms();
             CreateDefaultSkills();
-            var baseDir = PathUtils.GetFileDirectory(_wdlPath);
-            _textParser.BaseDir = baseDir;
-            _textParser.ParseWDL(_wdlPath);
+            var baseDir = PathUtils.GetFileDirectory(WDLPath);
+            _textParser = new TextParser(baseDir, WMPContainsRegionsByName);
+            _textParser.ParseWDL(WDLPath);
             foreach (var mapFile in MapFiles)
             {
                 _textParser.ParseWMP(mapFile);
