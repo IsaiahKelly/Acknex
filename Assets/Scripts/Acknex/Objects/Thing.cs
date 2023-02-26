@@ -209,7 +209,7 @@ namespace Acknex
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)
         {
             var thingRegion = World.Instance.RegionsByIndex[AcknexObject.Get<int>("REGION")];
-            thingZ = thingRegion.ProjectHeight(thingX, thingY, false);
+            thingZ = thingRegion.ProjectHeight(thingX, thingY, Flags.Contains("GROUND"));
             AcknexObject.Set("Z", thingZ);
         }
     }
