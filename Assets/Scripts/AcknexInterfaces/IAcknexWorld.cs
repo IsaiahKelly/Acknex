@@ -5,5 +5,6 @@
         IAcknexObject CreateObject(ObjectType type, string name, bool fromWDL);
         IAcknexObject GetObject(ObjectType type, string name, bool fromWDL);
         IAcknexObject GetWorld();
+        void AddString(string name, string value);
     }
 }

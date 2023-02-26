@@ -48,6 +48,11 @@ namespace Acknex
             throw new NotImplementedException();
         }
 
+        public void AddString(string name, string value)
+        {
+            throw new NotImplementedException();
+        }
+
         public static World Instance { get; private set; }
 
         public Resolution Resolution1
