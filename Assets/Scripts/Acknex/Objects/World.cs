@@ -137,6 +137,8 @@ namespace Acknex
             Instance = this;
             CreateDefaultSynonyms();
             CreateDefaultSkills();
+            var baseDir = PathUtils.GetFileDirectory(_wdlPath);
+            _textParser.BaseDir = baseDir;
             _textParser.ParseWDL(_wdlPath);
             foreach (var mapFile in MapFiles)
             {

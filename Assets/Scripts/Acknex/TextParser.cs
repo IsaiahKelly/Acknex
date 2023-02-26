@@ -16,6 +16,7 @@ namespace Acknex
 
         private readonly List<string> _tokens = new List<string>();
         private readonly StringBuilder _tokenStringBuilder = new StringBuilder();
+        public string BaseDir;
 
         private static int ParseInt(string token)
         {
@@ -610,10 +611,10 @@ namespace Acknex
             return tokens;
         }
 
-        private static string ParseDir(string token)
+        private string ParseDir(string token)
         {
             token = token.Substring(1, token.Length - 2);
-            var file = $"Assets/Data/{token}";
+            var file = $"{BaseDir}/{token}";
             if (File.Exists(file))
             {
                 return file;

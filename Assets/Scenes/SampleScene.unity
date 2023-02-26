@@ -606,7 +606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b52af5bca98fed4c9690969a13ed559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wdlPath: Assets\Data\Contato.wdl
+  _wdlPath: Assets/Data/Contato.wdl
   Canvas: {fileID: 1116186326}
   AmbientLight: {fileID: 705507994}
   CanvasWidthRatio: 1.6
