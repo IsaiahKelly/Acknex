@@ -58,7 +58,7 @@ namespace WdlEngine
                     var filePath = Path.Combine(_rootPath, filename.ValueString);
                     using (var streamReader = new StreamReader(File.OpenRead(filePath)))
                     {
-                        var tokens = Lexer.Lex(CommentStyle.DoubleSlash, streamReader).ToList();
+                        var tokens = Lexer.Lex(streamReader).ToList();
                         // Chop off end of input
                         if (tokens[tokens.Count - 1].Type == TokenType.EndOfInput) tokens.RemoveAt(tokens.Count - 1);
                         // Prepend

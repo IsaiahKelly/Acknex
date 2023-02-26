@@ -17,7 +17,7 @@ namespace WdlEngine
         public void Test(string rootPath, TextReader reader)
         {
             var gameEngine = new TestGameEngine();
-            var lexedTokens = Lexer.Lex(CommentStyle.DoubleSlash, reader);
+            var lexedTokens = Lexer.Lex(reader);
             var preprocessedTokens = Preprocessor.Process(rootPath, lexedTokens);
             Parser.Parse(gameEngine, preprocessedTokens);
         }

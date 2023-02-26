@@ -10,9 +10,9 @@ namespace WdlEngine
 {
     internal sealed class Lexer
     {
-        public static IEnumerable<Token> Lex(CommentStyle commentStyle, TextReader reader)
+        public static IEnumerable<Token> Lex(TextReader reader)
         {
-            var lexer = new Lexer(commentStyle, reader);
+            var lexer = new Lexer(reader);
             while (true)
             {
                 var token = lexer.Next();
@@ -36,14 +36,12 @@ namespace WdlEngine
         };
 
         private readonly StringBuilder _peekBuffer = new StringBuilder();
-        private readonly CommentStyle _commentStyle;
         private readonly TextReader _sourceReader;
 
         private Mode _mode = Mode.Normal;
 
-        private Lexer(CommentStyle commentStyle, TextReader sourceReader)
+        private Lexer(TextReader sourceReader)
         {
-            _commentStyle = commentStyle;
             _sourceReader = sourceReader;
         }
 
@@ -60,12 +58,23 @@ namespace WdlEngine
                 goto start;
             }
 
-            // Ignore comments
-            if ((_commentStyle == CommentStyle.Hashmark && ch == '#')
-             || (_commentStyle == CommentStyle.DoubleSlash && ch == '/' && Peek(1) == '/'))
+            // Ignore line comments
+            if (ch == '#' || (ch == '/' && Peek(1) == '/'))
+            {
+                Advance(ch == '#' ? 1 : 2);
+                while (!IsNewline(Peek(0, '\n'))) Advance();
+                goto start;
+            }
+
+            // Ignore multi-line comments
+            if (ch == '/' && Peek(1) == '*')
             {
                 Advance(2);
-                while (!IsNewline(Peek(0, '\n'))) Advance();
+                while (true)
+                {
+                    if (Peek(0, '*') == '*' && Peek(1, '/') == '/') break;
+                    Advance();
+                }
                 goto start;
             }
 
