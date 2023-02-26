@@ -34,16 +34,30 @@ namespace Acknex
             indices.Add(baseIndex + d);
         }
 
-        public static Mesh CreateQuadMesh()
+        public static Mesh CreateQuadMesh(bool pivotAtLeft=  false)
         {
             var mesh = new Mesh();
-            var vertices = new Vector3[4]
+            Vector3[] vertices;
+            if (pivotAtLeft)
             {
-                new Vector3(-0.5f, 0, 0),
-                new Vector3(0.5f, 0, 0),
-                new Vector3(-0.5f, 1f, 0),
-                new Vector3(0.5F, 1f, 0)
-            };
+                vertices = new Vector3[4]
+                {
+                    new Vector3(0, 0, 0),
+                    new Vector3(1f, 0, 0),
+                    new Vector3(0, 1f, 0),
+                    new Vector3(1f, 1f, 0)
+                };
+            }
+            else
+            {
+                vertices = new Vector3[4]
+                {
+                    new Vector3(-0.5f, 0, 0),
+                    new Vector3(0.5f, 0, 0),
+                    new Vector3(-0.5f, 1f, 0),
+                    new Vector3(0.5F, 1f, 0)
+                };
+            }
             mesh.vertices = vertices;
             var tris = new int[6]
             {
