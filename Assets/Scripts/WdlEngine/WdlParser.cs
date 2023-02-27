@@ -47,7 +47,8 @@ namespace WdlEngine
                 case "TEXTURE":
                 {
                     var name = Expect(TokenType.Identifier).ValueString;
-                    var obj = _world.CreateObject(StringToObjectType(statementName), name, true);
+                    var objType = Utils.StringToObjectType(statementName);
+                    var obj = _world.CreateObject(objType, name, true);
                     Expect(TokenType.OpenBrace);
                     while (!Matches(TokenType.CloseBrace))
                     {
@@ -71,7 +72,8 @@ namespace WdlEngine
                 case "OVLY":
                 {
                     var name = Expect(TokenType.Identifier).ValueString;
-                    var obj = _world.CreateObject(StringToObjectType(statementName), name, true);
+                    var objType = Utils.StringToObjectType(statementName);
+                    var obj = _world.CreateObject(objType, name, true);
                     Expect(TokenType.Comma);
                     obj["FILENAME"] = Expect(TokenType.String).ValueString;
                     if (Matches(TokenType.Comma))
@@ -171,15 +173,6 @@ namespace WdlEngine
                     if (depth == 0) break;
                 }
                 if (consumed.Type == TokenType.Semicolon && depth == 0) break;
-            }
-        }
-
-        private static ObjectType StringToObjectType(string str)
-        {
-            switch (str)
-            {
-            default:
-                throw new ArgumentOutOfRangeException(nameof(str));
             }
         }
     }

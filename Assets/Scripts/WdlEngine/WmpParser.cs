@@ -1,4 +1,5 @@
 ﻿using Acknex.Interfaces;
+using Codice.CM.Client.Differences;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using WdlEngine;
 
-namespace Assets.Scripts.WdlEngine
+namespace WdlEngine
 {
     internal sealed class WmpParser : TokenConsumerBase
     {
@@ -25,6 +26,12 @@ namespace Assets.Scripts.WdlEngine
             _world = world;
         }
 
+        private void SetSkill(string name, object value)
+        {
+            var skill = _world.CreateObject(ObjectType.Skill, name, false);
+            skill["VAL"] = value;
+        }
+
         private void Parse()
         {
             while (!Matches(TokenType.EndOfInput)) ParseStatement();
@@ -39,12 +46,28 @@ namespace Assets.Scripts.WdlEngine
                 switch (statementName)
                 {
                 case "PLAYER_START":
-                    // TODO: Handle
+                {
+                    SetSkill("PLAYER_X", ParseNumber());
+                    SetSkill("PLAYER_Y", ParseNumber());
+                    SetSkill("PLAYER_ANGLE", Mathf.Deg2Rad * ParseNumber());
+                    var region = (int)Expect(TokenType.Integer).Value;
+                    // TODO: Set REGION of player
+                    Expect(TokenType.Semicolon);
                     return;
+                }
                 case "THING":
                 case "ACTOR":
-                    // TODO: Handle
+                {
+                    var name = Expect(TokenType.Identifier).ValueString;
+                    var objType = Utils.StringToObjectType(statementName);
+                    var obj = _world.CreateObject(objType, name, false);
+                    obj["X"] = ParseNumber();
+                    obj["Y"] = ParseNumber();
+                    obj["ANGLE"] = Mathf.Deg2Rad * ParseNumber();
+                    obj["REGION"] = (int)Expect(TokenType.Integer).Value;
+                    Expect(TokenType.Semicolon);
                     return;
+                }
                 case "VERTEX":
                     // TODO: Handle
                     return;
@@ -62,6 +85,13 @@ namespace Assets.Scripts.WdlEngine
 
             Debug.LogError($"Unknown construct {statement.Type}, {statement.Value}");
             SkipStructure();
+        }
+
+        private float ParseNumber()
+        {
+            if (Matches(TokenType.Integer, out var integer)) return (int)integer.Value;
+            if (Matches(TokenType.Real, out var real)) return (float)real.Value;
+            throw new InvalidOperationException($"expected number, but got {Peek().Type}");
         }
 
         private void SkipStructure()
