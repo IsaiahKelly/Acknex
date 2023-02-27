@@ -161,14 +161,14 @@ namespace Acknex
         {
             if (SkillsByName.TryGetValue(name, out var skill))
             {
-                if (skill.AcknexObject.TryGet<float>("MIN", out var min))
-                {
-                    value = Mathf.Max(min, value);
-                }
-                if (skill.AcknexObject.TryGet<float>("MAX", out var max))
-                {
-                    value = Mathf.Min(max, value);
-                }
+                //if (skill.AcknexObject.TryGet<float>("MIN", out var min))
+                //{
+                //    value = Mathf.Max(min, value);
+                //}
+                //if (skill.AcknexObject.TryGet<float>("MAX", out var max))
+                //{
+                //    value = Mathf.Min(max, value);
+                //}
                 skill.AcknexObject.Set("VAL", value);
             }
             else
