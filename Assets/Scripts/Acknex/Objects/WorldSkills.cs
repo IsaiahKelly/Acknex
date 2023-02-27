@@ -169,7 +169,6 @@ namespace Acknex
             }
         }
 
-        //todo: clamp
         public float GetSkillValue(string name)
         {
             if (SkillsByName.TryGetValue(name, out var skill))
