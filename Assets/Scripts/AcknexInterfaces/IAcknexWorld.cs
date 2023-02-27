@@ -10,5 +10,6 @@
         void AddString(string name, string value);
         void PostSetupObjectInstance(ObjectType type, IAcknexObject acknexObject);
         void PostSetupObjectTemplate(ObjectType type, IAcknexObject acknexObject);
-}
+        void UpdateSkillValue(string name, float value);
+    }
 }
