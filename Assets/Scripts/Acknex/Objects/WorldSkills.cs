@@ -123,7 +123,7 @@ namespace Acknex
             CreateSkill("PLAYER_COS", 0, 0, 0); //todo <- player angle cos IMPORTANT
             CreateSkill("PLAYER_SPEED", 0, 0, 0); //todo <- player speed IMPORTANT
             //...
-
+            //todo: some missing here?
             CreateSkill("PLAYER_DEPTH", 0, 0, 0); //todo <- player depth inside water IMPORTANT
             CreateSkill("PLAYER_LAST_X", 0, 0, 0); //todo <- player last pos IMPORTANT
             CreateSkill("PLAYER_LAST_Y", 0, 0, 0); //todo <- player last pos IMPORTANT
@@ -139,10 +139,8 @@ namespace Acknex
         private void UpdateSkills()
         {
             var mousePosition = Input.mousePosition;
-            mousePosition.x = (Input.mousePosition.x / Screen.width) *
-                              SkillsByName["SCREEN_WIDTH"].AcknexObject.Get<float>("VAL");
-            mousePosition.y = (Input.mousePosition.y / Screen.height) *
-                              SkillsByName["SCREEN_HGT"].AcknexObject.Get<float>("VAL");
+            mousePosition.x = Input.mousePosition.x / Screen.width * GetSkillValue("SCREEN_WIDTH");
+            mousePosition.y = Input.mousePosition.y / Screen.height * GetSkillValue("SCREEN_HGT");
             var deltaMousePosition = mousePosition - _lastMousePosition;
             UpdateSkillValue("MICKEY_X", deltaMousePosition.x);
             UpdateSkillValue("MICKEY_Y", deltaMousePosition.y);
@@ -159,12 +157,18 @@ namespace Acknex
             _lastMousePosition = mousePosition;
         }
 
-
-        //todo: clamp
         public void UpdateSkillValue(string name, float value)
         {
             if (SkillsByName.TryGetValue(name, out var skill))
             {
+                if (skill.AcknexObject.TryGet<float>("MIN", out var min))
+                {
+                    value = Mathf.Max(min, value);
+                }
+                if (skill.AcknexObject.TryGet<float>("MAX", out var max))
+                {
+                    value = Mathf.Min(max, value);
+                }
                 skill.AcknexObject.Set("VAL", value);
             }
             else
@@ -175,11 +179,7 @@ namespace Acknex
 
         public float GetSkillValue(string name)
         {
-            if (SkillsByName.TryGetValue(name, out var skill))
-            {
-                return skill.AcknexObject.Get<float>("VAL");
-            }
-            return default;
+            return SkillsByName.TryGetValue(name, out var skill) ? skill.AcknexObject.Get<float>("VAL") : default;
         }
     }
 }

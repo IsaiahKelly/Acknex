@@ -1,6 +1,5 @@
 ﻿using Acknex.Interfaces;
 using UnityEngine;
-using Utils;
 
 namespace Acknex
 {
@@ -56,16 +55,13 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_SIN", Mathf.Sin(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_COS", Mathf.Cos(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(transform.eulerAngles.y));
-
             if (playerRegion != null)
             {
-                World.Instance.UpdateSynonymValue("HERE", playerRegion.AcknexObject);
+                World.Instance.AssignSynonymToObject("HERE", playerRegion.AcknexObject, true);
             }
-            //DebugExtension.DebugArrow(transform.position, Vector3.forward, Color.blue, 100f);
-                //DebugExtension.DebugArrow(transform.position, Vector3.right, Color.red, 100f);
-            }
+        }
 
-            private Region StickToTheGround(float playerX, float playerY, out float playerZ)
+        private Region StickToTheGround(float playerX, float playerY, out float playerZ)
         {
             var regionIndex = AcknexObject.Get<int>("REGION");
             if (regionIndex > World.Instance.RegionsByIndex.Count - 1)

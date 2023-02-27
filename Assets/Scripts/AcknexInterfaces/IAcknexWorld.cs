@@ -12,5 +12,6 @@
         void PostSetupObjectTemplate(ObjectType type, IAcknexObject acknexObject);
         void UpdateSkillValue(string name, float value);
         float GetSkillValue(string name);
+        void AssignSynonymToObject(string synonymName, IAcknexObject target, bool clear = false);
     }
 }
