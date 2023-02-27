@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Acknex.Interfaces;
 using UnityEngine;
+using Utils;
 
 namespace Acknex
 {
     public class Wall : MonoBehaviour, IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
 
-        private static IAcknexObject GetDefinitionCallback(string name)
+        private static IAcknexObject GetTemplateCallback(string name)
         {
             if (World.Instance.WallsByName.TryGetValue(name, out var wall))
             {
@@ -35,9 +36,25 @@ namespace Acknex
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
 
+        private void Awake()
+        {
+            AcknexObject.Container = this;
+        }
+
         private void Update()
         {
             UpdateObject();
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (DebugMarked)
+            {
+                GizmosUtils.DrawString("0", _bottomQuad.GetColumn(0));
+                GizmosUtils.DrawString("1", _bottomQuad.GetColumn(1));
+                GizmosUtils.DrawString("2", _bottomQuad.GetColumn(2));
+                GizmosUtils.DrawString("3", _bottomQuad.GetColumn(3));
+            }
         }
 
         public bool DebugMarked;
@@ -48,8 +65,11 @@ namespace Acknex
             var position = _bottomQuad.GetColumn(0);
             var rotation = Quaternion.LookRotation(-_bottomNormal);
             TextureUtils.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject?.AcknexObject, position, rotation);
-            BitmapImage?.UpdateMaterial(_meshRenderer.material, TextureObject, 0, false, AcknexObject);
-            //todo: update <X1, <Y1, <Z1 <X2, <Y2, <Z2, DISTANCE, LENGTH, SIZE_X, LEFT, RIGHT,
+            if (_meshRenderer != null)
+            {
+                BitmapImage?.UpdateMaterial(_meshRenderer.material, TextureObject, 0, false, AcknexObject);
+            }
+            //todo: update <X1, <Y1, <Z1 <X2, <Y2, <Z2, DISTANCE, LENGTH, SIZE_X, LEFT, RIGHT skills
         }
 
         public void Enable()
@@ -178,7 +198,6 @@ namespace Acknex
                 wall.AcknexObject.Set<float>("Y1", vertexA.Position.Y);
                 wall.AcknexObject.Set<float>("Z1", vertexA.Position.Z);
 
-
                 wall.AcknexObject.Set<float>("X2", vertexB.Position.X);
                 wall.AcknexObject.Set<float>("Y2", vertexB.Position.Y);
                 wall.AcknexObject.Set<float>("Z2", vertexB.Position.Z);
@@ -237,18 +256,29 @@ namespace Acknex
                     //    Debug.DrawLine(v2 - new Vector3(0f, vertexA.Position.Z, 0f), v2, Color.blue, 1000f);
                     //    Debug.DrawLine(v3 - new Vector3(0f, vertexB.Position.Z, 0f), v3, Color.yellow, 1000f);
                     //}
-                    allVertices.Add(v0);
-                    allVertices.Add(v1);
-                    allVertices.Add(v2);
-                    allVertices.Add(v3);
-                    //todo: calculate normal with source points on fallback?
+                    allVertices.Add(v0); //a
+                    allVertices.Add(v1); //b
+                    allVertices.Add(v2); //c
+                    allVertices.Add(v3); //d
+
                     var normal = MeshUtils.GetNormal(v0, v1, v2, v3);
+                    var xAxis = Vector3.Normalize(v1 - v0);
+                    var yAxis = Vector3.Normalize(v2 - v1);
+                    var uv0 = Vector2.zero;
+                    var uv1 = CalculateUV(v1 - v0, xAxis, yAxis);
+                    var uv2 = CalculateUV(v2 - v0, xAxis, yAxis);
+                    var uv3 = CalculateUV(v3 - v0, xAxis, yAxis);
+                    allUVs.Add(uv0);
+                    allUVs.Add(uv1);
+                    allUVs.Add(uv2);
+                    allUVs.Add(uv3);
+
                     wall._bottomNormal = normal.magnitude > 0f ? normal : Vector3.forward;
-                    var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(normal));
-                    allUVs.Add(unRotateNormal * v0);
-                    allUVs.Add(unRotateNormal * v1);
-                    allUVs.Add(unRotateNormal * v2);
-                    allUVs.Add(unRotateNormal * v3);
+                    //var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(-normal));
+                    //allUVs.Add(unRotateNormal * v0);
+                    //allUVs.Add(unRotateNormal * v1);
+                    //allUVs.Add(unRotateNormal * v2);
+                    //allUVs.Add(unRotateNormal * v3);
                 }
                 {
                     var heightLeft = leftRegion.AcknexObject.Get<float>("CEIL_HGT");
@@ -279,12 +309,23 @@ namespace Acknex
                     allVertices.Add(v3);
                     //todo: calculate normal with source points on fallback?
                     var normal = MeshUtils.GetNormal(v0, v1, v2, v3);
+                    var xAxis = Vector3.Normalize(v1 - v0);
+                    var yAxis = Vector3.Normalize(v2 - v1);
+                    var uv0 = Vector2.zero;
+                    var uv1 = CalculateUV(v1 - v0, xAxis, yAxis);
+                    var uv2 = CalculateUV(v2 - v0, xAxis, yAxis);
+                    var uv3 = CalculateUV(v3 - v0, xAxis, yAxis);
+                    allUVs.Add(uv0);
+                    allUVs.Add(uv1);
+                    allUVs.Add(uv2);
+                    allUVs.Add(uv3);
+
                     wall._topNormal = normal.magnitude > 0f ? normal : Vector3.forward;
-                    var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(normal));
-                    allUVs.Add(unRotateNormal * v0);
-                    allUVs.Add(unRotateNormal * v1);
-                    allUVs.Add(unRotateNormal * v2);
-                    allUVs.Add(unRotateNormal * v3);
+                    //var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(-normal));
+                    //allUVs.Add(unRotateNormal * v0);
+                    //allUVs.Add(unRotateNormal * v1);
+                    //allUVs.Add(unRotateNormal * v2);
+                    //allUVs.Add(unRotateNormal * v3);
                 }
                 if (leftRegion.Below != null && rightRegion.Below != null)
                 {
@@ -319,6 +360,15 @@ namespace Acknex
                 break;
             }
         }
+
+        private static Vector2 CalculateUV(Vector3 input, Vector3 xAxis, Vector3 yAxis)
+        {
+            var uv = new Vector2();
+            uv.x = Vector3.Project(input, xAxis).magnitude;
+            uv.y = -Vector3.Project(input, yAxis).magnitude;
+            return uv;
+        }
+
         public static void BuildWallAndMesh(Wall wall, List<ContourVertex> contourVertices)
         {
             var allVertices = new List<Vector3>();

@@ -167,9 +167,12 @@ namespace Acknex
             {
                 skill.AcknexObject.Set("VAL", value);
             }
+            else
+            {
+                CreateSkill(name, value);
+            }
         }
 
-        //todo: clamp
         public float GetSkillValue(string name)
         {
             if (SkillsByName.TryGetValue(name, out var skill))

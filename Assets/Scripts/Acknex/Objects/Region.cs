@@ -1,16 +1,22 @@
-﻿using LibTessDotNet;
+﻿using System;
+using LibTessDotNet;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Acknex.Interfaces;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Acknex
 {
+    //todo: tesselation needs to implement the method to create new vertices
     public class Region : MonoBehaviour, IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
 
-        private static IAcknexObject GetDefinitionCallback(string name)
+        private static IAcknexObject GetTemplateCallback(string name)
         {
             if (World.Instance.RegionsByName.TryGetValue(name, out var region))
             {
@@ -36,6 +42,10 @@ namespace Acknex
 
         public void UpdateObject()
         {
+            if (_meshRenderer == null)
+            {
+                return;
+            }
             var floorTexture = AcknexObject.Get<string>("FLOOR_TEX");
             if (floorTexture != null && World.Instance.TexturesByName.TryGetValue(floorTexture, out var floorTextureObject))
             {
@@ -190,9 +200,12 @@ namespace Acknex
             var allVertices = new List<Vector3>();
             var allUVs = new List<Vector2>();
             var allTriangles = new Dictionary<int, List<int>>();
-            BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex);
-            BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex, true);
-            BuildFloorMesh(allVertices, allUVs, allTriangles, region, region.AcknexObject.Get<string>("CEIL_TEX"), region.AcknexObject.Get<string>("FLOOR_TEX"));
+            if (Math.Abs(region.AcknexObject.Get<float>("CEIL_HGT") - region.AcknexObject.Get<float>("FLOOR_HGT")) > Mathf.Epsilon)
+            {
+                BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex);
+                BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex, true);
+                BuildFloorMesh(allVertices, allUVs, allTriangles, region, region.AcknexObject.Get<string>("CEIL_TEX"), region.AcknexObject.Get<string>("FLOOR_TEX"));
+            }
             region.Enable();
             if (region.Below != null)
             {
@@ -235,7 +248,7 @@ namespace Acknex
                 }
             }
 
-            var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(Vector3.up));
+            var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(ceil ? Vector3.up : Vector3.down));
             for (var i = 0; i < floorVertices.Length; i++)
             {
                 allUVs.Add(unRotateNormal * floorVertices[i]);

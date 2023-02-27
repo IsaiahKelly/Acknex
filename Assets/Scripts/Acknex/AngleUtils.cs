@@ -4,6 +4,16 @@ namespace Acknex
 {
     public static class AngleUtils
     {
+        public static float Angle(Vector3 from, Vector3 to)
+        {
+            var angle = Vector3.SignedAngle(to, from, Vector3.up);
+            if (angle < 0)
+            {
+                angle = 360 - angle * -1f;
+            }
+            return angle;
+        }
+
         public static float ConvertUnityToAcknexAngle(float unityAngle)
         {
             return Mathf.Repeat(Mathf.Deg2Rad * (unityAngle + 180f), 360f);

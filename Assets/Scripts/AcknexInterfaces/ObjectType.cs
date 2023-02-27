@@ -14,6 +14,9 @@
         Way,
         Overlay,
         View,
-        World
+        Panel,
+        Sound,
+        World,
+        Player
     }
 }

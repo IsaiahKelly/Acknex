@@ -11,6 +11,10 @@
         _X1("_X1", Float) = 0.0
         _Y0("_Y0", Float) = 0.0
         _Y1("_Y1", Float) = 0.0
+        _SCALE_X("_SCALE_X", Float) = 0.0
+        _SCALE_Y("_SCALE_Y", Float) = 0.0
+        _OFFSET_X("_OFFSET_X", Float) = 0.0
+        _OFFSET_Y("_OFFSET_Y", Float) = 0.0
     }
     SubShader
     {
@@ -40,6 +44,10 @@
         float _Y0;
         float _X1;
         float _Y1;
+        float _SCALE_X;
+        float _SCALE_Y;
+        float _OFFSET_X;
+        float _OFFSET_Y;
         float _AMBIENT;
 
         // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
@@ -51,7 +59,9 @@
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
-            float2 uv = lerp(float2(_X0, _Y0), float2(_X1, _Y1), IN.uv_MainTex) * _MainTex_TexelSize.xy;
+            float2 coord0 = float2((_SCALE_X != 0 ? 0 : _X0) + _OFFSET_X, (_SCALE_Y != 0 ? 0 : _Y0) + _OFFSET_Y);
+            float2 coord1 = float2((_SCALE_X != 0 ? _SCALE_X : _X1) + _OFFSET_X, (_SCALE_Y != 0 ? _SCALE_Y : _Y1) + _OFFSET_Y);
+            float2 uv = lerp(coord0, coord1, IN.uv_MainTex) * _MainTex_TexelSize.xy;
             // Albedo comes from a texture tinted by color
             fixed4 c = tex2D (_MainTex, uv) * _Color;
             o.Albedo = c.rgb;// *_AMBIENT;

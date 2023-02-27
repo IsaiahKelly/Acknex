@@ -1,16 +1,15 @@
 ﻿using Acknex.Interfaces;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.UI;
 
 namespace Acknex
 {
     public class Overlay : MonoBehaviour, IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
 
-        private static IAcknexObject GetDefinitionCallback(string name)
+        private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
         }

@@ -6,7 +6,7 @@ namespace Acknex
 {
     public static class TextureUtils
     {
-        private static Vector3 CalculateObjectSize(Bitmap bitmap, Texture textureObject)
+        public static Vector3 CalculateObjectSize(Bitmap bitmap, Texture textureObject)
         {
             if (bitmap == null || textureObject == null)
             {

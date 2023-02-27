@@ -9,12 +9,14 @@ namespace Acknex
     {
         public Dictionary<string, object> Properties = new Dictionary<string, object>();
 
+        public IAcknexObjectContainer Container { get; set; }
+
         public void Set<T>(string propertyName, T value)
         {
             Properties[propertyName] = value;
         }
 
-        public T Get<T>(string propertyName, bool fromDefinition = true)
+        public T Get<T>(string propertyName, bool fromTemplate = true)
         {
             if (Properties.TryGetValue(propertyName, out var property))
             {
@@ -28,10 +30,10 @@ namespace Acknex
                     Debug.LogWarning($"Cannot cast {propertyName}({property.GetType()}) to ({typeof(T)})");
                 }
             }
-            if (fromDefinition && GetDefinitionCallback != null && Properties.TryGetValue("NAME", out var name))
+            if (fromTemplate && GetTemplateCallback != null && Properties.TryGetValue("NAME", out var name))
             {
-                var definition = GetDefinitionCallback(name.ToString());
-                if (definition != null && definition.TryGet<T>(propertyName, out var definitionProperty, false))
+                var template = GetTemplateCallback(name.ToString());
+                if (template != null && template.TryGet<T>(propertyName, out var definitionProperty, false))
                 {
                     return definitionProperty;
                 }
@@ -39,7 +41,7 @@ namespace Acknex
             return default;
         }
 
-        public bool TryGet<T>(string propertyName, out T result, bool fromDefinition = true)
+        public bool TryGet<T>(string propertyName, out T result, bool fromTemplate = true)
         {
             result = default;
             if (Properties.TryGetValue(propertyName, out var property))
@@ -53,10 +55,10 @@ namespace Acknex
                 {
                 }
             }
-            if (fromDefinition && GetDefinitionCallback != null && Properties.TryGetValue("NAME", out var name))
+            if (fromTemplate && GetTemplateCallback != null && Properties.TryGetValue("NAME", out var name))
             {
-                var definition = GetDefinitionCallback(name.ToString());
-                if (definition != null && definition.TryGet<T>(propertyName, out var definitionProperty, false))
+                var template = GetTemplateCallback(name.ToString());
+                if (template != null && template.TryGet<T>(propertyName, out var definitionProperty, false))
                 {
                     result = definitionProperty;
                     return true;
@@ -80,9 +82,9 @@ namespace Acknex
 
         }
 
-        public AcknexObject(Func<string, IAcknexObject> getDefinitionCallback)
+        public AcknexObject(Func<string, IAcknexObject> getTemplateCallback)
         {
-            GetDefinitionCallback = getDefinitionCallback;
+            GetTemplateCallback = getTemplateCallback;
         }
 
         public object this[string propertyName]
@@ -91,6 +93,6 @@ namespace Acknex
             set => Set(propertyName, value);
         }
 
-        public Func<string, IAcknexObject> GetDefinitionCallback { get; }
+        public Func<string, IAcknexObject> GetTemplateCallback { get; }
     }
 }

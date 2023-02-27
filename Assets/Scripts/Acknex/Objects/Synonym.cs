@@ -4,9 +4,9 @@ namespace Acknex
 {
     public class Synonym : IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
 
-        private static IAcknexObject GetDefinitionCallback(string name)
+        private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
         }

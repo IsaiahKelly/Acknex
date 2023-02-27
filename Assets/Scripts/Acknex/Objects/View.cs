@@ -5,11 +5,13 @@ namespace Acknex
 {
     public class View : MonoBehaviour, IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
-        private static IAcknexObject GetDefinitionCallback(string name)
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
         }
+
+        public static View Instance { get; private set; }
 
         public bool MainView;
 
@@ -20,6 +22,9 @@ namespace Acknex
             if (MainView)
             {
                 _camera.fieldOfView = Mathf.InverseLerp(0.2f, 2.0f, World.Instance.GetSkillValue("PLAYER_ARC")) * 120f;
+                var transformLocalPosition = transform.localPosition;
+                transformLocalPosition.y = World.Instance.GetSkillValue("PLAYER_SIZE");
+                transform.localPosition = transformLocalPosition;
             }   
         }
 
@@ -35,6 +40,7 @@ namespace Acknex
 
         private void Awake()
         {
+            Instance = this;
             _camera = GetComponent<Camera>();
         }
 

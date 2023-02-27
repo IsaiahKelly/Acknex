@@ -86,8 +86,8 @@ namespace IlbmReaderTest
                             bitmap[pixelY * width + pixelX] = pixelCol;
                         }
                     }
+                    bitmap = ImageUtils.FlipPixelsVertically(bitmap, width, height);
                     ilbm.Bitmap = bitmap;
-
                     ilbm.Texture2D = new Texture2D(width, height, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.None);
                     ilbm.Texture2D.SetPixels32(bitmap);
                     ilbm.Texture2D.Apply(true, false);
