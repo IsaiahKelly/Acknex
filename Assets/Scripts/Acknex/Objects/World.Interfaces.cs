@@ -234,7 +234,7 @@ namespace Acknex
 
         public void PostSetupWMP()
         {
-            BuildRegionsAndWalls(Instance._regionWalls, Instance._contourVertices);
+            BuildRegionsAndWalls(_regionWalls, _contourVertices);
         }
 
         public void AddVertex(float x, float y, float z)
