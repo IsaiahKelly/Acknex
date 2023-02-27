@@ -1,5 +1,6 @@
 ﻿using Acknex;
 using Acknex.Interfaces;
+using Boo.Lang;
 using UnityEditor;
 using UnityEngine;
 using Texture = Acknex.Texture;
@@ -18,7 +19,7 @@ public class AcknexObjectEditor : Editor
                 EditorGUILayout.LabelField(property.Key);
                 if (property.Value is System.Collections.Generic.List<string> list)
                 {
-                   EditorGUILayout.LabelField(string.Join(",", list));
+                    EditorGUILayout.LabelField(string.Join(",", list));
                 }
                 else
                 {
@@ -123,13 +124,25 @@ public class WorldEditor : Editor
             EditorGUILayout.LabelField(kvp.Value.AcknexObject.Get<string>("VAL"));
             EditorGUILayout.EndHorizontal();
         }
-        EditorGUILayout.EndFoldoutHeaderGroup(); 
+        EditorGUILayout.EndFoldoutHeaderGroup();
         EditorGUILayout.BeginFoldoutHeaderGroup(true, "Synonym");
         foreach (var kvp in world.SynonymsByName)
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);
-            EditorGUILayout.LabelField(kvp.Value.AcknexObject.Get<string>("TYPE"));
+            if (kvp.Value.AcknexObject.TryGet<System.Collections.Generic.List<IAcknexObject>>("VAL", out var list))
+            {
+                var strings = new List<string>();
+                foreach (var item in list)
+                {
+                    strings.Add(item.Get<string>("NAME"));
+                }
+                EditorGUILayout.Popup("Objects", 0, strings.ToArray());
+            }
+            else
+            {
+                EditorGUILayout.LabelField("[EMPTY]");
+            }
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();

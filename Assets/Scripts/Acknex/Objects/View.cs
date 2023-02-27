@@ -21,6 +21,7 @@ namespace Acknex
         {
             if (MainView)
             {
+                //todo: check if fov is right
                 _camera.fieldOfView = Mathf.InverseLerp(0.2f, 2.0f, World.Instance.GetSkillValue("PLAYER_ARC")) * 120f;
                 var transformLocalPosition = transform.localPosition;
                 transformLocalPosition.y = World.Instance.GetSkillValue("PLAYER_SIZE");
