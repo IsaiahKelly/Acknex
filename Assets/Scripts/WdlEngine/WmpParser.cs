@@ -41,6 +41,22 @@ namespace Assets.Scripts.WdlEngine
                 case "PLAYER_START":
                     // TODO: Handle
                     return;
+                case "THING":
+                case "ACTOR":
+                    // TODO: Handle
+                    return;
+                case "VERTEX":
+                    // TODO: Handle
+                    return;
+                case "REGION":
+                    // TODO: Handle
+                    return;
+                case "WALL":
+                    // TODO: Handle
+                    return;
+                case "WAY":
+                    // TODO: Handle
+                    return;
                 }
             }
 
