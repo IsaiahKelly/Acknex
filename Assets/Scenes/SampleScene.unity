@@ -609,6 +609,7 @@ MonoBehaviour:
   WDLPath: Assets/Data/Contato.wdl
   CanvasWidthRatio: 1.6
   WMPContainsRegionsByName: 0
+  UseWDLEngine: 1
   Canvas: {fileID: 1116186326}
   AmbientLight: {fileID: 705507994}
 --- !u!1 &1477033080

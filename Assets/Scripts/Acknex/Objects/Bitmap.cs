@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using DmitryBrant.ImageFormats;
-using IffParserNS;
 using UnityEngine;
 
 namespace Acknex
@@ -10,19 +9,25 @@ namespace Acknex
     public class Bitmap : IAcknexObjectContainer
     {
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+        private static IAcknexObject GetDefinitionCallback(string name)
+        {
+            return null;
+        }
 
         public float Width => AcknexObject.Get<float>("DX") == 0 ? Texture2D.width : AcknexObject.Get<float>("DX");
         public float Height => AcknexObject.Get<float>("DY") == 0 ? Texture2D.height : AcknexObject.Get<float>("DY");
         public float X => AcknexObject.Get<float>("X");
         public float Y => AcknexObject.Get<float>("Y");
 
-        private static IAcknexObject GetDefinitionCallback(string name)
-        {
-            return null;
-        }
         public Texture2D Texture2D;
 
-        public void Setup()
+        public Bitmap()
+        {
+            AcknexObject.Container = this;
+        }
+
+
+        public void UpdateObject()
         {
             var filename = AcknexObject.Get<string>("FILENAME");
             if (!World.Instance.TextureCache.TryGetValue(filename, out Texture2D))
@@ -33,7 +38,8 @@ namespace Acknex
                     Texture2D = PcxReader.Load(filename);
                     Texture2D.name = AcknexObject.Get<string>("NAME");
                     World.Instance.TextureCache.Add(filename, Texture2D);
-                } else if (lowerInvariant.EndsWith("lbm"))
+                }
+                else if (lowerInvariant.EndsWith("lbm"))
                 {
                     var parser = new IlbmReaderTest.IffReader();
                     var iff = parser.Read(filename);
@@ -43,18 +49,8 @@ namespace Acknex
                         Texture2D.name = AcknexObject.Get<string>("NAME");
                         World.Instance.TextureCache.Add(filename, Texture2D);
                     }
-                    //var iff = new IFF();
-                    //iff.Parse(fileName);
-                    //Texture2D = iff.Texture2D;
-                    //Texture2D.name = AcknexObject.Get<string>("NAME");
-                    //World.Instance.TextureCache.Add(filename, Texture2D);
                 }
             }
-        }
-
-        public void UpdateObject()
-        {
-            throw new NotImplementedException();
         }
 
         public void Enable()

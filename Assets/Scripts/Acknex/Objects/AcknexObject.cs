@@ -9,6 +9,8 @@ namespace Acknex
     {
         public Dictionary<string, object> Properties = new Dictionary<string, object>();
 
+        public IAcknexObjectContainer Container { get; set; }
+
         public void Set<T>(string propertyName, T value)
         {
             Properties[propertyName] = value;

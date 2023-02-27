@@ -36,6 +36,11 @@ namespace Acknex
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
 
+        private void Awake()
+        {
+            AcknexObject.Container = this;
+        }
+
         private void Update()
         {
             UpdateObject();
