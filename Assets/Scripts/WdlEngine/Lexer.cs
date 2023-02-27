@@ -113,10 +113,12 @@ namespace WdlEngine
             // Numeric
             // NOTE: We check it here so the possible minus sign doesn't have a chance to be reinterpreted later
             var isNegative = ch == '-';
-            if (char.IsDigit(Peek(isNegative ? 1 : 0)))
+            var isPositive = ch == '+';
+            var hasSign = isNegative || isPositive;
+            if (char.IsDigit(Peek(hasSign ? 1 : 0)))
             {
                 // Must be a number
-                var offset = isNegative ? 2 : 1;
+                var offset = hasSign ? 2 : 1;
                 var type = TokenType.Integer;
                 while (char.IsDigit(Peek(offset))) ++offset;
 

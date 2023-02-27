@@ -54,8 +54,22 @@ namespace WdlEngine
                     // TODO: Handle
                     break;
                 case "REGION":
-                    // TODO: Handle
-                    break;
+                {
+                    var name = Expect(TokenType.Identifier).StringValue;
+                    var region = _world.CreateObjectInstance(ObjectType.Region, name);
+                    region["FLOOR_HGT"] = ParseNumber();
+                    region["CEIL_HGT"] = ParseNumber();
+                    // TODO: Text parser does this
+                    /*
+                     if (!_wmpContainsRegionsByName)
+                     {
+                         World.Instance.RegionsByIndex.Add(region);
+                     }
+                     */
+                    _world.PostSetupObjectInstance(ObjectType.Region, region);
+                    Expect(TokenType.Semicolon);
+                    return;
+                }
                 case "WALL":
                     // TODO: Handle
                     break;

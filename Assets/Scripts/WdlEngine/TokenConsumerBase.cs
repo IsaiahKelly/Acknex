@@ -19,7 +19,11 @@ namespace WdlEngine
 
         protected Token Expect(TokenType type)
         {
-            if (!Matches(type, out var token)) throw new InvalidOperationException($"expected token {type} but got {Peek().Type}");
+            if (!Matches(type, out var token))
+            {
+                var got = Peek();
+                throw new InvalidOperationException($"expected token {type} but got {got.Type}");
+            }
             return token;
         }
 

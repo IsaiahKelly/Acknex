@@ -48,8 +48,27 @@ namespace WdlEngine
                 case "WALL":
                 case "TEXTURE":
                 {
-                    // TODO
-                    break;
+                    var name = Expect(TokenType.Identifier).StringValue;
+                    var objType = Utils.StringToObjectType(statementName);
+                    var obj = _world.CreateObjectTemplate(objType, name);
+                    Expect(TokenType.OpenBrace);
+                    while (!Matches(TokenType.CloseBrace))
+                    {
+                        var (prop, value) = ParseProperty();
+                        if (prop == "SCALE_XY")
+                        {
+                            // Just sugar
+                            var (a, b) = (value as (float, float)?).Value;
+                            obj["SCALE_X"] = a;
+                            obj["SCALE_Y"] = b;
+                        }
+                        else
+                        {
+                            obj[prop] = value;
+                        }
+                    }
+                    _world.PostSetupObjectTemplate(objType, obj);
+                    return;
                 }
 
                 case "BMAP":
@@ -76,8 +95,12 @@ namespace WdlEngine
                     // TODO: No interface
                     break;
                 case "MAPFILE":
-                    // TODO: No interface
-                    break;
+                {
+                    var name = Expect(TokenType.String).StringValue;
+                    _mapFileNames.Add(name);
+                    Expect(TokenType.Semicolon);
+                    return;
+                }
                 case "STRING":
                     // TODO: No interface
                     break;
@@ -93,30 +116,34 @@ namespace WdlEngine
             var property = Expect(TokenType.Identifier);
             var name = property.StringValue;
             var value =
-                name == "FLAGS" ? ParseFlagList() :
-                name == "SCALE_XY" ? ParseValuePair() :
+                name == "FLAGS" || name == "BMAPS" ? ParseNameList() :
+                name == "SCYCLES" || name == "DELAY" || name == "MIRROR" ? ParseIntList() :
+                name == "SCALE_XY" ? ParseRealPair() :
                 Consume().Value;
             Expect(TokenType.Semicolon);
-            return (property.StringValue, value);
+            return (name, value);
         }
 
-        private object ParseValuePair()
+        private object ParseRealPair()
         {
             var first = Consume();
             Expect(TokenType.Comma);
             var second = Consume();
-            return (first.Value, second.Value);
+            return (first.NumericValue, second.NumericValue);
         }
 
-        private List<string> ParseFlagList()
+        private List<string> ParseNameList() => ParseListOf(() => Expect(TokenType.Identifier).StringValue);
+        private List<int> ParseIntList() => ParseListOf(() => Expect(TokenType.Integer).IntValue);
+
+        private List<T> ParseListOf<T>(Func<T> elementParser)
         {
-            var result = new List<string>();
-            var first = Expect(TokenType.Identifier);
-            result.Add(first.StringValue);
+            var result = new List<T>();
+            var first = elementParser();
+            result.Add(first);
             while (Matches(TokenType.Comma))
             {
-                var next = Expect(TokenType.Identifier);
-                result.Add(next.StringValue);
+                var next = elementParser();
+                result.Add(next);
             }
             return result;
         }
