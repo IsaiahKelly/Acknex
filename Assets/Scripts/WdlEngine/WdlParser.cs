@@ -31,11 +31,11 @@ namespace WdlEngine
 
         private void ParseStatement()
         {
-            var peek = Consume();
-            if (peek.Type == TokenType.Identifier)
+            var statement = Consume();
+            if (statement.Type == TokenType.Identifier)
             {
-                var text = peek.ValueString;
-                switch (text)
+                var statementName = statement.ValueString;
+                switch (statementName)
                 {
                 case "THING":
                 case "ACTOR":
@@ -47,7 +47,7 @@ namespace WdlEngine
                 case "TEXTURE":
                 {
                     var name = Expect(TokenType.Identifier).ValueString;
-                    var obj = _world.CreateObject(StringToObjectType(text), name, true);
+                    var obj = _world.CreateObject(StringToObjectType(statementName), name, true);
                     Expect(TokenType.OpenBrace);
                     while (!Matches(TokenType.CloseBrace))
                     {
@@ -71,7 +71,7 @@ namespace WdlEngine
                 case "OVLY":
                 {
                     var name = Expect(TokenType.Identifier).ValueString;
-                    var obj = _world.CreateObject(StringToObjectType(text), name, true);
+                    var obj = _world.CreateObject(StringToObjectType(statementName), name, true);
                     Expect(TokenType.Comma);
                     obj["FILENAME"] = Expect(TokenType.String).ValueString;
                     if (Matches(TokenType.Comma))
@@ -113,7 +113,7 @@ namespace WdlEngine
                 }
             }
 
-            Debug.LogError($"Unknown construct {peek.Type}, {peek.Value}");
+            Debug.LogError($"Unknown construct {statement.Type}, {statement.Value}");
             SkipStructure();
         }
 
