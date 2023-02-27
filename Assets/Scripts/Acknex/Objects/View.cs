@@ -11,6 +11,8 @@ namespace Acknex
             return null;
         }
 
+        public static View Instance { get; private set; }
+
         public bool MainView;
 
         private Camera _camera;
@@ -20,6 +22,9 @@ namespace Acknex
             if (MainView)
             {
                 _camera.fieldOfView = Mathf.InverseLerp(0.2f, 2.0f, World.Instance.GetSkillValue("PLAYER_ARC")) * 120f;
+                var transformLocalPosition = transform.localPosition;
+                transformLocalPosition.y = World.Instance.GetSkillValue("PLAYER_SIZE");
+                transform.localPosition = transformLocalPosition;
             }   
         }
 
@@ -35,6 +40,7 @@ namespace Acknex
 
         private void Awake()
         {
+            Instance = this;
             _camera = GetComponent<Camera>();
         }
 

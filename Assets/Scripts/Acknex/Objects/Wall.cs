@@ -193,7 +193,6 @@ namespace Acknex
                 wall.AcknexObject.Set<float>("Y1", vertexA.Position.Y);
                 wall.AcknexObject.Set<float>("Z1", vertexA.Position.Z);
 
-
                 wall.AcknexObject.Set<float>("X2", vertexB.Position.X);
                 wall.AcknexObject.Set<float>("Y2", vertexB.Position.Y);
                 wall.AcknexObject.Set<float>("Z2", vertexB.Position.Z);
@@ -361,7 +360,7 @@ namespace Acknex
         {
             var uv = new Vector2();
             uv.x = Vector3.Project(input, xAxis).magnitude;
-            uv.y = Vector3.Project(input, yAxis).magnitude;
+            uv.y = -Vector3.Project(input, yAxis).magnitude;
             return uv;
         }
 
