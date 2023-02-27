@@ -21,179 +21,177 @@ namespace Acknex
         {
         }
 
-        public IAcknexObject CreateObject(ObjectType type, string name, bool fromWDL)
+        public IAcknexObject CreateObjectInstance(ObjectType type, string name)
         {
-            if (fromWDL)
+            switch (type)
             {
-                switch (type)
+                case ObjectType.Thing:
                 {
-                    case ObjectType.Thing:
-                        {
-                            return CreateThing(name).AcknexObject;
-                        }
-                    case ObjectType.Actor:
-                        {
-                            return CreateActor(name).AcknexObject;
-                        }
-                    case ObjectType.Region:
-                        {
-                            var region = CreateRegion(name);
-                            if (!WMPContainsRegionsByName)
-                            {
-                                RegionsByIndex.Add(region);
-                            }
+                    return CreateThing(name).AcknexObject;
+                }
+                case ObjectType.Actor:
+                {
+                    return CreateActor(name).AcknexObject;
+                }
+                case ObjectType.Region:
+                {
+                    var region = CreateRegion(name);
+                    if (!WMPContainsRegionsByName)
+                    {
+                        RegionsByIndex.Add(region);
+                    }
 
-                            return region.AcknexObject;
-                        }
-                    case ObjectType.Wall:
-                        {
-                            var wall = CreateWall(name);
-                            wall.transform.SetParent(transform, false);
-                            Walls.Add(wall);
-                            return wall.AcknexObject;
-                        }
+                    return region.AcknexObject;
+                }
+                case ObjectType.Wall:
+                {
+                    var wall = CreateWall(name);
+                    wall.transform.SetParent(transform, false);
+                    Walls.Add(wall);
+                    return wall.AcknexObject;
                 }
             }
-            else
+            throw new Exception("Unknown instance type");
+        }
+
+        public IAcknexObject CreateObjectTemplate(ObjectType type, string name)
+        {
+            switch (type)
             {
-                switch (type)
-                {
-                    case ObjectType.Action:
+                case ObjectType.Action:
+                    {
+                        if (ActionsByName.ContainsKey(name))
                         {
-                            if (ActionsByName.ContainsKey(name))
-                            {
-                                throw new Exception("Action [" + name + "] already registered.");
-                            }
-
-                            var action = gameObject.AddComponent<Action>();
-                            action.Disable();
-                            ActionsByName.Add(name, action);
-                            return action.AcknexObject;
+                            throw new Exception("Action [" + name + "] already registered.");
                         }
-                    case ObjectType.Actor:
-                        {
-                            if (ActorsByName.ContainsKey(name))
-                            {
-                                throw new Exception("Actor [" + name + "] already registered.");
-                            }
 
-                            var actor = CreateActor(name, true);
-                            actor.Disable();
-                            ActorsByName.Add(name, actor);
-                            return actor.AcknexObject;
+                        var action = gameObject.AddComponent<Action>();
+                        action.Disable();
+                        ActionsByName.Add(name, action);
+                        return action.AcknexObject;
+                    }
+                case ObjectType.Actor:
+                    {
+                        if (ActorsByName.ContainsKey(name))
+                        {
+                            throw new Exception("Actor [" + name + "] already registered.");
                         }
-                    case ObjectType.Bitmap:
-                        {
-                            if (BitmapsByName.ContainsKey(name))
-                            {
-                                throw new Exception("Bitmap [" + name + "] already registered.");
-                            }
 
-                            var bitmap = new Bitmap();
-                            BitmapsByName.Add(name, bitmap);
-                            return bitmap.AcknexObject;
+                        var actor = CreateActor(name, true);
+                        actor.Disable();
+                        ActorsByName.Add(name, actor);
+                        return actor.AcknexObject;
+                    }
+                case ObjectType.Bitmap:
+                    {
+                        if (BitmapsByName.ContainsKey(name))
+                        {
+                            throw new Exception("Bitmap [" + name + "] already registered.");
                         }
-                    case ObjectType.Region:
+
+                        var bitmap = new Bitmap();
+                        BitmapsByName.Add(name, bitmap);
+                        return bitmap.AcknexObject;
+                    }
+                case ObjectType.Region:
+                    {
+                        if (RegionsByName.ContainsKey(name))
                         {
-                            if (RegionsByName.ContainsKey(name))
-                            {
-                                throw new Exception("Region [" + name + "] already registered.");
-                            }
-
-                            var region = CreateRegion(name, true);
-                            region.Disable();
-                            RegionsByName.Add(name, region);
-                            if (WMPContainsRegionsByName)
-                            {
-                                RegionsByIndex.Add(region);
-                            }
-
-                            return region.AcknexObject;
+                            throw new Exception("Region [" + name + "] already registered.");
                         }
-                    case ObjectType.Skill:
-                        {
-                            if (SkillsByName.TryGetValue(name, out var skill))
-                            {
-                                return skill.AcknexObject;
-                            }
 
-                            skill = CreateSkill(name, 0, 0, 0);
+                        var region = CreateRegion(name, true);
+                        region.Disable();
+                        RegionsByName.Add(name, region);
+                        if (WMPContainsRegionsByName)
+                        {
+                            RegionsByIndex.Add(region);
+                        }
+
+                        return region.AcknexObject;
+                    }
+                case ObjectType.Skill:
+                    {
+                        if (SkillsByName.TryGetValue(name, out var skill))
+                        {
                             return skill.AcknexObject;
                         }
-                    case ObjectType.Synonym:
-                        {
-                            if (SynonymsByName.TryGetValue(name, out var synonym))
-                            {
-                                return synonym.AcknexObject;
-                            }
 
-                            synonym = CreateSynonym(name);
+                        skill = CreateSkill(name, 0, 0, 0);
+                        return skill.AcknexObject;
+                    }
+                case ObjectType.Synonym:
+                    {
+                        if (SynonymsByName.TryGetValue(name, out var synonym))
+                        {
                             return synonym.AcknexObject;
                         }
-                    case ObjectType.Texture:
-                        {
-                            if (TexturesByName.ContainsKey(name))
-                            {
-                                throw new Exception("Texture [" + name + "] already registered.");
-                            }
 
-                            var texture = new Texture();
-                            TexturesByName.Add(name, texture);
-                            return texture.AcknexObject;
-                        }
-                    case ObjectType.Thing:
+                        synonym = CreateSynonym(name);
+                        return synonym.AcknexObject;
+                    }
+                case ObjectType.Texture:
+                    {
+                        if (TexturesByName.ContainsKey(name))
                         {
-                            if (ThingsByName.ContainsKey(name))
-                            {
-                                throw new Exception("Thing [" + name + "] already registered.");
-                            }
-
-                            var thing = CreateThing(name, true);
-                            thing.Disable();
-                            ThingsByName.Add(name, thing);
-                            return thing.AcknexObject;
+                            throw new Exception("Texture [" + name + "] already registered.");
                         }
-                    case ObjectType.Wall:
+
+                        var texture = new Texture();
+                        TexturesByName.Add(name, texture);
+                        return texture.AcknexObject;
+                    }
+                case ObjectType.Thing:
+                    {
+                        if (ThingsByName.ContainsKey(name))
                         {
-                            if (WallsByName.ContainsKey(name))
-                            {
-                                throw new Exception("Wall [" + name + "] already registered.");
-                            }
-
-                            var wall = CreateWall(name, true);
-                            wall.Disable();
-                            WallsByName.Add(name, wall);
-                            return wall.AcknexObject;
+                            throw new Exception("Thing [" + name + "] already registered.");
                         }
-                    case ObjectType.Way:
+
+                        var thing = CreateThing(name, true);
+                        thing.Disable();
+                        ThingsByName.Add(name, thing);
+                        return thing.AcknexObject;
+                    }
+                case ObjectType.Wall:
+                    {
+                        if (WallsByName.ContainsKey(name))
                         {
-                            if (WaysByName.ContainsKey(name))
-                            {
-                                throw new Exception("Way [" + name + "] already registered.");
-                            }
-
-                            var way = CreateWay(name, true);
-                            way.Disable();
-                            WaysByName.Add(name, way);
-                            return way.AcknexObject;
+                            throw new Exception("Wall [" + name + "] already registered.");
                         }
-                    case ObjectType.Overlay:
+
+                        var wall = CreateWall(name, true);
+                        wall.Disable();
+                        WallsByName.Add(name, wall);
+                        return wall.AcknexObject;
+                    }
+                case ObjectType.Way:
+                    {
+                        if (WaysByName.ContainsKey(name))
                         {
-                            if (OverlaysByName.ContainsKey(name))
-                            {
-                                throw new Exception("Overlay [" + name + "] already registered.");
-                            }
-
-                            var overlay = CreateOverlay(name, true);
-                            overlay.Disable();
-                            OverlaysByName.Add(name, overlay);
-                            return overlay.AcknexObject;
+                            throw new Exception("Way [" + name + "] already registered.");
                         }
-                    case ObjectType.World:
-                        throw new Exception("It is not possible to create new worlds.");
-                }
+
+                        var way = CreateWay(name, true);
+                        way.Disable();
+                        WaysByName.Add(name, way);
+                        return way.AcknexObject;
+                    }
+                case ObjectType.Overlay:
+                    {
+                        if (OverlaysByName.ContainsKey(name))
+                        {
+                            throw new Exception("Overlay [" + name + "] already registered.");
+                        }
+
+                        var overlay = CreateOverlay(name, true);
+                        overlay.Disable();
+                        OverlaysByName.Add(name, overlay);
+                        return overlay.AcknexObject;
+                    }
+                case ObjectType.World:
+                    throw new Exception("It is not possible to create new worlds.");
             }
-
             throw new NotImplementedException();
         }
 
@@ -252,23 +250,24 @@ namespace Acknex
             StringsByName.Add(name, value);
         }
 
-        public void PostSetupObject(ObjectType type, IAcknexObject acknexObject, bool fromWDL)
+        public void PostSetupObjectInstance(ObjectType type, IAcknexObject acknexObject)
         {
-            switch (type)
+            if (type == ObjectType.Wall)
             {
-                case ObjectType.Bitmap when !fromWDL:
-                    acknexObject.Container.UpdateObject();
-                    break;
-                case ObjectType.Wall when fromWDL:
+                var wall = acknexObject.Container as Wall;
+                if (wall != null)
                 {
-                    var wall = acknexObject.Container as Wall;
-                    if (wall != null)
-                    {
-                        _regionWalls.GetWallsList(wall.AcknexObject.Get<int>("REGION1")).Add(wall);
-                        _regionWalls.GetWallsList(wall.AcknexObject.Get<int>("REGION2")).Add(wall);
-                    }
-                    break;
+                    _regionWalls.GetWallsList(wall.AcknexObject.Get<int>("REGION1")).Add(wall);
+                    _regionWalls.GetWallsList(wall.AcknexObject.Get<int>("REGION2")).Add(wall);
                 }
+            }
+        }
+
+        public void PostSetupObjectTemplate(ObjectType type, IAcknexObject acknexObject)
+        {
+            if (type == ObjectType.Bitmap)
+            {
+                acknexObject.Container.UpdateObject();
             }
         }
     }
