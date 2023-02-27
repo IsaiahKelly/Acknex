@@ -32,5 +32,10 @@ namespace Acknex
                 list.Add(target);
             }
         }
+
+        public List<IAcknexObject> GetAllObjectsWithSynonym(string synonymName)
+        {
+            return SynonymsByName.TryGetValue(synonymName, out var synonym) ? synonym.AcknexObject.Get<List<IAcknexObject>>("VAL") : null;
+        }
     }
 }

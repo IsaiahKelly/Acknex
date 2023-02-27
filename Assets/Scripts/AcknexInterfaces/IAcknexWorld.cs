@@ -1,4 +1,6 @@
-﻿namespace Acknex.Interfaces
+﻿using System.Collections.Generic;
+
+namespace Acknex.Interfaces
 {
     public interface IAcknexWorld {
         IAcknexObject CreateObjectTemplate(ObjectType type, string name);
@@ -12,6 +14,7 @@
         void PostSetupObjectTemplate(ObjectType type, IAcknexObject acknexObject);
         void UpdateSkillValue(string name, float value);
         float GetSkillValue(string name);
-        void AssignSynonymToObject(string synonymName, IAcknexObject target, bool clear = false);
+        void AssignSynonymToObject(string name, IAcknexObject target, bool clear = false);
+        List<IAcknexObject> GetAllObjectsWithSynonym(string name);
     }
 }
