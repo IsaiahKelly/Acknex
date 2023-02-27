@@ -26,12 +26,6 @@ namespace WdlEngine
             _world = world;
         }
 
-        private void SetSkill(string name, object value)
-        {
-            var skill = _world.CreateObject(ObjectType.Skill, name, false);
-            skill["VAL"] = value;
-        }
-
         private void Parse()
         {
             while (!Matches(TokenType.EndOfInput)) ParseStatement();
@@ -42,44 +36,32 @@ namespace WdlEngine
             var statement = Consume();
             if (statement.Type == TokenType.Identifier)
             {
-                var statementName = statement.ValueString;
+                var statementName = statement.StringValue;
                 switch (statementName)
                 {
                 case "PLAYER_START":
                 {
-                    SetSkill("PLAYER_X", ParseNumber());
-                    SetSkill("PLAYER_Y", ParseNumber());
-                    SetSkill("PLAYER_ANGLE", Mathf.Deg2Rad * ParseNumber());
-                    var region = (int)Expect(TokenType.Integer).Value;
-                    // TODO: Set REGION of player
-                    Expect(TokenType.Semicolon);
-                    return;
+                    // TODO: Handle
+                    break;
                 }
                 case "THING":
                 case "ACTOR":
                 {
-                    var name = Expect(TokenType.Identifier).ValueString;
-                    var objType = Utils.StringToObjectType(statementName);
-                    var obj = _world.CreateObject(objType, name, false);
-                    obj["X"] = ParseNumber();
-                    obj["Y"] = ParseNumber();
-                    obj["ANGLE"] = Mathf.Deg2Rad * ParseNumber();
-                    obj["REGION"] = (int)Expect(TokenType.Integer).Value;
-                    Expect(TokenType.Semicolon);
-                    return;
+                    // TODO: Handle
+                    break;
                 }
                 case "VERTEX":
                     // TODO: Handle
-                    return;
+                    break;
                 case "REGION":
                     // TODO: Handle
-                    return;
+                    break;
                 case "WALL":
                     // TODO: Handle
-                    return;
+                    break;
                 case "WAY":
                     // TODO: Handle
-                    return;
+                    break;
                 }
             }
 
@@ -89,8 +71,8 @@ namespace WdlEngine
 
         private float ParseNumber()
         {
-            if (Matches(TokenType.Integer, out var integer)) return (int)integer.Value;
-            if (Matches(TokenType.Real, out var real)) return (float)real.Value;
+            if (Matches(TokenType.Integer, out var integer)) return integer.IntValue;
+            if (Matches(TokenType.Real, out var real)) return real.RealValue;
             throw new InvalidOperationException($"expected number, but got {Peek().Type}");
         }
 

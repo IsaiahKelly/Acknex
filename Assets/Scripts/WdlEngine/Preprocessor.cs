@@ -46,7 +46,7 @@ namespace WdlEngine
             var token = Consume();
             if (token.Type == TokenType.Identifier)
             {
-                var text = token.ValueString;
+                var text = token.StringValue;
                 switch (text)
                 {
                 case "INCLUDE" when ConditionIsTrue:
@@ -55,7 +55,7 @@ namespace WdlEngine
                     // And then we append the included tokens to the start of the peek buffer
                     var filename = Expect(TokenType.String);
                     Expect(TokenType.Semicolon);
-                    var filePath = Path.Combine(_rootPath, filename.ValueString);
+                    var filePath = Path.Combine(_rootPath, filename.StringValue);
                     using (var streamReader = new StreamReader(File.OpenRead(filePath)))
                     {
                         var tokens = Lexer.Lex(streamReader).ToList();
@@ -75,7 +75,7 @@ namespace WdlEngine
                     if (Matches(TokenType.Comma)) value = Expect(TokenType.Identifier);
                     Expect(TokenType.Semicolon);
                     // Define it
-                    _defines[name.ValueString] = value;
+                    _defines[name.StringValue] = value;
                     goto start;
                 }
                 case "UNDEF" when ConditionIsTrue:
@@ -83,7 +83,7 @@ namespace WdlEngine
                     var name = Expect(TokenType.Identifier);
                     Expect(TokenType.Semicolon);
                     // Remove define
-                    _defines.Remove(name.ValueString);
+                    _defines.Remove(name.StringValue);
                     goto start;
                 }
 
@@ -95,7 +95,7 @@ namespace WdlEngine
                         // We observe the condition
                         var name = Expect(TokenType.Identifier);
                         Expect(TokenType.Semicolon);
-                        var condition = _defines.ContainsKey(name.ValueString);
+                        var condition = _defines.ContainsKey(name.StringValue);
                         if (text == "IFNDEF") condition = !condition;
                         _conditionStack.Push(condition ? ConditionState.True : ConditionState.False);
                     }
@@ -140,7 +140,7 @@ namespace WdlEngine
 
                 // Our token was an identifier, but not for preprocessing
                 // There is a chance it's a DEFINEd value, try look it up
-                if (_defines.TryGetValue(token.ValueString, out var definedValue))
+                if (_defines.TryGetValue(token.StringValue, out var definedValue))
                 {
                     // Yes it is, swap out token
                     token = definedValue;

@@ -11,7 +11,10 @@ namespace WdlEngine
         public readonly TokenType Type;
         public readonly object Value;
 
-        public string ValueString => Value.ToString();
+        public string StringValue => Value.ToString();
+        public float RealValue => (float)Value;
+        public float IntValue => (int)Value;
+        public float NumericValue => Type == TokenType.Integer ? IntValue : RealValue;
 
         public Token(TokenType type, object value)
         {

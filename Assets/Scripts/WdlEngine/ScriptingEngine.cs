@@ -18,11 +18,29 @@ namespace WdlEngine
             _world = world;
         }
 
-        public void Test(string rootPath, TextReader reader)
+        public void ParseWdl(string path)
         {
-            var lexedTokens = Lexer.Lex(reader);
-            var preprocessedTokens = Preprocessor.Process(rootPath, lexedTokens);
-            WdlParser.Parse(_world, preprocessedTokens);
+            var rootPath = Path.GetDirectoryName(path);
+            using (var sourceText = File.OpenText(path))
+            {
+                var tokens = Lexer.Lex(sourceText);
+                tokens = Preprocessor.Process(rootPath, tokens);
+                var wdlResult = WdlParser.Parse(_world, tokens);
+                foreach (var mapfile in wdlResult.MapFileNames)
+                {
+                    var mapFilePath = Path.Combine(rootPath, mapfile);
+                    ParseWmp(mapFilePath);
+                }
+            }
+        }
+
+        private void ParseWmp(string path)
+        {
+            using (var sourceText = File.OpenText(path))
+            {
+                var tokens = Lexer.Lex(sourceText);
+                WmpParser.Parse(_world, tokens);
+            }
         }
     }
 }

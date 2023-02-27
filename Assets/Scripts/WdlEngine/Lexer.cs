@@ -187,7 +187,7 @@ namespace WdlEngine
                 var offset = 1;
                 while (IsIdentifier(Peek(offset))) ++offset;
                 var result = Take(TokenType.Identifier, offset);
-                if (CommandsWithAngleBracketStrings.Contains(result.ValueString)) _mode = Mode.AngleBracketString;
+                if (CommandsWithAngleBracketStrings.Contains(result.StringValue)) _mode = Mode.AngleBracketString;
                 return result;
             }
 

@@ -4,6 +4,7 @@ using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.UI;
+using WdlEngine;
 
 namespace Acknex
 {
@@ -122,9 +123,8 @@ namespace Acknex
                 _contourVertices = new List<ContourVertex>();
                 _regionWalls = new RegionWalls();
 
-                //todo: LPeter1997 you can start parsing your code here
-                //the IAcknexWorld instance is ´this´
-                //the path to the WDL is at the `WDLPath` variable
+                var engine = new ScriptingEngine(this);
+                engine.ParseWdl(WDLPath);
             }
             else
             {

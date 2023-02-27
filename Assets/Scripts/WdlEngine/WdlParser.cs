@@ -10,13 +10,15 @@ namespace WdlEngine
 {
     internal sealed class WdlParser : TokenConsumerBase
     {
-        public static void Parse(IAcknexWorld world, IEnumerable<Token> tokens)
+        public static WdlParseResult Parse(IAcknexWorld world, IEnumerable<Token> tokens)
         {
             var parser = new WdlParser(world, tokens);
             parser.Parse();
+            return new WdlParseResult(parser._mapFileNames);
         }
 
         private readonly IAcknexWorld _world;
+        private readonly List<string> _mapFileNames = new List<string>();
 
         private WdlParser(IAcknexWorld world, IEnumerable<Token> tokens) 
             : base(tokens.GetEnumerator())
@@ -34,7 +36,7 @@ namespace WdlEngine
             var statement = Consume();
             if (statement.Type == TokenType.Identifier)
             {
-                var statementName = statement.ValueString;
+                var statementName = statement.StringValue;
                 switch (statementName)
                 {
                 case "THING":
@@ -46,48 +48,15 @@ namespace WdlEngine
                 case "WALL":
                 case "TEXTURE":
                 {
-                    var name = Expect(TokenType.Identifier).ValueString;
-                    var objType = Utils.StringToObjectType(statementName);
-                    var obj = _world.CreateObject(objType, name, true);
-                    Expect(TokenType.OpenBrace);
-                    while (!Matches(TokenType.CloseBrace))
-                    {
-                        var (prop, value) = ParseProperty();
-                        if (prop == "SCALE_XY")
-                        {
-                            // Just sugar
-                            var (a, b) = (value as (float, float)?).Value;
-                            obj["SCALE_X"] = a;
-                            obj["SCALE_Y"] = b;
-                        }
-                        else
-                        {
-                            obj[prop] = value;
-                        }
-                    }
-                    return;
+                    // TODO
+                    break;
                 }
 
                 case "BMAP":
                 case "OVLY":
                 {
-                    var name = Expect(TokenType.Identifier).ValueString;
-                    var objType = Utils.StringToObjectType(statementName);
-                    var obj = _world.CreateObject(objType, name, true);
-                    Expect(TokenType.Comma);
-                    obj["FILENAME"] = Expect(TokenType.String).ValueString;
-                    if (Matches(TokenType.Comma))
-                    {
-                        obj["X"] = ParseNumber();
-                        Expect(TokenType.Comma);
-                        obj["Y"] = ParseNumber();
-                        Expect(TokenType.Comma);
-                        obj["DX"] = ParseNumber();
-                        Expect(TokenType.Comma);
-                        obj["DY"] = ParseNumber();
-                    }
-                    Expect(TokenType.Semicolon);
-                    return;
+                    // TODO
+                    break;
                 }
 
                 case "ACTION":
@@ -122,13 +91,13 @@ namespace WdlEngine
         private (string Name, object Value) ParseProperty()
         {
             var property = Expect(TokenType.Identifier);
-            var name = property.ValueString;
+            var name = property.StringValue;
             var value =
                 name == "FLAGS" ? ParseFlagList() :
                 name == "SCALE_XY" ? ParseValuePair() :
                 Consume().Value;
             Expect(TokenType.Semicolon);
-            return (property.ValueString, value);
+            return (property.StringValue, value);
         }
 
         private object ParseValuePair()
@@ -143,19 +112,19 @@ namespace WdlEngine
         {
             var result = new List<string>();
             var first = Expect(TokenType.Identifier);
-            result.Add(first.ValueString);
+            result.Add(first.StringValue);
             while (Matches(TokenType.Comma))
             {
                 var next = Expect(TokenType.Identifier);
-                result.Add(next.ValueString);
+                result.Add(next.StringValue);
             }
             return result;
         }
 
         private float ParseNumber()
         {
-            if (Matches(TokenType.Integer, out var integer)) return (int)integer.Value;
-            if (Matches(TokenType.Real, out var real)) return (float)real.Value;
+            if (Matches(TokenType.Integer, out var integer)) return integer.IntValue;
+            if (Matches(TokenType.Real, out var real)) return real.RealValue;
             throw new InvalidOperationException($"expected number, but got {Peek().Type}");
         }
 
