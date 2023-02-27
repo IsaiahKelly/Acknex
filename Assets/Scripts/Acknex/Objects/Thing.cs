@@ -12,9 +12,9 @@ namespace Acknex
     //todo: skill ACTOR_WIDTH & THING_WIDTH
     public class Thing : MonoBehaviour, IAcknexObjectContainer
     {
-        public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+        public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
 
-        private static IAcknexObject GetDefinitionCallback(string name)
+        private static IAcknexObject GetTemplateCallback(string name)
         {
             if (World.Instance.ThingsByName.TryGetValue(name, out var definition))
             {

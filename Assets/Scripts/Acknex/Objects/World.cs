@@ -9,9 +9,9 @@ namespace Acknex
 {
     public partial class World : MonoBehaviour, IAcknexObjectContainer, IAcknexWorld
     {
-        public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
+        public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
 
-        private static IAcknexObject GetDefinitionCallback(string name)
+        private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
         }

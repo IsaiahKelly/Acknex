@@ -27,13 +27,13 @@ public class AcknexObjectEditor : Editor
                 EditorGUILayout.EndHorizontal();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
-            if (container.AcknexObject.GetDefinitionCallback != null && container.AcknexObject.TryGet<string>("NAME", out var name))
+            if (container.AcknexObject.GetTemplateCallback != null && container.AcknexObject.TryGet<string>("NAME", out var name))
             {
-                var definition = container.AcknexObject.GetDefinitionCallback(name);
-                if (definition != null)
+                var template = container.AcknexObject.GetTemplateCallback(name);
+                if (template != null)
                 {
-                    EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Definition");
-                    foreach (var property in ((AcknexObject)definition).Properties)
+                    EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Template");
+                    foreach (var property in ((AcknexObject)template).Properties)
                     {
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField(property.Key);

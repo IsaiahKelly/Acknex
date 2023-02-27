@@ -454,13 +454,13 @@ namespace Acknex
                         case "REGION":
                             {
                                 var name = tokens[1];
-                                CreateRegionDefinition(name);
+                                CreateRegionTemplate(name);
                                 break;
                             }
                         case "WALL":
                             {
                                 var name = tokens[1];
-                                CreateWallDefinition(name);
+                                CreateWallTemplate(name);
                                 continue;
                             }
                         case "BMAP":
@@ -479,19 +479,19 @@ namespace Acknex
                         case "WAY":
                             {
                                 var name = tokens[1];
-                                CreateWayDefinition(name);
+                                CreateWayTemplate(name);
                                 break;
                             }
                         case "THING":
                             {
                                 var name = tokens[1];
-                                CrateThingDefinition(name);
+                                CreateThingTemplate(name);
                                 break;
                             }
                         case "ACTOR":
                             {
                                 var name = tokens[1];
-                                CreateActorDefinition(name);
+                                CreateActorTemplate(name);
                                 break;
                             }
                         case "OVERLAY":
@@ -535,7 +535,7 @@ namespace Acknex
             World.Instance.OverlaysByName.Add(name, (Overlay)_openObject);
         }
 
-        private void CreateActorDefinition(string name)
+        private void CreateActorTemplate(string name)
         {
             if (World.Instance.ActorsByName.ContainsKey(name))
             {
@@ -547,7 +547,7 @@ namespace Acknex
             World.Instance.ActorsByName.Add(name, (Actor)_openObject);
         }
 
-        private void CrateThingDefinition(string name)
+        private void CreateThingTemplate(string name)
         {
             if (World.Instance.ThingsByName.ContainsKey(name))
             {
@@ -559,7 +559,7 @@ namespace Acknex
             World.Instance.ThingsByName.Add(name, (Thing)_openObject);
         }
 
-        private void CreateWayDefinition(string name)
+        private void CreateWayTemplate(string name)
         {
             if (World.Instance.WaysByName.ContainsKey(name))
             {
@@ -605,7 +605,7 @@ namespace Acknex
             bitmap.UpdateObject();
         }
 
-        private void CreateWallDefinition(string name)
+        private void CreateWallTemplate(string name)
         {
             if (World.Instance.WallsByName.ContainsKey(name))
             {
@@ -617,7 +617,7 @@ namespace Acknex
             World.Instance.WallsByName.Add(name, (Wall)_openObject);
         }
 
-        private void CreateRegionDefinition(string name)
+        private void CreateRegionTemplate(string name)
         {
             if (World.Instance.RegionsByName.ContainsKey(name))
             {

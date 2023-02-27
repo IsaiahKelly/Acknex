@@ -5,8 +5,8 @@ namespace Acknex
 {
     public class View : MonoBehaviour, IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
-        private static IAcknexObject GetDefinitionCallback(string name)
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
         }

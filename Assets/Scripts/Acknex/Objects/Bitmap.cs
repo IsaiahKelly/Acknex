@@ -8,8 +8,8 @@ namespace Acknex
 {
     public class Bitmap : IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallback);
-        private static IAcknexObject GetDefinitionCallback(string name)
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
         }
