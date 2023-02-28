@@ -27,10 +27,11 @@ namespace Acknex
         private MeshRenderer _meshRenderer;
         private MeshCollider _meshCollider;
         private GameObject _attached;
+
+        //todo: can remove, debug info
         private Matrix4x4 _bottomQuad;
-        private Matrix4x4 _topQuad;
+        private Matrix4x4 _bottomUV;
         private Vector3 _bottomNormal;
-        private Vector3 _topNormal;
 
         public Texture TextureObject => AcknexObject.Get<string>("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.Get<string>("TEXTURE"), out var textureObject) ? textureObject : null;
 
@@ -50,10 +51,10 @@ namespace Acknex
         {
             if (DebugMarked)
             {
-                GizmosUtils.DrawString("0", _bottomQuad.GetColumn(0));
-                GizmosUtils.DrawString("1", _bottomQuad.GetColumn(1));
-                GizmosUtils.DrawString("2", _bottomQuad.GetColumn(2));
-                GizmosUtils.DrawString("3", _bottomQuad.GetColumn(3));
+                GizmosUtils.DrawString("0" + "(" + ((Vector2)_bottomUV.GetColumn(0)) + ")", _bottomQuad.GetColumn(0));
+                GizmosUtils.DrawString("1" + "(" + ((Vector2)_bottomUV.GetColumn(1)) + ")", _bottomQuad.GetColumn(1));
+                GizmosUtils.DrawString("2" + "(" + ((Vector2)_bottomUV.GetColumn(2)) + ")", _bottomQuad.GetColumn(2));
+                GizmosUtils.DrawString("3" + "(" + ((Vector2)_bottomUV.GetColumn(3)) + ")", _bottomQuad.GetColumn(3));
             }
         }
 
@@ -244,7 +245,6 @@ namespace Acknex
                     var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v3 = new Vector3(vertexA.Position.X, heightRight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                    wall._bottomQuad = new Matrix4x4(v0, v1, v2, v3);
                     MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, wall.AcknexObject.Get<string>("TEXTURE"), allVertices.Count);
                     //if (liftedLeft)
                     //{
@@ -263,22 +263,18 @@ namespace Acknex
 
                     var normal = MeshUtils.GetNormal(v0, v1, v2, v3);
                     var xAxis = Vector3.Normalize(v1 - v0);
-                    var yAxis = Vector3.Normalize(v2 - v1);
-                    var uv0 = Vector2.zero;
-                    var uv1 = CalculateUV(v1 - v0, xAxis, yAxis);
-                    var uv2 = CalculateUV(v2 - v0, xAxis, yAxis);
-                    var uv3 = CalculateUV(v3 - v0, xAxis, yAxis);
+                    var uv0 = CalculateUV(v0 - v0, xAxis, v0);
+                    var uv1 = CalculateUV(v1 - v0, xAxis, v1);
+                    var uv2 = CalculateUV(v2 - v0, xAxis, v2);
+                    var uv3 = CalculateUV(v3 - v0, xAxis, v3);
                     allUVs.Add(uv0);
                     allUVs.Add(uv1);
                     allUVs.Add(uv2);
                     allUVs.Add(uv3);
 
+                    wall._bottomQuad = new Matrix4x4(v0, v1, v2, v3);
                     wall._bottomNormal = normal.magnitude > 0f ? normal : Vector3.forward;
-                    //var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(-normal));
-                    //allUVs.Add(unRotateNormal * v0);
-                    //allUVs.Add(unRotateNormal * v1);
-                    //allUVs.Add(unRotateNormal * v2);
-                    //allUVs.Add(unRotateNormal * v3);
+                    wall._bottomUV = new Matrix4x4(uv0, uv1, uv2, uv3);
                 }
                 {
                     var heightLeft = leftRegion.AcknexObject.Get<float>("CEIL_HGT");
@@ -301,31 +297,20 @@ namespace Acknex
                     var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v3 = new Vector3(vertexA.Position.X, heightRight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                    wall._topQuad = new Matrix4x4(v0, v1, v2, v3);
                     MeshUtils.AddQuad(3, 2, 1, 0, allTriangles, wall.AcknexObject.Get<string>("TEXTURE"), allVertices.Count);
                     allVertices.Add(v0);
                     allVertices.Add(v1);
                     allVertices.Add(v2);
                     allVertices.Add(v3);
-                    //todo: calculate normal with source points on fallback?
-                    var normal = MeshUtils.GetNormal(v0, v1, v2, v3);
                     var xAxis = Vector3.Normalize(v1 - v0);
-                    var yAxis = Vector3.Normalize(v2 - v1);
-                    var uv0 = Vector2.zero;
-                    var uv1 = CalculateUV(v1 - v0, xAxis, yAxis);
-                    var uv2 = CalculateUV(v2 - v0, xAxis, yAxis);
-                    var uv3 = CalculateUV(v3 - v0, xAxis, yAxis);
+                    var uv0 = CalculateUV(v0 - v0, xAxis, v0);
+                    var uv1 = CalculateUV(v1 - v0, xAxis, v1);
+                    var uv2 = CalculateUV(v2 - v0, xAxis, v2);
+                    var uv3 = CalculateUV(v3 - v0, xAxis, v3);
                     allUVs.Add(uv0);
                     allUVs.Add(uv1);
                     allUVs.Add(uv2);
                     allUVs.Add(uv3);
-
-                    wall._topNormal = normal.magnitude > 0f ? normal : Vector3.forward;
-                    //var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(-normal));
-                    //allUVs.Add(unRotateNormal * v0);
-                    //allUVs.Add(unRotateNormal * v1);
-                    //allUVs.Add(unRotateNormal * v2);
-                    //allUVs.Add(unRotateNormal * v3);
                 }
                 if (leftRegion.Below != null && rightRegion.Below != null)
                 {
@@ -363,9 +348,11 @@ namespace Acknex
 
         private static Vector2 CalculateUV(Vector3 input, Vector3 xAxis, Vector3 yAxis)
         {
-            var uv = new Vector2();
-            uv.x = Vector3.Project(input, xAxis).magnitude;
-            uv.y = -Vector3.Project(input, yAxis).magnitude;
+            var uv = new Vector2
+            {
+                x = Vector3.Project(input, xAxis).magnitude,
+                y = yAxis.y
+            };
             return uv;
         }
 

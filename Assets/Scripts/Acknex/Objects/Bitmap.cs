@@ -65,46 +65,48 @@ namespace Acknex
 
         public void UpdateMaterial(Material material, Texture texture = null, int index = 0, bool mirror = false, IAcknexObject wallOrRegion = null)
         {
-            var offsetX = 0f;
-            var offsetY = 0f;
-            var scaleX = 0f;
-            var scaleY = 0f;
+            var width = Width;
+            var height = Height;
+            var x = X;
+            var y = Y;
             if (wallOrRegion != null && wallOrRegion.TryGet<float>("OFFSET_X", out var offsetXVal))
             {
-                offsetX = offsetXVal;
+                x += offsetXVal;
             }
             if (wallOrRegion != null && wallOrRegion.TryGet<float>("OFFSET_Y", out var offsetYVal))
             {
-                offsetY = offsetYVal;
+                y += offsetYVal;
             }
             if (texture != null && texture.AcknexObject.TryGet<List<float>>("OFFSET_X", out var offsetXList))
             {
-                offsetX = offsetXList[index];
+                x += offsetXList[index];
             }
             if (texture != null && texture.AcknexObject.TryGet<List<float>>("OFFSET_Y", out var offsetYList))
             {
-                offsetY = offsetYList[index];
+                y += offsetYList[index];
             }
-            if (texture != null && texture.AcknexObject.TryGet<float>("SCALE_X", out scaleX))
+            if (texture != null && texture.AcknexObject.TryGet<float>("SCALE_X", out var newWidth))
             {
-             
-            }
-            if (texture != null && texture.AcknexObject.TryGet<float>("SCALE_Y", out scaleY))
+                width = newWidth;
+            } else if (wallOrRegion != null)
             {
-                
+                width = 16f;
             }
-            var x0 = mirror ? X + Width : X;
-            var y0 = Y;
-            var x1 = mirror ? X : X + Width;
-            var y1 = Y + Height;
+            if (texture != null && texture.AcknexObject.TryGet<float>("SCALE_Y", out var newHeight))
+            {
+                height = newHeight;
+            } else if (wallOrRegion != null)
+            {
+                height = 16f;
+            }
+            var x0 = mirror ? x + width : x;
+            var y0 = y;
+            var x1 = mirror ? x : x + width;
+            var y1 = y + height;
             material.SetFloat("_X0", x0);
             material.SetFloat("_Y0", y0);
             material.SetFloat("_X1", x1);
             material.SetFloat("_Y1", y1);
-            material.SetFloat("_OFFSET_X", offsetX);
-            material.SetFloat("_OFFSET_Y", offsetY);
-            material.SetFloat("_SCALE_X", scaleX);
-            material.SetFloat("_SCALE_Y", scaleY);
             //material.SetFloat("_AMBIENT", ambient);
             material.mainTexture = Texture2D;
         }
