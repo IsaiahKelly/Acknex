@@ -64,6 +64,10 @@ namespace Acknex
                         return _tokens;
                     case '{':
                     case '}':
+                        if (_tokenStringBuilder.Length > 0)
+                        {
+                            _tokens.Add(_tokenStringBuilder.ToString());
+                        }
                         _tokens.Add(((char)read).ToString());
                         return _tokens;
                 }
