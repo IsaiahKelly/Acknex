@@ -325,6 +325,9 @@ namespace Acknex
                         case "AMBIENT":
                             wall.AcknexObject[keyword] = ParseFloat(tokens[1]);
                             break;
+                        case "FLAGS":
+                            ParseList(keyword, _openObject, tokens);
+                            break;
                     }
                 }
                 else if (_openObject is Texture texture)

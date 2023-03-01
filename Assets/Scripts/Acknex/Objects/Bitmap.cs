@@ -95,9 +95,17 @@ namespace Acknex
             if (texture != null && texture.AcknexObject.TryGet<float>("SCALE_Y", out var newHeight))
             {
                 height = newHeight;
-            } else if (wallOrRegion != null)
+            } 
+            else if (wallOrRegion != null)
             {
                 height = 16f;
+            }
+            material.SetInt("_CLAMPY", 0);
+            if (wallOrRegion != null && wallOrRegion.Container is Wall wall && wall.Flags.Contains("FENCE"))
+            {
+                material.SetFloat("_V0H", wall.BottomUV.m12);
+                material.SetFloat("_V1H", wall.BottomUV.m13);
+                material.SetInt("_CLAMPY", 1);
             }
             var x0 = mirror ? x + width : x;
             var y0 = y;

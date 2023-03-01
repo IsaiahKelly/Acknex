@@ -39,7 +39,7 @@ namespace Acknex
             return innerGameObject;
         }
 
-        public static void HandleAttachment(ref GameObject attached, GameObject parent, IAcknexObject acknexObject, IAcknexObject textureObject, Vector3? position = null , Quaternion? rotation = null, bool pivotAtLeft = false)
+        public static void HandleAttachment(ref GameObject attached, GameObject parent, IAcknexObject acknexObject, IAcknexObject textureObject, Vector3? basePosition = null , Quaternion? baseRotation = null, bool pivotAtLeft = false)
         {
             var attach = acknexObject.Get<string>("ATTACH");
             if (attach == null && textureObject != null)
@@ -56,15 +56,18 @@ namespace Acknex
                 {
                     var toAttachBitmapImage = toAttachTextureObject.GetBitmapAt();
                     attached = BuildTextureGameObject(parent.transform, toAttachTextureObject.AcknexObject.Get<string>("NAME"), toAttachBitmapImage, out _, out var toAttachMeshRenderer, pivotAtLeft);
-                    if (position.HasValue)
+                    var transformPosition = attached.transform.position;
+                    if (basePosition.HasValue)
                     {
-                        attached.transform.position = position.Value;
+                        transformPosition = basePosition.Value;
                     }
-                    if (rotation.HasValue)
+                    if (baseRotation.HasValue)
                     {
-                        attached.transform.rotation = rotation.Value;
+                        attached.transform.rotation = baseRotation.Value;
                     }
+                    attached.transform.position = transformPosition;
                     var transformLocalPosition = attached.transform.localPosition;
+                    transformLocalPosition.y = -toAttachTextureObject.AcknexObject.Get<float>("POS_Y");
                     transformLocalPosition.z -= 0.01f;
                     attached.transform.localPosition = transformLocalPosition;
                     var attachment = attached.AddComponent<Attachment>();

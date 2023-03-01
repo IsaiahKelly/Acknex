@@ -133,6 +133,10 @@ namespace Acknex
             CreateSkill("MOUSE_MIDDLE", 0, 0, 1); //todo <-  mouse button down IMPORTANT
             CreateSkill("MOUSE_RIGHT", 0, 0, 1); //todo <-  mouse button down IMPORTANT
             CreateSkill("KEY_ANY", 0, 0, 1); //todo <- key down IMPORTANT
+            CreateSkill("KEY_SENSE", 0.7f, 0, 0); //todo
+            CreateSkill("SHIFT_SENSE", 2f, 0, 0); //todo
+            CreateSkill("MOUSE_SENSE", 1f, 0, 0); //todo
+            CreateSkill("JOY_SENSE", 1f, 0, 0); //todo
         }
 
         private Vector3 _lastMousePosition;
@@ -140,7 +144,7 @@ namespace Acknex
         {
             var mousePosition = Input.mousePosition;
             mousePosition.x = Input.mousePosition.x / Screen.width * GetSkillValue("SCREEN_WIDTH");
-            mousePosition.y = Input.mousePosition.y / Screen.height * GetSkillValue("SCREEN_HGT");
+            mousePosition.y = (1f - (Input.mousePosition.y / Screen.height)) * GetSkillValue("SCREEN_HGT");
             var deltaMousePosition = mousePosition - _lastMousePosition;
             UpdateSkillValue("MICKEY_X", deltaMousePosition.x);
             UpdateSkillValue("MICKEY_Y", deltaMousePosition.y);
@@ -150,13 +154,18 @@ namespace Acknex
             UpdateSkillValue("MOUSE_MIDDLE", Input.GetMouseButtonDown(1) ? 1 : 0);
             UpdateSkillValue("MOUSE_RIGHT", Input.GetMouseButtonDown(2) ? 1 : 0);
             UpdateSkillValue("KEY_ANY", Input.anyKey ? 1 : 0);
-            UpdateSkillValue("JOYSTICK_X", Input.GetAxis("Horizontal") / 255f);
-            UpdateSkillValue("JOYSTICK_Y", Input.GetAxis("Vertical") / 255f);
+            UpdateSkillValue("JOYSTICK_X", Input.GetAxis("Horizontal") * 255f);
+            UpdateSkillValue("JOYSTICK_Y", Input.GetAxis("Vertical") * 255f);
             UpdateSkillValue("TICKS", TimeUtils.TimeToTicks(Time.time));
             UpdateSkillValue("SECS", (int)Time.time);
+            UpdateSkillValue("FORCE_AHEAD", Input.GetAxis("Vertical"));
+            UpdateSkillValue("FORCE_STRAFE", Input.GetAxis("Horizontal"));
+            UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X"));
+            UpdateSkillValue("FORCE_UP", Input.GetAxis("Mouse Y"));
             _lastMousePosition = mousePosition;
         }
 
+        //todo: clamp
         public void UpdateSkillValue(string name, float value)
         {
             if (SkillsByName.TryGetValue(name, out var skill))

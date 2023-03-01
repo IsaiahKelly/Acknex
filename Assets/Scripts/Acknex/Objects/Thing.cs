@@ -30,16 +30,15 @@ namespace Acknex
 
         private GameObject _attached;
 
-        //todo: debug vars
-        public int side;
-        public int angleFrame;
-        public int cycles;
-        public int sides;
-        public bool mirrored;
-        public float normalizedAngle;
-        public float angle;
-        public Vector3 cameraToThingDirection;
-        public Vector3 thingDirection;
+        //public int side;
+        //public int angleFrame;
+        //public int cycles;
+        //public int sides;
+        //public bool mirrored;
+        //public float normalizedAngle;
+        //public float angle;
+        //public Vector3 cameraToThingDirection;
+        //public Vector3 thingDirection;
 
         public List<string> Flags
         {
@@ -99,14 +98,14 @@ namespace Acknex
         {
             var forward = Quaternion.Euler(0f, AcknexObject.Get<float>("ANGLE"), 0f) * Vector3.right;
             DebugExtension.DebugArrow(_thingGameObject.transform.position, forward, Color.red);
-            DebugExtension.DebugArrow(_thingGameObject.transform.position, thingDirection, Color.yellow);
-            DebugExtension.DebugArrow(_thingGameObject.transform.position, cameraToThingDirection, Color.blue);
+            //DebugExtension.DebugArrow(_thingGameObject.transform.position, thingDirection, Color.yellow);
+            //DebugExtension.DebugArrow(_thingGameObject.transform.position, cameraToThingDirection, Color.blue);
         }
 
         private IEnumerator Animate(Texture texture, MeshRenderer meshRenderer)
         {
-            cycles = Mathf.Max(1, texture.AcknexObject.Get<int>("CYCLES"));
-            sides = Mathf.Max(1, texture.AcknexObject.Get<int>("SIDES"));
+            var cycles = Mathf.Max(1, texture.AcknexObject.Get<int>("CYCLES"));
+            var sides = Mathf.Max(1, texture.AcknexObject.Get<int>("SIDES"));
             var delay = texture.AcknexObject.Get<List<string>>("DELAY");
             var mirror = texture.AcknexObject.Get<List<string>>("MIRROR");
             var cycle = 0;
@@ -121,14 +120,14 @@ namespace Acknex
 
         private void UpdateAngleFrameScale(Texture texture, MeshRenderer meshRenderer, int cycles, int sides, int animFrame, List<string> mirror)
         {
-            //int side;
             var camera = CameraExtensions.GetLastActiveCamera();
+            int side;
             if (camera != null)
             {
-                cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(camera.transform.position - _thingGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
-                thingDirection = Quaternion.Euler(0f, AcknexObject.Get<float>("ANGLE"), 0f) * Vector3.back;
-                angle = AngleUtils.Angle(thingDirection, cameraToThingDirection);
-                normalizedAngle = angle / 360f;
+                var cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(camera.transform.position - _thingGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
+                var thingDirection = Quaternion.Euler(0f, AcknexObject.Get<float>("ANGLE"), 0f) * Vector3.back;
+                var angle = AngleUtils.Angle(thingDirection, cameraToThingDirection);
+                var normalizedAngle = angle / 360f;
                 side = Mathf.RoundToInt(Mathf.Lerp(0, sides - 1, normalizedAngle));
             }
             else
@@ -136,10 +135,9 @@ namespace Acknex
                 side = 0;
             }
             Bitmap bitmap;
-            //int angleFrame;
-            if (mirror != null && int.Parse(mirror[side]) > 0)
+            int angleFrame;
+            if (mirror != null && int.Parse(mirror[side]) > 0) //mirrored
             {
-                mirrored = true;
                 angleFrame = side * cycles;
                 var frame = angleFrame + animFrame;
                 bitmap = texture.GetBitmapAt(frame);
@@ -147,7 +145,6 @@ namespace Acknex
             }
             else
             {
-                mirrored = false;
                 angleFrame = side * cycles;
                 var frame = angleFrame + animFrame;
                 bitmap = texture.GetBitmapAt(frame);

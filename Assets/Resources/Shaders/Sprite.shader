@@ -1,165 +1,91 @@
 ﻿Shader "Acknex/Sprite"
 {
-	Properties
-	{
-		_MainTex("Texture", 2D) = "white" {}
-		_Cutoff("Alpha cutoff", Range(0,1)) = 0.9
-		_AMBIENT("_AMBIENT", Float) = 1.0
-		_X0("_X0", Float) = 0.0
-		_X1("_X1", Float) = 0.0
-		_Y0("_Y0", Float) = 0.0
-		_Y1("_Y1", Float) = 0.0
-	}
-		SubShader
-		{
-			Tags {"Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout" }
-			LOD 100
+    Properties
+    {
+        _Color ("Color", Color) = (1,1,1,1)
+        _MainTex ("Albedo (RGB)", 2D) = "white" {}
+        _Cutoff("Alpha cutoff", Range(0,1)) = 0.9
+        _AMBIENT("_AMBIENT", Float) = 1.0
+        _X0("_X0", Float) = 0.0
+        _X1("_X1", Float) = 0.0
+        _Y0("_Y0", Float) = 0.0
+        _Y1("_Y1", Float) = 0.0
+        _V0H("_V0H", Float) = 0.0
+        _V1H("_V1H", Float) = 0.0
+        _CLAMPX("_CLAMPX", Float) = 0
+        _CLAMPY("_CLAMPY", Float) = 0
+    }
+    SubShader
+    {
+        Tags { "RenderType" = "Opaque" }
+        Cull Off
+        LOD 200
 
-			Pass
-			{
-				Tags{ "LightMode" = "ForwardBase" }
-				CGPROGRAM
-				#pragma vertex vert
-				#pragma fragment frag
-			// make fog work
-			#pragma multi_compile_fog
+        CGPROGRAM
+        // Physically based Standard lighting model, and enable shadows on all light types
+         #pragma surface surf Sprite addshadow
 
-			#include "UnityCG.cginc"
+        // Use shader model 3.0 target, to get nicer looking lighting
+        #pragma target 3.0
 
-			struct appdata
-			{
-				float4 vertex : POSITION;
-				float2 uv : TEXCOORD0;
-			};
+        sampler2D _MainTex;
+        float4 _MainTex_TexelSize;
 
-			struct v2f
-			{
-				float2 uv : TEXCOORD0;
-				UNITY_FOG_COORDS(1)
-				float4 vertex : SV_POSITION;
-			};
+        struct Input
+        {
+            float2 uv_MainTex;
+        };
 
-			sampler2D _MainTex;
-			float4 _MainTex_ST;
-			float4 _MainTex_TexelSize;
 
-			float _Cutoff;
+        fixed4 _Color;
+        float _Cutoff;
 
-			float _X0;
-			float _Y0;
-			float _X1;
-			float _Y1;
-			float _AMBIENT;
+        float _X0;
+        float _Y0;
+        float _X1;
+        float _Y1;
+        float _AMBIENT;
+        float _V0H;
+        float _V1H;
+        int _CLAMPX;
+        int _CLAMPY;
 
-			v2f vert(appdata v)
-			{
-				v2f o;
-				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-				UNITY_TRANSFER_FOG(o,o.vertex);
-				return o;
-			}
+        // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
+        // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
+        // #pragma instancing_options assumeuniformscaling
+        UNITY_INSTANCING_BUFFER_START(Props)
+            // put more per-instance properties here
+        UNITY_INSTANCING_BUFFER_END(Props)
 
-			float4 frag(v2f i) : SV_Target
-			{
-				float2 uv = lerp(float2(_X0, _Y0), float2(_X1, _Y1), i.uv) * _MainTex_TexelSize.xy;
-				float4 col = tex2D(_MainTex, uv);
-				clip(col.a - _Cutoff);
-				// apply fog
-				UNITY_APPLY_FOG(i.fogCoord, col);
-				return col;
-			}
-			ENDCG
-		}
-			//Pass
-			//{
-			//    Tags{ "LightMode" = "ForwardAdd" }
-			//    CGPROGRAM
-			//    #pragma vertex vert
-			//    #pragma fragment frag
-			//        // make fog work
-			//        #pragma multi_compile_fog
 
-			//        #include "UnityCG.cginc"
+        half4 LightingSprite(SurfaceOutput s, half3 lightDir, half atten) {
+            half4 c;
+            c.rgb = s.Albedo * _LightColor0.rgb * atten;
+            c.a = s.Alpha;
+            return c;
+        }
 
-			//        struct appdata
-			//        {
-			//            float4 vertex : POSITION;
-			//            float2 uv : TEXCOORD0;
-			//        };
-
-			//        struct v2f
-			//        {
-			//            float2 uv : TEXCOORD0;
-			//            UNITY_FOG_COORDS(1)
-			//            float4 vertex : SV_POSITION;
-			//        };
-
-			//        sampler2D _MainTex;
-			//        float4 _MainTex_ST;
-			//        float _Cutoff;
-
-			//        v2f vert(appdata v)
-			//        {
-			//            v2f o;
-			//            o.vertex = UnityObjectToClipPos(v.vertex);
-			//            o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-			//            UNITY_TRANSFER_FOG(o,o.vertex);
-			//            return o;
-			//        }
-
-			//        float4 frag(v2f i) : SV_Target
-			//        {
-			//            float4 col = tex2D(_MainTex, i.uv);
-			//            clip(col.a - _Cutoff);
-			//            // apply fog
-			//            UNITY_APPLY_FOG(i.fogCoord, col);
-			//            return col;
-			//    }
-			//    ENDCG
-			//}
-
-			//Pass
-			//{
-			//    Tags { "LightMode" = "ShadowCaster" }
-			//    CGPROGRAM
-			//        #pragma vertex vert
-			//        #pragma fragment frag
-
-			//        #include "UnityCG.cginc"
-
-			//        struct appdata
-			//        {
-			//            float4 vertex : POSITION;
-			//            float2 uv : TEXCOORD0;
-			//        };
-
-			//        struct v2f
-			//        {
-			//            float2 uv : TEXCOORD0;
-			//            float4 vertex : SV_POSITION;
-			//        };
-
-			//        sampler2D _MainTex;
-			//        float4 _MainTex_ST;
-			//        float _Cutoff;
-
-			//        v2f vert(appdata v)
-			//        {
-			//            v2f o;
-			//            o.vertex = UnityObjectToClipPos(v.vertex);
-			//            o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-			//            UNITY_TRANSFER_FOG(o,o.vertex);
-			//            return o;
-			//        }
-
-			//        float4 frag(v2f i) : SV_Target
-			//        {
-			//            float4 col = tex2D(_MainTex, i.uv);
-			//            clip(col.a - _Cutoff);
-			//            return 0;
-			//        }
-			//    ENDCG
-			//}
-		}
+        void surf (Input IN, inout SurfaceOutput o)
+        {
+            float2 coord0 = float2(_X0, _Y0);
+            float2 coord1 = float2(_X1, _Y1);
+            //if (_CLAMPY) {
+            //    float height = abs(_Y1 - _Y0);
+            //    float maxHeight = -_V0H + height;// lerp(_V0H + height, _V1H + height, uv.x);
+            //    if (IN.uv_MainTex.y > maxHeight) {
+            //        IN.uv_MainTex.y = maxHeight;
+            //        _Color = 0.0;
+            //    }
+            //}
+            float2 uv = lerp(coord0, coord1, IN.uv_MainTex);
+            uv *= _MainTex_TexelSize.xy;
+            // Albedo comes from a texture tinted by color
+            fixed4 c = tex2D(_MainTex, uv) * _Color;
+            clip(c.a - _Cutoff);
+            o.Albedo = c.rgb;// *_AMBIENT;
+            o.Alpha = c.a;
+        }
+        ENDCG
+    }
+    FallBack "Diffuse"
 }
