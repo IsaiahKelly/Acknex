@@ -8,6 +8,7 @@ using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
+using UnityEngine.Rendering;
 
 namespace Acknex
 {
@@ -42,26 +43,28 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            if (_meshRenderer == null)
+            if (_meshRenderer != null)
             {
-                return;
-            }
-            var floorTexture = AcknexObject.Get<string>("FLOOR_TEX");
-            if (floorTexture != null && World.Instance.TexturesByName.TryGetValue(floorTexture, out var floorTextureObject))
-            {
-                var bitmapImage = floorTextureObject.GetBitmapAt(0);
-                if (bitmapImage != null)
+                _meshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
+                var floorTexture = AcknexObject.Get<string>("FLOOR_TEX");
+                if (floorTexture != null && World.Instance.TexturesByName.TryGetValue(floorTexture, out var floorTextureObject))
                 {
-                    bitmapImage.UpdateMaterial(_meshRenderer.materials[0], floorTextureObject, 0, false, AcknexObject);
+                    var bitmapImage = floorTextureObject.GetBitmapAt(0);
+                    if (bitmapImage != null)
+                    {
+                        bitmapImage.UpdateMaterial(_meshRenderer.materials[0], floorTextureObject, 0, false, AcknexObject);
+                    }
                 }
-            }
-            var ceilTexture = AcknexObject.Get<string>("CEIL_TEX");
-            if (ceilTexture != null && World.Instance.TexturesByName.TryGetValue(ceilTexture, out var ceilTextureObject))
-            {
-                var bitmapImage = ceilTextureObject.GetBitmapAt(0);
-                if (bitmapImage != null)
+                var ceilTexture = AcknexObject.Get<string>("CEIL_TEX");
+                if (ceilTexture != null && World.Instance.TexturesByName.TryGetValue(ceilTexture, out var ceilTextureObject))
                 {
-                    bitmapImage.UpdateMaterial(_meshRenderer.materials[1], ceilTextureObject, 0, false, AcknexObject);
+                    var bitmapImage = ceilTextureObject.GetBitmapAt(0);
+                    if (bitmapImage != null)
+                    {
+                        bitmapImage.UpdateMaterial(_meshRenderer.materials[1], ceilTextureObject, 0, false, AcknexObject);
+                    }
+                    //todo: will need two mesh renderers to handle that correctly
+                    _meshRenderer.shadowCastingMode = ceilTextureObject.Flags.Contains("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
                 }
             }
         }

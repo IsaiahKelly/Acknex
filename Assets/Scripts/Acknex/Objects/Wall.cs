@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Acknex.Interfaces;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Utils;
 
 namespace Acknex
@@ -84,6 +85,7 @@ namespace Acknex
             {
                 BitmapImage?.UpdateMaterial(_meshRenderer.material, TextureObject, 0, false, AcknexObject);
                 _meshRenderer.enabled = !Flags.Contains("INVISIBLE");
+                _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.Flags.Contains("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             }
             if (_meshCollider != null)
             {
