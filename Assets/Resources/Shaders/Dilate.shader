@@ -17,7 +17,6 @@
 
 			#include "UnityCG.cginc"
 
-			sampler2D _BaseTex;
 			sampler2D _MainTex;
 			float4 _MainTex_TexelSize;
 			float4 _MainTex_ST;
@@ -45,17 +44,17 @@
 			float4 frag(v2f input) : SV_Target
 			{
 				const float2 offsets[8] = {float2(-1,0), float2(1,0), float2(0,1), float2(0,-1), float2(-1,1), float2(1,1), float2(1,-1), float2(-1,-1)};
-				float base = tex2D(_BaseTex, input.uv).w;
-				if (base < 0.0) {
+				float4 fragment = tex2D(_MainTex, input.uv);
+				if (fragment.x == 1.0 && fragment.y == 0.0 && fragment.z == 1.0) {
 					[unroll]
 					for (int j = 0; j < 8; j++) {
 						float4 check = tex2D(_MainTex, input.uv + (offsets[j] * _MainTex_TexelSize.xy));
-						if (check.w > 0.0) {
-							return check;
+						if (!(check.x == 1.0 && check.y == 0.0 && check.z == 1.0)) {
+							return float4(check.xyz, fragment.w);
 						}
 					}
 				}
-				return tex2D(_MainTex, input.uv);
+				return fragment;
 			}
 		ENDCG
 		}

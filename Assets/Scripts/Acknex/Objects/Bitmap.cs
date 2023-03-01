@@ -26,7 +26,6 @@ namespace Acknex
             AcknexObject.Container = this;
         }
 
-
         public void UpdateObject()
         {
             var filename = AcknexObject.Get<string>("FILENAME");
@@ -37,6 +36,7 @@ namespace Acknex
                 {
                     Texture2D = PcxReader.Load(filename);
                     Texture2D.name = AcknexObject.Get<string>("NAME");
+                    TextureUtils.Dilate(Texture2D);
                     World.Instance.TextureCache.Add(filename, Texture2D);
                 }
                 else if (lowerInvariant.EndsWith("lbm"))
@@ -47,6 +47,7 @@ namespace Acknex
                     {
                         Texture2D = iff.Ilbms[0].Texture2D;
                         Texture2D.name = AcknexObject.Get<string>("NAME");
+                        TextureUtils.Dilate(Texture2D);
                         World.Instance.TextureCache.Add(filename, Texture2D);
                     }
                 }

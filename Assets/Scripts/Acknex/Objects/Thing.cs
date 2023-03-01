@@ -94,8 +94,14 @@ namespace Acknex
 
         }
 
-        private void OnDrawGizmos()
+        private Bitmap _bitmap;
+
+        private void OnDrawGizmosSelected()
         {
+            if (_bitmap != null)
+            {
+                GizmosUtils.DrawString(_bitmap.AcknexObject["NAME"] + "|" + _bitmap.X + "|" + _bitmap.Y + "|" + _bitmap.Width + "|" + _bitmap.Height, transform.position, Color.yellow);
+            }
             //var forward = Quaternion.Euler(0f, AcknexObject.Get<float>("ANGLE"), 0f) * Vector3.right;
             //DebugExtension.DebugArrow(_thingGameObject.transform.position, forward, Color.red);
             //DebugExtension.DebugArrow(_thingGameObject.transform.position, thingDirection, Color.yellow);
@@ -111,18 +117,8 @@ namespace Acknex
             var cycle = 0;
             while (true)
             {
-                var currentDelay = delay != null && delay.Count > cycle ? TimeUtils.TicksToTime(int.Parse(delay[cycle])) : Mathf.Infinity;
                 UpdateAngleFrameScale(texture, meshRenderer, cycles, sides, cycle, mirror);
-
-                //var thingAngle = AcknexObject.Get<float>("ANGLE");
-                //var step = 360f / sides;
-                //for (var s = 0; s < sides; s++)
-                //{
-                //    var angle = Mathf.Repeat(AngleUtils.ConvertAcknexToUnityAngle(thingAngle) + (s * step), 360f);
-                //    var direction = Quaternion.Euler(0f, angle, 0f) * Vector3.forward;
-                //    DebugExtension.DebugArrow(transform.position, direction, Color.green, currentDelay);
-                //}
-
+                var currentDelay = delay != null && delay.Count > cycle ? TimeUtils.TicksToTime(int.Parse(delay[cycle])) : Mathf.Infinity;
                 yield return new WaitForSeconds(currentDelay);
                 cycle = (int)Mathf.Repeat(cycle + 1, cycles);
             }
@@ -161,7 +157,9 @@ namespace Acknex
                 bitmap = texture.GetBitmapAt(frame);
                 UpdateFrame(bitmap, texture, meshRenderer, false, frame);
             }
-            TextureUtils.UpdateScale(meshRenderer.transform, bitmap, texture);
+            transform.localScale = TextureUtils.CalculateObjectSize(bitmap, texture);
+            _bitmap = bitmap;
+            //TextureUtils.UpdateScale(meshRenderer.transform, bitmap, texture);
         }
 
         private static void UpdateFrame(Bitmap bitmap, Texture textureObject, MeshRenderer meshRenderer, bool mirror = false, int frameIndex = 0)
@@ -203,9 +201,10 @@ namespace Acknex
             StickToTheGround(thingX, thingY, ref thingZ);
             transform.position = new Vector3(thingX, thingZ, thingY);
 
-            var transformLocalPosition = _thingGameObject.transform.localPosition;
-            transformLocalPosition.y = AcknexObject.Get<float>("HEIGHT");
-            _thingGameObject.transform.localPosition = transformLocalPosition;
+            
+            var thingPosition = _thingGameObject.transform.position;
+            thingPosition.y = transform.position.y + AcknexObject.Get<float>("HEIGHT");
+            _thingGameObject.transform.position = thingPosition;
             _collider.isTrigger = Flags.Contains("PASSABLE");
 
             //todo: how to?

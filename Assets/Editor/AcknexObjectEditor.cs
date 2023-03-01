@@ -1,9 +1,30 @@
-﻿using Acknex;
+﻿using System.Collections.Generic;
+using Acknex;
 using Acknex.Interfaces;
-using Boo.Lang;
 using UnityEditor;
 using UnityEngine;
 using Texture = Acknex.Texture;
+
+public class InputDialog : EditorWindow
+{
+    public string Value;
+
+    private void OnGUI()
+    {
+        Value = EditorGUILayout.TextField("New Value", Value);
+        if (GUILayout.Button("OK"))
+        {
+            Close();
+        }
+    }
+    public static InputDialog ShowDialog(string value)
+    {
+        var window = new InputDialog();
+        window.Value = value;
+        window.ShowUtility();
+        return window;
+    }
+}
 
 public class AcknexObjectEditor : Editor
 {
@@ -113,6 +134,7 @@ public class WorldEditor : Editor
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);
             EditorGUILayout.LabelField(kvp.Value);
+            EditorGUILayout.LabelField("");
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
@@ -122,6 +144,11 @@ public class WorldEditor : Editor
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);
             EditorGUILayout.LabelField(kvp.Value.AcknexObject.Get<string>("VAL"));
+            if (GUILayout.Button("Modify"))
+            {
+                var dialog = InputDialog.ShowDialog(kvp.Value.AcknexObject.Get<string>("VAL"));
+                world.SkillsByName[kvp.Key].AcknexObject["VAL"] = dialog.Value;
+            }
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
@@ -143,6 +170,7 @@ public class WorldEditor : Editor
             {
                 EditorGUILayout.LabelField("[EMPTY]");
             }
+            EditorGUILayout.LabelField("");
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();

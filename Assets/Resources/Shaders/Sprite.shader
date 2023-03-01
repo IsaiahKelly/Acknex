@@ -67,23 +67,19 @@
 
         void surf (Input IN, inout SurfaceOutput o)
         {
+            _Y0 = _MainTex_TexelSize.w - _Y0;
+            _Y1 = _MainTex_TexelSize.w - _Y1;
             float2 coord0 = float2(_X0, _Y0);
             float2 coord1 = float2(_X1, _Y1);
-            //if (_CLAMPY) {
-            //    float height = abs(_Y1 - _Y0);
-            //    float maxHeight = -_V0H + height;// lerp(_V0H + height, _V1H + height, uv.x);
-            //    if (IN.uv_MainTex.y > maxHeight) {
-            //        IN.uv_MainTex.y = maxHeight;
-            //        _Color = 0.0;
-            //    }
-            //}
-            float2 uv = lerp(coord0, coord1, IN.uv_MainTex);
+            float2 uv = lerp(coord0, coord1, float2(IN.uv_MainTex.x, 1.0-IN.uv_MainTex.y));
             uv *= _MainTex_TexelSize.xy;
             // Albedo comes from a texture tinted by color
             fixed4 c = tex2D(_MainTex, uv) * _Color;
-            clip(c.a - _Cutoff);
             o.Albedo = c.rgb;// *_AMBIENT;
-            o.Alpha = c.a;
+            //o.Alpha = c.a;
+            /* Sharpen texture alpha to the width of a pixel */
+            o.Alpha = (c.a - 0.5) / max(fwidth(c.a), 0.0001) + 0.5;
+            clip(o.Alpha - 0.5);
         }
         ENDCG
     }

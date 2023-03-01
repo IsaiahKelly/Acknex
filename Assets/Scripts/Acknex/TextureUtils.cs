@@ -6,18 +6,18 @@ namespace Acknex
 {
     public static class TextureUtils
     {
+        private static Material _dilateShader;
+
         public static Vector3 CalculateObjectSize(Bitmap bitmap, Texture textureObject)
         {
             if (bitmap == null || textureObject == null)
             {
                 return Vector3.one;
             }
-            return new Vector3(bitmap.Width / textureObject.AcknexObject.Get<float>("SCALE_X"), bitmap.Height / textureObject.AcknexObject.Get<float>("SCALE_Y"), 1f);
-        }
-
-        public static void UpdateScale(Transform transform, Bitmap bitmap, Texture textureObject)
-        {
-            transform.localScale = CalculateObjectSize(bitmap, textureObject);
+            return new Vector3(
+                bitmap.Width / textureObject.AcknexObject.Get<float>("SCALE_X"), 
+                bitmap.Height / textureObject.AcknexObject.Get<float>("SCALE_Y"), 
+                1f);
         }
 
         public static GameObject BuildTextureGameObject(Transform parent, string name, Bitmap bitmap, out MeshFilter meshFilter, out MeshRenderer meshRenderer, bool pivotAtLeft = false)
@@ -79,5 +79,32 @@ namespace Acknex
             }
         }
 
+        public static void CopyTextureCPU(RenderTexture from, Texture2D to, bool updateMipMaps, bool makeNoLongerReadable)
+        {
+            RenderTexture.active = from;
+            to.ReadPixels(new Rect(0, 0, from.width, from.height), 0, 0);
+            to.Apply(updateMipMaps, makeNoLongerReadable);
+            RenderTexture.active = null;
+        }
+
+        public static void Dilate(Texture2D texture2D)
+        {
+            if (_dilateShader == null)
+            {
+                _dilateShader = new Material(Shader.Find("Acknex/Dilate"));
+            }
+            var renderTextureA = RenderTexture.GetTemporary(texture2D.width, texture2D.height, 0, texture2D.graphicsFormat);
+            var renderTextureB = RenderTexture.GetTemporary(texture2D.width, texture2D.height, 0, texture2D.graphicsFormat);
+            Graphics.Blit(texture2D, renderTextureA);
+            for (var i = 0; i < Mathf.Max(texture2D.width, texture2D.height); i++)
+            {
+               Graphics.Blit(renderTextureA, renderTextureB, _dilateShader);
+               Graphics.CopyTexture(renderTextureB, renderTextureA);
+            }
+            Graphics.CopyTexture(renderTextureA, 0, 0, texture2D, 0, 0);
+            CopyTextureCPU(renderTextureA, texture2D, true, true);
+            RenderTexture.ReleaseTemporary(renderTextureA);
+            RenderTexture.ReleaseTemporary(renderTextureB);
+        }
     }
 }
