@@ -30,16 +30,6 @@ namespace Acknex
 
         private GameObject _attached;
 
-        //public int side;
-        //public int angleFrame;
-        //public int cycles;
-        //public int sides;
-        //public bool mirrored;
-        //public float normalizedAngle;
-        //public float angle;
-        //public Vector3 cameraToThingDirection;
-        //public Vector3 thingDirection;
-
         public List<string> Flags
         {
             get
@@ -81,7 +71,7 @@ namespace Acknex
 
         private void OnTriggerEnterCallback(Collider obj)
         {
-            ;
+
         }
 
         private void OnCollisionExitCallback(Collision obj)
@@ -103,14 +93,14 @@ namespace Acknex
         {
             var cycles = Mathf.Max(1, texture.AcknexObject.GetInteger("CYCLES"));
             var sides = Mathf.Max(1, texture.AcknexObject.GetInteger("SIDES"));
-            var delay = texture.AcknexObject.GetObject<List<int>>("DELAY");
+            //var delay = texture.AcknexObject.GetObject<List<int>>("DELAY");
             var mirror = texture.AcknexObject.GetObject<List<int>>("MIRROR");
             var cycle = 0;
             while (true)
             {
                 UpdateAngleFrameScale(texture, meshRenderer, cycles, sides, cycle, mirror);
-                var currentDelay = delay != null && delay.Count > cycle ? TimeUtils.TicksToTime(delay[cycle]) : Mathf.Infinity;
-                yield return new WaitForSeconds(currentDelay);
+                var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : null;
+                yield return currentDelay;
                 cycle = (int)Mathf.Repeat(cycle + 1, cycles);
             }
         }
@@ -180,8 +170,27 @@ namespace Acknex
             gameObject.SetActive(false);
         }
 
+        private Texture _lastTextureObject;
+        private List<WaitForSeconds> _textureObjectDelay;
+
         public void UpdateObject()
         {
+            //todo: better way to do that?
+            if (TextureObject != _lastTextureObject)
+            {
+
+                var delay = TextureObject.AcknexObject.GetObject<List<int>>("DELAY");
+                if (delay != null)
+                {
+                    _textureObjectDelay = new List<WaitForSeconds>(delay.Count);
+                    for (var i = 0; i < delay.Count; i++)
+                    {
+                        _textureObjectDelay.Add(new WaitForSeconds(TimeUtils.TicksToTime(delay[i])));
+                    }
+                }
+                _lastTextureObject = TextureObject;
+            }
+
             var thingX = AcknexObject.GetFloat("X");
             var thingY = AcknexObject.GetFloat("Y");
             var thingZ = AcknexObject.GetFloat("Z");
@@ -190,7 +199,6 @@ namespace Acknex
             StickToTheGround(thingX, thingY, ref thingZ);
             transform.position = new Vector3(thingX, thingZ, thingY);
 
-            
             var thingPosition = _thingGameObject.transform.position;
             thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
             _thingGameObject.transform.position = thingPosition;
