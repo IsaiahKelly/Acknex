@@ -103,19 +103,19 @@ namespace Acknex
         {
             var cycles = Mathf.Max(1, texture.AcknexObject.GetInteger("CYCLES"));
             var sides = Mathf.Max(1, texture.AcknexObject.GetInteger("SIDES"));
-            var delay = texture.AcknexObject.GetObject<List<string>>("DELAY");
-            var mirror = texture.AcknexObject.GetObject<List<string>>("MIRROR");
+            var delay = texture.AcknexObject.GetObject<List<int>>("DELAY");
+            var mirror = texture.AcknexObject.GetObject<List<int>>("MIRROR");
             var cycle = 0;
             while (true)
             {
                 UpdateAngleFrameScale(texture, meshRenderer, cycles, sides, cycle, mirror);
-                var currentDelay = delay != null && delay.Count > cycle ? TimeUtils.TicksToTime(int.Parse(delay[cycle])) : Mathf.Infinity;
+                var currentDelay = delay != null && delay.Count > cycle ? TimeUtils.TicksToTime(delay[cycle]) : Mathf.Infinity;
                 yield return new WaitForSeconds(currentDelay);
                 cycle = (int)Mathf.Repeat(cycle + 1, cycles);
             }
         }
 
-        private void UpdateAngleFrameScale(Texture texture, MeshRenderer meshRenderer, int cycles, int sides, int animFrame, List<string> mirror)
+        private void UpdateAngleFrameScale(Texture texture, MeshRenderer meshRenderer, int cycles, int sides, int animFrame, List<int> mirror)
         {
             var halfStep = 180f / sides;
             var camera = CameraExtensions.GetLastActiveCamera();
@@ -134,7 +134,7 @@ namespace Acknex
             }
             Bitmap bitmap;
             int angleFrame;
-            if (mirror != null && int.Parse(mirror[side]) > 0) //mirrored
+            if (mirror != null && mirror[side] > 0) //mirrored
             {
                 angleFrame = side * cycles;
                 var frame = angleFrame + animFrame;

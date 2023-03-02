@@ -221,7 +221,7 @@ namespace Acknex
                             _openObject.AcknexObject.SetString(keyword, tokens[1]);
                             break;
                         case "FLAGS":
-                            ParseList(keyword, _openObject, tokens);
+                            ParseStringList(keyword, _openObject, tokens);
                             break;
                         case "DIST":
                             _openObject.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
@@ -251,7 +251,7 @@ namespace Acknex
                             overlay.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
                             break;
                         case "FLAGS":
-                            ParseList(tokens[1], overlay, tokens);
+                            ParseStringList(tokens[1], overlay, tokens);
                             break;
                         case "OVLYS":
                             overlay.AcknexObject.SetString(keyword, tokens[1]);
@@ -302,7 +302,7 @@ namespace Acknex
                             region.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
                             break;
                         case "FLAGS":
-                            ParseList(keyword, region, tokens);
+                            ParseStringList(keyword, region, tokens);
                             break;
                         case "BELOW":
                             region.AcknexObject.SetString(keyword, tokens[1]);
@@ -326,7 +326,7 @@ namespace Acknex
                             wall.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
                             break;
                         case "FLAGS":
-                            ParseList(keyword, _openObject, tokens);
+                            ParseStringList(keyword, _openObject, tokens);
                             break;
                     }
                 }
@@ -352,7 +352,7 @@ namespace Acknex
                             }
                         case "BMAPS":
                             {
-                                ParseList(keyword, texture, tokens);
+                                ParseStringList(keyword, texture, tokens);
                                 break;
                             }
                         case "POS_X":
@@ -367,13 +367,13 @@ namespace Acknex
                             }
                         case "FLAGS":
                             {
-                                ParseList(keyword, texture, tokens);
+                                ParseStringList(keyword, texture, tokens);
                                 break;
                             }
                         case "DELAY":
                         case "MIRROR":
                             {
-                                ParseList(keyword, texture, tokens);
+                                ParseIntList(keyword, texture, tokens);
                                 break;
                             }
                         case "SIDES":
@@ -652,16 +652,29 @@ namespace Acknex
             World.Instance.ActionsByName.Add(name, (Action)_openObject);
         }
 
-        //todo: remove linq?
-        private static void ParseList(string propertyName, IAcknexObjectContainer container, List<string> tokens)
+        private static void ParseStringList(string propertyName, IAcknexObjectContainer container, List<string> tokens)
         {
-            if (container.AcknexObject.TryGetObject(propertyName, out List<string> list))
+            if (!container.AcknexObject.TryGetObject(propertyName, out List<string> list))
             {
-                list.AddRange(tokens.Skip(1).Take(tokens.Count - 1));
+                list = new List<string>();
+                container.AcknexObject.SetObject(propertyName, list);
             }
-            else
+            for (var i = 1; i < tokens.Count; i++)
             {
-                container.AcknexObject.SetObject(propertyName, tokens.Skip(1).Take(tokens.Count - 1).ToList());
+                list.Add(tokens[i]);
+            }
+        }
+
+        private static void ParseIntList(string propertyName, IAcknexObjectContainer container, List<string> tokens)
+        {
+            if (!container.AcknexObject.TryGetObject(propertyName, out List<int> list))
+            {
+                list = new List<int>();
+                container.AcknexObject.SetObject(propertyName, list);
+            }
+            for (var i = 1; i < tokens.Count; i++)
+            {
+                list.Add(int.Parse(tokens[i]));
             }
         }
 
