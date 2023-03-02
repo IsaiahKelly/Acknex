@@ -216,13 +216,13 @@ namespace Acknex
                 var vertexA = vertices[wall.AcknexObject.GetInteger("VERTEX1")];
                 var vertexB = vertices[wall.AcknexObject.GetInteger("VERTEX2")];
 
-                wall.AcknexObject.SetNumber("X1", vertexA.Position.X);
-                wall.AcknexObject.SetNumber("Y1", vertexA.Position.Y);
-                wall.AcknexObject.SetNumber("Z1", vertexA.Position.Z);
+                wall.AcknexObject.SetFloat("X1", vertexA.Position.X);
+                wall.AcknexObject.SetFloat("Y1", vertexA.Position.Y);
+                wall.AcknexObject.SetFloat("Z1", vertexA.Position.Z);
                                   
-                wall.AcknexObject.SetNumber("X2", vertexB.Position.X);
-                wall.AcknexObject.SetNumber("Y2", vertexB.Position.Y);
-                wall.AcknexObject.SetNumber("Z2", vertexB.Position.Z);
+                wall.AcknexObject.SetFloat("X2", vertexB.Position.X);
+                wall.AcknexObject.SetFloat("Y2", vertexB.Position.Y);
+                wall.AcknexObject.SetFloat("Z2", vertexB.Position.Z);
 
                 if (leftRegion == null)
                 {
@@ -242,23 +242,23 @@ namespace Acknex
                     //leftRegion.AcknexObject.GetNumber("FLOOR_HGT") == rightRegion.AcknexObject.GetNumber("FLOOR_HGT") && 
                     //leftRegion.AcknexObject.GetNumber("CEIL_HGT") == rightRegion.AcknexObject.GetNumber("CEIL_HGT"))
                 {
-                    var floor = leftRegion.AcknexObject.GetNumber("FLOOR_HGT", false);
-                    var ceil = leftRegion.AcknexObject.GetNumber("CEIL_HGT", false);
+                    var floor = leftRegion.AcknexObject.GetFloat("FLOOR_HGT", false);
+                    var ceil = leftRegion.AcknexObject.GetFloat("CEIL_HGT", false);
                     if (leftRegion.Below != null)
                     {
-                        floor = Mathf.Max(floor, leftRegion.Below.AcknexObject.GetNumber("CEIL_HGT"));
+                        floor = Mathf.Max(floor, leftRegion.Below.AcknexObject.GetFloat("CEIL_HGT"));
                     }
                     if (rightRegion.Below != null)
                     {
-                        floor = Mathf.Max(floor, rightRegion.Below.AcknexObject.GetNumber("CEIL_HGT"));
+                        floor = Mathf.Max(floor, rightRegion.Below.AcknexObject.GetFloat("CEIL_HGT"));
                     }
                     if (leftRegionAbove != null)
                     {
-                        ceil = Mathf.Min(ceil, leftRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
+                        ceil = Mathf.Min(ceil, leftRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
                     }
                     if (rightRegionAbove != null)
                     {
-                        ceil = Mathf.Min(ceil, rightRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
+                        ceil = Mathf.Min(ceil, rightRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
                     }
                     var liftedLeft = /*leftRegionAbove != null && leftRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ leftRegionAbove == null && leftRegion.Flags.Contains("FLOOR_LIFTED");
                     var liftedRight = /*rightRegionAbove != null && rightRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ rightRegionAbove == null && rightRegion.Flags.Contains("FLOOR_LIFTED");
@@ -290,27 +290,27 @@ namespace Acknex
                 else
                 {
                     {
-                        var heightLeft = leftRegion.AcknexObject.GetNumber("FLOOR_HGT", false);
-                        var heightRight = rightRegion.AcknexObject.GetNumber("FLOOR_HGT", false);
+                        var heightLeft = leftRegion.AcknexObject.GetFloat("FLOOR_HGT", false);
+                        var heightRight = rightRegion.AcknexObject.GetFloat("FLOOR_HGT", false);
                         if (leftRegion.Below != null)
                         {
-                            heightLeft = Mathf.Max(heightLeft, leftRegion.Below.AcknexObject.GetNumber("CEIL_HGT"));
-                            heightRight = Mathf.Max(heightRight, leftRegion.Below.AcknexObject.GetNumber("CEIL_HGT"));
+                            heightLeft = Mathf.Max(heightLeft, leftRegion.Below.AcknexObject.GetFloat("CEIL_HGT"));
+                            heightRight = Mathf.Max(heightRight, leftRegion.Below.AcknexObject.GetFloat("CEIL_HGT"));
                         }
                         if (rightRegion.Below != null)
                         {
-                            heightRight = Mathf.Max(heightRight, rightRegion.Below.AcknexObject.GetNumber("CEIL_HGT"));
-                            heightLeft = Mathf.Max(heightLeft, rightRegion.Below.AcknexObject.GetNumber("CEIL_HGT"));
+                            heightRight = Mathf.Max(heightRight, rightRegion.Below.AcknexObject.GetFloat("CEIL_HGT"));
+                            heightLeft = Mathf.Max(heightLeft, rightRegion.Below.AcknexObject.GetFloat("CEIL_HGT"));
                         }
                         if (leftRegionAbove != null)
                         {
-                            heightLeft = Mathf.Min(heightLeft, leftRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
-                            heightRight = Mathf.Min(heightRight, leftRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
+                            heightLeft = Mathf.Min(heightLeft, leftRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
+                            heightRight = Mathf.Min(heightRight, leftRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
                         }
                         if (rightRegionAbove != null)
                         {
-                            heightRight = Mathf.Min(heightRight, rightRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
-                            heightLeft = Mathf.Min(heightLeft, rightRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
+                            heightRight = Mathf.Min(heightRight, rightRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
+                            heightLeft = Mathf.Min(heightLeft, rightRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
                         }
                         var liftedLeft = /*leftRegionAbove != null && leftRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ leftRegionAbove == null && leftRegion.Flags.Contains("FLOOR_LIFTED");
                         var liftedRight = /*rightRegionAbove != null && rightRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ rightRegionAbove == null && rightRegion.Flags.Contains("FLOOR_LIFTED");
@@ -338,18 +338,18 @@ namespace Acknex
                         wall.BottomUV = new Matrix4x4(uv0, uv1, uv2, uv3);
                     }
                     {
-                        var heightLeft = leftRegion.AcknexObject.GetNumber("CEIL_HGT");
-                        var heightRight = rightRegion.AcknexObject.GetNumber("CEIL_HGT");
+                        var heightLeft = leftRegion.AcknexObject.GetFloat("CEIL_HGT");
+                        var heightRight = rightRegion.AcknexObject.GetFloat("CEIL_HGT");
                         if (leftRegionAbove != null)
                         {
-                            heightLeft = Mathf.Min(heightLeft, leftRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
-                            heightRight = Mathf.Min(heightRight, leftRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
+                            heightLeft = Mathf.Min(heightLeft, leftRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
+                            heightRight = Mathf.Min(heightRight, leftRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
                         }
 
                         if (rightRegionAbove != null)
                         {
-                            heightRight = Mathf.Min(heightRight, rightRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
-                            heightLeft = Mathf.Min(heightLeft, rightRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
+                            heightRight = Mathf.Min(heightRight, rightRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
+                            heightLeft = Mathf.Min(heightLeft, rightRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
                         }
 
                         var liftedLeft = leftRegion.Flags.Contains("CEIL_LIFTED") && leftRegionAbove == null;

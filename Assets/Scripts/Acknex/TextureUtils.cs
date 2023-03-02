@@ -15,8 +15,8 @@ namespace Acknex
                 return Vector3.one;
             }
             return new Vector3(
-                bitmap.Width / textureObject.AcknexObject.GetNumber("SCALE_X"), 
-                bitmap.Height / textureObject.AcknexObject.GetNumber("SCALE_Y"), 
+                bitmap.Width / textureObject.AcknexObject.GetFloat("SCALE_X"), 
+                bitmap.Height / textureObject.AcknexObject.GetFloat("SCALE_Y"), 
                 1f);
         }
 
@@ -67,7 +67,7 @@ namespace Acknex
                     }
                     attached.transform.position = transformPosition;
                     var transformLocalPosition = attached.transform.localPosition;
-                    transformLocalPosition.y = -toAttachTextureObject.AcknexObject.GetNumber("POS_Y");
+                    transformLocalPosition.y = -toAttachTextureObject.AcknexObject.GetFloat("POS_Y");
                     transformLocalPosition.z -= 0.01f;
                     attached.transform.localPosition = transformLocalPosition;
                     var attachment = attached.AddComponent<Attachment>();

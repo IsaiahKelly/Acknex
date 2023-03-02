@@ -132,7 +132,7 @@ namespace Acknex
             if (camera != null)
             {
                 var cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(camera.transform.position - _thingGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
-                var thingDirection = Quaternion.Euler(0f, AcknexObject.GetNumber("ANGLE"), 0f) * Vector3.back;
+                var thingDirection = Quaternion.Euler(0f, AcknexObject.GetFloat("ANGLE"), 0f) * Vector3.back;
                 var angle = Mathf.Repeat(AngleUtils.Angle(thingDirection, cameraToThingDirection) + halfStep, 360f);
                 var normalizedAngle = angle / 360f;
                 side = Mathf.RoundToInt(Mathf.Lerp(0, sides - 1, normalizedAngle));
@@ -193,9 +193,9 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            var thingX = AcknexObject.GetNumber("X");
-            var thingY = AcknexObject.GetNumber("Y");
-            var thingZ = AcknexObject.GetNumber("Z");
+            var thingX = AcknexObject.GetFloat("X");
+            var thingY = AcknexObject.GetFloat("Y");
+            var thingZ = AcknexObject.GetFloat("Z");
 
             //todo: this block should only run on carefully flagged
             StickToTheGround(thingX, thingY, ref thingZ);
@@ -203,7 +203,7 @@ namespace Acknex
 
             
             var thingPosition = _thingGameObject.transform.position;
-            thingPosition.y = transform.position.y + AcknexObject.GetNumber("HEIGHT");
+            thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
             _thingGameObject.transform.position = thingPosition;
             _collider.isTrigger = Flags.Contains("PASSABLE");
 
@@ -217,7 +217,7 @@ namespace Acknex
         {
             var thingRegion = World.Instance.RegionsByIndex[AcknexObject.GetInteger("REGION")];
             thingZ = thingRegion.ProjectHeight(thingX, thingY, Flags.Contains("GROUND"));
-            AcknexObject.SetNumber("Z", thingZ);
+            AcknexObject.SetFloat("Z", thingZ);
         }
     }
 }

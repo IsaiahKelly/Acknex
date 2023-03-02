@@ -136,13 +136,13 @@ namespace Acknex
 
         public Vector3 ProjectPosition(float x, float y, bool ground = false)
         {
-            var point = new Vector3(x, AcknexObject.GetNumber("CEIL_HGT"), y);
+            var point = new Vector3(x, AcknexObject.GetFloat("CEIL_HGT"), y);
             return !ground && _meshCollider != null && _meshCollider.Raycast(new Ray(point, Vector3.down), out var bottomHit, Mathf.Infinity) ? bottomHit.point : new Vector3(x, 0f, y);
         }
 
         public float ProjectHeight(float x, float y, bool ground = false)
         {
-            var point = new Vector3(x, AcknexObject.GetNumber("CEIL_HGT"), y);
+            var point = new Vector3(x, AcknexObject.GetFloat("CEIL_HGT"), y);
             return !ground && _meshCollider != null && _meshCollider.Raycast(new Ray(point, Vector3.down), out var bottomHit, Mathf.Infinity) ? bottomHit.point.y : 0f;
         }
 
@@ -207,7 +207,7 @@ namespace Acknex
             var allVertices = new List<Vector3>();
             var allUVs = new List<Vector2>();
             var allTriangles = new Dictionary<int, List<int>>();
-            if (Math.Abs(region.AcknexObject.GetNumber("CEIL_HGT") - region.AcknexObject.GetNumber("FLOOR_HGT")) > Mathf.Epsilon)
+            if (Math.Abs(region.AcknexObject.GetFloat("CEIL_HGT") - region.AcknexObject.GetFloat("FLOOR_HGT")) > Mathf.Epsilon)
             {
                 BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex);
                 BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex, true);
@@ -236,7 +236,7 @@ namespace Acknex
 
             tess.Tessellate();
             var floorVertices = new Vector3[tess.VertexCount];
-            var height = (ceil ? region.AcknexObject.GetNumber("CEIL_HGT") : region.AcknexObject.GetNumber("FLOOR_HGT"));
+            var height = (ceil ? region.AcknexObject.GetFloat("CEIL_HGT") : region.AcknexObject.GetFloat("FLOOR_HGT"));
             for (var i = 0; i < tess.VertexCount; i++)
             {
                 var vertex = tess.Vertices[i];

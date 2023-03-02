@@ -147,7 +147,7 @@ public class WorldEditor : Editor
             if (GUILayout.Button("Modify"))
             {
                 var dialog = InputDialog.ShowDialog(kvp.Value.AcknexObject.GetString("VAL"));
-                world.SkillsByName[kvp.Key].AcknexObject.SetNumber("VAL", float.Parse(dialog.Value));
+                world.SkillsByName[kvp.Key].AcknexObject.SetFloat("VAL", float.Parse(dialog.Value));
             }
             EditorGUILayout.EndHorizontal();
         }

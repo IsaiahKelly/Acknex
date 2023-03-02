@@ -14,10 +14,10 @@ namespace Acknex
             return null;
         }
 
-        public float Width => AcknexObject.GetNumber("DX") == 0 ? Texture2D.width : AcknexObject.GetNumber("DX");
-        public float Height => AcknexObject.GetNumber("DY") == 0 ? Texture2D.height : AcknexObject.GetNumber("DY");
-        public float X => AcknexObject.GetNumber("X");
-        public float Y => AcknexObject.GetNumber("Y");
+        public float Width => AcknexObject.GetFloat("DX") == 0 ? Texture2D.width : AcknexObject.GetFloat("DX");
+        public float Height => AcknexObject.GetFloat("DY") == 0 ? Texture2D.height : AcknexObject.GetFloat("DY");
+        public float X => AcknexObject.GetFloat("X");
+        public float Y => AcknexObject.GetFloat("Y");
 
         public Texture2D Texture2D;
 
@@ -70,11 +70,11 @@ namespace Acknex
             var height = Height;
             var x = X;
             var y = Y;
-            if (wallOrRegion != null && wallOrRegion.TryGetNumber("OFFSET_X", out var offsetXVal))
+            if (wallOrRegion != null && wallOrRegion.TryGetFloat("OFFSET_X", out var offsetXVal))
             {
                 x += offsetXVal;
             }
-            if (wallOrRegion != null && wallOrRegion.TryGetNumber("OFFSET_Y", out var offsetYVal))
+            if (wallOrRegion != null && wallOrRegion.TryGetFloat("OFFSET_Y", out var offsetYVal))
             {
                 y += offsetYVal;
             }
@@ -86,14 +86,14 @@ namespace Acknex
             {
                 y += offsetYList[index];
             }
-            if (texture != null && texture.AcknexObject.TryGetNumber("SCALE_X", out var newWidth))
+            if (texture != null && texture.AcknexObject.TryGetFloat("SCALE_X", out var newWidth))
             {
                 width = newWidth;
             } else if (wallOrRegion != null)
             {
                 width = 16f;
             }
-            if (texture != null && texture.AcknexObject.TryGetNumber("SCALE_Y", out var newHeight))
+            if (texture != null && texture.AcknexObject.TryGetFloat("SCALE_Y", out var newHeight))
             {
                 height = newHeight;
             } 

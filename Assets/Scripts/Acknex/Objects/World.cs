@@ -252,9 +252,9 @@ namespace Acknex
                 return existingSkill;
             }
             var skill = new Skill();
-            skill.AcknexObject.SetNumber("MIN", min);
-            skill.AcknexObject.SetNumber("MAX", max);
-            skill.AcknexObject.SetNumber("VAL", value);
+            skill.AcknexObject.SetFloat("MIN", min);
+            skill.AcknexObject.SetFloat("MAX", max);
+            skill.AcknexObject.SetFloat("VAL", value);
             SkillsByName.Add(name, skill);
             return skill;
         }

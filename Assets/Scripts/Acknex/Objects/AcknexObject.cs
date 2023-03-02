@@ -11,7 +11,7 @@ namespace Acknex
 
         public IAcknexObjectContainer Container { get; set; }
 
-        public void SetNumber(string propertyName, float value)
+        public void SetFloat(string propertyName, float value)
         {
             NumberProperties[propertyName] = value;
         }
@@ -35,7 +35,7 @@ namespace Acknex
         }
 
 
-        public float GetNumber(string propertyName, bool fromTemplate = true)
+        public float GetFloat(string propertyName, bool fromTemplate = true)
         {
             if (NumberProperties.TryGetValue(propertyName, out var number))
             {
@@ -44,7 +44,7 @@ namespace Acknex
             if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
             {
                 var template = GetTemplateCallback(name.ToString());
-                if (template != null && template.TryGetNumber(propertyName, out var definitionNumber, false))
+                if (template != null && template.TryGetFloat(propertyName, out var definitionNumber, false))
                 {
                     return definitionNumber;
                 }
@@ -61,7 +61,7 @@ namespace Acknex
             if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
             {
                 var template = GetTemplateCallback(name.ToString());
-                if (template != null && template.TryGetNumber(propertyName, out var definitionNumber, false))
+                if (template != null && template.TryGetFloat(propertyName, out var definitionNumber, false))
                 {
                     return (int)definitionNumber;
                 }
@@ -110,7 +110,7 @@ namespace Acknex
         }
 
 
-        public bool TryGetNumber(string propertyName, out float result, bool fromTemplate = true)
+        public bool TryGetFloat(string propertyName, out float result, bool fromTemplate = true)
         {
             if (NumberProperties.TryGetValue(propertyName, out var number))
             {
@@ -120,7 +120,7 @@ namespace Acknex
             if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
             {
                 var template = GetTemplateCallback(name.ToString());
-                if (template != null && template.TryGetNumber(propertyName, out var definitionNumber, false))
+                if (template != null && template.TryGetFloat(propertyName, out var definitionNumber, false))
                 {
                     result = definitionNumber;
                     return true;
@@ -140,7 +140,7 @@ namespace Acknex
             if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
             {
                 var template = GetTemplateCallback(name.ToString());
-                if (template != null && template.TryGetNumber(propertyName, out var definitionNumber, false))
+                if (template != null && template.TryGetFloat(propertyName, out var definitionNumber, false))
                 {
                     result = (int)definitionNumber;
                     return true;
