@@ -120,6 +120,10 @@ namespace Acknex
                 _tokenStringBuilder.Append(char.ToUpperInvariant((char)read));
                 read = streamReader.Read();
             }
+            if (_tokenStringBuilder.Length > 0)
+            {
+                _tokens.Add(_tokenStringBuilder.ToString());
+            }
             return _tokens;
         }
 
