@@ -220,6 +220,7 @@ namespace Acknex
                 newRegion.transform.SetParent(World.Instance.transform, false);
                 newRegion.name = region.Below.name;
                 ((AcknexObject)newRegion.AcknexObject).ObjectProperties = new Dictionary<string, object>(((AcknexObject)region.Below.AcknexObject).ObjectProperties);
+                ((AcknexObject)newRegion.AcknexObject).NumberProperties = new Dictionary<string, float>(((AcknexObject)region.Below.AcknexObject).NumberProperties);
                 region.Below = newRegion;
                 BuildRegionFloorAndCeiling(newRegion, contouredRegion);
             }

@@ -24,6 +24,7 @@ namespace Acknex
         {
             ObjectProperties[propertyName] = value;
         }
+
         public void SetString(string propertyName, string value)
         {
             ObjectProperties[propertyName] = value;
@@ -61,7 +62,7 @@ namespace Acknex
             if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
             {
                 var template = GetTemplateCallback(name.ToString());
-                if (template != null && template.TryGetFloat(propertyName, out var definitionNumber, false))
+                if (template != null && template.TryGetInteger(propertyName, out var definitionNumber, false))
                 {
                     return (int)definitionNumber;
                 }
@@ -140,9 +141,9 @@ namespace Acknex
             if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
             {
                 var template = GetTemplateCallback(name.ToString());
-                if (template != null && template.TryGetFloat(propertyName, out var definitionNumber, false))
+                if (template != null && template.TryGetInteger(propertyName, out var definitionNumber, false))
                 {
-                    result = (int)definitionNumber;
+                    result = definitionNumber;
                     return true;
                 }
             }
@@ -201,27 +202,13 @@ namespace Acknex
             return false;
         }
 
-        public void UpdateObject()
-        {
-
-        }
-
-        public void Enable()
-        {
-
-        }
-
-        public void Disable()
-        {
-
-        }
-
         public AcknexObject(Func<string, IAcknexObject> getTemplateCallback)
         {
             GetTemplateCallback = getTemplateCallback;
         }
 
         public Func<string, IAcknexObject> GetTemplateCallback { get; }
+
         public bool IsDirty { get; set; } = true;
     }
 }
