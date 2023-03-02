@@ -94,5 +94,6 @@ namespace Acknex
         }
 
         public Func<string, IAcknexObject> GetTemplateCallback { get; }
+        public bool IsDirty { get; set; } = true;
     }
 }

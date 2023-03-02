@@ -78,6 +78,11 @@ namespace Acknex
 
         public void UpdateObject()
         {
+            if (!AcknexObject.IsDirty)
+            {
+                return;
+            }
+            AcknexObject.IsDirty = false;
             var basePosition = new Vector3(BottomQuad.GetColumn(0).x, 0f, 0f);
             var baseRotation = Quaternion.LookRotation(-BottomNormal);
             TextureUtils.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject?.AcknexObject, basePosition, baseRotation);

@@ -235,8 +235,8 @@ Light:
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
+    m_Bias: 0
+    m_NormalBias: 0
     m_NearPlane: 0.2
     m_CullingMatrixOverride:
       e00: 1
@@ -668,7 +668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b52af5bca98fed4c9690969a13ed559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WDLPath: Assets/Data/Contato.wdl
+  WDLPath: Assets/Data/Se.wdl
   CanvasWidthRatio: 1.6
   WMPContainsRegionsByName: 0
   UseWDLEngine: 0

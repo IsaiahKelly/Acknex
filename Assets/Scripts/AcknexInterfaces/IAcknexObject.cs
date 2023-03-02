@@ -9,6 +9,7 @@ namespace Acknex.Interfaces
         T Get<T>(string propertyName, bool fromTemplate = true);
         bool TryGet<T>(string propertyName, out T result, bool fromTemplate = true);
         object this[string propertyName] { get; set; }
-        Func<string, IAcknexObject> GetTemplateCallback { get; } //this parameter can be null when moking up
+        Func<string, IAcknexObject> GetTemplateCallback { get; }
+        bool IsDirty { get; set; }
     }
 }

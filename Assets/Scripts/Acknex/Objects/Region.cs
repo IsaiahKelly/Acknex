@@ -43,6 +43,11 @@ namespace Acknex
 
         public void UpdateObject()
         {
+            if (!AcknexObject.IsDirty)
+            {
+                return;
+            }
+            AcknexObject.IsDirty = false;
             if (_meshRenderer != null)
             {
                 _meshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
