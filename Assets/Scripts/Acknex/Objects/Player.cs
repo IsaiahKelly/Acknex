@@ -63,7 +63,7 @@ namespace Acknex
 
         private Region StickToTheGround(float playerX, float playerY, out float playerZ)
         {
-            var regionIndex = AcknexObject.Get<int>("REGION");
+            var regionIndex = AcknexObject.GetInteger("REGION");
             if (regionIndex > World.Instance.RegionsByIndex.Count - 1)
             {
                 playerZ = 0f;

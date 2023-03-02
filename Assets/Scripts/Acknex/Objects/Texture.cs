@@ -17,12 +17,12 @@ namespace Acknex
         {
             get
             {
-                if (AcknexObject.TryGet("FLAGS", out List<string> flags))
+                if (AcknexObject.TryGetObject("FLAGS", out List<string> flags))
                 {
                     return flags;
                 }
                 flags = new List<string>();
-                AcknexObject["FLAGS"] = flags;
+                AcknexObject.SetObject("FLAGS", flags);
                 return flags;
             }
         }
@@ -30,12 +30,12 @@ namespace Acknex
         {
             get
             {
-                if (AcknexObject.TryGet("BMAPS", out List<string> bmaps))
+                if (AcknexObject.TryGetObject("BMAPS", out List<string> bmaps))
                 {
                     return bmaps;
                 }
                 bmaps = new List<string>();
-                AcknexObject["BMAPS"] = bmaps;
+                AcknexObject.SetObject("BMAPS", bmaps);
                 return bmaps;
             }
         }

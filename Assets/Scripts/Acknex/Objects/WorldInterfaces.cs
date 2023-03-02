@@ -9,7 +9,7 @@ namespace Acknex
     {
         public void UpdateObject()
         {
-            AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.Get<float>("LIGHT_ANGLE")), 0f) * Quaternion.Euler(45f, 0f, 0f);
+            AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetNumber("LIGHT_ANGLE")), 0f) * Quaternion.Euler(45f, 0f, 0f);
             UpdateSkills();
         }
 
@@ -257,8 +257,8 @@ namespace Acknex
                 var wall = acknexObject.Container as Wall;
                 if (wall != null)
                 {
-                    _regionWalls.GetWallsList(wall.AcknexObject.Get<int>("REGION1")).Add(wall);
-                    _regionWalls.GetWallsList(wall.AcknexObject.Get<int>("REGION2")).Add(wall);
+                    _regionWalls.GetWallsList(wall.AcknexObject.GetInteger("REGION1")).Add(wall);
+                    _regionWalls.GetWallsList(wall.AcknexObject.GetInteger("REGION2")).Add(wall);
                 }
             }
         }

@@ -20,10 +20,10 @@ namespace Acknex
         public void AssignSynonymToObject(string synonymName, IAcknexObject target, bool clear = false) {
             if (SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
-                if (!synonym.AcknexObject.TryGet<List<IAcknexObject>>("VAL", out var list))
+                if (!synonym.AcknexObject.TryGetObject<List<IAcknexObject>>("VAL", out var list))
                 {
                     list = new List<IAcknexObject>();
-                    synonym.AcknexObject["VAL"] = list;
+                    synonym.AcknexObject.SetObject("VAL", list);
                 }
                 if (clear)
                 {
@@ -35,7 +35,7 @@ namespace Acknex
 
         public List<IAcknexObject> GetAllObjectsWithSynonym(string synonymName)
         {
-            return SynonymsByName.TryGetValue(synonymName, out var synonym) ? synonym.AcknexObject.Get<List<IAcknexObject>>("VAL") : null;
+            return SynonymsByName.TryGetValue(synonymName, out var synonym) ? synonym.AcknexObject.GetObject<List<IAcknexObject>>("VAL") : null;
         }
     }
 }

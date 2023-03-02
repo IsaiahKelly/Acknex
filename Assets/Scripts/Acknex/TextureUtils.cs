@@ -15,8 +15,8 @@ namespace Acknex
                 return Vector3.one;
             }
             return new Vector3(
-                bitmap.Width / textureObject.AcknexObject.Get<float>("SCALE_X"), 
-                bitmap.Height / textureObject.AcknexObject.Get<float>("SCALE_Y"), 
+                bitmap.Width / textureObject.AcknexObject.GetNumber("SCALE_X"), 
+                bitmap.Height / textureObject.AcknexObject.GetNumber("SCALE_Y"), 
                 1f);
         }
 
@@ -41,10 +41,10 @@ namespace Acknex
 
         public static void HandleAttachment(ref GameObject attached, GameObject parent, IAcknexObject acknexObject, IAcknexObject textureObject, Vector3? basePosition = null , Quaternion? baseRotation = null, bool pivotAtLeft = false)
         {
-            var attach = acknexObject.Get<string>("ATTACH");
+            var attach = acknexObject.GetString("ATTACH");
             if (attach == null && textureObject != null)
             {
-                attach = textureObject.Get<string>("ATTACH");
+                attach = textureObject.GetString("ATTACH");
             }
             if (string.IsNullOrEmpty(attach) && attached != null || attached != null && attach != attached.name)
             {
@@ -55,7 +55,7 @@ namespace Acknex
                 if (World.Instance.TexturesByName.TryGetValue(attach, out var toAttachTextureObject))
                 {
                     var toAttachBitmapImage = toAttachTextureObject.GetBitmapAt();
-                    attached = BuildTextureGameObject(parent.transform, toAttachTextureObject.AcknexObject.Get<string>("NAME"), toAttachBitmapImage, out _, out var toAttachMeshRenderer, pivotAtLeft);
+                    attached = BuildTextureGameObject(parent.transform, toAttachTextureObject.AcknexObject.GetString("NAME"), toAttachBitmapImage, out _, out var toAttachMeshRenderer, pivotAtLeft);
                     var transformPosition = attached.transform.position;
                     if (basePosition.HasValue)
                     {
@@ -67,7 +67,7 @@ namespace Acknex
                     }
                     attached.transform.position = transformPosition;
                     var transformLocalPosition = attached.transform.localPosition;
-                    transformLocalPosition.y = -toAttachTextureObject.AcknexObject.Get<float>("POS_Y");
+                    transformLocalPosition.y = -toAttachTextureObject.AcknexObject.GetNumber("POS_Y");
                     transformLocalPosition.z -= 0.01f;
                     attached.transform.localPosition = transformLocalPosition;
                     var attachment = attached.AddComponent<Attachment>();

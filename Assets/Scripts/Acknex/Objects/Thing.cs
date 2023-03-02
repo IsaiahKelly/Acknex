@@ -44,17 +44,17 @@ namespace Acknex
         {
             get
             {
-                if (AcknexObject.TryGet("FLAGS", out List<string> flags))
+                if (AcknexObject.TryGetObject("FLAGS", out List<string> flags))
                 {
                     return flags;
                 }
                 flags = new List<string>();
-                AcknexObject["FLAGS"] = flags;
+                AcknexObject.SetObject("FLAGS", flags);
                 return flags;
             }
         }
 
-        public Texture TextureObject => AcknexObject.Get<string>("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.Get<string>("TEXTURE"), out var textureObject) ? textureObject : null;
+        public Texture TextureObject => AcknexObject.GetString("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.GetString("TEXTURE"), out var textureObject) ? textureObject : null;
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
 
@@ -100,9 +100,9 @@ namespace Acknex
         {
             if (_bitmap != null)
             {
-                GizmosUtils.DrawString(_bitmap.AcknexObject["NAME"] + "|" + _bitmap.X + "|" + _bitmap.Y + "|" + _bitmap.Width + "|" + _bitmap.Height, transform.position, Color.yellow);
+                GizmosUtils.DrawString(_bitmap.AcknexObject.GetString("NAME") + "|" + _bitmap.X + "|" + _bitmap.Y + "|" + _bitmap.Width + "|" + _bitmap.Height, transform.position, Color.yellow);
             }
-            //var forward = Quaternion.Euler(0f, AcknexObject.Get<float>("ANGLE"), 0f) * Vector3.right;
+            //var forward = Quaternion.Euler(0f, AcknexObject.GetNumber("ANGLE"), 0f) * Vector3.right;
             //DebugExtension.DebugArrow(_thingGameObject.transform.position, forward, Color.red);
             //DebugExtension.DebugArrow(_thingGameObject.transform.position, thingDirection, Color.yellow);
             //DebugExtension.DebugArrow(_thingGameObject.transform.position, cameraToThingDirection, Color.blue);
@@ -110,10 +110,10 @@ namespace Acknex
 
         private IEnumerator Animate(Texture texture, MeshRenderer meshRenderer)
         {
-            var cycles = Mathf.Max(1, texture.AcknexObject.Get<int>("CYCLES"));
-            var sides = Mathf.Max(1, texture.AcknexObject.Get<int>("SIDES"));
-            var delay = texture.AcknexObject.Get<List<string>>("DELAY");
-            var mirror = texture.AcknexObject.Get<List<string>>("MIRROR");
+            var cycles = Mathf.Max(1, texture.AcknexObject.GetInteger("CYCLES"));
+            var sides = Mathf.Max(1, texture.AcknexObject.GetInteger("SIDES"));
+            var delay = texture.AcknexObject.GetObject<List<string>>("DELAY");
+            var mirror = texture.AcknexObject.GetObject<List<string>>("MIRROR");
             var cycle = 0;
             while (true)
             {
@@ -132,7 +132,7 @@ namespace Acknex
             if (camera != null)
             {
                 var cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(camera.transform.position - _thingGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
-                var thingDirection = Quaternion.Euler(0f, AcknexObject.Get<float>("ANGLE"), 0f) * Vector3.back;
+                var thingDirection = Quaternion.Euler(0f, AcknexObject.GetNumber("ANGLE"), 0f) * Vector3.back;
                 var angle = Mathf.Repeat(AngleUtils.Angle(thingDirection, cameraToThingDirection) + halfStep, 360f);
                 var normalizedAngle = angle / 360f;
                 side = Mathf.RoundToInt(Mathf.Lerp(0, sides - 1, normalizedAngle));
@@ -193,9 +193,9 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            var thingX = AcknexObject.Get<float>("X");
-            var thingY = AcknexObject.Get<float>("Y");
-            var thingZ = AcknexObject.Get<float>("Z");
+            var thingX = AcknexObject.GetNumber("X");
+            var thingY = AcknexObject.GetNumber("Y");
+            var thingZ = AcknexObject.GetNumber("Z");
 
             //todo: this block should only run on carefully flagged
             StickToTheGround(thingX, thingY, ref thingZ);
@@ -203,21 +203,21 @@ namespace Acknex
 
             
             var thingPosition = _thingGameObject.transform.position;
-            thingPosition.y = transform.position.y + AcknexObject.Get<float>("HEIGHT");
+            thingPosition.y = transform.position.y + AcknexObject.GetNumber("HEIGHT");
             _thingGameObject.transform.position = thingPosition;
             _collider.isTrigger = Flags.Contains("PASSABLE");
 
             //todo: how to?
-            //_collider.radius = AcknexObject.Get<float>("DIST") > 0f ? AcknexObject.Get<float>("DIST") * 0.5f : 0.5f;
+            //_collider.radius = AcknexObject.GetNumber("DIST") > 0f ? AcknexObject.GetNumber("DIST") * 0.5f : 0.5f;
 
             TextureUtils.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject?.AcknexObject);
         }
 
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)
         {
-            var thingRegion = World.Instance.RegionsByIndex[AcknexObject.Get<int>("REGION")];
+            var thingRegion = World.Instance.RegionsByIndex[AcknexObject.GetInteger("REGION")];
             thingZ = thingRegion.ProjectHeight(thingX, thingY, Flags.Contains("GROUND"));
-            AcknexObject.Set("Z", thingZ);
+            AcknexObject.SetNumber("Z", thingZ);
         }
     }
 }

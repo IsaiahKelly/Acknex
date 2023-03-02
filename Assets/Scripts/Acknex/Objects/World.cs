@@ -153,7 +153,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newOverlay = newGameObject.AddComponent<Overlay>();
-            newOverlay.AcknexObject.Set("NAME", name);
+            newOverlay.AcknexObject.SetString("NAME", name);
             return newOverlay;
         }
 
@@ -167,7 +167,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newRegion = newGameObject.AddComponent<Region>();
-            newRegion.AcknexObject.Set("NAME", name);
+            newRegion.AcknexObject.SetString("NAME", name);
             return newRegion;
         }
 
@@ -181,7 +181,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newWall = newGameObject.AddComponent<Wall>();
-            newWall.AcknexObject.Set("NAME", name);
+            newWall.AcknexObject.SetString("NAME", name);
             return newWall;
         }
 
@@ -195,7 +195,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newWay = newGameObject.AddComponent<Way>();
-            newWay.AcknexObject.Set("NAME", name);
+            newWay.AcknexObject.SetString("NAME", name);
             return newWay;
         }
 
@@ -209,7 +209,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newThing = newGameObject.AddComponent<Thing>();
-            newThing.AcknexObject.Set("NAME", name);
+            newThing.AcknexObject.SetString("NAME", name);
             return newThing;
         }
 
@@ -223,7 +223,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newActor = newGameObject.AddComponent<Actor>();
-            newActor.AcknexObject.Set("NAME", name);
+            newActor.AcknexObject.SetString("NAME", name);
             return newActor;
         }
 
@@ -252,9 +252,9 @@ namespace Acknex
                 return existingSkill;
             }
             var skill = new Skill();
-            skill.AcknexObject["MIN"] = min;
-            skill.AcknexObject["MAX"] = max;
-            skill.AcknexObject["VAL"] = value;
+            skill.AcknexObject.SetNumber("MIN", min);
+            skill.AcknexObject.SetNumber("MAX", max);
+            skill.AcknexObject.SetNumber("VAL", value);
             SkillsByName.Add(name, skill);
             return skill;
         }
@@ -266,7 +266,7 @@ namespace Acknex
                 return existingSynonym;
             }
             var synonym = new Synonym();
-            synonym.AcknexObject["TYPE"] = type;
+            synonym.AcknexObject.SetString("TYPE",type);
             SynonymsByName.Add(name, synonym);
             return synonym;
         }
@@ -291,7 +291,7 @@ namespace Acknex
 
                     var rightRegion = contouredRegions.GetContouredRegion(kvp.Key);
                     var allContourVertices = rightRegion.GetNew();
-                    wall.ProcessWall(allContourVertices, contourVertices, wall, kvp, ref vertexCount, wall.AcknexObject.Get<int>("REGION2") == kvp.Key);
+                    wall.ProcessWall(allContourVertices, contourVertices, wall, kvp, ref vertexCount, wall.AcknexObject.GetInteger("REGION2") == kvp.Key);
                 }
             }
 

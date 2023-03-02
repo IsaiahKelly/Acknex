@@ -2,7 +2,6 @@
 using LibTessDotNet;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using Acknex.Interfaces;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
@@ -51,7 +50,7 @@ namespace Acknex
             if (_meshRenderer != null)
             {
                 _meshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
-                var floorTexture = AcknexObject.Get<string>("FLOOR_TEX");
+                var floorTexture = AcknexObject.GetString("FLOOR_TEX");
                 if (floorTexture != null && World.Instance.TexturesByName.TryGetValue(floorTexture, out var floorTextureObject))
                 {
                     var bitmapImage = floorTextureObject.GetBitmapAt(0);
@@ -60,7 +59,7 @@ namespace Acknex
                         bitmapImage.UpdateMaterial(_meshRenderer.materials[0], floorTextureObject, 0, false, AcknexObject);
                     }
                 }
-                var ceilTexture = AcknexObject.Get<string>("CEIL_TEX");
+                var ceilTexture = AcknexObject.GetString("CEIL_TEX");
                 if (ceilTexture != null && World.Instance.TexturesByName.TryGetValue(ceilTexture, out var ceilTextureObject))
                 {
                     var bitmapImage = ceilTextureObject.GetBitmapAt(0);
@@ -78,12 +77,12 @@ namespace Acknex
         {
             get
             {
-                if (AcknexObject.TryGet("FLAGS", out List<string> flags))
+                if (AcknexObject.TryGetObject("FLAGS", out List<string> flags))
                 {
                     return flags;
                 }
                 flags = new List<string>();
-                AcknexObject["FLAGS"] = flags;
+                AcknexObject.SetObject("FLAGS",flags);
                 return flags;
             }
         }
@@ -96,7 +95,7 @@ namespace Acknex
                 {
                     return _belowOverride;
                 }
-                var below = AcknexObject.Get<string>("BELOW");
+                var below = AcknexObject.GetString("BELOW");
                 if (below != null && World.Instance.RegionsByName.TryGetValue(below, out var region))
                 {
                     return region;
@@ -114,7 +113,7 @@ namespace Acknex
                 {
                     return _meshCollider;
                 }
-                if (World.Instance.RegionsByName.TryGetValue(AcknexObject.Get<string>("NAME"), out var definition))
+                if (World.Instance.RegionsByName.TryGetValue(AcknexObject.GetString("NAME"), out var definition))
                 {
                     return definition._meshCollider;
                 }
@@ -137,13 +136,13 @@ namespace Acknex
 
         public Vector3 ProjectPosition(float x, float y, bool ground = false)
         {
-            var point = new Vector3(x, AcknexObject.Get<float>("CEIL_HGT"), y);
+            var point = new Vector3(x, AcknexObject.GetNumber("CEIL_HGT"), y);
             return !ground && _meshCollider != null && _meshCollider.Raycast(new Ray(point, Vector3.down), out var bottomHit, Mathf.Infinity) ? bottomHit.point : new Vector3(x, 0f, y);
         }
 
         public float ProjectHeight(float x, float y, bool ground = false)
         {
-            var point = new Vector3(x, AcknexObject.Get<float>("CEIL_HGT"), y);
+            var point = new Vector3(x, AcknexObject.GetNumber("CEIL_HGT"), y);
             return !ground && _meshCollider != null && _meshCollider.Raycast(new Ray(point, Vector3.down), out var bottomHit, Mathf.Infinity) ? bottomHit.point.y : 0f;
         }
 
@@ -208,11 +207,11 @@ namespace Acknex
             var allVertices = new List<Vector3>();
             var allUVs = new List<Vector2>();
             var allTriangles = new Dictionary<int, List<int>>();
-            if (Math.Abs(region.AcknexObject.Get<float>("CEIL_HGT") - region.AcknexObject.Get<float>("FLOOR_HGT")) > Mathf.Epsilon)
+            if (Math.Abs(region.AcknexObject.GetNumber("CEIL_HGT") - region.AcknexObject.GetNumber("FLOOR_HGT")) > Mathf.Epsilon)
             {
                 BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex);
                 BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex, true);
-                BuildFloorMesh(allVertices, allUVs, allTriangles, region, region.AcknexObject.Get<string>("CEIL_TEX"), region.AcknexObject.Get<string>("FLOOR_TEX"));
+                BuildFloorMesh(allVertices, allUVs, allTriangles, region, region.AcknexObject.GetString("CEIL_TEX"), region.AcknexObject.GetString("FLOOR_TEX"));
             }
             region.Enable();
             if (region.Below != null)
@@ -220,7 +219,7 @@ namespace Acknex
                 var newRegion = Instantiate(region.Below.gameObject).GetComponent<Region>();
                 newRegion.transform.SetParent(World.Instance.transform, false);
                 newRegion.name = region.Below.name;
-                ((AcknexObject)newRegion.AcknexObject).Properties = new Dictionary<string, object>(((AcknexObject)region.Below.AcknexObject).Properties);
+                ((AcknexObject)newRegion.AcknexObject).ObjectProperties = new Dictionary<string, object>(((AcknexObject)region.Below.AcknexObject).ObjectProperties);
                 region.Below = newRegion;
                 BuildRegionFloorAndCeiling(newRegion, contouredRegion);
             }
@@ -237,7 +236,7 @@ namespace Acknex
 
             tess.Tessellate();
             var floorVertices = new Vector3[tess.VertexCount];
-            var height = (ceil ? region.AcknexObject.Get<float>("CEIL_HGT") : region.AcknexObject.Get<float>("FLOOR_HGT"));
+            var height = (ceil ? region.AcknexObject.GetNumber("CEIL_HGT") : region.AcknexObject.GetNumber("FLOOR_HGT"));
             for (var i = 0; i < tess.VertexCount; i++)
             {
                 var vertex = tess.Vertices[i];

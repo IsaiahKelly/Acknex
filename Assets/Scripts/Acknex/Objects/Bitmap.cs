@@ -14,10 +14,10 @@ namespace Acknex
             return null;
         }
 
-        public float Width => AcknexObject.Get<float>("DX") == 0 ? Texture2D.width : AcknexObject.Get<float>("DX");
-        public float Height => AcknexObject.Get<float>("DY") == 0 ? Texture2D.height : AcknexObject.Get<float>("DY");
-        public float X => AcknexObject.Get<float>("X");
-        public float Y => AcknexObject.Get<float>("Y");
+        public float Width => AcknexObject.GetNumber("DX") == 0 ? Texture2D.width : AcknexObject.GetNumber("DX");
+        public float Height => AcknexObject.GetNumber("DY") == 0 ? Texture2D.height : AcknexObject.GetNumber("DY");
+        public float X => AcknexObject.GetNumber("X");
+        public float Y => AcknexObject.GetNumber("Y");
 
         public Texture2D Texture2D;
 
@@ -28,14 +28,14 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            var filename = AcknexObject.Get<string>("FILENAME");
+            var filename = AcknexObject.GetString("FILENAME");
             if (!World.Instance.TextureCache.TryGetValue(filename, out Texture2D))
             {
                 var lowerInvariant = filename.ToLowerInvariant();
                 if (lowerInvariant.EndsWith("pcx"))
                 {
                     Texture2D = PcxReader.Load(filename);
-                    Texture2D.name = AcknexObject.Get<string>("NAME");
+                    Texture2D.name = AcknexObject.GetString("NAME");
                     TextureUtils.Dilate(Texture2D);
                     World.Instance.TextureCache.Add(filename, Texture2D);
                 }
@@ -46,7 +46,7 @@ namespace Acknex
                     if (iff.Ilbms.Count > 0)
                     {
                         Texture2D = iff.Ilbms[0].Texture2D;
-                        Texture2D.name = AcknexObject.Get<string>("NAME");
+                        Texture2D.name = AcknexObject.GetString("NAME");
                         TextureUtils.Dilate(Texture2D);
                         World.Instance.TextureCache.Add(filename, Texture2D);
                     }
@@ -70,30 +70,30 @@ namespace Acknex
             var height = Height;
             var x = X;
             var y = Y;
-            if (wallOrRegion != null && wallOrRegion.TryGet<float>("OFFSET_X", out var offsetXVal))
+            if (wallOrRegion != null && wallOrRegion.TryGetNumber("OFFSET_X", out var offsetXVal))
             {
                 x += offsetXVal;
             }
-            if (wallOrRegion != null && wallOrRegion.TryGet<float>("OFFSET_Y", out var offsetYVal))
+            if (wallOrRegion != null && wallOrRegion.TryGetNumber("OFFSET_Y", out var offsetYVal))
             {
                 y += offsetYVal;
             }
-            if (texture != null && texture.AcknexObject.TryGet<List<float>>("OFFSET_X", out var offsetXList))
+            if (texture != null && texture.AcknexObject.TryGetObject<List<float>>("OFFSET_X", out var offsetXList))
             {
                 x += offsetXList[index];
             }
-            if (texture != null && texture.AcknexObject.TryGet<List<float>>("OFFSET_Y", out var offsetYList))
+            if (texture != null && texture.AcknexObject.TryGetObject<List<float>>("OFFSET_Y", out var offsetYList))
             {
                 y += offsetYList[index];
             }
-            if (texture != null && texture.AcknexObject.TryGet<float>("SCALE_X", out var newWidth))
+            if (texture != null && texture.AcknexObject.TryGetNumber("SCALE_X", out var newWidth))
             {
                 width = newWidth;
             } else if (wallOrRegion != null)
             {
                 width = 16f;
             }
-            if (texture != null && texture.AcknexObject.TryGet<float>("SCALE_Y", out var newHeight))
+            if (texture != null && texture.AcknexObject.TryGetNumber("SCALE_Y", out var newHeight))
             {
                 height = newHeight;
             } 

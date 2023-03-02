@@ -34,7 +34,7 @@ public class AcknexObjectEditor : Editor
         if (target is IAcknexObjectContainer container)
         {
             EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Instance");
-            foreach (var property in ((AcknexObject)container.AcknexObject).Properties)
+            foreach (var property in ((AcknexObject)container.AcknexObject).ObjectProperties)
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(property.Key);
@@ -49,13 +49,13 @@ public class AcknexObjectEditor : Editor
                 EditorGUILayout.EndHorizontal();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
-            if (container.AcknexObject.GetTemplateCallback != null && container.AcknexObject.TryGet<string>("NAME", out var name))
+            if (container.AcknexObject.GetTemplateCallback != null && container.AcknexObject.TryGetString("NAME", out var name))
             {
                 var template = container.AcknexObject.GetTemplateCallback(name);
                 if (template != null)
                 {
                     EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Template");
-                    foreach (var property in ((AcknexObject)template).Properties)
+                    foreach (var property in ((AcknexObject)template).ObjectProperties)
                     {
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField(property.Key);
@@ -143,11 +143,11 @@ public class WorldEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);
-            EditorGUILayout.LabelField(kvp.Value.AcknexObject.Get<string>("VAL"));
+            EditorGUILayout.LabelField(kvp.Value.AcknexObject.GetString("VAL"));
             if (GUILayout.Button("Modify"))
             {
-                var dialog = InputDialog.ShowDialog(kvp.Value.AcknexObject.Get<string>("VAL"));
-                world.SkillsByName[kvp.Key].AcknexObject["VAL"] = dialog.Value;
+                var dialog = InputDialog.ShowDialog(kvp.Value.AcknexObject.GetString("VAL"));
+                world.SkillsByName[kvp.Key].AcknexObject.SetNumber("VAL", float.Parse(dialog.Value));
             }
             EditorGUILayout.EndHorizontal();
         }
@@ -157,12 +157,12 @@ public class WorldEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);
-            if (kvp.Value.AcknexObject.TryGet<System.Collections.Generic.List<IAcknexObject>>("VAL", out var list))
+            if (kvp.Value.AcknexObject.TryGetObject<System.Collections.Generic.List<IAcknexObject>>("VAL", out var list))
             {
                 var strings = new List<string>();
                 foreach (var item in list)
                 {
-                    strings.Add(item.Get<string>("NAME"));
+                    strings.Add(item.GetString("NAME"));
                 }
                 EditorGUILayout.Popup("Objects", 0, strings.ToArray());
             }

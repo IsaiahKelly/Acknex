@@ -36,7 +36,7 @@ namespace Acknex
         public Matrix4x4 BottomUV;
         public Vector3 BottomNormal;
 
-        public Texture TextureObject => AcknexObject.Get<string>("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.Get<string>("TEXTURE"), out var textureObject) ? textureObject : null;
+        public Texture TextureObject => AcknexObject.GetString("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.GetString("TEXTURE"), out var textureObject) ? textureObject : null;
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
 
@@ -44,12 +44,12 @@ namespace Acknex
         {
             get
             {
-                if (AcknexObject.TryGet("FLAGS", out List<string> flags))
+                if (AcknexObject.TryGetObject("FLAGS", out List<string> flags))
                 {
                     return flags;
                 }
                 flags = new List<string>();
-                AcknexObject["FLAGS"] = flags;
+                AcknexObject.SetObject("FLAGS", flags);
                 return flags;
             }
         }
@@ -118,7 +118,7 @@ namespace Acknex
             bool inverted = false)
         {
             vertexCount++;
-            var initialVertex = contourVertices[inverted ? wallA.AcknexObject.Get<int>("VERTEX2") : wallA.AcknexObject.Get<int>("VERTEX1")];
+            var initialVertex = contourVertices[inverted ? wallA.AcknexObject.GetInteger("VERTEX2") : wallA.AcknexObject.GetInteger("VERTEX1")];
             initialVertex = new ContourVertex(initialVertex.Position, new WallWithSide(wallA, inverted));
             allContourVertices.Add(initialVertex);
             wallA.Processed = true;
@@ -132,14 +132,14 @@ namespace Acknex
 
                 if (inverted)
                 {
-                    if (wallB.AcknexObject.Get<int>("VERTEX2") == wallA.AcknexObject.Get<int>("VERTEX1"))
+                    if (wallB.AcknexObject.GetInteger("VERTEX2") == wallA.AcknexObject.GetInteger("VERTEX1"))
                     {
                         ProcessWall(allContourVertices, contourVertices, wallB, kvp, ref vertexCount, true);
                         foundPair = true;
                         break;
                     }
 
-                    if (wallB.AcknexObject.Get<int>("VERTEX1") == wallA.AcknexObject.Get<int>("VERTEX1"))
+                    if (wallB.AcknexObject.GetInteger("VERTEX1") == wallA.AcknexObject.GetInteger("VERTEX1"))
                     {
                         ProcessWall(allContourVertices, contourVertices, wallB, kvp, ref vertexCount);
                         foundPair = true;
@@ -148,14 +148,14 @@ namespace Acknex
                 }
                 else
                 {
-                    if (wallB.AcknexObject.Get<int>("VERTEX1") == wallA.AcknexObject.Get<int>("VERTEX2"))
+                    if (wallB.AcknexObject.GetInteger("VERTEX1") == wallA.AcknexObject.GetInteger("VERTEX2"))
                     {
                         ProcessWall(allContourVertices, contourVertices, wallB, kvp, ref vertexCount);
                         foundPair = true;
                         break;
                     }
 
-                    if (wallB.AcknexObject.Get<int>("VERTEX2") == wallA.AcknexObject.Get<int>("VERTEX2"))
+                    if (wallB.AcknexObject.GetInteger("VERTEX2") == wallA.AcknexObject.GetInteger("VERTEX2"))
                     {
                         ProcessWall(allContourVertices, contourVertices, wallB, kvp, ref vertexCount, true);
                         foundPair = true;
@@ -167,7 +167,7 @@ namespace Acknex
 
             if (!foundPair)
             {
-                var endingVertex = contourVertices[inverted ? wallA.AcknexObject.Get<int>("VERTEX1") : wallA.AcknexObject.Get<int>("VERTEX2")];
+                var endingVertex = contourVertices[inverted ? wallA.AcknexObject.GetInteger("VERTEX1") : wallA.AcknexObject.GetInteger("VERTEX2")];
                 endingVertex = new ContourVertex(endingVertex.Position, new WallWithSide(wallA, inverted));
                 allContourVertices.Add(endingVertex);
                 vertexCount++;
@@ -213,16 +213,16 @@ namespace Acknex
         {
             while (true)
             {
-                var vertexA = vertices[wall.AcknexObject.Get<int>("VERTEX1")];
-                var vertexB = vertices[wall.AcknexObject.Get<int>("VERTEX2")];
+                var vertexA = vertices[wall.AcknexObject.GetInteger("VERTEX1")];
+                var vertexB = vertices[wall.AcknexObject.GetInteger("VERTEX2")];
 
-                wall.AcknexObject.Set<float>("X1", vertexA.Position.X);
-                wall.AcknexObject.Set<float>("Y1", vertexA.Position.Y);
-                wall.AcknexObject.Set<float>("Z1", vertexA.Position.Z);
-
-                wall.AcknexObject.Set<float>("X2", vertexB.Position.X);
-                wall.AcknexObject.Set<float>("Y2", vertexB.Position.Y);
-                wall.AcknexObject.Set<float>("Z2", vertexB.Position.Z);
+                wall.AcknexObject.SetNumber("X1", vertexA.Position.X);
+                wall.AcknexObject.SetNumber("Y1", vertexA.Position.Y);
+                wall.AcknexObject.SetNumber("Z1", vertexA.Position.Z);
+                                  
+                wall.AcknexObject.SetNumber("X2", vertexB.Position.X);
+                wall.AcknexObject.SetNumber("Y2", vertexB.Position.Y);
+                wall.AcknexObject.SetNumber("Z2", vertexB.Position.Z);
 
                 if (leftRegion == null)
                 {
@@ -239,26 +239,26 @@ namespace Acknex
 
                 //todo: checking by the flag here is wrong
                 if (wall.Flags.Contains("FENCE"))
-                    //leftRegion.AcknexObject.Get<float>("FLOOR_HGT") == rightRegion.AcknexObject.Get<float>("FLOOR_HGT") && 
-                    //leftRegion.AcknexObject.Get<float>("CEIL_HGT") == rightRegion.AcknexObject.Get<float>("CEIL_HGT"))
+                    //leftRegion.AcknexObject.GetNumber("FLOOR_HGT") == rightRegion.AcknexObject.GetNumber("FLOOR_HGT") && 
+                    //leftRegion.AcknexObject.GetNumber("CEIL_HGT") == rightRegion.AcknexObject.GetNumber("CEIL_HGT"))
                 {
-                    var floor = leftRegion.AcknexObject.Get<float>("FLOOR_HGT", false);
-                    var ceil = leftRegion.AcknexObject.Get<float>("CEIL_HGT", false);
+                    var floor = leftRegion.AcknexObject.GetNumber("FLOOR_HGT", false);
+                    var ceil = leftRegion.AcknexObject.GetNumber("CEIL_HGT", false);
                     if (leftRegion.Below != null)
                     {
-                        floor = Mathf.Max(floor, leftRegion.Below.AcknexObject.Get<float>("CEIL_HGT"));
+                        floor = Mathf.Max(floor, leftRegion.Below.AcknexObject.GetNumber("CEIL_HGT"));
                     }
                     if (rightRegion.Below != null)
                     {
-                        floor = Mathf.Max(floor, rightRegion.Below.AcknexObject.Get<float>("CEIL_HGT"));
+                        floor = Mathf.Max(floor, rightRegion.Below.AcknexObject.GetNumber("CEIL_HGT"));
                     }
                     if (leftRegionAbove != null)
                     {
-                        ceil = Mathf.Min(ceil, leftRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
+                        ceil = Mathf.Min(ceil, leftRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
                     }
                     if (rightRegionAbove != null)
                     {
-                        ceil = Mathf.Min(ceil, rightRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
+                        ceil = Mathf.Min(ceil, rightRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
                     }
                     var liftedLeft = /*leftRegionAbove != null && leftRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ leftRegionAbove == null && leftRegion.Flags.Contains("FLOOR_LIFTED");
                     var liftedRight = /*rightRegionAbove != null && rightRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ rightRegionAbove == null && rightRegion.Flags.Contains("FLOOR_LIFTED");
@@ -266,9 +266,9 @@ namespace Acknex
                     var v1 = new Vector3(vertexB.Position.X, ceil + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, floor + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v3 = new Vector3(vertexA.Position.X, floor + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                    MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, wall.AcknexObject.Get<string>("TEXTURE"), allVertices.Count);
+                    MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, wall.AcknexObject.GetString("TEXTURE"), allVertices.Count);
                     //todo: double-sided walls glitch Unity shadows
-                    //MeshUtils.AddQuad(3, 2, 1, 0, allTriangles, wall.AcknexObject.Get<string>("TEXTURE"), allVertices.Count);
+                    //MeshUtils.AddQuad(3, 2, 1, 0, allTriangles, wall.AcknexObject.GetString("TEXTURE"), allVertices.Count);
                     allVertices.Add(v0); //a
                     allVertices.Add(v1); //b
                     allVertices.Add(v2); //c
@@ -290,27 +290,27 @@ namespace Acknex
                 else
                 {
                     {
-                        var heightLeft = leftRegion.AcknexObject.Get<float>("FLOOR_HGT", false);
-                        var heightRight = rightRegion.AcknexObject.Get<float>("FLOOR_HGT", false);
+                        var heightLeft = leftRegion.AcknexObject.GetNumber("FLOOR_HGT", false);
+                        var heightRight = rightRegion.AcknexObject.GetNumber("FLOOR_HGT", false);
                         if (leftRegion.Below != null)
                         {
-                            heightLeft = Mathf.Max(heightLeft, leftRegion.Below.AcknexObject.Get<float>("CEIL_HGT"));
-                            heightRight = Mathf.Max(heightRight, leftRegion.Below.AcknexObject.Get<float>("CEIL_HGT"));
+                            heightLeft = Mathf.Max(heightLeft, leftRegion.Below.AcknexObject.GetNumber("CEIL_HGT"));
+                            heightRight = Mathf.Max(heightRight, leftRegion.Below.AcknexObject.GetNumber("CEIL_HGT"));
                         }
                         if (rightRegion.Below != null)
                         {
-                            heightRight = Mathf.Max(heightRight, rightRegion.Below.AcknexObject.Get<float>("CEIL_HGT"));
-                            heightLeft = Mathf.Max(heightLeft, rightRegion.Below.AcknexObject.Get<float>("CEIL_HGT"));
+                            heightRight = Mathf.Max(heightRight, rightRegion.Below.AcknexObject.GetNumber("CEIL_HGT"));
+                            heightLeft = Mathf.Max(heightLeft, rightRegion.Below.AcknexObject.GetNumber("CEIL_HGT"));
                         }
                         if (leftRegionAbove != null)
                         {
-                            heightLeft = Mathf.Min(heightLeft, leftRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
-                            heightRight = Mathf.Min(heightRight, leftRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
+                            heightLeft = Mathf.Min(heightLeft, leftRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
+                            heightRight = Mathf.Min(heightRight, leftRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
                         }
                         if (rightRegionAbove != null)
                         {
-                            heightRight = Mathf.Min(heightRight, rightRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
-                            heightLeft = Mathf.Min(heightLeft, rightRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
+                            heightRight = Mathf.Min(heightRight, rightRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
+                            heightLeft = Mathf.Min(heightLeft, rightRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
                         }
                         var liftedLeft = /*leftRegionAbove != null && leftRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ leftRegionAbove == null && leftRegion.Flags.Contains("FLOOR_LIFTED");
                         var liftedRight = /*rightRegionAbove != null && rightRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ rightRegionAbove == null && rightRegion.Flags.Contains("FLOOR_LIFTED");
@@ -318,7 +318,7 @@ namespace Acknex
                         var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                         var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                         var v3 = new Vector3(vertexA.Position.X, heightRight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                        MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, wall.AcknexObject.Get<string>("TEXTURE"), allVertices.Count);
+                        MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, wall.AcknexObject.GetString("TEXTURE"), allVertices.Count);
                         allVertices.Add(v0); //a
                         allVertices.Add(v1); //b
                         allVertices.Add(v2); //c
@@ -338,18 +338,18 @@ namespace Acknex
                         wall.BottomUV = new Matrix4x4(uv0, uv1, uv2, uv3);
                     }
                     {
-                        var heightLeft = leftRegion.AcknexObject.Get<float>("CEIL_HGT");
-                        var heightRight = rightRegion.AcknexObject.Get<float>("CEIL_HGT");
+                        var heightLeft = leftRegion.AcknexObject.GetNumber("CEIL_HGT");
+                        var heightRight = rightRegion.AcknexObject.GetNumber("CEIL_HGT");
                         if (leftRegionAbove != null)
                         {
-                            heightLeft = Mathf.Min(heightLeft, leftRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
-                            heightRight = Mathf.Min(heightRight, leftRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
+                            heightLeft = Mathf.Min(heightLeft, leftRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
+                            heightRight = Mathf.Min(heightRight, leftRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
                         }
 
                         if (rightRegionAbove != null)
                         {
-                            heightRight = Mathf.Min(heightRight, rightRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
-                            heightLeft = Mathf.Min(heightLeft, rightRegionAbove.AcknexObject.Get<float>("FLOOR_HGT"));
+                            heightRight = Mathf.Min(heightRight, rightRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
+                            heightLeft = Mathf.Min(heightLeft, rightRegionAbove.AcknexObject.GetNumber("FLOOR_HGT"));
                         }
 
                         var liftedLeft = leftRegion.Flags.Contains("CEIL_LIFTED") && leftRegionAbove == null;
@@ -358,7 +358,7 @@ namespace Acknex
                         var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                         var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                         var v3 = new Vector3(vertexA.Position.X, heightRight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                        MeshUtils.AddQuad(3, 2, 1, 0, allTriangles, wall.AcknexObject.Get<string>("TEXTURE"), allVertices.Count);
+                        MeshUtils.AddQuad(3, 2, 1, 0, allTriangles, wall.AcknexObject.GetString("TEXTURE"), allVertices.Count);
                         allVertices.Add(v0);
                         allVertices.Add(v1);
                         allVertices.Add(v2);
@@ -423,8 +423,8 @@ namespace Acknex
             var allVertices = new List<Vector3>();
             var allUVs = new List<Vector2>();
             var allTriangles = new Dictionary<string, List<int>>();
-            var rightRegion = World.Instance.RegionsByIndex[wall.AcknexObject.Get<int>("REGION1")];
-            var leftRegion = World.Instance.RegionsByIndex[wall.AcknexObject.Get<int>("REGION2")];
+            var rightRegion = World.Instance.RegionsByIndex[wall.AcknexObject.GetInteger("REGION1")];
+            var leftRegion = World.Instance.RegionsByIndex[wall.AcknexObject.GetInteger("REGION2")];
             BuildWall(wall, rightRegion, leftRegion, contourVertices, allVertices, allUVs, allTriangles);
             BuildWallMesh(allVertices, allUVs, allTriangles, wall);
         }

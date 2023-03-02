@@ -170,15 +170,15 @@ namespace Acknex
         {
             if (SkillsByName.TryGetValue(name, out var skill))
             {
-                //if (skill.AcknexObject.TryGet<float>("MIN", out var min))
+                //if (skill.AcknexObject.TryGetNumber("MIN", out var min))
                 //{
                 //    value = Mathf.Max(min, value);
                 //}
-                //if (skill.AcknexObject.TryGet<float>("MAX", out var max))
+                //if (skill.AcknexObject.TryGetNumber("MAX", out var max))
                 //{
                 //    value = Mathf.Min(max, value);
                 //}
-                skill.AcknexObject.Set("VAL", value);
+                skill.AcknexObject.SetNumber("VAL", value);
             }
             else
             {
@@ -188,7 +188,7 @@ namespace Acknex
 
         public float GetSkillValue(string name)
         {
-            return SkillsByName.TryGetValue(name, out var skill) ? skill.AcknexObject.Get<float>("VAL") : default;
+            return SkillsByName.TryGetValue(name, out var skill) ? skill.AcknexObject.GetNumber("VAL") : default;
         }
     }
 }
