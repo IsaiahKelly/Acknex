@@ -94,18 +94,9 @@ namespace Acknex
 
         }
 
-        private Bitmap _bitmap;
-
         private void OnDrawGizmosSelected()
         {
-            if (_bitmap != null)
-            {
-                GizmosUtils.DrawString(_bitmap.AcknexObject.GetString("NAME") + "|" + _bitmap.X + "|" + _bitmap.Y + "|" + _bitmap.Width + "|" + _bitmap.Height, transform.position, Color.yellow);
-            }
-            //var forward = Quaternion.Euler(0f, AcknexObject.GetNumber("ANGLE"), 0f) * Vector3.right;
-            //DebugExtension.DebugArrow(_thingGameObject.transform.position, forward, Color.red);
-            //DebugExtension.DebugArrow(_thingGameObject.transform.position, thingDirection, Color.yellow);
-            //DebugExtension.DebugArrow(_thingGameObject.transform.position, cameraToThingDirection, Color.blue);
+
         }
 
         private IEnumerator Animate(Texture texture, MeshRenderer meshRenderer)
@@ -158,8 +149,6 @@ namespace Acknex
                 UpdateFrame(bitmap, texture, meshRenderer, false, frame);
             }
             transform.localScale = TextureUtils.CalculateObjectSize(bitmap, texture);
-            _bitmap = bitmap;
-            //TextureUtils.UpdateScale(meshRenderer.transform, bitmap, texture);
         }
 
         private static void UpdateFrame(Bitmap bitmap, Texture textureObject, MeshRenderer meshRenderer, bool mirror = false, int frameIndex = 0)
