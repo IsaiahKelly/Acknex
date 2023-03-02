@@ -32,7 +32,7 @@ namespace Acknex
         public bool UseWDLEngine;
 
         public readonly List<Region> RegionsByIndex = new List<Region>();
-        public readonly HashSet<string> DefinitionsByName = new HashSet<string>();
+        public readonly Dictionary<string, string> DefinitionsByName = new Dictionary<string, string>();
         public readonly Dictionary<string, Synonym> SynonymsByName = new Dictionary<string, Synonym>();
         public readonly Dictionary<string, Action> ActionsByName = new Dictionary<string, Action>();
         public readonly Dictionary<string, Skill> SkillsByName = new Dictionary<string, Skill>();

@@ -24,14 +24,13 @@ namespace Acknex
             _baseDir = baseDir;
             _wmpContainsRegionsByName = wmpContainsRegionsByName;
         }
-
-        //private static int ParseInt(string token)
-        //{
-        //    return Convert.ToInt32(token);
-        //}
-
+        
         private static float ParseFloat(string token)
         {
+            if (World.Instance.DefinitionsByName.TryGetValue(token, out var value))
+            {
+                return Convert.ToSingle(value, CultureInfo.InvariantCulture);
+            }
             return Convert.ToSingle(token, CultureInfo.InvariantCulture);
         }
 
@@ -45,7 +44,7 @@ namespace Acknex
             while (!streamReader.EndOfStream)
             {
                 read = streamReader.Read();
-                if (read != '\r' && read != '\n' && read != ' ' && read != '\t' && read != ',')
+                if (read != '\0' && read != '\r' && read != '\n' && read != ' ' && read != '\t' && read != ',')
                 {
                     break;
                 }
@@ -105,6 +104,7 @@ namespace Acknex
                 }
                 switch (read)
                 {
+                    case '\0':
                     case '\r':
                     case '\n':
                     case ' ':
@@ -151,7 +151,21 @@ namespace Acknex
                 case "DEFINE":
                     {
                         var a = tokens[1];
-                        World.Instance.DefinitionsByName.Add(a);
+                        if (tokens.Count > 2)
+                        {
+                            if (World.Instance.DefinitionsByName.TryGetValue(tokens[2], out var defineValue))
+                            {
+                                World.Instance.DefinitionsByName[a] = defineValue;
+                            }
+                            else
+                            {
+                                World.Instance.DefinitionsByName[a] = tokens[2];
+                            }
+                        }
+                        else
+                        {
+                            World.Instance.DefinitionsByName[a] = null;
+                        }
                         return true;
                     }
                 case "UNDEF":
@@ -164,7 +178,7 @@ namespace Acknex
                 case "IFNDEF":
                     {
                         var a = tokens[1];
-                        canContinue = keyword == "IFDEF" && World.Instance.DefinitionsByName.Contains(a);
+                        canContinue = keyword == "IFDEF" && World.Instance.DefinitionsByName.ContainsKey(a);
                         return true;
                     }
                 case "IFELSE":
@@ -700,12 +714,12 @@ namespace Acknex
         private string ParseDir(string token)
         {
             token = token.Substring(1, token.Length - 2);
-            var file = $"{_baseDir}/{token}";
-            if (File.Exists(file))
-            {
-                return file;
-            }
-            return null;
+            var filename = $"{_baseDir}/{token}";
+            //if (File.Exists(file))
+            //{
+                return filename;
+            //}
+            //return null;
         }
 
         public void ParseWMP(string wmpFilename)
