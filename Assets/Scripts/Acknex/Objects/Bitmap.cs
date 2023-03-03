@@ -103,7 +103,7 @@ namespace Acknex
             {
                 material.SetFloat("_V0H", wall.BottomUV.m12);
                 material.SetFloat("_V1H", wall.BottomUV.m13);
-                material.SetInt("_CLAMPY", 1);
+                material.SetInt("_FENCE", 1);
             }
             var x0 = mirror ? x + width : x;
             var y0 = y;

@@ -16,8 +16,7 @@
         _OFFSETY("_OFFSETY", Float) = 0.0
         _V0H("_V0H", Float) = 0.0
         _V1H("_V1H", Float) = 0.0
-        _CLAMPX("_CLAMPX", Float) = 0
-        _CLAMPY("_CLAMPY", Float) = 0
+        _FENCE("_FENCE", Float) = 0
     }
     SubShader
     {
@@ -57,8 +56,7 @@
         float _AMBIENT;
         float _V0H;
         float _V1H;
-        int _CLAMPX;
-        int _CLAMPY;
+        int _FENCE;
 
         // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
         // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -70,10 +68,13 @@
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
             //todo: lerp between V0H V1H
-            if (_CLAMPY) {
+            if (_FENCE) {
                 _OFFSETY = _V0H - _SCALEY;
                 _Y0 = 0.0;
-                //IN.uv_MainTex.y = min(IN.uv_MainTex.y, _V1H);
+                //TODO: TEST HACK!
+                if (IN.uv_MainTex.y > _V0H + (_SCALEY / 5.7)) {
+                    discard;
+                }
             }
             float2 rectMin = float2(_OFFSETX + (_X0 * _SCALEX), _OFFSETY + (_Y0 * _SCALEY));
             float2 rectMax = float2(rectMin.x + _SCALEX, rectMin.y + _SCALEY);
