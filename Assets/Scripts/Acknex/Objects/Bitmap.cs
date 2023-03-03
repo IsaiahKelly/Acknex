@@ -70,36 +70,33 @@ namespace Acknex
             var height = Height;
             var x = X;
             var y = Y;
+            var scaleX = 16f;
+            var scaleY = 16f;
+            var offsetX = 0f;
+            var offsetY = 0f;
             if (wallOrRegion != null && wallOrRegion.TryGetFloat("OFFSET_X", out var offsetXVal))
             {
-                x += offsetXVal;
+                offsetX = offsetXVal;
             }
             if (wallOrRegion != null && wallOrRegion.TryGetFloat("OFFSET_Y", out var offsetYVal))
             {
-                y += offsetYVal;
+                offsetY = offsetYVal;
             }
             if (texture != null && texture.AcknexObject.TryGetObject<List<float>>("OFFSET_X", out var offsetXList))
             {
-                x += offsetXList[index];
+                offsetX = offsetXList[index];
             }
             if (texture != null && texture.AcknexObject.TryGetObject<List<float>>("OFFSET_Y", out var offsetYList))
             {
-                y += offsetYList[index];
+                offsetY = offsetYList[index];
             }
-            if (texture != null && texture.AcknexObject.TryGetFloat("SCALE_X", out var newWidth))
+            if (texture != null && texture.AcknexObject.TryGetFloat("SCALE_X", out var scaleXVal))
             {
-                width = newWidth;
-            } else if (wallOrRegion != null)
-            {
-                width = 16f;
-            }
-            if (texture != null && texture.AcknexObject.TryGetFloat("SCALE_Y", out var newHeight))
-            {
-                height = newHeight;
+                scaleX = scaleXVal;
             } 
-            else if (wallOrRegion != null)
+            if (texture != null && texture.AcknexObject.TryGetFloat("SCALE_Y", out var scaleYVal))
             {
-                height = 16f;
+                scaleY = scaleYVal;
             }
             material.SetInt("_CLAMPY", 0);
             if (wallOrRegion != null && wallOrRegion.Container is Wall wall && wall.Flags.Contains("FENCE"))
@@ -116,6 +113,10 @@ namespace Acknex
             material.SetFloat("_Y0", y0);
             material.SetFloat("_X1", x1);
             material.SetFloat("_Y1", y1);
+            material.SetFloat("_OFFSETX", offsetX);
+            material.SetFloat("_OFFSETY", offsetY);
+            material.SetFloat("_SCALEX", scaleX);
+            material.SetFloat("_SCALEY", scaleY);
             //material.SetFloat("_AMBIENT", ambient);
             material.mainTexture = Texture2D;
         }

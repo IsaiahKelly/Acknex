@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using Acknex;
 using Acknex.Interfaces;
 using UnityEditor;
@@ -48,6 +49,13 @@ public class AcknexObjectEditor : Editor
                 }
                 EditorGUILayout.EndHorizontal();
             }
+            foreach (var property in ((AcknexObject)container.AcknexObject).NumberProperties)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(property.Key);
+                EditorGUILayout.LabelField(property.Value.ToString());
+                EditorGUILayout.EndHorizontal();
+            }
             EditorGUILayout.EndFoldoutHeaderGroup();
             if (container.AcknexObject.GetTemplateCallback != null && container.AcknexObject.TryGetString("NAME", out var name))
             {
@@ -67,6 +75,13 @@ public class AcknexObjectEditor : Editor
                         {
                             EditorGUILayout.LabelField(property.Value.ToString());
                         }
+                        EditorGUILayout.EndHorizontal();
+                    }
+                    foreach (var property in ((AcknexObject)template).NumberProperties)
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField(property.Key);
+                        EditorGUILayout.LabelField(property.Value.ToString(CultureInfo.InvariantCulture));
                         EditorGUILayout.EndHorizontal();
                     }
                     EditorGUILayout.EndFoldoutHeaderGroup();

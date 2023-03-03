@@ -4,7 +4,7 @@
     {
         _Color ("Color", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
-        _Cutoff("Alpha cutoff", Range(0,1)) = 0.9
+        _LightMultiplier("_LightMultiplier", Range(0,1)) = 1.0
         _AMBIENT("_AMBIENT", Float) = 1.0
         _X0("_X0", Float) = 0.0
         _X1("_X1", Float) = 0.0
@@ -23,7 +23,7 @@
 
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
-         #pragma surface surf Sprite addshadow
+        #pragma surface surf Sprite addshadow
 
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
@@ -38,7 +38,7 @@
 
 
         fixed4 _Color;
-        float _Cutoff;
+        float _LightMultiplier;
 
         float _X0;
         float _Y0;
@@ -60,7 +60,7 @@
 
         half4 LightingSprite(SurfaceOutput s, half3 lightDir, half atten) {
             half4 c;
-            c.rgb = s.Albedo * _LightColor0.rgb * atten;
+            c.rgb = s.Albedo * lerp(1.0, _LightColor0.rgb * atten, _LightMultiplier);
             c.a = s.Alpha;
             return c;
         }

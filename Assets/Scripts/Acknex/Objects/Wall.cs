@@ -34,7 +34,9 @@ namespace Acknex
         //todo: can remove, debug info
         public Matrix4x4 BottomQuad;
         public Matrix4x4 BottomUV;
-        public Vector3 BottomNormal;
+
+        private Vector3 XAxis;
+        //public Vector3 BottomNormal;
 
         public Texture TextureObject => AcknexObject.GetString("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.GetString("TEXTURE"), out var textureObject) ? textureObject : null;
 
@@ -84,8 +86,8 @@ namespace Acknex
             }
             AcknexObject.IsDirty = false;
             var basePosition = new Vector3(BottomQuad.GetColumn(0).x, 0f, 0f);
-            var baseRotation = Quaternion.LookRotation(-BottomNormal);
-            TextureUtils.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject?.AcknexObject, basePosition, baseRotation);
+            var baseRotation = Quaternion.LookRotation(Vector3.Cross(XAxis, Vector3.up));
+            Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject?.AcknexObject, basePosition, baseRotation);
             if (_meshRenderer != null)
             {
                 BitmapImage?.UpdateMaterial(_meshRenderer.material, TextureObject, 0, false, AcknexObject);
@@ -216,6 +218,9 @@ namespace Acknex
                 var vertexA = vertices[wall.AcknexObject.GetInteger("VERTEX1")];
                 var vertexB = vertices[wall.AcknexObject.GetInteger("VERTEX2")];
 
+                var xAxis = (new Vector3(vertexB.Position.X, 0f, vertexB.Position.Y) - new Vector3(vertexA.Position.X, 0f, vertexA.Position.Y)).normalized;
+                wall.XAxis= xAxis;
+
                 wall.AcknexObject.SetFloat("X1", vertexA.Position.X);
                 wall.AcknexObject.SetFloat("Y1", vertexA.Position.Y);
                 wall.AcknexObject.SetFloat("Z1", vertexA.Position.Z);
@@ -273,8 +278,7 @@ namespace Acknex
                     allVertices.Add(v1); //b
                     allVertices.Add(v2); //c
                     allVertices.Add(v3); //d
-                    var normal = MeshUtils.GetNormal(v0, v1, v2, v3);
-                    var xAxis = Vector3.Normalize(v1 - v0);
+                    //var normal = MeshUtils.GetNormal(v0, v1, v2, v3);
                     var uv0 = CalculateUV(v0 - v0, xAxis, v0);
                     var uv1 = CalculateUV(v1 - v0, xAxis, v1);
                     var uv2 = CalculateUV(v2 - v0, xAxis, v2);
@@ -284,7 +288,6 @@ namespace Acknex
                     allUVs.Add(uv2);
                     allUVs.Add(uv3);
                     wall.BottomQuad = new Matrix4x4(v0, v1, v2, v3);
-                    wall.BottomNormal = normal.magnitude > 0f ? normal : Vector3.forward;
                     wall.BottomUV = new Matrix4x4(uv0, uv1, uv2, uv3);
                 }
                 else
@@ -323,8 +326,8 @@ namespace Acknex
                         allVertices.Add(v1); //b
                         allVertices.Add(v2); //c
                         allVertices.Add(v3); //d
-                        var normal = MeshUtils.GetNormal(v0, v1, v2, v3);
-                        var xAxis = Vector3.Normalize(v1 - v0);
+                        //var normal = MeshUtils.GetNormal(v0, v1, v2, v3);
+                        //var xAxis = Vector3.Normalize(v1 - v0);
                         var uv0 = CalculateUV(v0 - v0, xAxis, v0);
                         var uv1 = CalculateUV(v1 - v0, xAxis, v1);
                         var uv2 = CalculateUV(v2 - v0, xAxis, v2);
@@ -334,7 +337,6 @@ namespace Acknex
                         allUVs.Add(uv2);
                         allUVs.Add(uv3);
                         wall.BottomQuad = new Matrix4x4(v0, v1, v2, v3);
-                        wall.BottomNormal = normal.magnitude > 0f ? normal : Vector3.forward;
                         wall.BottomUV = new Matrix4x4(uv0, uv1, uv2, uv3);
                     }
                     {
@@ -363,7 +365,7 @@ namespace Acknex
                         allVertices.Add(v1);
                         allVertices.Add(v2);
                         allVertices.Add(v3);
-                        var xAxis = Vector3.Normalize(v1 - v0);
+                        //var xAxis = Vector3.Normalize(v1 - v0);
                         var uv0 = CalculateUV(v0 - v0, xAxis, v0);
                         var uv1 = CalculateUV(v1 - v0, xAxis, v1);
                         var uv2 = CalculateUV(v2 - v0, xAxis, v2);

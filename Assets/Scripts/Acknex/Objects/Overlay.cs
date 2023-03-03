@@ -17,7 +17,6 @@ namespace Acknex
         private Graphic _overlayGraphic;
         private string _overlaySprite;
 
-
         public List<string> Flags
         {
             get
