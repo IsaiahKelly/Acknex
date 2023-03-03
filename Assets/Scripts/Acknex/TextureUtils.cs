@@ -61,7 +61,7 @@ namespace Acknex
                Graphics.CopyTexture(renderTextureB, renderTextureA);
             }
             Graphics.CopyTexture(renderTextureA, 0, 0, texture2D, 0, 0);
-            CopyTextureCPU(renderTextureA, texture2D, true, true);
+            CopyTextureCPU(renderTextureA, texture2D, true, false);
             RenderTexture.ReleaseTemporary(renderTextureA);
             RenderTexture.ReleaseTemporary(renderTextureB);
         }

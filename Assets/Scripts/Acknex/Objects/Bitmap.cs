@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Acknex.Interfaces;
 using DmitryBrant.ImageFormats;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 
 namespace Acknex
 {
@@ -64,6 +65,8 @@ namespace Acknex
 
         }
 
+        private Texture2DArray _bmaps;
+
         public void UpdateMaterial(Material material, Texture texture = null, int index = 0, bool mirror = false, IAcknexObject wallOrRegion = null)
         {
             var width = Width;
@@ -100,12 +103,28 @@ namespace Acknex
             }
             var cullMode = UnityEngine.Rendering.CullMode.Back;
             material.SetInt("_CLAMPY", 0);
-            if (wallOrRegion != null && wallOrRegion.Container is Wall wall && wall.Flags.Contains("FENCE"))
+            if (wallOrRegion?.Container is Wall wall && wall.Flags.Contains("FENCE"))
             {
                 material.SetFloat("_V0H", wall.BottomUV.m12);
                 material.SetFloat("_V1H", wall.BottomUV.m13);
                 material.SetInt("_FENCE", 1);
                 cullMode = UnityEngine.Rendering.CullMode.Off;
+            }
+            if (texture != null && texture.Flags.Contains("SKY"))
+            {
+                var sides = texture.AcknexObject.GetInteger("SIDES");
+                material.SetInt("_SIDES", sides);
+                if (_bmaps == null)
+                {
+                    var bitmapCount = texture.BitmapCount;
+                    _bmaps = new Texture2DArray((int)width, (int)height, bitmapCount, Texture2D.graphicsFormat, TextureCreationFlags.MipChain);
+                    for (var i = 0; i < bitmapCount; i++)
+                    {
+                        _bmaps.SetPixels(texture.GetBitmapAt(i).Texture2D.GetPixels(), i);
+                    }
+                    _bmaps.Apply(true, false);
+                }
+                material.SetTexture("_BMAPS", _bmaps);
             }
             var x0 = mirror ? x + width : x;
             var y0 = y;

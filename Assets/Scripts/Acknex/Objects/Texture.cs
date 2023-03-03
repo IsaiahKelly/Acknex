@@ -40,6 +40,8 @@ namespace Acknex
             }
         }
 
+        public int BitmapCount => AcknexObject.TryGetObject("BMAPS", out List<string> bmaps) ? bmaps.Count : 0;
+
         public void UpdateObject()
         {
             throw new System.NotImplementedException();

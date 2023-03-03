@@ -3,6 +3,8 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _BMAPS("_BMAPS", 2DArray) = "white" {}
+        _SIDES("_SIDES", Int) = 1
         _SOFFSETY("_OFFSETY", Float) = 0.2
     }
     SubShader
@@ -17,6 +19,7 @@
             #pragma fragment frag
             // make fog work
             #pragma multi_compile_fog
+            #pragma require 2darray
 
             #include "UnityCG.cginc"
 
@@ -36,6 +39,8 @@
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
+            UNITY_DECLARE_TEX2DARRAY(_BMAPS);
+            float4 _BMAPS_TexelSize;
             int _SIDES;
             float _CAMERA_PITCH;
             float _SOFFSETY;
@@ -52,17 +57,17 @@
 
             fixed4 frag(v2f i) : SV_Target
             {
-                //todo: remove this fixed number and pass from code
-                _SIDES = 5;
-                float3 worldDirection = normalize(_WorldSpaceCameraPos - i.worldPos.xyz);
-                float yaw = 180.0 + degrees(atan2(worldDirection.z, worldDirection.x));
+                float2 worldDirection = normalize(float2(_WorldSpaceCameraPos.x, _WorldSpaceCameraPos.z) - float2(i.worldPos.x, i.worldPos.z));
+                float yaw = 180.0 + degrees(atan2(worldDirection.y, worldDirection.x));
                 float anglesPerSide = 360.0 / _SIDES;
                 float u = fmod(yaw, anglesPerSide);
                 u /= anglesPerSide;
                 float v = (i.screenPosition.y / i.screenPosition.w) + (_CAMERA_PITCH * 0.02);
                 v -= _SOFFSETY;
-                v = clamp(v, 0.01, 0.91);
-                fixed4 col = tex2D(_MainTex, float2(u, v));
+                v = clamp(v, _BMAPS_TexelSize.y, 1.0 - _BMAPS_TexelSize.y);
+                int textureIndex = yaw == 0.0 ? 0.0 : yaw / anglesPerSide;
+                fixed4 col = UNITY_SAMPLE_TEX2DARRAY(_BMAPS, float3(u, v, textureIndex));
+                //fixed4 col = tex2D(_MainTex, float2(u, v));
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }
