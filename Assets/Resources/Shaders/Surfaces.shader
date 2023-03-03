@@ -69,6 +69,12 @@
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
+            //todo: lerp between V0H V1H
+            if (_CLAMPY) {
+                _OFFSETY = _V0H - _SCALEY;
+                _Y0 = 0.0;
+                //IN.uv_MainTex.y = min(IN.uv_MainTex.y, _V1H);
+            }
             float2 rectMin = float2(_OFFSETX + (_X0 * _SCALEX), _OFFSETY + (_Y0 * _SCALEY));
             float2 rectMax = float2(rectMin.x + _SCALEX, rectMin.y + _SCALEY);
             float2 uv = lerp(rectMin, rectMax, IN.uv_MainTex);
