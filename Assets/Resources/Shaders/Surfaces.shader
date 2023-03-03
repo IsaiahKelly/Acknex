@@ -1,4 +1,6 @@
-﻿Shader "Acknex/Surfaces"
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "Acknex/Surfaces"
 {
     Properties
     {
@@ -7,6 +9,7 @@
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
         _Cutoff("Alpha cutoff", Range(0,1)) = 0.9
+        _CullMode("_CullMode", Int) = 0
         _AMBIENT("_AMBIENT", Float) = 1.0
         _X0("_X0", Float) = 0.0
         _Y0("_Y0", Float) = 0.0
@@ -16,18 +19,18 @@
         _OFFSETY("_OFFSETY", Float) = 0.0
         _V0H("_V0H", Float) = 0.0
         _V1H("_V1H", Float) = 0.0
-        _FENCE("_FENCE", Float) = 0
+        _FENCE("_FENCE", Int) = 0
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
         //todo: lets add this here later
-        //Cull Off
+        Cull [_CullMode]
         LOD 200
 
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf Standard addshadow 
+        #pragma surface surf Standard addshadow vertex:vert
 
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
@@ -65,8 +68,17 @@
             // put more per-instance properties here
         UNITY_INSTANCING_BUFFER_END(Props)
 
+        void vert(inout appdata_full v) {
+            float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
+            float3 worldNorm = UnityObjectToWorldNormal(v.normal);
+            float3 viewDir = worldPos - _WorldSpaceCameraPos;
+            v.normal *= dot(viewDir, worldNorm) > 0 ? -1 : 1;
+            //v.vertex.xyz += v.normal * _Amount;
+        }
+
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
+
             //todo: lerp between V0H V1H
             if (_FENCE) {
                 _OFFSETY = _V0H - _SCALEY;

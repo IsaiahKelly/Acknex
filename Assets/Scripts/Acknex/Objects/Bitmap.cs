@@ -98,12 +98,14 @@ namespace Acknex
             {
                 scaleY = scaleYVal;
             }
+            var cullMode = UnityEngine.Rendering.CullMode.Back;
             material.SetInt("_CLAMPY", 0);
             if (wallOrRegion != null && wallOrRegion.Container is Wall wall && wall.Flags.Contains("FENCE"))
             {
                 material.SetFloat("_V0H", wall.BottomUV.m12);
                 material.SetFloat("_V1H", wall.BottomUV.m13);
                 material.SetInt("_FENCE", 1);
+                cullMode = UnityEngine.Rendering.CullMode.Off;
             }
             var x0 = mirror ? x + width : x;
             var y0 = y;
@@ -117,6 +119,7 @@ namespace Acknex
             material.SetFloat("_OFFSETY", offsetY);
             material.SetFloat("_SCALEX", scaleX);
             material.SetFloat("_SCALEY", scaleY);
+            material.SetInt("_CullMode", (int)cullMode);
             //material.SetFloat("_AMBIENT", ambient);
             material.mainTexture = Texture2D;
         }
