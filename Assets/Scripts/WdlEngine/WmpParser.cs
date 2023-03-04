@@ -58,7 +58,7 @@ namespace WdlEngine
                     var obj = _world.CreateObjectInstance(type, name);
                     obj.SetFloat("X", ParseNumber());
                     obj.SetFloat("Y", ParseNumber());
-                    obj.SetFloat("ANGLE", ParseNumber());
+                    obj.SetFloat("ANGLE", Mathf.Deg2Rad * ParseNumber());
                     obj.SetFloat("REGION", Expect(TokenType.Integer).IntValue);
                     _world.PostSetupObjectInstance(obj);
                     Expect(TokenType.Semicolon);
