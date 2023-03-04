@@ -107,11 +107,14 @@ namespace DmitryBrant.ImageFormats
 
             int paletteInfo = ImageUtils.LittleEndian(reader.ReadUInt16());
 
+            var transparency = Color.magenta;
+
             if (imgBpp == 8 && numPlanes == 1)
             {
                 colorPalette = new byte[768];
                 stream.Seek(-768, SeekOrigin.End);
                 stream.Read(colorPalette, 0, 768);
+                transparency = new Color32(colorPalette[0 * 3], colorPalette[0 * 3 + 1], colorPalette[0 * 3 + 2], 255);
             }
 
             if (imgBpp == 1 && numPlanes == 1 && usePalette)
@@ -140,6 +143,7 @@ namespace DmitryBrant.ImageFormats
                 }
             }
 
+
             if (!usePalette && imgBpp == 1 && (numPlanes == 3 || numPlanes == 4))
             {
                 // Special handling for EGA images that don't contain palette information:
@@ -151,6 +155,10 @@ namespace DmitryBrant.ImageFormats
                         colorPalette[c * 3] = (byte)((egaColors[c + 8] >> 16) & 0xFF);
                         colorPalette[c * 3 + 1] = (byte)((egaColors[c + 8] >> 8) & 0xFF);
                         colorPalette[c * 3 + 2] = (byte)(egaColors[c + 8] & 0xFF);
+                        if (c == 0)
+                        {
+                            transparency = new Color32(colorPalette[c * 3], colorPalette[c * 3 + 1], colorPalette[c * 3 + 2], 255);
+                        }
                     }
                     // Hack: make color 0 black instead of gray.
                     colorPalette[0] = colorPalette[1] = colorPalette[2] = 0;
@@ -162,6 +170,10 @@ namespace DmitryBrant.ImageFormats
                         colorPalette[c * 3] = (byte)((egaColors[c] >> 16) & 0xFF);
                         colorPalette[c * 3 + 1] = (byte)((egaColors[c] >> 8) & 0xFF);
                         colorPalette[c * 3 + 2] = (byte)(egaColors[c] & 0xFF);
+                        if (c == 0)
+                        {
+                            transparency = new Color32(colorPalette[c * 3], colorPalette[c * 3 + 1], colorPalette[c * 3 + 2], 255);
+                        }
                     }
                 }
             }
@@ -211,6 +223,10 @@ namespace DmitryBrant.ImageFormats
                     colorPalette[c * 3] = (byte)((newColors[c] >> 16) & 0xFF);
                     colorPalette[c * 3 + 1] = (byte)((newColors[c] >> 8) & 0xFF);
                     colorPalette[c * 3 + 2] = (byte)(newColors[c] & 0xFF);
+                    if (c == 0)
+                    {
+                        transparency = new Color32(colorPalette[c * 3], colorPalette[c * 3 + 1], colorPalette[c * 3 + 2], 255);
+                    }
                 }
             }
 
@@ -376,7 +392,7 @@ namespace DmitryBrant.ImageFormats
                 Debug.Log("Error while processing PCX file: " + e.Message);
             }
 
-            bmpData = ImageUtils.MagentaToTransparent(bmpData);
+            bmpData = ImageUtils.ColorToTransparent(bmpData, transparency);
             bmpData = ImageUtils.FlipPixelsVertically(bmpData, imgWidth, imgHeight);
 
             var texture2D = new Texture2D(imgWidth, imgHeight, GraphicsFormat.B8G8R8A8_UNorm, TextureCreationFlags.MipChain);

@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace DmitryBrant.ImageFormats
 {
@@ -30,7 +31,7 @@ namespace DmitryBrant.ImageFormats
             return data;
         }
 
-        public static byte[] MagentaToTransparent(byte[] bmpData)
+        public static byte[] ColorToTransparent(byte[] bmpData, Color32 transparentColor)
         {
             //bgra
             for (var i = 0; i < bmpData.Length; i += 4)
@@ -38,10 +39,14 @@ namespace DmitryBrant.ImageFormats
                 var b = bmpData[i];
                 var g = bmpData[i + 1];
                 var r = bmpData[i + 2];
-                if (b != 255 || r != 255 || g != 0)
+                if (r == transparentColor.r && g == transparentColor.g && b == transparentColor.b)
+                {
+                    bmpData[i + 3] = 0;
+                }
+                else
                 {
                     bmpData[i + 3] = 255;
-                };
+                }
             }
             return bmpData;
         }

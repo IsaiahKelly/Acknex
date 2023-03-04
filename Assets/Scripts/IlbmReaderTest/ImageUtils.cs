@@ -16,5 +16,23 @@ namespace IlbmReaderTest
             }
             return data;
         }
+
+        public static Color32[] ColorToTransparent(Color32[] frameData, Color32 transparentColor)
+        {
+            for (var i = 0; i < frameData.Length; i++)
+            {
+                var color = frameData[i];
+                if (color.r == transparentColor.r && color.g == transparentColor.g && color.b == transparentColor.b)
+                {
+                    color.a = 0;
+                }
+                else
+                {
+                    color.a = 255;
+                }
+                frameData[i] = color;
+            }
+            return frameData;
+        }
     }
 }

@@ -86,7 +86,18 @@ namespace IlbmReaderTest
                             bitmap[pixelY * width + pixelX] = pixelCol;
                         }
                     }
+
+                    Color32 transparency;
+                    if (cmap.Colors != null && cmap.Colors.Count > 0)
+                    {
+                        transparency = cmap.Colors[0];
+                    }
+                    else
+                    {
+                        transparency = UnityEngine.Color.magenta;
+                    }
                     bitmap = ImageUtils.FlipPixelsVertically(bitmap, width, height);
+                    bitmap = ImageUtils.ColorToTransparent(bitmap, transparency);
                     ilbm.Bitmap = bitmap;
                     ilbm.Texture2D = new Texture2D(width, height, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.MipChain);
                     ilbm.Texture2D.SetPixels32(bitmap);
