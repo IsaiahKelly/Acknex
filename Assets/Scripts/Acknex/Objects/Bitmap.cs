@@ -106,12 +106,20 @@ namespace Acknex
             }
             var cullMode = UnityEngine.Rendering.CullMode.Back;
             material.SetInt("_CLAMPY", 0);
-            if (wallOrRegion?.Container is Wall wall && wall.Flags.Contains("FENCE"))
+            if (wallOrRegion?.Container is Wall wall)
             {
-                material.SetFloat("_V0H", wall.BottomUV.m12);
-                material.SetFloat("_V1H", wall.BottomUV.m13);
-                material.SetInt("_FENCE", 1);
-                cullMode = UnityEngine.Rendering.CullMode.Off;
+                if (wall.Flags.Contains("FENCE"))
+                {
+                    material.SetFloat("_V0H", wall.BottomUV.m12);
+                    material.SetFloat("_V1H", wall.BottomUV.m13);
+                    material.SetInt("_FENCE", 1);
+                    cullMode = UnityEngine.Rendering.CullMode.Off;
+                }
+                if (wall.Flags.Contains("PORTCULLIS"))
+                {
+                    material.SetInt("_PORTCULLIS", 1);
+                    cullMode = UnityEngine.Rendering.CullMode.Off;
+                }
             }
             if (texture != null && texture.Flags.Contains("SKY"))
             {

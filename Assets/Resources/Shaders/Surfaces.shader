@@ -22,6 +22,7 @@ Shader "Acknex/Surfaces"
         _V0H("_V0H", Float) = 0.0
         _V1H("_V1H", Float) = 0.0
         _FENCE("_FENCE", Int) = 0
+        _PORTCULLIS("_PORTCULLIS", Int) = 0  
     }
     SubShader
     {
@@ -63,7 +64,9 @@ Shader "Acknex/Surfaces"
         float _AMBIENT;
         float _V0H;
         float _V1H;
+
         int _FENCE;
+        int _PORTCULLIS;
 
         // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
         // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -98,12 +101,14 @@ Shader "Acknex/Surfaces"
             uv *= _MainTex_TexelSize.xy;
             // Albedo comes from a texture tinted by color
             fixed4 c = tex2D (_MainTex, uv) * _Color;
-            clip(c.a - _Cutoff);
+            if (_PORTCULLIS) {
+                clip(c.a - _Cutoff);
+                o.Alpha = c.a;
+            }
             o.Albedo = c.rgb;// *_AMBIENT;
             // Metallic and smoothness come from slider variables
             o.Metallic = _Metallic;
             o.Smoothness = _Glossiness;
-            o.Alpha = c.a;
         }
         ENDCG
     }
