@@ -1,5 +1,8 @@
 ﻿namespace Acknex.Interfaces
 {
+    /// <summary>
+    /// Represents the original game resolution.
+    /// </summary>
     public enum Resolution
     {
         Res320x200,

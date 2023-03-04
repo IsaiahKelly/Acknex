@@ -2,24 +2,98 @@
 
 namespace Acknex.Interfaces
 {
+    /// <summary>
+    /// Represents the game world.
+    /// </summary>
     public interface IAcknexWorld : IAcknexObjectContainer
     {
+        /// <summary>
+        /// Creates an object template.
+        /// The `name` parameter defines the object property 'NAME' value.
+        /// </summary>
         IAcknexObject CreateObjectTemplate(ObjectType type, string name);
+
+        /// <summary>
+        /// Creates an object instance.
+        /// The `name` parameter defines the object property 'NAME' value.
+        /// </summary>
         IAcknexObject CreateObjectInstance(ObjectType type, string name);
+
+        /// <summary>
+        /// Gets the engine object with the given `name`.
+        /// </summary>
         IAcknexObject GetObject(ObjectType type, string name);
+
+        /// <summary>
+        /// Gets the game world singleton instance.
+        /// </summary>
         IAcknexObject GetWorld();
+
+        /// <summary>
+        /// This method should be called when any parser ends processing a WMP file.
+        /// </summary>
         void PostSetupWMP();
+
+        /// <summary>
+        /// This method should be called when any WMP vertex is processed.
+        /// </summary>
         void AddVertex(float x, float y, float z);
+
+        /// <summary>
+        /// This method should be called when any WDL string is processed.
+        /// </summary>
         void AddString(string name, string value);
+
+        /// <summary>
+        /// This method should be called when any WDL path is processed.
+        /// </summary>
         void AddPath(string value);
+
+        /// <summary>
+        /// This method should be called when all properties from a given object instance have been processed.
+        /// </summary>
         void PostSetupObjectInstance(IAcknexObject acknexObject);
+
+        /// <summary>
+        /// This method should be called when all properties from a given object template have been processed.
+        /// </summary>
         void PostSetupObjectTemplate(IAcknexObject acknexObject);
+
+        /// <summary>
+        /// Updates a game skill by the name ´name` with the value `value`.
+        /// </summary>
         void UpdateSkillValue(string name, float value);
+
+        /// <summary>
+        /// Gets the skill's by the name `name´ value.
+        /// </summary>
         float GetSkillValue(string name);
+
+        /// <summary>
+        /// Assign the synonym by name `name` to the given object `target´
+        /// <remarks>
+        /// When ´clear´ is <c>true</c>, the given synonym objects list will be cleared.
+        /// </remarks>
+        /// </summary>
         void AssignSynonymToObject(string name, IAcknexObject target, bool clear = false);
+
+        /// <summary>
+        /// This method should be called when a new Way instance point is processed.
         void AddWayPoint(IAcknexObject way, float x, float y);
+
+        /// <summary>
+        /// Returns all engine objects containing the given synonym.
         List<IAcknexObject> GetAllObjectsWithSynonym(string name);
+
+        /// <summary>
+        /// Gets/Sets the internal game resolution.
+        /// </summary>
         Resolution GameResolution { get; set; }
+
+        /// <summary>
+        /// Gets a registered Region index.
+        /// This value must be passed to the objects created when processing an WMP file.
+        /// </summary>
         int GetRegionIndex(string value);
     }
 }

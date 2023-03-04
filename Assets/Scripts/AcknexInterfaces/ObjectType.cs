@@ -1,5 +1,8 @@
 ﻿namespace Acknex.Interfaces
 {
+    /// <summary>
+    /// Represents an engine object type.
+    /// </summary>
     public enum ObjectType
     {
         Action,
