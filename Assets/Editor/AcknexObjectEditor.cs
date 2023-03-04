@@ -1,8 +1,31 @@
-﻿using Acknex;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using Acknex;
 using Acknex.Interfaces;
 using UnityEditor;
 using UnityEngine;
 using Texture = Acknex.Texture;
+
+public class InputDialog : EditorWindow
+{
+    public string Value;
+
+    private void OnGUI()
+    {
+        Value = EditorGUILayout.TextField("New Value", Value);
+        if (GUILayout.Button("OK"))
+        {
+            Close();
+        }
+    }
+    public static InputDialog ShowDialog(string value)
+    {
+        var window = new InputDialog();
+        window.Value = value;
+        window.ShowUtility();
+        return window;
+    }
+}
 
 public class AcknexObjectEditor : Editor
 {
@@ -12,13 +35,13 @@ public class AcknexObjectEditor : Editor
         if (target is IAcknexObjectContainer container)
         {
             EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Instance");
-            foreach (var property in ((AcknexObject)container.AcknexObject).Properties)
+            foreach (var property in ((AcknexObject)container.AcknexObject).ObjectProperties)
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(property.Key);
                 if (property.Value is System.Collections.Generic.List<string> list)
                 {
-                   EditorGUILayout.LabelField(string.Join(",", list));
+                    EditorGUILayout.LabelField(string.Join(",", list));
                 }
                 else
                 {
@@ -26,14 +49,21 @@ public class AcknexObjectEditor : Editor
                 }
                 EditorGUILayout.EndHorizontal();
             }
+            foreach (var property in ((AcknexObject)container.AcknexObject).NumberProperties)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(property.Key);
+                EditorGUILayout.LabelField(property.Value.ToString());
+                EditorGUILayout.EndHorizontal();
+            }
             EditorGUILayout.EndFoldoutHeaderGroup();
-            if (container.AcknexObject.GetTemplateCallback != null && container.AcknexObject.TryGet<string>("NAME", out var name))
+            if (container.AcknexObject.GetTemplateCallback != null && container.AcknexObject.TryGetString("NAME", out var name))
             {
                 var template = container.AcknexObject.GetTemplateCallback(name);
                 if (template != null)
                 {
                     EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Template");
-                    foreach (var property in ((AcknexObject)template).Properties)
+                    foreach (var property in ((AcknexObject)template).ObjectProperties)
                     {
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField(property.Key);
@@ -45,6 +75,13 @@ public class AcknexObjectEditor : Editor
                         {
                             EditorGUILayout.LabelField(property.Value.ToString());
                         }
+                        EditorGUILayout.EndHorizontal();
+                    }
+                    foreach (var property in ((AcknexObject)template).NumberProperties)
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField(property.Key);
+                        EditorGUILayout.LabelField(property.Value.ToString(CultureInfo.InvariantCulture));
                         EditorGUILayout.EndHorizontal();
                     }
                     EditorGUILayout.EndFoldoutHeaderGroup();
@@ -112,6 +149,7 @@ public class WorldEditor : Editor
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);
             EditorGUILayout.LabelField(kvp.Value);
+            EditorGUILayout.LabelField("");
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
@@ -120,16 +158,34 @@ public class WorldEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);
-            EditorGUILayout.LabelField(kvp.Value.AcknexObject.Get<string>("VAL"));
+            EditorGUILayout.LabelField(kvp.Value.AcknexObject.GetString("VAL"));
+            if (GUILayout.Button("Modify"))
+            {
+                var dialog = InputDialog.ShowDialog(kvp.Value.AcknexObject.GetString("VAL"));
+                world.SkillsByName[kvp.Key].AcknexObject.SetFloat("VAL", float.Parse(dialog.Value));
+            }
             EditorGUILayout.EndHorizontal();
         }
-        EditorGUILayout.EndFoldoutHeaderGroup(); 
+        EditorGUILayout.EndFoldoutHeaderGroup();
         EditorGUILayout.BeginFoldoutHeaderGroup(true, "Synonym");
         foreach (var kvp in world.SynonymsByName)
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);
-            EditorGUILayout.LabelField(kvp.Value.AcknexObject.Get<string>("TYPE"));
+            if (kvp.Value.AcknexObject.TryGetObject<System.Collections.Generic.List<IAcknexObject>>("VAL", out var list))
+            {
+                var strings = new List<string>();
+                foreach (var item in list)
+                {
+                    strings.Add(item.GetString("NAME"));
+                }
+                EditorGUILayout.Popup("Objects", 0, strings.ToArray());
+            }
+            else
+            {
+                EditorGUILayout.LabelField("[EMPTY]");
+            }
+            EditorGUILayout.LabelField("");
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();

@@ -123,7 +123,7 @@ namespace Acknex
             CreateSkill("PLAYER_COS", 0, 0, 0); //todo <- player angle cos IMPORTANT
             CreateSkill("PLAYER_SPEED", 0, 0, 0); //todo <- player speed IMPORTANT
             //...
-
+            //todo: some missing here?
             CreateSkill("PLAYER_DEPTH", 0, 0, 0); //todo <- player depth inside water IMPORTANT
             CreateSkill("PLAYER_LAST_X", 0, 0, 0); //todo <- player last pos IMPORTANT
             CreateSkill("PLAYER_LAST_Y", 0, 0, 0); //todo <- player last pos IMPORTANT
@@ -133,16 +133,18 @@ namespace Acknex
             CreateSkill("MOUSE_MIDDLE", 0, 0, 1); //todo <-  mouse button down IMPORTANT
             CreateSkill("MOUSE_RIGHT", 0, 0, 1); //todo <-  mouse button down IMPORTANT
             CreateSkill("KEY_ANY", 0, 0, 1); //todo <- key down IMPORTANT
+            CreateSkill("KEY_SENSE", 0.7f, 0, 0); //todo
+            CreateSkill("SHIFT_SENSE", 2f, 0, 0); //todo
+            CreateSkill("MOUSE_SENSE", 1f, 0, 0); //todo
+            CreateSkill("JOY_SENSE", 1f, 0, 0); //todo
         }
 
         private Vector3 _lastMousePosition;
         private void UpdateSkills()
         {
             var mousePosition = Input.mousePosition;
-            mousePosition.x = (Input.mousePosition.x / Screen.width) *
-                              SkillsByName["SCREEN_WIDTH"].AcknexObject.Get<float>("VAL");
-            mousePosition.y = (Input.mousePosition.y / Screen.height) *
-                              SkillsByName["SCREEN_HGT"].AcknexObject.Get<float>("VAL");
+            mousePosition.x = Input.mousePosition.x / Screen.width * GetSkillValue("SCREEN_WIDTH");
+            mousePosition.y = (1f - (Input.mousePosition.y / Screen.height)) * GetSkillValue("SCREEN_HGT");
             var deltaMousePosition = mousePosition - _lastMousePosition;
             UpdateSkillValue("MICKEY_X", deltaMousePosition.x);
             UpdateSkillValue("MICKEY_Y", deltaMousePosition.y);
@@ -152,20 +154,31 @@ namespace Acknex
             UpdateSkillValue("MOUSE_MIDDLE", Input.GetMouseButtonDown(1) ? 1 : 0);
             UpdateSkillValue("MOUSE_RIGHT", Input.GetMouseButtonDown(2) ? 1 : 0);
             UpdateSkillValue("KEY_ANY", Input.anyKey ? 1 : 0);
-            UpdateSkillValue("JOYSTICK_X", Input.GetAxis("Horizontal") / 255f);
-            UpdateSkillValue("JOYSTICK_Y", Input.GetAxis("Vertical") / 255f);
+            UpdateSkillValue("JOYSTICK_X", Input.GetAxis("Horizontal") * 255f);
+            UpdateSkillValue("JOYSTICK_Y", Input.GetAxis("Vertical") * 255f);
             UpdateSkillValue("TICKS", TimeUtils.TimeToTicks(Time.time));
             UpdateSkillValue("SECS", (int)Time.time);
+            UpdateSkillValue("FORCE_AHEAD", Input.GetAxis("Vertical"));
+            UpdateSkillValue("FORCE_STRAFE", Input.GetAxis("Horizontal"));
+            UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X"));
+            UpdateSkillValue("FORCE_UP", Input.GetAxis("Mouse Y"));
             _lastMousePosition = mousePosition;
         }
-
 
         //todo: clamp
         public void UpdateSkillValue(string name, float value)
         {
             if (SkillsByName.TryGetValue(name, out var skill))
             {
-                skill.AcknexObject.Set("VAL", value);
+                //if (skill.AcknexObject.TryGetNumber("MIN", out var min))
+                //{
+                //    value = Mathf.Max(min, value);
+                //}
+                //if (skill.AcknexObject.TryGetNumber("MAX", out var max))
+                //{
+                //    value = Mathf.Min(max, value);
+                //}
+                skill.AcknexObject.SetFloat("VAL", value);
             }
             else
             {
@@ -175,11 +188,7 @@ namespace Acknex
 
         public float GetSkillValue(string name)
         {
-            if (SkillsByName.TryGetValue(name, out var skill))
-            {
-                return skill.AcknexObject.Get<float>("VAL");
-            }
-            return default;
+            return SkillsByName.TryGetValue(name, out var skill) ? skill.AcknexObject.GetFloat("VAL") : default;
         }
     }
 }

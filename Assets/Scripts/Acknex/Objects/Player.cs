@@ -1,6 +1,5 @@
 ﻿using Acknex.Interfaces;
 using UnityEngine;
-using Utils;
 
 namespace Acknex
 {
@@ -47,27 +46,24 @@ namespace Acknex
             var playerSpeed = World.Instance.GetSkillValue("PLAYER_SPEED") * TimeUtils.TicksToTime(1);
             //_characterController.Move(playerMove * playerSpeed);
             //transform.Rotate(Vector3.up, AngleUtils.ConvertAcknexToUnityAnglePerTick(World.Instance.GetSkillValue("PLAYER_VROT")), Space.Self);
-            World.Instance.UpdateSkillValue("LAST_PLAYER_X", World.Instance.GetSkillValue("PLAYER_X"));
-            World.Instance.UpdateSkillValue("LAST_PLAYER_Y", World.Instance.GetSkillValue("PLAYER_Y"));
-            World.Instance.UpdateSkillValue("LAST_PLAYER_Z", World.Instance.GetSkillValue("PLAYER_Z"));
-            World.Instance.UpdateSkillValue("PLAYER_X", _characterController.transform.position.x);
-            World.Instance.UpdateSkillValue("PLAYER_Y", _characterController.transform.position.z);
-            World.Instance.UpdateSkillValue("PLAYER_Z", _characterController.transform.position.y);
-            World.Instance.UpdateSkillValue("PLAYER_SIN", Mathf.Sin(playerAngle));
-            World.Instance.UpdateSkillValue("PLAYER_COS", Mathf.Cos(playerAngle));
-            World.Instance.UpdateSkillValue("PLAYER_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(transform.eulerAngles.y));
-
+            //World.Instance.UpdateSkillValue("LAST_PLAYER_X", World.Instance.GetSkillValue("PLAYER_X"));
+            //World.Instance.UpdateSkillValue("LAST_PLAYER_Y", World.Instance.GetSkillValue("PLAYER_Y"));
+            //World.Instance.UpdateSkillValue("LAST_PLAYER_Z", World.Instance.GetSkillValue("PLAYER_Z"));
+            //World.Instance.UpdateSkillValue("PLAYER_X", _characterController.transform.position.x);
+            //World.Instance.UpdateSkillValue("PLAYER_Y", _characterController.transform.position.z);
+            //World.Instance.UpdateSkillValue("PLAYER_Z", _characterController.transform.position.y);
+            //World.Instance.UpdateSkillValue("PLAYER_SIN", Mathf.Sin(playerAngle));
+            //World.Instance.UpdateSkillValue("PLAYER_COS", Mathf.Cos(playerAngle));
+            //World.Instance.UpdateSkillValue("PLAYER_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(transform.eulerAngles.y));
             if (playerRegion != null)
             {
-                World.Instance.UpdateSynonymValue("HERE", playerRegion.AcknexObject);
+                World.Instance.AssignSynonymToObject("HERE", playerRegion.AcknexObject, true);
             }
-            //DebugExtension.DebugArrow(transform.position, Vector3.forward, Color.blue, 100f);
-                //DebugExtension.DebugArrow(transform.position, Vector3.right, Color.red, 100f);
-            }
+        }
 
-            private Region StickToTheGround(float playerX, float playerY, out float playerZ)
+        private Region StickToTheGround(float playerX, float playerY, out float playerZ)
         {
-            var regionIndex = AcknexObject.Get<int>("REGION");
+            var regionIndex = AcknexObject.GetInteger("REGION");
             if (regionIndex > World.Instance.RegionsByIndex.Count - 1)
             {
                 playerZ = 0f;
@@ -94,6 +90,7 @@ namespace Acknex
         private void Awake()
         {
             Instance = this;
+            AcknexObject.Container = this;
             _characterController = GetComponent<CharacterController>();
         }
 

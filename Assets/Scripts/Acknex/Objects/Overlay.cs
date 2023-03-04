@@ -17,17 +17,16 @@ namespace Acknex
         private Graphic _overlayGraphic;
         private string _overlaySprite;
 
-
         public List<string> Flags
         {
             get
             {
-                if (AcknexObject.TryGet("FLAGS", out List<string> flags))
+                if (AcknexObject.TryGetObject("FLAGS", out List<string> flags))
                 {
                     return flags;
                 }
                 flags = new List<string>();
-                AcknexObject["FLAGS"] = flags;
+                AcknexObject.SetObject("FLAGS", flags);
                 return flags;
             }
         }
@@ -36,20 +35,20 @@ namespace Acknex
         {
             _overlayGraphic.rectTransform.anchorMin = new Vector3(0f, 1f);
             _overlayGraphic.rectTransform.anchorMax = new Vector3(0f, 1f);
-            _overlayGraphic.rectTransform.anchoredPosition = new Vector3(AcknexObject.Get<float>("POS_X") * World.Instance.CanvasWidthRatio, -AcknexObject.Get<float>("POS_Y"), 0f);
-            var overlaySprite = AcknexObject.Get<string>("OVLYS");
+            _overlayGraphic.rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat("POS_X") * World.Instance.CanvasWidthRatio, -AcknexObject.GetFloat("POS_Y"), 0f);
+            var overlaySprite = AcknexObject.GetString("OVLYS");
             if (!string.IsNullOrEmpty(overlaySprite) && _overlaySprite != overlaySprite)
             {
                 if (World.Instance.BitmapsByName.TryGetValue(overlaySprite, out var bitmap))
                 {
-                    _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (AcknexObject.TryGet<float>("SIZE_X", out var width) ? width : bitmap.Width) * World.Instance.CanvasWidthRatio);
-                    _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, AcknexObject.TryGet<float>("SIZE_Y", out var height) ? height : bitmap.Height);
+                    _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (AcknexObject.TryGetFloat("SIZE_X", out var width) ? width : bitmap.Width) * World.Instance.CanvasWidthRatio);
+                    _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, AcknexObject.TryGetFloat("SIZE_Y", out var height) ? height : bitmap.Height);
                     bitmap.UpdateMaterial(_overlayGraphic.material, null, 0, false);
                 }
                 _overlaySprite = overlaySprite;
             }
             _overlayGraphic.enabled = Flags.Contains("VISIBLE");
-            _overlayGraphic.transform.SetSiblingIndex(_overlayGraphic.transform.parent.childCount - 1 - AcknexObject.Get<int>("LAYER"));
+            _overlayGraphic.transform.SetSiblingIndex(_overlayGraphic.transform.parent.childCount - 1 - AcknexObject.GetInteger("LAYER"));
         }
 
         public void Enable()
@@ -60,6 +59,11 @@ namespace Acknex
         public void Disable()
         {
 
+        }
+
+        private void Awake()
+        {
+            AcknexObject.Container = this;
         }
 
         private void Start()

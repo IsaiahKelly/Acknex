@@ -30,32 +30,21 @@ namespace Acknex
 
         private GameObject _attached;
 
-        //todo: debug vars
-        public int side;
-        public int angleFrame;
-        public int cycles;
-        public int sides;
-        public bool mirrored;
-        public float normalizedAngle;
-        public float angle;
-        public Vector3 cameraToThingDirection;
-        public Vector3 thingDirection;
-
         public List<string> Flags
         {
             get
             {
-                if (AcknexObject.TryGet("FLAGS", out List<string> flags))
+                if (AcknexObject.TryGetObject("FLAGS", out List<string> flags))
                 {
                     return flags;
                 }
                 flags = new List<string>();
-                AcknexObject["FLAGS"] = flags;
+                AcknexObject.SetObject("FLAGS", flags);
                 return flags;
             }
         }
 
-        public Texture TextureObject => AcknexObject.Get<string>("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.Get<string>("TEXTURE"), out var textureObject) ? textureObject : null;
+        public Texture TextureObject => AcknexObject.GetString("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.GetString("TEXTURE"), out var textureObject) ? textureObject : null;
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
 
@@ -82,7 +71,7 @@ namespace Acknex
 
         private void OnTriggerEnterCallback(Collider obj)
         {
-            ;
+
         }
 
         private void OnCollisionExitCallback(Collision obj)
@@ -95,40 +84,38 @@ namespace Acknex
 
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
-            var forward = Quaternion.Euler(0f, AcknexObject.Get<float>("ANGLE"), 0f) * Vector3.right;
-            DebugExtension.DebugArrow(_thingGameObject.transform.position, forward, Color.red);
-            DebugExtension.DebugArrow(_thingGameObject.transform.position, thingDirection, Color.yellow);
-            DebugExtension.DebugArrow(_thingGameObject.transform.position, cameraToThingDirection, Color.blue);
+
         }
 
         private IEnumerator Animate(Texture texture, MeshRenderer meshRenderer)
         {
-            cycles = Mathf.Max(1, texture.AcknexObject.Get<int>("CYCLES"));
-            sides = Mathf.Max(1, texture.AcknexObject.Get<int>("SIDES"));
-            var delay = texture.AcknexObject.Get<List<string>>("DELAY");
-            var mirror = texture.AcknexObject.Get<List<string>>("MIRROR");
+            var cycles = Mathf.Max(1, texture.AcknexObject.GetInteger("CYCLES"));
+            var sides = Mathf.Max(1, texture.AcknexObject.GetInteger("SIDES"));
+            //var delay = texture.AcknexObject.GetObject<List<int>>("DELAY");
+            var mirror = texture.AcknexObject.GetObject<List<int>>("MIRROR");
             var cycle = 0;
             while (true)
             {
-                var currentDelay = delay != null && delay.Count > cycle ? TimeUtils.TicksToTime(int.Parse(delay[cycle])) : Mathf.Infinity;
                 UpdateAngleFrameScale(texture, meshRenderer, cycles, sides, cycle, mirror);
-                yield return new WaitForSeconds(currentDelay);
+                var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : null;
+                yield return currentDelay;
                 cycle = (int)Mathf.Repeat(cycle + 1, cycles);
             }
         }
 
-        private void UpdateAngleFrameScale(Texture texture, MeshRenderer meshRenderer, int cycles, int sides, int animFrame, List<string> mirror)
+        private void UpdateAngleFrameScale(Texture texture, MeshRenderer meshRenderer, int cycles, int sides, int animFrame, List<int> mirror)
         {
-            //int side;
+            var halfStep = 180f / sides;
             var camera = CameraExtensions.GetLastActiveCamera();
+            int side;
             if (camera != null)
             {
-                cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(camera.transform.position - _thingGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
-                thingDirection = Quaternion.Euler(0f, AcknexObject.Get<float>("ANGLE"), 0f) * Vector3.back;
-                angle = AngleUtils.Angle(thingDirection, cameraToThingDirection);
-                normalizedAngle = angle / 360f;
+                var cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(camera.transform.position - _thingGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
+                var thingDirection = Quaternion.Euler(0f, AcknexObject.GetFloat("ANGLE"), 0f) * Vector3.back;
+                var angle = Mathf.Repeat(AngleUtils.Angle(thingDirection, cameraToThingDirection) + halfStep, 360f);
+                var normalizedAngle = angle / 360f;
                 side = Mathf.RoundToInt(Mathf.Lerp(0, sides - 1, normalizedAngle));
             }
             else
@@ -136,10 +123,9 @@ namespace Acknex
                 side = 0;
             }
             Bitmap bitmap;
-            //int angleFrame;
-            if (mirror != null && int.Parse(mirror[side]) > 0)
+            int angleFrame;
+            if (mirror != null && mirror[side] > 0) //mirrored
             {
-                mirrored = true;
                 angleFrame = side * cycles;
                 var frame = angleFrame + animFrame;
                 bitmap = texture.GetBitmapAt(frame);
@@ -147,19 +133,23 @@ namespace Acknex
             }
             else
             {
-                mirrored = false;
                 angleFrame = side * cycles;
                 var frame = angleFrame + animFrame;
                 bitmap = texture.GetBitmapAt(frame);
                 UpdateFrame(bitmap, texture, meshRenderer, false, frame);
             }
-            TextureUtils.UpdateScale(meshRenderer.transform, bitmap, texture);
+            transform.localScale = TextureUtils.CalculateObjectSize(bitmap, texture);
         }
 
         private static void UpdateFrame(Bitmap bitmap, Texture textureObject, MeshRenderer meshRenderer, bool mirror = false, int frameIndex = 0)
         {
             //todo: null here to avoid scale
             bitmap.UpdateMaterial(meshRenderer.material, null, frameIndex, mirror);
+        }
+
+        private void Awake()
+        {
+            AcknexObject.Container = this;
         }
 
         protected virtual void Update()
@@ -185,32 +175,51 @@ namespace Acknex
             gameObject.SetActive(false);
         }
 
+        private Texture _lastTextureObject;
+        private List<WaitForSeconds> _textureObjectDelay;
+
         public void UpdateObject()
         {
-            var thingX = AcknexObject.Get<float>("X");
-            var thingY = AcknexObject.Get<float>("Y");
-            var thingZ = AcknexObject.Get<float>("Z");
+            //todo: better way to do that?
+            if (TextureObject != _lastTextureObject)
+            {
+
+                var delay = TextureObject.AcknexObject.GetObject<List<int>>("DELAY");
+                if (delay != null)
+                {
+                    _textureObjectDelay = new List<WaitForSeconds>(delay.Count);
+                    for (var i = 0; i < delay.Count; i++)
+                    {
+                        _textureObjectDelay.Add(new WaitForSeconds(TimeUtils.TicksToTime(delay[i])));
+                    }
+                }
+                _lastTextureObject = TextureObject;
+            }
+
+            var thingX = AcknexObject.GetFloat("X");
+            var thingY = AcknexObject.GetFloat("Y");
+            var thingZ = AcknexObject.GetFloat("Z");
 
             //todo: this block should only run on carefully flagged
             StickToTheGround(thingX, thingY, ref thingZ);
             transform.position = new Vector3(thingX, thingZ, thingY);
 
-            var transformLocalPosition = _thingGameObject.transform.localPosition;
-            transformLocalPosition.y = AcknexObject.Get<float>("HEIGHT");
-            _thingGameObject.transform.localPosition = transformLocalPosition;
+            var thingPosition = _thingGameObject.transform.position;
+            thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
+            _thingGameObject.transform.position = thingPosition;
             _collider.isTrigger = Flags.Contains("PASSABLE");
 
             //todo: how to?
-            //_collider.radius = AcknexObject.Get<float>("DIST") > 0f ? AcknexObject.Get<float>("DIST") * 0.5f : 0.5f;
+            //_collider.radius = AcknexObject.GetNumber("DIST") > 0f ? AcknexObject.GetNumber("DIST") * 0.5f : 0.5f;
 
-            TextureUtils.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject?.AcknexObject);
+            Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject?.AcknexObject);
         }
 
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)
         {
-            var thingRegion = World.Instance.RegionsByIndex[AcknexObject.Get<int>("REGION")];
+            var thingRegion = World.Instance.RegionsByIndex[AcknexObject.GetInteger("REGION")];
             thingZ = thingRegion.ProjectHeight(thingX, thingY, Flags.Contains("GROUND"));
-            AcknexObject.Set("Z", thingZ);
+            AcknexObject.SetFloat("Z", thingZ);
         }
     }
 }

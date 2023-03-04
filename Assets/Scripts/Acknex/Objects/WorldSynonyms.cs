@@ -1,4 +1,5 @@
-﻿using Acknex.Interfaces;
+﻿using System.Collections.Generic;
+using Acknex.Interfaces;
 
 namespace Acknex
 {
@@ -16,13 +17,25 @@ namespace Acknex
             CreateSynonym("#TOUCH_TEXT");
         }
 
-        //todo: clamp
-        public void UpdateSynonymValue(string name, IAcknexObject value)
-        {
-            if (SynonymsByName.TryGetValue(name, out var synonym))
+        public void AssignSynonymToObject(string synonymName, IAcknexObject target, bool clear = false) {
+            if (SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
-                synonym.AcknexObject.Set("VAL", value);
+                if (!synonym.AcknexObject.TryGetObject<List<IAcknexObject>>("VAL", out var list))
+                {
+                    list = new List<IAcknexObject>();
+                    synonym.AcknexObject.SetObject("VAL", list);
+                }
+                if (clear)
+                {
+                    list.Clear();
+                }
+                list.Add(target);
             }
+        }
+
+        public List<IAcknexObject> GetAllObjectsWithSynonym(string synonymName)
+        {
+            return SynonymsByName.TryGetValue(synonymName, out var synonym) ? synonym.AcknexObject.GetObject<List<IAcknexObject>>("VAL") : null;
         }
     }
 }

@@ -18,13 +18,7 @@ namespace Acknex
         }
 
         public static World Instance { get; private set; }
-
-        public Resolution Resolution1
-        {
-            get => Resolution;
-            set => Resolution = value;
-        }
-
+        
         public string WDLPath;
 
         //todo: how to calculate this?
@@ -33,7 +27,6 @@ namespace Acknex
         public bool UseWDLEngine;
 
         public readonly List<Region> RegionsByIndex = new List<Region>();
-        public readonly HashSet<string> DefinitionsByName = new HashSet<string>();
         public readonly Dictionary<string, Synonym> SynonymsByName = new Dictionary<string, Synonym>();
         public readonly Dictionary<string, Action> ActionsByName = new Dictionary<string, Action>();
         public readonly Dictionary<string, Skill> SkillsByName = new Dictionary<string, Skill>();
@@ -50,91 +43,35 @@ namespace Acknex
 
         public readonly List<string> Paths = new List<string>();
 
-        public readonly List<string> MapFiles = new List<string>();
-
         public readonly List<Wall> Walls = new List<Wall>();
 
         public Canvas Canvas;
         public Light AmbientLight;
 
-        private Resolution _resolution = Resolution.Res320x200;
-
         //Text parser variables
         private TextParser _textParser;
-
-        //WDL engine variables
         private List<ContourVertex> _contourVertices;
         private RegionWalls _regionWalls;
-
-        public Resolution Resolution
-        {
-            get => _resolution;
-            set
-            {
-                var canvasScaler = Canvas.GetComponent<CanvasScaler>();
-                var referenceResolution = canvasScaler.referenceResolution;
-                switch (value)
-                {
-                    case Resolution.Res320x200:
-                        {
-                            referenceResolution.x = 320f;
-                            referenceResolution.y = 200f;
-                            break;
-                        }
-                    case Resolution.ResX320x240:
-                        {
-                            referenceResolution.x = 320f;
-                            referenceResolution.y = 240f;
-                            break;
-                        }
-                    case Resolution.ResX320x400:
-                        {
-                            referenceResolution.x = 320f;
-                            referenceResolution.y = 400f;
-                            break;
-                        }
-                    case Resolution.ResS640x480:
-                        {
-                            referenceResolution.x = 640f;
-                            referenceResolution.y = 480f;
-                            break;
-                        }
-                    case Resolution.ResS800x600:
-                        {
-                            referenceResolution.x = 800f;
-                            referenceResolution.y = 600f;
-                            break;
-                        }
-                }
-                UpdateSkillValue("SCREEN_WIDTH", referenceResolution.x);
-                UpdateSkillValue("SCREEN_HGT", referenceResolution.y);
-                canvasScaler.referenceResolution = referenceResolution;
-                _resolution = value;
-            }
-        }
-
+        
         private void Start()
         {
             Instance = this;
             CreateDefaultSynonyms();
             CreateDefaultSkills();
+
+            _contourVertices = new List<ContourVertex>();
+            _regionWalls = new RegionWalls();
+
             if (UseWDLEngine)
             {
-                _contourVertices = new List<ContourVertex>();
-                _regionWalls = new RegionWalls();
-
                 var engine = new ScriptingEngine(this);
                 engine.ParseWdl(WDLPath);
             }
             else
             {
                 var baseDir = PathUtils.GetFileDirectory(WDLPath);
-                _textParser = new TextParser(baseDir, WMPContainsRegionsByName);
-                _textParser.ParseWDL(WDLPath);
-                foreach (var mapFile in MapFiles)
-                {
-                    _textParser.ParseWMP(mapFile);
-                }
+                _textParser = new TextParser(this, baseDir, WMPContainsRegionsByName);
+                _textParser.ParseInitialWDL(WDLPath);
             }
         }
 
@@ -153,7 +90,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newOverlay = newGameObject.AddComponent<Overlay>();
-            newOverlay.AcknexObject.Set("NAME", name);
+            newOverlay.AcknexObject.SetString("NAME", name);
             return newOverlay;
         }
 
@@ -167,7 +104,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newRegion = newGameObject.AddComponent<Region>();
-            newRegion.AcknexObject.Set("NAME", name);
+            newRegion.AcknexObject.SetString("NAME", name);
             return newRegion;
         }
 
@@ -181,7 +118,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newWall = newGameObject.AddComponent<Wall>();
-            newWall.AcknexObject.Set("NAME", name);
+            newWall.AcknexObject.SetString("NAME", name);
             return newWall;
         }
 
@@ -195,7 +132,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newWay = newGameObject.AddComponent<Way>();
-            newWay.AcknexObject.Set("NAME", name);
+            newWay.AcknexObject.SetString("NAME", name);
             return newWay;
         }
 
@@ -209,7 +146,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newThing = newGameObject.AddComponent<Thing>();
-            newThing.AcknexObject.Set("NAME", name);
+            newThing.AcknexObject.SetString("NAME", name);
             return newThing;
         }
 
@@ -223,7 +160,7 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var newActor = newGameObject.AddComponent<Actor>();
-            newActor.AcknexObject.Set("NAME", name);
+            newActor.AcknexObject.SetString("NAME", name);
             return newActor;
         }
 
@@ -252,9 +189,9 @@ namespace Acknex
                 return existingSkill;
             }
             var skill = new Skill();
-            skill.AcknexObject["MIN"] = min;
-            skill.AcknexObject["MAX"] = max;
-            skill.AcknexObject["VAL"] = value;
+            skill.AcknexObject.SetFloat("MIN", min);
+            skill.AcknexObject.SetFloat("MAX", max);
+            skill.AcknexObject.SetFloat("VAL", value);
             SkillsByName.Add(name, skill);
             return skill;
         }
@@ -266,7 +203,7 @@ namespace Acknex
                 return existingSynonym;
             }
             var synonym = new Synonym();
-            synonym.AcknexObject["TYPE"] = type;
+            synonym.AcknexObject.SetString("TYPE", type);
             SynonymsByName.Add(name, synonym);
             return synonym;
         }
@@ -291,7 +228,7 @@ namespace Acknex
 
                     var rightRegion = contouredRegions.GetContouredRegion(kvp.Key);
                     var allContourVertices = rightRegion.GetNew();
-                    wall.ProcessWall(allContourVertices, contourVertices, wall, kvp, ref vertexCount, wall.AcknexObject.Get<int>("REGION2") == kvp.Key);
+                    wall.ProcessWall(allContourVertices, contourVertices, wall, kvp, ref vertexCount, wall.AcknexObject.GetInteger("REGION2") == kvp.Key);
                 }
             }
 

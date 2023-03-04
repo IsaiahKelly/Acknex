@@ -379,17 +379,11 @@ namespace DmitryBrant.ImageFormats
             bmpData = ImageUtils.MagentaToTransparent(bmpData);
             bmpData = ImageUtils.FlipPixelsVertically(bmpData, imgWidth, imgHeight);
 
-            var texture2D = new Texture2D(imgWidth, imgHeight, GraphicsFormat.B8G8R8A8_UNorm, TextureCreationFlags.None);
-            texture2D.LoadRawTextureData(bmpData);
-            texture2D.Apply(true, false);
+            var texture2D = new Texture2D(imgWidth, imgHeight, GraphicsFormat.B8G8R8A8_UNorm, TextureCreationFlags.MipChain);
+            texture2D.SetPixelData(bmpData, 0);
+            texture2D.Apply(false, false);
 
-            var mipmapTexture2D = new Texture2D(imgWidth, imgHeight, GraphicsFormat.B8G8R8A8_UNorm, TextureCreationFlags.MipChain);
-            Graphics.CopyTexture(texture2D, 0, 0, mipmapTexture2D, 0, 0);
-            mipmapTexture2D.Apply(true, true);
-
-            Object.Destroy(texture2D);
-
-            return mipmapTexture2D;
+            return texture2D;
         }
 
         /// <summary>
