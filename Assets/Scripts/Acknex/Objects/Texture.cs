@@ -68,5 +68,10 @@ namespace Acknex
             }
             return null;
         }
+
+        public Texture()
+        {
+            AcknexObject.Container = this;
+        }
     }
 }

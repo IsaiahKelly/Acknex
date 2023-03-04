@@ -1,4 +1,4 @@
-﻿namespace Acknex
+﻿namespace Acknex.Interfaces
 {
     public enum Resolution
     {

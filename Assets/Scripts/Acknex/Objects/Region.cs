@@ -35,6 +35,11 @@ namespace Acknex
 
         public ContouredRegion ContouredRegion;
 
+        private void Awake()
+        {
+            AcknexObject.Container = this;
+        }
+
         private void Update()
         {
             UpdateObject();

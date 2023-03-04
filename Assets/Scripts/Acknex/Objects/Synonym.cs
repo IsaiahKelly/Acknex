@@ -26,5 +26,10 @@ namespace Acknex
             
         }
 
+        public Synonym()
+        {
+            AcknexObject.Container = this;
+        }
+
     }
 }

@@ -90,6 +90,7 @@ namespace Acknex
         private void Awake()
         {
             Instance = this;
+            AcknexObject.Container = this;
             _characterController = GetComponent<CharacterController>();
         }
 

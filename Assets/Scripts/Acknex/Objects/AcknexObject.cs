@@ -6,6 +6,8 @@ namespace Acknex
 {
     public class AcknexObject : IAcknexObject
     {
+        public ObjectType Type { get; set; }
+
         public Dictionary<string, float> NumberProperties = new Dictionary<string, float>();
         public Dictionary<string, object> ObjectProperties = new Dictionary<string, object>();
 

@@ -47,6 +47,7 @@ namespace Acknex
                     attached.transform.localPosition = transformLocalPosition;
                     var attachment = attached.AddComponent<Attachment>();
                     attachment.AcknexObject = acknexObject;
+                    attachment.AcknexObject.Container = attachment;
                     attachment.TextureObject = toAttachTextureObject;
                     attachment.BitmapImage = toAttachBitmapImage;
                     attachment.Material = toAttachMeshRenderer.material;
@@ -74,7 +75,7 @@ namespace Acknex
 
         public void Disable()
         {
-           
+
         }
 
         private void Update()

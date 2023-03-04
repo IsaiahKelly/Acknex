@@ -15,5 +15,10 @@ namespace Acknex
             }
             return null;
         }
+
+        private void Awake()
+        {
+            AcknexObject.Container = this;
+        }
     }
 }

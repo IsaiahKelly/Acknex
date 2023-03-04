@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Acknex.Interfaces;
 using DmitryBrant.ImageFormats;
 using UnityEngine;
@@ -15,12 +14,13 @@ namespace Acknex
             return null;
         }
 
-        public float Width => AcknexObject.GetFloat("DX") == 0 ? Texture2D.width : AcknexObject.GetFloat("DX");
-        public float Height => AcknexObject.GetFloat("DY") == 0 ? Texture2D.height : AcknexObject.GetFloat("DY");
+        public float Width => AcknexObject.GetFloat("DX") == 0 && Texture2D != null ? Texture2D.width : AcknexObject.GetFloat("DX");
+        public float Height => AcknexObject.GetFloat("DY") == 0 && Texture2D != null ? Texture2D.height : AcknexObject.GetFloat("DY");
         public float X => AcknexObject.GetFloat("X");
         public float Y => AcknexObject.GetFloat("Y");
 
         public Texture2D Texture2D;
+        private Texture2DArray _bmaps;
 
         public Bitmap()
         {
@@ -65,10 +65,13 @@ namespace Acknex
 
         }
 
-        private Texture2DArray _bmaps;
 
         public void UpdateMaterial(Material material, Texture texture = null, int index = 0, bool mirror = false, IAcknexObject wallOrRegion = null)
         {
+            if (Texture2D == null)
+            {
+                return;
+            }
             var width = Width;
             var height = Height;
             var x = X;
@@ -96,7 +99,7 @@ namespace Acknex
             if (texture != null && texture.AcknexObject.TryGetFloat("SCALE_X", out var scaleXVal))
             {
                 scaleX = scaleXVal;
-            } 
+            }
             if (texture != null && texture.AcknexObject.TryGetFloat("SCALE_Y", out var scaleYVal))
             {
                 scaleY = scaleYVal;

@@ -13,6 +13,8 @@ Shader "Acknex/Surfaces"
         _AMBIENT("_AMBIENT", Float) = 1.0
         _X0("_X0", Float) = 0.0
         _Y0("_Y0", Float) = 0.0
+        _X1("_X1", Float) = 0.0
+        _Y1("_Y1", Float) = 0.0
         _SCALEX("_SCALEX", Float) = 0.0
         _SCALEY("_SCALEY", Float) = 0.0
         _OFFSETX("_OFFSETX", Float) = 0.0
@@ -50,6 +52,8 @@ Shader "Acknex/Surfaces"
 
         float _X0;
         float _Y0;
+        float _X1;
+        float _Y1;
 
         float _SCALEX;
         float _SCALEY;

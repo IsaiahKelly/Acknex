@@ -55,6 +55,7 @@ namespace Acknex
         private void Awake()
         {
             Instance = this;
+            AcknexObject.Container = this;
             _camera = GetComponent<Camera>();
         }
 

@@ -61,6 +61,11 @@ namespace Acknex
 
         }
 
+        private void Awake()
+        {
+            AcknexObject.Container = this;
+        }
+
         private void Start()
         {
             transform.SetParent(World.Instance.Canvas.transform, false);

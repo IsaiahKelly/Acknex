@@ -4,6 +4,8 @@ namespace Acknex.Interfaces
 {
     public interface IAcknexObject
     {
+        ObjectType Type { get; set; }
+
         IAcknexObjectContainer Container { get; set; }
 
         void SetFloat(string propertyName, float value);

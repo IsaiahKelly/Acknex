@@ -25,5 +25,10 @@ namespace Acknex
         {
             
         }
+
+        public Skill()
+        {
+            AcknexObject.Container = this;
+        }
     }
 }

@@ -42,5 +42,10 @@ namespace Acknex
         {
             gameObject.SetActive(false);
         }
+
+        private void Awake()
+        {
+            AcknexObject.Container = this;
+        }
     }
 }

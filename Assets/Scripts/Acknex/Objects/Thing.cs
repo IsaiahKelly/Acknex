@@ -147,6 +147,11 @@ namespace Acknex
             bitmap.UpdateMaterial(meshRenderer.material, null, frameIndex, mirror);
         }
 
+        private void Awake()
+        {
+            AcknexObject.Container = this;
+        }
+
         protected virtual void Update()
         {
             UpdateObject();
