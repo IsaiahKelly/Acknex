@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Resolution = Acknex.Interfaces.Resolution;
 
 namespace WdlEngine
 {
@@ -54,20 +55,9 @@ namespace WdlEngine
                     Expect(TokenType.OpenBrace);
                     while (!Matches(TokenType.CloseBrace))
                     {
-                        var (prop, value) = ParseProperty();
-                        if (prop == "SCALE_XY")
-                        {
-                            // Just sugar
-                            var (a, b) = (value as (float, float)?).Value;
-                            obj["SCALE_X"] = a;
-                            obj["SCALE_Y"] = b;
-                        }
-                        else
-                        {
-                            obj[prop] = value;
-                        }
+                        ParseProperty(obj);
                     }
-                    _world.PostSetupObjectTemplate(objType, obj);
+                    _world.PostSetupObjectTemplate(obj);
                     return;
                 }
 
@@ -83,17 +73,37 @@ namespace WdlEngine
                     break;
 
                 case "VIDEO":
-                    // TODO: No interface
-                    break;
+                {
+                    var resolution = this.Expect(TokenType.Identifier).StringValue;
+                    switch (resolution)
+                    {
+                    case "X320X240":
+                        _world.GameResolution = Resolution.ResX320x240;
+                        break;
+                    case "X320X400":
+                        _world.GameResolution = Resolution.ResX320x400;
+                        break;
+                    case "S640X480":
+                        _world.GameResolution = Resolution.ResS640x480;
+                        break;
+                    case "S800X600":
+                        _world.GameResolution = Resolution.ResS800x600;
+                        break;
+                    default:
+                        Debug.LogError($"Unknown resolution {resolution}");
+                        break;
+                    }
+                    Expect(TokenType.Semicolon);
+                    return;
+                }
                 case "AMBIENT":
-                    // TODO: No interface
-                    break;
                 case "LIGHT_ANGLE":
-                    // TODO: No interface
-                    break;
-                case "PATH":
-                    // TODO: No interface
-                    break;
+                {
+                    var value = ParseNumber();
+                    Expect(TokenType.Semicolon);
+                    _world.AcknexObject.SetFloat(statementName, value);
+                    return;
+                }
                 case "MAPFILE":
                 {
                     var name = Expect(TokenType.String).StringValue;
@@ -101,6 +111,9 @@ namespace WdlEngine
                     Expect(TokenType.Semicolon);
                     return;
                 }
+                case "PATH":
+                    // TODO: No interface
+                    break;
                 case "STRING":
                     // TODO: No interface
                     break;
@@ -111,25 +124,61 @@ namespace WdlEngine
             SkipStructure();
         }
 
-        private (string Name, object Value) ParseProperty()
+        private void ParseProperty(IAcknexObject obj)
         {
-            var property = Expect(TokenType.Identifier);
-            var name = property.StringValue;
-            var value =
-                name == "FLAGS" || name == "BMAPS" ? ParseNameList() :
-                name == "SCYCLES" || name == "DELAY" || name == "MIRROR" ? ParseIntList() :
-                name == "SCALE_XY" ? ParseRealPair() :
-                Consume().Value;
+            var name = this.Expect(TokenType.Identifier).StringValue;
+            switch (name)
+            {
+            case "TEXTURE":
+            case "ATTACH":
+            case "OVLYS":
+            case "MSPRITE":
+            case "TYPE":
+            case "DEFAULT":
+            case "BELOW":
+            case "FLOOR_TEX":
+            case "CEIL_TEX":
+                obj.SetString(name, Expect(TokenType.Identifier).StringValue);
+                break;
+            case "HEIGHT":
+            case "DIST":
+            case "SPEED":
+            case "LAYER":
+            case "POS_X":
+            case "POS_Y":
+            case "SIZE_X":
+            case "SIZE_Y":
+            case "VAL":
+            case "MIN":
+            case "MAX":
+            case "FLOOR_HGT":
+            case "CEIL_HGT":
+            case "AMBIENT":
+            case "SCALE_X":
+            case "SCALE_Y":
+            case "SIDES":
+            case "CYCLES":
+                obj.SetFloat(name, ParseNumber());
+                break;
+            case "FLAGAS":
+            case "BMAPS":
+                obj.SetObject(name, ParseNameList());
+                break;
+            case "DELAY":
+            case "MIRROR":
+                obj.SetObject(name, ParseIntList());
+                break;
+            case "SCALE_XY":
+                obj.SetFloat("SCALE_X", ParseNumber());
+                Expect(TokenType.Comma);
+                obj.SetFloat("SCALE_Y", ParseNumber());
+                break;
+            default:
+                Debug.LogError($"Unknown property {name}");
+                while (Peek().Type != TokenType.Semicolon) Consume();
+                break;
+            }
             Expect(TokenType.Semicolon);
-            return (name, value);
-        }
-
-        private object ParseRealPair()
-        {
-            var first = Consume();
-            Expect(TokenType.Comma);
-            var second = Consume();
-            return (first.NumericValue, second.NumericValue);
         }
 
         private List<string> ParseNameList() => ParseListOf(() => Expect(TokenType.Identifier).StringValue);

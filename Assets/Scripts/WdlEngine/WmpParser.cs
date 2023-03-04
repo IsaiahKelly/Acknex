@@ -29,6 +29,7 @@ namespace WdlEngine
         private void Parse()
         {
             while (!Matches(TokenType.EndOfInput)) ParseStatement();
+            _world.PostSetupWMP();
         }
 
         private void ParseStatement()
@@ -41,34 +42,72 @@ namespace WdlEngine
                 {
                 case "PLAYER_START":
                 {
-                    // TODO: Handle
-                    break;
+                    var player = _world.GetObject(ObjectType.Player, null);
+                    _world.UpdateSkillValue("PLAYER_X", ParseNumber());
+                    _world.UpdateSkillValue("PLAYER_Y", ParseNumber());
+                    _world.UpdateSkillValue("PLAYER_ANGLE", Mathf.Deg2Rad * ParseNumber());
+                    player.SetFloat("REGION", Expect(TokenType.Integer).IntValue);
+                    Expect(TokenType.Semicolon);
+                    return;
                 }
                 case "THING":
                 case "ACTOR":
                 {
-                    // TODO: Handle
-                    break;
+                    var type = Utils.StringToObjectType(statementName);
+                    var name = Expect(TokenType.Identifier).StringValue;
+                    var obj = _world.CreateObjectInstance(type, name);
+                    obj.SetFloat("X", ParseNumber());
+                    obj.SetFloat("Y", ParseNumber());
+                    obj.SetFloat("ANGLE", ParseNumber());
+                    obj.SetFloat("REGION", Expect(TokenType.Integer).IntValue);
+                    _world.PostSetupObjectInstance(obj);
+                    Expect(TokenType.Semicolon);
+                    return;
                 }
                 case "VERTEX":
-                    // TODO: Handle
-                    break;
+                {
+                    var x = ParseNumber();
+                    var y = ParseNumber();
+                    var z = ParseNumber();
+                    Expect(TokenType.Semicolon);
+                    _world.AddVertex(x, y, z);
+                    return;
+                }
                 case "REGION":
                 {
                     var name = Expect(TokenType.Identifier).StringValue;
                     var region = _world.CreateObjectInstance(ObjectType.Region, name);
-                    region["FLOOR_HGT"] = ParseNumber();
-                    region["CEIL_HGT"] = ParseNumber();
-                    _world.PostSetupObjectInstance(ObjectType.Region, region);
+                    region.SetFloat("FLOOR_HGT", ParseNumber());
+                    region.SetFloat("CEIL_HGT", ParseNumber());
+                    _world.PostSetupObjectInstance(region);
                     Expect(TokenType.Semicolon);
                     return;
                 }
                 case "WALL":
-                    // TODO: Handle
-                    break;
+                {
+                    var name = Expect(TokenType.Identifier).StringValue;
+                    var obj = _world.CreateObjectInstance(ObjectType.Wall, name);
+                    obj.SetFloat("VERTEX2", Expect(TokenType.Integer).IntValue);
+                    obj.SetFloat("VERTEX1", Expect(TokenType.Integer).IntValue);
+                    obj.SetFloat("REGION1", Expect(TokenType.Integer).IntValue);
+                    obj.SetFloat("REGION2", Expect(TokenType.Integer).IntValue);
+                    obj.SetFloat("OFFSET_X", ParseNumber());
+                    obj.SetFloat("OFFSET_Y", ParseNumber());
+                    _world.PostSetupObjectInstance(obj);
+                    Expect(TokenType.Semicolon);
+                    return;
+                }
                 case "WAY":
-                    // TODO: Handle
-                    break;
+                {
+                    var name = Expect(TokenType.Identifier).StringValue;
+                    var way = _world.CreateObjectInstance(ObjectType.Way, name);
+                    while (!Matches(TokenType.Semicolon))
+                    {
+                        _world.AddWayPoint(way, ParseNumber(), ParseNumber());
+                    }
+                    _world.PostSetupObjectInstance(way);
+                    return;
+                }
                 }
             }
 
