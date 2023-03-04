@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Acknex.Interfaces;
-using UnityEngine;
 
 namespace Acknex
 {
@@ -41,6 +40,9 @@ namespace Acknex
         }
 
         public int BitmapCount => AcknexObject.TryGetObject("BMAPS", out List<string> bmaps) ? bmaps.Count : 0;
+
+        public float ScaleX => AcknexObject.TryGetFloat("SCALE_X", out var val) ? val : 16f;
+        public float ScaleY => AcknexObject.TryGetFloat("SCALE_Y", out var val) ? val : 16f;
 
         public void UpdateObject()
         {

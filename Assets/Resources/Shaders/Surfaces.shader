@@ -88,7 +88,7 @@ Shader "Acknex/Surfaces"
             if (_FENCE) {
                 _OFFSETY = 0;
                 //todo: better take this as width and height from the original sprite to avoid distortion
-                float worldHeight = (_Y1) / _SCALEY;
+                float worldHeight = (_Y1-_Y0) / _SCALEY;
                 IN.uv_MainTex.y -= _V0H;
                 if (IN.uv_MainTex.y > worldHeight) {
                     discard;

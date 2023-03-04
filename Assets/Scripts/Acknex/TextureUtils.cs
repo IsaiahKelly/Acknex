@@ -20,7 +20,8 @@ namespace Acknex
                 1f);
         }
 
-        public static GameObject BuildTextureGameObject(Transform parent, string name, Bitmap bitmap, out MeshFilter meshFilter, out MeshRenderer meshRenderer, bool pivotAtLeft = false)
+        public static GameObject BuildTextureGameObject(Transform parent, string name, Bitmap bitmap,
+            out MeshFilter meshFilter, out MeshRenderer meshRenderer, bool pivotAtLeft = false)
         {
             var innerGameObject = new GameObject(name);
             innerGameObject.transform.SetParent(parent, false);

@@ -212,7 +212,7 @@ namespace Acknex
             //todo: how to?
             //_collider.radius = AcknexObject.GetNumber("DIST") > 0f ? AcknexObject.GetNumber("DIST") * 0.5f : 0.5f;
 
-            Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject?.AcknexObject);
+            Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, transform.right);
         }
 
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)

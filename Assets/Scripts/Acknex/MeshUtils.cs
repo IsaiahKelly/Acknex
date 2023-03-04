@@ -34,7 +34,7 @@ namespace Acknex
             indices.Add(baseIndex + d);
         }
 
-        public static Mesh CreateQuadMesh(bool pivotAtLeft=  false)
+        public static Mesh CreateQuadMesh(bool pivotAtLeft = false)
         {
             var mesh = new Mesh();
             Vector3[] vertices;

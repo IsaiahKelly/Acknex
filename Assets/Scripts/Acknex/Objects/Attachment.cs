@@ -1,6 +1,7 @@
 ﻿using Acknex.Interfaces;
-using UnityEditor.PackageManager;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Acknex
 {
@@ -14,12 +15,19 @@ namespace Acknex
 
         private GameObject _attached;
 
-        public static void HandleAttachment(ref GameObject attached, GameObject parent, IAcknexObject acknexObject, IAcknexObject textureObject, Vector3? basePosition = null, Quaternion? baseRotation = null, bool pivotAtLeft = false)
+        public static void HandleAttachment(
+            ref GameObject attached,
+            GameObject parent,
+            IAcknexObject acknexObject,
+            Texture textureObject,
+            Vector3 baseRightDirection,
+            Vector3? basePosition = null,
+            bool pivotAtLeft = false)
         {
             var attach = acknexObject.GetString("ATTACH");
             if (attach == null && textureObject != null)
             {
-                attach = textureObject.GetString("ATTACH");
+                attach = textureObject.AcknexObject.GetString("ATTACH");
             }
             if (string.IsNullOrEmpty(attach) && attached != null || attached != null && attach != attached.name)
             {
@@ -36,15 +44,14 @@ namespace Acknex
                     {
                         transformPosition = basePosition.Value;
                     }
-                    if (baseRotation.HasValue)
-                    {
-                        attached.transform.rotation = baseRotation.Value;
-                    }
+                    var baseForwardDirection = Vector3.Cross(baseRightDirection, Vector3.up);
+                    attached.transform.rotation = Quaternion.LookRotation(baseForwardDirection);
+                    var posX = textureObject.AcknexObject.GetFloat("POS_X") + toAttachTextureObject.AcknexObject.GetFloat("POS_X");
+                    var posY = textureObject.AcknexObject.GetFloat("POS_Y") + toAttachTextureObject.AcknexObject.GetFloat("POS_Y");
+                    var upperLeftPos = baseRightDirection * (posX / toAttachTextureObject.ScaleX);
+                    var upperTopPos = Vector3.down * (posY / toAttachTextureObject.ScaleY);
+                    transformPosition += upperLeftPos + upperTopPos - (baseForwardDirection * 0.01f);
                     attached.transform.position = transformPosition;
-                    var transformLocalPosition = attached.transform.localPosition;
-                    transformLocalPosition.y = toAttachTextureObject.AcknexObject.GetFloat("POS_Y");
-                    transformLocalPosition.z -= 0.01f;
-                    attached.transform.localPosition = transformLocalPosition;
                     var attachment = attached.AddComponent<Attachment>();
                     attachment.AcknexObject = acknexObject;
                     attachment.AcknexObject.Container = attachment;
@@ -70,7 +77,7 @@ namespace Acknex
 
         public void Enable()
         {
-            
+
         }
 
         public void Disable()

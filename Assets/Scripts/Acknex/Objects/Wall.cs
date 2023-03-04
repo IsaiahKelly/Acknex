@@ -85,9 +85,7 @@ namespace Acknex
                 return;
             }
             AcknexObject.IsDirty = false;
-            var basePosition = new Vector3(BottomQuad.GetColumn(0).x, 0f, 0f);
-            var baseRotation = Quaternion.LookRotation(Vector3.Cross(XAxis, Vector3.up));
-            Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject?.AcknexObject, basePosition, baseRotation);
+            Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, XAxis, BottomQuad.GetColumn(0), true);
             if (_meshRenderer != null)
             {
                 BitmapImage?.UpdateMaterial(_meshRenderer.material, TextureObject, 0, false, AcknexObject);
