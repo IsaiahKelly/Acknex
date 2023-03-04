@@ -15,6 +15,7 @@ namespace Acknex
 
         private GameObject _attached;
 
+        //todo: looks like an attachment disappear when it gets outside a given wall area, so we'll need barycentric interpolation to handle that
         public static void HandleAttachment(
             ref GameObject attached,
             GameObject parent,
