@@ -76,7 +76,6 @@
             // Albedo comes from a texture tinted by color
             fixed4 c = tex2D(_MainTex, uv) * _Color;
             o.Albedo = c.rgb;// *_AMBIENT;
-            //o.Alpha = c.a;
             /* Sharpen texture alpha to the width of a pixel */
             o.Alpha = (c.a - 0.5) / max(fwidth(c.a), 0.0001) + 0.5;
             clip(o.Alpha - 0.5);

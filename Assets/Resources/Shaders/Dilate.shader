@@ -1,5 +1,6 @@
 ﻿Shader "Acknex/Dilate"
 {
+	//todo: add the transparent color from bitmaps here
 	Properties
 	{
 		_MainTex("Texture", 2D) = "white" {}

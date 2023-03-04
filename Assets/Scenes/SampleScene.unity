@@ -668,7 +668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b52af5bca98fed4c9690969a13ed559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WDLPath: C:\games\acknex\hades2\chin3.WMP
+  WDLPath: Assets\Data\Contato.wdl
   CanvasWidthRatio: 1.6
   WMPContainsRegionsByName: 0
   UseWDLEngine: 0

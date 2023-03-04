@@ -8,7 +8,6 @@ Shader "Acknex/Surfaces"
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
-        _Cutoff("Alpha cutoff", Range(0,1)) = 0.9
         _CullMode("_CullMode", Int) = 0
         _AMBIENT("_AMBIENT", Float) = 1.0
         _X0("_X0", Float) = 0.0
@@ -49,7 +48,6 @@ Shader "Acknex/Surfaces"
         half _Glossiness;
         half _Metallic;
         fixed4 _Color;
-        float _Cutoff;
 
         float _X0;
         float _Y0;
@@ -88,10 +86,11 @@ Shader "Acknex/Surfaces"
 
             //todo: lerp between V0H V1H
             if (_FENCE) {
-                _OFFSETY = _V0H - _SCALEY;
-                _Y0 = 0.0;
-                //TODO: TEST HACK!
-                if (IN.uv_MainTex.y > _V0H + (_SCALEY / 5.7)) {
+                _OFFSETY = 0;
+                //todo: better take this as width and height from the original sprite to avoid distortion
+                float worldHeight = (_Y1) / _SCALEY;
+                IN.uv_MainTex.y -= _V0H;
+                if (IN.uv_MainTex.y > worldHeight) {
                     discard;
                 }
             }
@@ -101,9 +100,10 @@ Shader "Acknex/Surfaces"
             uv *= _MainTex_TexelSize.xy;
             // Albedo comes from a texture tinted by color
             fixed4 c = tex2D (_MainTex, uv) * _Color;
-            if (_PORTCULLIS) {
-                clip(c.a - _Cutoff);
-                o.Alpha = c.a;
+            if (_PORTCULLIS || _FENCE) {
+                /* Sharpen texture alpha to the width of a pixel */
+                o.Alpha = (c.a - 0.5) / max(fwidth(c.a), 0.0001) + 0.5;
+                clip(o.Alpha - 0.5);
             }
             o.Albedo = c.rgb;// *_AMBIENT;
             // Metallic and smoothness come from slider variables
