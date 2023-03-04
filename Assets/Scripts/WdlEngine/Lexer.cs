@@ -30,6 +30,8 @@ namespace WdlEngine
         private static string[] CommandsWithAngleBracketStrings = new[]
         {
             "BIND",
+            "BMAP",
+            "OVLY",
             "INCLUDE",
             "MAPFILE",
             "PALFILE",

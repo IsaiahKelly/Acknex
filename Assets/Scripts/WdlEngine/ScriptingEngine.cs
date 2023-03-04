@@ -25,12 +25,8 @@ namespace WdlEngine
             {
                 var tokens = Lexer.Lex(sourceText);
                 tokens = Preprocessor.Process(rootPath, tokens);
-                var wdlResult = WdlParser.Parse(_world, tokens);
-                foreach (var mapfile in wdlResult.MapFileNames)
-                {
-                    var mapFilePath = Path.Combine(rootPath, mapfile);
-                    ParseWmp(mapFilePath);
-                }
+                var wdlResult = WdlParser.Parse(rootPath, _world, tokens);
+                foreach (var mapfile in wdlResult.MapFiles) ParseWmp(mapfile);
             }
         }
 

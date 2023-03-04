@@ -8,11 +8,11 @@ namespace WdlEngine
 {
     internal readonly struct WdlParseResult
     {
-        public readonly IReadOnlyList<string> MapFileNames;
+        public readonly IReadOnlyList<string> MapFiles;
 
         public WdlParseResult(IReadOnlyList<string> mapFileNames)
         {
-            MapFileNames = mapFileNames;
+            MapFiles = mapFileNames;
         }
     }
 }

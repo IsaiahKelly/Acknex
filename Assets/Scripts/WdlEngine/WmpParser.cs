@@ -37,7 +37,7 @@ namespace WdlEngine
             var statement = Consume();
             if (statement.Type == TokenType.Identifier)
             {
-                var statementName = statement.StringValue;
+                var statementName = statement.StringValue.ToUpper();
                 switch (statementName)
                 {
                 case "PLAYER_START":

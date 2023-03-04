@@ -17,8 +17,10 @@ namespace WdlEngine
                 return ObjectType.Action;
             case "ACTOR":
                 return ObjectType.Actor;
+            case "BMAP":
             case "BITMAP":
                 return ObjectType.Bitmap;
+            case "OVLY":
             case "OVERLAY":
                 return ObjectType.Overlay;
             case "PANEL":

@@ -1,6 +1,7 @@
 ﻿using Acknex.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,19 +12,21 @@ namespace WdlEngine
 {
     internal sealed class WdlParser : TokenConsumerBase
     {
-        public static WdlParseResult Parse(IAcknexWorld world, IEnumerable<Token> tokens)
+        public static WdlParseResult Parse(string rootPath, IAcknexWorld world, IEnumerable<Token> tokens)
         {
-            var parser = new WdlParser(world, tokens);
+            var parser = new WdlParser(rootPath, world, tokens);
             parser.Parse();
-            return new WdlParseResult(parser._mapFileNames);
+            return new WdlParseResult(parser._mapFiles);
         }
 
+        private readonly string _rootPath;
         private readonly IAcknexWorld _world;
-        private readonly List<string> _mapFileNames = new List<string>();
+        private readonly List<string> _mapFiles = new List<string>();
 
-        private WdlParser(IAcknexWorld world, IEnumerable<Token> tokens) 
+        private WdlParser(string rootPath, IAcknexWorld world, IEnumerable<Token> tokens) 
             : base(tokens.GetEnumerator())
         {
+            _rootPath = rootPath;
             _world = world;
         }
 
@@ -37,7 +40,7 @@ namespace WdlEngine
             var statement = Consume();
             if (statement.Type == TokenType.Identifier)
             {
-                var statementName = statement.StringValue;
+                var statementName = statement.StringValue.ToUpper();
                 switch (statementName)
                 {
                 case "THING":
@@ -49,8 +52,8 @@ namespace WdlEngine
                 case "WALL":
                 case "TEXTURE":
                 {
-                    var name = Expect(TokenType.Identifier).StringValue;
                     var objType = Utils.StringToObjectType(statementName);
+                    var name = Expect(TokenType.Identifier).StringValue;
                     var obj = _world.CreateObjectTemplate(objType, name);
                     Expect(TokenType.OpenBrace);
                     while (!Matches(TokenType.CloseBrace))
@@ -64,8 +67,24 @@ namespace WdlEngine
                 case "BMAP":
                 case "OVLY":
                 {
-                    // TODO
-                    break;
+                    var objType = Utils.StringToObjectType(statementName);
+                    var name = Expect(TokenType.Identifier).StringValue;
+                    var obj = _world.CreateObjectTemplate(objType, name);
+                    Expect(TokenType.Comma);
+                    obj.SetString("FILENAME", ParsePath());
+                    if (Matches(TokenType.Comma))
+                    {
+                        obj.SetFloat("X", ParseNumber());
+                        Expect(TokenType.Comma);
+                        obj.SetFloat("Y", ParseNumber());
+                        Expect(TokenType.Comma);
+                        obj.SetFloat("DX", ParseNumber());
+                        Expect(TokenType.Comma);
+                        obj.SetFloat("DY", ParseNumber());
+                    }
+                    _world.PostSetupObjectTemplate(obj);
+                    Expect(TokenType.Semicolon);
+                    return;
                 }
 
                 case "ACTION":
@@ -106,17 +125,34 @@ namespace WdlEngine
                 }
                 case "MAPFILE":
                 {
-                    var name = Expect(TokenType.String).StringValue;
-                    _mapFileNames.Add(name);
+                    var path = ParsePath();
+                    _mapFiles.Add(path);
                     Expect(TokenType.Semicolon);
                     return;
                 }
                 case "PATH":
-                    // TODO: No interface
-                    break;
+                {
+                    var path = Expect(TokenType.String).StringValue;
+                    _world.AddPath(path);
+                    Expect(TokenType.Semicolon);
+                    return;
+                }
                 case "STRING":
-                    // TODO: No interface
-                    break;
+                {
+                    var name = Expect(TokenType.Identifier).StringValue;
+                    Expect(TokenType.Comma);
+                    var value = Expect(TokenType.String).StringValue;
+                    _world.AddString(name, value);
+                    Expect(TokenType.Semicolon);
+                    return;
+                }
+                case "WAY":
+                {
+                    var name = Expect(TokenType.Identifier).StringValue;
+                    Expect(TokenType.Semicolon);
+                    _world.CreateObjectTemplate(ObjectType.Way, name);
+                    return;
+                }
                 }
             }
 
@@ -124,9 +160,15 @@ namespace WdlEngine
             SkipStructure();
         }
 
+        private string ParsePath()
+        {
+            var name = Expect(TokenType.String).StringValue;
+            return Path.Combine(_rootPath, name);
+        }
+
         private void ParseProperty(IAcknexObject obj)
         {
-            var name = this.Expect(TokenType.Identifier).StringValue;
+            var name = Expect(TokenType.Identifier).StringValue.ToUpper();
             switch (name)
             {
             case "TEXTURE":
@@ -160,7 +202,7 @@ namespace WdlEngine
             case "CYCLES":
                 obj.SetFloat(name, ParseNumber());
                 break;
-            case "FLAGAS":
+            case "FLAGS":
             case "BMAPS":
                 obj.SetObject(name, ParseNameList());
                 break;
