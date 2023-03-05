@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
@@ -84,12 +85,16 @@ namespace Acknex
                     {
                         var container = CreateThing(name);
                         container.AcknexObject.Type = type;
+                        container.AcknexObject.SetFloat("SCALE_X", 16);
+                        container.AcknexObject.SetFloat("SCALE_Y", 16);
                         return container.AcknexObject;
                     }
                 case ObjectType.Actor:
                     {
                         var container = CreateActor(name);
                         container.AcknexObject.Type = type;
+                        container.AcknexObject.SetFloat("SCALE_X", 16);
+                        container.AcknexObject.SetFloat("SCALE_Y", 16);
                         return container.AcknexObject;
                     }
                 case ObjectType.Region:
@@ -145,6 +150,8 @@ namespace Acknex
                         var actor = CreateActor(name, true);
                         actor.AcknexObject.Type = type;
                         actor.AcknexObject.SetString("NAME", name);
+                        actor.AcknexObject.SetFloat("SCALE_X", 16);
+                        actor.AcknexObject.SetFloat("SCALE_Y", 16);
                         actor.Disable();
                         ActorsByName.Add(name, actor);
                         return actor.AcknexObject;
@@ -221,6 +228,8 @@ namespace Acknex
                         var thing = CreateThing(name, true);
                         thing.AcknexObject.Type = type;
                         thing.AcknexObject.SetString("NAME", name);
+                        thing.AcknexObject.SetFloat("SCALE_X", 16);
+                        thing.AcknexObject.SetFloat("SCALE_Y", 16);
                         thing.Disable();
                         ThingsByName.Add(name, thing);
                         return thing.AcknexObject;
