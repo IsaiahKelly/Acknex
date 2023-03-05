@@ -252,7 +252,7 @@ namespace Acknex
         }
 
         //todo: replace MaxHeightCheck
-        public static void Locate(AcknexObject source, ref int regionIndex, float thingX, float thingY, ref float thingZ, bool onGround = false)
+        public static void Locate(IAcknexObject source, ref int regionIndex, float thingX, float thingY, ref float thingZ, bool onGround = false)
         {
             var point = new Vector3(thingX, MaxHeightCheck, thingY);
             if (Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))

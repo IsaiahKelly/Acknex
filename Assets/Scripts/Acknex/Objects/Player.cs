@@ -62,7 +62,7 @@ namespace Acknex
         private void StickToTheGround(float playerX, float playerY, ref float playerZ)
         {
             var playerRegion = AcknexObject.GetInteger("REGION");
-            Region.Locate(AcknexObject,Single.MaxValue ref playerRegion , ref playerX, playerY, ref playerZ, false);
+            Region.Locate(AcknexObject, ref playerRegion, playerX, playerY, ref playerZ, false);
             World.Instance.AssignSynonymToObject("HERE", World.Instance.RegionsByIndex[playerRegion].AcknexObject, true);
             AcknexObject.SetInteger("REGION", playerRegion);
         }
