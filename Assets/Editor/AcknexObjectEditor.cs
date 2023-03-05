@@ -91,8 +91,23 @@ public class AcknexObjectEditor : Editor
     }
 }
 [UnityEditor.CustomEditor(typeof(Actor))]
-public class Actorditor : AcknexObjectEditor
+public class ActorEditor : AcknexObjectEditor
 {
+    private Way _target;
+    public override void OnInspectorGUI()
+    {
+        EditorGUILayout.BeginHorizontal();
+        _target = EditorGUILayout.ObjectField("Target", _target, typeof(Way)) as Way;
+        if (GUILayout.Button("Go to Way") && _target != null)
+        {
+            var actor = (Actor)target;
+            actor.AcknexObject.SetFloat("SPEED", 0.7f);
+            actor.AcknexObject.SetString("TARGET", _target.AcknexObject.GetString("NAME"));
+            actor.AcknexObject.IsDirty = true;
+        }
+        EditorGUILayout.EndHorizontal();
+        base.OnInspectorGUI();
+    }
 }
 [UnityEditor.CustomEditor(typeof(Region))]
 public class RegionEditor : AcknexObjectEditor

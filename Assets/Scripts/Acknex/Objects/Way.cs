@@ -15,7 +15,6 @@ namespace Acknex
             {
                 return definition.AcknexObject;
             }
-
             return null;
         }
 
@@ -54,29 +53,34 @@ namespace Acknex
         {
             if (Points.Count == 0)
             {
+                World.Instance.TriggerEvent(AcknexObject, "IF_ARRIVED");
                 yield break;
             }
-            var waypoint = thingOrActor.GetInteger("WAYPOINT");
+
+            var waypoint = 1;
             var nextPoint = Points[waypoint - 1];
-            for (; ; )
+            for (;;)
             {
+                thingOrActor.SetInteger("WAYPOINT", waypoint);
                 var pos = new Vector2(thingOrActor.GetFloat("X"), thingOrActor.GetFloat("Y"));
                 var speed = thingOrActor.GetFloat("SPEED");
                 var vSpeed = thingOrActor.GetFloat("VSPEED");
+                if (Vector2.Distance(pos, nextPoint) <= Mathf.Max(speed, vSpeed) * TimeUtils.TicksToTime(1))
                 {
-                    if (Vector2.Distance(pos, nextPoint) <= Mathf.Max(speed, vSpeed) * TimeUtils.TicksToTime(1))
-                    {
-                        World.Instance.TriggerEvent(AcknexObject, "IF_ARRIVED");    
-                        yield break;
-                    }
-                    thingOrActor.SetFloat("TARGET_X", nextPoint.x);
-                    thingOrActor.SetFloat("TARGET_Y", nextPoint.y);
-                    var newX = Mathf.MoveTowards(pos.x, nextPoint.x, speed * TimeUtils.TicksToTime(1));
-                    var newY = Mathf.MoveTowards(pos.y, nextPoint.y, speed * TimeUtils.TicksToTime(1));
-                    thingOrActor.SetFloat("X", newX);
-                    thingOrActor.SetFloat("y", newY);
-                    yield return null;
+                    World.Instance.TriggerEvent(AcknexObject, "IF_ARRIVED");
+                    yield break;
                 }
+
+                thingOrActor.SetFloat("TARGET_X", nextPoint.x);
+                thingOrActor.SetFloat("TARGET_Y", nextPoint.y);
+                var angle = AngleUtils.ConvertUnityToAcknexAngle((Mathf.Atan2(pos.x - nextPoint.x, pos.y - nextPoint.y) * Mathf.Rad2Deg));
+                var newX = Mathf.MoveTowards(pos.x, nextPoint.x, speed * TimeUtils.TicksToTime(1));
+                var newY = Mathf.MoveTowards(pos.y, nextPoint.y, speed * TimeUtils.TicksToTime(1));
+                thingOrActor.SetFloat("X", newX);
+                thingOrActor.SetFloat("Y", newY);
+                thingOrActor.SetFloat("ANGLE", angle);
+                thingOrActor.IsDirty = true;
+                yield return null;
             }
         }
     }

@@ -27,6 +27,13 @@ namespace Acknex
         public bool UseWDLEngine;
 
         public readonly List<Region> RegionsByIndex = new List<Region>();
+
+        public readonly Dictionary<string, IList<Region>> AllRegionsByName = new Dictionary<string, IList<Region>>();
+        public readonly Dictionary<string, IList<Wall>> AllWallsByName = new Dictionary<string, IList<Wall>>();
+        public readonly Dictionary<string, IList<Way>> AllWaysByName = new Dictionary<string, IList<Way>>();
+        public readonly Dictionary<string, IList<Actor>> AllActorsByName = new Dictionary<string, IList<Actor>>();
+        public readonly Dictionary<string, IList<Thing>> AllThingsByName = new Dictionary<string, IList<Thing>>();
+
         public readonly Dictionary<string, Synonym> SynonymsByName = new Dictionary<string, Synonym>();
         public readonly Dictionary<string, Action> ActionsByName = new Dictionary<string, Action>();
         public readonly Dictionary<string, Skill> SkillsByName = new Dictionary<string, Skill>();
@@ -34,13 +41,13 @@ namespace Acknex
         public readonly Dictionary<string, Wall> WallsByName = new Dictionary<string, Wall>();
         public readonly Dictionary<string, Bitmap> BitmapsByName = new Dictionary<string, Bitmap>();
         public readonly Dictionary<string, Texture> TexturesByName = new Dictionary<string, Texture>();
-        public readonly Dictionary<string, string> StringsByName = new Dictionary<string, string>();
         public readonly Dictionary<string, Way> WaysByName = new Dictionary<string, Way>();
         public readonly Dictionary<string, Actor> ActorsByName = new Dictionary<string, Actor>();
         public readonly Dictionary<string, Overlay> OverlaysByName = new Dictionary<string, Overlay>();
         public readonly Dictionary<string, Thing> ThingsByName = new Dictionary<string, Thing>();
         public readonly Dictionary<string, Flic> FlicsByName = new Dictionary<string, Flic>();
         public readonly Dictionary<string, Texture2D> TextureCache = new Dictionary<string, Texture2D>();
+        public readonly Dictionary<string, string> StringsByName = new Dictionary<string, string>();
 
         public readonly List<string> Paths = new List<string>();
 

@@ -118,7 +118,8 @@ namespace Acknex
             if (camera != null)
             {
                 var cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(camera.transform.position - _thingGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
-                var thingDirection = Quaternion.Euler(0f, AcknexObject.GetFloat("ANGLE"), 0f) * Vector3.back;
+                var thingAngle = AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE"));
+                var thingDirection = Quaternion.Euler(0f, thingAngle, 0f) * Vector3.back;
                 var angle = Mathf.Repeat(AngleUtils.Angle(thingDirection, cameraToThingDirection) + halfStep, 360f);
                 var normalizedAngle = angle / 360f;
                 side = Mathf.RoundToInt(Mathf.Lerp(0, sides - 1, normalizedAngle));
@@ -183,6 +184,8 @@ namespace Acknex
         private Texture _lastTextureObject;
         private List<WaitForSeconds> _textureObjectDelay;
 
+        private bool _goingToTarget;
+
         public virtual void UpdateObject()
         {
             UpdateEvents();
@@ -192,6 +195,15 @@ namespace Acknex
                 return;
             }
             AcknexObject.IsDirty = true;
+
+            if (AcknexObject.TryGetString("TARGET", out var target) && !_goingToTarget)
+            {
+                if (World.Instance.AllWaysByName.TryGetValue(target, out var wayList))
+                {
+                    StartCoroutine(wayList[0].MoveThingOrActor(AcknexObject));
+                    _goingToTarget = true;
+                }
+            }
 
             //todo: better way to do that?
             if (TextureObject != _lastTextureObject)

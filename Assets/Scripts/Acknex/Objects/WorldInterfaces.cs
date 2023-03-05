@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
@@ -347,14 +348,66 @@ namespace Acknex
 
         public void PostSetupObjectInstance(IAcknexObject acknexObject)
         {
-            if (acknexObject.Type == ObjectType.Wall)
+            var wall = acknexObject.Container as Wall;
+            if (wall != null)
             {
-                var wall = acknexObject.Container as Wall;
-                if (wall != null)
+                var name = acknexObject.GetString("NAME");
+                if (!AllWallsByName.TryGetValue(name, out var list))
                 {
-                    _regionWalls.GetWallsList(wall.AcknexObject.GetInteger("REGION1")).Add(wall);
-                    _regionWalls.GetWallsList(wall.AcknexObject.GetInteger("REGION2")).Add(wall);
+                    list = new List<Wall>();
+                    AllWallsByName.Add(name, list);
                 }
+                list.Add(wall);
+                _regionWalls.GetWallsList(wall.AcknexObject.GetInteger("REGION1")).Add(wall);
+                _regionWalls.GetWallsList(wall.AcknexObject.GetInteger("REGION2")).Add(wall);
+            }
+
+            var region = acknexObject.Container as Region;
+            if (region != null)
+            {
+                var name = acknexObject.GetString("NAME");
+                if (!AllRegionsByName.TryGetValue(name, out var list))
+                {
+                    list = new List<Region>();
+                    AllRegionsByName.Add(name, list);
+                }
+                list.Add(region);
+            }
+
+            var actor = acknexObject.Container as Actor;
+            if (actor != null)
+            {
+                var name = acknexObject.GetString("NAME");
+                if (!AllActorsByName.TryGetValue(name, out var list))
+                {
+                    list = new List<Actor>();
+                    AllActorsByName.Add(name, list);
+                }
+                list.Add(actor);
+            }
+
+            var thing = acknexObject.Container as Thing;
+            if (thing != null)
+            {
+                var name = acknexObject.GetString("NAME");
+                if (!AllThingsByName.TryGetValue(name, out var list))
+                {
+                    list = new List<Thing>();
+                    AllThingsByName.Add(name, list);
+                }
+                list.Add(thing);
+            }
+
+            var way = acknexObject.Container as Way;
+            if (way != null)
+            {
+                var name = acknexObject.GetString("NAME");
+                if (!AllWaysByName.TryGetValue(name, out var list))
+                {
+                    list = new List<Way>();
+                    AllWaysByName.Add(name, list);
+                }
+                list.Add(way);
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Acknex.Interfaces
 {
@@ -19,6 +20,7 @@ namespace Acknex.Interfaces
         /// Gets/Sets the object container (Unity representation).
         /// <remarks>
         /// The container is set automatically by the IAcknexWorld implementation.
+        /// </remarks>
         /// </summary>
         IAcknexObjectContainer Container { get; set; }
 
