@@ -14,10 +14,11 @@ namespace Acknex
             {
                 return Vector3.one;
             }
-            return new Vector3(
-                bitmap.Width / textureObject.AcknexObject.GetFloat("SCALE_X"), 
-                bitmap.Height / textureObject.AcknexObject.GetFloat("SCALE_Y"), 
+            var value = new Vector3(
+                Mathf.Max(1, bitmap.Width) / Mathf.Max(1, textureObject.AcknexObject.GetFloat("SCALE_X")),
+                Mathf.Max(1, bitmap.Height) / Mathf.Max(1, textureObject.AcknexObject.GetFloat("SCALE_Y")),
                 1f);
+            return value;
         }
 
         public static GameObject BuildTextureGameObject(Transform parent, string name, Bitmap bitmap,
@@ -58,8 +59,8 @@ namespace Acknex
             Graphics.Blit(texture2D, renderTextureA);
             for (var i = 0; i < Mathf.Max(texture2D.width, texture2D.height); i++)
             {
-               Graphics.Blit(renderTextureA, renderTextureB, _dilateShader);
-               Graphics.CopyTexture(renderTextureB, renderTextureA);
+                Graphics.Blit(renderTextureA, renderTextureB, _dilateShader);
+                Graphics.CopyTexture(renderTextureB, renderTextureA);
             }
             Graphics.CopyTexture(renderTextureA, 0, 0, texture2D, 0, 0);
             CopyTextureCPU(renderTextureA, texture2D, true, false);
