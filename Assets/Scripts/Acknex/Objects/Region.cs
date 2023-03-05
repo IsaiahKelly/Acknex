@@ -254,7 +254,8 @@ namespace Acknex
         //todo: replace MaxHeightCheck
         public static void Locate(IAcknexObject source, ref int regionIndex, float thingX, float thingY, ref float thingZ, bool onGround = false)
         {
-            var point = new Vector3(thingX, MaxHeightCheck, thingY);
+            var currentRegion = World.Instance.RegionsByIndex[regionIndex];
+            var point = new Vector3(thingX, currentRegion.AcknexObject.GetFloat("CEIL_HGT") , thingY);
             if (Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
             {
                 if (raycastHit.transform.TryGetComponent<Region>(out var region))
@@ -267,9 +268,9 @@ namespace Acknex
                     {
                         if (newRegionIndex != regionIndex)
                         {
-                            var oldRegionIndex = source.GetInteger("REGION");
-                            var oldRegion = World.Instance.RegionsByIndex[oldRegionIndex];
-                            World.Instance.AssignSynonymToObject("THERE", oldRegion.AcknexObject, true);
+                            //var oldRegionIndex = source.GetInteger("REGION");
+                            //var oldRegion = World.Instance.RegionsByIndex[oldRegionIndex];
+                            World.Instance.AssignSynonymToObject("THERE", currentRegion.AcknexObject, true);
                             World.Instance.TriggerEvent(source, "IF_LEAVE");
 
                             World.Instance.AssignSynonymToObject("THERE", region.AcknexObject, true);
