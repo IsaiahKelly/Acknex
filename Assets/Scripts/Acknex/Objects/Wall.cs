@@ -42,15 +42,15 @@ namespace Acknex
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
 
-        public List<string> Flags
+        public HashSet<string> Flags
         {
             get
             {
-                if (AcknexObject.TryGetObject("FLAGS", out List<string> flags))
+                if (AcknexObject.TryGetObject("FLAGS", out HashSet<string> flags))
                 {
                     return flags;
                 }
-                flags = new List<string>();
+                flags = new HashSet<string>();
                 AcknexObject.SetObject("FLAGS", flags);
                 return flags;
             }

@@ -118,7 +118,7 @@ namespace Acknex.Interfaces
         /// </summary>
         void SetFloatAll(string objectName, string propertyName, float value);
         /// <summary>
-        /// Sets an integer property valuefor all objects with the given name.
+        /// Sets an integer property value for all objects with the given name.
         /// </summary>
         void SetIntegerAll(string objectName, string propertyName, int value);
         /// <summary>
@@ -126,11 +126,11 @@ namespace Acknex.Interfaces
         /// </summary>
         void SetStringAll(string objectName, string propertyName, string value);
         /// <summary>
-        /// Sets a typed by reference property valuefor all objects with the given name.
+        /// Sets a typed by reference property value for all objects with the given name.
         /// </summary>
         void SetObjectAll<T>(string objectName, string propertyName, T value);
         /// <summary>
-        /// Sets a float property value to another IAcknexObjectfor all objects with the given name.
+        /// Sets a float property value to another IAcknexObject for all objects with the given name.
         /// </summary>
         void SetAcknexObjectAll(string objectName, string propertyName, IAcknexObject value);
     }

@@ -238,7 +238,7 @@ namespace Acknex
                             _openObject.SetString(keyword, tokens[1]);
                             break;
                         case "FLAGS":
-                            ParseStringList(keyword, _openObject, tokens);
+                            ParseFlags(keyword, _openObject, tokens);
                             break;
                         case "DIST":
                             _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
@@ -277,7 +277,7 @@ namespace Acknex
                             overlay.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
                             break;
                         case "FLAGS":
-                            ParseStringList(tokens[1], _openObject, tokens);
+                            ParseFlags(tokens[1], _openObject, tokens);
                             break;
                         case "OVLYS":
                             overlay.AcknexObject.SetString(keyword, tokens[1]);
@@ -328,7 +328,7 @@ namespace Acknex
                             region.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
                             break;
                         case "FLAGS":
-                            ParseStringList(keyword, _openObject, tokens);
+                            ParseFlags(keyword, _openObject, tokens);
                             break;
                         case "BELOW":
                             region.AcknexObject.SetString(keyword, tokens[1]);
@@ -352,7 +352,7 @@ namespace Acknex
                             wall.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
                             break;
                         case "FLAGS":
-                            ParseStringList(keyword, _openObject, tokens);
+                            ParseFlags(keyword, _openObject, tokens);
                             break;
                     }
                 }
@@ -398,7 +398,7 @@ namespace Acknex
                             }
                         case "FLAGS":
                             {
-                                ParseStringList(keyword, _openObject, tokens);
+                                ParseFlags(keyword, _openObject, tokens);
                                 break;
                             }
                         case "DELAY":
@@ -669,6 +669,19 @@ namespace Acknex
             if (!acknexObject.TryGetObject(propertyName, out List<string> list))
             {
                 list = new List<string>();
+                acknexObject.SetObject(propertyName, list);
+            }
+            for (var i = 1; i < tokens.Count; i++)
+            {
+                list.Add(tokens[i]);
+            }
+        }
+
+        private static void ParseFlags(string propertyName, IAcknexObject acknexObject, List<string> tokens)
+        {
+            if (!acknexObject.TryGetObject(propertyName, out HashSet<string> list))
+            {
+                list = new HashSet<string>();
                 acknexObject.SetObject(propertyName, list);
             }
             for (var i = 1; i < tokens.Count; i++)
