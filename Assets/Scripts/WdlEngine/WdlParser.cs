@@ -203,8 +203,10 @@ namespace WdlEngine
                 obj.SetFloat(name, ParseNumber());
                 break;
             case "FLAGS":
-            case "BMAPS":
                 obj.SetObject(name, ParseNameSet());
+                break;
+            case "BMAPS":
+                obj.SetObject(name, ParseNameList());
                 break;
             case "DELAY":
             case "MIRROR":
@@ -224,6 +226,7 @@ namespace WdlEngine
         }
 
         private HashSet<string> ParseNameSet() => ParseSetOf(() => Expect(TokenType.Identifier).StringValue);
+        private List<string> ParseNameList() => ParseListOf(() => Expect(TokenType.Identifier).StringValue);
         private List<int> ParseIntList() => ParseListOf(() => Expect(TokenType.Integer).IntValue);
 
         private List<T> ParseListOf<T>(Func<T> elementParser)
