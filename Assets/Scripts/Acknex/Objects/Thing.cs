@@ -177,6 +177,7 @@ namespace Acknex
         //Deltas for comparison
         private Texture _lastTextureObject;
         private string _lastTarget;
+        private readonly HashSet<IAcknexObject> _near = new HashSet<IAcknexObject>();
 
         public virtual void UpdateObject()
         {
@@ -250,7 +251,30 @@ namespace Acknex
 
         public virtual void UpdateEvents()
         {
-            
+            if (AcknexObject.TryGetFloat("DIST", out var dist))
+            {
+                //todo: use MASTER objects as well
+                var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
+                var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"));
+                if (!_near.Contains(Player.Instance.AcknexObject))
+                {
+                    if (Vector2.Distance(playerPos, pos) <= dist)
+                    {
+                        World.Instance.AssignSynonymToObject("THERE", Player.Instance.AcknexObject, true);
+                        World.Instance.TriggerEvent(AcknexObject, "IF_NEAR");
+                        _near.Add(Player.Instance.AcknexObject);
+                    }
+                }
+                else
+                {
+                    if (Vector2.Distance(playerPos, pos) > dist)
+                    {
+                        World.Instance.AssignSynonymToObject("THERE", Player.Instance.AcknexObject, true);
+                        World.Instance.TriggerEvent(AcknexObject, "IF_FAR");
+                        _near.Remove(Player.Instance.AcknexObject);
+                    }
+                }
+            }
         }
 
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)
