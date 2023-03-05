@@ -259,5 +259,200 @@ namespace Acknex
                 Wall.BuildWallAndMesh(wall, contourVertices);
             }
         }
+
+        public void SetFloatAll(string objectName, string propertyName, float value)
+        {
+            if (AllWallsByName.TryGetValue(objectName, out var walls))
+            {
+                foreach (var item in walls)
+                {
+                    item.AcknexObject.SetFloat(propertyName, value);
+                }
+            }
+            if (AllActorsByName.TryGetValue(objectName, out var actors))
+            {
+                foreach (var item in actors)
+                {
+                    item.AcknexObject.SetFloat(propertyName, value);
+                }
+            }
+            if (AllThingsByName.TryGetValue(objectName, out var things))
+            {
+                foreach (var item in things)
+                {
+                    item.AcknexObject.SetFloat(propertyName, value);
+                }
+            }
+            if (AllRegionsByName.TryGetValue(objectName, out var regions))
+            {
+                foreach (var item in regions)
+                {
+                    item.AcknexObject.SetFloat(propertyName, value);
+                }
+            }
+            if (AllWaysByName.TryGetValue(objectName, out var ways))
+            {
+                foreach (var item in ways)
+                {
+                    item.AcknexObject.SetFloat(propertyName, value);
+                }
+            }
+        }
+
+        public void SetIntegerAll(string objectName, string propertyName, int value)
+        {
+            if (AllWallsByName.TryGetValue(objectName, out var walls))
+            {
+                foreach (var item in walls)
+                {
+                    item.AcknexObject.SetInteger(propertyName, value);
+                }
+            }
+            if (AllActorsByName.TryGetValue(objectName, out var actors))
+            {
+                foreach (var item in actors)
+                {
+                    item.AcknexObject.SetInteger(propertyName, value);
+                }
+            }
+            if (AllThingsByName.TryGetValue(objectName, out var things))
+            {
+                foreach (var item in things)
+                {
+                    item.AcknexObject.SetInteger(propertyName, value);
+                }
+            }
+            if (AllRegionsByName.TryGetValue(objectName, out var regions))
+            {
+                foreach (var item in regions)
+                {
+                    item.AcknexObject.SetInteger(propertyName, value);
+                }
+            }
+            if (AllWaysByName.TryGetValue(objectName, out var ways))
+            {
+                foreach (var item in ways)
+                {
+                    item.AcknexObject.SetInteger(propertyName, value);
+                }
+            }
+        }
+
+        public void SetStringAll(string objectName, string propertyName, string value)
+        {
+            if (AllWallsByName.TryGetValue(objectName, out var walls))
+            {
+                foreach (var item in walls)
+                {
+                    item.AcknexObject.SetString(propertyName, value);
+                }
+            }
+            if (AllActorsByName.TryGetValue(objectName, out var actors))
+            {
+                foreach (var item in actors)
+                {
+                    item.AcknexObject.SetString(propertyName, value);
+                }
+            }
+            if (AllThingsByName.TryGetValue(objectName, out var things))
+            {
+                foreach (var item in things)
+                {
+                    item.AcknexObject.SetString(propertyName, value);
+                }
+            }
+            if (AllRegionsByName.TryGetValue(objectName, out var regions))
+            {
+                foreach (var item in regions)
+                {
+                    item.AcknexObject.SetString(propertyName, value);
+                }
+            }
+            if (AllWaysByName.TryGetValue(objectName, out var ways))
+            {
+                foreach (var item in ways)
+                {
+                    item.AcknexObject.SetString(propertyName, value);
+                }
+            }
+        }
+
+        public void SetObjectAll<T>(string objectName, string propertyName, T value)
+        {
+            if (AllWallsByName.TryGetValue(objectName, out var walls))
+            {
+                foreach (var item in walls)
+                {
+                    item.AcknexObject.SetObject(propertyName, value);
+                }
+            }
+            if (AllActorsByName.TryGetValue(objectName, out var actors))
+            {
+                foreach (var item in actors)
+                {
+                    item.AcknexObject.SetObject(propertyName, value);
+                }
+            }
+            if (AllThingsByName.TryGetValue(objectName, out var things))
+            {
+                foreach (var item in things)
+                {
+                    item.AcknexObject.SetObject(propertyName, value);
+                }
+            }
+            if (AllRegionsByName.TryGetValue(objectName, out var regions))
+            {
+                foreach (var item in regions)
+                {
+                    item.AcknexObject.SetObject(propertyName, value);
+                }
+            }
+            if (AllWaysByName.TryGetValue(objectName, out var ways))
+            {
+                foreach (var item in ways)
+                {
+                    item.AcknexObject.SetObject(propertyName, value);
+                }
+            }
+        }
+
+        public void SetAcknexObjectAll(string objectName, string propertyName, IAcknexObject value)
+        {
+            if (AllWallsByName.TryGetValue(objectName, out var walls))
+            {
+                foreach (var item in walls)
+                {
+                    item.AcknexObject.SetAcknexObject(propertyName, value);
+                }
+            }
+            if (AllActorsByName.TryGetValue(objectName, out var actors))
+            {
+                foreach (var item in actors)
+                {
+                    item.AcknexObject.SetAcknexObject(propertyName, value);
+                }
+            }
+            if (AllThingsByName.TryGetValue(objectName, out var things))
+            {
+                foreach (var item in things)
+                {
+                    item.AcknexObject.SetAcknexObject(propertyName, value);
+                }
+            }
+            if (AllRegionsByName.TryGetValue(objectName, out var regions))
+            {
+                foreach (var item in regions)
+                {
+                    item.AcknexObject.SetAcknexObject(propertyName, value);
+                }
+            }
+            if (AllWaysByName.TryGetValue(objectName, out var ways))
+            {
+                foreach (var item in ways)
+                {
+                    item.AcknexObject.SetAcknexObject(propertyName, value);
+                }
+            }
+        }
     }
 }

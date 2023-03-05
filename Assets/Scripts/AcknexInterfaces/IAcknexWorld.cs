@@ -112,5 +112,26 @@ namespace Acknex.Interfaces
         /// Halts the given task `identifier` for the given number of ticks.
         /// </summary>
         void WaitForTicks(ActionIdentifier identifier, int ticks);
+
+        /// <summary>
+        /// Sets a float property value for all objects with the given name.
+        /// </summary>
+        void SetFloatAll(string objectName, string propertyName, float value);
+        /// <summary>
+        /// Sets an integer property valuefor all objects with the given name.
+        /// </summary>
+        void SetIntegerAll(string objectName, string propertyName, int value);
+        /// <summary>
+        /// Sets a string property valuefor all objects with the given name.
+        /// </summary>
+        void SetStringAll(string objectName, string propertyName, string value);
+        /// <summary>
+        /// Sets a typed by reference property valuefor all objects with the given name.
+        /// </summary>
+        void SetObjectAll<T>(string objectName, string propertyName, T value);
+        /// <summary>
+        /// Sets a float property value to another IAcknexObjectfor all objects with the given name.
+        /// </summary>
+        void SetAcknexObjectAll(string objectName, string propertyName, IAcknexObject value);
     }
 }
