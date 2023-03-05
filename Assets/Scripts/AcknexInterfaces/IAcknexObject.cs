@@ -97,5 +97,20 @@ namespace Acknex.Interfaces
         /// Gets/Sets a flag indicating whether any object property has changed, and the Unity representation has to be updated.
         /// </summary>
         bool IsDirty { get; set; }
+
+        /// <summary>
+        /// Returns whether the object contains the given flag.
+        /// </summary>
+        bool ContainsFlag(string flag, bool fromTemplate = true);
+
+        /// <summary>
+        /// Enables the given instance flag.
+        /// </summary>
+        void AddFlag(string flag);
+
+        /// <summary>
+        /// Disables the given instance flag.
+        /// </summary>
+        void RemoveFlag(string flag);
     }
 }

@@ -33,12 +33,23 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            throw new System.NotImplementedException();
+            UpdateEvents();
+
+            if (!AcknexObject.IsDirty)
+            {
+                return;
+            }
+            AcknexObject.IsDirty = false;
+        }
+
+        private void UpdateEvents()
+        {
+          
         }
 
         public void Enable()
         {
-
+            gameObject.SetActive(true);
         }
 
         public void Disable()

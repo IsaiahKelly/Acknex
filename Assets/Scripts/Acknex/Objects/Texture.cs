@@ -12,19 +12,6 @@ namespace Acknex
             return null;
         }
 
-        public HashSet<string> Flags
-        {
-            get
-            {
-                if (AcknexObject.TryGetObject("FLAGS", out HashSet<string> flags))
-                {
-                    return flags;
-                }
-                flags = new HashSet<string>();
-                AcknexObject.SetObject("FLAGS", flags);
-                return flags;
-            }
-        }
         public List<string> BMaps
         {
             get

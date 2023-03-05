@@ -93,14 +93,14 @@ namespace Acknex
                 }
                 if (wallOrRegion.Container is Wall wall)
                 {
-                    if (wall.Flags.Contains("FENCE"))
+                    if (wall.AcknexObject.ContainsFlag("FENCE"))
                     {
                         material.SetFloat("_V0H", wall.BottomUV.m12);
                         material.SetFloat("_V1H", wall.BottomUV.m13);
                         material.SetInt("_FENCE", 1);
                         cullMode = UnityEngine.Rendering.CullMode.Off;
                     }
-                    if (wall.Flags.Contains("PORTCULLIS"))
+                    if (wall.AcknexObject.ContainsFlag("PORTCULLIS"))
                     {
                         material.SetInt("_PORTCULLIS", 1);
                         cullMode = UnityEngine.Rendering.CullMode.Off;
@@ -119,7 +119,7 @@ namespace Acknex
                 }
                 scaleX = texture.ScaleX;
                 scaleY = texture.ScaleY;
-                if (texture.Flags.Contains("SKY"))
+                if (texture.AcknexObject.ContainsFlag("SKY"))
                 {
                     var sides = texture.AcknexObject.GetInteger("SIDES");
                     material.SetInt("_SIDES", sides);

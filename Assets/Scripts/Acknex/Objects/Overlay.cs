@@ -17,22 +17,9 @@ namespace Acknex
         private Graphic _overlayGraphic;
         private string _overlaySprite;
 
-        public HashSet<string> Flags
-        {
-            get
-            {
-                if (AcknexObject.TryGetObject("FLAGS", out HashSet<string> flags))
-                {
-                    return flags;
-                }
-                flags = new HashSet<string>();
-                AcknexObject.SetObject("FLAGS", flags);
-                return flags;
-            }
-        }
-
         public void UpdateObject()
         {
+            _overlayGraphic.enabled = AcknexObject.ContainsFlag("VISIBLE", false);
             _overlayGraphic.rectTransform.anchorMin = new Vector3(0f, 1f);
             _overlayGraphic.rectTransform.anchorMax = new Vector3(0f, 1f);
             _overlayGraphic.rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat("POS_X") * World.Instance.CanvasWidthRatio, -AcknexObject.GetFloat("POS_Y"), 0f);
@@ -47,7 +34,6 @@ namespace Acknex
                 }
                 _overlaySprite = overlaySprite;
             }
-            _overlayGraphic.enabled = Flags.Contains("VISIBLE");
             _overlayGraphic.transform.SetSiblingIndex(_overlayGraphic.transform.parent.childCount - 1 - AcknexObject.GetInteger("LAYER"));
         }
 

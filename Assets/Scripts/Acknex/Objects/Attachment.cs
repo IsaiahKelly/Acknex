@@ -70,7 +70,7 @@ namespace Acknex
             //TextureUtils.UpdateScale(transform, BitmapImage, TextureObject);
             transform.localScale = TextureUtils.CalculateObjectSize(BitmapImage, TextureObject);
             BitmapImage?.UpdateMaterial(Material, TextureObject, 0, false); //TODO: flag mirror?
-            if (TextureObject.Flags.Contains("SHADOW"))
+            if (TextureObject.AcknexObject.ContainsFlag("SHADOW"))
             {
                 gameObject.SetActive(false);
             }

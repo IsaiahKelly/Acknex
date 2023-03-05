@@ -30,25 +30,6 @@ namespace Acknex
 
         private GameObject _attached;
 
-        public HashSet<string> Flags
-        {
-            get
-            {
-                if (AcknexObject.TryGetObject("FLAGS", out HashSet<string> flags))
-                {
-                    return flags;
-                }
-                flags = new HashSet<string>();
-                AcknexObject.SetObject("FLAGS", flags);
-                return flags;
-            }
-        }
-
-        public void AddFlag(string flag)
-        {
-            Flags.Add(flag);
-        }
-
         public Texture TextureObject => AcknexObject.GetString("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.GetString("TEXTURE"), out var textureObject) ? textureObject : null;
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -178,12 +159,14 @@ namespace Acknex
 
         public void Enable()
         {
-
+            AcknexObject.RemoveFlag("INVISIBLE");
+            AcknexObject.AddFlag("VISIBLE");
         }
 
         public void Disable()
         {
-            gameObject.SetActive(false);
+            AcknexObject.AddFlag("INVISIBLE");
+            AcknexObject.RemoveFlag("VISIBLE");
         }
 
         private List<WaitForSeconds> _textureObjectDelay;
@@ -194,13 +177,29 @@ namespace Acknex
 
         public virtual void UpdateObject()
         {
+            if (_meshRenderer == null)
+            {
+                return;
+            }
+
             UpdateEvents();
 
             if (!AcknexObject.IsDirty)
             {
                 return;
             }
-            AcknexObject.IsDirty = true;
+            AcknexObject.IsDirty = false;
+
+            if (AcknexObject.ContainsFlag("INVISIBLE", false))
+            {
+                _meshRenderer.enabled = false;
+                _collider.enabled = false;
+            }
+            else
+            {
+                _meshRenderer.enabled = true;
+                _collider.enabled = true;
+            }
 
             if (AcknexObject.TryGetString("TARGET", out var target) && target != _lastTarget)
             {
@@ -237,7 +236,8 @@ namespace Acknex
             var thingPosition = _thingGameObject.transform.position;
             thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
             _thingGameObject.transform.position = thingPosition;
-            _collider.isTrigger = Flags.Contains("PASSABLE");
+
+            _collider.isTrigger = AcknexObject.ContainsFlag("PASSABLE");
 
             //todo: how to?
             //_collider.radius = AcknexObject.GetNumber("DIST") > 0f ? AcknexObject.GetNumber("DIST") * 0.5f : 0.5f;
@@ -253,7 +253,7 @@ namespace Acknex
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)
         {
             var regionIndex = AcknexObject.GetInteger("REGION");
-            Region.Locate(AcknexObject, ref regionIndex, thingX, thingY, ref thingZ, Flags.Contains("GROUND"));
+            Region.Locate(AcknexObject, ref regionIndex, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"));
             AcknexObject.SetInteger("REGION", regionIndex);
             AcknexObject.SetFloat("Z", thingZ);
         }

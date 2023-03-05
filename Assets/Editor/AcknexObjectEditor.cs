@@ -18,7 +18,7 @@ public class AcknexObjectEditor : Editor
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(property.Key);
-                if (property.Value is System.Collections.Generic.List<string> list)
+                if (property.Value is HashSet<string> list)
                 {
                     EditorGUILayout.LabelField(string.Join(",", list));
                 }
@@ -46,7 +46,7 @@ public class AcknexObjectEditor : Editor
                     {
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField(property.Key);
-                        if (property.Value is System.Collections.Generic.List<string> list)
+                        if (property.Value is System.Collections.Generic.HashSet<string> list)
                         {
                             EditorGUILayout.LabelField(string.Join(",", list));
                         }

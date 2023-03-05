@@ -679,15 +679,19 @@ namespace Acknex
 
         private static void ParseFlags(string propertyName, IAcknexObject acknexObject, List<string> tokens)
         {
-            if (!acknexObject.TryGetObject(propertyName, out HashSet<string> list))
-            {
-                list = new HashSet<string>();
-                acknexObject.SetObject(propertyName, list);
-            }
             for (var i = 1; i < tokens.Count; i++)
             {
-                list.Add(tokens[i]);
+                acknexObject.AddFlag(tokens[i]);
             }
+            //if (acknexObject.TryGetObject(propertyName, out HashSet<string> list))
+            //{
+            //    list = new HashSet<string>();
+            //    acknexObject.SetObject(propertyName, list);
+            //}
+            //for (var i = 1; i < tokens.Count; i++)
+            //{
+            //    list.Add(tokens[i]);
+            //}
         }
 
         private static void ParseIntList(string propertyName, IAcknexObjectContainer container, List<string> tokens)

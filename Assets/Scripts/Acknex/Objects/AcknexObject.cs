@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Acknex.Interfaces;
+using UnityEngine;
 
 namespace Acknex
 {
@@ -12,6 +14,39 @@ namespace Acknex
         public Dictionary<string, object> ObjectProperties = new Dictionary<string, object>();
 
         public IAcknexObjectContainer Container { get; set; }
+
+        //private HashSet<string> Flags => GetObject<HashSet<string>>("FLAGS", true);
+
+        private HashSet<string> InstanceFlags => GetObject<HashSet<string>>("FLAGS", false);
+
+        public void AddFlag(string flag)
+        {
+            InstanceFlags.Add(flag);
+            //IsDirty = true;
+        }
+
+        public void RemoveFlag(string flag)
+        {
+            InstanceFlags.Remove(flag);
+            //IsDirty = true;
+        }
+
+        public bool ContainsFlag(string flag, bool fromTemplate = true)
+        {
+            if (InstanceFlags.Contains(flag))
+            {
+                return true;
+            }
+            if (fromTemplate)
+            {
+                var template = GetTemplateCallback(GetString("NAME", false));
+                if (template != null && template.ContainsFlag(flag, false))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public void SetFloat(string propertyName, float value)
         {
@@ -206,6 +241,7 @@ namespace Acknex
 
         public AcknexObject(Func<string, IAcknexObject> getTemplateCallback)
         {
+            SetObject("FLAGS", new HashSet<string>());
             GetTemplateCallback = getTemplateCallback;
         }
 

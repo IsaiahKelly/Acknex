@@ -185,7 +185,7 @@ namespace Acknex
             Material material;
             if (textureName != null && TexturesByName.TryGetValue(textureName, out var textureObject))
             {
-                material = new Material(textureObject.Flags.Contains("SKY")
+                material = new Material(textureObject.AcknexObject.ContainsFlag("SKY")
                     ? Shader.Find("Acknex/Sky")
                     : Shader.Find("Acknex/Surfaces"));
                 material.mainTexture = textureObject.GetBitmapAt()?.Texture2D;

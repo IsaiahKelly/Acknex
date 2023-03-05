@@ -24,11 +24,11 @@ namespace Acknex
         public Region LeftRegion;
 
         public bool DebugMarked;
-
         public bool Processed;
+
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
-        private MeshCollider _meshCollider;
+        private MeshCollider _collider;
         private GameObject _attached;
 
         //todo: can remove, debug info
@@ -36,25 +36,10 @@ namespace Acknex
         public Matrix4x4 BottomUV;
 
         private Vector3 XAxis;
-        //public Vector3 BottomNormal;
 
         public Texture TextureObject => AcknexObject.GetString("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.GetString("TEXTURE"), out var textureObject) ? textureObject : null;
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
-
-        public HashSet<string> Flags
-        {
-            get
-            {
-                if (AcknexObject.TryGetObject("FLAGS", out HashSet<string> flags))
-                {
-                    return flags;
-                }
-                flags = new HashSet<string>();
-                AcknexObject.SetObject("FLAGS", flags);
-                return flags;
-            }
-        }
 
         private void Awake()
         {
@@ -80,33 +65,54 @@ namespace Acknex
 
         public void UpdateObject()
         {
+            if (_meshRenderer == null)
+            {
+                return;
+            }
+
+            UpdateEvents();
+
             if (!AcknexObject.IsDirty)
             {
                 return;
             }
             AcknexObject.IsDirty = false;
+
+            if (AcknexObject.ContainsFlag("INVISIBLE", false))
+            {
+                _meshRenderer.enabled = false;
+                _collider.enabled = false;
+            }
+            else
+            {
+                _meshRenderer.enabled = true;
+                _collider.enabled = true;
+            }
+
             Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, XAxis, BottomQuad.GetColumn(0), true);
-            if (_meshRenderer != null)
-            {
-                BitmapImage?.UpdateMaterial(_meshRenderer.material, TextureObject, 0, false, AcknexObject);
-                _meshRenderer.enabled = !Flags.Contains("INVISIBLE");
-                _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.Flags.Contains("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
-            }
-            if (_meshCollider != null)
-            {
-                _meshCollider.enabled = !Flags.Contains("PASSABLE");
-            }
+
+            BitmapImage?.UpdateMaterial(_meshRenderer.material, TextureObject, 0, false, AcknexObject);
+            _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.AcknexObject.ContainsFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
+            //todo: conflict?
+            _collider.enabled = !AcknexObject.ContainsFlag("PASSABLE");
             //todo: update <X1, <Y1, <Z1 <X2, <Y2, <Z2, DISTANCE, LENGTH, SIZE_X, LEFT, RIGHT skills
+        }
+
+        private void UpdateEvents()
+        {
+
         }
 
         public void Enable()
         {
-
+            AcknexObject.RemoveFlag("INVISIBLE");
+            AcknexObject.AddFlag("VISIBLE");
         }
 
         public void Disable()
         {
-            gameObject.SetActive(false);
+            AcknexObject.AddFlag("INVISIBLE");
+            AcknexObject.RemoveFlag("VISIBLE");
         }
 
         public void ProcessWall(
@@ -205,8 +211,8 @@ namespace Acknex
             wall._meshRenderer = wall.gameObject.AddComponent<MeshRenderer>();
             wall._meshRenderer.sharedMaterials = materials;
 
-            wall._meshCollider = wall.gameObject.AddComponent<MeshCollider>();
-            wall._meshCollider.sharedMesh = mesh;
+            wall._collider = wall.gameObject.AddComponent<MeshCollider>();
+            wall._collider.sharedMesh = mesh;
         }
 
         private static void BuildWall(Wall wall, Region rightRegion, Region leftRegion, List<ContourVertex> vertices, List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<string, List<int>> allTriangles, Region rightRegionAbove = null, Region leftRegionAbove = null)
@@ -217,12 +223,12 @@ namespace Acknex
                 var vertexB = vertices[wall.AcknexObject.GetInteger("VERTEX2")];
 
                 var xAxis = (new Vector3(vertexB.Position.X, 0f, vertexB.Position.Y) - new Vector3(vertexA.Position.X, 0f, vertexA.Position.Y)).normalized;
-                wall.XAxis= xAxis;
+                wall.XAxis = xAxis;
 
                 wall.AcknexObject.SetFloat("X1", vertexA.Position.X);
                 wall.AcknexObject.SetFloat("Y1", vertexA.Position.Y);
                 wall.AcknexObject.SetFloat("Z1", vertexA.Position.Z);
-                                  
+
                 wall.AcknexObject.SetFloat("X2", vertexB.Position.X);
                 wall.AcknexObject.SetFloat("Y2", vertexB.Position.Y);
                 wall.AcknexObject.SetFloat("Z2", vertexB.Position.Z);
@@ -241,9 +247,9 @@ namespace Acknex
                 wall.LeftRegion = leftRegion;
 
                 //todo: checking by the flag here is wrong
-                if (wall.Flags.Contains("FENCE"))
-                    //leftRegion.AcknexObject.GetNumber("FLOOR_HGT") == rightRegion.AcknexObject.GetNumber("FLOOR_HGT") && 
-                    //leftRegion.AcknexObject.GetNumber("CEIL_HGT") == rightRegion.AcknexObject.GetNumber("CEIL_HGT"))
+                if (wall.AcknexObject.ContainsFlag("FENCE"))
+                //leftRegion.AcknexObject.GetNumber("FLOOR_HGT") == rightRegion.AcknexObject.GetNumber("FLOOR_HGT") && 
+                //leftRegion.AcknexObject.GetNumber("CEIL_HGT") == rightRegion.AcknexObject.GetNumber("CEIL_HGT"))
                 {
                     var floor = leftRegion.AcknexObject.GetFloat("FLOOR_HGT", false);
                     var ceil = leftRegion.AcknexObject.GetFloat("CEIL_HGT", false);
@@ -263,8 +269,8 @@ namespace Acknex
                     {
                         ceil = Mathf.Min(ceil, rightRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
                     }
-                    var liftedLeft = /*leftRegionAbove != null && leftRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ leftRegionAbove == null && leftRegion.Flags.Contains("FLOOR_LIFTED");
-                    var liftedRight = /*rightRegionAbove != null && rightRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ rightRegionAbove == null && rightRegion.Flags.Contains("FLOOR_LIFTED");
+                    var liftedLeft = /*leftRegionAbove != null && leftRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ leftRegionAbove == null && leftRegion.AcknexObject.ContainsFlag("FLOOR_LIFTED");
+                    var liftedRight = /*rightRegionAbove != null && rightRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ rightRegionAbove == null && rightRegion.AcknexObject.ContainsFlag("FLOOR_LIFTED");
                     var v0 = new Vector3(vertexA.Position.X, ceil + (liftedLeft ? vertexA.Position.Z : 0), vertexA.Position.Y);
                     var v1 = new Vector3(vertexB.Position.X, ceil + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, floor + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
@@ -313,8 +319,8 @@ namespace Acknex
                             heightRight = Mathf.Min(heightRight, rightRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
                             heightLeft = Mathf.Min(heightLeft, rightRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
                         }
-                        var liftedLeft = /*leftRegionAbove != null && leftRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ leftRegionAbove == null && leftRegion.Flags.Contains("FLOOR_LIFTED");
-                        var liftedRight = /*rightRegionAbove != null && rightRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ rightRegionAbove == null && rightRegion.Flags.Contains("FLOOR_LIFTED");
+                        var liftedLeft = /*leftRegionAbove != null && leftRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ leftRegionAbove == null && leftRegion.AcknexObject.ContainsFlag("FLOOR_LIFTED");
+                        var liftedRight = /*rightRegionAbove != null && rightRegionAbove.Flags.Contains("FLOOR_LIFTED") ||*/ rightRegionAbove == null && rightRegion.AcknexObject.ContainsFlag("FLOOR_LIFTED");
                         var v0 = new Vector3(vertexA.Position.X, heightLeft + (liftedLeft ? vertexA.Position.Z : 0), vertexA.Position.Y);
                         var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                         var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
@@ -352,8 +358,8 @@ namespace Acknex
                             heightLeft = Mathf.Min(heightLeft, rightRegionAbove.AcknexObject.GetFloat("FLOOR_HGT"));
                         }
 
-                        var liftedLeft = leftRegion.Flags.Contains("CEIL_LIFTED") && leftRegionAbove == null;
-                        var liftedRight = rightRegion.Flags.Contains("CEIL_LIFTED") && rightRegionAbove == null;
+                        var liftedLeft = leftRegion.AcknexObject.ContainsFlag("CEIL_LIFTED") && leftRegionAbove == null;
+                        var liftedRight = rightRegion.AcknexObject.ContainsFlag("CEIL_LIFTED") && rightRegionAbove == null;
                         var v0 = new Vector3(vertexA.Position.X, heightLeft + (liftedLeft ? vertexA.Position.Z : 0), vertexA.Position.Y);
                         var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                         var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);

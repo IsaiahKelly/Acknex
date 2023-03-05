@@ -30,7 +30,7 @@ namespace Acknex
         private const float MaxHeightCheck = 20000f;
 
         private MeshFilter _meshFilter;
-        private MeshCollider _meshCollider;
+        private MeshCollider _collider;
         private MeshRenderer _meshRenderer;
 
         private Region _belowOverride;
@@ -49,55 +49,58 @@ namespace Acknex
 
         public void UpdateObject()
         {
+            if (_meshRenderer == null)
+            {
+                return;
+            }
+
             UpdateEvents();
+
             if (!AcknexObject.IsDirty)
             {
                 return;
             }
             AcknexObject.IsDirty = false;
-            if (_meshRenderer != null)
+
+            if (AcknexObject.ContainsFlag("INVISIBLE", false))
             {
-                _meshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
-                var floorTexture = AcknexObject.GetString("FLOOR_TEX");
-                if (floorTexture != null && World.Instance.TexturesByName.TryGetValue(floorTexture, out var floorTextureObject))
+                _meshRenderer.enabled = false;
+                _collider.enabled = false;
+            }
+            else
+            {
+                _meshRenderer.enabled = true;
+                _collider.enabled = true;
+            }
+
+            _meshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
+            var floorTexture = AcknexObject.GetString("FLOOR_TEX");
+            if (floorTexture != null && World.Instance.TexturesByName.TryGetValue(floorTexture, out var floorTextureObject))
+            {
+                var bitmapImage = floorTextureObject.GetBitmapAt(0);
+                if (bitmapImage != null)
                 {
-                    var bitmapImage = floorTextureObject.GetBitmapAt(0);
-                    if (bitmapImage != null)
-                    {
-                        bitmapImage.UpdateMaterial(_meshRenderer.materials[0], floorTextureObject, 0, false, AcknexObject);
-                    }
+                    bitmapImage.UpdateMaterial(_meshRenderer.materials[0], floorTextureObject, 0, false, AcknexObject);
                 }
-                var ceilTexture = AcknexObject.GetString("CEIL_TEX");
-                if (ceilTexture != null && World.Instance.TexturesByName.TryGetValue(ceilTexture, out var ceilTextureObject))
+            }
+
+            var ceilTexture = AcknexObject.GetString("CEIL_TEX");
+            if (ceilTexture != null && World.Instance.TexturesByName.TryGetValue(ceilTexture, out var ceilTextureObject))
+            {
+                var bitmapImage = ceilTextureObject.GetBitmapAt(0);
+                if (bitmapImage != null)
                 {
-                    var bitmapImage = ceilTextureObject.GetBitmapAt(0);
-                    if (bitmapImage != null)
-                    {
-                        bitmapImage.UpdateMaterial(_meshRenderer.materials[1], ceilTextureObject, 0, false, AcknexObject);
-                    }
-                    //todo: will need two mesh renderers to handle that correctly
-                    _meshRenderer.shadowCastingMode = ceilTextureObject.Flags.Contains("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
+                    bitmapImage.UpdateMaterial(_meshRenderer.materials[1], ceilTextureObject, 0, false, AcknexObject);
                 }
+
+                //todo: will need two mesh renderers to handle that correctly
+                _meshRenderer.shadowCastingMode = ceilTextureObject.AcknexObject.ContainsFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             }
         }
 
         private void UpdateEvents()
         {
 
-        }
-
-        public HashSet<string> Flags
-        {
-            get
-            {
-                if (AcknexObject.TryGetObject("FLAGS", out HashSet<string> flags))
-                {
-                    return flags;
-                }
-                flags = new HashSet<string>();
-                AcknexObject.SetObject("FLAGS", flags);
-                return flags;
-            }
         }
 
         public Region Below
@@ -129,12 +132,14 @@ namespace Acknex
 
         public void Enable()
         {
-            gameObject.SetActive(true);
+            AcknexObject.RemoveFlag("INVISIBLE");
+            AcknexObject.AddFlag("VISIBLE");
         }
 
         public void Disable()
         {
-            gameObject.SetActive(false);
+            AcknexObject.AddFlag("INVISIBLE");
+            AcknexObject.RemoveFlag("VISIBLE");
         }
 
         public static void BuildFloorMesh(List<Vector3> allVertices, List<Vector2> allUVS, Dictionary<int, List<int>> allTriangles,
@@ -168,8 +173,8 @@ namespace Acknex
 
             region._meshRenderer.sharedMaterials = materials;
 
-            region._meshCollider = region.gameObject.AddComponent<MeshCollider>();
-            region._meshCollider.sharedMesh = mesh;
+            region._collider = region.gameObject.AddComponent<MeshCollider>();
+            region._collider.sharedMesh = mesh;
         }
 
         public static void BuildRegionFloorAndCeiling(Region region, ContouredRegion contouredRegion)
@@ -215,7 +220,7 @@ namespace Acknex
                 var vertex = tess.Vertices[i];
                 var lifted = false;
                 {
-                    if (ceil && region.Flags.Contains("CEIL_LIFTED") || !ceil && region.Flags.Contains("FLOOR_LIFTED"))
+                    if (ceil && region.AcknexObject.ContainsFlag("CEIL_LIFTED") || !ceil && region.AcknexObject.ContainsFlag("FLOOR_LIFTED"))
                     {
                         lifted = true;
                         floorVertices[i] = new Vector3(vertex.Position.X, ceil ? (height - vertex.Position.Z) : (height + vertex.Position.Z), vertex.Position.Y);
@@ -264,7 +269,7 @@ namespace Acknex
                     var newRegionIndex = World.Instance.RegionsByIndex.IndexOf(region);
                     if (
                         source.Type == ObjectType.Player ||
-                        source.TryGetObject<HashSet<string>>("FLAGS", out var flags) && flags.Contains("MASTER"))
+                        source.ContainsFlag("MASTER", false))
                     {
                         if (newRegionIndex != regionIndex)
                         {
