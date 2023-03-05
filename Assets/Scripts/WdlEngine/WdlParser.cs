@@ -204,7 +204,7 @@ namespace WdlEngine
                 break;
             case "FLAGS":
             case "BMAPS":
-                obj.SetObject(name, ParseNameList());
+                obj.SetObject(name, ParseNameSet());
                 break;
             case "DELAY":
             case "MIRROR":
@@ -223,20 +223,32 @@ namespace WdlEngine
             Expect(TokenType.Semicolon);
         }
 
-        private List<string> ParseNameList() => ParseListOf(() => Expect(TokenType.Identifier).StringValue);
+        private HashSet<string> ParseNameSet() => ParseSetOf(() => Expect(TokenType.Identifier).StringValue);
         private List<int> ParseIntList() => ParseListOf(() => Expect(TokenType.Integer).IntValue);
 
         private List<T> ParseListOf<T>(Func<T> elementParser)
         {
             var result = new List<T>();
+            ParseCollectionOf(result, elementParser);
+            return result;
+        }
+
+        private HashSet<T> ParseSetOf<T>(Func<T> elementParser)
+        {
+            var result = new HashSet<T>();
+            ParseCollectionOf(result, elementParser);
+            return result;
+        }
+
+        private void ParseCollectionOf<T>(ICollection<T> target, Func<T> elementParser)
+        {
             var first = elementParser();
-            result.Add(first);
+            target.Add(first);
             while (Matches(TokenType.Comma))
             {
                 var next = elementParser();
-                result.Add(next);
+                target.Add(next);
             }
-            return result;
         }
 
         private float ParseNumber()
