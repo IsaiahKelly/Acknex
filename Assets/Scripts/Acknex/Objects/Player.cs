@@ -1,4 +1,5 @@
-﻿using Acknex.Interfaces;
+﻿using System;
+using Acknex.Interfaces;
 using UnityEngine;
 
 namespace Acknex
@@ -56,16 +57,13 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_SIN", Mathf.Sin(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_COS", Mathf.Cos(playerAngle));
             //World.Instance.UpdateSkillValue("PLAYER_ANGLE", playerAngle);
-            //todo: update PLAYER_HGT
-            //if (playerRegion != null)
-            //{
-            //    World.Instance.AssignSynonymToObject("HERE", playerRegion.AcknexObject, true);
-            //}
         }
 
         private void StickToTheGround(float playerX, float playerY, ref float playerZ)
         {
-            var playerRegion = Region.Locate(playerX, playerY, ref playerZ, false);
+            var playerRegion = AcknexObject.GetInteger("REGION");
+            Region.Locate(AcknexObject,Single.MaxValue ref playerRegion , ref playerX, playerY, ref playerZ, false);
+            World.Instance.AssignSynonymToObject("HERE", World.Instance.RegionsByIndex[playerRegion].AcknexObject, true);
             AcknexObject.SetInteger("REGION", playerRegion);
         }
 

@@ -251,7 +251,8 @@ namespace Acknex
 
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)
         {
-            var regionIndex = Region.Locate(thingX, thingY, ref thingZ, Flags.Contains("GROUND"));
+            var regionIndex = AcknexObject.GetInteger("REGION");
+            Region.Locate(AcknexObject, ref regionIndex, thingX, thingY, ref thingZ, Flags.Contains("GROUND"));
             AcknexObject.SetInteger("REGION", regionIndex);
             AcknexObject.SetFloat("Z", thingZ);
         }
