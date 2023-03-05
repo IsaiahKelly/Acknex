@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 
 namespace Acknex
 {
@@ -51,35 +52,36 @@ namespace Acknex
 
         public IEnumerator MoveThingOrActor(IAcknexObject thingOrActor)
         {
+            var waypoint = 1;
+            thingOrActor.SetInteger("WAYPOINT", waypoint);
             if (Points.Count == 0)
             {
                 World.Instance.TriggerEvent(AcknexObject, "IF_ARRIVED");
                 yield break;
             }
-
-            var waypoint = 1;
             var nextPoint = Points[waypoint - 1];
-            for (;;)
+            while (waypoint <= Points.Count)
             {
-                thingOrActor.SetInteger("WAYPOINT", waypoint);
                 var pos = new Vector2(thingOrActor.GetFloat("X"), thingOrActor.GetFloat("Y"));
                 var speed = thingOrActor.GetFloat("SPEED");
-                var vSpeed = thingOrActor.GetFloat("VSPEED");
-                if (Vector2.Distance(pos, nextPoint) <= Mathf.Max(speed, vSpeed) * TimeUtils.TicksToTime(1))
-                {
-                    World.Instance.TriggerEvent(AcknexObject, "IF_ARRIVED");
-                    yield break;
-                }
-
+                //var vSpeed = thingOrActor.GetFloat("VSPEED");
                 thingOrActor.SetFloat("TARGET_X", nextPoint.x);
                 thingOrActor.SetFloat("TARGET_Y", nextPoint.y);
-                var angle = AngleUtils.ConvertUnityToAcknexAngle((Mathf.Atan2(pos.x - nextPoint.x, pos.y - nextPoint.y) * Mathf.Rad2Deg));
-                var newX = Mathf.MoveTowards(pos.x, nextPoint.x, speed * TimeUtils.TicksToTime(1));
-                var newY = Mathf.MoveTowards(pos.y, nextPoint.y, speed * TimeUtils.TicksToTime(1));
-                thingOrActor.SetFloat("X", newX);
-                thingOrActor.SetFloat("Y", newY);
+                var toTarget = nextPoint - pos;
+                var angle = AngleUtils.ConvertUnityToAcknexAngle(Mathf.Atan2(toTarget.y ,toTarget.x) * Mathf.Rad2Deg);
+                var newPos = Vector2.MoveTowards(pos, nextPoint, speed * TimeUtils.TicksToTime(1));
+                //var newX = Mathf.MoveTowards(pos.x, nextPoint.x, speed * TimeUtils.TicksToTime(1));
+                //var newY = Mathf.MoveTowards(pos.y, nextPoint.y, speed * TimeUtils.TicksToTime(1));
+                thingOrActor.SetFloat("X", newPos.x);
+                thingOrActor.SetFloat("Y", newPos.y);
                 thingOrActor.SetFloat("ANGLE", angle);
                 thingOrActor.IsDirty = true;
+                if (toTarget.magnitude <= speed)
+                {
+                    waypoint++;
+                    thingOrActor.SetInteger("WAYPOINT", waypoint);
+                    nextPoint = Points[waypoint - 1];
+                }
                 yield return null;
             }
         }
