@@ -73,17 +73,23 @@ public class AcknexObjectEditor : Editor
 public class ActorEditor : AcknexObjectEditor
 {
     private float _speed = 2f;
-    private Way _target;
+    private Way _way;
     public override void OnInspectorGUI()
     {
+        var actor = (Actor)target;
         EditorGUILayout.BeginVertical();
         _speed = EditorGUILayout.FloatField("Speed", _speed);
-        _target = EditorGUILayout.ObjectField("Target", _target, typeof(Way)) as Way;
-        if (GUILayout.Button("Go to Way") && _target != null)
+        _way = EditorGUILayout.ObjectField("Target", _way, typeof(Way)) as Way;
+        if (GUILayout.Button("Go to Way") && _way != null)
         {
-            var actor = (Actor)target;
             actor.AcknexObject.SetFloat("SPEED", _speed);
-            actor.AcknexObject.SetString("TARGET", _target.AcknexObject.GetString("NAME"));
+            actor.AcknexObject.SetString("TARGET", _way.AcknexObject.GetString("NAME"));
+            actor.AcknexObject.IsDirty = true;
+        }
+        if (GUILayout.Button("Go to Player"))
+        {
+            actor.AcknexObject.SetFloat("SPEED", _speed);
+            actor.AcknexObject.SetString("TARGET", "FOLLOW");
             actor.AcknexObject.IsDirty = true;
         }
         EditorGUILayout.EndVertical();

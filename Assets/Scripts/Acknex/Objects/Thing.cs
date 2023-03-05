@@ -117,10 +117,7 @@ namespace Acknex
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : null;
                 yield return currentDelay;
                 cycle = (int)Mathf.Repeat(cycle + 1, cycles);
-                if (AcknexObject.TryGetString("EACH_CYCLE", out var eachCycle))
-                {
-                    World.Instance.TriggerEvent(AcknexObject, "EACH_CYCLE");
-                }
+                World.Instance.TriggerEvent(AcknexObject, "EACH_CYCLE");
             }
         }
 
@@ -232,11 +229,15 @@ namespace Acknex
 
             if (AcknexObject.TryGetString("TARGET", out var target) && target != _lastTarget)
             {
+                if (target == "FOLLOW")
+                {
+                    StartCoroutine(MoveToPlayer());
+                }
                 if (World.Instance.AllWaysByName.TryGetValue(target, out var wayList))
                 {
                     StartCoroutine(wayList[0].MoveThingOrActor(AcknexObject));
-                    _lastTarget = target;
                 }
+                _lastTarget = target;
             }
 
             //todo: better way to do that?
@@ -274,6 +275,19 @@ namespace Acknex
             Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, transform.right);
         }
 
+        private IEnumerator MoveToPlayer()
+        {
+            var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
+            for (; ; )
+            {
+                if (MoveTo(playerPos))
+                {
+                    yield break;
+                }
+                yield return null;
+            }
+        }
+
         public virtual void UpdateEvents()
         {
             if (AcknexObject.TryGetFloat("DIST", out var dist))
@@ -308,6 +322,28 @@ namespace Acknex
             Region.Locate(AcknexObject, ref regionIndex, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"));
             AcknexObject.SetInteger("REGION", regionIndex);
             AcknexObject.SetFloat("Z", thingZ);
+        }
+
+        public bool MoveTo(Vector2 nextPoint)
+        {
+            var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"));
+            var speed = AcknexObject.GetFloat("SPEED");
+            AcknexObject.SetFloat("TARGET_X", nextPoint.x);
+            AcknexObject.SetFloat("TARGET_Y", nextPoint.y);
+            var toTarget = pos - nextPoint;
+            //todo: why angle inverted?
+            var angle = AngleUtils.ConvertUnityToAcknexAngle(Mathf.Atan2(toTarget.x, toTarget.y) * Mathf.Rad2Deg);
+            //todo: 0.5f to control speed, it is too high, must investigate why
+            var newPos = Vector2.MoveTowards(pos, nextPoint, speed * 0.5f * (Time.deltaTime / TimeUtils.TicksToTime(1)));
+            AcknexObject.SetFloat("X", newPos.x);
+            AcknexObject.SetFloat("Y", newPos.y);
+            AcknexObject.SetFloat("ANGLE", angle);
+            AcknexObject.IsDirty = true;
+            if (toTarget.magnitude <= speed)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
