@@ -68,8 +68,9 @@ namespace Acknex
                 //var vSpeed = thingOrActor.GetFloat("VSPEED");
                 thingOrActor.SetFloat("TARGET_X", nextPoint.x);
                 thingOrActor.SetFloat("TARGET_Y", nextPoint.y);
-                var toTarget = nextPoint - pos;
-                var angle = AngleUtils.ConvertUnityToAcknexAngle(Mathf.Atan2(toTarget.y ,toTarget.x) * Mathf.Rad2Deg);
+                var toTarget =  pos - nextPoint;
+                //todo: why angle inverted?
+                var angle = AngleUtils.ConvertUnityToAcknexAngle(Mathf.Atan2(toTarget.x ,toTarget.y) * Mathf.Rad2Deg);
                 var newPos = Vector2.MoveTowards(pos, nextPoint, speed * TimeUtils.TicksToTime(1));
                 //var newX = Mathf.MoveTowards(pos.x, nextPoint.x, speed * TimeUtils.TicksToTime(1));
                 //var newY = Mathf.MoveTowards(pos.y, nextPoint.y, speed * TimeUtils.TicksToTime(1));
