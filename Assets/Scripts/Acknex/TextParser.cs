@@ -240,9 +240,6 @@ namespace Acknex
                         case "FLAGS":
                             ParseFlags(keyword, _openObject, tokens);
                             break;
-                        case "DIST":
-                            _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
                         case "SPEED":
                             _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
                             break;
@@ -253,6 +250,19 @@ namespace Acknex
                             _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
                             break;
                         case "WAYPOINT":
+                            _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                            break;
+                        case "DIST":
+                            _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                            break;
+                        case "SKILL1":
+                        case "SKILL2":
+                        case "SKILL3":
+                        case "SKILL4":
+                        case "SKILL5":
+                        case "SKILL6":
+                        case "SKILL7":
+                        case "SKILL8":
                             _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
                             break;
                     }
@@ -353,6 +363,19 @@ namespace Acknex
                             break;
                         case "FLAGS":
                             ParseFlags(keyword, _openObject, tokens);
+                            break;
+                        case "DIST":
+                            wall.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                            break;
+                        case "SKILL1":
+                        case "SKILL2":
+                        case "SKILL3":
+                        case "SKILL4":
+                        case "SKILL5":
+                        case "SKILL6":
+                        case "SKILL7":
+                        case "SKILL8":
+                            wall.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
                             break;
                     }
                 }

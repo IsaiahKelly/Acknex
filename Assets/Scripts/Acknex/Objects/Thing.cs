@@ -74,7 +74,10 @@ namespace Acknex
 
         private void OnDrawGizmosSelected()
         {
-
+            if (AcknexObject.TryGetFloat("DIST", out var dist))
+            {
+                DebugExtension.DrawCircle(transform.position, Vector3.up, Color.magenta, dist);
+            }
         }
 
         private IEnumerator Animate(Texture texture, MeshRenderer meshRenderer)
