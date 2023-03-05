@@ -43,7 +43,7 @@ namespace Acknex
             }
         }
 
-        public IEnumerator TriggerTickEvents(IAcknexObject acknexObject)
+        private IEnumerator TriggerTickEvents(IAcknexObject acknexObject)
         {
             while (true)
             {
@@ -67,7 +67,7 @@ namespace Acknex
             }
         }
 
-        public IEnumerator TriggerSecEvents(IAcknexObject acknexObject)
+        private IEnumerator TriggerSecEvents(IAcknexObject acknexObject)
         {
             while (true)
             {

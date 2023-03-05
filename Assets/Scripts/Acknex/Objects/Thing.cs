@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Acknex.Interfaces;
+using CodiceApp.EventTracking.Plastic;
 using UnityEngine;
 using Utils;
 
@@ -48,8 +49,32 @@ namespace Acknex
             {
                 StartCoroutine(Animate(TextureObject, _meshRenderer));
             }
-            StartCoroutine(World.Instance.TriggerTickEvents(AcknexObject));
-            StartCoroutine(World.Instance.TriggerSecEvents(AcknexObject));
+            StartCoroutine(TriggerTickEvents());
+            StartCoroutine(TriggerSecEvents());
+        }
+
+        private IEnumerator TriggerSecEvents()
+        {
+            while (true)
+            {
+                if (AcknexObject.TryGetString("EACH_SEC", out var action))
+                {
+                    World.Instance.CallAction(AcknexObject, action);
+                }
+                yield return World.Instance.WaitForSecond;
+            }
+        }
+
+        private IEnumerator TriggerTickEvents()
+        {
+            while (true)
+            {
+                if (AcknexObject.TryGetString("EACH_TICK", out var action))
+                {
+                    World.Instance.CallAction(AcknexObject, action);
+                }
+                yield return World.Instance.WaitForTick;
+            }
         }
 
         private void OnTriggerExitCallback(Collider obj)

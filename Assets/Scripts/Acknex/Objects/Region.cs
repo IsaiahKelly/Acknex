@@ -34,6 +34,7 @@ namespace Acknex
         private MeshRenderer _meshRenderer;
 
         private Region _belowOverride;
+        private HashSet<IAcknexObject> _dive = new HashSet<IAcknexObject>();
 
         public ContouredRegion ContouredRegion;
 
@@ -100,7 +101,28 @@ namespace Acknex
 
         private void UpdateEvents()
         {
-
+            //todo: masters
+            var playerZ = World.Instance.GetSkillValue("PLAYER_Z");
+            //todo: needs to take the bottom offset?
+            var ceilHgt = AcknexObject.GetFloat("CEIL_HGT");
+            if (playerZ <= ceilHgt && !_dive.Contains(Player.Instance.AcknexObject))
+            {
+                if (AcknexObject.TryGetString("IF_DIVE", out var ifDive))
+                {
+                    World.Instance.AssignSynonymToObject("THERE", AcknexObject, true);
+                    World.Instance.TriggerEvent(Player.Instance.AcknexObject, "IF_DIVE");
+                }
+                _dive.Add(Player.Instance.AcknexObject);
+            }
+            else if (playerZ > ceilHgt && !_dive.Contains(Player.Instance.AcknexObject))
+            {
+                if (AcknexObject.TryGetString("IF_ARISE", out var ifDive))
+                {
+                    World.Instance.AssignSynonymToObject("THERE", AcknexObject, true);
+                    World.Instance.TriggerEvent(Player.Instance.AcknexObject, "IF_ARISE");
+                }
+                _dive.Remove(Player.Instance.AcknexObject);
+            }
         }
 
         public Region Below
@@ -260,7 +282,7 @@ namespace Acknex
         public static void Locate(IAcknexObject source, ref int regionIndex, float thingX, float thingY, ref float thingZ, bool onGround = false)
         {
             var currentRegion = World.Instance.RegionsByIndex[regionIndex];
-            var point = new Vector3(thingX, currentRegion.AcknexObject.GetFloat("CEIL_HGT") , thingY);
+            var point = new Vector3(thingX, currentRegion.AcknexObject.GetFloat("CEIL_HGT"), thingY);
             if (Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
             {
                 if (raycastHit.transform.TryGetComponent<Region>(out var region))
