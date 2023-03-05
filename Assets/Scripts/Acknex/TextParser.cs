@@ -476,10 +476,79 @@ namespace Acknex
                         case "EACH_SEC.14":
                         case "EACH_SEC.15":
                         case "EACH_SEC.16":
+                        case "IF_ANYKEY":
+                        case "IF_0":
+                        case "IF_1":
+                        case "IF_2":
+                        case "IF_3":
+                        case "IF_4":
+                        case "IF_5":
+                        case "IF_6":
+                        case "IF_7":
+                        case "IF_8":
+                        case "IF_9":
+                        case "IF_A":
+                        case "IF_B":
+                        case "IF_C":
+                        case "IF_D":
+                        case "IF_E":
+                        case "IF_F":
+                        case "IF_G":
+                        case "IF_H":
+                        case "IF_I":
+                        case "IF_J":
+                        case "IF_K":
+                        case "IF_L":
+                        case "IF_M":
+                        case "IF_N":
+                        case "IF_O":
+                        case "IF_P":
+                        case "IF_Q":
+                        case "IF_R":
+                        case "IF_S":
+                        case "IF_T":
+                        case "IF_U":
+                        case "IF_V":
+                        case "IF_X":
+                        case "IF_Y":
+                        case "IF_Z":
+                        case "IF_W":
+                        case "IF_ALT":
+                        case "IF_BKSP":
+                        case "IF_CAL":
+                        case "IF_CAR":
+                        case "IF_CTRL":
+                        case "IF_DEL":
+                        case "IF_END":
+                        case "IF_ENTER":
+                        case "IF_ESC":
+                        case "IF_F1":
+                        case "IF_F2":
+                        case "IF_F3":
+                        case "IF_F4":
+                        case "IF_F5":
+                        case "IF_F6":
+                        case "IF_F7":
+                        case "IF_F8":
+                        case "IF_F9":
+                        case "IF_HOME":
+                        case "IF_INS":
+                        case "IF_LEFT":
+                        case "IF_MIDDLE":
+                        case "IF_RIGHT":
+                        case "IF_PAUSE":
+                        case "IF_PGDN":
+                        case "IF_PGUP":
+                        case "IF_SPACE":
+                        case "IF_TAB":
+                        case "IF_CUU":
+                        case "IF_CUD":
+                        case "IF_CUR":
+                        case "IF_CUL":
                             {
-                            _world.AcknexObject.SetString(keyword, tokens[1]);
-                            break;
-                        }
+                                _world.AcknexObject.SetString(keyword, tokens[1]);
+                                break;
+                            }
                         case "AMBIENT":
                             _world.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
                             break;
