@@ -40,7 +40,7 @@ namespace WdlEngine
             var statement = Consume();
             if (statement.Type == TokenType.Identifier)
             {
-                var statementName = statement.StringValue.ToUpper();
+                var statementName = statement.StringValue;
                 switch (statementName)
                 {
                 case "THING":
@@ -93,8 +93,8 @@ namespace WdlEngine
 
                 case "VIDEO":
                 {
-                    var resolution = this.Expect(TokenType.Identifier).StringValue;
-                    switch (resolution.ToUpper())
+                    var resolution = Expect(TokenType.Identifier).StringValue;
+                    switch (resolution)
                     {
                     case "X320X240":
                         _world.GameResolution = Resolution.ResX320x240;
@@ -168,7 +168,7 @@ namespace WdlEngine
 
         private void ParseProperty(IAcknexObject obj)
         {
-            var name = Expect(TokenType.Identifier).StringValue.ToUpper();
+            var name = Expect(TokenType.Identifier).StringValue;
             switch (name)
             {
             case "TEXTURE":

@@ -199,8 +199,12 @@ namespace WdlEngine
             return Take(TokenType.Unknown, 1);
         }
 
-        private Token Take(TokenType tokenType, int length) =>
-            new Token(tokenType, Take(length));
+        private Token Take(TokenType tokenType, int length)
+        {
+            var text = Take(length);
+            if (tokenType == TokenType.Identifier) text = text.ToUpper();
+            return new Token(tokenType, text);
+        }
 
         private string Take(int length)
         {
