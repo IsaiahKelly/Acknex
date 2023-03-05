@@ -28,7 +28,7 @@ namespace Acknex
             {
                 return;
             }
-            if (source != null && source.TryGetString(eventName, out var @event))
+            if (source.TryGetString(eventName, out var @event))
             {
                 AssignSynonymToObject("MY", source, true);
                 _runtime.CallAction(@event);
