@@ -62,56 +62,8 @@ namespace Acknex
             {
                 StartCoroutine(Animate(TextureObject, _meshRenderer));
             }
-            StartCoroutine(TriggerTickEvents());
-            StartCoroutine(TriggerSecEvents());
-        }
-
-        private IEnumerator TriggerTickEvents()
-        {
-            while (true)
-            {
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.1");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.2");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.3");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.4");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.5");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.6");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.7");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.8");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.9");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.10");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.11");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.12");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.13");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.14");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.15");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.16");
-                yield return World.Instance.WaitForTick;
-            }
-        }
-
-        private IEnumerator TriggerSecEvents()
-        {
-            while (true)
-            {
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.1");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.2");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.3");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.4");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.5");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.6");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.7");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.8");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.9");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.10");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.11");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.12");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.13");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.14");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.15");
-                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.16");
-                yield return World.Instance.WaitForSecond;
-            }
+            StartCoroutine(World.Instance.TriggerTickEvents(AcknexObject));
+            StartCoroutine(World.Instance.TriggerSecEvents(AcknexObject));
         }
 
         private void OnTriggerExitCallback(Collider obj)

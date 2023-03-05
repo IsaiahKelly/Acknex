@@ -443,6 +443,43 @@ namespace Acknex
                                 }
                                 break;
                             }
+                        case "IF_START":
+                        case "EACH_TICK.1":
+                        case "EACH_TICK.2":
+                        case "EACH_TICK.3":
+                        case "EACH_TICK.4":
+                        case "EACH_TICK.5":
+                        case "EACH_TICK.6":
+                        case "EACH_TICK.7":
+                        case "EACH_TICK.8":
+                        case "EACH_TICK.9":
+                        case "EACH_TICK.10":
+                        case "EACH_TICK.11":
+                        case "EACH_TICK.12":
+                        case "EACH_TICK.13":
+                        case "EACH_TICK.14":
+                        case "EACH_TICK.15":
+                        case "EACH_TICK.16":
+                        case "EACH_SEC.1":
+                        case "EACH_SEC.2":
+                        case "EACH_SEC.3":
+                        case "EACH_SEC.4":
+                        case "EACH_SEC.5":
+                        case "EACH_SEC.6":
+                        case "EACH_SEC.7":
+                        case "EACH_SEC.8":
+                        case "EACH_SEC.9":
+                        case "EACH_SEC.10":
+                        case "EACH_SEC.11":
+                        case "EACH_SEC.12":
+                        case "EACH_SEC.13":
+                        case "EACH_SEC.14":
+                        case "EACH_SEC.15":
+                        case "EACH_SEC.16":
+                            {
+                            _world.AcknexObject.SetString(keyword, tokens[1]);
+                            break;
+                        }
                         case "AMBIENT":
                             _world.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
                             break;
