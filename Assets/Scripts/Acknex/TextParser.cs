@@ -246,6 +246,12 @@ namespace Acknex
                         case "SPEED":
                             _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
                             break;
+                        case "VSPEED":
+                            _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                            break;
+                        case "ASPEED":
+                            _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                            break;
                     }
                 }
                 else if (_openObject?.Container is Overlay overlay)

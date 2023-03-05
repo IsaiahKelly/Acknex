@@ -10,10 +10,6 @@
         /// </summary>
         void CallAction(string name);
         /// <summary>
-        /// Triggers the given event on the given source object.
-        /// </summary>
-        void TriggerEvent(IAcknexObject source, string name);
-        /// <summary>
         /// Resumes the given action.
         /// </summary>
         void ResumeAction(ActionIdentifier identifier);

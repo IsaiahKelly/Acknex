@@ -13,6 +13,7 @@ namespace Acknex
         {
             AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("LIGHT_ANGLE")), 0f) * Quaternion.Euler(45f, 0f, 0f);
             UpdateSkills();
+            UpdateEvents();
         }
 
         public void Enable()

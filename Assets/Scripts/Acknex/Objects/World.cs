@@ -74,6 +74,8 @@ namespace Acknex
                 _textParser = new TextParser(this, baseDir, WMPContainsRegionsByName);
                 _textParser.ParseInitialWDL(WDLPath);
             }
+
+            SetupEvents();
         }
 
         private void Update()

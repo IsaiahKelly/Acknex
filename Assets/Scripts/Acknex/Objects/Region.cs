@@ -47,6 +47,7 @@ namespace Acknex
 
         public void UpdateObject()
         {
+            UpdateEvents();
             if (!AcknexObject.IsDirty)
             {
                 return;
@@ -76,6 +77,11 @@ namespace Acknex
                     _meshRenderer.shadowCastingMode = ceilTextureObject.Flags.Contains("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
                 }
             }
+        }
+
+        private void UpdateEvents()
+        {
+            
         }
 
         public List<string> Flags

@@ -62,6 +62,56 @@ namespace Acknex
             {
                 StartCoroutine(Animate(TextureObject, _meshRenderer));
             }
+            StartCoroutine(TriggerTickEvents());
+            StartCoroutine(TriggerSecEvents());
+        }
+
+        private IEnumerator TriggerTickEvents()
+        {
+            while (true)
+            {
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.1");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.2");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.3");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.4");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.5");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.6");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.7");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.8");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.9");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.10");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.11");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.12");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.13");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.14");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.15");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_TICK.16");
+                yield return World.Instance.WaitForTick;
+            }
+        }
+
+        private IEnumerator TriggerSecEvents()
+        {
+            while (true)
+            {
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.1");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.2");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.3");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.4");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.5");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.6");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.7");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.8");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.9");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.10");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.11");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.12");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.13");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.14");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.15");
+                World.Instance.CallActionSlot(AcknexObject, "EACH_SEC.16");
+                yield return World.Instance.WaitForSecond;
+            }
         }
 
         private void OnTriggerExitCallback(Collider obj)
@@ -93,7 +143,6 @@ namespace Acknex
         {
             var cycles = Mathf.Max(1, texture.AcknexObject.GetInteger("CYCLES"));
             var sides = Mathf.Max(1, texture.AcknexObject.GetInteger("SIDES"));
-            //var delay = texture.AcknexObject.GetObject<List<int>>("DELAY");
             var mirror = texture.AcknexObject.GetObject<List<int>>("MIRROR");
             var cycle = 0;
             while (true)
@@ -102,6 +151,10 @@ namespace Acknex
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : null;
                 yield return currentDelay;
                 cycle = (int)Mathf.Repeat(cycle + 1, cycles);
+                if (AcknexObject.TryGetString("EACH_CYCLE", out var eachCycle))
+                {
+                    World.Instance.TriggerEvent(AcknexObject, "EACH_CYCLE");
+                }
             }
         }
 
@@ -178,12 +231,19 @@ namespace Acknex
         private Texture _lastTextureObject;
         private List<WaitForSeconds> _textureObjectDelay;
 
-        public void UpdateObject()
+        public virtual void UpdateObject()
         {
+            UpdateEvents();
+
+            if (!AcknexObject.IsDirty)
+            {
+                return;
+            }
+            AcknexObject.IsDirty = true;
+
             //todo: better way to do that?
             if (TextureObject != _lastTextureObject)
             {
-
                 var delay = TextureObject.AcknexObject.GetObject<List<int>>("DELAY");
                 if (delay != null)
                 {
@@ -213,6 +273,11 @@ namespace Acknex
             //_collider.radius = AcknexObject.GetNumber("DIST") > 0f ? AcknexObject.GetNumber("DIST") * 0.5f : 0.5f;
 
             Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, transform.right);
+        }
+
+        public virtual void UpdateEvents()
+        {
+            
         }
 
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)
