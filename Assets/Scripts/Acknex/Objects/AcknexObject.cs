@@ -22,13 +22,13 @@ namespace Acknex
         public void AddFlag(string flag)
         {
             InstanceFlags.Add(flag);
-            //IsDirty = true;
+            IsDirty = true;
         }
 
         public void RemoveFlag(string flag)
         {
             InstanceFlags.Remove(flag);
-            //IsDirty = true;
+            IsDirty = true;
         }
 
         public bool ContainsFlag(string flag, bool fromTemplate = true)
@@ -48,30 +48,36 @@ namespace Acknex
             return false;
         }
 
+        //todo: create a mechanism to avoid infinite loop on setdirty
+
         public void SetFloat(string propertyName, float value)
         {
             NumberProperties[propertyName] = value;
+            //IsDirty = true;
         }
         public void SetInteger(string propertyName, int value)
         {
             NumberProperties[propertyName] = value;
+            //IsDirty = true;
         }
 
         public void SetObject<T>(string propertyName, T value)
         {
             ObjectProperties[propertyName] = value;
+            //IsDirty = true;
         }
 
         public void SetString(string propertyName, string value)
         {
             ObjectProperties[propertyName] = value;
+            //IsDirty = true;
         }
 
         public void SetAcknexObject(string propertyName, IAcknexObject value)
         {
             ObjectProperties[propertyName] = value;
+            //IsDirty = true;
         }
-
 
         public float GetFloat(string propertyName, bool fromTemplate = true)
         {
