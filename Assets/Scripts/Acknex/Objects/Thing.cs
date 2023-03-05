@@ -186,10 +186,11 @@ namespace Acknex
             gameObject.SetActive(false);
         }
 
-        private Texture _lastTextureObject;
         private List<WaitForSeconds> _textureObjectDelay;
 
-        private bool _goingToTarget;
+        //Deltas for comparison
+        private Texture _lastTextureObject;
+        private string _lastTarget;
 
         public virtual void UpdateObject()
         {
@@ -201,12 +202,12 @@ namespace Acknex
             }
             AcknexObject.IsDirty = true;
 
-            if (AcknexObject.TryGetString("TARGET", out var target) && !_goingToTarget)
+            if (AcknexObject.TryGetString("TARGET", out var target) && target != _lastTarget)
             {
                 if (World.Instance.AllWaysByName.TryGetValue(target, out var wayList))
                 {
                     StartCoroutine(wayList[0].MoveThingOrActor(AcknexObject));
-                    _goingToTarget = true;
+                    _lastTarget = target;
                 }
             }
 
