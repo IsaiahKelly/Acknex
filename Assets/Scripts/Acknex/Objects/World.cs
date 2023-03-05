@@ -39,6 +39,7 @@ namespace Acknex
         public readonly Dictionary<string, Actor> ActorsByName = new Dictionary<string, Actor>();
         public readonly Dictionary<string, Overlay> OverlaysByName = new Dictionary<string, Overlay>();
         public readonly Dictionary<string, Thing> ThingsByName = new Dictionary<string, Thing>();
+        public readonly Dictionary<string, Flic> FlicsByName = new Dictionary<string, Flic>();
         public readonly Dictionary<string, Texture2D> TextureCache = new Dictionary<string, Texture2D>();
 
         public readonly List<string> Paths = new List<string>();

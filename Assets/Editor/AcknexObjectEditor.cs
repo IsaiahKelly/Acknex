@@ -149,7 +149,7 @@ public class WorldEditor : Editor
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);
             EditorGUILayout.LabelField(kvp.Value);
-            EditorGUILayout.LabelField("");
+            //EditorGUILayout.LabelField("");
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
@@ -158,12 +158,12 @@ public class WorldEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);
-            EditorGUILayout.LabelField(kvp.Value.AcknexObject.GetString("VAL"));
-            if (GUILayout.Button("Modify"))
-            {
-                var dialog = InputDialog.ShowDialog(kvp.Value.AcknexObject.GetString("VAL"));
-                world.SkillsByName[kvp.Key].AcknexObject.SetFloat("VAL", float.Parse(dialog.Value));
-            }
+            EditorGUILayout.LabelField("|" + kvp.Value.AcknexObject.GetFloat("VAL") + "|");
+            //if (GUILayout.Button("Modify"))
+            //{
+            //    var dialog = InputDialog.ShowDialog(kvp.Value.AcknexObject.GetString("VAL"));
+            //    world.SkillsByName[kvp.Key].AcknexObject.SetFloat("VAL", float.Parse(dialog.Value));
+            //}
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
@@ -185,7 +185,7 @@ public class WorldEditor : Editor
             {
                 EditorGUILayout.LabelField("[EMPTY]");
             }
-            EditorGUILayout.LabelField("");
+            //EditorGUILayout.LabelField("");
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();

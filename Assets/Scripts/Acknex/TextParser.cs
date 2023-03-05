@@ -372,6 +372,11 @@ namespace Acknex
                                 ParseStringList(keyword, _openObject, tokens);
                                 break;
                             }
+                        case "FLIC":
+                            {
+                                texture.AcknexObject.SetString(keyword, tokens[1]);
+                                break;
+                            }
                         case "POS_X":
                             {
                                 texture.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
@@ -494,6 +499,14 @@ namespace Acknex
                                     _openObject.SetFloat("DX", ParseFloat(tokens[5]));
                                     _openObject.SetFloat("DY", ParseFloat(tokens[6]));
                                 }
+                                _world.PostSetupObjectTemplate(_openObject);
+                                _openObject = null;
+                                break;
+                            }
+                        case "FLIC":
+                            {
+                                _openObject = _world.CreateObjectTemplate(ObjectType.Flic, tokens[1]);
+                                _openObject.SetString("FILENAME", ParseDir(tokens[2]));
                                 _world.PostSetupObjectTemplate(_openObject);
                                 _openObject = null;
                                 break;

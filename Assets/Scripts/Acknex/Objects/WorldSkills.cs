@@ -87,11 +87,11 @@ namespace Acknex
             CreateSkill("WAVE", 0, -1, 1); //todo
             CreateSkill("PSOUND_VOL", 1, 0, 2); //todo
             CreateSkill("PSOUND_TONE", 1, 0, 4); //
-            CreateSkill("PLAYER_VX", 1, 0, 0); //todo <- steering? IMPORTANT
-            CreateSkill("PLAYER_VY", 1, 0, 0); //todo <- steering? IMPORTANT
-            CreateSkill("PLAYER_VZ", 1, 0, 0); //todo <- jump? IMPORTANT
-            CreateSkill("PLAYER_VROT", 1, 0, 0); //todo <- something about rotation IMPORTANT
-            CreateSkill("PLAYER_TILT", 1, 0, 0); //todo <- something about rotation IMPORTANT
+            CreateSkill("PLAYER_VX", 0, 0, 0); //todo <- steering? IMPORTANT
+            CreateSkill("PLAYER_VY", 0, 0, 0); //todo <- steering? IMPORTANT
+            CreateSkill("PLAYER_VZ", 0, 0, 0); //todo <- jump? IMPORTANT
+            CreateSkill("PLAYER_VROT", 0, 0, 0); //todo <- something about rotation IMPORTANT
+            CreateSkill("PLAYER_TILT", 0, 0, 0); //todo <- something about rotation IMPORTANT
             CreateSkill("PLAYER_ARC", 1, 0.2f, 2.0f); //todo <- FOV, IMPORTANT. 1.0 = 60 degrees
             CreateSkill("FRICTION", 0.5f, 0.0f, 1.0f); //todo <- move friction IMPORTANT
             CreateSkill("INERTIA", 1f, 0.0f, 0); //todo <- move inertia IMPORTANT
@@ -150,10 +150,13 @@ namespace Acknex
             UpdateSkillValue("MICKEY_Y", deltaMousePosition.y);
             UpdateSkillValue("MOUSE_X", mousePosition.x);
             UpdateSkillValue("MOUSE_Y", mousePosition.y);
-            UpdateSkillValue("MOUSE_LEFT", Input.GetMouseButtonDown(0) ? 1 : 0);
-            UpdateSkillValue("MOUSE_MIDDLE", Input.GetMouseButtonDown(1) ? 1 : 0);
-            UpdateSkillValue("MOUSE_RIGHT", Input.GetMouseButtonDown(2) ? 1 : 0);
+            UpdateSkillValue("MOUSE_LEFT", Input.GetMouseButton(0) ? 1 : 0);
+            UpdateSkillValue("MOUSE_MIDDLE", Input.GetMouseButton(1) ? 1 : 0);
+            UpdateSkillValue("MOUSE_RIGHT", Input.GetMouseButton(2) ? 1 : 0);
             UpdateSkillValue("KEY_ANY", Input.anyKey ? 1 : 0);
+            UpdateSkillValue("KEY_SHIFT", Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? 1 :0);
+            UpdateSkillValue("KEY_INS", Input.GetKey(KeyCode.PageUp) || Input.GetAxis("Mouse Y") < 0f ? 1 : 0);
+            UpdateSkillValue("KEY_INS", Input.GetKey(KeyCode.PageDown) || Input.GetAxis("Mouse Y") > 0f ? 1 : 0);
             UpdateSkillValue("JOYSTICK_X", Input.GetAxis("Horizontal") * 255f);
             UpdateSkillValue("JOYSTICK_Y", Input.GetAxis("Vertical") * 255f);
             UpdateSkillValue("TICKS", TimeUtils.TimeToTicks(Time.time));
@@ -162,6 +165,8 @@ namespace Acknex
             UpdateSkillValue("FORCE_STRAFE", Input.GetAxis("Horizontal"));
             UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X"));
             UpdateSkillValue("FORCE_UP", Input.GetAxis("Mouse Y"));
+
+            UpdateSkillValue("RANDOM", Random.value);
             _lastMousePosition = mousePosition;
         }
 

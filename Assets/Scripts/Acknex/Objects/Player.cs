@@ -43,18 +43,20 @@ namespace Acknex
             var deltaAngle = moveAngle - World.Instance.GetSkillValue("MOVE_ANGLE");
             World.Instance.UpdateSkillValue("MOVE_ANGLE", moveAngle);
             World.Instance.UpdateSkillValue("DELTA_ANGLE", deltaAngle);
-            var playerSpeed = World.Instance.GetSkillValue("PLAYER_SPEED") * TimeUtils.TicksToTime(1);
-            //_characterController.Move(playerMove * playerSpeed);
+            //_characterController.Move(playerMove * TimeUtils.TicksToTime(1));
             //transform.Rotate(Vector3.up, AngleUtils.ConvertAcknexToUnityAnglePerTick(World.Instance.GetSkillValue("PLAYER_VROT")), Space.Self);
-            //World.Instance.UpdateSkillValue("LAST_PLAYER_X", World.Instance.GetSkillValue("PLAYER_X"));
-            //World.Instance.UpdateSkillValue("LAST_PLAYER_Y", World.Instance.GetSkillValue("PLAYER_Y"));
-            //World.Instance.UpdateSkillValue("LAST_PLAYER_Z", World.Instance.GetSkillValue("PLAYER_Z"));
-            //World.Instance.UpdateSkillValue("PLAYER_X", _characterController.transform.position.x);
-            //World.Instance.UpdateSkillValue("PLAYER_Y", _characterController.transform.position.z);
-            //World.Instance.UpdateSkillValue("PLAYER_Z", _characterController.transform.position.y);
-            //World.Instance.UpdateSkillValue("PLAYER_SIN", Mathf.Sin(playerAngle));
-            //World.Instance.UpdateSkillValue("PLAYER_COS", Mathf.Cos(playerAngle));
-            //World.Instance.UpdateSkillValue("PLAYER_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(transform.eulerAngles.y));
+            //playerAngle = AngleUtils.ConvertUnityToAcknexAngle(transform.eulerAngles.y);
+            World.Instance.UpdateSkillValue("LAST_PLAYER_X", World.Instance.GetSkillValue("PLAYER_X"));
+            World.Instance.UpdateSkillValue("LAST_PLAYER_Y", World.Instance.GetSkillValue("PLAYER_Y"));
+            World.Instance.UpdateSkillValue("LAST_PLAYER_Z", World.Instance.GetSkillValue("PLAYER_Z"));
+            World.Instance.UpdateSkillValue("PLAYER_SPEED", _characterController.velocity.magnitude);
+            World.Instance.UpdateSkillValue("PLAYER_X", _characterController.transform.position.x);
+            World.Instance.UpdateSkillValue("PLAYER_Y", _characterController.transform.position.z);
+            World.Instance.UpdateSkillValue("PLAYER_Z", _characterController.transform.position.y);
+            World.Instance.UpdateSkillValue("PLAYER_SIN", Mathf.Sin(playerAngle));
+            World.Instance.UpdateSkillValue("PLAYER_COS", Mathf.Cos(playerAngle));
+            //World.Instance.UpdateSkillValue("PLAYER_ANGLE", playerAngle);
+            //todo: update PLAYER_HGT
             if (playerRegion != null)
             {
                 World.Instance.AssignSynonymToObject("HERE", playerRegion.AcknexObject, true);

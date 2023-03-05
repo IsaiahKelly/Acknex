@@ -79,10 +79,12 @@ namespace Acknex.Interfaces
 
         /// <summary>
         /// This method should be called when a new Way instance point is processed.
+        /// </summary>
         void AddWayPoint(IAcknexObject way, float x, float y);
 
         /// <summary>
         /// Returns all engine objects containing the given synonym.
+        /// </summary>
         List<IAcknexObject> GetAllObjectsWithSynonym(string name);
 
         /// <summary>
@@ -95,5 +97,20 @@ namespace Acknex.Interfaces
         /// This value must be passed to the objects created when processing an WMP file.
         /// </summary>
         int GetRegionIndex(string value);
+
+        /// <summary>
+        /// Sets the scripting runtime to be used by the engine.
+        /// </summary>
+        void SetRuntime(IAcknexRuntime runtime);
+
+        /// <summary>
+        /// Halts the given task `identifier` for the given number of cycles.
+        /// </summary>
+        void WaitForCycles(ActionIdentifier identifier, int cycles);
+
+        /// <summary>
+        /// Halts the given task `identifier` for the given number of ticks.
+        /// </summary>
+        void WaitForTicks(ActionIdentifier identifier, int ticks);
     }
 }

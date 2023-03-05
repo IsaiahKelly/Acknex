@@ -25,6 +25,7 @@ namespace Acknex
 
 
         private Resolution _resolution = Resolution.Res320x200;
+        private IAcknexRuntime _runtime;
 
         public Resolution GameResolution
         {
@@ -261,6 +262,18 @@ namespace Acknex
                         OverlaysByName.Add(name, overlay);
                         return overlay.AcknexObject;
                     }
+                case ObjectType.Flic:
+                {
+                    if (FlicsByName.ContainsKey(name))
+                    {
+                        throw new Exception("Flic [" + name + "] already registered.");
+                    }
+                    var flic = new Flic();
+                    flic.AcknexObject.Type = type;
+                    flic.AcknexObject.SetString("NAME", name);
+                    FlicsByName.Add(name, flic);
+                    return flic.AcknexObject;
+                }
                 case ObjectType.World:
                     throw new Exception("It is not possible to create a new world.");
             }
@@ -293,6 +306,8 @@ namespace Acknex
                     return WaysByName.TryGetValue(name, out var way) ? way.AcknexObject : null;
                 case ObjectType.Overlay:
                     return OverlaysByName.TryGetValue(name, out var overlay) ? overlay.AcknexObject : null;
+                case ObjectType.Flic:
+                    return FlicsByName.TryGetValue(name, out var flic) ? flic.AcknexObject : null;
                 case ObjectType.Player:
                     return Player.Instance.AcknexObject;
             }
@@ -366,6 +381,21 @@ namespace Acknex
                 return RegionsByIndex.IndexOf(region);
             }
             return 0;
+        }
+
+        public void SetRuntime(IAcknexRuntime runtime)
+        {
+            _runtime = runtime;
+        }
+
+        public void WaitForCycles(ActionIdentifier identifier, int cycles)
+        {
+           
+        }
+
+        public void WaitForTicks(ActionIdentifier identifier, int ticks)
+        {
+            
         }
     }
 }

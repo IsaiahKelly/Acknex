@@ -20,6 +20,7 @@
         Panel,
         Sound,
         World,
-        Player
+        Player,
+        Flic
     }
 }
