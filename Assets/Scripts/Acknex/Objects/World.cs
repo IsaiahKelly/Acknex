@@ -25,6 +25,8 @@ namespace Acknex
         public float CanvasWidthRatio = 2f;
         public bool WMPContainsRegionsByName;
         public bool UseWDLEngine;
+        public SingleUnityLayer WallsAndRegionsLayer;
+        public SingleUnityLayer ThingsAndActorsLayer;
 
         public readonly List<Region> RegionsByIndex = new List<Region>();
 
@@ -112,6 +114,7 @@ namespace Acknex
                 throw new Exception("Expected: name");
             }
             var newGameObject = new GameObject(name);
+            newGameObject.layer = WallsAndRegionsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
             var newRegion = newGameObject.AddComponent<Region>();
             newRegion.AcknexObject.SetString("NAME", name);
@@ -126,6 +129,7 @@ namespace Acknex
                 throw new Exception("Expected: name");
             }
             var newGameObject = new GameObject(name);
+            newGameObject.layer = WallsAndRegionsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
             var newWall = newGameObject.AddComponent<Wall>();
             newWall.AcknexObject.SetString("NAME", name);
@@ -154,6 +158,7 @@ namespace Acknex
                 throw new Exception("Expected: name");
             }
             var newGameObject = new GameObject(name);
+            newGameObject.layer = ThingsAndActorsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
             var newThing = newGameObject.AddComponent<Thing>();
             newThing.AcknexObject.SetString("NAME", name);
@@ -168,6 +173,7 @@ namespace Acknex
                 throw new Exception("Expected: name");
             }
             var newGameObject = new GameObject(name);
+            newGameObject.layer = ThingsAndActorsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
             var newActor = newGameObject.AddComponent<Actor>();
             newActor.AcknexObject.SetString("NAME", name);

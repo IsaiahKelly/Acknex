@@ -44,6 +44,11 @@ namespace Acknex
             }
         }
 
+        public void AddFlag(string flag)
+        {
+            Flags.Add(flag);
+        }
+
         public Texture TextureObject => AcknexObject.GetString("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.GetString("TEXTURE"), out var textureObject) ? textureObject : null;
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -246,8 +251,8 @@ namespace Acknex
 
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)
         {
-            var thingRegion = World.Instance.RegionsByIndex[AcknexObject.GetInteger("REGION")];
-            thingZ = thingRegion.ProjectHeight(thingX, thingY, Flags.Contains("GROUND"));
+            var regionIndex = Region.Locate(thingX, thingY, ref thingZ, Flags.Contains("GROUND"));
+            AcknexObject.SetInteger("REGION", regionIndex);
             AcknexObject.SetFloat("Z", thingZ);
         }
     }

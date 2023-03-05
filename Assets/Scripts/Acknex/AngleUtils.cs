@@ -34,6 +34,11 @@ namespace Acknex
             return new Vector3(position.x, 0f, position.z);
         }
 
+        public static Vector3 To3D(float x, float y)
+        {
+            return new Vector3(x, 0f, y);
+        }
+
         //public static Vector3 ConvertVector(Vector3 vector)
         //{
         //    return new Vector3(vector.x, vector.z, vector.y);

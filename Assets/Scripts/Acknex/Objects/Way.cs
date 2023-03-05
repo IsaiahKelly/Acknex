@@ -27,6 +27,7 @@ namespace Acknex
             for (var i = 1; i < Points.Count; i++)
             {
                 Gizmos.DrawLine(MeshUtils.ToXZ(Points[i - 1]), MeshUtils.ToXZ(Points[i]));
+                Gizmos.DrawSphere(MeshUtils.ToXZ(Points[i]), 1f);
             }
         }
 

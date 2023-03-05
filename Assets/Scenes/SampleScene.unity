@@ -672,6 +672,10 @@ MonoBehaviour:
   CanvasWidthRatio: 1.6
   WMPContainsRegionsByName: 0
   UseWDLEngine: 0
+  WallsAndRegionsLayer:
+    m_LayerIndex: 8
+  ThingsAndActorsLayer:
+    m_LayerIndex: 9
   Canvas: {fileID: 1116186326}
   AmbientLight: {fileID: 705507994}
 --- !u!114 &1246573633

@@ -6,27 +6,6 @@ using UnityEditor;
 using UnityEngine;
 using Texture = Acknex.Texture;
 
-public class InputDialog : EditorWindow
-{
-    public string Value;
-
-    private void OnGUI()
-    {
-        Value = EditorGUILayout.TextField("New Value", Value);
-        if (GUILayout.Button("OK"))
-        {
-            Close();
-        }
-    }
-    public static InputDialog ShowDialog(string value)
-    {
-        var window = new InputDialog();
-        window.Value = value;
-        window.ShowUtility();
-        return window;
-    }
-}
-
 public class AcknexObjectEditor : Editor
 {
     public override void OnInspectorGUI()
@@ -93,19 +72,21 @@ public class AcknexObjectEditor : Editor
 [UnityEditor.CustomEditor(typeof(Actor))]
 public class ActorEditor : AcknexObjectEditor
 {
+    private float _speed = 2f;
     private Way _target;
     public override void OnInspectorGUI()
     {
-        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.BeginVertical();
+        _speed = EditorGUILayout.FloatField("Speed", _speed);
         _target = EditorGUILayout.ObjectField("Target", _target, typeof(Way)) as Way;
         if (GUILayout.Button("Go to Way") && _target != null)
         {
             var actor = (Actor)target;
-            actor.AcknexObject.SetFloat("SPEED", 0.7f);
+            actor.AcknexObject.SetFloat("SPEED", _speed);
             actor.AcknexObject.SetString("TARGET", _target.AcknexObject.GetString("NAME"));
             actor.AcknexObject.IsDirty = true;
         }
-        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.EndVertical();
         base.OnInspectorGUI();
     }
 }

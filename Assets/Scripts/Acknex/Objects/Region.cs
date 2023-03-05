@@ -8,6 +8,7 @@ using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 using UnityEngine.Rendering;
+using Utils;
 
 namespace Acknex
 {
@@ -81,7 +82,7 @@ namespace Acknex
 
         private void UpdateEvents()
         {
-            
+
         }
 
         public List<string> Flags
@@ -93,7 +94,7 @@ namespace Acknex
                     return flags;
                 }
                 flags = new List<string>();
-                AcknexObject.SetObject("FLAGS",flags);
+                AcknexObject.SetObject("FLAGS", flags);
                 return flags;
             }
         }
@@ -116,46 +117,46 @@ namespace Acknex
             set => _belowOverride = value;
         }
 
-        public MeshCollider MeshCollider
-        {
-            get
-            {
-                if (_meshCollider != null)
-                {
-                    return _meshCollider;
-                }
-                if (World.Instance.RegionsByName.TryGetValue(AcknexObject.GetString("NAME"), out var definition))
-                {
-                    return definition._meshCollider;
-                }
-                return null;
-            }
-        }
+        //public MeshCollider MeshCollider
+        //{
+        //    get
+        //    {
+        //        if (_meshCollider != null)
+        //        {
+        //            return _meshCollider;
+        //        }
+        //        if (World.Instance.RegionsByName.TryGetValue(AcknexObject.GetString("NAME"), out var definition))
+        //        {
+        //            return definition._meshCollider;
+        //        }
+        //        return null;
+        //    }
+        //}
 
-        public bool IsPointInsideRegion(Vector3 point)
-        {
-            if (!Physics.Raycast(new Ray(point  + new Vector3(0f, 1f, 0f), Vector3.down), out var bottomHit, MaxHeightCheck) || bottomHit.collider != _meshCollider)
-            {
-                return false;
-            }
-            if (!Physics.Raycast(new Ray(point  - new Vector3(0f, 1f, 0f), Vector3.up), out var topHit, MaxHeightCheck) || topHit.collider != _meshCollider)
-            {
-                return false;
-            }
-            return true;
-        }
+        //public bool IsPointInsideRegion(Vector3 point)
+        //{
+        //    if (!Physics.Raycast(new Ray(point  + new Vector3(0f, 1f, 0f), Vector3.down), out var bottomHit, MaxHeightCheck) || bottomHit.collider != _meshCollider)
+        //    {
+        //        return false;
+        //    }
+        //    if (!Physics.Raycast(new Ray(point  - new Vector3(0f, 1f, 0f), Vector3.up), out var topHit, MaxHeightCheck) || topHit.collider != _meshCollider)
+        //    {
+        //        return false;
+        //    }
+        //    return true;
+        //}
 
-        public Vector3 ProjectPosition(float x, float y, bool ground = false)
-        {
-            var point = new Vector3(x, AcknexObject.GetFloat("CEIL_HGT"), y);
-            return !ground && _meshCollider != null && _meshCollider.Raycast(new Ray(point, Vector3.down), out var bottomHit, Mathf.Infinity) ? bottomHit.point : new Vector3(x, 0f, y);
-        }
+        //public Vector3 ProjectPosition(float x, float y, bool ground = false)
+        //{
+        //    var point = new Vector3(x, AcknexObject.GetFloat("CEIL_HGT"), y);
+        //    return !ground && _meshCollider != null && _meshCollider.Raycast(new Ray(point, Vector3.down), out var bottomHit, Mathf.Infinity) ? bottomHit.point : new Vector3(x, 0f, y);
+        //}
 
-        public float ProjectHeight(float x, float y, bool ground = false)
-        {
-            var point = new Vector3(x, AcknexObject.GetFloat("CEIL_HGT"), y);
-            return !ground && _meshCollider != null && _meshCollider.Raycast(new Ray(point, Vector3.down), out var bottomHit, Mathf.Infinity) ? bottomHit.point.y : 0f;
-        }
+        //public float ProjectHeight(float x, float y, bool ground = false)
+        //{
+        //    var point = new Vector3(x, AcknexObject.GetFloat("CEIL_HGT"), y);
+        //    return !ground && _meshCollider != null && _meshCollider.Raycast(new Ray(point, Vector3.down), out var bottomHit, Mathf.Infinity) ? bottomHit.point.y : 0f;
+        //}
 
         private Region GetGroundRegion(Region region)
         {
@@ -288,6 +289,25 @@ namespace Acknex
 
             allTriangles.Add(meshIndex, elements);
             meshIndex++;
+        }
+
+        //todo: replace MaxHeightCheck
+        public static int Locate(float thingX, float thingY, ref float thingZ, bool onGround = false)
+        {
+            var point = new Vector3(thingX, MaxHeightCheck, thingY);
+            if (Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
+            {
+                if (raycastHit.transform.TryGetComponent<Region>(out var region))
+                {
+                    thingZ = onGround ? 0 : raycastHit.point.y;
+                    return World.Instance.RegionsByIndex.IndexOf(region);
+                }
+            }
+            if (onGround)
+            {
+                thingZ = 0f;
+            }
+            return 0;
         }
     }
 }
