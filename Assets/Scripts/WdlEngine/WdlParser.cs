@@ -94,7 +94,7 @@ namespace WdlEngine
                 case "VIDEO":
                 {
                     var resolution = this.Expect(TokenType.Identifier).StringValue;
-                    switch (resolution)
+                    switch (resolution.ToUpper())
                     {
                     case "X320X240":
                         _world.GameResolution = Resolution.ResX320x240;
