@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Acknex.Interfaces;
 using UnityEngine;
@@ -78,6 +79,7 @@ namespace Acknex
             {
                 return;
             }
+            CodeStringBuilder.Append("//").AppendLine(string.Join(",", tokens));
             var keyword = GetNextToken();
             switch (keyword)
             {
