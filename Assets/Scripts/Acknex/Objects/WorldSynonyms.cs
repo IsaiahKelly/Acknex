@@ -20,8 +20,9 @@ namespace Acknex
         public void SetSynonymObject(string synonymName, IAcknexObject target) {
             if (!SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
-                synonym = new Synonym();
-                SynonymsByName.Add(synonymName, synonym);
+                throw new Exception("Synonym [" + synonymName + "] not found");
+                //synonym = new Synonym();
+                //SynonymsByName.Add(synonymName, synonym);
             }
             var isValid = true;
             var type = synonym.AcknexObject.GetString("TYPE");
