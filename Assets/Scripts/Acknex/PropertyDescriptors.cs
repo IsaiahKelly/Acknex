@@ -137,6 +137,17 @@ namespace Acknex
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SKILL7");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SKILL8");
             AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "EACH_TICK");
+            AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "EACH_CYCLE");
+            AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "IF_ARRIVED");
+            AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "IF_HIT");
+            AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "IF_NEAR");
+            AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "IF_FAR");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "ANGLE");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "X");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "Y");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "Z");
+            AddObjectProperty(ObjectType.Actor, PropertyType.ObjectReference, "REGION");
+            AddObjectProperty(ObjectType.Actor, PropertyType.String, "TARGET");
 
 
             AddObjectProperty(ObjectType.Thing, PropertyType.String, "NAME");
@@ -159,6 +170,18 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "SKILL7");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "SKILL8");
             AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "EACH_TICK");
+            AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "EACH_CYCLE");
+            AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "IF_ARRIVED");
+            AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "IF_HIT");
+            AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "IF_NEAR");
+            AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "IF_FAR");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "ANGLE");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "X");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "Y");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "Z");
+            AddObjectProperty(ObjectType.Thing, PropertyType.ObjectReference, "REGION");
+            AddObjectProperty(ObjectType.Thing, PropertyType.String, "TARGET");
+
 
 
             AddObjectProperty(ObjectType.Overlay, PropertyType.String, "NAME");
@@ -205,6 +228,8 @@ namespace Acknex
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "CEIL_OFFS_Y");
             AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "EACH_TICK");
             AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "IF_ENTER");
+            AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "IF_DIVE");
+            AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "IF_ARISE");
 
 
             AddObjectProperty(ObjectType.Wall, PropertyType.String, "NAME");
