@@ -109,7 +109,7 @@ namespace Acknex
             {
                 if (AcknexObject.TryGetString("IF_DIVE", out var ifDive))
                 {
-                    World.Instance.AssignSynonymToObject("THERE", AcknexObject, true);
+                    World.Instance.SetSynonymObject("THERE", AcknexObject);
                     World.Instance.TriggerEvent(Player.Instance.AcknexObject, "IF_DIVE");
                 }
                 _dive.Add(Player.Instance.AcknexObject);
@@ -118,7 +118,7 @@ namespace Acknex
             {
                 if (AcknexObject.TryGetString("IF_ARISE", out var ifDive))
                 {
-                    World.Instance.AssignSynonymToObject("THERE", AcknexObject, true);
+                    World.Instance.SetSynonymObject("THERE", AcknexObject);
                     World.Instance.TriggerEvent(Player.Instance.AcknexObject, "IF_ARISE");
                 }
                 _dive.Remove(Player.Instance.AcknexObject);
@@ -218,8 +218,11 @@ namespace Acknex
                 var newRegion = Instantiate(region.Below.gameObject).GetComponent<Region>();
                 newRegion.transform.SetParent(World.Instance.transform, false);
                 newRegion.name = region.Below.name;
-                ((AcknexObject)newRegion.AcknexObject).ObjectProperties = new Dictionary<string, object>(((AcknexObject)region.Below.AcknexObject).ObjectProperties);
-                ((AcknexObject)newRegion.AcknexObject).NumberProperties = new Dictionary<string, float>(((AcknexObject)region.Below.AcknexObject).NumberProperties);
+                var acknexObject = ((AcknexObject)newRegion.AcknexObject);
+                var belowAcknexObject = ((AcknexObject)region.Below.AcknexObject);
+                acknexObject.ObjectProperties = new Dictionary<string, object>(belowAcknexObject.ObjectProperties);
+                acknexObject.NumberProperties = new Dictionary<string, float>(belowAcknexObject.NumberProperties);
+                acknexObject.Type = belowAcknexObject.Type;
                 region.Below = newRegion;
                 BuildRegionFloorAndCeiling(newRegion, contouredRegion);
             }
@@ -297,10 +300,10 @@ namespace Acknex
                         {
                             //var oldRegionIndex = source.GetInteger("REGION");
                             //var oldRegion = World.Instance.RegionsByIndex[oldRegionIndex];
-                            World.Instance.AssignSynonymToObject("THERE", currentRegion.AcknexObject, true);
+                            World.Instance.SetSynonymObject("THERE", currentRegion.AcknexObject);
                             World.Instance.TriggerEvent(source, "IF_LEAVE");
 
-                            World.Instance.AssignSynonymToObject("THERE", region.AcknexObject, true);
+                            World.Instance.SetSynonymObject("THERE", region.AcknexObject);
                             World.Instance.TriggerEvent(source, "IF_ENTER");
                         }
                     }

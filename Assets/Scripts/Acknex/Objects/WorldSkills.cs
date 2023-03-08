@@ -137,6 +137,83 @@ namespace Acknex
             CreateSkill("SHIFT_SENSE", 2f, 0, 0); //todo
             CreateSkill("MOUSE_SENSE", 1f, 0, 0); //todo
             CreateSkill("JOY_SENSE", 1f, 0, 0); //todo
+
+            CreateSkill("PLAYER_HGT", 0, 0, 0);
+            CreateSkill("FORCE_AHEAD", 0, 0, 0);
+            CreateSkill("FORCE_STRAFE", 0, 0, 0);
+            CreateSkill("FORCE_ROT", 0, 0, 0);
+            CreateSkill("FORCE_UP", 0, 0, 0);
+
+            //CreateSkill("KEY_ANYKEY", Input.anyKeyDown);
+            CreateSkill("KEY_0", 0, 0, 1);
+            CreateSkill("KEY_1", 0, 0, 1);
+            CreateSkill("KEY_2", 0, 0, 1);
+            CreateSkill("KEY_3", 0, 0, 1);
+            CreateSkill("KEY_4", 0, 0, 1);
+            CreateSkill("KEY_5", 0, 0, 1);
+            CreateSkill("KEY_6", 0, 0, 1);
+            CreateSkill("KEY_7", 0, 0, 1);
+            CreateSkill("KEY_8", 0, 0, 1);
+            CreateSkill("KEY_9", 0, 0, 1);
+            CreateSkill("KEY_A", 0, 0, 1);
+            CreateSkill("KEY_B", 0, 0, 1);
+            CreateSkill("KEY_C", 0, 0, 1);
+            CreateSkill("KEY_D", 0, 0, 1);
+            CreateSkill("KEY_E", 0, 0, 1);
+            CreateSkill("KEY_F", 0, 0, 1);
+            CreateSkill("KEY_G", 0, 0, 1);
+            CreateSkill("KEY_H", 0, 0, 1);
+            CreateSkill("KEY_I", 0, 0, 1);
+            CreateSkill("KEY_J", 0, 0, 1);
+            CreateSkill("KEY_K", 0, 0, 1);
+            CreateSkill("KEY_L", 0, 0, 1);
+            CreateSkill("KEY_M", 0, 0, 1);
+            CreateSkill("KEY_N", 0, 0, 1);
+            CreateSkill("KEY_O", 0, 0, 1);
+            CreateSkill("KEY_P", 0, 0, 1);
+            CreateSkill("KEY_Q", 0, 0, 1);
+            CreateSkill("KEY_R", 0, 0, 1);
+            CreateSkill("KEY_S", 0, 0, 1);
+            CreateSkill("KEY_T", 0, 0, 1);
+            CreateSkill("KEY_U", 0, 0, 1);
+            CreateSkill("KEY_V", 0, 0, 1);
+            CreateSkill("KEY_X", 0, 0, 1);
+            CreateSkill("KEY_Y", 0, 0, 1);
+            CreateSkill("KEY_Z", 0, 0, 1);
+            CreateSkill("KEY_W", 0, 0, 1);
+            CreateSkill("KEY_ALT", 0, 0, 1);
+            CreateSkill("KEY_BKSP", 0, 0, 1);
+            CreateSkill("KEY_CAL", 0, 0, 1);
+            CreateSkill("KEY_CAR", 0, 0, 1);
+            CreateSkill("KEY_CTRL", 0, 0, 1);
+            CreateSkill("KEY_DEL", 0, 0, 1);
+            CreateSkill("KEY_END", 0, 0, 1);
+            CreateSkill("KEY_ENTER", 0, 0, 1);
+            CreateSkill("KEY_ESC", 0, 0, 1);
+            CreateSkill("KEY_F1", 0, 0, 1);
+            CreateSkill("KEY_F2", 0, 0, 1);
+            CreateSkill("KEY_F3", 0, 0, 1);
+            CreateSkill("KEY_F4", 0, 0, 1);
+            CreateSkill("KEY_F5", 0, 0, 1);
+            CreateSkill("KEY_F6", 0, 0, 1);
+            CreateSkill("KEY_F7", 0, 0, 1);
+            CreateSkill("KEY_F8", 0, 0, 1);
+            CreateSkill("KEY_F9", 0, 0, 1); ;
+            CreateSkill("KEY_HOME", 0, 0, 1);
+            CreateSkill("KEY_INS", 0, 0, 1);
+            CreateSkill("KEY_LEFT", 0, 0, 1);
+            CreateSkill("KEY_MIDDLE", 0, 0, 1);
+            CreateSkill("KEY_RIGHT", 0, 0, 1);
+            CreateSkill("KEY_PAUSE", 0, 0, 1);
+            CreateSkill("KEY_PGDN", 0, 0, 1); ;
+            CreateSkill("KEY_PGUP", 0, 0, 1);
+            CreateSkill("KEY_SPACE", 0, 0, 1);
+            CreateSkill("KEY_TAB", 0, 0, 1);
+            CreateSkill("KEY_CUU", 0, 0, 1);
+            CreateSkill("KEY_CUD", 0, 0, 1);
+            CreateSkill("KEY_CUR", 0, 0, 1);
+            CreateSkill("KEY_CUL", 0, 0, 1);
+            CreateSkill("KEY_SHIFT", 0, 0, 1);
         }
 
         private Vector3 _lastMousePosition;
@@ -154,9 +231,9 @@ namespace Acknex
             UpdateSkillValue("MOUSE_MIDDLE", Input.GetMouseButton(1) ? 1 : 0);
             UpdateSkillValue("MOUSE_RIGHT", Input.GetMouseButton(2) ? 1 : 0);
             UpdateSkillValue("KEY_ANY", Input.anyKey ? 1 : 0);
-            UpdateSkillValue("KEY_SHIFT", Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? 1 :0);
+            UpdateSkillValue("KEY_SHIFT", Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? 1 : 0);
             UpdateSkillValue("KEY_INS", Input.GetKey(KeyCode.PageUp) || Input.GetAxis("Mouse Y") < 0f ? 1 : 0);
-            UpdateSkillValue("KEY_INS", Input.GetKey(KeyCode.PageDown) || Input.GetAxis("Mouse Y") > 0f ? 1 : 0);
+            UpdateSkillValue("KEY_DEL", Input.GetKey(KeyCode.PageDown) || Input.GetAxis("Mouse Y") > 0f ? 1 : 0);
             UpdateSkillValue("JOYSTICK_X", Input.GetAxis("Horizontal") * 255f);
             UpdateSkillValue("JOYSTICK_Y", Input.GetAxis("Vertical") * 255f);
             UpdateSkillValue("TICKS", TimeUtils.TimeToTicks(Time.time));

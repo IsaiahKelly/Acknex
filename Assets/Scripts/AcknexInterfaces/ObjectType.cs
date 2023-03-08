@@ -21,6 +21,10 @@
         Sound,
         World,
         Player,
-        Flic
+        String,
+        Flic,
+        Text,
+        Internal,
+        Rule
     }
 }

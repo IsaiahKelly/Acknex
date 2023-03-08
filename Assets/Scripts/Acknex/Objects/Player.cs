@@ -63,7 +63,7 @@ namespace Acknex
         {
             var playerRegion = AcknexObject.GetInteger("REGION");
             Region.Locate(AcknexObject, ref playerRegion, playerX, playerY, ref playerZ, false);
-            World.Instance.AssignSynonymToObject("HERE", World.Instance.RegionsByIndex[playerRegion].AcknexObject, true);
+            World.Instance.SetSynonymObject("HERE", World.Instance.RegionsByIndex[playerRegion].AcknexObject);
             AcknexObject.SetInteger("REGION", playerRegion);
         }
 

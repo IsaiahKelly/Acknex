@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using LibTessDotNet;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
-using UnityEngine.UI;
 using WdlEngine;
 
 namespace Acknex
 {
-    public partial class World : MonoBehaviour, IAcknexObjectContainer, IAcknexWorld
+    public partial class World : MonoBehaviour, IAcknexWorld
     {
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
 
@@ -30,11 +32,11 @@ namespace Acknex
 
         public readonly List<Region> RegionsByIndex = new List<Region>();
 
-        public readonly Dictionary<string, IList<Region>> AllRegionsByName = new Dictionary<string, IList<Region>>();
-        public readonly Dictionary<string, IList<Wall>> AllWallsByName = new Dictionary<string, IList<Wall>>();
-        public readonly Dictionary<string, IList<Way>> AllWaysByName = new Dictionary<string, IList<Way>>();
-        public readonly Dictionary<string, IList<Actor>> AllActorsByName = new Dictionary<string, IList<Actor>>();
-        public readonly Dictionary<string, IList<Thing>> AllThingsByName = new Dictionary<string, IList<Thing>>();
+        public readonly Dictionary<string, HashSet<Region>> AllRegionsByName = new Dictionary<string, HashSet<Region>>();
+        public readonly Dictionary<string, HashSet<Wall>> AllWallsByName = new Dictionary<string, HashSet<Wall>>();
+        public readonly Dictionary<string, HashSet<Way>> AllWaysByName = new Dictionary<string, HashSet<Way>>();
+        public readonly Dictionary<string, HashSet<Actor>> AllActorsByName = new Dictionary<string, HashSet<Actor>>();
+        public readonly Dictionary<string, HashSet<Thing>> AllThingsByName = new Dictionary<string, HashSet<Thing>>();
 
         public readonly Dictionary<string, Synonym> SynonymsByName = new Dictionary<string, Synonym>();
         public readonly Dictionary<string, Action> ActionsByName = new Dictionary<string, Action>();
@@ -49,7 +51,8 @@ namespace Acknex
         public readonly Dictionary<string, Thing> ThingsByName = new Dictionary<string, Thing>();
         public readonly Dictionary<string, Flic> FlicsByName = new Dictionary<string, Flic>();
         public readonly Dictionary<string, Texture2D> TextureCache = new Dictionary<string, Texture2D>();
-        public readonly Dictionary<string, string> StringsByName = new Dictionary<string, string>();
+        public readonly Dictionary<string, AcknexString> StringsByName = new Dictionary<string, AcknexString>();
+        public readonly Dictionary<string, Text> TextsByName = new Dictionary<string, Text>();
 
         public readonly List<string> Paths = new List<string>();
 
@@ -62,12 +65,13 @@ namespace Acknex
         private TextParser _textParser;
         private List<ContourVertex> _contourVertices;
         private RegionWalls _regionWalls;
-        
+
         private void Start()
         {
             Instance = this;
             CreateDefaultSynonyms();
             CreateDefaultSkills();
+            CreatePropertyDescriptors();
 
             _contourVertices = new List<ContourVertex>();
             _regionWalls = new RegionWalls();
@@ -85,6 +89,11 @@ namespace Acknex
             }
 
             SetupEvents();
+
+#if UNITY_EDITOR
+            Selection.activeTransform = Player.Instance.transform;
+            SceneView.lastActiveSceneView.FrameSelected();
+#endif
         }
 
         private void Update()

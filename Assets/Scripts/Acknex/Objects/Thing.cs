@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Acknex.Interfaces;
 using CodiceApp.EventTracking.Plastic;
 using UnityEngine;
@@ -235,7 +236,7 @@ namespace Acknex
                 }
                 if (World.Instance.AllWaysByName.TryGetValue(target, out var wayList))
                 {
-                    StartCoroutine(wayList[0].MoveThingOrActor(AcknexObject));
+                    StartCoroutine(wayList.First().MoveThingOrActor(AcknexObject));
                 }
                 _lastTarget = target;
             }
@@ -299,7 +300,7 @@ namespace Acknex
                 {
                     if (Vector2.Distance(playerPos, pos) <= dist)
                     {
-                        World.Instance.AssignSynonymToObject("THERE", Player.Instance.AcknexObject, true);
+                        World.Instance.SetSynonymObject("THERE", Player.Instance.AcknexObject);
                         World.Instance.TriggerEvent(AcknexObject, "IF_NEAR");
                         _near.Add(Player.Instance.AcknexObject);
                     }
@@ -308,7 +309,7 @@ namespace Acknex
                 {
                     if (Vector2.Distance(playerPos, pos) > dist)
                     {
-                        World.Instance.AssignSynonymToObject("THERE", Player.Instance.AcknexObject, true);
+                        World.Instance.SetSynonymObject("THERE", Player.Instance.AcknexObject);
                         World.Instance.TriggerEvent(AcknexObject, "IF_FAR");
                         _near.Remove(Player.Instance.AcknexObject);
                     }

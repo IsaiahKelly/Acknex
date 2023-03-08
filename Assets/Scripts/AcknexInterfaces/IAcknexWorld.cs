@@ -70,12 +70,9 @@ namespace Acknex.Interfaces
         float GetSkillValue(string name);
 
         /// <summary>
-        /// Assign the synonym by name `name` to the given object `target´
-        /// <remarks>
-        /// When ´clear´ is <c>true</c>, the given synonym objects list will be cleared.
-        /// </remarks>
+        /// Assign the synonym by name `synonymName` to the given object `target´.
         /// </summary>
-        void AssignSynonymToObject(string name, IAcknexObject target, bool clear = false);
+        void SetSynonymObject(string synonymName, IAcknexObject target);
 
         /// <summary>
         /// This method should be called when a new Way instance point is processed.
@@ -83,9 +80,9 @@ namespace Acknex.Interfaces
         void AddWayPoint(IAcknexObject way, float x, float y);
 
         /// <summary>
-        /// Returns all engine objects containing the given synonym.
+        /// Returns the object stored into the given synonym.
         /// </summary>
-        List<IAcknexObject> GetAllObjectsWithSynonym(string name);
+        IAcknexObject GetSynonymObject(string synonymName);
 
         /// <summary>
         /// Gets/Sets the internal game resolution.

@@ -33,11 +33,15 @@ namespace Acknex
             {
                 if (hitInfo.collider.TryGetComponent<IAcknexObjectContainer>(out var container))
                 {
-                    if (container is Region)
+                    switch (container)
                     {
-                        World.Instance.AssignSynonymToObject("TOUCH_REG", container.AcknexObject, true);
+                        case Region _:
+                            World.Instance.SetSynonymObject("TOUCH_REG", container.AcknexObject);
+                            break;
+                        case Thing _:
+                            World.Instance.SetSynonymObject("TOUCHED", container.AcknexObject);
+                            break;
                     }
-                    World.Instance.AssignSynonymToObject("TOUCHED", container.AcknexObject, true);
                 }
             }
         }

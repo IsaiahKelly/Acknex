@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Acknex
 {
+
     public partial class World
     {
         public WaitForSeconds WaitForTick;
@@ -17,7 +18,7 @@ namespace Acknex
             }
             if (source != null)
             {
-                AssignSynonymToObject("MY", source, true);
+                SetSynonymObject("MY", source);
             }
             _runtime.CallAction(name);
         }
@@ -30,7 +31,7 @@ namespace Acknex
             }
             if (source.TryGetString(eventName, out var @event))
             {
-                AssignSynonymToObject("MY", source, true);
+                SetSynonymObject("MY", source);
                 _runtime.CallAction(@event);
             }
         }
@@ -172,6 +173,7 @@ namespace Acknex
             TriggerEventConditional(AcknexObject, "IF_CUD", Input.GetKeyDown(KeyCode.DownArrow));
             TriggerEventConditional(AcknexObject, "IF_CUR", Input.GetKeyDown(KeyCode.RightArrow));
             TriggerEventConditional(AcknexObject, "IF_CUL", Input.GetKeyDown(KeyCode.LeftArrow));
+            TriggerEventConditional(AcknexObject, "IF_SHIFT", Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift));
         }
 
         public void CallActionSlot(IAcknexObject acknexObject, string eventName)

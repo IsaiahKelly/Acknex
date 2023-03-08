@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.NetworkInformation;
+using System.Text;
 using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
@@ -134,10 +136,9 @@ namespace Acknex
                         {
                             throw new Exception("Action [" + name + "] already registered.");
                         }
-                        var action = gameObject.AddComponent<Action>();
+                        var action = new Action();
                         action.AcknexObject.Type = type;
                         action.AcknexObject.SetString("NAME", name);
-                        action.Disable();
                         ActionsByName.Add(name, action);
                         return action.AcknexObject;
                     }
@@ -306,7 +307,8 @@ namespace Acknex
                 case ObjectType.Skill:
                     return SkillsByName.TryGetValue(name, out var skill) ? skill.AcknexObject : null;
                 case ObjectType.Synonym:
-                    return SynonymsByName.TryGetValue(name, out var synonym) ? synonym.AcknexObject : null;
+                    return GetSynonymObject(name);    
+                //return SynonymsByName.TryGetValue(name, out var synonym) ? synonym.AcknexObject : null;
                 case ObjectType.Texture:
                     return TexturesByName.TryGetValue(name, out var texture) ? texture.AcknexObject : null;
                 case ObjectType.Thing:
@@ -333,6 +335,17 @@ namespace Acknex
         public void PostSetupWMP()
         {
             BuildRegionsAndWalls(_regionWalls, _contourVertices);
+            var sourceStringBuilder = new StringBuilder();
+            sourceStringBuilder.AppendLine("public class Game {");
+            foreach (var action in ActionsByName)
+            {
+                action.Value.WriteHeader();
+                action.Value.ParseAllStatements(_textParser);
+                action.Value.WriteFooter();
+                sourceStringBuilder.Append(action.Value.CodeStringBuilder);
+            }
+            File.WriteAllText(Application.temporaryCachePath + "/source.cs", sourceStringBuilder.ToString());
+            Debug.Log(Application.temporaryCachePath + "/source.cs");
         }
 
         public void AddVertex(float x, float y, float z)
@@ -346,8 +359,10 @@ namespace Acknex
             {
                 throw new Exception("String [" + name + "] already registered.");
             }
-
-            StringsByName.Add(name, value);
+            var str = new AcknexString(value);
+            str.AcknexObject.Type = ObjectType.String;
+            str.AcknexObject.SetString("NAME", name);
+            StringsByName.Add(name, str);
         }
 
         public void AddPath(string value)
@@ -363,7 +378,7 @@ namespace Acknex
                 var name = acknexObject.GetString("NAME");
                 if (!AllWallsByName.TryGetValue(name, out var list))
                 {
-                    list = new List<Wall>();
+                    list = new HashSet<Wall>();
                     AllWallsByName.Add(name, list);
                 }
                 list.Add(wall);
@@ -377,7 +392,7 @@ namespace Acknex
                 var name = acknexObject.GetString("NAME");
                 if (!AllRegionsByName.TryGetValue(name, out var list))
                 {
-                    list = new List<Region>();
+                    list = new HashSet<Region>();
                     AllRegionsByName.Add(name, list);
                 }
                 list.Add(region);
@@ -389,7 +404,7 @@ namespace Acknex
                 var name = acknexObject.GetString("NAME");
                 if (!AllActorsByName.TryGetValue(name, out var list))
                 {
-                    list = new List<Actor>();
+                    list = new HashSet<Actor>();
                     AllActorsByName.Add(name, list);
                 }
                 list.Add(actor);
@@ -401,7 +416,7 @@ namespace Acknex
                 var name = acknexObject.GetString("NAME");
                 if (!AllThingsByName.TryGetValue(name, out var list))
                 {
-                    list = new List<Thing>();
+                    list = new HashSet<Thing>();
                     AllThingsByName.Add(name, list);
                 }
                 list.Add(thing);
@@ -413,7 +428,7 @@ namespace Acknex
                 var name = acknexObject.GetString("NAME");
                 if (!AllWaysByName.TryGetValue(name, out var list))
                 {
-                    list = new List<Way>();
+                    list = new HashSet<Way>();
                     AllWaysByName.Add(name, list);
                 }
                 list.Add(way);
@@ -425,7 +440,7 @@ namespace Acknex
             if (acknexObject.Type == ObjectType.Bitmap)
             {
                 acknexObject.Container.UpdateObject();
-            }
+            } 
         }
 
         public void AddWayPoint(IAcknexObject way, float x, float y)

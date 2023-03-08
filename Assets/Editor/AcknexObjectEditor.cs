@@ -150,7 +150,7 @@ public class WorldEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);
-            EditorGUILayout.LabelField(kvp.Value);
+            EditorGUILayout.LabelField(kvp.Value.Value);
             //EditorGUILayout.LabelField("");
             EditorGUILayout.EndHorizontal();
         }
@@ -170,26 +170,21 @@ public class WorldEditor : Editor
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
         EditorGUILayout.BeginFoldoutHeaderGroup(true, "Synonym");
-        foreach (var kvp in world.SynonymsByName)
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(kvp.Key);
-            if (kvp.Value.AcknexObject.TryGetObject<System.Collections.Generic.List<IAcknexObject>>("VAL", out var list))
-            {
-                var strings = new List<string>();
-                foreach (var item in list)
-                {
-                    strings.Add(item.GetString("NAME"));
-                }
-                EditorGUILayout.Popup("Objects", 0, strings.ToArray());
-            }
-            else
-            {
-                EditorGUILayout.LabelField("[EMPTY]");
-            }
-            //EditorGUILayout.LabelField("");
-            EditorGUILayout.EndHorizontal();
-        }
+        //foreach (var kvp in world.SynonymsByName)
+        //{
+        //    EditorGUILayout.BeginHorizontal();
+        //    EditorGUILayout.LabelField(kvp.Key);
+        //    if (kvp.Value.AcknexObject.TryGetObject<IAcknexObject>("VAL", out var acknexObject))
+        //    {
+        //        EditorGUILayout.LabelField(acknexObject.GetString("NAME"));
+        //    }
+        //    else
+        //    {
+        //        EditorGUILayout.LabelField("[EMPTY]");
+        //    }
+        //    //EditorGUILayout.LabelField("");
+        //    EditorGUILayout.EndHorizontal();
+        //}
         EditorGUILayout.EndFoldoutHeaderGroup();
     }
 }

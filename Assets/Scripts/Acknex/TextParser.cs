@@ -11,13 +11,12 @@ namespace Acknex
 {
     public class TextParser
     {
-
         public readonly Dictionary<string, string> DefinitionsByName = new Dictionary<string, string>();
 
         private IAcknexObject _openObject;
         private readonly List<string> _tokens = new List<string>();
         private readonly StringBuilder _tokenStringBuilder = new StringBuilder();
-        private List<string> _mapFiles = new List<string>();
+        private string _mapFile;
         private readonly string _baseDir;
         private readonly bool _wmpContainsRegionsByName;
         private readonly IAcknexWorld _world;
@@ -38,14 +37,14 @@ namespace Acknex
             return Convert.ToSingle(token, CultureInfo.InvariantCulture);
         }
 
-        public List<string> ParseStatement(StreamReader streamReader, out bool isLabel)
+        public List<string> ParseStatement(BinaryReader streamReader, out bool isLabel)
         {
             isLabel = false;
             _tokens.Clear();
             removeSpaces:
             _tokenStringBuilder.Clear();
             var read = 0;
-            while (!streamReader.EndOfStream)
+            while (streamReader.BaseStream.Position < streamReader.BaseStream.Length)
             {
                 read = streamReader.Read();
                 if (read != '\0' && read != '\r' && read != '\n' && read != ' ' && read != '\t' && read != ',')
@@ -53,7 +52,7 @@ namespace Acknex
                     break;
                 }
             }
-            while (!streamReader.EndOfStream)
+            while (streamReader.BaseStream.Position < streamReader.BaseStream.Length)
             {
                 switch (read)
                 {
@@ -88,7 +87,7 @@ namespace Acknex
                 switch (read)
                 {
                     case '#':
-                    case '/' when streamReader.Peek() == '/':
+                    case '/' when streamReader.PeekChar() == '/':
                         {
                             while (read > -1 && read != '\n')
                             {
@@ -96,9 +95,9 @@ namespace Acknex
                             }
                             return _tokens;
                         }
-                    case '/' when streamReader.Peek() == '*':
+                    case '/' when streamReader.PeekChar() == '*':
                         {
-                            while (read > -1 && !(read == '*' && streamReader.Peek() == '/'))
+                            while (read > -1 && !(read == '*' && streamReader.PeekChar() == '/'))
                             {
                                 read = streamReader.Read();
                             }
@@ -137,17 +136,13 @@ namespace Acknex
             {
                 return;
             }
-            using (var streamReader = new StreamReader(File.OpenRead(wdlFilename)))
+            var streamReader = new BinaryReader(File.OpenRead(wdlFilename), Encoding.ASCII, true);
             {
                 ParseStatements(streamReader);
             }
         }
 
-        public bool HandleCompilerDirectives(
-            ref bool canContinue,
-            List<string> tokens,
-            StreamReader streamReader,
-            Func<StreamReader, List<string>> parseNextStatement)
+        public bool HandleCompilerDirectives(ref bool canContinue, List<string> tokens)
         {
             var keyword = tokens[0];
             switch (keyword)
@@ -199,17 +194,17 @@ namespace Acknex
             return false;
         }
 
-        private void ParseStatements(StreamReader streamReader)
+        private void ParseStatements(BinaryReader streamReader)
         {
             var canContinue = true;
-            while (!streamReader.EndOfStream)
+            while (streamReader.BaseStream.Position < streamReader.BaseStream.Length)
             {
                 var tokens = ParseNextStatement(streamReader);
                 if (tokens.Count == 0)
                 {
                     continue;
                 }
-                var handledCompilerDirective = HandleCompilerDirectives(ref canContinue, tokens, streamReader, ParseNextStatement);
+                var handledCompilerDirective = HandleCompilerDirectives(ref canContinue, tokens);
                 var keyword = tokens[0];
                 if (_openObject != null && keyword == "}")
                 {
@@ -220,227 +215,227 @@ namespace Acknex
                 {
                     continue;
                 }
-                if (_openObject?.Container is Action action)
+                if (_openObject != null)
                 {
-                    action.ParseAction(tokens, streamReader, ParseNextStatement);
-                }
-                else if (_openObject?.Container is Thing || _openObject?.Container is Actor)
-                {
-                    switch (keyword)
+                    if (_openObject.Container is Thing || _openObject?.Container is Actor)
                     {
-                        case "TEXTURE":
-                            _openObject.SetString(keyword, tokens[1]);
-                            break;
-                        case "HEIGHT":
-                            _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "ATTACH":
-                            _openObject.SetString(keyword, tokens[1]);
-                            break;
-                        case "FLAGS":
-                            ParseFlags(keyword, _openObject, tokens);
-                            break;
-                        case "SPEED":
-                            _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "VSPEED":
-                            _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "ASPEED":
-                            _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "WAYPOINT":
-                            _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "DIST":
-                            _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "SKILL1":
-                        case "SKILL2":
-                        case "SKILL3":
-                        case "SKILL4":
-                        case "SKILL5":
-                        case "SKILL6":
-                        case "SKILL7":
-                        case "SKILL8":
-                            _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                    }
-                }
-                else if (_openObject?.Container is Overlay overlay)
-                {
-                    switch (keyword)
-                    {
-                        case "LAYER":
-                            overlay.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "POS_X":
-                            overlay.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "POS_Y":
-                            overlay.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "SIZE_X":
-                            overlay.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "SIZE_Y":
-                            overlay.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "FLAGS":
-                            ParseFlags(tokens[1], _openObject, tokens);
-                            break;
-                        case "OVLYS":
-                            overlay.AcknexObject.SetString(keyword, tokens[1]);
-                            break;
-                        case "MSPRITE":
-                            overlay.AcknexObject.SetString(keyword, tokens[1]);
-                            break;
-                    }
-                }
-                else if (_openObject?.Container is Synonym synonym)
-                {
-                    switch (keyword)
-                    {
-                        case "TYPE":
-                            synonym.AcknexObject.SetString(keyword, tokens[1]);
-                            break;
-                        case "DEFAULT":
-                            synonym.AcknexObject.SetString(keyword, tokens[1]);
-                            break;
-                    }
-                }
-                else if (_openObject?.Container is Skill skill)
-                {
-                    switch (keyword)
-                    {
-                        case "VAL":
-                            skill.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "MIN":
-                            skill.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "MAX":
-                            skill.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                    }
-                }
-                else if (_openObject?.Container is Region region)
-                {
-                    switch (keyword)
-                    {
-                        case "FLOOR_HGT":
-                            region.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "CEIL_HGT":
-                            region.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "AMBIENT":
-                            region.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "FLAGS":
-                            ParseFlags(keyword, _openObject, tokens);
-                            break;
-                        case "BELOW":
-                            region.AcknexObject.SetString(keyword, tokens[1]);
-                            break;
-                        case "FLOOR_TEX":
-                            region.AcknexObject.SetString(keyword, tokens[1]);
-                            break;
-                        case "CEIL_TEX":
-                            region.AcknexObject.SetString(keyword, tokens[1]);
-                            break;
-                    }
-                }
-                else if (_openObject?.Container is Wall wall)
-                {
-                    switch (keyword)
-                    {
-                        case "TEXTURE":
-                            wall.AcknexObject.SetString(keyword, tokens[1]);
-                            break;
-                        case "AMBIENT":
-                            wall.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "FLAGS":
-                            ParseFlags(keyword, _openObject, tokens);
-                            break;
-                        case "DIST":
-                            wall.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                        case "SKILL1":
-                        case "SKILL2":
-                        case "SKILL3":
-                        case "SKILL4":
-                        case "SKILL5":
-                        case "SKILL6":
-                        case "SKILL7":
-                        case "SKILL8":
-                            wall.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                            break;
-                    }
-                }
-                else if (_openObject?.Container is Texture texture)
-                {
-                    switch (keyword)
-                    {
-                        case "SCALE_XY":
-                            {
-                                texture.AcknexObject.SetFloat("SCALE_X", ParseFloat(tokens[1]));
-                                texture.AcknexObject.SetFloat("SCALE_Y", ParseFloat(tokens[2]));
+                        switch (keyword)
+                        {
+                            case "TEXTURE":
+                                _openObject.SetString(keyword, tokens[1]);
                                 break;
-                            }
-                        case "SCALE_X":
-                            {
-                                texture.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                            case "HEIGHT":
+                                _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
                                 break;
-                            }
-                        case "SCALE_Y":
-                            {
-                                texture.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                            case "ATTACH":
+                                _openObject.SetString(keyword, tokens[1]);
                                 break;
-                            }
-                        case "BMAPS":
-                            {
-                                ParseStringList(keyword, _openObject, tokens);
-                                break;
-                            }
-                        case "FLIC":
-                            {
-                                texture.AcknexObject.SetString(keyword, tokens[1]);
-                                break;
-                            }
-                        case "POS_X":
-                            {
-                                texture.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                                break;
-                            }
-                        case "POS_Y":
-                            {
-                                texture.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
-                                break;
-                            }
-                        case "FLAGS":
-                            {
+                            case "FLAGS":
                                 ParseFlags(keyword, _openObject, tokens);
                                 break;
-                            }
-                        case "DELAY":
-                        case "MIRROR":
-                            {
-                                ParseIntList(keyword, texture, tokens);
+                            case "SPEED":
+                                _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
                                 break;
-                            }
-                        case "SIDES":
-                        case "CYCLES":
-                            {
-                                texture.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                            case "VSPEED":
+                                _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
                                 break;
-                            }
-                        case "ATTACH":
-                            {
-                                texture.AcknexObject.SetString(keyword, tokens[1]);
+                            case "ASPEED":
+                                _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
                                 break;
-                            }
+                            case "WAYPOINT":
+                                _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "DIST":
+                                _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "SKILL1":
+                            case "SKILL2":
+                            case "SKILL3":
+                            case "SKILL4":
+                            case "SKILL5":
+                            case "SKILL6":
+                            case "SKILL7":
+                            case "SKILL8":
+                                _openObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                        }
+                    }
+                    else if (_openObject.Container is Overlay overlay)
+                    {
+                        switch (keyword)
+                        {
+                            case "LAYER":
+                                overlay.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "POS_X":
+                                overlay.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "POS_Y":
+                                overlay.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "SIZE_X":
+                                overlay.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "SIZE_Y":
+                                overlay.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "FLAGS":
+                                ParseFlags(tokens[1], _openObject, tokens);
+                                break;
+                            case "OVLYS":
+                                overlay.AcknexObject.SetString(keyword, tokens[1]);
+                                break;
+                            case "MSPRITE":
+                                overlay.AcknexObject.SetString(keyword, tokens[1]);
+                                break;
+                        }
+                    }
+                    else if (_openObject.Container is Synonym synonym)
+                    {
+                        switch (keyword)
+                        {
+                            case "TYPE":
+                                synonym.AcknexObject.SetString(keyword, tokens[1]);
+                                break;
+                            case "DEFAULT":
+                                synonym.AcknexObject.SetString(keyword, tokens[1]);
+                                synonym.AcknexObject.SetString("VAL", tokens[1]);
+                                break;
+                        }
+                    }
+                    else if (_openObject.Container is Skill skill)
+                    {
+                        switch (keyword)
+                        {
+                            case "VAL":
+                                skill.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "MIN":
+                                skill.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "MAX":
+                                skill.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                        }
+                    }
+                    else if (_openObject.Container is Region region)
+                    {
+                        switch (keyword)
+                        {
+                            case "FLOOR_HGT":
+                                region.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "CEIL_HGT":
+                                region.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "AMBIENT":
+                                region.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "FLAGS":
+                                ParseFlags(keyword, _openObject, tokens);
+                                break;
+                            case "BELOW":
+                                region.AcknexObject.SetString(keyword, tokens[1]);
+                                break;
+                            case "FLOOR_TEX":
+                                region.AcknexObject.SetString(keyword, tokens[1]);
+                                break;
+                            case "CEIL_TEX":
+                                region.AcknexObject.SetString(keyword, tokens[1]);
+                                break;
+                        }
+                    }
+                    else if (_openObject.Container is Wall wall)
+                    {
+                        switch (keyword)
+                        {
+                            case "TEXTURE":
+                                wall.AcknexObject.SetString(keyword, tokens[1]);
+                                break;
+                            case "AMBIENT":
+                                wall.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "FLAGS":
+                                ParseFlags(keyword, _openObject, tokens);
+                                break;
+                            case "DIST":
+                                wall.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                            case "SKILL1":
+                            case "SKILL2":
+                            case "SKILL3":
+                            case "SKILL4":
+                            case "SKILL5":
+                            case "SKILL6":
+                            case "SKILL7":
+                            case "SKILL8":
+                                wall.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                break;
+                        }
+                    }
+                    else if (_openObject.Container is Texture texture)
+                    {
+                        switch (keyword)
+                        {
+                            case "SCALE_XY":
+                                {
+                                    texture.AcknexObject.SetFloat("SCALE_X", ParseFloat(tokens[1]));
+                                    texture.AcknexObject.SetFloat("SCALE_Y", ParseFloat(tokens[2]));
+                                    break;
+                                }
+                            case "SCALE_X":
+                                {
+                                    texture.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                    break;
+                                }
+                            case "SCALE_Y":
+                                {
+                                    texture.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                    break;
+                                }
+                            case "BMAPS":
+                                {
+                                    ParseStringList(keyword, _openObject, tokens);
+                                    break;
+                                }
+                            case "FLIC":
+                                {
+                                    texture.AcknexObject.SetString(keyword, tokens[1]);
+                                    break;
+                                }
+                            case "POS_X":
+                                {
+                                    texture.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                    break;
+                                }
+                            case "POS_Y":
+                                {
+                                    texture.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                    break;
+                                }
+                            case "FLAGS":
+                                {
+                                    ParseFlags(keyword, _openObject, tokens);
+                                    break;
+                                }
+                            case "DELAY":
+                            case "MIRROR":
+                                {
+                                    ParseIntList(keyword, texture, tokens);
+                                    break;
+                                }
+                            case "SIDES":
+                            case "CYCLES":
+                                {
+                                    texture.AcknexObject.SetFloat(keyword, ParseFloat(tokens[1]));
+                                    break;
+                                }
+                            case "ATTACH":
+                                {
+                                    texture.AcknexObject.SetString(keyword, tokens[1]);
+                                    break;
+                                }
+                        }
                     }
                 }
                 else
@@ -585,7 +580,7 @@ namespace Acknex
                             _world.AddPath(tokens[1]);
                             break;
                         case "MAPFILE":
-                            _mapFiles.Add(ParseDir(tokens[1]));
+                            _mapFile = ParseDir(tokens[1]);
                             break;
                         case "INCLUDE":
                             ParseWDL(ParseDir(tokens[1]));
@@ -603,6 +598,9 @@ namespace Acknex
                         case "ACTION":
                             {
                                 _openObject = _world.CreateObjectTemplate(ObjectType.Action, tokens[1]);
+                                var action = (Action)_openObject.Container;
+                                action.PositionInFile = streamReader.BaseStream.Position;
+                                action.StreamReader = streamReader;
                                 break;
                             }
                         case "SYNONYM":
@@ -730,11 +728,11 @@ namespace Acknex
             }
         }
 
-        private List<string> ParseNextStatement(StreamReader textReader)
+        public List<string> ParseNextStatement(BinaryReader streamReader)
         {
             parseNew:
-            var tokens = ParseStatement(textReader, out var isNewLabel);
-            if (tokens.Count == 0 && !textReader.EndOfStream)
+            var tokens = ParseStatement(streamReader, out var isNewLabel);
+            if (tokens.Count == 0 && streamReader.BaseStream.Position < streamReader.BaseStream.Length)
             {
                 goto parseNew;
             }
@@ -758,9 +756,9 @@ namespace Acknex
             {
                 return;
             }
-            using (var streamReader = new StreamReader(File.OpenRead(wmpFilename)))
+            var streamReader = new BinaryReader(File.OpenRead(wmpFilename), Encoding.ASCII, true);
             {
-                while (!streamReader.EndOfStream)
+                while (streamReader.BaseStream.Position < streamReader.BaseStream.Length)
                 {
                     var tokens = ParseNextStatement(streamReader);
                     if (tokens.Count == 0)
@@ -849,10 +847,7 @@ namespace Acknex
         public void ParseInitialWDL(string wdlPath)
         {
             ParseWDL(wdlPath);
-            foreach (var mapFile in _mapFiles)
-            {
-                ParseWMP(mapFile);
-            }
+            ParseWMP(_mapFile);
         }
     }
 }
