@@ -130,5 +130,15 @@ namespace Acknex.Interfaces
         /// Sets a float property value to another IAcknexObject for all objects with the given name.
         /// </summary>
         void SetAcknexObjectAll(string objectName, string propertyName, IAcknexObject value);
+
+        /// <summary>
+        /// Register an object property descriptor.
+        /// </summary>
+        void AddObjectProperty(ObjectType objectType, PropertyType propertyType, string property);
+
+        /// <summary>
+        /// Gets the given object property type.
+        /// </summary>
+        PropertyType GetPropertyType(ObjectType objectType, string property);
     }
 }
