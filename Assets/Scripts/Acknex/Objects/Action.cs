@@ -359,7 +359,7 @@ namespace Acknex
             }
             if (float.TryParse(objectOrPropertyOrValue, NumberStyles.Any, CultureInfo.InvariantCulture, out var floatValue))
             {
-                return (floatValue.ToString(CultureInfo.InvariantCulture), PropertyType.Float, ObjectType.Internal, null);
+                return (floatValue.ToString(CultureInfo.InvariantCulture) + "f", PropertyType.Float, ObjectType.Internal, null);
             }
             if (HandleObject(objectOrPropertyOrValue, propertyAssignmentVariable, outputGetter, out var valueAndType))
             {
