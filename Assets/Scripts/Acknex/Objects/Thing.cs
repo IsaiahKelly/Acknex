@@ -334,8 +334,7 @@ namespace Acknex
             var toTarget = pos - nextPoint;
             //todo: why angle inverted?
             var angle = AngleUtils.ConvertUnityToAcknexAngle(Mathf.Atan2(toTarget.x, toTarget.y) * Mathf.Rad2Deg);
-            //todo: 0.5f to control speed, it is too high, must investigate why
-            var newPos = Vector2.MoveTowards(pos, nextPoint, speed * 0.5f * (Time.deltaTime / TimeUtils.TicksToTime(1)));
+            var newPos = Vector2.MoveTowards(pos, nextPoint, speed * (Time.deltaTime / TimeUtils.TicksToTime(1)));
             AcknexObject.SetFloat("X", newPos.x);
             AcknexObject.SetFloat("Y", newPos.y);
             AcknexObject.SetFloat("ANGLE", angle);

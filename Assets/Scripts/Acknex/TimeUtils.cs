@@ -2,7 +2,7 @@
 {
     public static class TimeUtils
     {
-        private const float OneTick = 1.0f / 60f;
+        private const float OneTick = 1.0f / 16f;
 
         public static float TicksToTime(int ticks)
         {
