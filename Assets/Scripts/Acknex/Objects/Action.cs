@@ -113,13 +113,14 @@ namespace Acknex
                         break;
                     }
                 case "ADD":
+                case "ADDT":
                 {
                     var identifier = GetNextToken();
                     var value = GetNextToken();
                     var rhs = GetValueAndType(value, "rhs");
                     var lhsGetter = GetValueAndType(identifier, "lhs", true, rhs.propertyType);
                     var lhsSetter = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
-                    HandleAdd(lhsGetter, lhsSetter, rhs);
+                    HandleAdd(lhsGetter, lhsSetter, rhs, keyword == "ADDT");
                     HandleIfStack();
                     break;
                 }
@@ -285,21 +286,13 @@ namespace Acknex
         private void HandleAdd(
             (string property, PropertyType propertyType, ObjectType objectType, string source) lhsGetter,
             (string property, PropertyType propertyType, ObjectType objectType, string source) lhsSetter,
-            (string property, PropertyType propertyType, ObjectType objectType, string source) rhs
+            (string property, PropertyType propertyType, ObjectType objectType, string source) rhs,
+            bool perTick
             )
         {
             switch (lhsGetter.objectType)
             {
                 case ObjectType.Skill:
-                //{
-                //    switch (lhsGetter.propertyType)
-                //    {
-                //        case PropertyType.Float:
-                //            CodeStringBuilder.Append($"{lhsGetter.source}.SetFloat(\"VAL\"").Append(",").Append(lhsSetter.property).Append(" + ").Append(rhs.property).AppendLine(");");
-                //            break;
-                //    }
-                //    break;
-                //}
                 case ObjectType.Action:
                 case ObjectType.Actor:
                 case ObjectType.Thing:
@@ -313,7 +306,14 @@ namespace Acknex
                     switch (lhsGetter.propertyType)
                     {
                         case PropertyType.Float:
-                            CodeStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsSetter.property).Append(",").Append(lhsGetter.property).Append(" + ").Append(rhs.property).AppendLine(");");
+                            if (perTick)
+                            {
+                                CodeStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsSetter.property).Append(",").Append(lhsGetter.property).Append(" + (").Append(rhs.property).AppendLine(" * TimeUtils.TicksToTime(1)));");
+                            }
+                            else
+                            {
+                                CodeStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsSetter.property).Append(",").Append(lhsGetter.property).Append(" + ").Append(rhs.property).AppendLine(");");
+                            }
                             break;
                     }
                     break;
