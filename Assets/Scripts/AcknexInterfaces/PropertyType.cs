@@ -14,6 +14,10 @@
         ObjectReferenceList,
         FloatList,
         ScaleXY,
-        Unknown
+        Unknown,
+        Function,
+        Operator,
+        LeftParen,
+        RightParen
     }
 }

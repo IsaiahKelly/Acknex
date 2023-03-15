@@ -159,6 +159,9 @@ namespace Acknex
             TriggerEventConditional(AcknexObject, "IF_F7", Input.GetKeyDown(KeyCode.F7));
             TriggerEventConditional(AcknexObject, "IF_F8", Input.GetKeyDown(KeyCode.F8));
             TriggerEventConditional(AcknexObject, "IF_F9", Input.GetKeyDown(KeyCode.F9));
+            TriggerEventConditional(AcknexObject, "IF_F10", Input.GetKeyDown(KeyCode.F10));
+            TriggerEventConditional(AcknexObject, "IF_F11", Input.GetKeyDown(KeyCode.F11));
+            TriggerEventConditional(AcknexObject, "IF_F12", Input.GetKeyDown(KeyCode.F12));
             TriggerEventConditional(AcknexObject, "IF_HOME", Input.GetKeyDown(KeyCode.Home));
             TriggerEventConditional(AcknexObject, "IF_INS", Input.GetKeyDown(KeyCode.Insert));
             TriggerEventConditional(AcknexObject, "IF_LEFT", Input.GetMouseButtonDown(0));

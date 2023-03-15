@@ -7,7 +7,7 @@ namespace Acknex
     {
         public override IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallbackActor);
 
-        private  static IAcknexObject GetDefinitionCallbackActor(string name)
+        private static IAcknexObject GetDefinitionCallbackActor(string name)
         {
             if (World.Instance.ActorsByName.TryGetValue(name, out var definition))
             {

@@ -5,7 +5,7 @@
         _MainTex ("Texture", 2D) = "white" {}
         _BMAPS("_BMAPS", 2DArray) = "white" {}
         _SIDES("_SIDES", Int) = 1
-        _SOFFSETY("_OFFSETY", Float) = 0.2
+        _SKY_OFFS_Y("_OFFSETY", Float) = 0.2
     }
     SubShader
     {
@@ -43,7 +43,7 @@
             float4 _BMAPS_TexelSize;
             int _SIDES;
             float _CAMERA_PITCH;
-            float _SOFFSETY;
+            float _SKY_OFFS_Y;
 
             v2f vert (appdata v)
             {
@@ -63,7 +63,7 @@
                 float u = fmod(yaw, anglesPerSide);
                 u /= anglesPerSide;
                 float v = (i.screenPosition.y / i.screenPosition.w) + (_CAMERA_PITCH * 0.02);
-                v -= _SOFFSETY;
+                v -= _SKY_OFFS_Y;
                 v = clamp(v, _BMAPS_TexelSize.y, 1.0 - _BMAPS_TexelSize.y);
                 int textureIndex = yaw == 0.0 ? 0.0 : yaw / anglesPerSide;
                 fixed4 col = UNITY_SAMPLE_TEX2DARRAY(_BMAPS, float3(u, v, textureIndex));

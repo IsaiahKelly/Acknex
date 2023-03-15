@@ -40,7 +40,7 @@ namespace Acknex
                 playerRotation * Vector3.up * World.Instance.GetSkillValue("PLAYER_VZ") +
                 playerRotation * Vector3.forward * World.Instance.GetSkillValue("PLAYER_VY") +
                 playerRotation * Vector3.right * World.Instance.GetSkillValue("PLAYER_VX");
-            var moveAngle = AngleUtils.ConvertUnityToAcknexAngle(Quaternion.LookRotation(playerMove).eulerAngles.y);
+            var moveAngle = playerMove.magnitude > 0f ? AngleUtils.ConvertUnityToAcknexAngle(Quaternion.LookRotation(playerMove).eulerAngles.y) : 0f;
             var deltaAngle = moveAngle - World.Instance.GetSkillValue("MOVE_ANGLE");
             World.Instance.UpdateSkillValue("MOVE_ANGLE", moveAngle);
             World.Instance.UpdateSkillValue("DELTA_ANGLE", deltaAngle);
@@ -63,8 +63,25 @@ namespace Acknex
         {
             var playerRegion = AcknexObject.GetInteger("REGION");
             Region.Locate(AcknexObject, ref playerRegion, playerX, playerY, ref playerZ, false);
-            World.Instance.SetSynonymObject("HERE", World.Instance.RegionsByIndex[playerRegion].AcknexObject);
+            var playerRegionObject = GetRegion(playerRegion);
+            if (playerRegionObject != null)
+            {
+                World.Instance.SetSynonymObject("HERE", playerRegionObject);
+                World.Instance.UpdateSkillValue("FLOOR_HGT", playerRegionObject.GetFloat("FLOOR_HGT"));
+                World.Instance.UpdateSkillValue("CEIL_HGT", playerRegionObject.GetFloat("CEIL_HGT"));
+            }
             AcknexObject.SetInteger("REGION", playerRegion);
+        }
+
+        public IAcknexObject GetRegion(int? actualPlayerRegion)
+        {
+            var playerRegion = actualPlayerRegion ?? AcknexObject.GetInteger("REGION");
+            if (playerRegion >= World.Instance.RegionsByIndex.Count)
+            {
+                return null;
+            }
+            var playerRegionObject = World.Instance.RegionsByIndex[playerRegion].AcknexObject;
+            return playerRegionObject;
         }
 
         public void Enable()

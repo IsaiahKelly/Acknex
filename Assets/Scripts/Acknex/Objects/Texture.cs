@@ -33,7 +33,7 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void Enable()

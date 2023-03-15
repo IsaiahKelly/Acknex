@@ -657,7 +657,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WDLPath: Assets\Data\Contato.wdl
   CanvasWidthRatio: 1.6
-  WMPContainsRegionsByName: 1
+  WMPContainsRegionsByName: 0
   UseWDLEngine: 0
   WallsAndRegionsLayer:
     m_LayerIndex: 8

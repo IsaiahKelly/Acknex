@@ -28,10 +28,15 @@ namespace Acknex
                 indices = new List<int>();
                 allTriangles[texture] = indices;
             }
-            indices.Add(baseIndex + a);
-            indices.Add(baseIndex + b);
-            indices.Add(baseIndex + c);
+
             indices.Add(baseIndex + d);
+            indices.Add(baseIndex + c);
+            indices.Add(baseIndex + b);
+            indices.Add(baseIndex + a);
+            //indices.Add(baseIndex + a);
+            //indices.Add(baseIndex + b);
+            //indices.Add(baseIndex + c);
+            //indices.Add(baseIndex + d);
         }
 
         public static Mesh CreateQuadMesh(bool pivotAtLeft = false)

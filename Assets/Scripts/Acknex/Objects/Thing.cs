@@ -110,7 +110,7 @@ namespace Acknex
         {
             var cycles = Mathf.Max(1, texture.AcknexObject.GetInteger("CYCLES"));
             var sides = Mathf.Max(1, texture.AcknexObject.GetInteger("SIDES"));
-            var mirror = texture.AcknexObject.GetObject<List<int>>("MIRROR");
+            var mirror = texture.AcknexObject.GetObject<List<float>>("MIRROR");
             var cycle = 0;
             while (true)
             {
@@ -122,7 +122,7 @@ namespace Acknex
             }
         }
 
-        private void UpdateAngleFrameScale(Texture texture, MeshRenderer meshRenderer, int cycles, int sides, int animFrame, List<int> mirror)
+        private void UpdateAngleFrameScale(Texture texture, MeshRenderer meshRenderer, int cycles, int sides, int animFrame, List<float> mirror)
         {
             var halfStep = 180f / sides;
             var camera = CameraExtensions.GetLastActiveCamera();
@@ -244,13 +244,13 @@ namespace Acknex
             //todo: better way to do that?
             if (TextureObject != _lastTextureObject)
             {
-                var delay = TextureObject.AcknexObject.GetObject<List<int>>("DELAY");
+                var delay = TextureObject.AcknexObject.GetObject<List<float>>("DELAY");
                 if (delay != null)
                 {
                     _textureObjectDelay = new List<WaitForSeconds>(delay.Count);
                     for (var i = 0; i < delay.Count; i++)
                     {
-                        _textureObjectDelay.Add(new WaitForSeconds(TimeUtils.TicksToTime(delay[i])));
+                        _textureObjectDelay.Add(new WaitForSeconds(TimeUtils.TicksToTime((int)delay[i])));
                     }
                 }
                 _lastTextureObject = TextureObject;
@@ -300,7 +300,7 @@ namespace Acknex
                 {
                     if (Vector2.Distance(playerPos, pos) <= dist)
                     {
-                        World.Instance.SetSynonymObject("THERE", Player.Instance.AcknexObject);
+                        World.Instance.SetSynonymObject("THERE", GetRegion());
                         World.Instance.TriggerEvent(AcknexObject, "IF_NEAR");
                         _near.Add(Player.Instance.AcknexObject);
                     }
@@ -309,13 +309,21 @@ namespace Acknex
                 {
                     if (Vector2.Distance(playerPos, pos) > dist)
                     {
-                        World.Instance.SetSynonymObject("THERE", Player.Instance.AcknexObject);
+                        World.Instance.SetSynonymObject("THERE", GetRegion());
                         World.Instance.TriggerEvent(AcknexObject, "IF_FAR");
                         _near.Remove(Player.Instance.AcknexObject);
                     }
                 }
             }
         }
+
+        public IAcknexObject GetRegion()
+        {
+            var region = AcknexObject.GetInteger("REGION");
+            var regionObject = World.Instance.RegionsByIndex[region].AcknexObject;
+            return regionObject;
+        }
+
 
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)
         {

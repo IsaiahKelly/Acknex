@@ -99,6 +99,9 @@ namespace Acknex
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_F7");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_F8");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_F9");
+            AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_F10");
+            AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_F11");
+            AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_F12");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_HOME");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_INS");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_LEFT");
@@ -114,7 +117,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_CUR");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_CUL");
             AddObjectProperty(ObjectType.World, PropertyType.Float, "AMBIENT");
-            AddObjectProperty(ObjectType.World, PropertyType.Float, "LIGHT_ANGLE");
+            AddObjectProperty(ObjectType.World, PropertyType.Float, "LIGHT_ANGLE");           
 
 
             AddObjectProperty(ObjectType.Actor, PropertyType.String, "NAME");
@@ -148,6 +151,8 @@ namespace Acknex
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "Z");
             AddObjectProperty(ObjectType.Actor, PropertyType.ObjectReference, "REGION");
             AddObjectProperty(ObjectType.Actor, PropertyType.String, "TARGET");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FLOOR_HGT");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "CEIL_HGT");
 
 
             AddObjectProperty(ObjectType.Thing, PropertyType.String, "NAME");
@@ -181,7 +186,8 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "Z");
             AddObjectProperty(ObjectType.Thing, PropertyType.ObjectReference, "REGION");
             AddObjectProperty(ObjectType.Thing, PropertyType.String, "TARGET");
-
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "FLOOR_HGT");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "CEIL_HGT");
 
 
             AddObjectProperty(ObjectType.Overlay, PropertyType.String, "NAME");

@@ -214,6 +214,9 @@ namespace Acknex
             CreateSkill("KEY_CUR", 0, 0, 1);
             CreateSkill("KEY_CUL", 0, 0, 1);
             CreateSkill("KEY_SHIFT", 0, 0, 1);
+
+            CreateSkill("FLOOR_HGT", 0, 0, 0);
+            CreateSkill("CEIL_HGT", 0, 0, 0);
         }
 
         private Vector3 _lastMousePosition;

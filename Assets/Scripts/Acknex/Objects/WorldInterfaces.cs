@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -42,35 +43,35 @@ namespace Acknex
                 switch (value)
                 {
                     case Resolution.Res320x200:
-                    {
-                        referenceResolution.x = 320f;
-                        referenceResolution.y = 200f;
-                        break;
-                    }
+                        {
+                            referenceResolution.x = 320f;
+                            referenceResolution.y = 200f;
+                            break;
+                        }
                     case Resolution.ResX320x240:
-                    {
-                        referenceResolution.x = 320f;
-                        referenceResolution.y = 240f;
-                        break;
-                    }
+                        {
+                            referenceResolution.x = 320f;
+                            referenceResolution.y = 240f;
+                            break;
+                        }
                     case Resolution.ResX320x400:
-                    {
-                        referenceResolution.x = 320f;
-                        referenceResolution.y = 400f;
-                        break;
-                    }
+                        {
+                            referenceResolution.x = 320f;
+                            referenceResolution.y = 400f;
+                            break;
+                        }
                     case Resolution.ResS640x480:
-                    {
-                        referenceResolution.x = 640f;
-                        referenceResolution.y = 480f;
-                        break;
-                    }
+                        {
+                            referenceResolution.x = 640f;
+                            referenceResolution.y = 480f;
+                            break;
+                        }
                     case Resolution.ResS800x600:
-                    {
-                        referenceResolution.x = 800f;
-                        referenceResolution.y = 600f;
-                        break;
-                    }
+                        {
+                            referenceResolution.x = 800f;
+                            referenceResolution.y = 600f;
+                            break;
+                        }
                 }
                 UpdateSkillValue("SCREEN_WIDTH", referenceResolution.x);
                 UpdateSkillValue("SCREEN_HGT", referenceResolution.y);
@@ -275,17 +276,91 @@ namespace Acknex
                         return overlay.AcknexObject;
                     }
                 case ObjectType.Flic:
-                {
-                    if (FlicsByName.ContainsKey(name))
                     {
-                        throw new Exception("Flic [" + name + "] already registered.");
+                        if (FlicsByName.ContainsKey(name))
+                        {
+                            throw new Exception("Flic [" + name + "] already registered.");
+                        }
+                        var flic = new Flic();
+                        flic.AcknexObject.Type = type;
+                        flic.AcknexObject.SetString("NAME", name);
+                        FlicsByName.Add(name, flic);
+                        return flic.AcknexObject;
                     }
-                    var flic = new Flic();
-                    flic.AcknexObject.Type = type;
-                    flic.AcknexObject.SetString("NAME", name);
-                    FlicsByName.Add(name, flic);
-                    return flic.AcknexObject;
-                }
+                case ObjectType.Text:
+                    {
+                        if (TextsByName.ContainsKey(name))
+                        {
+                            throw new Exception("Text [" + name + "] already registered.");
+                        }
+                        var text = new Text();
+                        text.AcknexObject.Type = type;
+                        text.AcknexObject.SetString("NAME", name);
+                        TextsByName.Add(name, text);
+                        return text.AcknexObject;
+                    }
+                case ObjectType.Font:
+                    {
+                        if (FontsByName.ContainsKey(name))
+                        {
+                            throw new Exception("Font [" + name + "] already registered.");
+                        }
+                        var font = new Font();
+                        font.AcknexObject.Type = type;
+                        font.AcknexObject.SetString("NAME", name);
+                        FontsByName.Add(name, font);
+                        return font.AcknexObject;
+                    }
+                case ObjectType.Sound:
+                    {
+                        if (SoundsByName.ContainsKey(name))
+                        {
+                            throw new Exception("Sound [" + name + "] already registered.");
+                        }
+                        var sound = new Sound();
+                        sound.AcknexObject.Type = type;
+                        sound.AcknexObject.SetString("NAME", name);
+                        SoundsByName.Add(name, sound);
+                        return sound.AcknexObject;
+                    }
+                case ObjectType.Model:
+                    {
+                        if (ModelsByName.ContainsKey(name))
+                        {
+                            throw new Exception("Model [" + name + "] already registered.");
+                        }
+                        var model = CreateModel(name, true);
+                        model.AcknexObject.Type = type;
+                        model.AcknexObject.SetString("NAME", name);
+                        model.Disable();
+                        ModelsByName.Add(name, model);
+                        return model.AcknexObject;
+                    }
+                case ObjectType.Palette:
+                    {
+                        if (PalettesByName.ContainsKey(name))
+                        {
+                            throw new Exception("Palette [" + name + "] already registered.");
+                        }
+                        var palette = new Palette();
+                        palette.AcknexObject.Type = type;
+                        palette.AcknexObject.SetString("NAME", name);
+                        PalettesByName.Add(name, palette);
+                        return palette.AcknexObject;
+                    }
+                case ObjectType.Panel:
+                    {
+                        if (PanelsByName.ContainsKey(name))
+                        {
+                            throw new Exception("Panel [" + name + "] already registered.");
+                        }
+                        var panel = CreatePanel(name, true);
+                        panel.AcknexObject.Type = type;
+                        panel.AcknexObject.SetString("NAME", name);
+                        panel.Disable();
+                        PanelsByName.Add(name, panel);
+                        return panel.AcknexObject;
+                    }
                 case ObjectType.World:
                     throw new Exception("It is not possible to create a new world.");
             }
@@ -307,7 +382,7 @@ namespace Acknex
                 case ObjectType.Skill:
                     return SkillsByName.TryGetValue(name, out var skill) ? skill.AcknexObject : null;
                 case ObjectType.Synonym:
-                    return GetSynonymObject(name);    
+                    return GetSynonymObject(name);
                 //return SynonymsByName.TryGetValue(name, out var synonym) ? synonym.AcknexObject : null;
                 case ObjectType.Texture:
                     return TexturesByName.TryGetValue(name, out var texture) ? texture.AcknexObject : null;
@@ -344,8 +419,9 @@ namespace Acknex
                 action.Value.WriteFooter();
                 sourceStringBuilder.Append(action.Value.CodeStringBuilder);
             }
-            File.WriteAllText(Application.temporaryCachePath + "/source.cs", sourceStringBuilder.ToString());
-            Debug.Log(Application.temporaryCachePath + "/source.cs");
+            var sourcePath = Application.temporaryCachePath + "/source.cs";
+            File.WriteAllText(sourcePath, sourceStringBuilder.ToString());
+            Process.Start(sourcePath);
         }
 
         public void AddVertex(float x, float y, float z)
@@ -440,7 +516,7 @@ namespace Acknex
             if (acknexObject.Type == ObjectType.Bitmap)
             {
                 acknexObject.Container.UpdateObject();
-            } 
+            }
         }
 
         public void AddWayPoint(IAcknexObject way, float x, float y)
@@ -448,7 +524,7 @@ namespace Acknex
             var container = way.Container as Way;
             if (container != null)
             {
-                container.Points.Add(new Vector2(x,y));
+                container.Points.Add(new Vector2(x, y));
             }
         }
 
@@ -468,12 +544,12 @@ namespace Acknex
 
         public void WaitForCycles(ActionIdentifier identifier, int cycles)
         {
-           
+
         }
 
         public void WaitForTicks(ActionIdentifier identifier, int ticks)
         {
-            
+
         }
     }
 }

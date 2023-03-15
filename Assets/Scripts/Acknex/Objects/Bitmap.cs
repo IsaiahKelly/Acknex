@@ -134,6 +134,7 @@ namespace Acknex
                         _bmaps.Apply(true, false);
                     }
                     material.SetTexture("_BMAPS", _bmaps);
+                    //todo: SKY_OFFS_Y
                 }
             }
             var x0 = mirror ? x + width : x;

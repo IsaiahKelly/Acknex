@@ -174,7 +174,9 @@ namespace Acknex
             mesh.subMeshCount = allTriangles.Count;
             foreach (var kvp in allTriangles)
             {
-                mesh.SetTriangles(kvp.Value, kvp.Key);
+                var tris = kvp.Value;
+                tris.Reverse();
+                mesh.SetTriangles(tris, kvp.Key);
             }
 
             mesh.RecalculateNormals();
@@ -284,6 +286,10 @@ namespace Acknex
         //todo: replace MaxHeightCheck
         public static void Locate(IAcknexObject source, ref int regionIndex, float thingX, float thingY, ref float thingZ, bool onGround = false)
         {
+            if (regionIndex >= World.Instance.RegionsByIndex.Count)
+            {
+                return;
+            }
             var currentRegion = World.Instance.RegionsByIndex[regionIndex];
             var point = new Vector3(thingX, currentRegion.AcknexObject.GetFloat("CEIL_HGT"), thingY);
             if (Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))

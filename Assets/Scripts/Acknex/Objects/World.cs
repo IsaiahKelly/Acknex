@@ -53,6 +53,11 @@ namespace Acknex
         public readonly Dictionary<string, Texture2D> TextureCache = new Dictionary<string, Texture2D>();
         public readonly Dictionary<string, AcknexString> StringsByName = new Dictionary<string, AcknexString>();
         public readonly Dictionary<string, Text> TextsByName = new Dictionary<string, Text>();
+        public readonly Dictionary<string, Panel> PanelsByName = new Dictionary<string, Panel>();
+        public readonly Dictionary<string, Font> FontsByName = new Dictionary<string, Font>();
+        public readonly Dictionary<string, Palette> PalettesByName = new Dictionary<string, Palette>();
+        public readonly Dictionary<string, Sound> SoundsByName = new Dictionary<string, Sound>();
+        public readonly Dictionary<string, Model> ModelsByName = new Dictionary<string, Model>();
 
         public readonly List<string> Paths = new List<string>();
 
@@ -99,6 +104,34 @@ namespace Acknex
         private void Update()
         {
             UpdateObject();
+        }
+
+        //todo: generic method?
+        public Model CreateModel(string name, bool definition = false)
+        {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            var newGameObject = new GameObject(name);
+            newGameObject.transform.SetParent(transform, false);
+            var newModel = newGameObject.AddComponent<Model>();
+            newModel.AcknexObject.SetString("NAME", name);
+            return newModel;
+        }
+
+        //todo: generic method?
+        public Panel CreatePanel(string name, bool definition = false)
+        {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            var newGameObject = new GameObject(name);
+            newGameObject.transform.SetParent(transform, false);
+            var newPanel = newGameObject.AddComponent<Panel>();
+            newPanel.AcknexObject.SetString("NAME", name);
+            return newPanel;
         }
 
         //todo: generic method?

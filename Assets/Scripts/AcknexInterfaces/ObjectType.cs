@@ -25,6 +25,9 @@
         Flic,
         Text,
         Internal,
-        Rule
+        Rule,
+        Palette,
+        Font,
+        Model
     }
 }
