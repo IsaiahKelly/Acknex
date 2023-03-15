@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Acknex.Interfaces;
+using UnityEngine;
 
 namespace Acknex
 {
@@ -142,6 +143,7 @@ namespace Acknex
             CreateSkill("FORCE_AHEAD", 0, 0, 0);
             CreateSkill("FORCE_STRAFE", 0, 0, 0);
             CreateSkill("FORCE_ROT", 0, 0, 0);
+            CreateSkill("FORCE_TILT", 0, 0, 0);
             CreateSkill("FORCE_UP", 0, 0, 0);
 
             //CreateSkill("KEY_ANYKEY", Input.anyKeyDown);
@@ -244,7 +246,8 @@ namespace Acknex
             UpdateSkillValue("FORCE_AHEAD", Input.GetAxis("Vertical"));
             UpdateSkillValue("FORCE_STRAFE", Input.GetAxis("Horizontal"));
             UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X"));
-            UpdateSkillValue("FORCE_UP", Input.GetAxis("Mouse Y"));
+            UpdateSkillValue("FORCE_TILT", Input.GetAxis("Mouse Y"));
+            //TODO: FORCE_UP
 
             UpdateSkillValue("RANDOM", Random.value);
             _lastMousePosition = mousePosition;
@@ -255,14 +258,14 @@ namespace Acknex
         {
             if (SkillsByName.TryGetValue(name, out var skill))
             {
-                //if (skill.AcknexObject.TryGetNumber("MIN", out var min))
-                //{
-                //    value = Mathf.Max(min, value);
-                //}
-                //if (skill.AcknexObject.TryGetNumber("MAX", out var max))
-                //{
-                //    value = Mathf.Min(max, value);
-                //}
+                if (skill.AcknexObject.TryGetFloat("MIN", out var min))
+                {
+                    value = Mathf.Max(min, value);
+                }
+                if (skill.AcknexObject.TryGetFloat("MAX", out var max))
+                {
+                    value = Mathf.Min(max, value);
+                }
                 skill.AcknexObject.SetFloat("VAL", value);
             }
             else

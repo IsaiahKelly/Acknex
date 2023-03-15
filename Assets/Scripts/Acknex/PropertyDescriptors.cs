@@ -117,6 +117,9 @@ namespace Acknex
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_CUD");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_CUR");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_CUL");
+            AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_APO");
+            AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_MINUS");
+            AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_PLUS");
             AddObjectProperty(ObjectType.World, PropertyType.Float, "AMBIENT");
             AddObjectProperty(ObjectType.World, PropertyType.Float, "LIGHT_ANGLE");           
 
@@ -163,6 +166,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FLOOR_HGT");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "CEIL_HGT");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "DISTANCE");
+            AddObjectProperty(ObjectType.Actor, PropertyType.ObjectReference, "GENIUS");
 
 
             AddObjectProperty(ObjectType.Thing, PropertyType.String, "NAME");
@@ -207,6 +211,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "FLOOR_HGT");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "CEIL_HGT");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "DISTANCE");
+            AddObjectProperty(ObjectType.Thing, PropertyType.ObjectReference, "GENIUS");
 
 
             AddObjectProperty(ObjectType.Overlay, PropertyType.String, "NAME");
@@ -264,6 +269,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "IF_LEAVE");
             AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "IF_DIVE");
             AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "IF_ARISE");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "GENIUS");
 
 
             AddObjectProperty(ObjectType.Wall, PropertyType.String, "NAME");
@@ -290,6 +296,8 @@ namespace Acknex
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "OFFSET_X");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "OFFSET_Y");
             AddObjectProperty(ObjectType.Wall, PropertyType.ActionReference, "EACH_TICK");
+            AddObjectProperty(ObjectType.Wall, PropertyType.ActionReference, "IF_NEAR");
+            AddObjectProperty(ObjectType.Wall, PropertyType.ObjectReference, "GENIUS");
 
 
             AddObjectProperty(ObjectType.Texture, PropertyType.String, "NAME");

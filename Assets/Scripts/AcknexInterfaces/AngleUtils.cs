@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Acknex
+namespace Acknex.Interfaces
 {
     public static class AngleUtils
     {

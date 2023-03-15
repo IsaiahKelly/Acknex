@@ -411,6 +411,10 @@ namespace Acknex
         {
             BuildRegionsAndWalls(_regionWalls, _contourVertices);
             var sourceStringBuilder = new StringBuilder();
+            sourceStringBuilder.AppendLine("using Acknex;");
+            sourceStringBuilder.AppendLine("using Acknex.Interfaces;");
+            sourceStringBuilder.AppendLine("using System.Collections;");
+            sourceStringBuilder.AppendLine("using UnityEngine;");
             sourceStringBuilder.AppendLine("public class Game {");
             foreach (var action in ActionsByName)
             {
@@ -419,6 +423,7 @@ namespace Acknex
                 action.Value.WriteFooter();
                 sourceStringBuilder.Append(action.Value.CodeStringBuilder);
             }
+            sourceStringBuilder.AppendLine("}");
             var sourcePath = Application.temporaryCachePath + "/source.cs";
             File.WriteAllText(sourcePath, sourceStringBuilder.ToString());
             Process.Start(sourcePath);

@@ -212,6 +212,9 @@ namespace Acknex
                                 if (next != ";")
                                 {
                                     CodeStringBuilder.Append("\"").Append(next).AppendLine("\");");
+                                } else
+                                {
+                                    CodeStringBuilder.AppendLine(");");
                                 }
                                 HandleIfStack();
                                 ReadUntilSemiColon(tokens);
@@ -280,7 +283,36 @@ namespace Acknex
 
         private string HandleFunction(string property)
         {
-            return property;
+            switch (property)
+            {
+                case "SIN":
+                    return "Mathf.Sin";
+                case "COS":
+                    return "Mathf.Cos";
+                case "TAN":
+                    return "Mathf.Tan";
+                case "ASIN":
+                    return "Mathf.Asin";
+                case "ACOS":
+                    return "Mathf.Acos";
+                case "LOG":
+                    return "MathExtension.Log";
+                case "LOG10":
+                    return "Mathf.Log10";
+                case "LOG2":
+                    return "MathExtension.Log2";
+                case "SQRT":
+                    return "Mathf.Sqrt";
+                case "SIGN":
+                    return "Mathf.Sign";
+                case "ABS":
+                    return "Mathf.Abs";
+                case "INT":
+                    return "Mathf.RoundToInt";
+                case "EXP":
+                    return "Mathf.Exp";
+            }
+            return "/*UNKNOWN*/";
         }
 
         private string GetValue(IEnumerator<string> tokens, TextParser textParser, string existingValue = null)
@@ -310,7 +342,7 @@ namespace Acknex
             switch (lhs.objectType)
             {
                 case ObjectType.Synonym:
-                    CodeStringBuilder.AppendLine($"{lhs.source}.SetSynonymObject({lhs.property},{rhs.property});");
+                    CodeStringBuilder.AppendLine($"World.Instance.SetSynonymObject({lhs.property},{rhs.property});");
                     break;
                 case ObjectType.Skill:
                 case ObjectType.Action:
@@ -533,7 +565,7 @@ namespace Acknex
             {
                 if (outputGetter)
                 {
-                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.GetString(\"").Append(objectName).AppendLine("\");");
+                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.AcknexObject.GetAcknexObject(\"").Append(objectName).AppendLine("\");");
                 }
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.String, "World.Instance.AcknexObject");
                 return true;
@@ -551,7 +583,7 @@ namespace Acknex
             {
                 if (outputGetter)
                 {
-                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.GetAcknexObject(ObjectType.Action,\"").Append(objectName).AppendLine("\");");
+                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/\"").Append(objectName).AppendLine("\");");
                 }
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Action, "World.Instance.AcknexObject");
                 return true;
@@ -560,7 +592,7 @@ namespace Acknex
             {
                 if (outputGetter)
                 {
-                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.GetAcknexObject(ObjectType.Actor,\"").Append(objectName).AppendLine("\");");
+                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/\"").Append(objectName).AppendLine("\");");
                 }
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Actor, "World.Instance.AcknexObject");
                 return true;
@@ -569,7 +601,7 @@ namespace Acknex
             {
                 if (outputGetter)
                 {
-                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.GetAcknexObject(ObjectType.Thing,\"").Append(objectName).AppendLine("\");");
+                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/\"").Append(objectName).AppendLine("\");");
                 }
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Thing, "World.Instance.AcknexObject");
                 return true;
@@ -578,7 +610,7 @@ namespace Acknex
             {
                 if (outputGetter)
                 {
-                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.GetAcknexObject(ObjectType.Texture,\"").Append(objectName).AppendLine("\");");
+                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/\"").Append(objectName).AppendLine("\");");
                 }
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Texture, "World.Instance.AcknexObject");
                 return true;
@@ -587,7 +619,7 @@ namespace Acknex
             {
                 if (outputGetter)
                 {
-                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.GetAcknexObject(ObjectType.Wall,\"").Append(objectName).AppendLine("\");");
+                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.AcknexObject.GetAcknexObject(/*ObjectType.Wall,*/\"").Append(objectName).AppendLine("\");");
                 }
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Wall, "World.Instance.AcknexObject");
                 return true;
@@ -596,7 +628,7 @@ namespace Acknex
             {
                 if (outputGetter)
                 {
-                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.GetAcknexObject(ObjectType.Region,\"").Append(objectName).AppendLine("\");");
+                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/\"").Append(objectName).AppendLine("\");");
                 }
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Region, "World.Instance.AcknexObject");
                 return true;
@@ -605,7 +637,7 @@ namespace Acknex
             {
                 if (outputGetter)
                 {
-                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.GetAcknexObject(ObjectType.Skill,\"").Append(objectName).AppendLine("\");");
+                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/\"").Append(objectName).AppendLine("\");");
                 }
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Skill, "World.Instance.AcknexObject");
                 return true;
@@ -614,7 +646,7 @@ namespace Acknex
             {
                 if (outputGetter)
                 {
-                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.GetAcknexObject(ObjectType.Text,\"").Append(objectName).AppendLine("\");");
+                    CodeStringBuilder.Append($"var {assignmentVariable} = World.Instance.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/\"").Append(objectName).AppendLine("\");");
                 }
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Text, "World.Instance.AcknexObject");
                 return true;
@@ -681,7 +713,7 @@ namespace Acknex
                         break;
                     case PropertyType.Null:
                     case PropertyType.String:
-                        CodeStringBuilder.Append($"var temp_{_varCounter} =").Append($"{assignmentVariable}.GetString(\"").Append(property).AppendLine("\");");
+                        CodeStringBuilder.Append($"var temp_{_varCounter} =").Append($"{assignmentVariable}.GetAcknexObject(\"").Append(property).AppendLine("\");");
                         break;
                     case PropertyType.ObjectReference:
                     case PropertyType.ActionReference:

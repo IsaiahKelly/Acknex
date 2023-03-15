@@ -247,10 +247,13 @@ namespace Acknex
                 return existingSkill;
             }
             var skill = new Skill();
-            skill.AcknexObject.SetFloat("MIN", min);
-            skill.AcknexObject.SetFloat("MAX", max);
-            skill.AcknexObject.SetFloat("VAL", value);
+            if (min != 0f || max != 0f)
+            {
+                skill.AcknexObject.SetFloat("MIN", min);
+                skill.AcknexObject.SetFloat("MAX", max);
+            }
             SkillsByName.Add(name, skill);
+            UpdateSkillValue(name, value);
             return skill;
         }
 
@@ -495,6 +498,16 @@ namespace Acknex
                     item.AcknexObject.SetAcknexObject(propertyName, value);
                 }
             }
+        }
+
+        public void Shoot(string objectName = null)
+        {
+            
+        }
+
+        public void ReadInkey(string stringName)
+        {
+            
         }
     }
 }

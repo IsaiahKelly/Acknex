@@ -140,5 +140,15 @@ namespace Acknex.Interfaces
         /// Gets the given object property type.
         /// </summary>
         PropertyType GetPropertyType(ObjectType objectType, string property);
+
+        /// <summary>
+        /// Shoots the given object.
+        /// </summary>
+        void Shoot(string objectName = null);
+
+        /// <summary>
+        /// Stores the keyboard input into the given string object.
+        /// </summary>
+        void ReadInkey(string stringName);
     }
 }
