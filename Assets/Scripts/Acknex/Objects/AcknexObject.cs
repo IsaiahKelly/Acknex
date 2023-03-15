@@ -17,23 +17,23 @@ namespace Acknex
 
         //private HashSet<string> Flags => GetObject<HashSet<string>>("FLAGS", true);
 
-        private HashSet<string> InstanceFlags => GetObject<HashSet<string>>("FLAGS", false);
+        //private HashSet<string> InstanceFlags => GetObject<HashSet<string>>("FLAGS", false);
 
         public void AddFlag(string flag)
         {
-            InstanceFlags.Add(flag);
+            NumberProperties[flag] = 1;
             IsDirty = true;
         }
 
         public void RemoveFlag(string flag)
         {
-            InstanceFlags.Remove(flag);
+            NumberProperties.Remove(flag);
             IsDirty = true;
         }
 
         public bool ContainsFlag(string flag, bool fromTemplate = true)
         {
-            if (InstanceFlags.Contains(flag))
+            if (NumberProperties.ContainsKey(flag))
             {
                 return true;
             }
