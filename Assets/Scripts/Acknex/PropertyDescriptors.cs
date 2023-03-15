@@ -11,6 +11,7 @@ namespace Acknex
 
         public void CreatePropertyDescriptors()
         {
+            AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_LOAD");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_START");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "EACH_TICK.1");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "EACH_TICK.2");
@@ -234,6 +235,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "CEIL_OFFS_Y");
             AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "EACH_TICK");
             AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "IF_ENTER");
+            AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "IF_LEAVE");
             AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "IF_DIVE");
             AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "IF_ARISE");
 

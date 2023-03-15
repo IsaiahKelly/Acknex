@@ -286,7 +286,7 @@ namespace Acknex
         //todo: replace MaxHeightCheck
         public static void Locate(IAcknexObject source, ref int regionIndex, float thingX, float thingY, ref float thingZ, bool onGround = false)
         {
-            if (regionIndex >= World.Instance.RegionsByIndex.Count)
+            if (regionIndex >= World.Instance.RegionsByIndex.Count || regionIndex < 0)
             {
                 return;
             }

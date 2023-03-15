@@ -191,7 +191,13 @@ namespace Acknex
                         if (_openObject.Type != ObjectType.Action)
                         {
                             var propertyType = World.Instance.GetPropertyType(_openObject.Type, keyword);
-                            HandleProperty(_openObject, tokens, keyword, propertyType);                           
+                            if (!HandleProperty(_openObject, tokens, keyword, propertyType))
+                            {
+                                while (keyword != ";" && keyword != null)
+                                {
+                                    keyword = GetNextToken(tokens);
+                                }
+                            }
                         }
                     }
                     else
