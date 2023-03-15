@@ -175,7 +175,7 @@ namespace Acknex
             foreach (var kvp in allTriangles)
             {
                 var tris = kvp.Value;
-                tris.Reverse();
+                //tris.Reverse();
                 mesh.SetTriangles(tris, kvp.Key);
             }
 

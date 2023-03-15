@@ -846,8 +846,8 @@ namespace Acknex
                             {
                                 var wallName = GetNextToken(tokens);
                                 var wall = _world.CreateObjectInstance(ObjectType.Wall, wallName);
-                                wall.SetFloat("VERTEX1", ParseFloat(tokens));
                                 wall.SetFloat("VERTEX2", ParseFloat(tokens));
+                                wall.SetFloat("VERTEX1", ParseFloat(tokens));
                                 wall.SetFloat("REGION1", ParseRegionIndex(tokens));
                                 wall.SetFloat("REGION2", ParseRegionIndex(tokens));
                                 wall.SetFloat("OFFSET_X", ParseFloat(tokens));
