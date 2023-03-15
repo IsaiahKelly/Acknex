@@ -265,7 +265,7 @@ namespace Acknex
                             break;
                         }
                     default:
-                        Debug.LogWarning("<color=#00FF00>Unkown action keyword [" + keyword + "]</color>");
+                        var isLabel = false;
                         var lastKeyword = keyword;
                         while (keyword != ";" && keyword != ":" && keyword != null)
                         {
@@ -273,7 +273,12 @@ namespace Acknex
                             if (keyword == ":")
                             {
                                 CodeStringBuilder.Append(Sanitize(lastKeyword)).AppendLine(":");
+                                isLabel = true;
                             }
+                        }
+                        if (!isLabel)
+                        {
+                            Debug.LogWarning("<color=#00FF00>Unkown action keyword [" + keyword + "]</color>");
                         }
                         HandleIfStack();
                         break;
