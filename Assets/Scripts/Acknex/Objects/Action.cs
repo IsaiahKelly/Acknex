@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Acknex.Interfaces;
+using Unity.Plastic.Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace Acknex
@@ -14,14 +15,6 @@ namespace Acknex
     //TODO: categorize actions in IEnumerators and not IEnumeratros (depending on actions that uses WAIT or WAITT)
     public class Action : IAcknexObjectContainer
     {
-        private static readonly Dictionary<string, (string symbol, int precedence, bool rightAssociative)> operators
-        = new (string symbol, int precedence, bool rightAssociative)[] {
-            //("^", 4, true),
-            ("*", 3, false),
-            ("/", 3, false),
-            ("+", 2, false),
-            ("-", 2, false)
-        }.ToDictionary(op => op.symbol);
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
         public StringBuilder CodeStringBuilder = new StringBuilder();
@@ -64,238 +57,236 @@ namespace Acknex
             {
                 var tokens = textParser.ParseStatement(BinaryReader);
                 var keyword = textParser.GetNextToken(tokens);
-                switch (keyword)
+                var labelOrStatement = textParser.GetNextToken(tokens);
+                if (labelOrStatement == ":")
                 {
-                    case "}":
-                        {
-                            return;
-                        }
-                    case "RULE":
-                        {
-                            var identifier = textParser.GetNextToken(tokens);
-                            var identifierAndType = GetValueAndType(identifier, "identifierValue", false);
-                            var assignmentOp1 = textParser.GetNextToken(tokens);
-                            if (assignmentOp1 == "-" || assignmentOp1 == "+" || assignmentOp1 == "*" || assignmentOp1 == "/")
-                            {
-                                var assignmentOp2 = textParser.GetNextToken(tokens);
-                                if (assignmentOp2 != "=")
-                                {
-                                    throw new Exception("Expected: =");
-                                }
-                            }
-                            //var outputQueue = new Queue<(string, PropertyType)>();
-                            //var operatorStack = new Stack<(string, PropertyType)>();
-                            //var value = textParser.GetNextToken(tokens);
-                            //while (value != ";")
-                            //{
-                            //    var valueAndType = GetValueAndType(value, "rhs");
-                            //    if (valueAndType.propertyType == PropertyType.Float)
-                            //    {
-                            //        outputQueue.Enqueue((valueAndType.property, valueAndType.propertyType));
-                            //    }
-                            //    else if (valueAndType.propertyType == PropertyType.Function)
-                            //    {
-                            //        operatorStack.Push((valueAndType.property, valueAndType.propertyType));
-                            //    }
-                            //    else if (valueAndType.propertyType == PropertyType.Operator && operators.TryGetValue(valueAndType.property, out var op1))
-                            //    {
-                            //        while (operatorStack.Count > 0 && operators.TryGetValue(operatorStack.Peek().Item1, out var op2))
-                            //        {
-                            //            int c = op1.precedence.CompareTo(op2.precedence);
-                            //            if (c < 0 || !op1.rightAssociative && c <= 0)
-                            //            {
-                            //                outputQueue.Enqueue(operatorStack.Pop());
-                            //            }
-                            //            else
-                            //            {
-                            //                break;
-                            //            }
-                            //        }
-                            //        operatorStack.Push((valueAndType.property, valueAndType.propertyType));
-                            //    }
-                            //    else if (valueAndType.propertyType == PropertyType.LeftParen)
-                            //    {
-                            //        operatorStack.Push((valueAndType.property, valueAndType.propertyType));
-                            //    }
-                            //    else if (valueAndType.propertyType == PropertyType.RightParen)
-                            //    {
-                            //        var top = "";
-                            //        while (operatorStack.Count > 0 && (top = operatorStack.Pop().Item1) != "(")
-                            //        {
-                            //            outputQueue.Enqueue((top, PropertyType.Operator));
-                            //        }
-                            //        if (top != "(")
-                            //        {
-                            //            throw new ArgumentException("No matching left parenthesis.");
-                            //        }
-                            //    }
-                            //    value = textParser.GetNextToken(tokens);
-                            //}
-                            //while (operatorStack.Count > 0)
-                            //{
-                            //    var top = operatorStack.Pop();
-                            //    if (!operators.ContainsKey(top.Item1))
-                            //    {
-                            //        throw new ArgumentException("No matching right parenthesis.");
-                            //    }
-                            //    outputQueue.Enqueue(top);
-                            //}
-                            HandleIfStack();
-                            break;
-                        }
-                    case "SET":
-                        {
-                            var identifier = textParser.GetNextToken(tokens);
-                            var value = GetValue(tokens, textParser);
-                            var rhs = GetValueAndType(value, "rhs");
-                            var lhs = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
-                            HandleAssignment(lhs, rhs);
-                            HandleIfStack();
-                            break;
-                        }
-                    case "ADD":
-                    case "ADDT":
-                        {
-                            var identifier = textParser.GetNextToken(tokens);
-                            var value = GetValue(tokens, textParser);
-                            var rhs = GetValueAndType(value, "rhs");
-                            var lhsGetter = GetValueAndType(identifier, "lhs", true, rhs.propertyType);
-                            var lhsSetter = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
-                            HandleAdd(lhsGetter, lhsSetter, rhs, keyword == "ADDT");
-                            HandleIfStack();
-                            break;
-                        }
-                    case "WAITT":
-                        {
-                            var value = GetValue(tokens, textParser);
-                            var argument = GetValueAndType(value, "argument", true, PropertyType.Float);
-                            CodeStringBuilder.Append("yield return new WaitForTicks(").Append(argument.property).AppendLine(");");
-                            HandleIfStack();
-                            break;
-                        }
-                    case "WAIT":
-                        {
-                            var value = GetValue(tokens, textParser);
-                            var argument = GetValueAndType(value, "argument", true, PropertyType.Float);
-                            CodeStringBuilder.Append("yield return new WaitForCycles(").Append(argument.property).AppendLine(");");
-                            HandleIfStack();
-                            break;
-                        }
-                    case "CALL":
-                        {
-                            var action = textParser.GetNextToken(tokens);
-                            CodeStringBuilder.Append("yield return ").Append(Sanitize(action)).AppendLine("();");
-                            HandleIfStack();
-                            break;
-                        }
-                    case "BRANCH":
-                        {
-                            var action = textParser.GetNextToken(tokens);
-                            CodeStringBuilder.Append("yield return ").Append(Sanitize(action)).AppendLine("();");
-                            CodeStringBuilder.AppendLine("yield break;");
-                            HandleIfStack();
-                            break;
-                        }
-                    case "GOTO":
-                        {
-                            var label = textParser.GetNextToken(tokens);
-                            CodeStringBuilder.Append("goto ").Append(Sanitize(label)).AppendLine(";");
-                            HandleIfStack();
-                            break;
-                        }
-                    case "END":
-                        {
-                            CodeStringBuilder.AppendLine("yield break;");
-                            HandleIfStack();
-                            break;
-                        }
-                    case "EXIT":
-                        {
-                            CodeStringBuilder.AppendLine("Application.Quit();");
-                            HandleIfStack();
-                            break;
-                        }
-                    case "SHOOT":
-                        {
-                            CodeStringBuilder.Append("World.Instance.Shoot(");
-                            var next = textParser.GetNextToken(tokens);
-                            if (next != ";")
-                            {
-                                CodeStringBuilder.Append("\"").Append(next).AppendLine("\");");
-                            }
-                            HandleIfStack();
-                            break;
-                        }
-                    case "INKEY":
-                        {
-                            CodeStringBuilder.Append("World.Instance.ReadInkey(\"").Append(textParser.GetNextToken(tokens)).AppendLine("\");");
-                            HandleIfStack();
-                            break;
-                        }
-                    case "IF_EQUAL":
-                    case "IF_NEQUAL":
-                    case "IF_ABOVE":
-                    case "IF_BELOW":
-                        {
-                            var identifier = textParser.GetNextToken(tokens);
-                            var value = GetValue(tokens, textParser);
-                            var rhs = GetValueAndType(value, "rhs");
-                            var lhs = GetValueAndType(identifier, "lhs");
-                            //if (lhs.propertyType != rhs.propertyType && rhs.propertyType != PropertyType.Null && lhs.propertyType != PropertyType.Unknown && rhs.propertyType != PropertyType.Unknown)
-                            //{
-                            //    throw new Exception(lhs.property + "|" + rhs.property);
-                            //}
-                            switch (keyword)
-                            {
-                                case "IF_EQUAL":
-                                    CodeStringBuilder.Append("if (").Append(lhs.property).Append(" == ").Append(rhs.property).AppendLine(")");
-                                    break;
-                                case "IF_NEQUAL":
-                                    CodeStringBuilder.Append("if (").Append(lhs.property).Append(" != ").Append(rhs.property).AppendLine(")");
-                                    break;
-                                case "IF_BELOW":
-                                    CodeStringBuilder.Append("if (").Append(lhs.property).Append(" < ").Append(rhs.property).AppendLine(")");
-                                    break;
-                                default:
-                                    CodeStringBuilder.Append("if (").Append(lhs.property).Append(" > ").Append(rhs.property).AppendLine(")");
-                                    break;
-                            }
-                            CodeStringBuilder.AppendLine("{");
-                            _ifStack++;
-                            break;
-                        }
-                    default:
-                        var isLabel = false;
-                        var lastKeyword = keyword;
-                        while (keyword != ";" && keyword != ":" && keyword != null)
-                        {
-                            keyword = textParser.GetNextToken(tokens);
-                            if (keyword == ":")
-                            {
-                                CodeStringBuilder.Append(Sanitize(lastKeyword)).AppendLine(":");
-                                isLabel = true;
-                            }
-                        }
-                        if (!isLabel)
-                        {
-                            Debug.LogWarning("<color=#00FF00>Unkown action keyword [" + keyword + "]</color>");
-                        }
-                        HandleIfStack();
-                        break;
+                    CodeStringBuilder.Append(Sanitize(keyword)).AppendLine(":");
                 }
+                else
+                {
+                    switch (keyword)
+                    {
+                        case "}":
+                            {
+                                HandleIfStack();
+                                return;
+                            }
+                        case "SIN":
+                        case "COS":
+                        case "TAN":
+                        case "ASIN":
+                        case "ACOS":
+                        case "LOG":
+                        case "LOG10":
+                        case "LOG2":
+                        case "SQRT":
+                        case "SIGN":
+                        case "ABS":
+                        case "INT":
+                        case "EXP":
+                            {
+                                //todo
+                                //var input = labelOrStatement;
+                                //var output = textParser.GetNextToken(tokens);
+                                break;
+                            }
+                        case "RULE":
+                            {
+                                var identifier = labelOrStatement;
+                                var identifierAndType = GetValueAndType(identifier, "lhs", false);
+                                var assignmentOp1 = textParser.GetNextToken(tokens);
+                                //todo: different assignments (-= += /= *=)
+                                if (assignmentOp1 == "-" || assignmentOp1 == "+" || assignmentOp1 == "*" || assignmentOp1 == "/")
+                                {
+                                    var assignmentOp2 = textParser.GetNextToken(tokens);
+                                    if (assignmentOp2 != "=")
+                                    {
+                                        throw new Exception("Expected: =");
+                                    }
+                                }
+                                var ruleStringBuilder = new StringBuilder();
+                                var token = textParser.GetNextToken(tokens);
+                                while (token != ";")
+                                {
+                                    var tokenAndType = GetValueAndType(token, "temp");
+                                    if (tokenAndType.propertyType == PropertyType.Function)
+                                    {
+                                        ruleStringBuilder.Append(HandleFunction(tokenAndType.property));
+                                    }
+                                    else
+                                    {
+                                        ruleStringBuilder.Append(tokenAndType.property);
+                                    }
+                                    token = textParser.GetNextToken(tokens);
+                                }
+                                HandleAssignment(identifierAndType, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null));
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "SET":
+                            {
+                                var identifier = labelOrStatement;
+                                var value = GetValue(tokens, textParser);
+                                var rhs = GetValueAndType(value, "rhs");
+                                var lhs = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
+                                HandleAssignment(lhs, rhs);
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "ADD":
+                        case "ADDT":
+                            {
+                                var identifier = labelOrStatement;
+                                var value = GetValue(tokens, textParser);
+                                var rhs = GetValueAndType(value, "rhs");
+                                var lhsGetter = GetValueAndType(identifier, "lhs", true, rhs.propertyType);
+                                var lhsSetter = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
+                                HandleAdd(lhsGetter, lhsSetter, rhs, keyword == "ADDT");
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "WAITT":
+                            {
+                                var value = GetValue(tokens, textParser, labelOrStatement);
+                                var argument = GetValueAndType(value, "argument", true, PropertyType.Float);
+                                CodeStringBuilder.Append("yield return new WaitForTicks(").Append(argument.property).AppendLine(");");
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "WAIT":
+                            {
+                                var value = GetValue(tokens, textParser, labelOrStatement);
+                                var argument = GetValueAndType(value, "argument", true, PropertyType.Float);
+                                CodeStringBuilder.Append("yield return new WaitForCycles(").Append(argument.property).AppendLine(");");
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "CALL":
+                            {
+                                var action = labelOrStatement;
+                                CodeStringBuilder.Append("yield return ").Append(Sanitize(action)).AppendLine("();");
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "BRANCH":
+                            {
+                                var action = labelOrStatement;
+                                CodeStringBuilder.Append("yield return ").Append(Sanitize(action)).AppendLine("();");
+                                CodeStringBuilder.AppendLine("yield break;");
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "GOTO":
+                            {
+                                var label = labelOrStatement;
+                                CodeStringBuilder.Append("goto ").Append(Sanitize(label)).AppendLine(";");
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "END":
+                            {
+                                CodeStringBuilder.AppendLine("yield break;");
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "EXIT":
+                            {
+                                CodeStringBuilder.AppendLine("Application.Quit();");
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "SHOOT":
+                            {
+                                var next = labelOrStatement;
+                                CodeStringBuilder.Append("World.Instance.Shoot(");
+                                if (next != ";")
+                                {
+                                    CodeStringBuilder.Append("\"").Append(next).AppendLine("\");");
+                                }
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "INKEY":
+                            {
+                                var key = labelOrStatement;
+                                CodeStringBuilder.Append("World.Instance.ReadInkey(\"").Append(key).AppendLine("\");");
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "IF_EQUAL":
+                        case "IF_NEQUAL":
+                        case "IF_ABOVE":
+                        case "IF_BELOW":
+                            {
+                                var identifier = labelOrStatement;// textParser.GetNextToken(tokens);
+                                var value = GetValue(tokens, textParser);
+                                var rhs = GetValueAndType(value, "rhs");
+                                var lhs = GetValueAndType(identifier, "lhs");
+                                //if (lhs.propertyType != rhs.propertyType && rhs.propertyType != PropertyType.Null && lhs.propertyType != PropertyType.Unknown && rhs.propertyType != PropertyType.Unknown)
+                                //{
+                                //    throw new Exception(lhs.property + "|" + rhs.property);
+                                //}
+                                switch (keyword)
+                                {
+                                    case "IF_EQUAL":
+                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" == ").Append(rhs.property).AppendLine(")");
+                                        break;
+                                    case "IF_NEQUAL":
+                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" != ").Append(rhs.property).AppendLine(")");
+                                        break;
+                                    case "IF_BELOW":
+                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" < ").Append(rhs.property).AppendLine(")");
+                                        break;
+                                    default:
+                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" > ").Append(rhs.property).AppendLine(")");
+                                        break;
+                                }
+                                CodeStringBuilder.AppendLine("{");
+                                _ifStack++;
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        default:
+                            CodeStringBuilder.Append("//Unknown keyword: ").Append(keyword).AppendLine();
+                            Debug.LogWarning("<color=#00FF00>Unkown action keyword [" + keyword + "]</color>");
+                            HandleIfStack();
+                            ReadUntilSemiColon(tokens);
+                            break;
+                    }
+                }
+
             }
         }
 
-        private void Resolve((string, PropertyType) lhs, (string, PropertyType) rhs, (string, PropertyType) @operator)
+        private void ReadUntilSemiColon(IEnumerator<string> tokens)
         {
-            var varname = $"result_{_varCounter++}";
-            CodeStringBuilder.Append("var ").Append(varname).Append("=").Append(lhs.Item1).Append(@operator.Item2).Append(rhs.Item2).AppendLine(";");
+            while (tokens.Current != null && tokens.Current != ";")
+            {
+                tokens.MoveNext();
+            }
         }
 
-        private string GetValue(IEnumerator<string> tokens, TextParser textParser)
+        private string HandleFunction(string property)
+        {
+            return property;
+        }
+
+        private string GetValue(IEnumerator<string> tokens, TextParser textParser, string existingValue = null)
         {
             var result = string.Empty;
-            var value = textParser.GetNextToken(tokens);
+            var value = existingValue ?? textParser.GetNextToken(tokens);
             if (value == "-")
             {
                 result += value;
@@ -677,6 +668,10 @@ namespace Acknex
                 }
             }
             var propertyType = World.Instance.GetPropertyType(objectType, property);
+            if (propertyType == PropertyType.Unknown)
+            {
+                CodeStringBuilder.Append("//Unknown Property Type: ").Append(objectType).Append(".").Append(property).AppendLine();
+            }
             if (outputGetter)
             {
                 switch (propertyType)

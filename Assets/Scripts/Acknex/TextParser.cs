@@ -458,7 +458,7 @@ namespace Acknex
             return null;
         }
 
-        private void CheckCurlyOpen(IEnumerator<string> tokens)
+        public void CheckCurlyOpen(IEnumerator<string> tokens)
         {
             if (GetNextToken(tokens) != "{")
             {
@@ -466,7 +466,7 @@ namespace Acknex
             }
         }
 
-        private void CheckSemiColon(IEnumerator<string> tokens)
+        public void CheckSemiColon(IEnumerator<string> tokens)
         {
             if (GetNextToken(tokens) != ";")
             {

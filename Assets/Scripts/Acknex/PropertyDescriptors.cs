@@ -162,6 +162,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Actor, PropertyType.String, "TARGET");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FLOOR_HGT");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "CEIL_HGT");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "DISTANCE");
 
 
             AddObjectProperty(ObjectType.Thing, PropertyType.String, "NAME");
@@ -205,6 +206,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.String, "TARGET");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "FLOOR_HGT");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "CEIL_HGT");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "DISTANCE");
 
 
             AddObjectProperty(ObjectType.Overlay, PropertyType.String, "NAME");

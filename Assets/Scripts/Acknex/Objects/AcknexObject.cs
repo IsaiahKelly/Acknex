@@ -21,7 +21,7 @@ namespace Acknex
 
         public void AddFlag(string flag)
         {
-            NumberProperties[flag] = 1;
+            NumberProperties[flag] = 1f;
             IsDirty = true;
         }
 
@@ -33,9 +33,9 @@ namespace Acknex
 
         public bool ContainsFlag(string flag, bool fromTemplate = true)
         {
-            if (NumberProperties.ContainsKey(flag))
+            if (NumberProperties.TryGetValue(flag, out var value))
             {
-                return true;
+                return value == 1f;
             }
             if (fromTemplate)
             {
