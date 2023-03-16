@@ -371,6 +371,7 @@ namespace Acknex
                                 {
                                     var model = _world.CreateObjectTemplate(ObjectType.Model, GetNextToken(tokens));
                                     model.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                    World.Instance.PostSetupObjectTemplate(model);
                                     CheckSemiColon(tokens);
                                     break;
                                 }

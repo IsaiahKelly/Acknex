@@ -32,6 +32,13 @@ namespace Acknex
 
         private GameObject _attached;
 
+        private List<WaitForSeconds> _textureObjectDelay;
+
+        //Deltas for comparison
+        private Texture _lastTextureObject;
+        private string _lastTarget;
+        private readonly HashSet<IAcknexObject> _near = new HashSet<IAcknexObject>();
+
         public Texture TextureObject => AcknexObject.GetString("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.GetString("TEXTURE"), out var textureObject) ? textureObject : null;
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -46,10 +53,7 @@ namespace Acknex
             collisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
             _collider = _thingGameObject.AddComponent<CapsuleCollider>();
             _collider.height = 1f;
-            if (_meshRenderer != null)
-            {
-                StartCoroutine(Animate(TextureObject, _meshRenderer));
-            }
+            StartCoroutine(Animate());
             StartCoroutine(TriggerTickEvents());
             StartCoroutine(TriggerSecEvents());
         }
@@ -106,63 +110,91 @@ namespace Acknex
             }
         }
 
-        private IEnumerator Animate(Texture texture, MeshRenderer meshRenderer)
+        private IEnumerator Animate()
         {
+            var texture = TextureObject;
+            while (texture == null)
+            {
+                yield return null;
+            }
             var cycles = Mathf.Max(1, texture.AcknexObject.GetInteger("CYCLES"));
             var sides = Mathf.Max(1, texture.AcknexObject.GetInteger("SIDES"));
             var mirror = texture.AcknexObject.GetObject<List<float>>("MIRROR");
             var cycle = 0;
             while (true)
             {
-                UpdateAngleFrameScale(texture, meshRenderer, cycles, sides, cycle, mirror);
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : null;
+                UpdateAngleFrameScale(texture, cycles, sides, cycle, mirror, currentDelay);
                 yield return currentDelay;
                 cycle = (int)Mathf.Repeat(cycle + 1, cycles);
                 World.Instance.TriggerEvent(AcknexObject, "EACH_CYCLE");
             }
         }
 
-        private void UpdateAngleFrameScale(Texture texture, MeshRenderer meshRenderer, int cycles, int sides, int animFrame, List<float> mirror)
+        private void UpdateAngleFrameScale(Texture texture, int cycles, int sides, int animFrame, List<float> mirror, WaitForSeconds delay)
         {
-            var halfStep = 180f / sides;
-            var camera = CameraExtensions.GetLastActiveCamera();
-            int side;
-            if (camera != null)
+            if (HasModel(texture, out var modelObject))
             {
-                var cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(camera.transform.position - _thingGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
-                var thingAngle = AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE"));
-                var thingDirection = Quaternion.Euler(0f, thingAngle, 0f) * Vector3.back;
-                var angle = Mathf.Repeat(AngleUtils.Angle(thingDirection, cameraToThingDirection) + halfStep, 360f);
-                var normalizedAngle = angle / 360f;
-                side = Mathf.RoundToInt(Mathf.Lerp(0, sides - 1, normalizedAngle));
+                _meshRenderer.material = modelObject.Material;
+                _meshRenderer.material.mainTexture = modelObject.Texture2D;
+                _meshFilter.mesh = modelObject.Mesh;
+                _thingGameObject.transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
+                transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             }
             else
             {
-                side = 0;
+                var halfStep = 180f / sides;
+                var camera = CameraExtensions.GetLastActiveCamera();
+                int side;
+                if (camera != null)
+                {
+                    var cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(camera.transform.position - _thingGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
+                    var thingAngle = AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE"));
+                    var thingDirection = Quaternion.Euler(0f, thingAngle, 0f) * Vector3.back;
+                    var angle = Mathf.Repeat(AngleUtils.Angle(thingDirection, cameraToThingDirection) + halfStep, 360f);
+                    var normalizedAngle = angle / 360f;
+                    side = Mathf.RoundToInt(Mathf.Lerp(0, sides - 1, normalizedAngle));
+                }
+                else
+                {
+                    side = 0;
+                };
+                Bitmap bitmap;
+                int angleFrame;
+                if (mirror != null && mirror[side] > 0) //mirrored
+                {
+                    angleFrame = side * cycles;
+                    var frame = angleFrame + animFrame;
+                    bitmap = texture.GetBitmapAt(frame);
+                    if (_meshRenderer.material != null && bitmap != null)
+                    {
+                        UpdateFrame(bitmap, texture, _meshRenderer.material, true, frame);
+                    }
+                }
+                else
+                {
+                    angleFrame = side * cycles;
+                    var frame = angleFrame + animFrame;
+                    bitmap = texture.GetBitmapAt(frame);
+                    if (_meshRenderer.material != null && bitmap != null)
+                    {
+                        UpdateFrame(bitmap, texture, _meshRenderer.material, false, frame);
+                    }
+                }
+                transform.localScale = TextureUtils.CalculateObjectSize(bitmap, texture);
             }
-            Bitmap bitmap;
-            int angleFrame;
-            if (mirror != null && mirror[side] > 0) //mirrored
-            {
-                angleFrame = side * cycles;
-                var frame = angleFrame + animFrame;
-                bitmap = texture.GetBitmapAt(frame);
-                UpdateFrame(bitmap, texture, meshRenderer, true, frame);
-            }
-            else
-            {
-                angleFrame = side * cycles;
-                var frame = angleFrame + animFrame;
-                bitmap = texture.GetBitmapAt(frame);
-                UpdateFrame(bitmap, texture, meshRenderer, false, frame);
-            }
-            transform.localScale = TextureUtils.CalculateObjectSize(bitmap, texture);
         }
 
-        private static void UpdateFrame(Bitmap bitmap, Texture textureObject, MeshRenderer meshRenderer, bool mirror = false, int frameIndex = 0)
+        private static bool HasModel(Texture texture, out Model modelObject)
+        {
+            modelObject = null;
+            return texture.AcknexObject.TryGetString("MODEL", out var model) && World.Instance.ModelsByName.TryGetValue(model, out modelObject);
+        }
+
+        private static void UpdateFrame(Bitmap bitmap, Texture textureObject, Material unityMaterial, bool mirror = false, int frameIndex = 0)
         {
             //todo: null here to avoid scale
-            bitmap.UpdateMaterial(meshRenderer.material, null, frameIndex, mirror);
+            bitmap.UpdateMaterial(unityMaterial, null, frameIndex, mirror);
         }
 
         private void Awake()
@@ -173,14 +205,24 @@ namespace Acknex
         protected virtual void Update()
         {
             UpdateObject();
-            var camera = CameraExtensions.GetLastActiveCamera();
-            if (camera == null)
+            if (!HasModel(TextureObject, out _))
             {
-                return;
+                var camera = CameraExtensions.GetLastActiveCamera();
+                if (camera == null)
+                {
+                    return;
+                }
+                var eulerAngles = transform.eulerAngles;
+                eulerAngles.y = camera.transform.eulerAngles.y;
+                transform.eulerAngles = eulerAngles;
             }
-            var eulerAngles = transform.eulerAngles;
-            eulerAngles.y = camera.transform.eulerAngles.y;
-            transform.eulerAngles = eulerAngles;
+            else
+            {
+                var angle = AcknexObject.GetFloat("ANGLE");
+                var eulerAngles = transform.eulerAngles;
+                eulerAngles.y = AngleUtils.ConvertAcknexToUnityAngle(angle);
+                transform.eulerAngles = eulerAngles;
+            }
         }
 
         public void Enable()
@@ -194,13 +236,6 @@ namespace Acknex
             AcknexObject.AddFlag("INVISIBLE");
             AcknexObject.RemoveFlag("VISIBLE");
         }
-
-        private List<WaitForSeconds> _textureObjectDelay;
-
-        //Deltas for comparison
-        private Texture _lastTextureObject;
-        private string _lastTarget;
-        private readonly HashSet<IAcknexObject> _near = new HashSet<IAcknexObject>();
 
         public virtual void UpdateObject()
         {

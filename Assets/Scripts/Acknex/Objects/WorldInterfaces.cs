@@ -329,7 +329,7 @@ namespace Acknex
                         {
                             throw new Exception("Model [" + name + "] already registered.");
                         }
-                        var model = CreateModel(name, true);
+                        var model = new Model();
                         model.AcknexObject.Type = type;
                         model.AcknexObject.SetString("NAME", name);
                         model.Disable();
@@ -521,6 +521,10 @@ namespace Acknex
             if (acknexObject.Type == ObjectType.Bitmap)
             {
                 acknexObject.Container.UpdateObject();
+            }
+            else if (acknexObject.Type == ObjectType.Model && acknexObject.Container is Model model)
+            {
+                model.Setup();
             }
         }
 

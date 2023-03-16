@@ -206,10 +206,10 @@ namespace Acknex
             }
 
             wall._meshFilter = wall.gameObject.AddComponent<MeshFilter>();
-            wall._meshFilter.sharedMesh = mesh;
+            wall._meshFilter.mesh = mesh;
 
             wall._meshRenderer = wall.gameObject.AddComponent<MeshRenderer>();
-            wall._meshRenderer.sharedMaterials = materials;
+            wall._meshRenderer.materials = materials;
 
             wall._collider = wall.gameObject.AddComponent<MeshCollider>();
             wall._collider.sharedMesh = mesh;

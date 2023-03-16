@@ -655,9 +655,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b52af5bca98fed4c9690969a13ed559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WDLPath: Assets\Data\Contato.wdl
+  WDLPath: Assets/Data/Regional.wdl
   CanvasWidthRatio: 1.6
-  WMPContainsRegionsByName: 0
+  WMPContainsRegionsByName: 1
   UseWDLEngine: 0
   WallsAndRegionsLayer:
     m_LayerIndex: 8

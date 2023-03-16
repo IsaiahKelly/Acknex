@@ -183,7 +183,7 @@ namespace Acknex
             mesh.UploadMeshData(true);
 
             region._meshFilter = region.gameObject.AddComponent<MeshFilter>();
-            region._meshFilter.sharedMesh = mesh;
+            region._meshFilter.mesh = mesh;
 
             region._meshRenderer = region.gameObject.AddComponent<MeshRenderer>();
             var materials = new Material[mesh.subMeshCount];
@@ -195,7 +195,7 @@ namespace Acknex
                 materials[i] = material;
             }
 
-            region._meshRenderer.sharedMaterials = materials;
+            region._meshRenderer.materials = materials;
 
             region._collider = region.gameObject.AddComponent<MeshCollider>();
             region._collider.sharedMesh = mesh;

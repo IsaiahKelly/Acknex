@@ -28,18 +28,15 @@ namespace Acknex
             innerGameObject.transform.SetParent(parent, false);
             meshFilter = innerGameObject.AddComponent<MeshFilter>();
             meshRenderer = innerGameObject.AddComponent<MeshRenderer>();
-            if (bitmap == null)
+            if (bitmap != null)
             {
-                meshFilter = null;
-                meshRenderer = null;
-                return innerGameObject;
+                var mesh = MeshUtils.CreateQuadMesh(pivotAtLeft);
+                meshFilter.mesh = mesh;
+                meshRenderer.material = new Material(Shader.Find("Acknex/Sprite"));
             }
-            var mesh = MeshUtils.CreateQuadMesh(pivotAtLeft);
-            meshFilter.sharedMesh = mesh;
-            meshRenderer.material = new Material(Shader.Find("Acknex/Sprite"));
-            //UpdateFrame(bitmap, meshRenderer);
             return innerGameObject;
         }
+
         public static void CopyTextureCPU(RenderTexture from, Texture2D to, bool updateMipMaps, bool makeNoLongerReadable)
         {
             RenderTexture.active = from;

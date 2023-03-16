@@ -107,20 +107,6 @@ namespace Acknex
         }
 
         //todo: generic method?
-        public Model CreateModel(string name, bool definition = false)
-        {
-            if (name == null)
-            {
-                throw new Exception("Expected: name");
-            }
-            var newGameObject = new GameObject(name);
-            newGameObject.transform.SetParent(transform, false);
-            var newModel = newGameObject.AddComponent<Model>();
-            newModel.AcknexObject.SetString("NAME", name);
-            return newModel;
-        }
-
-        //todo: generic method?
         public Panel CreatePanel(string name, bool definition = false)
         {
             if (name == null)

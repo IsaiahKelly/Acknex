@@ -314,6 +314,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, "SIDES");
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, "CYCLES");
             AddObjectProperty(ObjectType.Texture, PropertyType.ObjectReference, "ATTACH");
+            AddObjectProperty(ObjectType.Texture, PropertyType.ObjectReference, "MODEL");
         }
 
         public void AddObjectProperty(ObjectType objectType, PropertyType propertyType, string property)
