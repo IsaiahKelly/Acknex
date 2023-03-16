@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Acknex.Interfaces;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 namespace Acknex
@@ -121,8 +122,23 @@ namespace Acknex
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_MINUS");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_PLUS");
             AddObjectProperty(ObjectType.World, PropertyType.Float, "AMBIENT");
-            AddObjectProperty(ObjectType.World, PropertyType.Float, "LIGHT_ANGLE");           
-
+            AddObjectProperty(ObjectType.World, PropertyType.Float, "LIGHT_ANGLE"); 
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.1");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.2");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.3");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.4");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.5");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.6");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.7");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.8");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.9");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.10");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.11");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.12");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.13");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.14");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.15");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.16");
 
             AddObjectProperty(ObjectType.Actor, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "AMBIENT");
@@ -298,6 +314,8 @@ namespace Acknex
             AddObjectProperty(ObjectType.Wall, PropertyType.ActionReference, "EACH_TICK");
             AddObjectProperty(ObjectType.Wall, PropertyType.ActionReference, "IF_NEAR");
             AddObjectProperty(ObjectType.Wall, PropertyType.ObjectReference, "GENIUS");
+            AddObjectProperty(ObjectType.Wall, PropertyType.Float, "POSITION");
+            AddObjectProperty(ObjectType.Wall, PropertyType.Float, "FENCE");
 
 
             AddObjectProperty(ObjectType.Texture, PropertyType.String, "NAME");
@@ -315,6 +333,15 @@ namespace Acknex
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, "CYCLES");
             AddObjectProperty(ObjectType.Texture, PropertyType.ObjectReference, "ATTACH");
             AddObjectProperty(ObjectType.Texture, PropertyType.ObjectReference, "MODEL");
+            AddObjectProperty(ObjectType.Texture, PropertyType.Float, "AMBIENT");
+            AddObjectProperty(ObjectType.Texture, PropertyType.Float, "ALBEDO");
+
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "POS_X");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "POS_Y");
+            AddObjectProperty(ObjectType.Text, PropertyType.ObjectReference, "STRING");
+
+            AddObjectProperty(ObjectType.Panel, PropertyType.Float, "POS_X");
+            AddObjectProperty(ObjectType.Panel, PropertyType.Float, "POS_Y");
         }
 
         public void AddObjectProperty(ObjectType objectType, PropertyType propertyType, string property)

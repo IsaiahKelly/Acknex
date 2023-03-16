@@ -217,8 +217,13 @@ namespace Acknex
             CreateSkill("KEY_CUL", 0, 0, 1);
             CreateSkill("KEY_SHIFT", 0, 0, 1);
 
+
+            //todo: is this right?
             CreateSkill("FLOOR_HGT", 0, 0, 0);
             CreateSkill("CEIL_HGT", 0, 0, 0);
+
+            CreateSkill("TIME_CORR", 0, 0, 0);
+            CreateSkill("TIME_FAC", 0, 0, 0);
         }
 
         private Vector3 _lastMousePosition;
@@ -243,6 +248,9 @@ namespace Acknex
             UpdateSkillValue("JOYSTICK_Y", Input.GetAxis("Vertical") * 255f);
             UpdateSkillValue("TICKS", TimeUtils.TimeToTicks(Time.time));
             UpdateSkillValue("SECS", (int)Time.time);
+            var timeCorr = Time.deltaTime / TimeUtils.TicksToTime(1);
+            UpdateSkillValue("TIME_CORR", timeCorr);
+            UpdateSkillValue("TIME_FAC", 1f - timeCorr);
             UpdateSkillValue("FORCE_AHEAD", Input.GetAxis("Vertical"));
             UpdateSkillValue("FORCE_STRAFE", Input.GetAxis("Horizontal"));
             UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X"));

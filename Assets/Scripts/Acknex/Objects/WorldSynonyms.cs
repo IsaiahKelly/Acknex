@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Acknex.Interfaces;
 
 namespace Acknex
@@ -81,37 +82,51 @@ namespace Acknex
             //}
         }
 
+        public ObjectType GetSynonymType(string synonymName)
+        {
+            var synonymType = SynonymsByName[synonymName].AcknexObject.GetString("TYPE");
+            switch (synonymType)
+            {
+                case "TEXTURE":
+                    return ObjectType.Texture;
+                case "THING":
+                    return ObjectType.Thing;
+                case "ACTOR":
+                    return ObjectType.Actor;
+                case "WALL":
+                    return  ObjectType.Wall;
+                case "REGION":
+                    return ObjectType.Region;
+                case "OVERLAY":
+                    return  ObjectType.Overlay;
+                case "PANEL":
+                    return ObjectType.Panel;
+                case "TEXT":
+                    return ObjectType.Text;
+                case "STRING":
+                    return ObjectType.String;
+                case "ACTION":
+                    return ObjectType.Action;
+                default:
+                    throw new Exception("Unknown synonym type:" + synonymType);
+            }
+        }
+
         //todo: add instance check "INDEX"  
         public IAcknexObject GetSynonymObject(string synonymName)
         {
             if (SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
                 var objectName = synonym.AcknexObject.GetString("VAL");
-                switch (synonym.AcknexObject.GetString("TYPE"))
-                {
-                    case "OVERLAY":
-                        return GetObject(ObjectType.Overlay, objectName);
-                    case "TEXTURE":
-                        return GetObject(ObjectType.Texture, objectName);
-                    case "WALL":
-                        return GetObject(ObjectType.Wall, objectName);
-                    case "THING":
-                        return GetObject(ObjectType.Thing, objectName);
-                    case "ACTOR":
-                        return GetObject(ObjectType.Actor, objectName);
-                    case "REGION":
-                        return GetObject(ObjectType.Region, objectName);
-                    case "PANEL":
-                        return GetObject(ObjectType.Panel, objectName);
-                    case "TEXT":
-                        return GetObject(ObjectType.Text, objectName);
-                    case "STRING":
-                        return GetObject(ObjectType.String, objectName);
-                    case "ACTION":
-                        return GetObject(ObjectType.Action, objectName);
-                }
+                var objectType = GetSynonymType(synonymName);
+                return GetObject(objectType, objectName);
             }
-            throw new Exception("Unknown synonym type");
+            return null;
+        }
+
+        public IEnumerator CallSynonymAction(string synonymName)
+        {
+            throw new NotImplementedException();
         }
     }
 }
