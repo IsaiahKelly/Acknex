@@ -253,7 +253,7 @@ namespace Acknex
             UpdateSkillValue("FORCE_STRAFE", Input.GetAxis("Horizontal"));
             UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X"));
             UpdateSkillValue("FORCE_TILT", Input.GetAxis("Mouse Y"));
-            //TODO: FORCE_UP
+            UpdateSkillValue("FORCE_UP", Input.GetButton("Jump") ? 1 : Input.GetButton("Crouch") ? -1 : 0);
 
             UpdateSkillValue("RANDOM", Random.value);
             _lastMousePosition = mousePosition;
