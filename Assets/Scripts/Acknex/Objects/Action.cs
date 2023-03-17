@@ -21,11 +21,9 @@ namespace Acknex
         public long PositionInFile;
         public BinaryReader BinaryReader;
 
-        private readonly HashSet<string> _rules = new HashSet<string>();
+        private List<Tuple<string, float>> _skips = new List<Tuple<string, float>>();
         private int _varCounter;
         private int _ifStack;
-
-        public IEnumerator Coroutine;
 
         private static IAcknexObject GetTemplateCallback(string name)
         {
@@ -66,6 +64,20 @@ namespace Acknex
                 }
                 else
                 {
+                    for (var i = _skips.Count - 1; i >= 0; i--)
+                    {
+                        var skip = _skips[i];
+                        var count = skip.Item2;
+                        if (--count < 0)
+                        {
+                            CodeStringBuilder.Append(skip.Item1).AppendLine(":");
+                            _skips.Remove(skip);
+                        }
+                        else
+                        {
+                            _skips[i] = new Tuple<string, float>(skip.Item1, count);
+                        }
+                    }
                     switch (keyword)
                     {
                         case "}":
@@ -192,6 +204,20 @@ namespace Acknex
                             {
                                 HandleCall(labelOrStatement);
                                 CodeStringBuilder.AppendLine("yield break;");
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "SKIP":
+                            {
+                                var count = float.Parse(GetValue(tokens, textParser, labelOrStatement));
+                                if (count < 0)
+                                {
+                                    throw new Exception("Die: can't go back in instructions");
+                                }
+                                var skipName = $"skip_{_varCounter++}";
+                                CodeStringBuilder.Append("goto ").Append(skipName).AppendLine(";");
+                                _skips.Add(new Tuple<string, float>(skipName, count));
                                 HandleIfStack();
                                 ReadUntilSemiColon(tokens);
                                 break;
@@ -583,11 +609,6 @@ namespace Acknex
 
         private bool HandleObject(string objectName, string assignmentVariable, bool outputGetter, out (string property, PropertyType propertyType, ObjectType objectType, string source) valueAndType)
         {
-            if (_rules.Contains(objectName))
-            {
-                valueAndType = (objectName, PropertyType.ObjectReference, ObjectType.Rule, null);
-                return true;
-            }
             if (World.Instance.StringsByName.ContainsKey(objectName))
             {
                 if (outputGetter)

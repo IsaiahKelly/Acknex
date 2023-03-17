@@ -1238,104 +1238,105 @@ var PLAYER_SPEED_SQR_237 = _world.GetObject(ObjectType.Skill,"PLAYER_SPEED_SQR")
 var PLAYER_SPEED_SQR_237_val = PLAYER_SPEED_SQR_237.GetFloat("VAL");
 if (PLAYER_SPEED_SQR_237_val > 0f)
 {
-//Unknown keyword: SKIP
+goto skip_238;
 }
-var MAX_PLAYER_TILT_P_238 = _world.GetObject(ObjectType.Skill,"MAX_PLAYER_TILT_P");
-var MAX_PLAYER_TILT_P_238_val = MAX_PLAYER_TILT_P_238.GetFloat("VAL");
-var PLAYER_TILT_239 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
-var PLAYER_TILT_239_val = PLAYER_TILT_239.GetFloat("VAL");
-if (PLAYER_TILT_239_val > MAX_PLAYER_TILT_P_238_val)
+var MAX_PLAYER_TILT_P_239 = _world.GetObject(ObjectType.Skill,"MAX_PLAYER_TILT_P");
+var MAX_PLAYER_TILT_P_239_val = MAX_PLAYER_TILT_P_239.GetFloat("VAL");
+var PLAYER_TILT_240 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_240_val = PLAYER_TILT_240.GetFloat("VAL");
+if (PLAYER_TILT_240_val > MAX_PLAYER_TILT_P_239_val)
 {
-var TILT_DECREASE_241 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
-TILT_DECREASE_241.SetFloat("VAL",1f);
+var TILT_DECREASE_242 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
+TILT_DECREASE_242.SetFloat("VAL",1f);
 }
-var MAX_PLAYER_TILT_N_242 = _world.GetObject(ObjectType.Skill,"MAX_PLAYER_TILT_N");
-var MAX_PLAYER_TILT_N_242_val = MAX_PLAYER_TILT_N_242.GetFloat("VAL");
-var PLAYER_TILT_243 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
-var PLAYER_TILT_243_val = PLAYER_TILT_243.GetFloat("VAL");
-if (PLAYER_TILT_243_val < MAX_PLAYER_TILT_N_242_val)
+var MAX_PLAYER_TILT_N_243 = _world.GetObject(ObjectType.Skill,"MAX_PLAYER_TILT_N");
+var MAX_PLAYER_TILT_N_243_val = MAX_PLAYER_TILT_N_243.GetFloat("VAL");
+var PLAYER_TILT_244 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_244_val = PLAYER_TILT_244.GetFloat("VAL");
+if (PLAYER_TILT_244_val < MAX_PLAYER_TILT_N_243_val)
 {
-var TILT_DECREASE_245 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
-TILT_DECREASE_245.SetFloat("VAL",1f);
+var TILT_DECREASE_246 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
+TILT_DECREASE_246.SetFloat("VAL",1f);
 }
-var MODE_SCHWIMMEN_246 = _world.GetObject(ObjectType.Skill,"MODE_SCHWIMMEN");
-var MODE_SCHWIMMEN_246_val = MODE_SCHWIMMEN_246.GetFloat("VAL");
-var MOVING_247 = _world.GetObject(ObjectType.Skill,"MOVING");
-var MOVING_247_val = MOVING_247.GetFloat("VAL");
-if (MOVING_247_val == MODE_SCHWIMMEN_246_val)
+skip_238:
+var MODE_SCHWIMMEN_247 = _world.GetObject(ObjectType.Skill,"MODE_SCHWIMMEN");
+var MODE_SCHWIMMEN_247_val = MODE_SCHWIMMEN_247.GetFloat("VAL");
+var MOVING_248 = _world.GetObject(ObjectType.Skill,"MOVING");
+var MOVING_248_val = MOVING_248.GetFloat("VAL");
+if (MOVING_248_val == MODE_SCHWIMMEN_247_val)
 {
-var PLAYER_TILT_248 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
 var PLAYER_TILT_249 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
-var PLAYER_TILT_249_val = PLAYER_TILT_249.GetFloat("VAL");
-var WAVE_253 = _world.GetObject(ObjectType.Skill,"WAVE");
-var WAVE_253_val = WAVE_253.GetFloat("VAL");
-PLAYER_TILT_248.SetFloat("VAL",PLAYER_TILT_249_val+0.01f*WAVE_253_val);
+var PLAYER_TILT_250 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_250_val = PLAYER_TILT_250.GetFloat("VAL");
+var WAVE_254 = _world.GetObject(ObjectType.Skill,"WAVE");
+var WAVE_254_val = WAVE_254.GetFloat("VAL");
+PLAYER_TILT_249.SetFloat("VAL",PLAYER_TILT_250_val+0.01f*WAVE_254_val);
 }
-var MODE_TAUCHEN_254 = _world.GetObject(ObjectType.Skill,"MODE_TAUCHEN");
-var MODE_TAUCHEN_254_val = MODE_TAUCHEN_254.GetFloat("VAL");
-var MOVING_255 = _world.GetObject(ObjectType.Skill,"MOVING");
-var MOVING_255_val = MOVING_255.GetFloat("VAL");
-if (MOVING_255_val == MODE_TAUCHEN_254_val)
+var MODE_TAUCHEN_255 = _world.GetObject(ObjectType.Skill,"MODE_TAUCHEN");
+var MODE_TAUCHEN_255_val = MODE_TAUCHEN_255.GetFloat("VAL");
+var MOVING_256 = _world.GetObject(ObjectType.Skill,"MOVING");
+var MOVING_256_val = MOVING_256.GetFloat("VAL");
+if (MOVING_256_val == MODE_TAUCHEN_255_val)
 {
 goto NO_HTILT;
 }
-var JUMP_PHASE_257 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
-var JUMP_PHASE_257_val = JUMP_PHASE_257.GetFloat("VAL");
-if (JUMP_PHASE_257_val > 0f)
+var JUMP_PHASE_258 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
+var JUMP_PHASE_258_val = JUMP_PHASE_258.GetFloat("VAL");
+if (JUMP_PHASE_258_val > 0f)
 {
 goto NO_HTILT;
 }
-var TILT_DECREASE_259 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
-var TILT_DECREASE_259_val = TILT_DECREASE_259.GetFloat("VAL");
-if (TILT_DECREASE_259_val < 1f)
+var TILT_DECREASE_260 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
+var TILT_DECREASE_260_val = TILT_DECREASE_260.GetFloat("VAL");
+if (TILT_DECREASE_260_val < 1f)
 {
-var PLAYER_TILT_260 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
 var PLAYER_TILT_261 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
-var PLAYER_TILT_261_val = PLAYER_TILT_261.GetFloat("VAL");
-var PLAYER_HGT_266 = _world.GetObject(ObjectType.Skill,"PLAYER_HGT");
-var PLAYER_HGT_266_val = PLAYER_HGT_266.GetFloat("VAL");
-PLAYER_TILT_260.SetFloat("VAL",PLAYER_TILT_261_val+0.03f*(PLAYER_HGT_266_val+0.3f));
+var PLAYER_TILT_262 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_262_val = PLAYER_TILT_262.GetFloat("VAL");
+var PLAYER_HGT_267 = _world.GetObject(ObjectType.Skill,"PLAYER_HGT");
+var PLAYER_HGT_267_val = PLAYER_HGT_267.GetFloat("VAL");
+PLAYER_TILT_261.SetFloat("VAL",PLAYER_TILT_262_val+0.03f*(PLAYER_HGT_267_val+0.3f));
 }
 NO_HTILT:
-var RICHTER_271 = _world.GetObject(ObjectType.Skill,"RICHTER");
-var RICHTER_271_val = RICHTER_271.GetFloat("VAL");
-if (RICHTER_271_val == 0f)
+var RICHTER_272 = _world.GetObject(ObjectType.Skill,"RICHTER");
+var RICHTER_272_val = RICHTER_272.GetFloat("VAL");
+if (RICHTER_272_val == 0f)
 {
 goto NO_QUAKE;
 }
-var PLAYER_Z_272 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
 var PLAYER_Z_273 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
-var PLAYER_Z_273_val = PLAYER_Z_273.GetFloat("VAL");
-var RICHTER_275 = _world.GetObject(ObjectType.Skill,"RICHTER");
-var RICHTER_275_val = RICHTER_275.GetFloat("VAL");
-var RANDOM_2_278 = _world.GetObject(ObjectType.Skill,"RANDOM_2");
-var RANDOM_2_278_val = RANDOM_2_278.GetFloat("VAL");
-PLAYER_Z_272.SetFloat("VAL",PLAYER_Z_273_val+RICHTER_275_val*(RANDOM_2_278_val-0.5f));
-var RANDOM_1_282 = _world.GetObject(ObjectType.Skill,"RANDOM_1");
-var RANDOM_1_282_val = RANDOM_1_282.GetFloat("VAL");
-var RANDOM_2_283 = _world.GetObject(ObjectType.Skill,"RANDOM_2");
-RANDOM_2_283.SetFloat("VAL",RANDOM_1_282_val);
-var RANDOM_1_285 = _world.GetObject(ObjectType.Skill,"RANDOM_1");
-RANDOM_1_285.SetFloat("VAL",UnityEngine.Random.value);
+var PLAYER_Z_274 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
+var PLAYER_Z_274_val = PLAYER_Z_274.GetFloat("VAL");
+var RICHTER_276 = _world.GetObject(ObjectType.Skill,"RICHTER");
+var RICHTER_276_val = RICHTER_276.GetFloat("VAL");
+var RANDOM_2_279 = _world.GetObject(ObjectType.Skill,"RANDOM_2");
+var RANDOM_2_279_val = RANDOM_2_279.GetFloat("VAL");
+PLAYER_Z_273.SetFloat("VAL",PLAYER_Z_274_val+RICHTER_276_val*(RANDOM_2_279_val-0.5f));
+var RANDOM_1_283 = _world.GetObject(ObjectType.Skill,"RANDOM_1");
+var RANDOM_1_283_val = RANDOM_1_283.GetFloat("VAL");
+var RANDOM_2_284 = _world.GetObject(ObjectType.Skill,"RANDOM_2");
+RANDOM_2_284.SetFloat("VAL",RANDOM_1_283_val);
+var RANDOM_1_286 = _world.GetObject(ObjectType.Skill,"RANDOM_1");
+RANDOM_1_286.SetFloat("VAL",UnityEngine.Random.value);
 NO_QUAKE:
 yield break;
-var KEY_INS_287 = _world.GetObject(ObjectType.Skill,"KEY_INS");
-var KEY_INS_287_val = KEY_INS_287.GetFloat("VAL");
-if (KEY_INS_287_val > 0f)
+var KEY_INS_288 = _world.GetObject(ObjectType.Skill,"KEY_INS");
+var KEY_INS_288_val = KEY_INS_288.GetFloat("VAL");
+if (KEY_INS_288_val > 0f)
 {
-var PLAYER_ARC_288 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
 var PLAYER_ARC_289 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
-var PLAYER_ARC_289_val = PLAYER_ARC_289.GetFloat("VAL");
-PLAYER_ARC_288.SetFloat("VAL",PLAYER_ARC_289_val-0.1f);
+var PLAYER_ARC_290 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
+var PLAYER_ARC_290_val = PLAYER_ARC_290.GetFloat("VAL");
+PLAYER_ARC_289.SetFloat("VAL",PLAYER_ARC_290_val-0.1f);
 }
-var KEY_DEL_293 = _world.GetObject(ObjectType.Skill,"KEY_DEL");
-var KEY_DEL_293_val = KEY_DEL_293.GetFloat("VAL");
-if (KEY_DEL_293_val > 0f)
+var KEY_DEL_294 = _world.GetObject(ObjectType.Skill,"KEY_DEL");
+var KEY_DEL_294_val = KEY_DEL_294.GetFloat("VAL");
+if (KEY_DEL_294_val > 0f)
 {
-var PLAYER_ARC_294 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
 var PLAYER_ARC_295 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
-var PLAYER_ARC_295_val = PLAYER_ARC_295.GetFloat("VAL");
-PLAYER_ARC_294.SetFloat("VAL",PLAYER_ARC_295_val+0.1f);
+var PLAYER_ARC_296 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
+var PLAYER_ARC_296_val = PLAYER_ARC_296.GetFloat("VAL");
+PLAYER_ARC_295.SetFloat("VAL",PLAYER_ARC_296_val+0.1f);
 }
 yield break;
 }
@@ -1808,44 +1809,46 @@ var ADJUST_MODE_28 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
 var ADJUST_MODE_28_val = ADJUST_MODE_28.GetFloat("VAL");
 if (ADJUST_MODE_28_val != 5f)
 {
-//Unknown keyword: SKIP
+goto skip_29;
 }
-var ADJUST_TEX_30 = _world.GetSynonymObject("ADJUST_TEX");
-var ADJUST_X_31 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_X_31_val = ADJUST_X_31.GetFloat("VAL");
-ADJUST_TEX_30.SetFloat("SCALE_X",ADJUST_X_31_val/10f);
+var ADJUST_TEX_31 = _world.GetSynonymObject("ADJUST_TEX");
+var ADJUST_X_32 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_32_val = ADJUST_X_32.GetFloat("VAL");
+ADJUST_TEX_31.SetFloat("SCALE_X",ADJUST_X_32_val/10f);
 //Unknown keyword: SET_ALL
-var ADJUST_MODE_35 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_35_val = ADJUST_MODE_35.GetFloat("VAL");
-if (ADJUST_MODE_35_val == 6f)
+skip_29:
+var ADJUST_MODE_36 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_36_val = ADJUST_MODE_36.GetFloat("VAL");
+if (ADJUST_MODE_36_val == 6f)
 {
-var ADJUST_X_36 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_X_36_val = ADJUST_X_36.GetFloat("VAL");
-var ADJUST_WALL_38 = _world.GetSynonymObject("ADJUST_WALL");
-ADJUST_WALL_38.SetFloat("OFFSET_X",ADJUST_X_36_val);
+var ADJUST_X_37 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_37_val = ADJUST_X_37.GetFloat("VAL");
+var ADJUST_WALL_39 = _world.GetSynonymObject("ADJUST_WALL");
+ADJUST_WALL_39.SetFloat("OFFSET_X",ADJUST_X_37_val);
 }
-var ADJUST_MODE_40 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_40_val = ADJUST_MODE_40.GetFloat("VAL");
-if (ADJUST_MODE_40_val != 7f)
+var ADJUST_MODE_41 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_41_val = ADJUST_MODE_41.GetFloat("VAL");
+if (ADJUST_MODE_41_val != 7f)
 {
-//Unknown keyword: SKIP
+goto skip_42;
 }
-var ADJUST_TEX_42 = _world.GetSynonymObject("ADJUST_TEX");
-var ADJUST_X_43 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_X_43_val = ADJUST_X_43.GetFloat("VAL");
-ADJUST_TEX_42.SetFloat("AMBIENT",ADJUST_X_43_val/10f);
+var ADJUST_TEX_44 = _world.GetSynonymObject("ADJUST_TEX");
+var ADJUST_X_45 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_45_val = ADJUST_X_45.GetFloat("VAL");
+ADJUST_TEX_44.SetFloat("AMBIENT",ADJUST_X_45_val/10f);
 //Unknown keyword: SET_ALL
-var ADJUST_MODE_47 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_47_val = ADJUST_MODE_47.GetFloat("VAL");
-if (ADJUST_MODE_47_val == 8f)
+skip_42:
+var ADJUST_MODE_49 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_49_val = ADJUST_MODE_49.GetFloat("VAL");
+if (ADJUST_MODE_49_val == 8f)
 {
-var ADJUST_REG_49 = _world.GetSynonymObject("ADJUST_REG");
-var ADJUST_X_50 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_X_50_val = ADJUST_X_50.GetFloat("VAL");
-ADJUST_REG_49.SetFloat("AMBIENT",ADJUST_X_50_val/10f);
+var ADJUST_REG_51 = _world.GetSynonymObject("ADJUST_REG");
+var ADJUST_X_52 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_52_val = ADJUST_X_52.GetFloat("VAL");
+ADJUST_REG_51.SetFloat("AMBIENT",ADJUST_X_52_val/10f);
 }
-var RENDER_MODE_54 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
-RENDER_MODE_54.SetFloat("VAL",1f);
+var RENDER_MODE_56 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
+RENDER_MODE_56.SetFloat("VAL",1f);
 yield break;
 }
 public IEnumerator SET_ADJY(){
@@ -1898,35 +1901,37 @@ var ADJUST_MODE_28 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
 var ADJUST_MODE_28_val = ADJUST_MODE_28.GetFloat("VAL");
 if (ADJUST_MODE_28_val != 5f)
 {
-//Unknown keyword: SKIP
+goto skip_29;
 }
-var ADJUST_TEX_30 = _world.GetSynonymObject("ADJUST_TEX");
-var ADJUST_Y_31 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-var ADJUST_Y_31_val = ADJUST_Y_31.GetFloat("VAL");
-ADJUST_TEX_30.SetFloat("SCALE_Y",ADJUST_Y_31_val/10f);
+var ADJUST_TEX_31 = _world.GetSynonymObject("ADJUST_TEX");
+var ADJUST_Y_32 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_32_val = ADJUST_Y_32.GetFloat("VAL");
+ADJUST_TEX_31.SetFloat("SCALE_Y",ADJUST_Y_32_val/10f);
 //Unknown keyword: SET_ALL
-var ADJUST_MODE_35 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_35_val = ADJUST_MODE_35.GetFloat("VAL");
-if (ADJUST_MODE_35_val == 6f)
+skip_29:
+var ADJUST_MODE_36 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_36_val = ADJUST_MODE_36.GetFloat("VAL");
+if (ADJUST_MODE_36_val == 6f)
 {
-var ADJUST_WALL_37 = _world.GetSynonymObject("ADJUST_WALL");
-var ADJUST_Y_38 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-var ADJUST_Y_38_val = ADJUST_Y_38.GetFloat("VAL");
-ADJUST_WALL_37.SetFloat("POSITION",ADJUST_Y_38_val/10f);
+var ADJUST_WALL_38 = _world.GetSynonymObject("ADJUST_WALL");
+var ADJUST_Y_39 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_39_val = ADJUST_Y_39.GetFloat("VAL");
+ADJUST_WALL_38.SetFloat("POSITION",ADJUST_Y_39_val/10f);
 }
-var ADJUST_MODE_42 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_42_val = ADJUST_MODE_42.GetFloat("VAL");
-if (ADJUST_MODE_42_val != 7f)
+var ADJUST_MODE_43 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_43_val = ADJUST_MODE_43.GetFloat("VAL");
+if (ADJUST_MODE_43_val != 7f)
 {
-//Unknown keyword: SKIP
+goto skip_44;
 }
-var ADJUST_TEX_44 = _world.GetSynonymObject("ADJUST_TEX");
-var ADJUST_Y_45 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-var ADJUST_Y_45_val = ADJUST_Y_45.GetFloat("VAL");
-ADJUST_TEX_44.SetFloat("ALBEDO",ADJUST_Y_45_val/10f);
+var ADJUST_TEX_46 = _world.GetSynonymObject("ADJUST_TEX");
+var ADJUST_Y_47 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_47_val = ADJUST_Y_47.GetFloat("VAL");
+ADJUST_TEX_46.SetFloat("ALBEDO",ADJUST_Y_47_val/10f);
 //Unknown keyword: SET_ALL
-var RENDER_MODE_49 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
-RENDER_MODE_49.SetFloat("VAL",1f);
+skip_44:
+var RENDER_MODE_51 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
+RENDER_MODE_51.SetFloat("VAL",1f);
 yield break;
 }
 public IEnumerator SET_AMODE(){
