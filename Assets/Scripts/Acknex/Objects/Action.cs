@@ -485,7 +485,7 @@ namespace Acknex
                 CodeStringBuilder.Append($"var {propertyAssignmentVariable} = _world.GetObject(ObjectType.Skill,\"").Append(objectOrPropertyOrValue).AppendLine("\");");
                 if (outputGetter)
                 {
-                    var objectAssignmentVariable = $"temp_{_varCounter++}";
+                    var objectAssignmentVariable = $"{propertyAssignmentVariable}_val";//$"temp_{_varCounter++}";
                     CodeStringBuilder.AppendLine($"var {objectAssignmentVariable} = {propertyAssignmentVariable}.GetFloat(\"VAL\");");
                     return (objectAssignmentVariable, PropertyType.Float, ObjectType.Skill, propertyAssignmentVariable);
                 }

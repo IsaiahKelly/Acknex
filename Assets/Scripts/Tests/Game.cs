@@ -14,23 +14,23 @@ namespace Tests
         {
             yield return GET_ADJX();
             var ADJUST_X_1 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            var temp_2 = ADJUST_X_1.GetFloat("VAL");
-            var ADJUST_X_3 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            ADJUST_X_3.SetFloat("VAL", temp_2 + -1f);
+            var ADJUST_X_1_val = ADJUST_X_1.GetFloat("VAL");
+            var ADJUST_X_2 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            ADJUST_X_2.SetFloat("VAL", ADJUST_X_1_val + -1f);
             yield return SET_ADJX();
             yield return new WaitForTicks(8f);
             AGAIN:
-            var KEY_5_6 = _world.GetObject(ObjectType.Skill, "KEY_5");
-            var temp_7 = KEY_5_6.GetFloat("VAL");
-            if (temp_7 == 0f)
+            var KEY_5_5 = _world.GetObject(ObjectType.Skill, "KEY_5");
+            var KEY_5_5_val = KEY_5_5.GetFloat("VAL");
+            if (KEY_5_5_val == 0f)
             {
                 yield break;
             }
             yield return GET_ADJX();
-            var ADJUST_X_9 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            var temp_10 = ADJUST_X_9.GetFloat("VAL");
-            var ADJUST_X_11 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            ADJUST_X_11.SetFloat("VAL", temp_10 + -1f);
+            var ADJUST_X_7 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            var ADJUST_X_7_val = ADJUST_X_7.GetFloat("VAL");
+            var ADJUST_X_8 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            ADJUST_X_8.SetFloat("VAL", ADJUST_X_7_val + -1f);
             yield return SET_ADJX();
             yield return new WaitForTicks(2f);
             goto AGAIN;
@@ -40,23 +40,23 @@ namespace Tests
         {
             yield return GET_ADJX();
             var ADJUST_X_1 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            var temp_2 = ADJUST_X_1.GetFloat("VAL");
-            var ADJUST_X_3 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            ADJUST_X_3.SetFloat("VAL", temp_2 + 1f);
+            var ADJUST_X_1_val = ADJUST_X_1.GetFloat("VAL");
+            var ADJUST_X_2 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            ADJUST_X_2.SetFloat("VAL", ADJUST_X_1_val + 1f);
             yield return SET_ADJX();
             yield return new WaitForTicks(8f);
             AGAIN:
-            var KEY_6_6 = _world.GetObject(ObjectType.Skill, "KEY_6");
-            var temp_7 = KEY_6_6.GetFloat("VAL");
-            if (temp_7 == 0f)
+            var KEY_6_5 = _world.GetObject(ObjectType.Skill, "KEY_6");
+            var KEY_6_5_val = KEY_6_5.GetFloat("VAL");
+            if (KEY_6_5_val == 0f)
             {
                 yield break;
             }
             yield return GET_ADJX();
-            var ADJUST_X_9 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            var temp_10 = ADJUST_X_9.GetFloat("VAL");
-            var ADJUST_X_11 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            ADJUST_X_11.SetFloat("VAL", temp_10 + 1f);
+            var ADJUST_X_7 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            var ADJUST_X_7_val = ADJUST_X_7.GetFloat("VAL");
+            var ADJUST_X_8 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            ADJUST_X_8.SetFloat("VAL", ADJUST_X_7_val + 1f);
             yield return SET_ADJX();
             yield return new WaitForTicks(2f);
             goto AGAIN;
@@ -66,23 +66,23 @@ namespace Tests
         {
             yield return GET_ADJY();
             var ADJUST_Y_1 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            var temp_2 = ADJUST_Y_1.GetFloat("VAL");
-            var ADJUST_Y_3 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            ADJUST_Y_3.SetFloat("VAL", temp_2 + -1f);
+            var ADJUST_Y_1_val = ADJUST_Y_1.GetFloat("VAL");
+            var ADJUST_Y_2 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            ADJUST_Y_2.SetFloat("VAL", ADJUST_Y_1_val + -1f);
             yield return SET_ADJY();
             yield return new WaitForTicks(8f);
             AGAIN:
-            var KEY_7_6 = _world.GetObject(ObjectType.Skill, "KEY_7");
-            var temp_7 = KEY_7_6.GetFloat("VAL");
-            if (temp_7 == 0f)
+            var KEY_7_5 = _world.GetObject(ObjectType.Skill, "KEY_7");
+            var KEY_7_5_val = KEY_7_5.GetFloat("VAL");
+            if (KEY_7_5_val == 0f)
             {
                 yield break;
             }
             yield return GET_ADJY();
-            var ADJUST_Y_9 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            var temp_10 = ADJUST_Y_9.GetFloat("VAL");
-            var ADJUST_Y_11 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            ADJUST_Y_11.SetFloat("VAL", temp_10 + -1f);
+            var ADJUST_Y_7 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            var ADJUST_Y_7_val = ADJUST_Y_7.GetFloat("VAL");
+            var ADJUST_Y_8 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            ADJUST_Y_8.SetFloat("VAL", ADJUST_Y_7_val + -1f);
             yield return SET_ADJY();
             yield return new WaitForTicks(2f);
             goto AGAIN;
@@ -92,23 +92,23 @@ namespace Tests
         {
             yield return GET_ADJY();
             var ADJUST_Y_1 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            var temp_2 = ADJUST_Y_1.GetFloat("VAL");
-            var ADJUST_Y_3 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            ADJUST_Y_3.SetFloat("VAL", temp_2 + 1f);
+            var ADJUST_Y_1_val = ADJUST_Y_1.GetFloat("VAL");
+            var ADJUST_Y_2 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            ADJUST_Y_2.SetFloat("VAL", ADJUST_Y_1_val + 1f);
             yield return SET_ADJY();
             yield return new WaitForTicks(8f);
             AGAIN:
-            var KEY_8_6 = _world.GetObject(ObjectType.Skill, "KEY_8");
-            var temp_7 = KEY_8_6.GetFloat("VAL");
-            if (temp_7 == 0f)
+            var KEY_8_5 = _world.GetObject(ObjectType.Skill, "KEY_8");
+            var KEY_8_5_val = KEY_8_5.GetFloat("VAL");
+            if (KEY_8_5_val == 0f)
             {
                 yield break;
             }
             yield return GET_ADJY();
-            var ADJUST_Y_9 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            var temp_10 = ADJUST_Y_9.GetFloat("VAL");
-            var ADJUST_Y_11 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            ADJUST_Y_11.SetFloat("VAL", temp_10 + 1f);
+            var ADJUST_Y_7 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            var ADJUST_Y_7_val = ADJUST_Y_7.GetFloat("VAL");
+            var ADJUST_Y_8 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            ADJUST_Y_8.SetFloat("VAL", ADJUST_Y_7_val + 1f);
             yield return SET_ADJY();
             yield return new WaitForTicks(2f);
             goto AGAIN;
@@ -222,16 +222,16 @@ namespace Tests
         public IEnumerator DECREASE_VOL()
         {
             var SOUND_VOL_1 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
-            var temp_2 = SOUND_VOL_1.GetFloat("VAL");
-            var SOUND_VOL_3 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
-            SOUND_VOL_3.SetFloat("VAL", temp_2 + -0.2f);
+            var SOUND_VOL_1_val = SOUND_VOL_1.GetFloat("VAL");
+            var SOUND_VOL_2 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
+            SOUND_VOL_2.SetFloat("VAL", SOUND_VOL_1_val + -0.2f);
+            var MUSIC_VOL_4 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
+            var MUSIC_VOL_4_val = MUSIC_VOL_4.GetFloat("VAL");
             var MUSIC_VOL_5 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
-            var temp_6 = MUSIC_VOL_5.GetFloat("VAL");
-            var MUSIC_VOL_7 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
-            MUSIC_VOL_7.SetFloat("VAL", temp_6 + -0.1f);
-            var VOL_MINUS_8 = _world.AcknexObject.GetAcknexObject("VOL_MINUS");
-            var SCREEN_TXT_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            SCREEN_TXT_10.SetAcknexObject("STRING", VOL_MINUS_8);
+            MUSIC_VOL_5.SetFloat("VAL", MUSIC_VOL_4_val + -0.1f);
+            var VOL_MINUS_6 = _world.AcknexObject.GetAcknexObject("VOL_MINUS");
+            var SCREEN_TXT_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            SCREEN_TXT_8.SetAcknexObject("STRING", VOL_MINUS_6);
             yield return SHOW_MESSAGE();
             yield break;
             yield break;
@@ -299,14 +299,14 @@ namespace Tests
             FADE_1.SetFloat("VAL", 0f);
             LOOP:
             var FADE_3 = _world.GetObject(ObjectType.Skill, "FADE");
-            var temp_4 = FADE_3.GetFloat("VAL");
-            var FADE_5 = _world.GetObject(ObjectType.Skill, "FADE");
-            FADE_5.SetFloat("VAL", temp_4 + 0.1f);
+            var FADE_3_val = FADE_3.GetFloat("VAL");
+            var FADE_4 = _world.GetObject(ObjectType.Skill, "FADE");
+            FADE_4.SetFloat("VAL", FADE_3_val + 0.1f);
             //Unknown keyword: FADE_PAL
             yield return new WaitForCycles(1f);
-            var FADE_8 = _world.GetObject(ObjectType.Skill, "FADE");
-            var temp_9 = FADE_8.GetFloat("VAL");
-            if (temp_9 < 1f)
+            var FADE_7 = _world.GetObject(ObjectType.Skill, "FADE");
+            var FADE_7_val = FADE_7.GetFloat("VAL");
+            if (FADE_7_val < 1f)
             {
                 goto LOOP;
             }
@@ -319,14 +319,14 @@ namespace Tests
             FADE_1.SetFloat("VAL", 1f);
             LOOP:
             var FADE_3 = _world.GetObject(ObjectType.Skill, "FADE");
-            var temp_4 = FADE_3.GetFloat("VAL");
-            var FADE_5 = _world.GetObject(ObjectType.Skill, "FADE");
-            FADE_5.SetFloat("VAL", temp_4 + 0.1f);
+            var FADE_3_val = FADE_3.GetFloat("VAL");
+            var FADE_4 = _world.GetObject(ObjectType.Skill, "FADE");
+            FADE_4.SetFloat("VAL", FADE_3_val + 0.1f);
             //Unknown keyword: FADE_PAL
             yield return new WaitForCycles(1f);
-            var FADE_8 = _world.GetObject(ObjectType.Skill, "FADE");
-            var temp_9 = FADE_8.GetFloat("VAL");
-            if (temp_9 < 1f)
+            var FADE_7 = _world.GetObject(ObjectType.Skill, "FADE");
+            var FADE_7_val = FADE_7.GetFloat("VAL");
+            if (FADE_7_val < 1f)
             {
                 goto LOOP;
             }
@@ -344,184 +344,184 @@ namespace Tests
         public IEnumerator GET_ADJX()
         {
             var ADJUST_MODE_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_2 = ADJUST_MODE_1.GetFloat("VAL");
-            if (temp_2 == 0f)
+            var ADJUST_MODE_1_val = ADJUST_MODE_1.GetFloat("VAL");
+            if (ADJUST_MODE_1_val == 0f)
             {
-                var ADJUST_WALL_4 = _world.GetSynonymObject("ADJUST_WALL");
-                var temp_5 = ADJUST_WALL_4.GetFloat("OFFSET_X");
-                var ADJUST_X_6 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                ADJUST_X_6.SetFloat("VAL", temp_5);
+                var ADJUST_WALL_3 = _world.GetSynonymObject("ADJUST_WALL");
+                var temp_4 = ADJUST_WALL_3.GetFloat("OFFSET_X");
+                var ADJUST_X_5 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                ADJUST_X_5.SetFloat("VAL", temp_4);
             }
-            var ADJUST_MODE_8 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_9 = ADJUST_MODE_8.GetFloat("VAL");
-            if (temp_9 == 1f)
+            var ADJUST_MODE_7 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_7_val = ADJUST_MODE_7.GetFloat("VAL");
+            if (ADJUST_MODE_7_val == 1f)
             {
-                var ADJUST_REG_11 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_12 = ADJUST_REG_11.GetFloat("FLOOR_OFFS_X");
-                var ADJUST_X_13 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                ADJUST_X_13.SetFloat("VAL", temp_12);
+                var ADJUST_REG_9 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_10 = ADJUST_REG_9.GetFloat("FLOOR_OFFS_X");
+                var ADJUST_X_11 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                ADJUST_X_11.SetFloat("VAL", temp_10);
             }
-            var ADJUST_MODE_15 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_16 = ADJUST_MODE_15.GetFloat("VAL");
-            if (temp_16 == 2f)
+            var ADJUST_MODE_13 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_13_val = ADJUST_MODE_13.GetFloat("VAL");
+            if (ADJUST_MODE_13_val == 2f)
             {
-                var ADJUST_REG_18 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_19 = ADJUST_REG_18.GetFloat("CEIL_OFFS_X");
+                var ADJUST_REG_15 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_16 = ADJUST_REG_15.GetFloat("CEIL_OFFS_X");
+                var ADJUST_X_17 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                ADJUST_X_17.SetFloat("VAL", temp_16);
+            }
+            var ADJUST_MODE_19 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_19_val = ADJUST_MODE_19.GetFloat("VAL");
+            if (ADJUST_MODE_19_val == 3f)
+            {
                 var ADJUST_X_20 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                ADJUST_X_20.SetFloat("VAL", temp_19);
+                var ADJUST_REG_22 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_23 = ADJUST_REG_22.GetFloat("FLOOR_HGT");
+                ADJUST_X_20.SetFloat("VAL", temp_23 * 10f);
             }
-            var ADJUST_MODE_22 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_23 = ADJUST_MODE_22.GetFloat("VAL");
-            if (temp_23 == 3f)
+            var ADJUST_MODE_27 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_27_val = ADJUST_MODE_27.GetFloat("VAL");
+            if (ADJUST_MODE_27_val == 4f)
             {
-                var ADJUST_X_24 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var ADJUST_REG_26 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_27 = ADJUST_REG_26.GetFloat("FLOOR_HGT");
-                ADJUST_X_24.SetFloat("VAL", temp_27 * 10f);
+                var ADJUST_TEX_29 = _world.GetSynonymObject("ADJUST_TEX");
+                var temp_30 = ADJUST_TEX_29.GetFloat("POS_X");
+                var ADJUST_X_31 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                ADJUST_X_31.SetFloat("VAL", temp_30);
             }
-            var ADJUST_MODE_31 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_32 = ADJUST_MODE_31.GetFloat("VAL");
-            if (temp_32 == 4f)
+            var ADJUST_MODE_33 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_33_val = ADJUST_MODE_33.GetFloat("VAL");
+            if (ADJUST_MODE_33_val == 5f)
             {
-                var ADJUST_TEX_34 = _world.GetSynonymObject("ADJUST_TEX");
-                var temp_35 = ADJUST_TEX_34.GetFloat("POS_X");
-                var ADJUST_X_36 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                ADJUST_X_36.SetFloat("VAL", temp_35);
+                var ADJUST_X_34 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                var ADJUST_TEX_36 = _world.GetSynonymObject("ADJUST_TEX");
+                var temp_37 = ADJUST_TEX_36.GetFloat("SCALE_X");
+                ADJUST_X_34.SetFloat("VAL", temp_37 * 10f);
             }
-            var ADJUST_MODE_38 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_39 = ADJUST_MODE_38.GetFloat("VAL");
-            if (temp_39 == 5f)
+            var ADJUST_MODE_41 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_41_val = ADJUST_MODE_41.GetFloat("VAL");
+            if (ADJUST_MODE_41_val == 6f)
             {
-                var ADJUST_X_40 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var ADJUST_TEX_42 = _world.GetSynonymObject("ADJUST_TEX");
-                var temp_43 = ADJUST_TEX_42.GetFloat("SCALE_X");
-                ADJUST_X_40.SetFloat("VAL", temp_43 * 10f);
+                var ADJUST_WALL_43 = _world.GetSynonymObject("ADJUST_WALL");
+                var temp_44 = ADJUST_WALL_43.GetFloat("OFFSET_X");
+                var ADJUST_X_45 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                ADJUST_X_45.SetFloat("VAL", temp_44);
             }
             var ADJUST_MODE_47 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_48 = ADJUST_MODE_47.GetFloat("VAL");
-            if (temp_48 == 6f)
+            var ADJUST_MODE_47_val = ADJUST_MODE_47.GetFloat("VAL");
+            if (ADJUST_MODE_47_val == 7f)
             {
-                var ADJUST_WALL_50 = _world.GetSynonymObject("ADJUST_WALL");
-                var temp_51 = ADJUST_WALL_50.GetFloat("OFFSET_X");
-                var ADJUST_X_52 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                ADJUST_X_52.SetFloat("VAL", temp_51);
+                var ADJUST_X_48 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                var ADJUST_TEX_50 = _world.GetSynonymObject("ADJUST_TEX");
+                var temp_51 = ADJUST_TEX_50.GetFloat("AMBIENT");
+                ADJUST_X_48.SetFloat("VAL", temp_51 * 10f);
             }
-            var ADJUST_MODE_54 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_55 = ADJUST_MODE_54.GetFloat("VAL");
-            if (temp_55 == 7f)
+            var ADJUST_MODE_55 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_55_val = ADJUST_MODE_55.GetFloat("VAL");
+            if (ADJUST_MODE_55_val == 8f)
             {
                 var ADJUST_X_56 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var ADJUST_TEX_58 = _world.GetSynonymObject("ADJUST_TEX");
-                var temp_59 = ADJUST_TEX_58.GetFloat("AMBIENT");
+                var ADJUST_REG_58 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_59 = ADJUST_REG_58.GetFloat("AMBIENT");
                 ADJUST_X_56.SetFloat("VAL", temp_59 * 10f);
-            }
-            var ADJUST_MODE_63 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_64 = ADJUST_MODE_63.GetFloat("VAL");
-            if (temp_64 == 8f)
-            {
-                var ADJUST_X_65 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var ADJUST_REG_67 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_68 = ADJUST_REG_67.GetFloat("AMBIENT");
-                ADJUST_X_65.SetFloat("VAL", temp_68 * 10f);
             }
             yield break;
         }
         public IEnumerator GET_ADJY()
         {
             var ADJUST_MODE_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_2 = ADJUST_MODE_1.GetFloat("VAL");
-            if (temp_2 == 0f)
+            var ADJUST_MODE_1_val = ADJUST_MODE_1.GetFloat("VAL");
+            if (ADJUST_MODE_1_val == 0f)
             {
-                var ADJUST_WALL_4 = _world.GetSynonymObject("ADJUST_WALL");
-                var temp_5 = ADJUST_WALL_4.GetFloat("OFFSET_Y");
-                var ADJUST_Y_6 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                ADJUST_Y_6.SetFloat("VAL", temp_5);
+                var ADJUST_WALL_3 = _world.GetSynonymObject("ADJUST_WALL");
+                var temp_4 = ADJUST_WALL_3.GetFloat("OFFSET_Y");
+                var ADJUST_Y_5 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                ADJUST_Y_5.SetFloat("VAL", temp_4);
             }
-            var ADJUST_MODE_8 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_9 = ADJUST_MODE_8.GetFloat("VAL");
-            if (temp_9 == 1f)
+            var ADJUST_MODE_7 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_7_val = ADJUST_MODE_7.GetFloat("VAL");
+            if (ADJUST_MODE_7_val == 1f)
             {
-                var ADJUST_REG_11 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_12 = ADJUST_REG_11.GetFloat("FLOOR_OFFS_Y");
-                var ADJUST_Y_13 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                ADJUST_Y_13.SetFloat("VAL", temp_12);
+                var ADJUST_REG_9 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_10 = ADJUST_REG_9.GetFloat("FLOOR_OFFS_Y");
+                var ADJUST_Y_11 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                ADJUST_Y_11.SetFloat("VAL", temp_10);
             }
-            var ADJUST_MODE_15 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_16 = ADJUST_MODE_15.GetFloat("VAL");
-            if (temp_16 == 2f)
+            var ADJUST_MODE_13 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_13_val = ADJUST_MODE_13.GetFloat("VAL");
+            if (ADJUST_MODE_13_val == 2f)
             {
-                var ADJUST_REG_18 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_19 = ADJUST_REG_18.GetFloat("CEIL_OFFS_Y");
+                var ADJUST_REG_15 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_16 = ADJUST_REG_15.GetFloat("CEIL_OFFS_Y");
+                var ADJUST_Y_17 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                ADJUST_Y_17.SetFloat("VAL", temp_16);
+            }
+            var ADJUST_MODE_19 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_19_val = ADJUST_MODE_19.GetFloat("VAL");
+            if (ADJUST_MODE_19_val == 3f)
+            {
                 var ADJUST_Y_20 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                ADJUST_Y_20.SetFloat("VAL", temp_19);
+                var ADJUST_REG_22 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_23 = ADJUST_REG_22.GetFloat("CEIL_HGT");
+                ADJUST_Y_20.SetFloat("VAL", temp_23 * 10f);
             }
-            var ADJUST_MODE_22 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_23 = ADJUST_MODE_22.GetFloat("VAL");
-            if (temp_23 == 3f)
+            var ADJUST_MODE_27 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_27_val = ADJUST_MODE_27.GetFloat("VAL");
+            if (ADJUST_MODE_27_val == 4f)
             {
-                var ADJUST_Y_24 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var ADJUST_REG_26 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_27 = ADJUST_REG_26.GetFloat("CEIL_HGT");
-                ADJUST_Y_24.SetFloat("VAL", temp_27 * 10f);
+                var ADJUST_TEX_29 = _world.GetSynonymObject("ADJUST_TEX");
+                var temp_30 = ADJUST_TEX_29.GetFloat("POS_Y");
+                var ADJUST_Y_31 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                ADJUST_Y_31.SetFloat("VAL", temp_30);
             }
-            var ADJUST_MODE_31 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_32 = ADJUST_MODE_31.GetFloat("VAL");
-            if (temp_32 == 4f)
+            var ADJUST_MODE_33 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_33_val = ADJUST_MODE_33.GetFloat("VAL");
+            if (ADJUST_MODE_33_val == 5f)
             {
-                var ADJUST_TEX_34 = _world.GetSynonymObject("ADJUST_TEX");
-                var temp_35 = ADJUST_TEX_34.GetFloat("POS_Y");
-                var ADJUST_Y_36 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                ADJUST_Y_36.SetFloat("VAL", temp_35);
+                var ADJUST_Y_34 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                var ADJUST_TEX_36 = _world.GetSynonymObject("ADJUST_TEX");
+                var temp_37 = ADJUST_TEX_36.GetFloat("SCALE_Y");
+                ADJUST_Y_34.SetFloat("VAL", temp_37 * 10f);
             }
-            var ADJUST_MODE_38 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_39 = ADJUST_MODE_38.GetFloat("VAL");
-            if (temp_39 == 5f)
+            var ADJUST_MODE_41 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_41_val = ADJUST_MODE_41.GetFloat("VAL");
+            if (ADJUST_MODE_41_val == 6f)
             {
-                var ADJUST_Y_40 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var ADJUST_TEX_42 = _world.GetSynonymObject("ADJUST_TEX");
-                var temp_43 = ADJUST_TEX_42.GetFloat("SCALE_Y");
-                ADJUST_Y_40.SetFloat("VAL", temp_43 * 10f);
+                var ADJUST_Y_42 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                var ADJUST_WALL_44 = _world.GetSynonymObject("ADJUST_WALL");
+                var temp_45 = ADJUST_WALL_44.GetFloat("POSITION");
+                ADJUST_Y_42.SetFloat("VAL", temp_45 * 10f);
             }
-            var ADJUST_MODE_47 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_48 = ADJUST_MODE_47.GetFloat("VAL");
-            if (temp_48 == 6f)
+            var ADJUST_MODE_49 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_49_val = ADJUST_MODE_49.GetFloat("VAL");
+            if (ADJUST_MODE_49_val == 7f)
             {
-                var ADJUST_Y_49 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var ADJUST_WALL_51 = _world.GetSynonymObject("ADJUST_WALL");
-                var temp_52 = ADJUST_WALL_51.GetFloat("POSITION");
-                ADJUST_Y_49.SetFloat("VAL", temp_52 * 10f);
+                var ADJUST_Y_50 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                var ADJUST_TEX_52 = _world.GetSynonymObject("ADJUST_TEX");
+                var temp_53 = ADJUST_TEX_52.GetFloat("ALBEDO");
+                ADJUST_Y_50.SetFloat("VAL", temp_53 * 10f);
             }
-            var ADJUST_MODE_56 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_57 = ADJUST_MODE_56.GetFloat("VAL");
-            if (temp_57 == 7f)
+            var ADJUST_MODE_57 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_57_val = ADJUST_MODE_57.GetFloat("VAL");
+            if (ADJUST_MODE_57_val == 8f)
             {
-                var ADJUST_Y_58 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var ADJUST_TEX_60 = _world.GetSynonymObject("ADJUST_TEX");
-                var temp_61 = ADJUST_TEX_60.GetFloat("ALBEDO");
-                ADJUST_Y_58.SetFloat("VAL", temp_61 * 10f);
-            }
-            var ADJUST_MODE_65 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_66 = ADJUST_MODE_65.GetFloat("VAL");
-            if (temp_66 == 8f)
-            {
-                var ADJUST_Y_68 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                ADJUST_Y_68.SetFloat("VAL", 0f);
+                var ADJUST_Y_59 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                ADJUST_Y_59.SetFloat("VAL", 0f);
             }
             yield break;
         }
         public IEnumerator INCREASE_VOL()
         {
             var SOUND_VOL_1 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
-            var temp_2 = SOUND_VOL_1.GetFloat("VAL");
-            var SOUND_VOL_3 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
-            SOUND_VOL_3.SetFloat("VAL", temp_2 + 0.2f);
+            var SOUND_VOL_1_val = SOUND_VOL_1.GetFloat("VAL");
+            var SOUND_VOL_2 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
+            SOUND_VOL_2.SetFloat("VAL", SOUND_VOL_1_val + 0.2f);
+            var MUSIC_VOL_4 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
+            var MUSIC_VOL_4_val = MUSIC_VOL_4.GetFloat("VAL");
             var MUSIC_VOL_5 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
-            var temp_6 = MUSIC_VOL_5.GetFloat("VAL");
-            var MUSIC_VOL_7 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
-            MUSIC_VOL_7.SetFloat("VAL", temp_6 + 0.1f);
-            var VOL_PLUS_8 = _world.AcknexObject.GetAcknexObject("VOL_PLUS");
-            var SCREEN_TXT_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            SCREEN_TXT_10.SetAcknexObject("STRING", VOL_PLUS_8);
+            MUSIC_VOL_5.SetFloat("VAL", MUSIC_VOL_4_val + 0.1f);
+            var VOL_PLUS_6 = _world.AcknexObject.GetAcknexObject("VOL_PLUS");
+            var SCREEN_TXT_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            SCREEN_TXT_8.SetAcknexObject("STRING", VOL_PLUS_6);
             yield return SHOW_MESSAGE();
             yield break;
             yield break;
@@ -534,9 +534,9 @@ namespace Tests
         public IEnumerator INIT_MOVE()
         {
             var MODE_GEHEN_0 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
-            var temp_1 = MODE_GEHEN_0.GetFloat("VAL");
-            var MOVING_2 = _world.GetObject(ObjectType.Skill, "MOVING");
-            MOVING_2.SetFloat("VAL", temp_1);
+            var MODE_GEHEN_0_val = MODE_GEHEN_0.GetFloat("VAL");
+            var MOVING_1 = _world.GetObject(ObjectType.Skill, "MOVING");
+            MOVING_1.SetFloat("VAL", MODE_GEHEN_0_val);
             yield return SET_MOVING();
             yield break;
         }
@@ -599,26 +599,26 @@ namespace Tests
             RUMPELKAMMERSOCKEL_5.SetFloat("FLOOR_HGT", temp_3 + -0.3f);
             //Unknown keyword: PLAY_SOUND
             var PLAYER_Z_7 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            var temp_8 = PLAYER_Z_7.GetFloat("VAL");
-            var PLAYER_Z_9 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            PLAYER_Z_9.SetFloat("VAL", temp_8 + -0.3f);
-            var RENDER_MODE_11 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
-            RENDER_MODE_11.SetFloat("VAL", 1f);
-            var RUMPELKAMMERSOCKEL_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            var temp_15 = RUMPELKAMMERSOCKEL_14.GetFloat("FLOOR_HGT");
-            if (temp_15 > 0f)
+            var PLAYER_Z_7_val = PLAYER_Z_7.GetFloat("VAL");
+            var PLAYER_Z_8 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            PLAYER_Z_8.SetFloat("VAL", PLAYER_Z_7_val + -0.3f);
+            var RENDER_MODE_10 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
+            RENDER_MODE_10.SetFloat("VAL", 1f);
+            var RUMPELKAMMERSOCKEL_13 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            var temp_14 = RUMPELKAMMERSOCKEL_13.GetFloat("FLOOR_HGT");
+            if (temp_14 > 0f)
             {
                 yield break;
             }
-            var RUMPELKAMMERSOCKEL_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            RUMPELKAMMERSOCKEL_18.SetFloat("FLOOR_HGT", 0f);
-            var RUMPELKAMMERSOCKEL_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            RUMPELKAMMERSOCKEL_21.SetString("EACH_TICK", null);
-            var ARSCHTRITT_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ARSCHTRITT");
-            var RUMPELKAMMERSOCKEL_24 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            RUMPELKAMMERSOCKEL_24.SetString("IF_ENTER", ARSCHTRITT_22.GetString("NAME"));
-            var DUNKELGANGSPERRE_27 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"DUNKELGANGSPERRE");
-            DUNKELGANGSPERRE_27.SetFloat("CEIL_HGT", 6f);
+            var RUMPELKAMMERSOCKEL_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            RUMPELKAMMERSOCKEL_17.SetFloat("FLOOR_HGT", 0f);
+            var RUMPELKAMMERSOCKEL_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            RUMPELKAMMERSOCKEL_20.SetString("EACH_TICK", null);
+            var ARSCHTRITT_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ARSCHTRITT");
+            var RUMPELKAMMERSOCKEL_23 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            RUMPELKAMMERSOCKEL_23.SetString("IF_ENTER", ARSCHTRITT_21.GetString("NAME"));
+            var DUNKELGANGSPERRE_26 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"DUNKELGANGSPERRE");
+            DUNKELGANGSPERRE_26.SetFloat("CEIL_HGT", 6f);
             yield break;
         }
         public IEnumerator LIFT_UP()
@@ -628,25 +628,25 @@ namespace Tests
             var RUMPELKAMMERSOCKEL_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
             RUMPELKAMMERSOCKEL_5.SetFloat("FLOOR_HGT", temp_3 + 0.3f);
             var PLAYER_Z_7 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            var temp_8 = PLAYER_Z_7.GetFloat("VAL");
-            var PLAYER_Z_9 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            PLAYER_Z_9.SetFloat("VAL", temp_8 + 0.3f);
-            var RENDER_MODE_11 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
-            RENDER_MODE_11.SetFloat("VAL", 1f);
+            var PLAYER_Z_7_val = PLAYER_Z_7.GetFloat("VAL");
+            var PLAYER_Z_8 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            PLAYER_Z_8.SetFloat("VAL", PLAYER_Z_7_val + 0.3f);
+            var RENDER_MODE_10 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
+            RENDER_MODE_10.SetFloat("VAL", 1f);
             //Unknown keyword: PLAY_SOUND
-            var RUMPELKAMMERSOCKEL_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            var temp_15 = RUMPELKAMMERSOCKEL_14.GetFloat("FLOOR_HGT");
-            if (temp_15 < 15.5f)
+            var RUMPELKAMMERSOCKEL_13 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            var temp_14 = RUMPELKAMMERSOCKEL_13.GetFloat("FLOOR_HGT");
+            if (temp_14 < 15.5f)
             {
                 yield break;
             }
-            var RUMPELKAMMERSOCKEL_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            RUMPELKAMMERSOCKEL_18.SetFloat("FLOOR_HGT", 15.5f);
-            var RUMPELKAMMERSOCKEL_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            RUMPELKAMMERSOCKEL_21.SetString("EACH_TICK", null);
-            var FALLTUER_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"FALLTUER");
-            var RUMPELKAMMERSOCKEL_24 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            RUMPELKAMMERSOCKEL_24.SetString("IF_ENTER", FALLTUER_22.GetString("NAME"));
+            var RUMPELKAMMERSOCKEL_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            RUMPELKAMMERSOCKEL_17.SetFloat("FLOOR_HGT", 15.5f);
+            var RUMPELKAMMERSOCKEL_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            RUMPELKAMMERSOCKEL_20.SetString("EACH_TICK", null);
+            var FALLTUER_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"FALLTUER");
+            var RUMPELKAMMERSOCKEL_23 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            RUMPELKAMMERSOCKEL_23.SetString("IF_ENTER", FALLTUER_21.GetString("NAME"));
             yield break;
         }
         public IEnumerator LOAD_GAME()
@@ -743,22 +743,22 @@ namespace Tests
         public IEnumerator LOAD_QUICK()
         {
             var SLOT_1 = _world.GetObject(ObjectType.Skill, "SLOT");
-            var temp_2 = SLOT_1.GetFloat("VAL");
-            if (temp_2 == 0f)
+            var SLOT_1_val = SLOT_1.GetFloat("VAL");
+            if (SLOT_1_val == 0f)
             {
                 yield return LOAD_MENU();
                 yield break;
             }
             yield return CLEAR_MENU();
-            var QLOAD_YESNO_3 = _world.AcknexObject.GetAcknexObject("QLOAD_YESNO");
-            var SCREEN_TXT_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            SCREEN_TXT_5.SetAcknexObject("STRING", QLOAD_YESNO_3);
-            var LOAD_GAME_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_GAME");
-            _world.AcknexObject.SetString("IF_J", LOAD_GAME_6.GetString("NAME"));
-            var LOAD_GAME_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_GAME");
-            _world.AcknexObject.SetString("IF_Y", LOAD_GAME_8.GetString("NAME"));
-            var LOAD_GAME_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_GAME");
-            _world.AcknexObject.SetString("IF_Z", LOAD_GAME_10.GetString("NAME"));
+            var QLOAD_YESNO_2 = _world.AcknexObject.GetAcknexObject("QLOAD_YESNO");
+            var SCREEN_TXT_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            SCREEN_TXT_4.SetAcknexObject("STRING", QLOAD_YESNO_2);
+            var LOAD_GAME_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_GAME");
+            _world.AcknexObject.SetString("IF_J", LOAD_GAME_5.GetString("NAME"));
+            var LOAD_GAME_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_GAME");
+            _world.AcknexObject.SetString("IF_Y", LOAD_GAME_7.GetString("NAME"));
+            var LOAD_GAME_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_GAME");
+            _world.AcknexObject.SetString("IF_Z", LOAD_GAME_9.GetString("NAME"));
             yield return WAIT_YESNO();
             yield break;
         }
@@ -801,59 +801,59 @@ namespace Tests
             //Unknown keyword: PLAY_SOUND
             yield return SET_MENU();
             var MENU_POS_1 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_2 = MENU_POS_1.GetFloat("VAL");
-            var MENU_POS_3 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            MENU_POS_3.SetFloat("VAL", temp_2 + 1f);
+            var MENU_POS_1_val = MENU_POS_1.GetFloat("VAL");
+            var MENU_POS_2 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            MENU_POS_2.SetFloat("VAL", MENU_POS_1_val + 1f);
             yield break;
         }
         public IEnumerator MENU_EXEC()
         {
             //Unknown keyword: PLAY_SOUND
             var MENU_POS_0 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_1 = MENU_POS_0.GetFloat("VAL");
-            if (temp_1 > MENU_POS_0.GetFloat("MAX"))
+            var MENU_POS_0_val = MENU_POS_0.GetFloat("VAL");
+            if (MENU_POS_0_val > MENU_POS_0.GetFloat("MAX"))
             {
                 yield return CLEAR_MENU();
                 yield break;
             }
-            var MENU_POS_3 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_4 = MENU_POS_3.GetFloat("VAL");
-            if (temp_4 == 1f)
+            var MENU_POS_2 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var MENU_POS_2_val = MENU_POS_2.GetFloat("VAL");
+            if (MENU_POS_2_val == 1f)
             {
                 yield return _world.CallSynonymAction("MENU1_ACT");
                 yield break;
             }
-            var MENU_POS_6 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_7 = MENU_POS_6.GetFloat("VAL");
-            if (temp_7 == 2f)
+            var MENU_POS_4 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var MENU_POS_4_val = MENU_POS_4.GetFloat("VAL");
+            if (MENU_POS_4_val == 2f)
             {
                 yield return _world.CallSynonymAction("MENU2_ACT");
                 yield break;
             }
-            var MENU_POS_9 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_10 = MENU_POS_9.GetFloat("VAL");
-            if (temp_10 == 3f)
+            var MENU_POS_6 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var MENU_POS_6_val = MENU_POS_6.GetFloat("VAL");
+            if (MENU_POS_6_val == 3f)
             {
                 yield return _world.CallSynonymAction("MENU3_ACT");
                 yield break;
             }
-            var MENU_POS_12 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_13 = MENU_POS_12.GetFloat("VAL");
-            if (temp_13 == 4f)
+            var MENU_POS_8 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var MENU_POS_8_val = MENU_POS_8.GetFloat("VAL");
+            if (MENU_POS_8_val == 4f)
             {
                 yield return _world.CallSynonymAction("MENU4_ACT");
                 yield break;
             }
-            var MENU_POS_15 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_16 = MENU_POS_15.GetFloat("VAL");
-            if (temp_16 == 5f)
+            var MENU_POS_10 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var MENU_POS_10_val = MENU_POS_10.GetFloat("VAL");
+            if (MENU_POS_10_val == 5f)
             {
                 yield return _world.CallSynonymAction("MENU5_ACT");
                 yield break;
             }
-            var MENU_POS_18 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_19 = MENU_POS_18.GetFloat("VAL");
-            if (temp_19 == 6f)
+            var MENU_POS_12 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var MENU_POS_12_val = MENU_POS_12.GetFloat("VAL");
+            if (MENU_POS_12_val == 6f)
             {
                 yield return _world.CallSynonymAction("MENU6_ACT");
                 yield break;
@@ -865,541 +865,541 @@ namespace Tests
             //Unknown keyword: PLAY_SOUND
             yield return SET_MENU();
             var MENU_POS_1 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_2 = MENU_POS_1.GetFloat("VAL");
-            var MENU_POS_3 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            MENU_POS_3.SetFloat("VAL", temp_2 + -1f);
+            var MENU_POS_1_val = MENU_POS_1.GetFloat("VAL");
+            var MENU_POS_2 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            MENU_POS_2.SetFloat("VAL", MENU_POS_1_val + -1f);
             yield break;
         }
         public IEnumerator MOVE_ME()
         {
             START:
             var MODE_GEHEN_0 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
-            var temp_1 = MODE_GEHEN_0.GetFloat("VAL");
-            var MOVING_2 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_3 = MOVING_2.GetFloat("VAL");
-            if (temp_3 == temp_1)
+            var MODE_GEHEN_0_val = MODE_GEHEN_0.GetFloat("VAL");
+            var MOVING_1 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_1_val = MOVING_1.GetFloat("VAL");
+            if (MOVING_1_val == MODE_GEHEN_0_val)
             {
-                var PLAYER_SIZE_4 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
-                var MY_SIZE_5 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
-                var temp_6 = MY_SIZE_5.GetFloat("VAL");
-                var WALK_10 = _world.GetObject(ObjectType.Skill, "WALK");
-                var temp_11 = WALK_10.GetFloat("VAL");
-                PLAYER_SIZE_4.SetFloat("VAL", temp_6 + 0.2f * temp_11);
+                var PLAYER_SIZE_2 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
+                var MY_SIZE_3 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
+                var MY_SIZE_3_val = MY_SIZE_3.GetFloat("VAL");
+                var WALK_7 = _world.GetObject(ObjectType.Skill, "WALK");
+                var WALK_7_val = WALK_7.GetFloat("VAL");
+                PLAYER_SIZE_2.SetFloat("VAL", MY_SIZE_3_val + 0.2f * WALK_7_val);
             }
-            var MODE_SCHWIMMEN_12 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
-            var temp_13 = MODE_SCHWIMMEN_12.GetFloat("VAL");
-            var MOVING_14 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_15 = MOVING_14.GetFloat("VAL");
-            if (temp_15 == temp_13)
+            var MODE_SCHWIMMEN_8 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
+            var MODE_SCHWIMMEN_8_val = MODE_SCHWIMMEN_8.GetFloat("VAL");
+            var MOVING_9 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_9_val = MOVING_9.GetFloat("VAL");
+            if (MOVING_9_val == MODE_SCHWIMMEN_8_val)
             {
-                var PLAYER_SIZE_16 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
-                var WAVE_21 = _world.GetObject(ObjectType.Skill, "WAVE");
-                var temp_22 = WAVE_21.GetFloat("VAL");
-                PLAYER_SIZE_16.SetFloat("VAL", 1f + 0.12f * temp_22);
+                var PLAYER_SIZE_10 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
+                var WAVE_15 = _world.GetObject(ObjectType.Skill, "WAVE");
+                var WAVE_15_val = WAVE_15.GetFloat("VAL");
+                PLAYER_SIZE_10.SetFloat("VAL", 1f + 0.12f * WAVE_15_val);
             }
-            var MODE_TAUCHEN_23 = _world.GetObject(ObjectType.Skill, "MODE_TAUCHEN");
-            var temp_24 = MODE_TAUCHEN_23.GetFloat("VAL");
-            var MOVING_25 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_26 = MOVING_25.GetFloat("VAL");
-            if (temp_26 == temp_24)
+            var MODE_TAUCHEN_16 = _world.GetObject(ObjectType.Skill, "MODE_TAUCHEN");
+            var MODE_TAUCHEN_16_val = MODE_TAUCHEN_16.GetFloat("VAL");
+            var MOVING_17 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_17_val = MOVING_17.GetFloat("VAL");
+            if (MOVING_17_val == MODE_TAUCHEN_16_val)
             {
-                var PLAYER_SIZE_27 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
-                PLAYER_SIZE_27.SetFloat("VAL", 1f);
+                var PLAYER_SIZE_18 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
+                PLAYER_SIZE_18.SetFloat("VAL", 1f);
             }
-            var MODE_GEHEN_29 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
-            var temp_30 = MODE_GEHEN_29.GetFloat("VAL");
-            var MOVING_31 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_32 = MOVING_31.GetFloat("VAL");
-            if (temp_32 == temp_30)
+            var MODE_GEHEN_20 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
+            var MODE_GEHEN_20_val = MODE_GEHEN_20.GetFloat("VAL");
+            var MOVING_21 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_21_val = MOVING_21.GetFloat("VAL");
+            if (MOVING_21_val == MODE_GEHEN_20_val)
             {
-                var PLAYER_SIZE_33 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
-                var PLAYER_SIZE_34 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
-                var temp_35 = PLAYER_SIZE_34.GetFloat("VAL");
-                var PLAYER_DEPTH_37 = _world.GetObject(ObjectType.Skill, "PLAYER_DEPTH");
-                var temp_38 = PLAYER_DEPTH_37.GetFloat("VAL");
-                PLAYER_SIZE_33.SetFloat("VAL", temp_35 - temp_38);
+                var PLAYER_SIZE_22 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
+                var PLAYER_SIZE_23 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
+                var PLAYER_SIZE_23_val = PLAYER_SIZE_23.GetFloat("VAL");
+                var PLAYER_DEPTH_25 = _world.GetObject(ObjectType.Skill, "PLAYER_DEPTH");
+                var PLAYER_DEPTH_25_val = PLAYER_DEPTH_25.GetFloat("VAL");
+                PLAYER_SIZE_22.SetFloat("VAL", PLAYER_SIZE_23_val - PLAYER_DEPTH_25_val);
             }
             NO_WATEN:
-            var MODE_SCHWIMMEN_39 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
-            var temp_40 = MODE_SCHWIMMEN_39.GetFloat("VAL");
-            var MOVING_41 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_42 = MOVING_41.GetFloat("VAL");
-            if (temp_42 != temp_40)
+            var MODE_SCHWIMMEN_26 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
+            var MODE_SCHWIMMEN_26_val = MODE_SCHWIMMEN_26.GetFloat("VAL");
+            var MOVING_27 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_27_val = MOVING_27.GetFloat("VAL");
+            if (MOVING_27_val != MODE_SCHWIMMEN_26_val)
             {
                 goto NO_SWIM;
             }
-            var PLAYER_DEPTH_44 = _world.GetObject(ObjectType.Skill, "PLAYER_DEPTH");
-            var temp_45 = PLAYER_DEPTH_44.GetFloat("VAL");
-            if (temp_45 > 1.5f)
+            var PLAYER_DEPTH_29 = _world.GetObject(ObjectType.Skill, "PLAYER_DEPTH");
+            var PLAYER_DEPTH_29_val = PLAYER_DEPTH_29.GetFloat("VAL");
+            if (PLAYER_DEPTH_29_val > 1.5f)
             {
                 goto NO_WATER;
             }
             yield return SET_WALKING();
             goto START;
             NO_SWIM:
-            var MODE_GEHEN_46 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
-            var temp_47 = MODE_GEHEN_46.GetFloat("VAL");
-            var MOVING_48 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_49 = MOVING_48.GetFloat("VAL");
-            if (temp_49 != temp_47)
+            var MODE_GEHEN_30 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
+            var MODE_GEHEN_30_val = MODE_GEHEN_30.GetFloat("VAL");
+            var MOVING_31 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_31_val = MOVING_31.GetFloat("VAL");
+            if (MOVING_31_val != MODE_GEHEN_30_val)
             {
                 goto NO_WATER;
             }
-            var PLAYER_DEPTH_51 = _world.GetObject(ObjectType.Skill, "PLAYER_DEPTH");
-            var temp_52 = PLAYER_DEPTH_51.GetFloat("VAL");
-            if (temp_52 < 2.5f)
+            var PLAYER_DEPTH_33 = _world.GetObject(ObjectType.Skill, "PLAYER_DEPTH");
+            var PLAYER_DEPTH_33_val = PLAYER_DEPTH_33.GetFloat("VAL");
+            if (PLAYER_DEPTH_33_val < 2.5f)
             {
                 goto NO_WATER;
             }
             yield return SET_SWIMMING();
             goto START;
             NO_WATER:
-            var MOUSE_MIDDLE_54 = _world.GetObject(ObjectType.Skill, "MOUSE_MIDDLE");
-            var temp_55 = MOUSE_MIDDLE_54.GetFloat("VAL");
-            if (temp_55 == 0f)
+            var MOUSE_MIDDLE_35 = _world.GetObject(ObjectType.Skill, "MOUSE_MIDDLE");
+            var MOUSE_MIDDLE_35_val = MOUSE_MIDDLE_35.GetFloat("VAL");
+            if (MOUSE_MIDDLE_35_val == 0f)
             {
                 goto NO_MOUSE;
             }
-            var KEY_SENSE_56 = _world.GetObject(ObjectType.Skill, "KEY_SENSE");
-            var temp_57 = KEY_SENSE_56.GetFloat("VAL");
-            var FORCE_AHEAD_58 = _world.GetObject(ObjectType.Skill, "FORCE_AHEAD");
-            FORCE_AHEAD_58.SetFloat("VAL", temp_57);
-            var KEY_SHIFT_60 = _world.GetObject(ObjectType.Skill, "KEY_SHIFT");
-            var temp_61 = KEY_SHIFT_60.GetFloat("VAL");
-            if (temp_61 == 1f)
+            var KEY_SENSE_36 = _world.GetObject(ObjectType.Skill, "KEY_SENSE");
+            var KEY_SENSE_36_val = KEY_SENSE_36.GetFloat("VAL");
+            var FORCE_AHEAD_37 = _world.GetObject(ObjectType.Skill, "FORCE_AHEAD");
+            FORCE_AHEAD_37.SetFloat("VAL", KEY_SENSE_36_val);
+            var KEY_SHIFT_39 = _world.GetObject(ObjectType.Skill, "KEY_SHIFT");
+            var KEY_SHIFT_39_val = KEY_SHIFT_39.GetFloat("VAL");
+            if (KEY_SHIFT_39_val == 1f)
             {
-                var FORCE_AHEAD_62 = _world.GetObject(ObjectType.Skill, "FORCE_AHEAD");
-                var FORCE_AHEAD_63 = _world.GetObject(ObjectType.Skill, "FORCE_AHEAD");
-                var temp_64 = FORCE_AHEAD_63.GetFloat("VAL");
-                var SHIFT_SENSE_66 = _world.GetObject(ObjectType.Skill, "SHIFT_SENSE");
-                var temp_67 = SHIFT_SENSE_66.GetFloat("VAL");
-                FORCE_AHEAD_62.SetFloat("VAL", temp_64 * temp_67);
+                var FORCE_AHEAD_40 = _world.GetObject(ObjectType.Skill, "FORCE_AHEAD");
+                var FORCE_AHEAD_41 = _world.GetObject(ObjectType.Skill, "FORCE_AHEAD");
+                var FORCE_AHEAD_41_val = FORCE_AHEAD_41.GetFloat("VAL");
+                var SHIFT_SENSE_43 = _world.GetObject(ObjectType.Skill, "SHIFT_SENSE");
+                var SHIFT_SENSE_43_val = SHIFT_SENSE_43.GetFloat("VAL");
+                FORCE_AHEAD_40.SetFloat("VAL", FORCE_AHEAD_41_val * SHIFT_SENSE_43_val);
             }
             NO_MOUSE:
-            var BOOSTER_69 = _world.GetObject(ObjectType.Skill, "BOOSTER");
-            BOOSTER_69.SetFloat("VAL", 1f);
-            var MASS_70 = _world.GetObject(ObjectType.Skill, "MASS");
-            var temp_71 = MASS_70.GetFloat("VAL");
-            var INERTIA_72 = _world.GetObject(ObjectType.Skill, "INERTIA");
-            INERTIA_72.SetFloat("VAL", temp_71);
-            var FRICTION_73 = _world.GetObject(ObjectType.Skill, "FRICTION");
-            var FRIC_74 = _world.GetObject(ObjectType.Skill, "FRIC");
-            var temp_75 = FRIC_74.GetFloat("VAL");
-            var DEPTH_79 = _world.GetObject(ObjectType.Skill, "DEPTH");
-            var temp_80 = DEPTH_79.GetFloat("VAL");
-            FRICTION_73.SetFloat("VAL", temp_75 + 0.1f * temp_80);
+            var BOOSTER_45 = _world.GetObject(ObjectType.Skill, "BOOSTER");
+            BOOSTER_45.SetFloat("VAL", 1f);
+            var MASS_46 = _world.GetObject(ObjectType.Skill, "MASS");
+            var MASS_46_val = MASS_46.GetFloat("VAL");
+            var INERTIA_47 = _world.GetObject(ObjectType.Skill, "INERTIA");
+            INERTIA_47.SetFloat("VAL", MASS_46_val);
+            var FRICTION_48 = _world.GetObject(ObjectType.Skill, "FRICTION");
+            var FRIC_49 = _world.GetObject(ObjectType.Skill, "FRIC");
+            var FRIC_49_val = FRIC_49.GetFloat("VAL");
+            var DEPTH_53 = _world.GetObject(ObjectType.Skill, "DEPTH");
+            var DEPTH_53_val = DEPTH_53.GetFloat("VAL");
+            FRICTION_48.SetFloat("VAL", FRIC_49_val + 0.1f * DEPTH_53_val);
+            var FORCE_54 = _world.GetObject(ObjectType.Skill, "FORCE");
+            var STRENGTH_56 = _world.GetObject(ObjectType.Skill, "STRENGTH");
+            var STRENGTH_56_val = STRENGTH_56.GetFloat("VAL");
+            var WAVE_STR_58 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
+            var WAVE_STR_58_val = WAVE_STR_58.GetFloat("VAL");
+            var WAVE_60 = _world.GetObject(ObjectType.Skill, "WAVE");
+            var WAVE_60_val = WAVE_60.GetFloat("VAL");
+            var BOOSTER_63 = _world.GetObject(ObjectType.Skill, "BOOSTER");
+            var BOOSTER_63_val = BOOSTER_63.GetFloat("VAL");
+            var FORCE_AHEAD_66 = _world.GetObject(ObjectType.Skill, "FORCE_AHEAD");
+            var FORCE_AHEAD_66_val = FORCE_AHEAD_66.GetFloat("VAL");
+            var PLAYER_COS_68 = _world.GetObject(ObjectType.Skill, "PLAYER_COS");
+            var PLAYER_COS_68_val = PLAYER_COS_68.GetFloat("VAL");
+            var FORCE_STRAFE_72 = _world.GetObject(ObjectType.Skill, "FORCE_STRAFE");
+            var FORCE_STRAFE_72_val = FORCE_STRAFE_72.GetFloat("VAL");
+            var PLAYER_SIN_74 = _world.GetObject(ObjectType.Skill, "PLAYER_SIN");
+            var PLAYER_SIN_74_val = PLAYER_SIN_74.GetFloat("VAL");
+            var DRIFT_X_77 = _world.GetObject(ObjectType.Skill, "DRIFT_X");
+            var DRIFT_X_77_val = DRIFT_X_77.GetFloat("VAL");
+            FORCE_54.SetFloat("VAL", (STRENGTH_56_val + WAVE_STR_58_val * WAVE_60_val) * BOOSTER_63_val * (FORCE_AHEAD_66_val * PLAYER_COS_68_val - 0.5f * FORCE_STRAFE_72_val * PLAYER_SIN_74_val) + DRIFT_X_77_val);
+            var FORCE_78 = _world.GetObject(ObjectType.Skill, "FORCE");
+            var FORCE_78_val = FORCE_78.GetFloat("VAL");
+            var PLAYER_VX_79 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
+            var PLAYER_VX_79_val = PLAYER_VX_79.GetFloat("VAL");
+            var PLAYER_VX_80 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
+            PLAYER_VX_80.SetFloat("VAL", _world.Accelerate(PLAYER_VX_79_val, FORCE_78_val));
             var FORCE_81 = _world.GetObject(ObjectType.Skill, "FORCE");
             var STRENGTH_83 = _world.GetObject(ObjectType.Skill, "STRENGTH");
-            var temp_84 = STRENGTH_83.GetFloat("VAL");
-            var WAVE_STR_86 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
-            var temp_87 = WAVE_STR_86.GetFloat("VAL");
-            var WAVE_89 = _world.GetObject(ObjectType.Skill, "WAVE");
-            var temp_90 = WAVE_89.GetFloat("VAL");
-            var BOOSTER_93 = _world.GetObject(ObjectType.Skill, "BOOSTER");
-            var temp_94 = BOOSTER_93.GetFloat("VAL");
-            var FORCE_AHEAD_97 = _world.GetObject(ObjectType.Skill, "FORCE_AHEAD");
-            var temp_98 = FORCE_AHEAD_97.GetFloat("VAL");
-            var PLAYER_COS_100 = _world.GetObject(ObjectType.Skill, "PLAYER_COS");
-            var temp_101 = PLAYER_COS_100.GetFloat("VAL");
-            var FORCE_STRAFE_105 = _world.GetObject(ObjectType.Skill, "FORCE_STRAFE");
-            var temp_106 = FORCE_STRAFE_105.GetFloat("VAL");
-            var PLAYER_SIN_108 = _world.GetObject(ObjectType.Skill, "PLAYER_SIN");
-            var temp_109 = PLAYER_SIN_108.GetFloat("VAL");
-            var DRIFT_X_112 = _world.GetObject(ObjectType.Skill, "DRIFT_X");
-            var temp_113 = DRIFT_X_112.GetFloat("VAL");
-            FORCE_81.SetFloat("VAL", (temp_84 + temp_87 * temp_90) * temp_94 * (temp_98 * temp_101 - 0.5f * temp_106 * temp_109) + temp_113);
-            var FORCE_114 = _world.GetObject(ObjectType.Skill, "FORCE");
-            var temp_115 = FORCE_114.GetFloat("VAL");
-            var PLAYER_VX_116 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
-            var temp_117 = PLAYER_VX_116.GetFloat("VAL");
-            var PLAYER_VX_118 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
-            PLAYER_VX_118.SetFloat("VAL", _world.Accelerate(temp_117, temp_115));
-            var FORCE_119 = _world.GetObject(ObjectType.Skill, "FORCE");
-            var STRENGTH_121 = _world.GetObject(ObjectType.Skill, "STRENGTH");
-            var temp_122 = STRENGTH_121.GetFloat("VAL");
-            var WAVE_STR_124 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
-            var temp_125 = WAVE_STR_124.GetFloat("VAL");
-            var WAVE_127 = _world.GetObject(ObjectType.Skill, "WAVE");
-            var temp_128 = WAVE_127.GetFloat("VAL");
-            var BOOSTER_131 = _world.GetObject(ObjectType.Skill, "BOOSTER");
-            var temp_132 = BOOSTER_131.GetFloat("VAL");
-            var FORCE_AHEAD_135 = _world.GetObject(ObjectType.Skill, "FORCE_AHEAD");
-            var temp_136 = FORCE_AHEAD_135.GetFloat("VAL");
-            var PLAYER_SIN_138 = _world.GetObject(ObjectType.Skill, "PLAYER_SIN");
-            var temp_139 = PLAYER_SIN_138.GetFloat("VAL");
-            var FORCE_STRAFE_143 = _world.GetObject(ObjectType.Skill, "FORCE_STRAFE");
-            var temp_144 = FORCE_STRAFE_143.GetFloat("VAL");
-            var PLAYER_COS_146 = _world.GetObject(ObjectType.Skill, "PLAYER_COS");
-            var temp_147 = PLAYER_COS_146.GetFloat("VAL");
-            var DRIFT_Y_150 = _world.GetObject(ObjectType.Skill, "DRIFT_Y");
-            var temp_151 = DRIFT_Y_150.GetFloat("VAL");
-            FORCE_119.SetFloat("VAL", (temp_122 + temp_125 * temp_128) * temp_132 * (temp_136 * temp_139 + 0.5f * temp_144 * temp_147) + temp_151);
-            var FORCE_152 = _world.GetObject(ObjectType.Skill, "FORCE");
-            var temp_153 = FORCE_152.GetFloat("VAL");
-            var PLAYER_VY_154 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
-            var temp_155 = PLAYER_VY_154.GetFloat("VAL");
-            var PLAYER_VY_156 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
-            PLAYER_VY_156.SetFloat("VAL", _world.Accelerate(temp_155, temp_153));
-            var FRICTION_158 = _world.GetObject(ObjectType.Skill, "FRICTION");
-            FRICTION_158.SetFloat("VAL", 0.5f);
-            var MODE_GEHEN_159 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
-            var temp_160 = MODE_GEHEN_159.GetFloat("VAL");
-            var MOVING_161 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_162 = MOVING_161.GetFloat("VAL");
-            if (temp_162 != temp_160)
+            var STRENGTH_83_val = STRENGTH_83.GetFloat("VAL");
+            var WAVE_STR_85 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
+            var WAVE_STR_85_val = WAVE_STR_85.GetFloat("VAL");
+            var WAVE_87 = _world.GetObject(ObjectType.Skill, "WAVE");
+            var WAVE_87_val = WAVE_87.GetFloat("VAL");
+            var BOOSTER_90 = _world.GetObject(ObjectType.Skill, "BOOSTER");
+            var BOOSTER_90_val = BOOSTER_90.GetFloat("VAL");
+            var FORCE_AHEAD_93 = _world.GetObject(ObjectType.Skill, "FORCE_AHEAD");
+            var FORCE_AHEAD_93_val = FORCE_AHEAD_93.GetFloat("VAL");
+            var PLAYER_SIN_95 = _world.GetObject(ObjectType.Skill, "PLAYER_SIN");
+            var PLAYER_SIN_95_val = PLAYER_SIN_95.GetFloat("VAL");
+            var FORCE_STRAFE_99 = _world.GetObject(ObjectType.Skill, "FORCE_STRAFE");
+            var FORCE_STRAFE_99_val = FORCE_STRAFE_99.GetFloat("VAL");
+            var PLAYER_COS_101 = _world.GetObject(ObjectType.Skill, "PLAYER_COS");
+            var PLAYER_COS_101_val = PLAYER_COS_101.GetFloat("VAL");
+            var DRIFT_Y_104 = _world.GetObject(ObjectType.Skill, "DRIFT_Y");
+            var DRIFT_Y_104_val = DRIFT_Y_104.GetFloat("VAL");
+            FORCE_81.SetFloat("VAL", (STRENGTH_83_val + WAVE_STR_85_val * WAVE_87_val) * BOOSTER_90_val * (FORCE_AHEAD_93_val * PLAYER_SIN_95_val + 0.5f * FORCE_STRAFE_99_val * PLAYER_COS_101_val) + DRIFT_Y_104_val);
+            var FORCE_105 = _world.GetObject(ObjectType.Skill, "FORCE");
+            var FORCE_105_val = FORCE_105.GetFloat("VAL");
+            var PLAYER_VY_106 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
+            var PLAYER_VY_106_val = PLAYER_VY_106.GetFloat("VAL");
+            var PLAYER_VY_107 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
+            PLAYER_VY_107.SetFloat("VAL", _world.Accelerate(PLAYER_VY_106_val, FORCE_105_val));
+            var FRICTION_109 = _world.GetObject(ObjectType.Skill, "FRICTION");
+            FRICTION_109.SetFloat("VAL", 0.5f);
+            var MODE_GEHEN_110 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
+            var MODE_GEHEN_110_val = MODE_GEHEN_110.GetFloat("VAL");
+            var MOVING_111 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_111_val = MOVING_111.GetFloat("VAL");
+            if (MOVING_111_val != MODE_GEHEN_110_val)
             {
-                var FRICTION_164 = _world.GetObject(ObjectType.Skill, "FRICTION");
-                FRICTION_164.SetFloat("VAL", 0.85f);
+                var FRICTION_113 = _world.GetObject(ObjectType.Skill, "FRICTION");
+                FRICTION_113.SetFloat("VAL", 0.85f);
             }
-            var FORCE_165 = _world.GetObject(ObjectType.Skill, "FORCE");
-            var FORCE_ROT_168 = _world.GetObject(ObjectType.Skill, "FORCE_ROT");
-            var temp_169 = FORCE_ROT_168.GetFloat("VAL");
-            FORCE_165.SetFloat("VAL", 0.05f * temp_169);
-            var FORCE_170 = _world.GetObject(ObjectType.Skill, "FORCE");
-            var temp_171 = FORCE_170.GetFloat("VAL");
-            var PLAYER_VROT_172 = _world.GetObject(ObjectType.Skill, "PLAYER_VROT");
-            var temp_173 = PLAYER_VROT_172.GetFloat("VAL");
-            var PLAYER_VROT_174 = _world.GetObject(ObjectType.Skill, "PLAYER_VROT");
-            PLAYER_VROT_174.SetFloat("VAL", _world.Accelerate(temp_173, temp_171));
-            var FORCE_175 = _world.GetObject(ObjectType.Skill, "FORCE");
-            var GRAVITY_176 = _world.GetObject(ObjectType.Skill, "GRAVITY");
-            var temp_177 = GRAVITY_176.GetFloat("VAL");
-            var FLOAT_STR_179 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
-            var temp_180 = FLOAT_STR_179.GetFloat("VAL");
-            var FORCE_UP_182 = _world.GetObject(ObjectType.Skill, "FORCE_UP");
-            var temp_183 = FORCE_UP_182.GetFloat("VAL");
-            FORCE_175.SetFloat("VAL", temp_177 + temp_180 * temp_183);
-            var FRIC_AIR_184 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
-            var temp_185 = FRIC_AIR_184.GetFloat("VAL");
-            var FRICTION_186 = _world.GetObject(ObjectType.Skill, "FRICTION");
-            FRICTION_186.SetFloat("VAL", temp_185);
-            var PLAYER_HGT_188 = _world.GetObject(ObjectType.Skill, "PLAYER_HGT");
-            var temp_189 = PLAYER_HGT_188.GetFloat("VAL");
-            if (temp_189 > 0f)
+            var FORCE_114 = _world.GetObject(ObjectType.Skill, "FORCE");
+            var FORCE_ROT_117 = _world.GetObject(ObjectType.Skill, "FORCE_ROT");
+            var FORCE_ROT_117_val = FORCE_ROT_117.GetFloat("VAL");
+            FORCE_114.SetFloat("VAL", 0.05f * FORCE_ROT_117_val);
+            var FORCE_118 = _world.GetObject(ObjectType.Skill, "FORCE");
+            var FORCE_118_val = FORCE_118.GetFloat("VAL");
+            var PLAYER_VROT_119 = _world.GetObject(ObjectType.Skill, "PLAYER_VROT");
+            var PLAYER_VROT_119_val = PLAYER_VROT_119.GetFloat("VAL");
+            var PLAYER_VROT_120 = _world.GetObject(ObjectType.Skill, "PLAYER_VROT");
+            PLAYER_VROT_120.SetFloat("VAL", _world.Accelerate(PLAYER_VROT_119_val, FORCE_118_val));
+            var FORCE_121 = _world.GetObject(ObjectType.Skill, "FORCE");
+            var GRAVITY_122 = _world.GetObject(ObjectType.Skill, "GRAVITY");
+            var GRAVITY_122_val = GRAVITY_122.GetFloat("VAL");
+            var FLOAT_STR_124 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
+            var FLOAT_STR_124_val = FLOAT_STR_124.GetFloat("VAL");
+            var FORCE_UP_126 = _world.GetObject(ObjectType.Skill, "FORCE_UP");
+            var FORCE_UP_126_val = FORCE_UP_126.GetFloat("VAL");
+            FORCE_121.SetFloat("VAL", GRAVITY_122_val + FLOAT_STR_124_val * FORCE_UP_126_val);
+            var FRIC_AIR_127 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
+            var FRIC_AIR_127_val = FRIC_AIR_127.GetFloat("VAL");
+            var FRICTION_128 = _world.GetObject(ObjectType.Skill, "FRICTION");
+            FRICTION_128.SetFloat("VAL", FRIC_AIR_127_val);
+            var PLAYER_HGT_130 = _world.GetObject(ObjectType.Skill, "PLAYER_HGT");
+            var PLAYER_HGT_130_val = PLAYER_HGT_130.GetFloat("VAL");
+            if (PLAYER_HGT_130_val > 0f)
             {
                 goto AIRBORNE;
             }
-            var FRICTION_191 = _world.GetObject(ObjectType.Skill, "FRICTION");
-            FRICTION_191.SetFloat("VAL", 0.98f);
-            var FORCE_192 = _world.GetObject(ObjectType.Skill, "FORCE");
-            var FORCE_193 = _world.GetObject(ObjectType.Skill, "FORCE");
-            var temp_194 = FORCE_193.GetFloat("VAL");
-            var PLAYER_HGT_198 = _world.GetObject(ObjectType.Skill, "PLAYER_HGT");
-            var temp_199 = PLAYER_HGT_198.GetFloat("VAL");
-            FORCE_192.SetFloat("VAL", temp_194 - 0.2f * temp_199);
+            var FRICTION_132 = _world.GetObject(ObjectType.Skill, "FRICTION");
+            FRICTION_132.SetFloat("VAL", 0.98f);
+            var FORCE_133 = _world.GetObject(ObjectType.Skill, "FORCE");
+            var FORCE_134 = _world.GetObject(ObjectType.Skill, "FORCE");
+            var FORCE_134_val = FORCE_134.GetFloat("VAL");
+            var PLAYER_HGT_138 = _world.GetObject(ObjectType.Skill, "PLAYER_HGT");
+            var PLAYER_HGT_138_val = PLAYER_HGT_138.GetFloat("VAL");
+            FORCE_133.SetFloat("VAL", FORCE_134_val - 0.2f * PLAYER_HGT_138_val);
             AIRBORNE:
-            var FORCE_200 = _world.GetObject(ObjectType.Skill, "FORCE");
-            var temp_201 = FORCE_200.GetFloat("VAL");
-            var PLAYER_VZ_202 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
-            var temp_203 = PLAYER_VZ_202.GetFloat("VAL");
-            var PLAYER_VZ_204 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
-            PLAYER_VZ_204.SetFloat("VAL", _world.Accelerate(temp_203, temp_201));
-            var DUCK_VAL_205 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
-            var DUCK_VAL_208 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
-            var temp_209 = DUCK_VAL_208.GetFloat("VAL");
-            DUCK_VAL_205.SetFloat("VAL", 0.8f * temp_209);
-            var MODE_SCHWIMMEN_210 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
-            var temp_211 = MODE_SCHWIMMEN_210.GetFloat("VAL");
-            var MOVING_212 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_213 = MOVING_212.GetFloat("VAL");
-            if (temp_213 == temp_211)
+            var FORCE_139 = _world.GetObject(ObjectType.Skill, "FORCE");
+            var FORCE_139_val = FORCE_139.GetFloat("VAL");
+            var PLAYER_VZ_140 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
+            var PLAYER_VZ_140_val = PLAYER_VZ_140.GetFloat("VAL");
+            var PLAYER_VZ_141 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
+            PLAYER_VZ_141.SetFloat("VAL", _world.Accelerate(PLAYER_VZ_140_val, FORCE_139_val));
+            var DUCK_VAL_142 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
+            var DUCK_VAL_145 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
+            var DUCK_VAL_145_val = DUCK_VAL_145.GetFloat("VAL");
+            DUCK_VAL_142.SetFloat("VAL", 0.8f * DUCK_VAL_145_val);
+            var MODE_SCHWIMMEN_146 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
+            var MODE_SCHWIMMEN_146_val = MODE_SCHWIMMEN_146.GetFloat("VAL");
+            var MOVING_147 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_147_val = MOVING_147.GetFloat("VAL");
+            if (MOVING_147_val == MODE_SCHWIMMEN_146_val)
             {
                 goto DUCK;
             }
-            var FORCE_UP_215 = _world.GetObject(ObjectType.Skill, "FORCE_UP");
-            var temp_216 = FORCE_UP_215.GetFloat("VAL");
-            if (temp_216 > 0f)
+            var FORCE_UP_149 = _world.GetObject(ObjectType.Skill, "FORCE_UP");
+            var FORCE_UP_149_val = FORCE_UP_149.GetFloat("VAL");
+            if (FORCE_UP_149_val > 0f)
             {
                 goto NO_DUCK;
             }
             DUCK:
-            var DUCK_VAL_217 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
-            var DUCK_VAL_218 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
-            var temp_219 = DUCK_VAL_218.GetFloat("VAL");
-            var DUCK_STR_221 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
-            var temp_222 = DUCK_STR_221.GetFloat("VAL");
-            var FORCE_UP_224 = _world.GetObject(ObjectType.Skill, "FORCE_UP");
-            var temp_225 = FORCE_UP_224.GetFloat("VAL");
-            DUCK_VAL_217.SetFloat("VAL", temp_219 + temp_222 * temp_225);
+            var DUCK_VAL_150 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
+            var DUCK_VAL_151 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
+            var DUCK_VAL_151_val = DUCK_VAL_151.GetFloat("VAL");
+            var DUCK_STR_153 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
+            var DUCK_STR_153_val = DUCK_STR_153.GetFloat("VAL");
+            var FORCE_UP_155 = _world.GetObject(ObjectType.Skill, "FORCE_UP");
+            var FORCE_UP_155_val = FORCE_UP_155.GetFloat("VAL");
+            DUCK_VAL_150.SetFloat("VAL", DUCK_VAL_151_val + DUCK_STR_153_val * FORCE_UP_155_val);
             NO_DUCK:
-            var PLAYER_SIZE_226 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
-            var PLAYER_SIZE_227 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
-            var temp_228 = PLAYER_SIZE_227.GetFloat("VAL");
-            var DUCK_VAL_230 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
-            var temp_231 = DUCK_VAL_230.GetFloat("VAL");
-            PLAYER_SIZE_226.SetFloat("VAL", temp_228 + temp_231);
-            var MODE_GEHEN_232 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
-            var temp_233 = MODE_GEHEN_232.GetFloat("VAL");
-            var MOVING_234 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_235 = MOVING_234.GetFloat("VAL");
-            if (temp_235 != temp_233)
+            var PLAYER_SIZE_156 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
+            var PLAYER_SIZE_157 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
+            var PLAYER_SIZE_157_val = PLAYER_SIZE_157.GetFloat("VAL");
+            var DUCK_VAL_159 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
+            var DUCK_VAL_159_val = DUCK_VAL_159.GetFloat("VAL");
+            PLAYER_SIZE_156.SetFloat("VAL", PLAYER_SIZE_157_val + DUCK_VAL_159_val);
+            var MODE_GEHEN_160 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
+            var MODE_GEHEN_160_val = MODE_GEHEN_160.GetFloat("VAL");
+            var MOVING_161 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_161_val = MOVING_161.GetFloat("VAL");
+            if (MOVING_161_val != MODE_GEHEN_160_val)
             {
                 goto NO_JUMP;
             }
-            var JUMP_PHASE_237 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
-            var temp_238 = JUMP_PHASE_237.GetFloat("VAL");
-            if (temp_238 > 0f)
+            var JUMP_PHASE_163 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
+            var JUMP_PHASE_163_val = JUMP_PHASE_163.GetFloat("VAL");
+            if (JUMP_PHASE_163_val > 0f)
             {
                 goto JUMP_1;
             }
-            var FORCE_UP_240 = _world.GetObject(ObjectType.Skill, "FORCE_UP");
-            var temp_241 = FORCE_UP_240.GetFloat("VAL");
-            if (temp_241 < 0.1f)
+            var FORCE_UP_165 = _world.GetObject(ObjectType.Skill, "FORCE_UP");
+            var FORCE_UP_165_val = FORCE_UP_165.GetFloat("VAL");
+            if (FORCE_UP_165_val < 0.1f)
             {
                 goto NO_JUMP;
             }
-            var JUMP_PHASE_243 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
-            JUMP_PHASE_243.SetFloat("VAL", 1f);
+            var JUMP_PHASE_167 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
+            JUMP_PHASE_167.SetFloat("VAL", 1f);
             JUMP_1:
-            var JUMP_PHASE_245 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
-            var temp_246 = JUMP_PHASE_245.GetFloat("VAL");
-            if (temp_246 > 1f)
+            var JUMP_PHASE_169 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
+            var JUMP_PHASE_169_val = JUMP_PHASE_169.GetFloat("VAL");
+            if (JUMP_PHASE_169_val > 1f)
             {
                 goto JUMP_2;
             }
-            var DUCK_VAL_247 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
-            var DUCK_VAL_248 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
-            var temp_249 = DUCK_VAL_248.GetFloat("VAL");
-            DUCK_VAL_247.SetFloat("VAL", temp_249 - 0.5f);
-            var DUCK_VAL_253 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
-            var temp_254 = DUCK_VAL_253.GetFloat("VAL");
-            if (temp_254 < -0.7f)
+            var DUCK_VAL_170 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
+            var DUCK_VAL_171 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
+            var DUCK_VAL_171_val = DUCK_VAL_171.GetFloat("VAL");
+            DUCK_VAL_170.SetFloat("VAL", DUCK_VAL_171_val - 0.5f);
+            var DUCK_VAL_175 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
+            var DUCK_VAL_175_val = DUCK_VAL_175.GetFloat("VAL");
+            if (DUCK_VAL_175_val < -0.7f)
             {
-                var JUMP_PHASE_256 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
-                JUMP_PHASE_256.SetFloat("VAL", 2f);
+                var JUMP_PHASE_177 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
+                JUMP_PHASE_177.SetFloat("VAL", 2f);
             }
             goto NO_JUMP;
             JUMP_2:
-            var JUMP_PHASE_258 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
-            var temp_259 = JUMP_PHASE_258.GetFloat("VAL");
-            if (temp_259 > 2f)
+            var JUMP_PHASE_179 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
+            var JUMP_PHASE_179_val = JUMP_PHASE_179.GetFloat("VAL");
+            if (JUMP_PHASE_179_val > 2f)
             {
                 goto JUMP_3;
             }
-            var DUCK_VAL_261 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
-            DUCK_VAL_261.SetFloat("VAL", 0f);
-            var PLAYER_Z_262 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            var FLOOR_HGT_263 = _world.GetObject(ObjectType.Skill, "FLOOR_HGT");
-            var temp_264 = FLOOR_HGT_263.GetFloat("VAL");
-            var MY_SIZE_266 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
-            var temp_267 = MY_SIZE_266.GetFloat("VAL");
-            PLAYER_Z_262.SetFloat("VAL", temp_264 + temp_267);
-            var PLAYER_VZ_269 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
-            PLAYER_VZ_269.SetFloat("VAL", 0.5f);
-            var JUMP_PHASE_271 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
-            JUMP_PHASE_271.SetFloat("VAL", 3f);
+            var DUCK_VAL_181 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
+            DUCK_VAL_181.SetFloat("VAL", 0f);
+            var PLAYER_Z_182 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            var FLOOR_HGT_183 = _world.GetObject(ObjectType.Skill, "FLOOR_HGT");
+            var FLOOR_HGT_183_val = FLOOR_HGT_183.GetFloat("VAL");
+            var MY_SIZE_185 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
+            var MY_SIZE_185_val = MY_SIZE_185.GetFloat("VAL");
+            PLAYER_Z_182.SetFloat("VAL", FLOOR_HGT_183_val + MY_SIZE_185_val);
+            var PLAYER_VZ_187 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
+            PLAYER_VZ_187.SetFloat("VAL", 0.5f);
+            var JUMP_PHASE_189 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
+            JUMP_PHASE_189.SetFloat("VAL", 3f);
             goto NO_JUMP;
             JUMP_3:
-            var PLAYER_VZ_273 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
-            var temp_274 = PLAYER_VZ_273.GetFloat("VAL");
-            if (temp_274 > 0f)
+            var PLAYER_VZ_191 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
+            var PLAYER_VZ_191_val = PLAYER_VZ_191.GetFloat("VAL");
+            if (PLAYER_VZ_191_val > 0f)
             {
                 goto NO_JUMP;
             }
-            var PLAYER_HGT_276 = _world.GetObject(ObjectType.Skill, "PLAYER_HGT");
-            var temp_277 = PLAYER_HGT_276.GetFloat("VAL");
-            if (temp_277 > 0f)
+            var PLAYER_HGT_193 = _world.GetObject(ObjectType.Skill, "PLAYER_HGT");
+            var PLAYER_HGT_193_val = PLAYER_HGT_193.GetFloat("VAL");
+            if (PLAYER_HGT_193_val > 0f)
             {
                 goto NO_JUMP;
             }
-            var JUMP_PHASE_279 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
-            JUMP_PHASE_279.SetFloat("VAL", 0f);
+            var JUMP_PHASE_195 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
+            JUMP_PHASE_195.SetFloat("VAL", 0f);
             NO_JUMP:
-            var PLAYER_SPEED_SQR_280 = _world.GetObject(ObjectType.Skill, "PLAYER_SPEED_SQR");
-            var PLAYER_VX_281 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
-            var temp_282 = PLAYER_VX_281.GetFloat("VAL");
-            var PLAYER_VX_284 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
-            var temp_285 = PLAYER_VX_284.GetFloat("VAL");
-            var PLAYER_VY_287 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
-            var temp_288 = PLAYER_VY_287.GetFloat("VAL");
-            var PLAYER_VY_290 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
-            var temp_291 = PLAYER_VY_290.GetFloat("VAL");
-            PLAYER_SPEED_SQR_280.SetFloat("VAL", temp_282 * temp_285 + temp_288 * temp_291);
-            var TILT_DECREASE_293 = _world.GetObject(ObjectType.Skill, "TILT_DECREASE");
-            var temp_294 = TILT_DECREASE_293.GetFloat("VAL");
-            if (temp_294 != 1f)
+            var PLAYER_SPEED_SQR_196 = _world.GetObject(ObjectType.Skill, "PLAYER_SPEED_SQR");
+            var PLAYER_VX_197 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
+            var PLAYER_VX_197_val = PLAYER_VX_197.GetFloat("VAL");
+            var PLAYER_VX_199 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
+            var PLAYER_VX_199_val = PLAYER_VX_199.GetFloat("VAL");
+            var PLAYER_VY_201 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
+            var PLAYER_VY_201_val = PLAYER_VY_201.GetFloat("VAL");
+            var PLAYER_VY_203 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
+            var PLAYER_VY_203_val = PLAYER_VY_203.GetFloat("VAL");
+            PLAYER_SPEED_SQR_196.SetFloat("VAL", PLAYER_VX_197_val * PLAYER_VX_199_val + PLAYER_VY_201_val * PLAYER_VY_203_val);
+            var TILT_DECREASE_205 = _world.GetObject(ObjectType.Skill, "TILT_DECREASE");
+            var TILT_DECREASE_205_val = TILT_DECREASE_205.GetFloat("VAL");
+            if (TILT_DECREASE_205_val != 1f)
             {
                 goto CALC_TILT;
             }
-            var MAX_PLAYER_TILT_P_295 = _world.GetObject(ObjectType.Skill, "MAX_PLAYER_TILT_P");
-            var temp_296 = MAX_PLAYER_TILT_P_295.GetFloat("VAL");
-            var PLAYER_TILT_297 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
-            var temp_298 = PLAYER_TILT_297.GetFloat("VAL");
-            if (temp_298 > temp_296)
+            var MAX_PLAYER_TILT_P_206 = _world.GetObject(ObjectType.Skill, "MAX_PLAYER_TILT_P");
+            var MAX_PLAYER_TILT_P_206_val = MAX_PLAYER_TILT_P_206.GetFloat("VAL");
+            var PLAYER_TILT_207 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
+            var PLAYER_TILT_207_val = PLAYER_TILT_207.GetFloat("VAL");
+            if (PLAYER_TILT_207_val > MAX_PLAYER_TILT_P_206_val)
             {
                 goto CHECK_SPEED_TILT;
             }
-            var MAX_PLAYER_TILT_N_299 = _world.GetObject(ObjectType.Skill, "MAX_PLAYER_TILT_N");
-            var temp_300 = MAX_PLAYER_TILT_N_299.GetFloat("VAL");
-            var PLAYER_TILT_301 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
-            var temp_302 = PLAYER_TILT_301.GetFloat("VAL");
-            if (temp_302 > temp_300)
+            var MAX_PLAYER_TILT_N_208 = _world.GetObject(ObjectType.Skill, "MAX_PLAYER_TILT_N");
+            var MAX_PLAYER_TILT_N_208_val = MAX_PLAYER_TILT_N_208.GetFloat("VAL");
+            var PLAYER_TILT_209 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
+            var PLAYER_TILT_209_val = PLAYER_TILT_209.GetFloat("VAL");
+            if (PLAYER_TILT_209_val > MAX_PLAYER_TILT_N_208_val)
             {
                 goto DECR_TILT;
             }
             CHECK_SPEED_TILT:
-            var PLAYER_SPEED_SQR_304 = _world.GetObject(ObjectType.Skill, "PLAYER_SPEED_SQR");
-            var temp_305 = PLAYER_SPEED_SQR_304.GetFloat("VAL");
-            if (temp_305 > 0.4f)
+            var PLAYER_SPEED_SQR_211 = _world.GetObject(ObjectType.Skill, "PLAYER_SPEED_SQR");
+            var PLAYER_SPEED_SQR_211_val = PLAYER_SPEED_SQR_211.GetFloat("VAL");
+            if (PLAYER_SPEED_SQR_211_val > 0.4f)
             {
                 goto DECR_TILT;
             }
-            var PLAYER_VZ_307 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
-            var temp_308 = PLAYER_VZ_307.GetFloat("VAL");
-            if (temp_308 != 0f)
+            var PLAYER_VZ_213 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
+            var PLAYER_VZ_213_val = PLAYER_VZ_213.GetFloat("VAL");
+            if (PLAYER_VZ_213_val != 0f)
             {
                 goto DECR_TILT;
             }
             goto CALC_TILT;
             DECR_TILT:
-            var TILT_DECREASE_310 = _world.GetObject(ObjectType.Skill, "TILT_DECREASE");
-            TILT_DECREASE_310.SetFloat("VAL", 0.8f);
+            var TILT_DECREASE_215 = _world.GetObject(ObjectType.Skill, "TILT_DECREASE");
+            TILT_DECREASE_215.SetFloat("VAL", 0.8f);
             CALC_TILT:
-            var PLAYER_TILT_311 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
-            var TILT_DECREASE_312 = _world.GetObject(ObjectType.Skill, "TILT_DECREASE");
-            var temp_313 = TILT_DECREASE_312.GetFloat("VAL");
-            var PLAYER_TILT_315 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
-            var temp_316 = PLAYER_TILT_315.GetFloat("VAL");
-            var FORCE_TILT_320 = _world.GetObject(ObjectType.Skill, "FORCE_TILT");
-            var temp_321 = FORCE_TILT_320.GetFloat("VAL");
-            var FLOAT_STR_325 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
-            var temp_326 = FLOAT_STR_325.GetFloat("VAL");
-            var FORCE_UP_328 = _world.GetObject(ObjectType.Skill, "FORCE_UP");
-            var temp_329 = FORCE_UP_328.GetFloat("VAL");
-            var FLY_MODE_334 = _world.GetObject(ObjectType.Skill, "FLY_MODE");
-            var temp_335 = FLY_MODE_334.GetFloat("VAL");
-            PLAYER_TILT_311.SetFloat("VAL", temp_313 * temp_316 + 0.3f * temp_321 - 0.3f * temp_326 * temp_329 * (1f - temp_335));
-            var PLAYER_SPEED_SQR_338 = _world.GetObject(ObjectType.Skill, "PLAYER_SPEED_SQR");
-            var temp_339 = PLAYER_SPEED_SQR_338.GetFloat("VAL");
-            if (temp_339 > 0f)
+            var PLAYER_TILT_216 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
+            var TILT_DECREASE_217 = _world.GetObject(ObjectType.Skill, "TILT_DECREASE");
+            var TILT_DECREASE_217_val = TILT_DECREASE_217.GetFloat("VAL");
+            var PLAYER_TILT_219 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
+            var PLAYER_TILT_219_val = PLAYER_TILT_219.GetFloat("VAL");
+            var FORCE_TILT_223 = _world.GetObject(ObjectType.Skill, "FORCE_TILT");
+            var FORCE_TILT_223_val = FORCE_TILT_223.GetFloat("VAL");
+            var FLOAT_STR_227 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
+            var FLOAT_STR_227_val = FLOAT_STR_227.GetFloat("VAL");
+            var FORCE_UP_229 = _world.GetObject(ObjectType.Skill, "FORCE_UP");
+            var FORCE_UP_229_val = FORCE_UP_229.GetFloat("VAL");
+            var FLY_MODE_234 = _world.GetObject(ObjectType.Skill, "FLY_MODE");
+            var FLY_MODE_234_val = FLY_MODE_234.GetFloat("VAL");
+            PLAYER_TILT_216.SetFloat("VAL", TILT_DECREASE_217_val * PLAYER_TILT_219_val + 0.3f * FORCE_TILT_223_val - 0.3f * FLOAT_STR_227_val * FORCE_UP_229_val * (1f - FLY_MODE_234_val));
+            var PLAYER_SPEED_SQR_237 = _world.GetObject(ObjectType.Skill, "PLAYER_SPEED_SQR");
+            var PLAYER_SPEED_SQR_237_val = PLAYER_SPEED_SQR_237.GetFloat("VAL");
+            if (PLAYER_SPEED_SQR_237_val > 0f)
             {
                 //Unknown keyword: SKIP
             }
-            var MAX_PLAYER_TILT_P_340 = _world.GetObject(ObjectType.Skill, "MAX_PLAYER_TILT_P");
-            var temp_341 = MAX_PLAYER_TILT_P_340.GetFloat("VAL");
-            var PLAYER_TILT_342 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
-            var temp_343 = PLAYER_TILT_342.GetFloat("VAL");
-            if (temp_343 > temp_341)
+            var MAX_PLAYER_TILT_P_238 = _world.GetObject(ObjectType.Skill, "MAX_PLAYER_TILT_P");
+            var MAX_PLAYER_TILT_P_238_val = MAX_PLAYER_TILT_P_238.GetFloat("VAL");
+            var PLAYER_TILT_239 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
+            var PLAYER_TILT_239_val = PLAYER_TILT_239.GetFloat("VAL");
+            if (PLAYER_TILT_239_val > MAX_PLAYER_TILT_P_238_val)
             {
-                var TILT_DECREASE_345 = _world.GetObject(ObjectType.Skill, "TILT_DECREASE");
-                TILT_DECREASE_345.SetFloat("VAL", 1f);
+                var TILT_DECREASE_241 = _world.GetObject(ObjectType.Skill, "TILT_DECREASE");
+                TILT_DECREASE_241.SetFloat("VAL", 1f);
             }
-            var MAX_PLAYER_TILT_N_346 = _world.GetObject(ObjectType.Skill, "MAX_PLAYER_TILT_N");
-            var temp_347 = MAX_PLAYER_TILT_N_346.GetFloat("VAL");
-            var PLAYER_TILT_348 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
-            var temp_349 = PLAYER_TILT_348.GetFloat("VAL");
-            if (temp_349 < temp_347)
+            var MAX_PLAYER_TILT_N_242 = _world.GetObject(ObjectType.Skill, "MAX_PLAYER_TILT_N");
+            var MAX_PLAYER_TILT_N_242_val = MAX_PLAYER_TILT_N_242.GetFloat("VAL");
+            var PLAYER_TILT_243 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
+            var PLAYER_TILT_243_val = PLAYER_TILT_243.GetFloat("VAL");
+            if (PLAYER_TILT_243_val < MAX_PLAYER_TILT_N_242_val)
             {
-                var TILT_DECREASE_351 = _world.GetObject(ObjectType.Skill, "TILT_DECREASE");
-                TILT_DECREASE_351.SetFloat("VAL", 1f);
+                var TILT_DECREASE_245 = _world.GetObject(ObjectType.Skill, "TILT_DECREASE");
+                TILT_DECREASE_245.SetFloat("VAL", 1f);
             }
-            var MODE_SCHWIMMEN_352 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
-            var temp_353 = MODE_SCHWIMMEN_352.GetFloat("VAL");
-            var MOVING_354 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_355 = MOVING_354.GetFloat("VAL");
-            if (temp_355 == temp_353)
+            var MODE_SCHWIMMEN_246 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
+            var MODE_SCHWIMMEN_246_val = MODE_SCHWIMMEN_246.GetFloat("VAL");
+            var MOVING_247 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_247_val = MOVING_247.GetFloat("VAL");
+            if (MOVING_247_val == MODE_SCHWIMMEN_246_val)
             {
-                var PLAYER_TILT_356 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
-                var PLAYER_TILT_357 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
-                var temp_358 = PLAYER_TILT_357.GetFloat("VAL");
-                var WAVE_362 = _world.GetObject(ObjectType.Skill, "WAVE");
-                var temp_363 = WAVE_362.GetFloat("VAL");
-                PLAYER_TILT_356.SetFloat("VAL", temp_358 + 0.01f * temp_363);
+                var PLAYER_TILT_248 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
+                var PLAYER_TILT_249 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
+                var PLAYER_TILT_249_val = PLAYER_TILT_249.GetFloat("VAL");
+                var WAVE_253 = _world.GetObject(ObjectType.Skill, "WAVE");
+                var WAVE_253_val = WAVE_253.GetFloat("VAL");
+                PLAYER_TILT_248.SetFloat("VAL", PLAYER_TILT_249_val + 0.01f * WAVE_253_val);
             }
-            var MODE_TAUCHEN_364 = _world.GetObject(ObjectType.Skill, "MODE_TAUCHEN");
-            var temp_365 = MODE_TAUCHEN_364.GetFloat("VAL");
-            var MOVING_366 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_367 = MOVING_366.GetFloat("VAL");
-            if (temp_367 == temp_365)
+            var MODE_TAUCHEN_254 = _world.GetObject(ObjectType.Skill, "MODE_TAUCHEN");
+            var MODE_TAUCHEN_254_val = MODE_TAUCHEN_254.GetFloat("VAL");
+            var MOVING_255 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_255_val = MOVING_255.GetFloat("VAL");
+            if (MOVING_255_val == MODE_TAUCHEN_254_val)
             {
                 goto NO_HTILT;
             }
-            var JUMP_PHASE_369 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
-            var temp_370 = JUMP_PHASE_369.GetFloat("VAL");
-            if (temp_370 > 0f)
+            var JUMP_PHASE_257 = _world.GetObject(ObjectType.Skill, "JUMP_PHASE");
+            var JUMP_PHASE_257_val = JUMP_PHASE_257.GetFloat("VAL");
+            if (JUMP_PHASE_257_val > 0f)
             {
                 goto NO_HTILT;
             }
-            var TILT_DECREASE_372 = _world.GetObject(ObjectType.Skill, "TILT_DECREASE");
-            var temp_373 = TILT_DECREASE_372.GetFloat("VAL");
-            if (temp_373 < 1f)
+            var TILT_DECREASE_259 = _world.GetObject(ObjectType.Skill, "TILT_DECREASE");
+            var TILT_DECREASE_259_val = TILT_DECREASE_259.GetFloat("VAL");
+            if (TILT_DECREASE_259_val < 1f)
             {
-                var PLAYER_TILT_374 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
-                var PLAYER_TILT_375 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
-                var temp_376 = PLAYER_TILT_375.GetFloat("VAL");
-                var PLAYER_HGT_381 = _world.GetObject(ObjectType.Skill, "PLAYER_HGT");
-                var temp_382 = PLAYER_HGT_381.GetFloat("VAL");
-                PLAYER_TILT_374.SetFloat("VAL", temp_376 + 0.03f * (temp_382 + 0.3f));
+                var PLAYER_TILT_260 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
+                var PLAYER_TILT_261 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
+                var PLAYER_TILT_261_val = PLAYER_TILT_261.GetFloat("VAL");
+                var PLAYER_HGT_266 = _world.GetObject(ObjectType.Skill, "PLAYER_HGT");
+                var PLAYER_HGT_266_val = PLAYER_HGT_266.GetFloat("VAL");
+                PLAYER_TILT_260.SetFloat("VAL", PLAYER_TILT_261_val + 0.03f * (PLAYER_HGT_266_val + 0.3f));
             }
             NO_HTILT:
-            var RICHTER_387 = _world.GetObject(ObjectType.Skill, "RICHTER");
-            var temp_388 = RICHTER_387.GetFloat("VAL");
-            if (temp_388 == 0f)
+            var RICHTER_271 = _world.GetObject(ObjectType.Skill, "RICHTER");
+            var RICHTER_271_val = RICHTER_271.GetFloat("VAL");
+            if (RICHTER_271_val == 0f)
             {
                 goto NO_QUAKE;
             }
-            var PLAYER_Z_389 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            var PLAYER_Z_390 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            var temp_391 = PLAYER_Z_390.GetFloat("VAL");
-            var RICHTER_393 = _world.GetObject(ObjectType.Skill, "RICHTER");
-            var temp_394 = RICHTER_393.GetFloat("VAL");
-            var RANDOM_2_397 = _world.GetObject(ObjectType.Skill, "RANDOM_2");
-            var temp_398 = RANDOM_2_397.GetFloat("VAL");
-            PLAYER_Z_389.SetFloat("VAL", temp_391 + temp_394 * (temp_398 - 0.5f));
-            var RANDOM_1_402 = _world.GetObject(ObjectType.Skill, "RANDOM_1");
-            var temp_403 = RANDOM_1_402.GetFloat("VAL");
-            var RANDOM_2_404 = _world.GetObject(ObjectType.Skill, "RANDOM_2");
-            RANDOM_2_404.SetFloat("VAL", temp_403);
-            var RANDOM_1_406 = _world.GetObject(ObjectType.Skill, "RANDOM_1");
-            RANDOM_1_406.SetFloat("VAL", UnityEngine.Random.value);
+            var PLAYER_Z_272 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            var PLAYER_Z_273 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            var PLAYER_Z_273_val = PLAYER_Z_273.GetFloat("VAL");
+            var RICHTER_275 = _world.GetObject(ObjectType.Skill, "RICHTER");
+            var RICHTER_275_val = RICHTER_275.GetFloat("VAL");
+            var RANDOM_2_278 = _world.GetObject(ObjectType.Skill, "RANDOM_2");
+            var RANDOM_2_278_val = RANDOM_2_278.GetFloat("VAL");
+            PLAYER_Z_272.SetFloat("VAL", PLAYER_Z_273_val + RICHTER_275_val * (RANDOM_2_278_val - 0.5f));
+            var RANDOM_1_282 = _world.GetObject(ObjectType.Skill, "RANDOM_1");
+            var RANDOM_1_282_val = RANDOM_1_282.GetFloat("VAL");
+            var RANDOM_2_283 = _world.GetObject(ObjectType.Skill, "RANDOM_2");
+            RANDOM_2_283.SetFloat("VAL", RANDOM_1_282_val);
+            var RANDOM_1_285 = _world.GetObject(ObjectType.Skill, "RANDOM_1");
+            RANDOM_1_285.SetFloat("VAL", UnityEngine.Random.value);
             NO_QUAKE:
             yield break;
-            var KEY_INS_408 = _world.GetObject(ObjectType.Skill, "KEY_INS");
-            var temp_409 = KEY_INS_408.GetFloat("VAL");
-            if (temp_409 > 0f)
+            var KEY_INS_287 = _world.GetObject(ObjectType.Skill, "KEY_INS");
+            var KEY_INS_287_val = KEY_INS_287.GetFloat("VAL");
+            if (KEY_INS_287_val > 0f)
             {
-                var PLAYER_ARC_410 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
-                var PLAYER_ARC_411 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
-                var temp_412 = PLAYER_ARC_411.GetFloat("VAL");
-                PLAYER_ARC_410.SetFloat("VAL", temp_412 - 0.1f);
+                var PLAYER_ARC_288 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
+                var PLAYER_ARC_289 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
+                var PLAYER_ARC_289_val = PLAYER_ARC_289.GetFloat("VAL");
+                PLAYER_ARC_288.SetFloat("VAL", PLAYER_ARC_289_val - 0.1f);
             }
-            var KEY_DEL_416 = _world.GetObject(ObjectType.Skill, "KEY_DEL");
-            var temp_417 = KEY_DEL_416.GetFloat("VAL");
-            if (temp_417 > 0f)
+            var KEY_DEL_293 = _world.GetObject(ObjectType.Skill, "KEY_DEL");
+            var KEY_DEL_293_val = KEY_DEL_293.GetFloat("VAL");
+            if (KEY_DEL_293_val > 0f)
             {
-                var PLAYER_ARC_418 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
-                var PLAYER_ARC_419 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
-                var temp_420 = PLAYER_ARC_419.GetFloat("VAL");
-                PLAYER_ARC_418.SetFloat("VAL", temp_420 + 0.1f);
+                var PLAYER_ARC_294 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
+                var PLAYER_ARC_295 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
+                var PLAYER_ARC_295_val = PLAYER_ARC_295.GetFloat("VAL");
+                PLAYER_ARC_294.SetFloat("VAL", PLAYER_ARC_295_val + 0.1f);
             }
             yield break;
         }
         public IEnumerator MSCALE_MINUS()
         {
             var MAP_MODE_1 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
-            var temp_2 = MAP_MODE_1.GetFloat("VAL");
-            if (temp_2 == 0f)
+            var MAP_MODE_1_val = MAP_MODE_1.GetFloat("VAL");
+            if (MAP_MODE_1_val == 0f)
             {
                 yield break;
             }
+            var MAP_SCALE_2 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
             var MAP_SCALE_3 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
-            var MAP_SCALE_4 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
-            var temp_5 = MAP_SCALE_4.GetFloat("VAL");
-            MAP_SCALE_3.SetFloat("VAL", temp_5 * 0.9f);
+            var MAP_SCALE_3_val = MAP_SCALE_3.GetFloat("VAL");
+            MAP_SCALE_2.SetFloat("VAL", MAP_SCALE_3_val * 0.9f);
             yield break;
         }
         public IEnumerator MSCALE_PLUS()
         {
             var MAP_MODE_1 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
-            var temp_2 = MAP_MODE_1.GetFloat("VAL");
-            if (temp_2 == 0f)
+            var MAP_MODE_1_val = MAP_MODE_1.GetFloat("VAL");
+            if (MAP_MODE_1_val == 0f)
             {
                 yield break;
             }
+            var MAP_SCALE_2 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
             var MAP_SCALE_3 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
-            var MAP_SCALE_4 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
-            var temp_5 = MAP_SCALE_4.GetFloat("VAL");
-            MAP_SCALE_3.SetFloat("VAL", temp_5 * 1.1f);
+            var MAP_SCALE_3_val = MAP_SCALE_3.GetFloat("VAL");
+            MAP_SCALE_2.SetFloat("VAL", MAP_SCALE_3_val * 1.1f);
             yield break;
         }
         public IEnumerator OPENDOOR()
@@ -1480,29 +1480,29 @@ namespace Tests
         public IEnumerator REGIO_ARISE()
         {
             var UNDERWATER_1 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
-            var temp_2 = UNDERWATER_1.GetFloat("VAL");
-            if (temp_2 == 0f)
+            var UNDERWATER_1_val = UNDERWATER_1.GetFloat("VAL");
+            if (UNDERWATER_1_val == 0f)
             {
                 yield break;
             }
-            var UNDERWATER_4 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
-            UNDERWATER_4.SetFloat("VAL", 0f);
+            var UNDERWATER_3 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
+            UNDERWATER_3.SetFloat("VAL", 0f);
+            var PLAYER_ARC_4 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
             var PLAYER_ARC_5 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
-            var PLAYER_ARC_6 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
-            var temp_7 = PLAYER_ARC_6.GetFloat("VAL");
-            PLAYER_ARC_5.SetFloat("VAL", temp_7 - 0.3f);
-            var MY_SIZE_10 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
-            var MY_SIZE_11 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
-            var temp_12 = MY_SIZE_11.GetFloat("VAL");
-            MY_SIZE_10.SetFloat("VAL", temp_12 + 0.2f);
-            var PLAYER_SIZE_15 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
-            var PLAYER_SIZE_16 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
-            var temp_17 = PLAYER_SIZE_16.GetFloat("VAL");
-            PLAYER_SIZE_15.SetFloat("VAL", temp_17 + 0.2f);
-            var PLAYER_Z_20 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            var PLAYER_Z_21 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            var temp_22 = PLAYER_Z_21.GetFloat("VAL");
-            PLAYER_Z_20.SetFloat("VAL", temp_22 + 0.2f);
+            var PLAYER_ARC_5_val = PLAYER_ARC_5.GetFloat("VAL");
+            PLAYER_ARC_4.SetFloat("VAL", PLAYER_ARC_5_val - 0.3f);
+            var MY_SIZE_8 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
+            var MY_SIZE_9 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
+            var MY_SIZE_9_val = MY_SIZE_9.GetFloat("VAL");
+            MY_SIZE_8.SetFloat("VAL", MY_SIZE_9_val + 0.2f);
+            var PLAYER_SIZE_12 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
+            var PLAYER_SIZE_13 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
+            var PLAYER_SIZE_13_val = PLAYER_SIZE_13.GetFloat("VAL");
+            PLAYER_SIZE_12.SetFloat("VAL", PLAYER_SIZE_13_val + 0.2f);
+            var PLAYER_Z_16 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            var PLAYER_Z_17 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            var PLAYER_Z_17_val = PLAYER_Z_17.GetFloat("VAL");
+            PLAYER_Z_16.SetFloat("VAL", PLAYER_Z_17_val + 0.2f);
             yield return _world.CallSynonymAction("SET_OVERWATER");
             yield return SET_SWIMMING();
             yield break;
@@ -1510,29 +1510,29 @@ namespace Tests
         public IEnumerator REGIO_DIVE()
         {
             var UNDERWATER_1 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
-            var temp_2 = UNDERWATER_1.GetFloat("VAL");
-            if (temp_2 == 1f)
+            var UNDERWATER_1_val = UNDERWATER_1.GetFloat("VAL");
+            if (UNDERWATER_1_val == 1f)
             {
                 yield break;
             }
-            var UNDERWATER_4 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
-            UNDERWATER_4.SetFloat("VAL", 1f);
+            var UNDERWATER_3 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
+            UNDERWATER_3.SetFloat("VAL", 1f);
+            var PLAYER_ARC_4 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
             var PLAYER_ARC_5 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
-            var PLAYER_ARC_6 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
-            var temp_7 = PLAYER_ARC_6.GetFloat("VAL");
-            PLAYER_ARC_5.SetFloat("VAL", temp_7 + 0.3f);
-            var MY_SIZE_10 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
-            var MY_SIZE_11 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
-            var temp_12 = MY_SIZE_11.GetFloat("VAL");
-            MY_SIZE_10.SetFloat("VAL", temp_12 - 0.2f);
-            var PLAYER_SIZE_15 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
-            var PLAYER_SIZE_16 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
-            var temp_17 = PLAYER_SIZE_16.GetFloat("VAL");
-            PLAYER_SIZE_15.SetFloat("VAL", temp_17 - 0.2f);
-            var PLAYER_Z_20 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            var PLAYER_Z_21 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            var temp_22 = PLAYER_Z_21.GetFloat("VAL");
-            PLAYER_Z_20.SetFloat("VAL", temp_22 - 0.2f);
+            var PLAYER_ARC_5_val = PLAYER_ARC_5.GetFloat("VAL");
+            PLAYER_ARC_4.SetFloat("VAL", PLAYER_ARC_5_val + 0.3f);
+            var MY_SIZE_8 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
+            var MY_SIZE_9 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
+            var MY_SIZE_9_val = MY_SIZE_9.GetFloat("VAL");
+            MY_SIZE_8.SetFloat("VAL", MY_SIZE_9_val - 0.2f);
+            var PLAYER_SIZE_12 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
+            var PLAYER_SIZE_13 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
+            var PLAYER_SIZE_13_val = PLAYER_SIZE_13.GetFloat("VAL");
+            PLAYER_SIZE_12.SetFloat("VAL", PLAYER_SIZE_13_val - 0.2f);
+            var PLAYER_Z_16 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            var PLAYER_Z_17 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            var PLAYER_Z_17_val = PLAYER_Z_17.GetFloat("VAL");
+            PLAYER_Z_16.SetFloat("VAL", PLAYER_Z_17_val - 0.2f);
             yield return _world.CallSynonymAction("SET_UNDERWATER");
             yield return SET_DIVING();
             yield break;
@@ -1558,12 +1558,12 @@ namespace Tests
             //Unknown keyword: SAVE
             _world.AcknexObject.SetString("EACH_TICK.10", null);
             var RESULT_14 = _world.GetObject(ObjectType.Skill, "RESULT");
-            var temp_15 = RESULT_14.GetFloat("VAL");
-            if (temp_15 < 0f)
+            var RESULT_14_val = RESULT_14.GetFloat("VAL");
+            if (RESULT_14_val < 0f)
             {
-                var SAVE_NIX_16 = _world.AcknexObject.GetAcknexObject("SAVE_NIX");
-                var SCREEN_TXT_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-                SCREEN_TXT_18.SetAcknexObject("STRING", SAVE_NIX_16);
+                var SAVE_NIX_15 = _world.AcknexObject.GetAcknexObject("SAVE_NIX");
+                var SCREEN_TXT_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+                SCREEN_TXT_17.SetAcknexObject("STRING", SAVE_NIX_15);
             }
             yield break;
         }
@@ -1670,143 +1670,143 @@ namespace Tests
         public IEnumerator SAVE_QUICK()
         {
             var SLOT_1 = _world.GetObject(ObjectType.Skill, "SLOT");
-            var temp_2 = SLOT_1.GetFloat("VAL");
-            if (temp_2 == 0f)
+            var SLOT_1_val = SLOT_1.GetFloat("VAL");
+            if (SLOT_1_val == 0f)
             {
                 yield return SAVE_MENU();
                 yield break;
             }
             yield return CLEAR_MENU();
-            var QSAV_YESNO_3 = _world.AcknexObject.GetAcknexObject("QSAV_YESNO");
-            var SCREEN_TXT_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            SCREEN_TXT_5.SetAcknexObject("STRING", QSAV_YESNO_3);
-            var SAVE_GAME_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_GAME");
-            _world.AcknexObject.SetString("IF_J", SAVE_GAME_6.GetString("NAME"));
-            var SAVE_GAME_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_GAME");
-            _world.AcknexObject.SetString("IF_Y", SAVE_GAME_8.GetString("NAME"));
-            var SAVE_GAME_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_GAME");
-            _world.AcknexObject.SetString("IF_Z", SAVE_GAME_10.GetString("NAME"));
+            var QSAV_YESNO_2 = _world.AcknexObject.GetAcknexObject("QSAV_YESNO");
+            var SCREEN_TXT_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            SCREEN_TXT_4.SetAcknexObject("STRING", QSAV_YESNO_2);
+            var SAVE_GAME_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_GAME");
+            _world.AcknexObject.SetString("IF_J", SAVE_GAME_5.GetString("NAME"));
+            var SAVE_GAME_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_GAME");
+            _world.AcknexObject.SetString("IF_Y", SAVE_GAME_7.GetString("NAME"));
+            var SAVE_GAME_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_GAME");
+            _world.AcknexObject.SetString("IF_Z", SAVE_GAME_9.GetString("NAME"));
             yield return WAIT_YESNO();
             yield break;
         }
         public IEnumerator SET_ADJUST()
         {
             var ADJUST_MODE_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_2 = ADJUST_MODE_1.GetFloat("VAL");
-            if (temp_2 > -1f)
+            var ADJUST_MODE_1_val = ADJUST_MODE_1.GetFloat("VAL");
+            if (ADJUST_MODE_1_val > -1f)
             {
                 goto DISABLE;
             }
-            var SCREEN_HGT_3 = _world.GetObject(ObjectType.Skill, "SCREEN_HGT");
-            var temp_4 = SCREEN_HGT_3.GetFloat("VAL");
-            var ADJUST_PANEL_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            ADJUST_PANEL_6.SetFloat("POS_Y", temp_4);
-            var ADJUST_PANEL_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            var temp_10 = ADJUST_PANEL_9.GetFloat("POS_Y");
-            var ADJUST_PANEL_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            ADJUST_PANEL_12.SetFloat("POS_Y", temp_10 + -12f);
-            var SCREEN_HGT_13 = _world.GetObject(ObjectType.Skill, "SCREEN_HGT");
-            var temp_14 = SCREEN_HGT_13.GetFloat("VAL");
+            var SCREEN_HGT_2 = _world.GetObject(ObjectType.Skill, "SCREEN_HGT");
+            var SCREEN_HGT_2_val = SCREEN_HGT_2.GetFloat("VAL");
+            var ADJUST_PANEL_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            ADJUST_PANEL_4.SetFloat("POS_Y", SCREEN_HGT_2_val);
+            var ADJUST_PANEL_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            var temp_8 = ADJUST_PANEL_7.GetFloat("POS_Y");
+            var ADJUST_PANEL_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            ADJUST_PANEL_10.SetFloat("POS_Y", temp_8 + -12f);
+            var SCREEN_HGT_11 = _world.GetObject(ObjectType.Skill, "SCREEN_HGT");
+            var SCREEN_HGT_11_val = SCREEN_HGT_11.GetFloat("VAL");
+            var ADJUST_TEXT_13 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            ADJUST_TEXT_13.SetFloat("POS_Y", SCREEN_HGT_11_val);
             var ADJUST_TEXT_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            ADJUST_TEXT_16.SetFloat("POS_Y", temp_14);
+            var temp_17 = ADJUST_TEXT_16.GetFloat("POS_Y");
             var ADJUST_TEXT_19 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            var temp_20 = ADJUST_TEXT_19.GetFloat("POS_Y");
+            ADJUST_TEXT_19.SetFloat("POS_Y", temp_17 + -100f);
+            var ADJUST_HELP_20 = _world.AcknexObject.GetAcknexObject("ADJUST_HELP");
             var ADJUST_TEXT_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            ADJUST_TEXT_22.SetFloat("POS_Y", temp_20 + -100f);
-            var ADJUST_HELP_23 = _world.AcknexObject.GetAcknexObject("ADJUST_HELP");
-            var ADJUST_TEXT_25 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            ADJUST_TEXT_25.SetAcknexObject("STRING", ADJUST_HELP_23);
-            var ADJUST_TEXT_26 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.9", ADJUST_TEXT_26);
-            var ADJUST_MODE_30 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            ADJUST_MODE_30.SetFloat("VAL", 99f);
-            var temp_32 = _world.AcknexObject.GetAcknexObject("IF_W");
-            _world.SetSynonymObject("AW_OLD", temp_32);
-            var SET_WMODE_34 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_WMODE");
-            _world.AcknexObject.SetString("IF_W", SET_WMODE_34.GetString("NAME"));
-            var temp_37 = _world.AcknexObject.GetAcknexObject("IF_F");
-            _world.SetSynonymObject("AF_OLD", temp_37);
-            var SET_FMODE_39 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_FMODE");
-            _world.AcknexObject.SetString("IF_F", SET_FMODE_39.GetString("NAME"));
-            var temp_42 = _world.AcknexObject.GetAcknexObject("IF_C");
-            _world.SetSynonymObject("AC_OLD", temp_42);
-            var SET_CMODE_44 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_CMODE");
-            _world.AcknexObject.SetString("IF_C", SET_CMODE_44.GetString("NAME"));
-            var temp_47 = _world.AcknexObject.GetAcknexObject("IF_R");
-            _world.SetSynonymObject("AR_OLD", temp_47);
-            var SET_RMODE_49 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_RMODE");
-            _world.AcknexObject.SetString("IF_R", SET_RMODE_49.GetString("NAME"));
-            var temp_52 = _world.AcknexObject.GetAcknexObject("IF_A");
-            _world.SetSynonymObject("AA_OLD", temp_52);
-            var SET_AMODE_54 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_AMODE");
-            _world.AcknexObject.SetString("IF_A", SET_AMODE_54.GetString("NAME"));
-            var temp_57 = _world.AcknexObject.GetAcknexObject("IF_S");
-            _world.SetSynonymObject("AS_OLD", temp_57);
-            var SET_SMODE_59 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_SMODE");
-            _world.AcknexObject.SetString("IF_S", SET_SMODE_59.GetString("NAME"));
-            var temp_62 = _world.AcknexObject.GetAcknexObject("IF_B");
-            _world.SetSynonymObject("AB_OLD", temp_62);
-            var SET_BMODE_64 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_BMODE");
-            _world.AcknexObject.SetString("IF_B", SET_BMODE_64.GetString("NAME"));
-            var temp_67 = _world.AcknexObject.GetAcknexObject("IF_V");
-            _world.SetSynonymObject("AV_OLD", temp_67);
-            var SET_VMODE_69 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_VMODE");
-            _world.AcknexObject.SetString("IF_V", SET_VMODE_69.GetString("NAME"));
-            var temp_72 = _world.AcknexObject.GetAcknexObject("IF_Q");
-            _world.SetSynonymObject("AQ_OLD", temp_72);
-            var temp_75 = _world.AcknexObject.GetAcknexObject("IF_X");
-            _world.SetSynonymObject("AX_OLD", temp_75);
-            var temp_78 = _world.AcknexObject.GetAcknexObject("IF_5");
-            _world.SetSynonymObject("A5_OLD", temp_78);
-            var ADJUST_XMINUS_80 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ADJUST_XMINUS");
-            _world.AcknexObject.SetString("IF_5", ADJUST_XMINUS_80.GetString("NAME"));
-            var temp_83 = _world.AcknexObject.GetAcknexObject("IF_6");
-            _world.SetSynonymObject("A6_OLD", temp_83);
-            var ADJUST_XPLUS_85 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ADJUST_XPLUS");
-            _world.AcknexObject.SetString("IF_6", ADJUST_XPLUS_85.GetString("NAME"));
-            var temp_88 = _world.AcknexObject.GetAcknexObject("IF_7");
-            _world.SetSynonymObject("A7_OLD", temp_88);
-            var ADJUST_YMINUS_90 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ADJUST_YMINUS");
-            _world.AcknexObject.SetString("IF_7", ADJUST_YMINUS_90.GetString("NAME"));
-            var temp_93 = _world.AcknexObject.GetAcknexObject("IF_8");
-            _world.SetSynonymObject("A8_OLD", temp_93);
-            var ADJUST_YPLUS_95 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ADJUST_YPLUS");
-            _world.AcknexObject.SetString("IF_8", ADJUST_YPLUS_95.GetString("NAME"));
+            ADJUST_TEXT_22.SetAcknexObject("STRING", ADJUST_HELP_20);
+            var ADJUST_TEXT_23 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.9", ADJUST_TEXT_23);
+            var ADJUST_MODE_27 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            ADJUST_MODE_27.SetFloat("VAL", 99f);
+            var temp_29 = _world.AcknexObject.GetAcknexObject("IF_W");
+            _world.SetSynonymObject("AW_OLD", temp_29);
+            var SET_WMODE_31 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_WMODE");
+            _world.AcknexObject.SetString("IF_W", SET_WMODE_31.GetString("NAME"));
+            var temp_34 = _world.AcknexObject.GetAcknexObject("IF_F");
+            _world.SetSynonymObject("AF_OLD", temp_34);
+            var SET_FMODE_36 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_FMODE");
+            _world.AcknexObject.SetString("IF_F", SET_FMODE_36.GetString("NAME"));
+            var temp_39 = _world.AcknexObject.GetAcknexObject("IF_C");
+            _world.SetSynonymObject("AC_OLD", temp_39);
+            var SET_CMODE_41 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_CMODE");
+            _world.AcknexObject.SetString("IF_C", SET_CMODE_41.GetString("NAME"));
+            var temp_44 = _world.AcknexObject.GetAcknexObject("IF_R");
+            _world.SetSynonymObject("AR_OLD", temp_44);
+            var SET_RMODE_46 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_RMODE");
+            _world.AcknexObject.SetString("IF_R", SET_RMODE_46.GetString("NAME"));
+            var temp_49 = _world.AcknexObject.GetAcknexObject("IF_A");
+            _world.SetSynonymObject("AA_OLD", temp_49);
+            var SET_AMODE_51 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_AMODE");
+            _world.AcknexObject.SetString("IF_A", SET_AMODE_51.GetString("NAME"));
+            var temp_54 = _world.AcknexObject.GetAcknexObject("IF_S");
+            _world.SetSynonymObject("AS_OLD", temp_54);
+            var SET_SMODE_56 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_SMODE");
+            _world.AcknexObject.SetString("IF_S", SET_SMODE_56.GetString("NAME"));
+            var temp_59 = _world.AcknexObject.GetAcknexObject("IF_B");
+            _world.SetSynonymObject("AB_OLD", temp_59);
+            var SET_BMODE_61 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_BMODE");
+            _world.AcknexObject.SetString("IF_B", SET_BMODE_61.GetString("NAME"));
+            var temp_64 = _world.AcknexObject.GetAcknexObject("IF_V");
+            _world.SetSynonymObject("AV_OLD", temp_64);
+            var SET_VMODE_66 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_VMODE");
+            _world.AcknexObject.SetString("IF_V", SET_VMODE_66.GetString("NAME"));
+            var temp_69 = _world.AcknexObject.GetAcknexObject("IF_Q");
+            _world.SetSynonymObject("AQ_OLD", temp_69);
+            var temp_72 = _world.AcknexObject.GetAcknexObject("IF_X");
+            _world.SetSynonymObject("AX_OLD", temp_72);
+            var temp_75 = _world.AcknexObject.GetAcknexObject("IF_5");
+            _world.SetSynonymObject("A5_OLD", temp_75);
+            var ADJUST_XMINUS_77 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ADJUST_XMINUS");
+            _world.AcknexObject.SetString("IF_5", ADJUST_XMINUS_77.GetString("NAME"));
+            var temp_80 = _world.AcknexObject.GetAcknexObject("IF_6");
+            _world.SetSynonymObject("A6_OLD", temp_80);
+            var ADJUST_XPLUS_82 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ADJUST_XPLUS");
+            _world.AcknexObject.SetString("IF_6", ADJUST_XPLUS_82.GetString("NAME"));
+            var temp_85 = _world.AcknexObject.GetAcknexObject("IF_7");
+            _world.SetSynonymObject("A7_OLD", temp_85);
+            var ADJUST_YMINUS_87 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ADJUST_YMINUS");
+            _world.AcknexObject.SetString("IF_7", ADJUST_YMINUS_87.GetString("NAME"));
+            var temp_90 = _world.AcknexObject.GetAcknexObject("IF_8");
+            _world.SetSynonymObject("A8_OLD", temp_90);
+            var ADJUST_YPLUS_92 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ADJUST_YPLUS");
+            _world.AcknexObject.SetString("IF_8", ADJUST_YPLUS_92.GetString("NAME"));
             //Unknown keyword: BEEP
             yield break;
             DISABLE:
             _world.AcknexObject.SetAcknexObject("MESSAGES.9", null);
             //Unknown Property Type: World.PANELS.9
-            var ADJUST_MODE_104 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            ADJUST_MODE_104.SetFloat("VAL", -1f);
-            var AW_OLD_105 = _world.GetSynonymObject("AW_OLD");
-            _world.AcknexObject.SetString("IF_W", AW_OLD_105.GetString("NAME"));
-            var AF_OLD_107 = _world.GetSynonymObject("AF_OLD");
-            _world.AcknexObject.SetString("IF_F", AF_OLD_107.GetString("NAME"));
-            var AC_OLD_109 = _world.GetSynonymObject("AC_OLD");
-            _world.AcknexObject.SetString("IF_C", AC_OLD_109.GetString("NAME"));
-            var AR_OLD_111 = _world.GetSynonymObject("AR_OLD");
-            _world.AcknexObject.SetString("IF_R", AR_OLD_111.GetString("NAME"));
-            var AA_OLD_113 = _world.GetSynonymObject("AA_OLD");
-            _world.AcknexObject.SetString("IF_A", AA_OLD_113.GetString("NAME"));
-            var AS_OLD_115 = _world.GetSynonymObject("AS_OLD");
-            _world.AcknexObject.SetString("IF_S", AS_OLD_115.GetString("NAME"));
-            var AB_OLD_117 = _world.GetSynonymObject("AB_OLD");
-            _world.AcknexObject.SetString("IF_B", AB_OLD_117.GetString("NAME"));
-            var AV_OLD_119 = _world.GetSynonymObject("AV_OLD");
-            _world.AcknexObject.SetString("IF_V", AV_OLD_119.GetString("NAME"));
-            var AQ_OLD_121 = _world.GetSynonymObject("AQ_OLD");
-            _world.AcknexObject.SetString("IF_Q", AQ_OLD_121.GetString("NAME"));
-            var AX_OLD_123 = _world.GetSynonymObject("AX_OLD");
-            _world.AcknexObject.SetString("IF_X", AX_OLD_123.GetString("NAME"));
-            var A5_OLD_125 = _world.GetSynonymObject("A5_OLD");
-            _world.AcknexObject.SetString("IF_5", A5_OLD_125.GetString("NAME"));
-            var A6_OLD_127 = _world.GetSynonymObject("A6_OLD");
-            _world.AcknexObject.SetString("IF_6", A6_OLD_127.GetString("NAME"));
-            var A7_OLD_129 = _world.GetSynonymObject("A7_OLD");
-            _world.AcknexObject.SetString("IF_7", A7_OLD_129.GetString("NAME"));
-            var A8_OLD_131 = _world.GetSynonymObject("A8_OLD");
-            _world.AcknexObject.SetString("IF_8", A8_OLD_131.GetString("NAME"));
+            var ADJUST_MODE_101 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            ADJUST_MODE_101.SetFloat("VAL", -1f);
+            var AW_OLD_102 = _world.GetSynonymObject("AW_OLD");
+            _world.AcknexObject.SetString("IF_W", AW_OLD_102.GetString("NAME"));
+            var AF_OLD_104 = _world.GetSynonymObject("AF_OLD");
+            _world.AcknexObject.SetString("IF_F", AF_OLD_104.GetString("NAME"));
+            var AC_OLD_106 = _world.GetSynonymObject("AC_OLD");
+            _world.AcknexObject.SetString("IF_C", AC_OLD_106.GetString("NAME"));
+            var AR_OLD_108 = _world.GetSynonymObject("AR_OLD");
+            _world.AcknexObject.SetString("IF_R", AR_OLD_108.GetString("NAME"));
+            var AA_OLD_110 = _world.GetSynonymObject("AA_OLD");
+            _world.AcknexObject.SetString("IF_A", AA_OLD_110.GetString("NAME"));
+            var AS_OLD_112 = _world.GetSynonymObject("AS_OLD");
+            _world.AcknexObject.SetString("IF_S", AS_OLD_112.GetString("NAME"));
+            var AB_OLD_114 = _world.GetSynonymObject("AB_OLD");
+            _world.AcknexObject.SetString("IF_B", AB_OLD_114.GetString("NAME"));
+            var AV_OLD_116 = _world.GetSynonymObject("AV_OLD");
+            _world.AcknexObject.SetString("IF_V", AV_OLD_116.GetString("NAME"));
+            var AQ_OLD_118 = _world.GetSynonymObject("AQ_OLD");
+            _world.AcknexObject.SetString("IF_Q", AQ_OLD_118.GetString("NAME"));
+            var AX_OLD_120 = _world.GetSynonymObject("AX_OLD");
+            _world.AcknexObject.SetString("IF_X", AX_OLD_120.GetString("NAME"));
+            var A5_OLD_122 = _world.GetSynonymObject("A5_OLD");
+            _world.AcknexObject.SetString("IF_5", A5_OLD_122.GetString("NAME"));
+            var A6_OLD_124 = _world.GetSynonymObject("A6_OLD");
+            _world.AcknexObject.SetString("IF_6", A6_OLD_124.GetString("NAME"));
+            var A7_OLD_126 = _world.GetSynonymObject("A7_OLD");
+            _world.AcknexObject.SetString("IF_7", A7_OLD_126.GetString("NAME"));
+            var A8_OLD_128 = _world.GetSynonymObject("A8_OLD");
+            _world.AcknexObject.SetString("IF_8", A8_OLD_128.GetString("NAME"));
             //Unknown keyword: BEEP
             yield break;
             yield break;
@@ -1814,174 +1814,174 @@ namespace Tests
         public IEnumerator SET_ADJX()
         {
             var ADJUST_MODE_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_2 = ADJUST_MODE_1.GetFloat("VAL");
-            if (temp_2 == 0f)
+            var ADJUST_MODE_1_val = ADJUST_MODE_1.GetFloat("VAL");
+            if (ADJUST_MODE_1_val == 0f)
             {
-                var ADJUST_X_3 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var temp_4 = ADJUST_X_3.GetFloat("VAL");
-                var ADJUST_WALL_6 = _world.GetSynonymObject("ADJUST_WALL");
-                ADJUST_WALL_6.SetFloat("OFFSET_X", temp_4);
+                var ADJUST_X_2 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                var ADJUST_X_2_val = ADJUST_X_2.GetFloat("VAL");
+                var ADJUST_WALL_4 = _world.GetSynonymObject("ADJUST_WALL");
+                ADJUST_WALL_4.SetFloat("OFFSET_X", ADJUST_X_2_val);
             }
-            var ADJUST_MODE_8 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_9 = ADJUST_MODE_8.GetFloat("VAL");
-            if (temp_9 == 1f)
+            var ADJUST_MODE_6 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_6_val = ADJUST_MODE_6.GetFloat("VAL");
+            if (ADJUST_MODE_6_val == 1f)
             {
-                var ADJUST_X_10 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var temp_11 = ADJUST_X_10.GetFloat("VAL");
-                var ADJUST_REG_13 = _world.GetSynonymObject("ADJUST_REG");
-                ADJUST_REG_13.SetFloat("FLOOR_OFFS_X", temp_11);
+                var ADJUST_X_7 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                var ADJUST_X_7_val = ADJUST_X_7.GetFloat("VAL");
+                var ADJUST_REG_9 = _world.GetSynonymObject("ADJUST_REG");
+                ADJUST_REG_9.SetFloat("FLOOR_OFFS_X", ADJUST_X_7_val);
             }
-            var ADJUST_MODE_15 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_16 = ADJUST_MODE_15.GetFloat("VAL");
-            if (temp_16 == 2f)
+            var ADJUST_MODE_11 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_11_val = ADJUST_MODE_11.GetFloat("VAL");
+            if (ADJUST_MODE_11_val == 2f)
             {
-                var ADJUST_X_17 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var temp_18 = ADJUST_X_17.GetFloat("VAL");
-                var ADJUST_REG_20 = _world.GetSynonymObject("ADJUST_REG");
-                ADJUST_REG_20.SetFloat("CEIL_OFFS_X", temp_18);
+                var ADJUST_X_12 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                var ADJUST_X_12_val = ADJUST_X_12.GetFloat("VAL");
+                var ADJUST_REG_14 = _world.GetSynonymObject("ADJUST_REG");
+                ADJUST_REG_14.SetFloat("CEIL_OFFS_X", ADJUST_X_12_val);
             }
-            var ADJUST_MODE_22 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_23 = ADJUST_MODE_22.GetFloat("VAL");
-            if (temp_23 == 3f)
+            var ADJUST_MODE_16 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_16_val = ADJUST_MODE_16.GetFloat("VAL");
+            if (ADJUST_MODE_16_val == 3f)
             {
-                var ADJUST_REG_25 = _world.GetSynonymObject("ADJUST_REG");
-                var ADJUST_X_26 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var temp_27 = ADJUST_X_26.GetFloat("VAL");
-                ADJUST_REG_25.SetFloat("FLOOR_HGT", temp_27 / 10f);
+                var ADJUST_REG_18 = _world.GetSynonymObject("ADJUST_REG");
+                var ADJUST_X_19 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                var ADJUST_X_19_val = ADJUST_X_19.GetFloat("VAL");
+                ADJUST_REG_18.SetFloat("FLOOR_HGT", ADJUST_X_19_val / 10f);
             }
-            var ADJUST_MODE_31 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_32 = ADJUST_MODE_31.GetFloat("VAL");
-            if (temp_32 == 4f)
+            var ADJUST_MODE_23 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_23_val = ADJUST_MODE_23.GetFloat("VAL");
+            if (ADJUST_MODE_23_val == 4f)
             {
-                var ADJUST_X_33 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var temp_34 = ADJUST_X_33.GetFloat("VAL");
-                var ADJUST_TEX_36 = _world.GetSynonymObject("ADJUST_TEX");
-                ADJUST_TEX_36.SetFloat("POS_X", temp_34);
+                var ADJUST_X_24 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                var ADJUST_X_24_val = ADJUST_X_24.GetFloat("VAL");
+                var ADJUST_TEX_26 = _world.GetSynonymObject("ADJUST_TEX");
+                ADJUST_TEX_26.SetFloat("POS_X", ADJUST_X_24_val);
             }
-            var ADJUST_MODE_38 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_39 = ADJUST_MODE_38.GetFloat("VAL");
-            if (temp_39 != 5f)
+            var ADJUST_MODE_28 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_28_val = ADJUST_MODE_28.GetFloat("VAL");
+            if (ADJUST_MODE_28_val != 5f)
             {
                 //Unknown keyword: SKIP
             }
-            var ADJUST_TEX_41 = _world.GetSynonymObject("ADJUST_TEX");
-            var ADJUST_X_42 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            var temp_43 = ADJUST_X_42.GetFloat("VAL");
-            ADJUST_TEX_41.SetFloat("SCALE_X", temp_43 / 10f);
+            var ADJUST_TEX_30 = _world.GetSynonymObject("ADJUST_TEX");
+            var ADJUST_X_31 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            var ADJUST_X_31_val = ADJUST_X_31.GetFloat("VAL");
+            ADJUST_TEX_30.SetFloat("SCALE_X", ADJUST_X_31_val / 10f);
+            //Unknown keyword: SET_ALL
+            var ADJUST_MODE_35 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_35_val = ADJUST_MODE_35.GetFloat("VAL");
+            if (ADJUST_MODE_35_val == 6f)
+            {
+                var ADJUST_X_36 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                var ADJUST_X_36_val = ADJUST_X_36.GetFloat("VAL");
+                var ADJUST_WALL_38 = _world.GetSynonymObject("ADJUST_WALL");
+                ADJUST_WALL_38.SetFloat("OFFSET_X", ADJUST_X_36_val);
+            }
+            var ADJUST_MODE_40 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_40_val = ADJUST_MODE_40.GetFloat("VAL");
+            if (ADJUST_MODE_40_val != 7f)
+            {
+                //Unknown keyword: SKIP
+            }
+            var ADJUST_TEX_42 = _world.GetSynonymObject("ADJUST_TEX");
+            var ADJUST_X_43 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            var ADJUST_X_43_val = ADJUST_X_43.GetFloat("VAL");
+            ADJUST_TEX_42.SetFloat("AMBIENT", ADJUST_X_43_val / 10f);
             //Unknown keyword: SET_ALL
             var ADJUST_MODE_47 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_48 = ADJUST_MODE_47.GetFloat("VAL");
-            if (temp_48 == 6f)
+            var ADJUST_MODE_47_val = ADJUST_MODE_47.GetFloat("VAL");
+            if (ADJUST_MODE_47_val == 8f)
             {
-                var ADJUST_X_49 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var temp_50 = ADJUST_X_49.GetFloat("VAL");
-                var ADJUST_WALL_52 = _world.GetSynonymObject("ADJUST_WALL");
-                ADJUST_WALL_52.SetFloat("OFFSET_X", temp_50);
+                var ADJUST_REG_49 = _world.GetSynonymObject("ADJUST_REG");
+                var ADJUST_X_50 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                var ADJUST_X_50_val = ADJUST_X_50.GetFloat("VAL");
+                ADJUST_REG_49.SetFloat("AMBIENT", ADJUST_X_50_val / 10f);
             }
-            var ADJUST_MODE_54 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_55 = ADJUST_MODE_54.GetFloat("VAL");
-            if (temp_55 != 7f)
-            {
-                //Unknown keyword: SKIP
-            }
-            var ADJUST_TEX_57 = _world.GetSynonymObject("ADJUST_TEX");
-            var ADJUST_X_58 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            var temp_59 = ADJUST_X_58.GetFloat("VAL");
-            ADJUST_TEX_57.SetFloat("AMBIENT", temp_59 / 10f);
-            //Unknown keyword: SET_ALL
-            var ADJUST_MODE_63 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_64 = ADJUST_MODE_63.GetFloat("VAL");
-            if (temp_64 == 8f)
-            {
-                var ADJUST_REG_66 = _world.GetSynonymObject("ADJUST_REG");
-                var ADJUST_X_67 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var temp_68 = ADJUST_X_67.GetFloat("VAL");
-                ADJUST_REG_66.SetFloat("AMBIENT", temp_68 / 10f);
-            }
-            var RENDER_MODE_72 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
-            RENDER_MODE_72.SetFloat("VAL", 1f);
+            var RENDER_MODE_54 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
+            RENDER_MODE_54.SetFloat("VAL", 1f);
             yield break;
         }
         public IEnumerator SET_ADJY()
         {
             var ADJUST_MODE_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_2 = ADJUST_MODE_1.GetFloat("VAL");
-            if (temp_2 == 0f)
+            var ADJUST_MODE_1_val = ADJUST_MODE_1.GetFloat("VAL");
+            if (ADJUST_MODE_1_val == 0f)
             {
-                var ADJUST_Y_3 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var temp_4 = ADJUST_Y_3.GetFloat("VAL");
-                var ADJUST_WALL_6 = _world.GetSynonymObject("ADJUST_WALL");
-                ADJUST_WALL_6.SetFloat("OFFSET_Y", temp_4);
+                var ADJUST_Y_2 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                var ADJUST_Y_2_val = ADJUST_Y_2.GetFloat("VAL");
+                var ADJUST_WALL_4 = _world.GetSynonymObject("ADJUST_WALL");
+                ADJUST_WALL_4.SetFloat("OFFSET_Y", ADJUST_Y_2_val);
             }
-            var ADJUST_MODE_8 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_9 = ADJUST_MODE_8.GetFloat("VAL");
-            if (temp_9 == 1f)
+            var ADJUST_MODE_6 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_6_val = ADJUST_MODE_6.GetFloat("VAL");
+            if (ADJUST_MODE_6_val == 1f)
             {
-                var ADJUST_Y_10 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var temp_11 = ADJUST_Y_10.GetFloat("VAL");
-                var ADJUST_REG_13 = _world.GetSynonymObject("ADJUST_REG");
-                ADJUST_REG_13.SetFloat("FLOOR_OFFS_Y", temp_11);
+                var ADJUST_Y_7 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                var ADJUST_Y_7_val = ADJUST_Y_7.GetFloat("VAL");
+                var ADJUST_REG_9 = _world.GetSynonymObject("ADJUST_REG");
+                ADJUST_REG_9.SetFloat("FLOOR_OFFS_Y", ADJUST_Y_7_val);
             }
-            var ADJUST_MODE_15 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_16 = ADJUST_MODE_15.GetFloat("VAL");
-            if (temp_16 == 2f)
+            var ADJUST_MODE_11 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_11_val = ADJUST_MODE_11.GetFloat("VAL");
+            if (ADJUST_MODE_11_val == 2f)
             {
-                var ADJUST_Y_17 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var temp_18 = ADJUST_Y_17.GetFloat("VAL");
-                var ADJUST_REG_20 = _world.GetSynonymObject("ADJUST_REG");
-                ADJUST_REG_20.SetFloat("CEIL_OFFS_Y", temp_18);
+                var ADJUST_Y_12 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                var ADJUST_Y_12_val = ADJUST_Y_12.GetFloat("VAL");
+                var ADJUST_REG_14 = _world.GetSynonymObject("ADJUST_REG");
+                ADJUST_REG_14.SetFloat("CEIL_OFFS_Y", ADJUST_Y_12_val);
             }
-            var ADJUST_MODE_22 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_23 = ADJUST_MODE_22.GetFloat("VAL");
-            if (temp_23 == 3f)
+            var ADJUST_MODE_16 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_16_val = ADJUST_MODE_16.GetFloat("VAL");
+            if (ADJUST_MODE_16_val == 3f)
             {
-                var ADJUST_REG_25 = _world.GetSynonymObject("ADJUST_REG");
-                var ADJUST_Y_26 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var temp_27 = ADJUST_Y_26.GetFloat("VAL");
-                ADJUST_REG_25.SetFloat("CEIL_HGT", temp_27 / 10f);
+                var ADJUST_REG_18 = _world.GetSynonymObject("ADJUST_REG");
+                var ADJUST_Y_19 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                var ADJUST_Y_19_val = ADJUST_Y_19.GetFloat("VAL");
+                ADJUST_REG_18.SetFloat("CEIL_HGT", ADJUST_Y_19_val / 10f);
             }
-            var ADJUST_MODE_31 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_32 = ADJUST_MODE_31.GetFloat("VAL");
-            if (temp_32 == 4f)
+            var ADJUST_MODE_23 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_23_val = ADJUST_MODE_23.GetFloat("VAL");
+            if (ADJUST_MODE_23_val == 4f)
             {
-                var ADJUST_Y_33 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var temp_34 = ADJUST_Y_33.GetFloat("VAL");
-                var ADJUST_TEX_36 = _world.GetSynonymObject("ADJUST_TEX");
-                ADJUST_TEX_36.SetFloat("POS_Y", temp_34);
+                var ADJUST_Y_24 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                var ADJUST_Y_24_val = ADJUST_Y_24.GetFloat("VAL");
+                var ADJUST_TEX_26 = _world.GetSynonymObject("ADJUST_TEX");
+                ADJUST_TEX_26.SetFloat("POS_Y", ADJUST_Y_24_val);
             }
-            var ADJUST_MODE_38 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_39 = ADJUST_MODE_38.GetFloat("VAL");
-            if (temp_39 != 5f)
-            {
-                //Unknown keyword: SKIP
-            }
-            var ADJUST_TEX_41 = _world.GetSynonymObject("ADJUST_TEX");
-            var ADJUST_Y_42 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            var temp_43 = ADJUST_Y_42.GetFloat("VAL");
-            ADJUST_TEX_41.SetFloat("SCALE_Y", temp_43 / 10f);
-            //Unknown keyword: SET_ALL
-            var ADJUST_MODE_47 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_48 = ADJUST_MODE_47.GetFloat("VAL");
-            if (temp_48 == 6f)
-            {
-                var ADJUST_WALL_50 = _world.GetSynonymObject("ADJUST_WALL");
-                var ADJUST_Y_51 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var temp_52 = ADJUST_Y_51.GetFloat("VAL");
-                ADJUST_WALL_50.SetFloat("POSITION", temp_52 / 10f);
-            }
-            var ADJUST_MODE_56 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_57 = ADJUST_MODE_56.GetFloat("VAL");
-            if (temp_57 != 7f)
+            var ADJUST_MODE_28 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_28_val = ADJUST_MODE_28.GetFloat("VAL");
+            if (ADJUST_MODE_28_val != 5f)
             {
                 //Unknown keyword: SKIP
             }
-            var ADJUST_TEX_59 = _world.GetSynonymObject("ADJUST_TEX");
-            var ADJUST_Y_60 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            var temp_61 = ADJUST_Y_60.GetFloat("VAL");
-            ADJUST_TEX_59.SetFloat("ALBEDO", temp_61 / 10f);
+            var ADJUST_TEX_30 = _world.GetSynonymObject("ADJUST_TEX");
+            var ADJUST_Y_31 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            var ADJUST_Y_31_val = ADJUST_Y_31.GetFloat("VAL");
+            ADJUST_TEX_30.SetFloat("SCALE_Y", ADJUST_Y_31_val / 10f);
             //Unknown keyword: SET_ALL
-            var RENDER_MODE_65 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
-            RENDER_MODE_65.SetFloat("VAL", 1f);
+            var ADJUST_MODE_35 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_35_val = ADJUST_MODE_35.GetFloat("VAL");
+            if (ADJUST_MODE_35_val == 6f)
+            {
+                var ADJUST_WALL_37 = _world.GetSynonymObject("ADJUST_WALL");
+                var ADJUST_Y_38 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                var ADJUST_Y_38_val = ADJUST_Y_38.GetFloat("VAL");
+                ADJUST_WALL_37.SetFloat("POSITION", ADJUST_Y_38_val / 10f);
+            }
+            var ADJUST_MODE_42 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var ADJUST_MODE_42_val = ADJUST_MODE_42.GetFloat("VAL");
+            if (ADJUST_MODE_42_val != 7f)
+            {
+                //Unknown keyword: SKIP
+            }
+            var ADJUST_TEX_44 = _world.GetSynonymObject("ADJUST_TEX");
+            var ADJUST_Y_45 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            var ADJUST_Y_45_val = ADJUST_Y_45.GetFloat("VAL");
+            ADJUST_TEX_44.SetFloat("ALBEDO", ADJUST_Y_45_val / 10f);
+            //Unknown keyword: SET_ALL
+            var RENDER_MODE_49 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
+            RENDER_MODE_49.SetFloat("VAL", 1f);
             yield break;
         }
         public IEnumerator SET_AMODE()
@@ -1991,48 +1991,48 @@ namespace Tests
             var ADJUST_TEXT_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
             ADJUST_TEXT_4.SetFloat("POS_Y", temp_2);
             var ADJUST_MODE_6 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_7 = ADJUST_MODE_6.GetFloat("VAL");
-            if (temp_7 == 4f)
+            var ADJUST_MODE_6_val = ADJUST_MODE_6.GetFloat("VAL");
+            if (ADJUST_MODE_6_val == 4f)
             {
                 goto NEXT_TEX;
             }
             _world.Shoot();
-            var HIT_DIST_9 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
-            var temp_10 = HIT_DIST_9.GetFloat("VAL");
-            if (temp_10 == 0f)
+            var HIT_DIST_8 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
+            var HIT_DIST_8_val = HIT_DIST_8.GetFloat("VAL");
+            if (HIT_DIST_8_val == 0f)
             {
                 yield break;
             }
-            var ADJUST_MODE_12 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            ADJUST_MODE_12.SetFloat("VAL", 4f);
-            var ATTACH_MODE_13 = _world.AcknexObject.GetAcknexObject("ATTACH_MODE");
-            var ADJUST_TEXT_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            ADJUST_TEXT_15.SetAcknexObject("STRING", ATTACH_MODE_13);
-            var ADJUST_PANEL_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            var ADJUST_MODE_10 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            ADJUST_MODE_10.SetFloat("VAL", 4f);
+            var ATTACH_MODE_11 = _world.AcknexObject.GetAcknexObject("ATTACH_MODE");
+            var ADJUST_TEXT_13 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            ADJUST_TEXT_13.SetAcknexObject("STRING", ATTACH_MODE_11);
+            var ADJUST_PANEL_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
             //Unknown Property Type: World.PANELS.9
-            var HIT_20 = _world.GetSynonymObject("HIT");
-            var temp_21 = HIT_20.GetAcknexObject("TEXTURE");
-            _world.SetSynonymObject("ADJUST_TEX", temp_21);
+            var HIT_18 = _world.GetSynonymObject("HIT");
+            var temp_19 = HIT_18.GetAcknexObject("TEXTURE");
+            _world.SetSynonymObject("ADJUST_TEX", temp_19);
             NEXT_TEX:
-            var ADJUST_TEX_25 = _world.GetSynonymObject("ADJUST_TEX");
-            var temp_26 = ADJUST_TEX_25.GetAcknexObject("ATTACH");
-            if (temp_26 != null)
+            var ADJUST_TEX_23 = _world.GetSynonymObject("ADJUST_TEX");
+            var temp_24 = ADJUST_TEX_23.GetAcknexObject("ATTACH");
+            if (temp_24 != null)
             {
                 goto SET_TEX;
             }
-            var HIT_28 = _world.GetSynonymObject("HIT");
-            var temp_29 = HIT_28.GetAcknexObject("TEXTURE");
-            _world.SetSynonymObject("ADJUST_TEX", temp_29);
-            var ADJUST_TEX_33 = _world.GetSynonymObject("ADJUST_TEX");
-            var temp_34 = ADJUST_TEX_33.GetAcknexObject("ATTACH");
-            if (temp_34 == null)
+            var HIT_26 = _world.GetSynonymObject("HIT");
+            var temp_27 = HIT_26.GetAcknexObject("TEXTURE");
+            _world.SetSynonymObject("ADJUST_TEX", temp_27);
+            var ADJUST_TEX_31 = _world.GetSynonymObject("ADJUST_TEX");
+            var temp_32 = ADJUST_TEX_31.GetAcknexObject("ATTACH");
+            if (temp_32 == null)
             {
                 yield break;
             }
             SET_TEX:
-            var ADJUST_TEX_36 = _world.GetSynonymObject("ADJUST_TEX");
-            var temp_37 = ADJUST_TEX_36.GetAcknexObject("ATTACH");
-            _world.SetSynonymObject("ADJUST_TEX", temp_37);
+            var ADJUST_TEX_34 = _world.GetSynonymObject("ADJUST_TEX");
+            var temp_35 = ADJUST_TEX_34.GetAcknexObject("ATTACH");
+            _world.SetSynonymObject("ADJUST_TEX", temp_35);
             yield return GET_ADJX();
             yield return GET_ADJY();
             yield break;
@@ -2050,23 +2050,23 @@ namespace Tests
             ADJUST_TEXT_4.SetFloat("POS_Y", temp_2);
             _world.Shoot();
             var HIT_DIST_6 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
-            var temp_7 = HIT_DIST_6.GetFloat("VAL");
-            if (temp_7 == 0f)
+            var HIT_DIST_6_val = HIT_DIST_6.GetFloat("VAL");
+            if (HIT_DIST_6_val == 0f)
             {
                 yield break;
             }
-            var ADJUST_PANEL_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            var ADJUST_PANEL_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
             //Unknown Property Type: World.PANELS.9
-            var HIT_12 = _world.GetSynonymObject("HIT");
-            var temp_13 = HIT_12.GetAcknexObject("TEXTURE");
-            _world.SetSynonymObject("ADJUST_TEX", temp_13);
-            var HIT_15 = _world.GetSynonymObject("HIT");
-            _world.SetSynonymObject("ADJUST_WALL", HIT_15);
-            var ADJUST_MODE_18 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            ADJUST_MODE_18.SetFloat("VAL", 7f);
-            var AMBIENT_MODE_19 = _world.AcknexObject.GetAcknexObject("AMBIENT_MODE");
-            var ADJUST_TEXT_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            ADJUST_TEXT_21.SetAcknexObject("STRING", AMBIENT_MODE_19);
+            var HIT_11 = _world.GetSynonymObject("HIT");
+            var temp_12 = HIT_11.GetAcknexObject("TEXTURE");
+            _world.SetSynonymObject("ADJUST_TEX", temp_12);
+            var HIT_14 = _world.GetSynonymObject("HIT");
+            _world.SetSynonymObject("ADJUST_WALL", HIT_14);
+            var ADJUST_MODE_17 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            ADJUST_MODE_17.SetFloat("VAL", 7f);
+            var AMBIENT_MODE_18 = _world.AcknexObject.GetAcknexObject("AMBIENT_MODE");
+            var ADJUST_TEXT_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            ADJUST_TEXT_20.SetAcknexObject("STRING", AMBIENT_MODE_18);
             yield return GET_ADJX();
             yield return GET_ADJY();
             yield break;
@@ -2137,23 +2137,23 @@ namespace Tests
             var FRIC_1 = _world.GetObject(ObjectType.Skill, "FRIC");
             FRIC_1.SetFloat("VAL", 0.3f);
             var MODE_TAUCHEN_2 = _world.GetObject(ObjectType.Skill, "MODE_TAUCHEN");
-            var temp_3 = MODE_TAUCHEN_2.GetFloat("VAL");
-            var MOVING_4 = _world.GetObject(ObjectType.Skill, "MOVING");
-            MOVING_4.SetFloat("VAL", temp_3);
-            var STRENGTH_6 = _world.GetObject(ObjectType.Skill, "STRENGTH");
-            STRENGTH_6.SetFloat("VAL", 0.1f);
-            var WAVE_STR_8 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
-            WAVE_STR_8.SetFloat("VAL", 0.03f);
-            var FLOAT_STR_10 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
-            FLOAT_STR_10.SetFloat("VAL", 0.05f);
-            var DUCK_STR_12 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
-            DUCK_STR_12.SetFloat("VAL", 0f);
-            var FRIC_AIR_14 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
-            FRIC_AIR_14.SetFloat("VAL", 0.7f);
-            var GRAVITY_16 = _world.GetObject(ObjectType.Skill, "GRAVITY");
-            GRAVITY_16.SetFloat("VAL", 0f);
-            var MOVE_ME_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MOVE_ME");
-            _world.AcknexObject.SetString("EACH_TICK.16", MOVE_ME_17.GetString("NAME"));
+            var MODE_TAUCHEN_2_val = MODE_TAUCHEN_2.GetFloat("VAL");
+            var MOVING_3 = _world.GetObject(ObjectType.Skill, "MOVING");
+            MOVING_3.SetFloat("VAL", MODE_TAUCHEN_2_val);
+            var STRENGTH_5 = _world.GetObject(ObjectType.Skill, "STRENGTH");
+            STRENGTH_5.SetFloat("VAL", 0.1f);
+            var WAVE_STR_7 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
+            WAVE_STR_7.SetFloat("VAL", 0.03f);
+            var FLOAT_STR_9 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
+            FLOAT_STR_9.SetFloat("VAL", 0.05f);
+            var DUCK_STR_11 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
+            DUCK_STR_11.SetFloat("VAL", 0f);
+            var FRIC_AIR_13 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
+            FRIC_AIR_13.SetFloat("VAL", 0.7f);
+            var GRAVITY_15 = _world.GetObject(ObjectType.Skill, "GRAVITY");
+            GRAVITY_15.SetFloat("VAL", 0f);
+            var MOVE_ME_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MOVE_ME");
+            _world.AcknexObject.SetString("EACH_TICK.16", MOVE_ME_16.GetString("NAME"));
             yield break;
         }
         public IEnumerator SET_FMODE()
@@ -2203,34 +2203,34 @@ namespace Tests
         public IEnumerator SET_MOVING()
         {
             var MOVING_1 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_2 = MOVING_1.GetFloat("VAL");
-            if (temp_2 == 0f)
+            var MOVING_1_val = MOVING_1.GetFloat("VAL");
+            if (MOVING_1_val == 0f)
             {
                 yield break;
             }
-            var MODE_GEHEN_3 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
-            var temp_4 = MODE_GEHEN_3.GetFloat("VAL");
-            var MOVING_5 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_6 = MOVING_5.GetFloat("VAL");
-            if (temp_6 == temp_4)
+            var MODE_GEHEN_2 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
+            var MODE_GEHEN_2_val = MODE_GEHEN_2.GetFloat("VAL");
+            var MOVING_3 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_3_val = MOVING_3.GetFloat("VAL");
+            if (MOVING_3_val == MODE_GEHEN_2_val)
             {
                 yield return SET_WALKING();
                 yield break;
             }
-            var MODE_SCHWIMMEN_7 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
-            var temp_8 = MODE_SCHWIMMEN_7.GetFloat("VAL");
-            var MOVING_9 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_10 = MOVING_9.GetFloat("VAL");
-            if (temp_10 == temp_8)
+            var MODE_SCHWIMMEN_4 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
+            var MODE_SCHWIMMEN_4_val = MODE_SCHWIMMEN_4.GetFloat("VAL");
+            var MOVING_5 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_5_val = MOVING_5.GetFloat("VAL");
+            if (MOVING_5_val == MODE_SCHWIMMEN_4_val)
             {
                 yield return SET_SWIMMING();
                 yield break;
             }
-            var MODE_TAUCHEN_11 = _world.GetObject(ObjectType.Skill, "MODE_TAUCHEN");
-            var temp_12 = MODE_TAUCHEN_11.GetFloat("VAL");
-            var MOVING_13 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_14 = MOVING_13.GetFloat("VAL");
-            if (temp_14 == temp_12)
+            var MODE_TAUCHEN_6 = _world.GetObject(ObjectType.Skill, "MODE_TAUCHEN");
+            var MODE_TAUCHEN_6_val = MODE_TAUCHEN_6.GetFloat("VAL");
+            var MOVING_7 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var MOVING_7_val = MOVING_7.GetFloat("VAL");
+            if (MOVING_7_val == MODE_TAUCHEN_6_val)
             {
                 yield return SET_DIVING();
                 yield break;
@@ -2264,23 +2264,23 @@ namespace Tests
             ADJUST_TEXT_4.SetFloat("POS_Y", temp_2);
             _world.Shoot();
             var HIT_DIST_6 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
-            var temp_7 = HIT_DIST_6.GetFloat("VAL");
-            if (temp_7 == 0f)
+            var HIT_DIST_6_val = HIT_DIST_6.GetFloat("VAL");
+            if (HIT_DIST_6_val == 0f)
             {
                 yield break;
             }
-            var ADJUST_PANEL_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            var ADJUST_PANEL_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
             //Unknown Property Type: World.PANELS.9
-            var HIT_12 = _world.GetSynonymObject("HIT");
-            var temp_13 = HIT_12.GetAcknexObject("TEXTURE");
-            _world.SetSynonymObject("ADJUST_TEX", temp_13);
-            var HIT_15 = _world.GetSynonymObject("HIT");
-            _world.SetSynonymObject("ADJUST_WALL", HIT_15);
-            var ADJUST_MODE_18 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            ADJUST_MODE_18.SetFloat("VAL", 5f);
-            var SCALE_MODE_19 = _world.AcknexObject.GetAcknexObject("SCALE_MODE");
-            var ADJUST_TEXT_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            ADJUST_TEXT_21.SetAcknexObject("STRING", SCALE_MODE_19);
+            var HIT_11 = _world.GetSynonymObject("HIT");
+            var temp_12 = HIT_11.GetAcknexObject("TEXTURE");
+            _world.SetSynonymObject("ADJUST_TEX", temp_12);
+            var HIT_14 = _world.GetSynonymObject("HIT");
+            _world.SetSynonymObject("ADJUST_WALL", HIT_14);
+            var ADJUST_MODE_17 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            ADJUST_MODE_17.SetFloat("VAL", 5f);
+            var SCALE_MODE_18 = _world.AcknexObject.GetAcknexObject("SCALE_MODE");
+            var ADJUST_TEXT_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            ADJUST_TEXT_20.SetAcknexObject("STRING", SCALE_MODE_18);
             yield return GET_ADJX();
             yield return GET_ADJY();
             yield break;
@@ -2290,23 +2290,23 @@ namespace Tests
             var FRIC_1 = _world.GetObject(ObjectType.Skill, "FRIC");
             FRIC_1.SetFloat("VAL", 0.3f);
             var MODE_SCHWIMMEN_2 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
-            var temp_3 = MODE_SCHWIMMEN_2.GetFloat("VAL");
-            var MOVING_4 = _world.GetObject(ObjectType.Skill, "MOVING");
-            MOVING_4.SetFloat("VAL", temp_3);
-            var STRENGTH_6 = _world.GetObject(ObjectType.Skill, "STRENGTH");
-            STRENGTH_6.SetFloat("VAL", 0.15f);
-            var WAVE_STR_8 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
-            WAVE_STR_8.SetFloat("VAL", 0.08f);
-            var FLOAT_STR_10 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
-            FLOAT_STR_10.SetFloat("VAL", 0f);
-            var DUCK_STR_12 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
-            DUCK_STR_12.SetFloat("VAL", 0.2f);
-            var FRIC_AIR_14 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
-            FRIC_AIR_14.SetFloat("VAL", 0.5f);
-            var GRAVITY_16 = _world.GetObject(ObjectType.Skill, "GRAVITY");
-            GRAVITY_16.SetFloat("VAL", -0.05f);
-            var MOVE_ME_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MOVE_ME");
-            _world.AcknexObject.SetString("EACH_TICK.16", MOVE_ME_17.GetString("NAME"));
+            var MODE_SCHWIMMEN_2_val = MODE_SCHWIMMEN_2.GetFloat("VAL");
+            var MOVING_3 = _world.GetObject(ObjectType.Skill, "MOVING");
+            MOVING_3.SetFloat("VAL", MODE_SCHWIMMEN_2_val);
+            var STRENGTH_5 = _world.GetObject(ObjectType.Skill, "STRENGTH");
+            STRENGTH_5.SetFloat("VAL", 0.15f);
+            var WAVE_STR_7 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
+            WAVE_STR_7.SetFloat("VAL", 0.08f);
+            var FLOAT_STR_9 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
+            FLOAT_STR_9.SetFloat("VAL", 0f);
+            var DUCK_STR_11 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
+            DUCK_STR_11.SetFloat("VAL", 0.2f);
+            var FRIC_AIR_13 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
+            FRIC_AIR_13.SetFloat("VAL", 0.5f);
+            var GRAVITY_15 = _world.GetObject(ObjectType.Skill, "GRAVITY");
+            GRAVITY_15.SetFloat("VAL", -0.05f);
+            var MOVE_ME_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MOVE_ME");
+            _world.AcknexObject.SetString("EACH_TICK.16", MOVE_ME_16.GetString("NAME"));
             yield break;
         }
         public IEnumerator SET_VMODE()
@@ -2331,25 +2331,25 @@ namespace Tests
         public IEnumerator SET_WALKING()
         {
             var MODE_GEHEN_0 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
-            var temp_1 = MODE_GEHEN_0.GetFloat("VAL");
-            var MOVING_2 = _world.GetObject(ObjectType.Skill, "MOVING");
-            MOVING_2.SetFloat("VAL", temp_1);
-            var FRIC_4 = _world.GetObject(ObjectType.Skill, "FRIC");
-            FRIC_4.SetFloat("VAL", 0.2f);
-            var STRENGTH_6 = _world.GetObject(ObjectType.Skill, "STRENGTH");
-            STRENGTH_6.SetFloat("VAL", 0.15f);
-            var WAVE_STR_8 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
-            WAVE_STR_8.SetFloat("VAL", 0f);
-            var FLOAT_STR_10 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
-            FLOAT_STR_10.SetFloat("VAL", 0f);
-            var DUCK_STR_12 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
-            DUCK_STR_12.SetFloat("VAL", 0.5f);
-            var FRIC_AIR_14 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
-            FRIC_AIR_14.SetFloat("VAL", 0.04f);
-            var GRAVITY_16 = _world.GetObject(ObjectType.Skill, "GRAVITY");
-            GRAVITY_16.SetFloat("VAL", -0.13f);
-            var MOVE_ME_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MOVE_ME");
-            _world.AcknexObject.SetString("EACH_TICK.16", MOVE_ME_17.GetString("NAME"));
+            var MODE_GEHEN_0_val = MODE_GEHEN_0.GetFloat("VAL");
+            var MOVING_1 = _world.GetObject(ObjectType.Skill, "MOVING");
+            MOVING_1.SetFloat("VAL", MODE_GEHEN_0_val);
+            var FRIC_3 = _world.GetObject(ObjectType.Skill, "FRIC");
+            FRIC_3.SetFloat("VAL", 0.2f);
+            var STRENGTH_5 = _world.GetObject(ObjectType.Skill, "STRENGTH");
+            STRENGTH_5.SetFloat("VAL", 0.15f);
+            var WAVE_STR_7 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
+            WAVE_STR_7.SetFloat("VAL", 0f);
+            var FLOAT_STR_9 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
+            FLOAT_STR_9.SetFloat("VAL", 0f);
+            var DUCK_STR_11 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
+            DUCK_STR_11.SetFloat("VAL", 0.5f);
+            var FRIC_AIR_13 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
+            FRIC_AIR_13.SetFloat("VAL", 0.04f);
+            var GRAVITY_15 = _world.GetObject(ObjectType.Skill, "GRAVITY");
+            GRAVITY_15.SetFloat("VAL", -0.13f);
+            var MOVE_ME_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MOVE_ME");
+            _world.AcknexObject.SetString("EACH_TICK.16", MOVE_ME_16.GetString("NAME"));
             yield break;
         }
         public IEnumerator SET_WMODE()
@@ -2360,35 +2360,35 @@ namespace Tests
             ADJUST_TEXT_4.SetFloat("POS_Y", temp_2);
             _world.Shoot();
             var HIT_DIST_6 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
-            var temp_7 = HIT_DIST_6.GetFloat("VAL");
-            if (temp_7 == 0f)
+            var HIT_DIST_6_val = HIT_DIST_6.GetFloat("VAL");
+            if (HIT_DIST_6_val == 0f)
             {
                 yield break;
             }
-            var ADJUST_PANEL_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            var ADJUST_PANEL_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
             //Unknown Property Type: World.PANELS.9
-            var HIT_11 = _world.GetSynonymObject("HIT");
-            _world.SetSynonymObject("ADJUST_WALL", HIT_11);
-            var ADJUST_WALL_15 = _world.GetSynonymObject("ADJUST_WALL");
-            var temp_16 = ADJUST_WALL_15.GetFloat("FENCE");
-            if (temp_16 == 1f)
+            var HIT_10 = _world.GetSynonymObject("HIT");
+            _world.SetSynonymObject("ADJUST_WALL", HIT_10);
+            var ADJUST_WALL_14 = _world.GetSynonymObject("ADJUST_WALL");
+            var temp_15 = ADJUST_WALL_14.GetFloat("FENCE");
+            if (temp_15 == 1f)
             {
                 goto SET_POSMODE;
             }
-            var ADJUST_MODE_18 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            ADJUST_MODE_18.SetFloat("VAL", 0f);
-            var WALL_MODE_19 = _world.AcknexObject.GetAcknexObject("WALL_MODE");
-            var ADJUST_TEXT_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            ADJUST_TEXT_21.SetAcknexObject("STRING", WALL_MODE_19);
+            var ADJUST_MODE_17 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            ADJUST_MODE_17.SetFloat("VAL", 0f);
+            var WALL_MODE_18 = _world.AcknexObject.GetAcknexObject("WALL_MODE");
+            var ADJUST_TEXT_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            ADJUST_TEXT_20.SetAcknexObject("STRING", WALL_MODE_18);
             yield return GET_ADJX();
             yield return GET_ADJY();
             yield break;
             SET_POSMODE:
-            var ADJUST_MODE_23 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            ADJUST_MODE_23.SetFloat("VAL", 6f);
-            var POS_MODE_24 = _world.AcknexObject.GetAcknexObject("POS_MODE");
-            var ADJUST_TEXT_26 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            ADJUST_TEXT_26.SetAcknexObject("STRING", POS_MODE_24);
+            var ADJUST_MODE_22 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            ADJUST_MODE_22.SetFloat("VAL", 6f);
+            var POS_MODE_23 = _world.AcknexObject.GetAcknexObject("POS_MODE");
+            var ADJUST_TEXT_25 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            ADJUST_TEXT_25.SetAcknexObject("STRING", POS_MODE_23);
             yield return GET_ADJX();
             yield return GET_ADJY();
             yield break;
@@ -2408,94 +2408,94 @@ namespace Tests
             var MENU_POS_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
             MENU_POS_12.SetFloat("MIN", 1f);
             var MENU_POS_14 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_15 = MENU_POS_14.GetFloat("VAL");
-            if (temp_15 == 0f)
+            var MENU_POS_14_val = MENU_POS_14.GetFloat("VAL");
+            if (MENU_POS_14_val == 0f)
             {
-                var MENU_POS_17 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-                MENU_POS_17.SetFloat("VAL", 1f);
+                var MENU_POS_16 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+                MENU_POS_16.SetFloat("VAL", 1f);
             }
-            var MENUEXIT_TXT_19 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
-            var MENU1_TXT_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
-            var temp_22 = MENU1_TXT_21.GetFloat("POS_Y");
-            var MENU_POS_25 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
-            var temp_26 = MENU_POS_25.GetFloat("MAX");
-            MENUEXIT_TXT_19.SetFloat("POS_Y", temp_22 + temp_26 * 16f - 8f);
-            var MENU1_TXT_31 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.10", MENU1_TXT_31);
-            var MENU2_TXT_34 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.11", MENU2_TXT_34);
-            var MENU3_TXT_37 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.12", MENU3_TXT_37);
-            var MENU4_TXT_40 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.13", MENU4_TXT_40);
-            var MENU5_TXT_43 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.14", MENU5_TXT_43);
-            var MENU6_TXT_46 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.15", MENU6_TXT_46);
-            var MENUEXIT_TXT_49 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.16", MENUEXIT_TXT_49);
+            var MENUEXIT_TXT_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
+            var MENU1_TXT_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
+            var temp_21 = MENU1_TXT_20.GetFloat("POS_Y");
+            var MENU_POS_24 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
+            var temp_25 = MENU_POS_24.GetFloat("MAX");
+            MENUEXIT_TXT_18.SetFloat("POS_Y", temp_21 + temp_25 * 16f - 8f);
+            var MENU1_TXT_30 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.10", MENU1_TXT_30);
+            var MENU2_TXT_33 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.11", MENU2_TXT_33);
+            var MENU3_TXT_36 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.12", MENU3_TXT_36);
+            var MENU4_TXT_39 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.13", MENU4_TXT_39);
+            var MENU5_TXT_42 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.14", MENU5_TXT_42);
+            var MENU6_TXT_45 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.15", MENU6_TXT_45);
+            var MENUEXIT_TXT_48 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.16", MENUEXIT_TXT_48);
             BLINK:
             yield return SET_MENU();
             yield return new WaitForTicks(3f);
-            var MENU_POS_53 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_54 = MENU_POS_53.GetFloat("VAL");
-            if (temp_54 > MENU_POS_53.GetFloat("MAX"))
+            var MENU_POS_52 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var MENU_POS_52_val = MENU_POS_52.GetFloat("VAL");
+            if (MENU_POS_52_val > MENU_POS_52.GetFloat("MAX"))
             {
-                var EMPTY_55 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var MENUEXIT_TXT_57 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
-                MENUEXIT_TXT_57.SetAcknexObject("STRING", EMPTY_55);
+                var EMPTY_53 = _world.AcknexObject.GetAcknexObject("EMPTY");
+                var MENUEXIT_TXT_55 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
+                MENUEXIT_TXT_55.SetAcknexObject("STRING", EMPTY_53);
             }
-            var MENU_POS_59 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_60 = MENU_POS_59.GetFloat("VAL");
-            if (temp_60 == 1f)
+            var MENU_POS_57 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var MENU_POS_57_val = MENU_POS_57.GetFloat("VAL");
+            if (MENU_POS_57_val == 1f)
             {
-                var EMPTY_61 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var MENU1_TXT_63 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
-                MENU1_TXT_63.SetAcknexObject("STRING", EMPTY_61);
+                var EMPTY_58 = _world.AcknexObject.GetAcknexObject("EMPTY");
+                var MENU1_TXT_60 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
+                MENU1_TXT_60.SetAcknexObject("STRING", EMPTY_58);
             }
-            var MENU_POS_65 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_66 = MENU_POS_65.GetFloat("VAL");
-            if (temp_66 == 2f)
+            var MENU_POS_62 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var MENU_POS_62_val = MENU_POS_62.GetFloat("VAL");
+            if (MENU_POS_62_val == 2f)
             {
-                var EMPTY_67 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var MENU2_TXT_69 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
-                MENU2_TXT_69.SetAcknexObject("STRING", EMPTY_67);
+                var EMPTY_63 = _world.AcknexObject.GetAcknexObject("EMPTY");
+                var MENU2_TXT_65 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
+                MENU2_TXT_65.SetAcknexObject("STRING", EMPTY_63);
             }
-            var MENU_POS_71 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_72 = MENU_POS_71.GetFloat("VAL");
-            if (temp_72 == 3f)
+            var MENU_POS_67 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var MENU_POS_67_val = MENU_POS_67.GetFloat("VAL");
+            if (MENU_POS_67_val == 3f)
+            {
+                var EMPTY_68 = _world.AcknexObject.GetAcknexObject("EMPTY");
+                var MENU3_TXT_70 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
+                MENU3_TXT_70.SetAcknexObject("STRING", EMPTY_68);
+            }
+            var MENU_POS_72 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var MENU_POS_72_val = MENU_POS_72.GetFloat("VAL");
+            if (MENU_POS_72_val == 4f)
             {
                 var EMPTY_73 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var MENU3_TXT_75 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
-                MENU3_TXT_75.SetAcknexObject("STRING", EMPTY_73);
+                var MENU4_TXT_75 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
+                MENU4_TXT_75.SetAcknexObject("STRING", EMPTY_73);
             }
             var MENU_POS_77 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_78 = MENU_POS_77.GetFloat("VAL");
-            if (temp_78 == 4f)
+            var MENU_POS_77_val = MENU_POS_77.GetFloat("VAL");
+            if (MENU_POS_77_val == 5f)
             {
-                var EMPTY_79 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var MENU4_TXT_81 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
-                MENU4_TXT_81.SetAcknexObject("STRING", EMPTY_79);
+                var EMPTY_78 = _world.AcknexObject.GetAcknexObject("EMPTY");
+                var MENU5_TXT_80 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
+                MENU5_TXT_80.SetAcknexObject("STRING", EMPTY_78);
             }
-            var MENU_POS_83 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_84 = MENU_POS_83.GetFloat("VAL");
-            if (temp_84 == 5f)
+            var MENU_POS_82 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var MENU_POS_82_val = MENU_POS_82.GetFloat("VAL");
+            if (MENU_POS_82_val == 6f)
             {
-                var EMPTY_85 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var MENU5_TXT_87 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
-                MENU5_TXT_87.SetAcknexObject("STRING", EMPTY_85);
+                var EMPTY_83 = _world.AcknexObject.GetAcknexObject("EMPTY");
+                var MENU6_TXT_85 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
+                MENU6_TXT_85.SetAcknexObject("STRING", EMPTY_83);
             }
-            var MENU_POS_89 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_90 = MENU_POS_89.GetFloat("VAL");
-            if (temp_90 == 6f)
-            {
-                var EMPTY_91 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var MENU6_TXT_93 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
-                MENU6_TXT_93.SetAcknexObject("STRING", EMPTY_91);
-            }
-            var MENU_POS_95 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_96 = MENU_POS_95.GetFloat("VAL");
-            if (temp_96 == 0f)
+            var MENU_POS_87 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var MENU_POS_87_val = MENU_POS_87.GetFloat("VAL");
+            if (MENU_POS_87_val == 0f)
             {
                 yield break;
             }
@@ -2568,41 +2568,41 @@ namespace Tests
             var MAP_ROT_1 = _world.GetObject(ObjectType.Skill, "MAP_ROT");
             MAP_ROT_1.SetFloat("VAL", 1f);
             var MAP_MODE_3 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
-            var temp_4 = MAP_MODE_3.GetFloat("VAL");
-            var MAP_MODE_5 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
-            MAP_MODE_5.SetFloat("VAL", temp_4 + 0.5f);
-            var MAP_MODE_7 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
-            var temp_8 = MAP_MODE_7.GetFloat("VAL");
-            if (temp_8 > 0.5f)
+            var MAP_MODE_3_val = MAP_MODE_3.GetFloat("VAL");
+            var MAP_MODE_4 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
+            MAP_MODE_4.SetFloat("VAL", MAP_MODE_3_val + 0.5f);
+            var MAP_MODE_6 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
+            var MAP_MODE_6_val = MAP_MODE_6.GetFloat("VAL");
+            if (MAP_MODE_6_val > 0.5f)
             {
-                var MAP_MODE_10 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
-                MAP_MODE_10.SetFloat("VAL", 0f);
+                var MAP_MODE_8 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
+                MAP_MODE_8.SetFloat("VAL", 0f);
             }
             yield break;
         }
         public IEnumerator TOGGLE_MBLUR()
         {
             var MOTION_BLUR_1 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
-            var temp_2 = MOTION_BLUR_1.GetFloat("VAL");
-            var MOTION_BLUR_3 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
-            MOTION_BLUR_3.SetFloat("VAL", temp_2 + 0.5f);
-            var MOTION_BLUR_5 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
-            var temp_6 = MOTION_BLUR_5.GetFloat("VAL");
-            if (temp_6 > 0.5f)
+            var MOTION_BLUR_1_val = MOTION_BLUR_1.GetFloat("VAL");
+            var MOTION_BLUR_2 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
+            MOTION_BLUR_2.SetFloat("VAL", MOTION_BLUR_1_val + 0.5f);
+            var MOTION_BLUR_4 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
+            var MOTION_BLUR_4_val = MOTION_BLUR_4.GetFloat("VAL");
+            if (MOTION_BLUR_4_val > 0.5f)
             {
-                var MOTION_BLUR_8 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
-                MOTION_BLUR_8.SetFloat("VAL", 0f);
+                var MOTION_BLUR_6 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
+                MOTION_BLUR_6.SetFloat("VAL", 0f);
             }
-            var MBLUR_ON_9 = _world.AcknexObject.GetAcknexObject("MBLUR_ON");
-            var SCREEN_TXT_11 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            SCREEN_TXT_11.SetAcknexObject("STRING", MBLUR_ON_9);
-            var MOTION_BLUR_13 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
-            var temp_14 = MOTION_BLUR_13.GetFloat("VAL");
-            if (temp_14 == 0f)
+            var MBLUR_ON_7 = _world.AcknexObject.GetAcknexObject("MBLUR_ON");
+            var SCREEN_TXT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            SCREEN_TXT_9.SetAcknexObject("STRING", MBLUR_ON_7);
+            var MOTION_BLUR_11 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
+            var MOTION_BLUR_11_val = MOTION_BLUR_11.GetFloat("VAL");
+            if (MOTION_BLUR_11_val == 0f)
             {
-                var MBLUR_OFF_15 = _world.AcknexObject.GetAcknexObject("MBLUR_OFF");
-                var SCREEN_TXT_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-                SCREEN_TXT_17.SetAcknexObject("STRING", MBLUR_OFF_15);
+                var MBLUR_OFF_12 = _world.AcknexObject.GetAcknexObject("MBLUR_OFF");
+                var SCREEN_TXT_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+                SCREEN_TXT_14.SetAcknexObject("STRING", MBLUR_OFF_12);
             }
             yield return SHOW_MESSAGE();
             yield break;
@@ -2617,10 +2617,10 @@ namespace Tests
         {
             var FPS_0 = _world.GetObject(ObjectType.Skill, "FPS");
             var FPS_3 = _world.GetObject(ObjectType.Skill, "FPS");
-            var temp_4 = FPS_3.GetFloat("VAL");
-            var TIME_FAC_8 = _world.GetObject(ObjectType.Skill, "TIME_FAC");
-            var temp_9 = TIME_FAC_8.GetFloat("VAL");
-            FPS_0.SetFloat("VAL", 0.9f * temp_4 + 0.1f * temp_9);
+            var FPS_3_val = FPS_3.GetFloat("VAL");
+            var TIME_FAC_7 = _world.GetObject(ObjectType.Skill, "TIME_FAC");
+            var TIME_FAC_7_val = TIME_FAC_7.GetFloat("VAL");
+            FPS_0.SetFloat("VAL", 0.9f * FPS_3_val + 0.1f * TIME_FAC_7_val);
             yield break;
         }
         public IEnumerator VRDEMO_START()
