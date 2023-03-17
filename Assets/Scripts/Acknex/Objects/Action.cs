@@ -153,7 +153,7 @@ namespace Acknex
                                 {
                                     rhs.property = HandleFunction(rhs.property);
                                 }
-                                HandleAdd(lhsGetter, lhsSetter, rhs, keyword == "ADDT");
+                                HandleAdd(lhsGetter, lhsSetter, rhs, keyword);
                                 HandleIfStack();
                                 ReadUntilSemiColon(tokens);
                                 break;
@@ -402,7 +402,7 @@ namespace Acknex
             (string property, PropertyType propertyType, ObjectType objectType, string source) lhsGetter,
             (string property, PropertyType propertyType, ObjectType objectType, string source) lhsSetter,
             (string property, PropertyType propertyType, ObjectType objectType, string source) rhs,
-            bool perTick
+            string mode
             )
         {
             //switch (lhsGetter.objectType)
@@ -421,11 +421,15 @@ namespace Acknex
             switch (lhsGetter.propertyType)
             {
                 case PropertyType.Float:
-                    if (perTick)
+                    if (mode == "ADDT")
                     {
                         CodeStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsSetter.property).Append(",").Append(lhsGetter.property).Append(" + (").Append(rhs.property).AppendLine(" * TimeUtils.TicksToTime(1)));");
                     }
-                    else
+                    else if (mode == "ACCEL")
+                    {
+                        CodeStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsSetter.property).Append(",").Append("_world.Accelerate(").Append(lhsGetter.property).Append(",").Append(rhs.property).AppendLine("));");
+                    }
+                    else if (mode == "ADD")
                     {
                         CodeStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsSetter.property).Append(",").Append(lhsGetter.property).Append(" + ").Append(rhs.property).AppendLine(");");
                     }

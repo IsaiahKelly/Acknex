@@ -9,6 +9,7 @@ using LibTessDotNet;
 using Tests;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.ShaderData;
 using Resolution = Acknex.Interfaces.Resolution;
 
 namespace Acknex
@@ -582,6 +583,12 @@ namespace Acknex
         public void WaitForTicks(ActionIdentifier identifier, int ticks)
         {
 
+        }
+
+        public float Accelerate(float value, float amount)
+        {
+            //todo: RULE PLAYER_VX = (1 - TIME_CORR * fric) * PLAYER_VX + TIME_CORR * (force_x +drift_x)/ mass;
+            return value + amount;
         }
     }
 }

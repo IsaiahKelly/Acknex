@@ -53,7 +53,7 @@ namespace Acknex
             //World.Instance.UpdateSkillValue("MOVE_ANGLE", moveAngle);
             //World.Instance.UpdateSkillValue("DELTA_ANGLE", deltaAngle);
             _characterController.Move(playerMove * TimeUtils.TicksToTime(1));
-            playerAngle += TimeUtils.TimeToTicks(Time.deltaTime) * World.Instance.GetSkillValue("PLAYER_VROT");
+            playerAngle += /*TimeUtils.TimeToTicks(Time.deltaTime) **/ World.Instance.GetSkillValue("PLAYER_VROT");
             World.Instance.UpdateSkillValue("LAST_PLAYER_X", World.Instance.GetSkillValue("PLAYER_X"));
             World.Instance.UpdateSkillValue("LAST_PLAYER_Y", World.Instance.GetSkillValue("PLAYER_Y"));
             World.Instance.UpdateSkillValue("LAST_PLAYER_Z", World.Instance.GetSkillValue("PLAYER_Z"));

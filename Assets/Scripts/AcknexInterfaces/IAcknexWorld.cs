@@ -151,5 +151,10 @@ namespace Acknex.Interfaces
         /// Calls the IEnumerator from the given action.
         /// </summary>
         IEnumerator CallSynonymAction(string actionName);
+
+        /// <summary>
+        /// Accelerates a value by the given amount.
+        /// </summary>
+        float Accelerate(float value, float amount);
     }
 }

@@ -10,6 +10,527 @@ namespace Tests
         {
             _world = world;
         }
+        public IEnumerator ADJUST_XMINUS()
+        {
+            yield return GET_ADJX();
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            var temp_2 = lhs_1.GetFloat("VAL");
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            lhs_3.SetFloat("VAL", temp_2 + -1f);
+            yield return SET_ADJX();
+            yield return new WaitForTicks(8f);
+            AGAIN:
+            var lhs_6 = _world.GetObject(ObjectType.Skill, "KEY_5");
+            var temp_7 = lhs_6.GetFloat("VAL");
+            if (temp_7 == 0f)
+            {
+                yield break;
+            }
+            yield return GET_ADJX();
+            var lhs_9 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            var temp_10 = lhs_9.GetFloat("VAL");
+            var lhs_11 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            lhs_11.SetFloat("VAL", temp_10 + -1f);
+            yield return SET_ADJX();
+            yield return new WaitForTicks(2f);
+            goto AGAIN;
+            yield break;
+        }
+        public IEnumerator ADJUST_XPLUS()
+        {
+            yield return GET_ADJX();
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            var temp_2 = lhs_1.GetFloat("VAL");
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            lhs_3.SetFloat("VAL", temp_2 + 1f);
+            yield return SET_ADJX();
+            yield return new WaitForTicks(8f);
+            AGAIN:
+            var lhs_6 = _world.GetObject(ObjectType.Skill, "KEY_6");
+            var temp_7 = lhs_6.GetFloat("VAL");
+            if (temp_7 == 0f)
+            {
+                yield break;
+            }
+            yield return GET_ADJX();
+            var lhs_9 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            var temp_10 = lhs_9.GetFloat("VAL");
+            var lhs_11 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+            lhs_11.SetFloat("VAL", temp_10 + 1f);
+            yield return SET_ADJX();
+            yield return new WaitForTicks(2f);
+            goto AGAIN;
+            yield break;
+        }
+        public IEnumerator ADJUST_YMINUS()
+        {
+            yield return GET_ADJY();
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            var temp_2 = lhs_1.GetFloat("VAL");
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            lhs_3.SetFloat("VAL", temp_2 + -1f);
+            yield return SET_ADJY();
+            yield return new WaitForTicks(8f);
+            AGAIN:
+            var lhs_6 = _world.GetObject(ObjectType.Skill, "KEY_7");
+            var temp_7 = lhs_6.GetFloat("VAL");
+            if (temp_7 == 0f)
+            {
+                yield break;
+            }
+            yield return GET_ADJY();
+            var lhs_9 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            var temp_10 = lhs_9.GetFloat("VAL");
+            var lhs_11 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            lhs_11.SetFloat("VAL", temp_10 + -1f);
+            yield return SET_ADJY();
+            yield return new WaitForTicks(2f);
+            goto AGAIN;
+            yield break;
+        }
+        public IEnumerator ADJUST_YPLUS()
+        {
+            yield return GET_ADJY();
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            var temp_2 = lhs_1.GetFloat("VAL");
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            lhs_3.SetFloat("VAL", temp_2 + 1f);
+            yield return SET_ADJY();
+            yield return new WaitForTicks(8f);
+            AGAIN:
+            var lhs_6 = _world.GetObject(ObjectType.Skill, "KEY_8");
+            var temp_7 = lhs_6.GetFloat("VAL");
+            if (temp_7 == 0f)
+            {
+                yield break;
+            }
+            yield return GET_ADJY();
+            var lhs_9 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            var temp_10 = lhs_9.GetFloat("VAL");
+            var lhs_11 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+            lhs_11.SetFloat("VAL", temp_10 + 1f);
+            yield return SET_ADJY();
+            yield return new WaitForTicks(2f);
+            goto AGAIN;
+            yield break;
+        }
+        public IEnumerator ARSCHTRITT()
+        {
+            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LIFT_UP");
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            acknexObject_2.SetString("EACH_TICK", rhs_0.GetString("NAME"));
+            yield break;
+        }
+        public IEnumerator AUFGEH()
+        {
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"GEHEIMTUER");
+            var temp_2 = acknexObject_2.GetFloat("CEIL_HGT");
+            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"GEHEIMTUER");
+            acknexObject_4.SetFloat("CEIL_HGT", temp_2 + 0.3f);
+            var lhs_5 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
+            lhs_5.SetFloat("VAL", 1f);
+            var acknexObject_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"GEHEIMTUER");
+            var temp_8 = acknexObject_8.GetFloat("CEIL_HGT");
+            if (temp_8 > 12f)
+            {
+                _world.AcknexObject.SetString("EACH_TICK.11", null);
+            }
+            yield break;
+        }
+        public IEnumerator CHECK_OPEN()
+        {
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"SECRET_DOOR");
+            var temp_2 = acknexObject_2.GetFloat("CEIL_HGT");
+            if (temp_2 < 8f)
+            {
+                var rhs_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"OPENDOOR");
+                _world.AcknexObject.SetString("EACH_TICK.10", rhs_3.GetString("NAME"));
+            }
+            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"SECRET_DOOR");
+            var temp_7 = acknexObject_7.GetFloat("CEIL_HGT");
+            if (temp_7 < 5.1f)
+            {
+                //Unknown keyword: PLAY_SOUND
+            }
+            yield break;
+        }
+        public IEnumerator CLEAR_MENU()
+        {
+            var rhs_0 = _world.AcknexObject.GetAcknexObject("EMPTY");
+            _world.SetSynonymObject("MENU1_STR", rhs_0);
+            var rhs_2 = _world.AcknexObject.GetAcknexObject("EMPTY");
+            _world.SetSynonymObject("MENU2_STR", rhs_2);
+            var rhs_4 = _world.AcknexObject.GetAcknexObject("EMPTY");
+            _world.SetSynonymObject("MENU3_STR", rhs_4);
+            var rhs_6 = _world.AcknexObject.GetAcknexObject("EMPTY");
+            _world.SetSynonymObject("MENU4_STR", rhs_6);
+            var rhs_8 = _world.AcknexObject.GetAcknexObject("EMPTY");
+            _world.SetSynonymObject("MENU5_STR", rhs_8);
+            var rhs_10 = _world.AcknexObject.GetAcknexObject("EMPTY");
+            _world.SetSynonymObject("MENU6_STR", rhs_10);
+            var rhs_12 = _world.AcknexObject.GetAcknexObject("EMPTY");
+            var acknexObject_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
+            acknexObject_14.SetAcknexObject("STRING", rhs_12);
+            var rhs_14 = _world.AcknexObject.GetAcknexObject("EMPTY");
+            var acknexObject_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
+            acknexObject_16.SetAcknexObject("STRING", rhs_14);
+            var rhs_16 = _world.AcknexObject.GetAcknexObject("EMPTY");
+            var acknexObject_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
+            acknexObject_18.SetAcknexObject("STRING", rhs_16);
+            var rhs_18 = _world.AcknexObject.GetAcknexObject("EMPTY");
+            var acknexObject_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
+            acknexObject_20.SetAcknexObject("STRING", rhs_18);
+            var rhs_20 = _world.AcknexObject.GetAcknexObject("EMPTY");
+            var acknexObject_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
+            acknexObject_22.SetAcknexObject("STRING", rhs_20);
+            var rhs_22 = _world.AcknexObject.GetAcknexObject("EMPTY");
+            var acknexObject_24 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
+            acknexObject_24.SetAcknexObject("STRING", rhs_22);
+            _world.AcknexObject.SetAcknexObject("MESSAGES.10", null);
+            _world.AcknexObject.SetAcknexObject("MESSAGES.11", null);
+            _world.AcknexObject.SetAcknexObject("MESSAGES.12", null);
+            _world.AcknexObject.SetAcknexObject("MESSAGES.13", null);
+            _world.AcknexObject.SetAcknexObject("MESSAGES.14", null);
+            _world.AcknexObject.SetAcknexObject("MESSAGES.15", null);
+            _world.AcknexObject.SetAcknexObject("MESSAGES.16", null);
+            var acknexObject_40 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
+            acknexObject_40.SetFloat("MIN", 0f);
+            var lhs_41 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            lhs_41.SetFloat("VAL", 0f);
+            var rhs_42 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MAIN_MENU");
+            _world.AcknexObject.SetString("IF_ESC", rhs_42.GetString("NAME"));
+            _world.AcknexObject.SetString("IF_CUU", null);
+            _world.AcknexObject.SetString("IF_CUD", null);
+            _world.AcknexObject.SetString("IF_ENTER", null);
+            var lhs_51 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
+            lhs_51.SetFloat("VAL", 1f);
+            yield break;
+        }
+        public IEnumerator CLEAR_YESNO()
+        {
+            _world.AcknexObject.SetAcknexObject("MESSAGES.14", null);
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
+            lhs_3.SetFloat("VAL", 1f);
+            _world.AcknexObject.SetString("IF_J", null);
+            _world.AcknexObject.SetString("IF_Y", null);
+            _world.AcknexObject.SetString("IF_Z", null);
+            _world.AcknexObject.SetString("IF_N", null);
+            var rhs_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MAIN_MENU");
+            _world.AcknexObject.SetString("IF_ESC", rhs_12.GetString("NAME"));
+            yield break;
+        }
+        public IEnumerator DECREASE_VOL()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
+            var temp_2 = lhs_1.GetFloat("VAL");
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
+            lhs_3.SetFloat("VAL", temp_2 + -0.2f);
+            var lhs_5 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
+            var temp_6 = lhs_5.GetFloat("VAL");
+            var lhs_7 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
+            lhs_7.SetFloat("VAL", temp_6 + -0.1f);
+            var rhs_8 = _world.AcknexObject.GetAcknexObject("VOL_MINUS");
+            var acknexObject_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            acknexObject_10.SetAcknexObject("STRING", rhs_8);
+            yield return SHOW_MESSAGE();
+            yield break;
+            yield break;
+        }
+        public IEnumerator DIFF_MENU()
+        {
+            yield return CLEAR_MENU();
+            var rhs_0 = _world.AcknexObject.GetAcknexObject("DIFFICULT1_STR");
+            _world.SetSynonymObject("MENU1_STR", rhs_0);
+            var rhs_2 = _world.AcknexObject.GetAcknexObject("DIFFICULT2_STR");
+            _world.SetSynonymObject("MENU2_STR", rhs_2);
+            var rhs_4 = _world.AcknexObject.GetAcknexObject("DIFFICULT3_STR");
+            _world.SetSynonymObject("MENU3_STR", rhs_4);
+            var rhs_6 = _world.AcknexObject.GetAcknexObject("DIFFICULT4_STR");
+            _world.SetSynonymObject("MENU4_STR", rhs_6);
+            var rhs_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_DIFF1");
+            _world.SetSynonymObject("MENU1_ACT", rhs_8);
+            var rhs_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_DIFF2");
+            _world.SetSynonymObject("MENU2_ACT", rhs_10);
+            var rhs_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_DIFF3");
+            _world.SetSynonymObject("MENU3_ACT", rhs_12);
+            var rhs_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_DIFF4");
+            _world.SetSynonymObject("MENU4_ACT", rhs_14);
+            var acknexObject_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
+            acknexObject_18.SetFloat("MAX", 5f);
+            yield return SHOW_MENU();
+            yield break;
+            yield break;
+        }
+        public IEnumerator DIVE_UP()
+        {
+            //Unknown keyword: PLAY_SOUND
+            yield return RESET_BLUE();
+            yield break;
+        }
+        public IEnumerator ENTER_WATER()
+        {
+            //Unknown keyword: PLAY_SOUND
+            yield return SET_SWIMMING();
+            yield break;
+        }
+        public IEnumerator EXIT_GAME()
+        {
+            Application.Quit();
+            yield break;
+        }
+        public IEnumerator EXIT_YESNO()
+        {
+            yield return CLEAR_MENU();
+            var rhs_0 = _world.AcknexObject.GetAcknexObject("QUIT_YESNO");
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            acknexObject_2.SetAcknexObject("STRING", rhs_0);
+            var rhs_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXIT_GAME");
+            _world.AcknexObject.SetString("IF_J", rhs_2.GetString("NAME"));
+            var rhs_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXIT_GAME");
+            _world.AcknexObject.SetString("IF_Y", rhs_4.GetString("NAME"));
+            var rhs_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXIT_GAME");
+            _world.AcknexObject.SetString("IF_Z", rhs_6.GetString("NAME"));
+            yield return WAIT_YESNO();
+            yield break;
+        }
+        public IEnumerator FADE_IN()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "FADE");
+            lhs_1.SetFloat("VAL", 0f);
+            LOOP:
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "FADE");
+            var temp_4 = lhs_3.GetFloat("VAL");
+            var lhs_5 = _world.GetObject(ObjectType.Skill, "FADE");
+            lhs_5.SetFloat("VAL", temp_4 + 0.1f);
+            //Unknown keyword: FADE_PAL
+            yield return new WaitForCycles(1f);
+            var lhs_8 = _world.GetObject(ObjectType.Skill, "FADE");
+            var temp_9 = lhs_8.GetFloat("VAL");
+            if (temp_9 < 1f)
+            {
+                goto LOOP;
+            }
+            //Unknown keyword: FADE_PAL
+            yield break;
+        }
+        public IEnumerator FADE_OUT()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "FADE");
+            lhs_1.SetFloat("VAL", 1f);
+            LOOP:
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "FADE");
+            var temp_4 = lhs_3.GetFloat("VAL");
+            var lhs_5 = _world.GetObject(ObjectType.Skill, "FADE");
+            lhs_5.SetFloat("VAL", temp_4 + 0.1f);
+            //Unknown keyword: FADE_PAL
+            yield return new WaitForCycles(1f);
+            var lhs_8 = _world.GetObject(ObjectType.Skill, "FADE");
+            var temp_9 = lhs_8.GetFloat("VAL");
+            if (temp_9 < 1f)
+            {
+                goto LOOP;
+            }
+            //Unknown keyword: FADE_PAL
+            Application.Quit();
+            yield break;
+        }
+        public IEnumerator FALLTUER()
+        {
+            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LIFT_DOWN");
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            acknexObject_2.SetString("EACH_TICK", rhs_0.GetString("NAME"));
+            yield break;
+        }
+        public IEnumerator GET_ADJX()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_2 = lhs_1.GetFloat("VAL");
+            if (temp_2 == 0f)
+            {
+                var acknexObject_4 = _world.GetSynonymObject("ADJUST_WALL");
+                var temp_4 = acknexObject_4.GetFloat("OFFSET_X");
+                var lhs_5 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                lhs_5.SetFloat("VAL", temp_4);
+            }
+            var lhs_7 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_8 = lhs_7.GetFloat("VAL");
+            if (temp_8 == 1f)
+            {
+                var acknexObject_10 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_10 = acknexObject_10.GetFloat("FLOOR_OFFS_X");
+                var lhs_11 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                lhs_11.SetFloat("VAL", temp_10);
+            }
+            var lhs_13 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_14 = lhs_13.GetFloat("VAL");
+            if (temp_14 == 2f)
+            {
+                var acknexObject_16 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_16 = acknexObject_16.GetFloat("CEIL_OFFS_X");
+                var lhs_17 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                lhs_17.SetFloat("VAL", temp_16);
+            }
+            var lhs_19 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_20 = lhs_19.GetFloat("VAL");
+            if (temp_20 == 3f)
+            {
+                var lhs_21 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                var acknexObject_23 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_23 = acknexObject_23.GetFloat("FLOOR_HGT");
+                lhs_21.SetFloat("VAL", temp_23 * 10f);
+            }
+            var lhs_27 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_28 = lhs_27.GetFloat("VAL");
+            if (temp_28 == 4f)
+            {
+                var acknexObject_30 = _world.GetSynonymObject("ADJUST_TEX");
+                var temp_30 = acknexObject_30.GetFloat("POS_X");
+                var lhs_31 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                lhs_31.SetFloat("VAL", temp_30);
+            }
+            var lhs_33 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_34 = lhs_33.GetFloat("VAL");
+            if (temp_34 == 5f)
+            {
+                var lhs_35 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                var acknexObject_37 = _world.GetSynonymObject("ADJUST_TEX");
+                var temp_37 = acknexObject_37.GetFloat("SCALE_X");
+                lhs_35.SetFloat("VAL", temp_37 * 10f);
+            }
+            var lhs_41 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_42 = lhs_41.GetFloat("VAL");
+            if (temp_42 == 6f)
+            {
+                var acknexObject_44 = _world.GetSynonymObject("ADJUST_WALL");
+                var temp_44 = acknexObject_44.GetFloat("OFFSET_X");
+                var lhs_45 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                lhs_45.SetFloat("VAL", temp_44);
+            }
+            var lhs_47 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_48 = lhs_47.GetFloat("VAL");
+            if (temp_48 == 7f)
+            {
+                var lhs_49 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                var acknexObject_51 = _world.GetSynonymObject("ADJUST_TEX");
+                var temp_51 = acknexObject_51.GetFloat("AMBIENT");
+                lhs_49.SetFloat("VAL", temp_51 * 10f);
+            }
+            var lhs_55 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_56 = lhs_55.GetFloat("VAL");
+            if (temp_56 == 8f)
+            {
+                var lhs_57 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
+                var acknexObject_59 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_59 = acknexObject_59.GetFloat("AMBIENT");
+                lhs_57.SetFloat("VAL", temp_59 * 10f);
+            }
+            yield break;
+        }
+        public IEnumerator GET_ADJY()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_2 = lhs_1.GetFloat("VAL");
+            if (temp_2 == 0f)
+            {
+                var acknexObject_4 = _world.GetSynonymObject("ADJUST_WALL");
+                var temp_4 = acknexObject_4.GetFloat("OFFSET_Y");
+                var lhs_5 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                lhs_5.SetFloat("VAL", temp_4);
+            }
+            var lhs_7 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_8 = lhs_7.GetFloat("VAL");
+            if (temp_8 == 1f)
+            {
+                var acknexObject_10 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_10 = acknexObject_10.GetFloat("FLOOR_OFFS_Y");
+                var lhs_11 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                lhs_11.SetFloat("VAL", temp_10);
+            }
+            var lhs_13 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_14 = lhs_13.GetFloat("VAL");
+            if (temp_14 == 2f)
+            {
+                var acknexObject_16 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_16 = acknexObject_16.GetFloat("CEIL_OFFS_Y");
+                var lhs_17 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                lhs_17.SetFloat("VAL", temp_16);
+            }
+            var lhs_19 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_20 = lhs_19.GetFloat("VAL");
+            if (temp_20 == 3f)
+            {
+                var lhs_21 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                var acknexObject_23 = _world.GetSynonymObject("ADJUST_REG");
+                var temp_23 = acknexObject_23.GetFloat("CEIL_HGT");
+                lhs_21.SetFloat("VAL", temp_23 * 10f);
+            }
+            var lhs_27 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_28 = lhs_27.GetFloat("VAL");
+            if (temp_28 == 4f)
+            {
+                var acknexObject_30 = _world.GetSynonymObject("ADJUST_TEX");
+                var temp_30 = acknexObject_30.GetFloat("POS_Y");
+                var lhs_31 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                lhs_31.SetFloat("VAL", temp_30);
+            }
+            var lhs_33 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_34 = lhs_33.GetFloat("VAL");
+            if (temp_34 == 5f)
+            {
+                var lhs_35 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                var acknexObject_37 = _world.GetSynonymObject("ADJUST_TEX");
+                var temp_37 = acknexObject_37.GetFloat("SCALE_Y");
+                lhs_35.SetFloat("VAL", temp_37 * 10f);
+            }
+            var lhs_41 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_42 = lhs_41.GetFloat("VAL");
+            if (temp_42 == 6f)
+            {
+                var lhs_43 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                var acknexObject_45 = _world.GetSynonymObject("ADJUST_WALL");
+                var temp_45 = acknexObject_45.GetFloat("POSITION");
+                lhs_43.SetFloat("VAL", temp_45 * 10f);
+            }
+            var lhs_49 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_50 = lhs_49.GetFloat("VAL");
+            if (temp_50 == 7f)
+            {
+                var lhs_51 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                var acknexObject_53 = _world.GetSynonymObject("ADJUST_TEX");
+                var temp_53 = acknexObject_53.GetFloat("ALBEDO");
+                lhs_51.SetFloat("VAL", temp_53 * 10f);
+            }
+            var lhs_57 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            var temp_58 = lhs_57.GetFloat("VAL");
+            if (temp_58 == 8f)
+            {
+                var lhs_60 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
+                lhs_60.SetFloat("VAL", 0f);
+            }
+            yield break;
+        }
+        public IEnumerator INCREASE_VOL()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
+            var temp_2 = lhs_1.GetFloat("VAL");
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
+            lhs_3.SetFloat("VAL", temp_2 + 0.2f);
+            var lhs_5 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
+            var temp_6 = lhs_5.GetFloat("VAL");
+            var lhs_7 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
+            lhs_7.SetFloat("VAL", temp_6 + 0.1f);
+            var rhs_8 = _world.AcknexObject.GetAcknexObject("VOL_PLUS");
+            var acknexObject_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            acknexObject_10.SetAcknexObject("STRING", rhs_8);
+            yield return SHOW_MESSAGE();
+            yield break;
+            yield break;
+        }
+        public IEnumerator INIT_GLOBALS()
+        {
+            //Unknown keyword: LOAD_INFO
+            yield break;
+        }
         public IEnumerator INIT_MOVE()
         {
             var rhs_0 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
@@ -17,6 +538,336 @@ namespace Tests
             var lhs_2 = _world.GetObject(ObjectType.Skill, "MOVING");
             lhs_2.SetFloat("VAL", temp_1);
             yield return SET_MOVING();
+            yield break;
+        }
+        public IEnumerator IST_OPEN()
+        {
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"GEHEIMTUER");
+            var temp_2 = acknexObject_2.GetFloat("CEIL_HGT");
+            if (temp_2 < 8f)
+            {
+                var rhs_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"AUFGEH");
+                _world.AcknexObject.SetString("EACH_TICK.11", rhs_3.GetString("NAME"));
+            }
+            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"GEHEIMTUER");
+            var temp_7 = acknexObject_7.GetFloat("CEIL_HGT");
+            if (temp_7 < 2.7f)
+            {
+                //Unknown keyword: PLAY_SOUND
+            }
+            yield break;
+        }
+        public IEnumerator LEAVE_WATER()
+        {
+            yield return SET_WALKING();
+            yield break;
+        }
+        public IEnumerator LEVEL_MENU()
+        {
+            yield return CLEAR_MENU();
+            var rhs_0 = _world.AcknexObject.GetAcknexObject("LEVEL1_STR");
+            _world.SetSynonymObject("MENU1_STR", rhs_0);
+            var rhs_2 = _world.AcknexObject.GetAcknexObject("LEVEL2_STR");
+            _world.SetSynonymObject("MENU2_STR", rhs_2);
+            var rhs_4 = _world.AcknexObject.GetAcknexObject("LEVEL3_STR");
+            _world.SetSynonymObject("MENU3_STR", rhs_4);
+            var rhs_6 = _world.AcknexObject.GetAcknexObject("LEVEL4_STR");
+            _world.SetSynonymObject("MENU4_STR", rhs_6);
+            var rhs_8 = _world.AcknexObject.GetAcknexObject("LEVEL5_STR");
+            _world.SetSynonymObject("MENU5_STR", rhs_8);
+            var rhs_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"START_LEVEL1");
+            _world.SetSynonymObject("MENU1_ACT", rhs_10);
+            var rhs_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"START_LEVEL2");
+            _world.SetSynonymObject("MENU2_ACT", rhs_12);
+            var rhs_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"START_LEVEL3");
+            _world.SetSynonymObject("MENU3_ACT", rhs_14);
+            var rhs_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"START_LEVEL4");
+            _world.SetSynonymObject("MENU4_ACT", rhs_16);
+            var rhs_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"START_LEVEL5");
+            _world.SetSynonymObject("MENU5_ACT", rhs_18);
+            var acknexObject_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
+            acknexObject_22.SetFloat("MAX", 6f);
+            yield return SHOW_MENU();
+            yield break;
+            yield break;
+        }
+        public IEnumerator LIFT_DOWN()
+        {
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            var temp_2 = acknexObject_2.GetFloat("FLOOR_HGT");
+            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            acknexObject_4.SetFloat("FLOOR_HGT", temp_2 + -0.3f);
+            //Unknown keyword: PLAY_SOUND
+            var lhs_5 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            var temp_6 = lhs_5.GetFloat("VAL");
+            var lhs_7 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            lhs_7.SetFloat("VAL", temp_6 + -0.3f);
+            var lhs_9 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
+            lhs_9.SetFloat("VAL", 1f);
+            var acknexObject_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            var temp_12 = acknexObject_12.GetFloat("FLOOR_HGT");
+            if (temp_12 > 0f)
+            {
+                yield break;
+            }
+            var acknexObject_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            acknexObject_15.SetFloat("FLOOR_HGT", 0f);
+            var acknexObject_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            acknexObject_17.SetString("EACH_TICK", null);
+            var rhs_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ARSCHTRITT");
+            var acknexObject_19 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            acknexObject_19.SetString("IF_ENTER", rhs_17.GetString("NAME"));
+            var acknexObject_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"DUNKELGANGSPERRE");
+            acknexObject_21.SetFloat("CEIL_HGT", 6f);
+            yield break;
+        }
+        public IEnumerator LIFT_UP()
+        {
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            var temp_2 = acknexObject_2.GetFloat("FLOOR_HGT");
+            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            acknexObject_4.SetFloat("FLOOR_HGT", temp_2 + 0.3f);
+            var lhs_5 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            var temp_6 = lhs_5.GetFloat("VAL");
+            var lhs_7 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            lhs_7.SetFloat("VAL", temp_6 + 0.3f);
+            var lhs_9 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
+            lhs_9.SetFloat("VAL", 1f);
+            //Unknown keyword: PLAY_SOUND
+            var acknexObject_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            var temp_12 = acknexObject_12.GetFloat("FLOOR_HGT");
+            if (temp_12 < 15.5f)
+            {
+                yield break;
+            }
+            var acknexObject_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            acknexObject_15.SetFloat("FLOOR_HGT", 15.5f);
+            var acknexObject_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            acknexObject_17.SetString("EACH_TICK", null);
+            var rhs_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"FALLTUER");
+            var acknexObject_19 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+            acknexObject_19.SetString("IF_ENTER", rhs_17.GetString("NAME"));
+            yield break;
+        }
+        public IEnumerator LOAD_GAME()
+        {
+            var rhs_0 = _world.AcknexObject.GetAcknexObject("WAIT_TXT");
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            acknexObject_2.SetAcknexObject("STRING", rhs_0);
+            var rhs_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.14", rhs_2);
+            yield return new WaitForCycles(1f);
+            //Unknown keyword: LOAD
+            var rhs_5 = _world.AcknexObject.GetAcknexObject("LOAD_NIX");
+            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            acknexObject_7.SetAcknexObject("STRING", rhs_5);
+            yield return SHOW_MESSAGE();
+            yield break;
+            yield break;
+        }
+        public IEnumerator LOAD_MENU()
+        {
+            //Unknown keyword: LOAD_INFO
+            yield return CLEAR_MENU();
+            var rhs_0 = _world.AcknexObject.GetAcknexObject("NAME1_STR");
+            _world.SetSynonymObject("MENU1_STR", rhs_0);
+            var rhs_2 = _world.AcknexObject.GetAcknexObject("NAME2_STR");
+            _world.SetSynonymObject("MENU2_STR", rhs_2);
+            var rhs_4 = _world.AcknexObject.GetAcknexObject("NAME3_STR");
+            _world.SetSynonymObject("MENU3_STR", rhs_4);
+            var rhs_6 = _world.AcknexObject.GetAcknexObject("NAME4_STR");
+            _world.SetSynonymObject("MENU4_STR", rhs_6);
+            var rhs_8 = _world.AcknexObject.GetAcknexObject("NAME5_STR");
+            _world.SetSynonymObject("MENU5_STR", rhs_8);
+            var rhs_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_NAME1");
+            _world.SetSynonymObject("MENU1_ACT", rhs_10);
+            var rhs_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_NAME2");
+            _world.SetSynonymObject("MENU2_ACT", rhs_12);
+            var rhs_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_NAME3");
+            _world.SetSynonymObject("MENU3_ACT", rhs_14);
+            var rhs_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_NAME4");
+            _world.SetSynonymObject("MENU4_ACT", rhs_16);
+            var rhs_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_NAME5");
+            _world.SetSynonymObject("MENU5_ACT", rhs_18);
+            var acknexObject_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
+            acknexObject_22.SetFloat("MAX", 6f);
+            yield return SHOW_MENU();
+            yield break;
+            yield break;
+        }
+        public IEnumerator LOAD_NAME1()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "SLOT");
+            lhs_1.SetFloat("VAL", 1f);
+            yield return CLEAR_MENU();
+            yield return LOAD_GAME();
+            yield break;
+            yield break;
+        }
+        public IEnumerator LOAD_NAME2()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "SLOT");
+            lhs_1.SetFloat("VAL", 2f);
+            yield return CLEAR_MENU();
+            yield return LOAD_GAME();
+            yield break;
+            yield break;
+        }
+        public IEnumerator LOAD_NAME3()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "SLOT");
+            lhs_1.SetFloat("VAL", 3f);
+            yield return CLEAR_MENU();
+            yield return LOAD_GAME();
+            yield break;
+            yield break;
+        }
+        public IEnumerator LOAD_NAME4()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "SLOT");
+            lhs_1.SetFloat("VAL", 4f);
+            yield return CLEAR_MENU();
+            yield return LOAD_GAME();
+            yield break;
+            yield break;
+        }
+        public IEnumerator LOAD_NAME5()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "SLOT");
+            lhs_1.SetFloat("VAL", 5f);
+            yield return CLEAR_MENU();
+            yield return LOAD_GAME();
+            yield break;
+            yield break;
+        }
+        public IEnumerator LOAD_QUICK()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "SLOT");
+            var temp_2 = lhs_1.GetFloat("VAL");
+            if (temp_2 == 0f)
+            {
+                yield return LOAD_MENU();
+                yield break;
+            }
+            yield return CLEAR_MENU();
+            var rhs_3 = _world.AcknexObject.GetAcknexObject("QLOAD_YESNO");
+            var acknexObject_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            acknexObject_5.SetAcknexObject("STRING", rhs_3);
+            var rhs_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_GAME");
+            _world.AcknexObject.SetString("IF_J", rhs_5.GetString("NAME"));
+            var rhs_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_GAME");
+            _world.AcknexObject.SetString("IF_Y", rhs_7.GetString("NAME"));
+            var rhs_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_GAME");
+            _world.AcknexObject.SetString("IF_Z", rhs_9.GetString("NAME"));
+            yield return WAIT_YESNO();
+            yield break;
+        }
+        public IEnumerator LOAD_STATUS()
+        {
+            yield return new WaitForCycles(1f);
+            //Unknown keyword: LOAD_INFO
+            _world.AcknexObject.SetString("EACH_TICK.10", null);
+            var lhs_4 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
+            lhs_4.SetFloat("VAL", 1f);
+            yield break;
+        }
+        public IEnumerator MAIN_MENU()
+        {
+            yield return CLEAR_MENU();
+            var rhs_0 = _world.AcknexObject.GetAcknexObject("SHOW_OPTION_STR");
+            _world.SetSynonymObject("MENU1_STR", rhs_0);
+            var rhs_2 = _world.AcknexObject.GetAcknexObject("LOAD_GAME_STR");
+            _world.SetSynonymObject("MENU2_STR", rhs_2);
+            var rhs_4 = _world.AcknexObject.GetAcknexObject("SAVE_GAME_STR");
+            _world.SetSynonymObject("MENU3_STR", rhs_4);
+            var rhs_6 = _world.AcknexObject.GetAcknexObject("QUIT_GAME_STR");
+            _world.SetSynonymObject("MENU4_STR", rhs_6);
+            var rhs_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SHOW_OPTIONS");
+            _world.SetSynonymObject("MENU1_ACT", rhs_8);
+            var rhs_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_MENU");
+            _world.SetSynonymObject("MENU2_ACT", rhs_10);
+            var rhs_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_MENU");
+            _world.SetSynonymObject("MENU3_ACT", rhs_12);
+            var rhs_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXIT_YESNO");
+            _world.SetSynonymObject("MENU4_ACT", rhs_14);
+            var acknexObject_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
+            acknexObject_18.SetFloat("MAX", 5f);
+            yield return SHOW_MENU();
+            yield break;
+            yield break;
+        }
+        public IEnumerator MENU_DOWN()
+        {
+            //Unknown keyword: PLAY_SOUND
+            yield return SET_MENU();
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_2 = lhs_1.GetFloat("VAL");
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            lhs_3.SetFloat("VAL", temp_2 + 1f);
+            yield break;
+        }
+        public IEnumerator MENU_EXEC()
+        {
+            //Unknown keyword: PLAY_SOUND
+            var lhs_0 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_1 = lhs_0.GetFloat("VAL");
+            if (temp_1 > lhs_0.GetFloat("MAX"))
+            {
+                yield return CLEAR_MENU();
+                yield break;
+            }
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_4 = lhs_3.GetFloat("VAL");
+            if (temp_4 == 1f)
+            {
+                yield return _world.CallSynonymAction("MENU1_ACT");
+                yield break;
+            }
+            var lhs_6 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_7 = lhs_6.GetFloat("VAL");
+            if (temp_7 == 2f)
+            {
+                yield return _world.CallSynonymAction("MENU2_ACT");
+                yield break;
+            }
+            var lhs_9 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_10 = lhs_9.GetFloat("VAL");
+            if (temp_10 == 3f)
+            {
+                yield return _world.CallSynonymAction("MENU3_ACT");
+                yield break;
+            }
+            var lhs_12 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_13 = lhs_12.GetFloat("VAL");
+            if (temp_13 == 4f)
+            {
+                yield return _world.CallSynonymAction("MENU4_ACT");
+                yield break;
+            }
+            var lhs_15 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_16 = lhs_15.GetFloat("VAL");
+            if (temp_16 == 5f)
+            {
+                yield return _world.CallSynonymAction("MENU5_ACT");
+                yield break;
+            }
+            var lhs_18 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_19 = lhs_18.GetFloat("VAL");
+            if (temp_19 == 6f)
+            {
+                yield return _world.CallSynonymAction("MENU6_ACT");
+                yield break;
+            }
+            yield break;
+        }
+        public IEnumerator MENU_UP()
+        {
+            //Unknown keyword: PLAY_SOUND
+            yield return SET_MENU();
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_2 = lhs_1.GetFloat("VAL");
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            lhs_3.SetFloat("VAL", temp_2 + -1f);
             yield break;
         }
         public IEnumerator MOVE_ME()
@@ -162,7 +1013,7 @@ namespace Tests
             var lhs_116 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
             var temp_117 = lhs_116.GetFloat("VAL");
             var lhs_118 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
-            lhs_118.SetFloat("VAL", temp_117 + temp_115);
+            lhs_118.SetFloat("VAL", _world.Accelerate(temp_117, temp_115));
             var lhs_119 = _world.GetObject(ObjectType.Skill, "FORCE");
             var temp_121 = _world.GetObject(ObjectType.Skill, "STRENGTH");
             var temp_122 = temp_121.GetFloat("VAL");
@@ -188,7 +1039,7 @@ namespace Tests
             var lhs_154 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
             var temp_155 = lhs_154.GetFloat("VAL");
             var lhs_156 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
-            lhs_156.SetFloat("VAL", temp_155 + temp_153);
+            lhs_156.SetFloat("VAL", _world.Accelerate(temp_155, temp_153));
             var lhs_158 = _world.GetObject(ObjectType.Skill, "FRICTION");
             lhs_158.SetFloat("VAL", 0.5f);
             var rhs_159 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
@@ -209,7 +1060,7 @@ namespace Tests
             var lhs_172 = _world.GetObject(ObjectType.Skill, "PLAYER_VROT");
             var temp_173 = lhs_172.GetFloat("VAL");
             var lhs_174 = _world.GetObject(ObjectType.Skill, "PLAYER_VROT");
-            lhs_174.SetFloat("VAL", temp_173 + temp_171);
+            lhs_174.SetFloat("VAL", _world.Accelerate(temp_173, temp_171));
             var lhs_175 = _world.GetObject(ObjectType.Skill, "FORCE");
             var temp_176 = _world.GetObject(ObjectType.Skill, "GRAVITY");
             var temp_177 = temp_176.GetFloat("VAL");
@@ -242,7 +1093,7 @@ namespace Tests
             var lhs_202 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
             var temp_203 = lhs_202.GetFloat("VAL");
             var lhs_204 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
-            lhs_204.SetFloat("VAL", temp_203 + temp_201);
+            lhs_204.SetFloat("VAL", _world.Accelerate(temp_203, temp_201));
             var lhs_205 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
             var temp_208 = _world.GetObject(ObjectType.Skill, "DUCK_VAL");
             var temp_209 = temp_208.GetFloat("VAL");
@@ -523,165 +1374,107 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator SET_WALKING()
+        public IEnumerator MSCALE_MINUS()
         {
-            var rhs_0 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
-            var temp_1 = rhs_0.GetFloat("VAL");
-            var lhs_2 = _world.GetObject(ObjectType.Skill, "MOVING");
-            lhs_2.SetFloat("VAL", temp_1);
-            var lhs_4 = _world.GetObject(ObjectType.Skill, "FRIC");
-            lhs_4.SetFloat("VAL", 0.2f);
-            var lhs_6 = _world.GetObject(ObjectType.Skill, "STRENGTH");
-            lhs_6.SetFloat("VAL", 0.15f);
-            var lhs_8 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
-            lhs_8.SetFloat("VAL", 0f);
-            var lhs_10 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
-            lhs_10.SetFloat("VAL", 0f);
-            var lhs_12 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
-            lhs_12.SetFloat("VAL", 0.5f);
-            var lhs_14 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
-            lhs_14.SetFloat("VAL", 0.04f);
-            var lhs_16 = _world.GetObject(ObjectType.Skill, "GRAVITY");
-            lhs_16.SetFloat("VAL", -0.13f);
-            var rhs_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MOVE_ME");
-            _world.AcknexObject.SetString("EACH_TICK.16", rhs_17.GetString("NAME"));
-            yield break;
-        }
-        public IEnumerator SET_SWIMMING()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "FRIC");
-            lhs_1.SetFloat("VAL", 0.3f);
-            var rhs_2 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
-            var temp_3 = rhs_2.GetFloat("VAL");
-            var lhs_4 = _world.GetObject(ObjectType.Skill, "MOVING");
-            lhs_4.SetFloat("VAL", temp_3);
-            var lhs_6 = _world.GetObject(ObjectType.Skill, "STRENGTH");
-            lhs_6.SetFloat("VAL", 0.15f);
-            var lhs_8 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
-            lhs_8.SetFloat("VAL", 0.08f);
-            var lhs_10 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
-            lhs_10.SetFloat("VAL", 0f);
-            var lhs_12 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
-            lhs_12.SetFloat("VAL", 0.2f);
-            var lhs_14 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
-            lhs_14.SetFloat("VAL", 0.5f);
-            var lhs_16 = _world.GetObject(ObjectType.Skill, "GRAVITY");
-            lhs_16.SetFloat("VAL", -0.05f);
-            var rhs_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MOVE_ME");
-            _world.AcknexObject.SetString("EACH_TICK.16", rhs_17.GetString("NAME"));
-            yield break;
-        }
-        public IEnumerator SET_DIVING()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "FRIC");
-            lhs_1.SetFloat("VAL", 0.3f);
-            var rhs_2 = _world.GetObject(ObjectType.Skill, "MODE_TAUCHEN");
-            var temp_3 = rhs_2.GetFloat("VAL");
-            var lhs_4 = _world.GetObject(ObjectType.Skill, "MOVING");
-            lhs_4.SetFloat("VAL", temp_3);
-            var lhs_6 = _world.GetObject(ObjectType.Skill, "STRENGTH");
-            lhs_6.SetFloat("VAL", 0.1f);
-            var lhs_8 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
-            lhs_8.SetFloat("VAL", 0.03f);
-            var lhs_10 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
-            lhs_10.SetFloat("VAL", 0.05f);
-            var lhs_12 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
-            lhs_12.SetFloat("VAL", 0f);
-            var lhs_14 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
-            lhs_14.SetFloat("VAL", 0.7f);
-            var lhs_16 = _world.GetObject(ObjectType.Skill, "GRAVITY");
-            lhs_16.SetFloat("VAL", 0f);
-            var rhs_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MOVE_ME");
-            _world.AcknexObject.SetString("EACH_TICK.16", rhs_17.GetString("NAME"));
-            yield break;
-        }
-        public IEnumerator SET_MOVING()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             var temp_2 = lhs_1.GetFloat("VAL");
             if (temp_2 == 0f)
             {
                 yield break;
             }
-            var rhs_3 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
-            var temp_4 = rhs_3.GetFloat("VAL");
-            var lhs_5 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_6 = lhs_5.GetFloat("VAL");
-            if (temp_6 == temp_4)
-            {
-                yield return SET_WALKING();
-                yield break;
-            }
-            var rhs_7 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
-            var temp_8 = rhs_7.GetFloat("VAL");
-            var lhs_9 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_10 = lhs_9.GetFloat("VAL");
-            if (temp_10 == temp_8)
-            {
-                yield return SET_SWIMMING();
-                yield break;
-            }
-            var rhs_11 = _world.GetObject(ObjectType.Skill, "MODE_TAUCHEN");
-            var temp_12 = rhs_11.GetFloat("VAL");
-            var lhs_13 = _world.GetObject(ObjectType.Skill, "MOVING");
-            var temp_14 = lhs_13.GetFloat("VAL");
-            if (temp_14 == temp_12)
-            {
-                yield return SET_DIVING();
-                yield break;
-            }
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
+            var temp_4 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
+            var temp_5 = temp_4.GetFloat("VAL");
+            lhs_3.SetFloat("VAL", temp_5 * 0.9f);
             yield break;
         }
-        public IEnumerator STOP_MOVING()
+        public IEnumerator MSCALE_PLUS()
         {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
-            lhs_1.SetFloat("VAL", 0f);
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
-            lhs_3.SetFloat("VAL", 0f);
-            var lhs_5 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
-            lhs_5.SetFloat("VAL", 0f);
-            var lhs_7 = _world.GetObject(ObjectType.Skill, "PLAYER_VROT");
-            lhs_7.SetFloat("VAL", 0f);
-            yield break;
-        }
-        public IEnumerator SET_BLUE()
-        {
-            //Unknown keyword: FADE_PAL
-            yield break;
-        }
-        public IEnumerator RESET_BLUE()
-        {
-            //Unknown keyword: FADE_PAL
-            yield break;
-        }
-        public IEnumerator REGIO_DIVE()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             var temp_2 = lhs_1.GetFloat("VAL");
-            if (temp_2 == 1f)
+            if (temp_2 == 0f)
             {
                 yield break;
             }
-            var lhs_4 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
-            lhs_4.SetFloat("VAL", 1f);
-            var lhs_5 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
-            var temp_6 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
-            var temp_7 = temp_6.GetFloat("VAL");
-            lhs_5.SetFloat("VAL", temp_7 + 0.3f);
-            var lhs_10 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
-            var temp_11 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
-            var temp_12 = temp_11.GetFloat("VAL");
-            lhs_10.SetFloat("VAL", temp_12 - 0.2f);
-            var lhs_15 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
-            var temp_16 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
-            var temp_17 = temp_16.GetFloat("VAL");
-            lhs_15.SetFloat("VAL", temp_17 - 0.2f);
-            var lhs_20 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            var temp_21 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            var temp_22 = temp_21.GetFloat("VAL");
-            lhs_20.SetFloat("VAL", temp_22 - 0.2f);
-            yield return _world.CallSynonymAction("SET_UNDERWATER");
-            yield return SET_DIVING();
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
+            var temp_4 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
+            var temp_5 = temp_4.GetFloat("VAL");
+            lhs_3.SetFloat("VAL", temp_5 * 1.1f);
+            yield break;
+        }
+        public IEnumerator OPENDOOR()
+        {
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"SECRET_DOOR");
+            var temp_2 = acknexObject_2.GetFloat("CEIL_HGT");
+            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"SECRET_DOOR");
+            acknexObject_4.SetFloat("CEIL_HGT", temp_2 + 0.3f);
+            var lhs_5 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
+            lhs_5.SetFloat("VAL", 1f);
+            var acknexObject_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"SECRET_DOOR");
+            var temp_8 = acknexObject_8.GetFloat("CEIL_HGT");
+            if (temp_8 > 16f)
+            {
+                _world.AcknexObject.SetString("EACH_TICK.10", null);
+            }
+            yield break;
+        }
+        public IEnumerator PULSDOWN()
+        {
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
+            var temp_2 = acknexObject_2.GetFloat("AMBIENT");
+            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
+            acknexObject_4.SetFloat("AMBIENT", temp_2 + -0.1f);
+            var acknexObject_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
+            var temp_6 = acknexObject_6.GetFloat("AMBIENT");
+            if (temp_6 < 0f)
+            {
+                var rhs_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"PULSUP");
+                var acknexObject_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
+                acknexObject_9.SetString("EACH_TICK", rhs_7.GetString("NAME"));
+            }
+            yield break;
+        }
+        public IEnumerator PULSUP()
+        {
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
+            var temp_2 = acknexObject_2.GetFloat("AMBIENT");
+            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
+            acknexObject_4.SetFloat("AMBIENT", temp_2 + 0.1f);
+            var acknexObject_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
+            var temp_6 = acknexObject_6.GetFloat("AMBIENT");
+            if (temp_6 > 1f)
+            {
+                var rhs_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"PULSDOWN");
+                var acknexObject_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
+                acknexObject_9.SetString("EACH_TICK", rhs_7.GetString("NAME"));
+            }
+            yield break;
+        }
+        public IEnumerator QUAKE()
+        {
+            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"QUAKE");
+            _world.AcknexObject.SetString("EACH_TICK.9", rhs_0.GetString("NAME"));
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "RICHTER");
+            lhs_3.SetFloat("VAL", 0.1f);
+            yield return new WaitForTicks(16f);
+            var lhs_6 = _world.GetObject(ObjectType.Skill, "RICHTER");
+            lhs_6.SetFloat("VAL", 0.3f);
+            yield return new WaitForTicks(32f);
+            var lhs_9 = _world.GetObject(ObjectType.Skill, "RICHTER");
+            lhs_9.SetFloat("VAL", 0.5f);
+            yield return new WaitForTicks(48f);
+            var lhs_12 = _world.GetObject(ObjectType.Skill, "RICHTER");
+            lhs_12.SetFloat("VAL", 0.2f);
+            yield return new WaitForTicks(80f);
+            var lhs_15 = _world.GetObject(ObjectType.Skill, "RICHTER");
+            lhs_15.SetFloat("VAL", 0.6f);
+            yield return new WaitForTicks(32f);
+            var lhs_18 = _world.GetObject(ObjectType.Skill, "RICHTER");
+            lhs_18.SetFloat("VAL", 0.1f);
+            yield return new WaitForTicks(16f);
+            var lhs_21 = _world.GetObject(ObjectType.Skill, "RICHTER");
+            lhs_21.SetFloat("VAL", 0f);
+            _world.AcknexObject.SetString("EACH_TICK.9", null);
             yield break;
         }
         public IEnumerator REGIO_ARISE()
@@ -714,336 +1507,39 @@ namespace Tests
             yield return SET_SWIMMING();
             yield break;
         }
-        public IEnumerator START_QUAKE()
+        public IEnumerator REGIO_DIVE()
         {
-            yield return QUAKE();
-            yield break;
-            yield break;
-        }
-        public IEnumerator QUAKE()
-        {
-            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"QUAKE");
-            _world.AcknexObject.SetString("EACH_TICK.9", rhs_0.GetString("NAME"));
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "RICHTER");
-            lhs_3.SetFloat("VAL", 0.1f);
-            yield return new WaitForTicks(16f);
-            var lhs_6 = _world.GetObject(ObjectType.Skill, "RICHTER");
-            lhs_6.SetFloat("VAL", 0.3f);
-            yield return new WaitForTicks(32f);
-            var lhs_9 = _world.GetObject(ObjectType.Skill, "RICHTER");
-            lhs_9.SetFloat("VAL", 0.5f);
-            yield return new WaitForTicks(48f);
-            var lhs_12 = _world.GetObject(ObjectType.Skill, "RICHTER");
-            lhs_12.SetFloat("VAL", 0.2f);
-            yield return new WaitForTicks(80f);
-            var lhs_15 = _world.GetObject(ObjectType.Skill, "RICHTER");
-            lhs_15.SetFloat("VAL", 0.6f);
-            yield return new WaitForTicks(32f);
-            var lhs_18 = _world.GetObject(ObjectType.Skill, "RICHTER");
-            lhs_18.SetFloat("VAL", 0.1f);
-            yield return new WaitForTicks(16f);
-            var lhs_21 = _world.GetObject(ObjectType.Skill, "RICHTER");
-            lhs_21.SetFloat("VAL", 0f);
-            _world.AcknexObject.SetString("EACH_TICK.9", null);
-            yield break;
-        }
-        public IEnumerator TUNIX()
-        {
-            yield break;
-            yield break;
-        }
-        public IEnumerator SET_MENU()
-        {
-            var rhs_0 = _world.GetSynonymObject("MENU1_STR");
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
-            acknexObject_2.SetAcknexObject("STRING", rhs_0);
-            var rhs_2 = _world.GetSynonymObject("MENU2_STR");
-            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
-            acknexObject_4.SetAcknexObject("STRING", rhs_2);
-            var rhs_4 = _world.GetSynonymObject("MENU3_STR");
-            var acknexObject_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
-            acknexObject_6.SetAcknexObject("STRING", rhs_4);
-            var rhs_6 = _world.GetSynonymObject("MENU4_STR");
-            var acknexObject_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
-            acknexObject_8.SetAcknexObject("STRING", rhs_6);
-            var rhs_8 = _world.GetSynonymObject("MENU5_STR");
-            var acknexObject_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
-            acknexObject_10.SetAcknexObject("STRING", rhs_8);
-            var rhs_10 = _world.GetSynonymObject("MENU6_STR");
-            var acknexObject_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
-            acknexObject_12.SetAcknexObject("STRING", rhs_10);
-            var rhs_12 = _world.AcknexObject.GetAcknexObject("EXIT_STR");
-            var acknexObject_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
-            acknexObject_14.SetAcknexObject("STRING", rhs_12);
-            yield break;
-        }
-        public IEnumerator SHOW_MENU()
-        {
-            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MENU_EXEC");
-            _world.AcknexObject.SetString("IF_ENTER", rhs_0.GetString("NAME"));
-            var rhs_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CLEAR_MENU");
-            _world.AcknexObject.SetString("IF_ESC", rhs_2.GetString("NAME"));
-            var rhs_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MENU_UP");
-            _world.AcknexObject.SetString("IF_CUU", rhs_4.GetString("NAME"));
-            var rhs_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MENU_DOWN");
-            _world.AcknexObject.SetString("IF_CUD", rhs_6.GetString("NAME"));
-            var lhs_9 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
-            lhs_9.SetFloat("VAL", 0f);
-            var acknexObject_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
-            acknexObject_12.SetFloat("MIN", 1f);
-            var lhs_13 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_14 = lhs_13.GetFloat("VAL");
-            if (temp_14 == 0f)
-            {
-                var lhs_16 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-                lhs_16.SetFloat("VAL", 1f);
-            }
-            var acknexObject_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
-            var acknexObject_19 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
-            var temp_19 = acknexObject_19.GetFloat("POS_Y");
-            var acknexObject_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
-            var temp_22 = acknexObject_22.GetFloat("MAX");
-            acknexObject_18.SetFloat("POS_Y", temp_19 + temp_22 * 16f - 8f);
-            var rhs_27 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.10", rhs_27);
-            var rhs_29 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.11", rhs_29);
-            var rhs_31 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.12", rhs_31);
-            var rhs_33 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.13", rhs_33);
-            var rhs_35 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.14", rhs_35);
-            var rhs_37 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.15", rhs_37);
-            var rhs_39 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.16", rhs_39);
-            BLINK:
-            yield return SET_MENU();
-            yield return new WaitForTicks(3f);
-            var lhs_42 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_43 = lhs_42.GetFloat("VAL");
-            if (temp_43 > lhs_42.GetFloat("MAX"))
-            {
-                var rhs_44 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var acknexObject_46 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
-                acknexObject_46.SetAcknexObject("STRING", rhs_44);
-            }
-            var lhs_47 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_48 = lhs_47.GetFloat("VAL");
-            if (temp_48 == 1f)
-            {
-                var rhs_49 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var acknexObject_51 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
-                acknexObject_51.SetAcknexObject("STRING", rhs_49);
-            }
-            var lhs_52 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_53 = lhs_52.GetFloat("VAL");
-            if (temp_53 == 2f)
-            {
-                var rhs_54 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var acknexObject_56 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
-                acknexObject_56.SetAcknexObject("STRING", rhs_54);
-            }
-            var lhs_57 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_58 = lhs_57.GetFloat("VAL");
-            if (temp_58 == 3f)
-            {
-                var rhs_59 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var acknexObject_61 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
-                acknexObject_61.SetAcknexObject("STRING", rhs_59);
-            }
-            var lhs_62 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_63 = lhs_62.GetFloat("VAL");
-            if (temp_63 == 4f)
-            {
-                var rhs_64 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var acknexObject_66 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
-                acknexObject_66.SetAcknexObject("STRING", rhs_64);
-            }
-            var lhs_67 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_68 = lhs_67.GetFloat("VAL");
-            if (temp_68 == 5f)
-            {
-                var rhs_69 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var acknexObject_71 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
-                acknexObject_71.SetAcknexObject("STRING", rhs_69);
-            }
-            var lhs_72 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_73 = lhs_72.GetFloat("VAL");
-            if (temp_73 == 6f)
-            {
-                var rhs_74 = _world.AcknexObject.GetAcknexObject("EMPTY");
-                var acknexObject_76 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
-                acknexObject_76.SetAcknexObject("STRING", rhs_74);
-            }
-            var lhs_77 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_78 = lhs_77.GetFloat("VAL");
-            if (temp_78 == 0f)
-            {
-                yield break;
-            }
-            yield return new WaitForTicks(3f);
-            goto BLINK;
-            yield break;
-        }
-        public IEnumerator CLEAR_MENU()
-        {
-            var rhs_0 = _world.AcknexObject.GetAcknexObject("EMPTY");
-            _world.SetSynonymObject("MENU1_STR", rhs_0);
-            var rhs_2 = _world.AcknexObject.GetAcknexObject("EMPTY");
-            _world.SetSynonymObject("MENU2_STR", rhs_2);
-            var rhs_4 = _world.AcknexObject.GetAcknexObject("EMPTY");
-            _world.SetSynonymObject("MENU3_STR", rhs_4);
-            var rhs_6 = _world.AcknexObject.GetAcknexObject("EMPTY");
-            _world.SetSynonymObject("MENU4_STR", rhs_6);
-            var rhs_8 = _world.AcknexObject.GetAcknexObject("EMPTY");
-            _world.SetSynonymObject("MENU5_STR", rhs_8);
-            var rhs_10 = _world.AcknexObject.GetAcknexObject("EMPTY");
-            _world.SetSynonymObject("MENU6_STR", rhs_10);
-            var rhs_12 = _world.AcknexObject.GetAcknexObject("EMPTY");
-            var acknexObject_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
-            acknexObject_14.SetAcknexObject("STRING", rhs_12);
-            var rhs_14 = _world.AcknexObject.GetAcknexObject("EMPTY");
-            var acknexObject_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
-            acknexObject_16.SetAcknexObject("STRING", rhs_14);
-            var rhs_16 = _world.AcknexObject.GetAcknexObject("EMPTY");
-            var acknexObject_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
-            acknexObject_18.SetAcknexObject("STRING", rhs_16);
-            var rhs_18 = _world.AcknexObject.GetAcknexObject("EMPTY");
-            var acknexObject_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
-            acknexObject_20.SetAcknexObject("STRING", rhs_18);
-            var rhs_20 = _world.AcknexObject.GetAcknexObject("EMPTY");
-            var acknexObject_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
-            acknexObject_22.SetAcknexObject("STRING", rhs_20);
-            var rhs_22 = _world.AcknexObject.GetAcknexObject("EMPTY");
-            var acknexObject_24 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
-            acknexObject_24.SetAcknexObject("STRING", rhs_22);
-            _world.AcknexObject.SetAcknexObject("MESSAGES.10", null);
-            _world.AcknexObject.SetAcknexObject("MESSAGES.11", null);
-            _world.AcknexObject.SetAcknexObject("MESSAGES.12", null);
-            _world.AcknexObject.SetAcknexObject("MESSAGES.13", null);
-            _world.AcknexObject.SetAcknexObject("MESSAGES.14", null);
-            _world.AcknexObject.SetAcknexObject("MESSAGES.15", null);
-            _world.AcknexObject.SetAcknexObject("MESSAGES.16", null);
-            var acknexObject_40 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
-            acknexObject_40.SetFloat("MIN", 0f);
-            var lhs_41 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            lhs_41.SetFloat("VAL", 0f);
-            var rhs_42 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MAIN_MENU");
-            _world.AcknexObject.SetString("IF_ESC", rhs_42.GetString("NAME"));
-            _world.AcknexObject.SetString("IF_CUU", null);
-            _world.AcknexObject.SetString("IF_CUD", null);
-            _world.AcknexObject.SetString("IF_ENTER", null);
-            var lhs_51 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
-            lhs_51.SetFloat("VAL", 1f);
-            yield break;
-        }
-        public IEnumerator MENU_UP()
-        {
-            //Unknown keyword: PLAY_SOUND
-            yield return SET_MENU();
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
             var temp_2 = lhs_1.GetFloat("VAL");
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            lhs_3.SetFloat("VAL", temp_2 + -1f);
+            if (temp_2 == 1f)
+            {
+                yield break;
+            }
+            var lhs_4 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
+            lhs_4.SetFloat("VAL", 1f);
+            var lhs_5 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
+            var temp_6 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
+            var temp_7 = temp_6.GetFloat("VAL");
+            lhs_5.SetFloat("VAL", temp_7 + 0.3f);
+            var lhs_10 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
+            var temp_11 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
+            var temp_12 = temp_11.GetFloat("VAL");
+            lhs_10.SetFloat("VAL", temp_12 - 0.2f);
+            var lhs_15 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
+            var temp_16 = _world.GetObject(ObjectType.Skill, "PLAYER_SIZE");
+            var temp_17 = temp_16.GetFloat("VAL");
+            lhs_15.SetFloat("VAL", temp_17 - 0.2f);
+            var lhs_20 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            var temp_21 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
+            var temp_22 = temp_21.GetFloat("VAL");
+            lhs_20.SetFloat("VAL", temp_22 - 0.2f);
+            yield return _world.CallSynonymAction("SET_UNDERWATER");
+            yield return SET_DIVING();
             yield break;
         }
-        public IEnumerator MENU_DOWN()
+        public IEnumerator RESET_BLUE()
         {
-            //Unknown keyword: PLAY_SOUND
-            yield return SET_MENU();
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            lhs_3.SetFloat("VAL", temp_2 + 1f);
-            yield break;
-        }
-        public IEnumerator MENU_EXEC()
-        {
-            //Unknown keyword: PLAY_SOUND
-            var lhs_0 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_1 = lhs_0.GetFloat("VAL");
-            if (temp_1 > lhs_0.GetFloat("MAX"))
-            {
-                yield return CLEAR_MENU();
-                yield break;
-            }
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_4 = lhs_3.GetFloat("VAL");
-            if (temp_4 == 1f)
-            {
-                yield return _world.CallSynonymAction("MENU1_ACT");
-                yield break;
-            }
-            var lhs_6 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_7 = lhs_6.GetFloat("VAL");
-            if (temp_7 == 2f)
-            {
-                yield return _world.CallSynonymAction("MENU2_ACT");
-                yield break;
-            }
-            var lhs_9 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_10 = lhs_9.GetFloat("VAL");
-            if (temp_10 == 3f)
-            {
-                yield return _world.CallSynonymAction("MENU3_ACT");
-                yield break;
-            }
-            var lhs_12 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_13 = lhs_12.GetFloat("VAL");
-            if (temp_13 == 4f)
-            {
-                yield return _world.CallSynonymAction("MENU4_ACT");
-                yield break;
-            }
-            var lhs_15 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_16 = lhs_15.GetFloat("VAL");
-            if (temp_16 == 5f)
-            {
-                yield return _world.CallSynonymAction("MENU5_ACT");
-                yield break;
-            }
-            var lhs_18 = _world.GetObject(ObjectType.Skill, "MENU_POS");
-            var temp_19 = lhs_18.GetFloat("VAL");
-            if (temp_19 == 6f)
-            {
-                yield return _world.CallSynonymAction("MENU6_ACT");
-                yield break;
-            }
-            yield break;
-        }
-        public IEnumerator SHOW_MESSAGE()
-        {
-            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.14", rhs_0);
-            yield return new WaitForTicks(48f);
-            _world.AcknexObject.SetAcknexObject("MESSAGES.14", null);
-            yield break;
-        }
-        public IEnumerator WAIT_YESNO()
-        {
-            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.14", rhs_0);
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
-            lhs_3.SetFloat("VAL", 0f);
-            var rhs_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CLEAR_YESNO");
-            _world.AcknexObject.SetString("IF_N", rhs_4.GetString("NAME"));
-            var rhs_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CLEAR_YESNO");
-            _world.AcknexObject.SetString("IF_ESC", rhs_6.GetString("NAME"));
-            yield break;
-        }
-        public IEnumerator CLEAR_YESNO()
-        {
-            _world.AcknexObject.SetAcknexObject("MESSAGES.14", null);
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
-            lhs_3.SetFloat("VAL", 1f);
-            _world.AcknexObject.SetString("IF_J", null);
-            _world.AcknexObject.SetString("IF_Y", null);
-            _world.AcknexObject.SetString("IF_Z", null);
-            _world.AcknexObject.SetString("IF_N", null);
-            var rhs_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MAIN_MENU");
-            _world.AcknexObject.SetString("IF_ESC", rhs_12.GetString("NAME"));
+            //Unknown keyword: FADE_PAL
             yield break;
         }
         public IEnumerator SAVE_GAME()
@@ -1071,290 +1567,6 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator LOAD_GAME()
-        {
-            var rhs_0 = _world.AcknexObject.GetAcknexObject("WAIT_TXT");
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            acknexObject_2.SetAcknexObject("STRING", rhs_0);
-            var rhs_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.14", rhs_2);
-            yield return new WaitForCycles(1f);
-            //Unknown keyword: LOAD
-            var rhs_5 = _world.AcknexObject.GetAcknexObject("LOAD_NIX");
-            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            acknexObject_7.SetAcknexObject("STRING", rhs_5);
-            yield return SHOW_MESSAGE();
-            yield break;
-            yield break;
-        }
-        public IEnumerator SAVE_QUICK()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "SLOT");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            if (temp_2 == 0f)
-            {
-                yield return SAVE_MENU();
-                yield break;
-            }
-            yield return CLEAR_MENU();
-            var rhs_3 = _world.AcknexObject.GetAcknexObject("QSAV_YESNO");
-            var acknexObject_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            acknexObject_5.SetAcknexObject("STRING", rhs_3);
-            var rhs_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_GAME");
-            _world.AcknexObject.SetString("IF_J", rhs_5.GetString("NAME"));
-            var rhs_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_GAME");
-            _world.AcknexObject.SetString("IF_Y", rhs_7.GetString("NAME"));
-            var rhs_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_GAME");
-            _world.AcknexObject.SetString("IF_Z", rhs_9.GetString("NAME"));
-            yield return WAIT_YESNO();
-            yield break;
-        }
-        public IEnumerator LOAD_QUICK()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "SLOT");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            if (temp_2 == 0f)
-            {
-                yield return LOAD_MENU();
-                yield break;
-            }
-            yield return CLEAR_MENU();
-            var rhs_3 = _world.AcknexObject.GetAcknexObject("QLOAD_YESNO");
-            var acknexObject_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            acknexObject_5.SetAcknexObject("STRING", rhs_3);
-            var rhs_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_GAME");
-            _world.AcknexObject.SetString("IF_J", rhs_5.GetString("NAME"));
-            var rhs_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_GAME");
-            _world.AcknexObject.SetString("IF_Y", rhs_7.GetString("NAME"));
-            var rhs_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_GAME");
-            _world.AcknexObject.SetString("IF_Z", rhs_9.GetString("NAME"));
-            yield return WAIT_YESNO();
-            yield break;
-        }
-        public IEnumerator LOAD_STATUS()
-        {
-            yield return new WaitForCycles(1f);
-            //Unknown keyword: LOAD_INFO
-            _world.AcknexObject.SetString("EACH_TICK.10", null);
-            var lhs_4 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
-            lhs_4.SetFloat("VAL", 1f);
-            yield break;
-        }
-        public IEnumerator EXIT_YESNO()
-        {
-            yield return CLEAR_MENU();
-            var rhs_0 = _world.AcknexObject.GetAcknexObject("QUIT_YESNO");
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            acknexObject_2.SetAcknexObject("STRING", rhs_0);
-            var rhs_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXIT_GAME");
-            _world.AcknexObject.SetString("IF_J", rhs_2.GetString("NAME"));
-            var rhs_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXIT_GAME");
-            _world.AcknexObject.SetString("IF_Y", rhs_4.GetString("NAME"));
-            var rhs_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXIT_GAME");
-            _world.AcknexObject.SetString("IF_Z", rhs_6.GetString("NAME"));
-            yield return WAIT_YESNO();
-            yield break;
-        }
-        public IEnumerator EXIT_GAME()
-        {
-            Application.Quit();
-            yield break;
-        }
-        public IEnumerator TOGGLE_MAP()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "MAP_ROT");
-            lhs_1.SetFloat("VAL", 1f);
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
-            var temp_4 = lhs_3.GetFloat("VAL");
-            var lhs_5 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
-            lhs_5.SetFloat("VAL", temp_4 + 0.5f);
-            var lhs_7 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
-            var temp_8 = lhs_7.GetFloat("VAL");
-            if (temp_8 > 0.5f)
-            {
-                var lhs_10 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
-                lhs_10.SetFloat("VAL", 0f);
-            }
-            yield break;
-        }
-        public IEnumerator MSCALE_PLUS()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            if (temp_2 == 0f)
-            {
-                yield break;
-            }
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
-            var temp_4 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
-            var temp_5 = temp_4.GetFloat("VAL");
-            lhs_3.SetFloat("VAL", temp_5 * 1.1f);
-            yield break;
-        }
-        public IEnumerator MSCALE_MINUS()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            if (temp_2 == 0f)
-            {
-                yield break;
-            }
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
-            var temp_4 = _world.GetObject(ObjectType.Skill, "MAP_SCALE");
-            var temp_5 = temp_4.GetFloat("VAL");
-            lhs_3.SetFloat("VAL", temp_5 * 0.9f);
-            yield break;
-        }
-        public IEnumerator TOGGLE_MBLUR()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
-            lhs_3.SetFloat("VAL", temp_2 + 0.5f);
-            var lhs_5 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
-            var temp_6 = lhs_5.GetFloat("VAL");
-            if (temp_6 > 0.5f)
-            {
-                var lhs_8 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
-                lhs_8.SetFloat("VAL", 0f);
-            }
-            var rhs_9 = _world.AcknexObject.GetAcknexObject("MBLUR_ON");
-            var acknexObject_11 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            acknexObject_11.SetAcknexObject("STRING", rhs_9);
-            var lhs_12 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
-            var temp_13 = lhs_12.GetFloat("VAL");
-            if (temp_13 == 0f)
-            {
-                var rhs_14 = _world.AcknexObject.GetAcknexObject("MBLUR_OFF");
-                var acknexObject_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-                acknexObject_16.SetAcknexObject("STRING", rhs_14);
-            }
-            yield return SHOW_MESSAGE();
-            yield break;
-            yield break;
-        }
-        public IEnumerator INCREASE_VOL()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
-            lhs_3.SetFloat("VAL", temp_2 + 0.2f);
-            var lhs_5 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
-            var temp_6 = lhs_5.GetFloat("VAL");
-            var lhs_7 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
-            lhs_7.SetFloat("VAL", temp_6 + 0.1f);
-            var rhs_8 = _world.AcknexObject.GetAcknexObject("VOL_PLUS");
-            var acknexObject_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            acknexObject_10.SetAcknexObject("STRING", rhs_8);
-            yield return SHOW_MESSAGE();
-            yield break;
-            yield break;
-        }
-        public IEnumerator DECREASE_VOL()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "SOUND_VOL");
-            lhs_3.SetFloat("VAL", temp_2 + -0.2f);
-            var lhs_5 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
-            var temp_6 = lhs_5.GetFloat("VAL");
-            var lhs_7 = _world.GetObject(ObjectType.Skill, "MUSIC_VOL");
-            lhs_7.SetFloat("VAL", temp_6 + -0.1f);
-            var rhs_8 = _world.AcknexObject.GetAcknexObject("VOL_MINUS");
-            var acknexObject_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            acknexObject_10.SetAcknexObject("STRING", rhs_8);
-            yield return SHOW_MESSAGE();
-            yield break;
-            yield break;
-        }
-        public IEnumerator SHOW_OPTIONS()
-        {
-            yield return CLEAR_MENU();
-            var rhs_0 = _world.AcknexObject.GetAcknexObject("OPTION_STR");
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
-            acknexObject_2.SetAcknexObject("STRING", rhs_0);
-            yield return WAIT_YESNO();
-            yield break;
-        }
-        public IEnumerator MAIN_MENU()
-        {
-            yield return CLEAR_MENU();
-            var rhs_0 = _world.AcknexObject.GetAcknexObject("SHOW_OPTION_STR");
-            _world.SetSynonymObject("MENU1_STR", rhs_0);
-            var rhs_2 = _world.AcknexObject.GetAcknexObject("LOAD_GAME_STR");
-            _world.SetSynonymObject("MENU2_STR", rhs_2);
-            var rhs_4 = _world.AcknexObject.GetAcknexObject("SAVE_GAME_STR");
-            _world.SetSynonymObject("MENU3_STR", rhs_4);
-            var rhs_6 = _world.AcknexObject.GetAcknexObject("QUIT_GAME_STR");
-            _world.SetSynonymObject("MENU4_STR", rhs_6);
-            var rhs_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SHOW_OPTIONS");
-            _world.SetSynonymObject("MENU1_ACT", rhs_8);
-            var rhs_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_MENU");
-            _world.SetSynonymObject("MENU2_ACT", rhs_10);
-            var rhs_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_MENU");
-            _world.SetSynonymObject("MENU3_ACT", rhs_12);
-            var rhs_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXIT_YESNO");
-            _world.SetSynonymObject("MENU4_ACT", rhs_14);
-            var acknexObject_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
-            acknexObject_18.SetFloat("MAX", 5f);
-            yield return SHOW_MENU();
-            yield break;
-            yield break;
-        }
-        public IEnumerator DIFF_MENU()
-        {
-            yield return CLEAR_MENU();
-            var rhs_0 = _world.AcknexObject.GetAcknexObject("DIFFICULT1_STR");
-            _world.SetSynonymObject("MENU1_STR", rhs_0);
-            var rhs_2 = _world.AcknexObject.GetAcknexObject("DIFFICULT2_STR");
-            _world.SetSynonymObject("MENU2_STR", rhs_2);
-            var rhs_4 = _world.AcknexObject.GetAcknexObject("DIFFICULT3_STR");
-            _world.SetSynonymObject("MENU3_STR", rhs_4);
-            var rhs_6 = _world.AcknexObject.GetAcknexObject("DIFFICULT4_STR");
-            _world.SetSynonymObject("MENU4_STR", rhs_6);
-            var rhs_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_DIFF1");
-            _world.SetSynonymObject("MENU1_ACT", rhs_8);
-            var rhs_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_DIFF2");
-            _world.SetSynonymObject("MENU2_ACT", rhs_10);
-            var rhs_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_DIFF3");
-            _world.SetSynonymObject("MENU3_ACT", rhs_12);
-            var rhs_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SET_DIFF4");
-            _world.SetSynonymObject("MENU4_ACT", rhs_14);
-            var acknexObject_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
-            acknexObject_18.SetFloat("MAX", 5f);
-            yield return SHOW_MENU();
-            yield break;
-            yield break;
-        }
-        public IEnumerator LEVEL_MENU()
-        {
-            yield return CLEAR_MENU();
-            var rhs_0 = _world.AcknexObject.GetAcknexObject("LEVEL1_STR");
-            _world.SetSynonymObject("MENU1_STR", rhs_0);
-            var rhs_2 = _world.AcknexObject.GetAcknexObject("LEVEL2_STR");
-            _world.SetSynonymObject("MENU2_STR", rhs_2);
-            var rhs_4 = _world.AcknexObject.GetAcknexObject("LEVEL3_STR");
-            _world.SetSynonymObject("MENU3_STR", rhs_4);
-            var rhs_6 = _world.AcknexObject.GetAcknexObject("LEVEL4_STR");
-            _world.SetSynonymObject("MENU4_STR", rhs_6);
-            var rhs_8 = _world.AcknexObject.GetAcknexObject("LEVEL5_STR");
-            _world.SetSynonymObject("MENU5_STR", rhs_8);
-            var rhs_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"START_LEVEL1");
-            _world.SetSynonymObject("MENU1_ACT", rhs_10);
-            var rhs_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"START_LEVEL2");
-            _world.SetSynonymObject("MENU2_ACT", rhs_12);
-            var rhs_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"START_LEVEL3");
-            _world.SetSynonymObject("MENU3_ACT", rhs_14);
-            var rhs_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"START_LEVEL4");
-            _world.SetSynonymObject("MENU4_ACT", rhs_16);
-            var rhs_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"START_LEVEL5");
-            _world.SetSynonymObject("MENU5_ACT", rhs_18);
-            var acknexObject_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
-            acknexObject_22.SetFloat("MAX", 6f);
-            yield return SHOW_MENU();
-            yield break;
-            yield break;
-        }
         public IEnumerator SAVE_MENU()
         {
             //Unknown keyword: LOAD_INFO
@@ -1378,36 +1590,6 @@ namespace Tests
             var rhs_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_NAME4");
             _world.SetSynonymObject("MENU4_ACT", rhs_16);
             var rhs_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_NAME5");
-            _world.SetSynonymObject("MENU5_ACT", rhs_18);
-            var acknexObject_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
-            acknexObject_22.SetFloat("MAX", 6f);
-            yield return SHOW_MENU();
-            yield break;
-            yield break;
-        }
-        public IEnumerator LOAD_MENU()
-        {
-            //Unknown keyword: LOAD_INFO
-            yield return CLEAR_MENU();
-            var rhs_0 = _world.AcknexObject.GetAcknexObject("NAME1_STR");
-            _world.SetSynonymObject("MENU1_STR", rhs_0);
-            var rhs_2 = _world.AcknexObject.GetAcknexObject("NAME2_STR");
-            _world.SetSynonymObject("MENU2_STR", rhs_2);
-            var rhs_4 = _world.AcknexObject.GetAcknexObject("NAME3_STR");
-            _world.SetSynonymObject("MENU3_STR", rhs_4);
-            var rhs_6 = _world.AcknexObject.GetAcknexObject("NAME4_STR");
-            _world.SetSynonymObject("MENU4_STR", rhs_6);
-            var rhs_8 = _world.AcknexObject.GetAcknexObject("NAME5_STR");
-            _world.SetSynonymObject("MENU5_STR", rhs_8);
-            var rhs_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_NAME1");
-            _world.SetSynonymObject("MENU1_ACT", rhs_10);
-            var rhs_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_NAME2");
-            _world.SetSynonymObject("MENU2_ACT", rhs_12);
-            var rhs_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_NAME3");
-            _world.SetSynonymObject("MENU3_ACT", rhs_14);
-            var rhs_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_NAME4");
-            _world.SetSynonymObject("MENU4_ACT", rhs_16);
-            var rhs_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOAD_NAME5");
             _world.SetSynonymObject("MENU5_ACT", rhs_18);
             var acknexObject_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
             acknexObject_22.SetFloat("MAX", 6f);
@@ -1485,131 +1667,26 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator LOAD_NAME1()
+        public IEnumerator SAVE_QUICK()
         {
             var lhs_1 = _world.GetObject(ObjectType.Skill, "SLOT");
-            lhs_1.SetFloat("VAL", 1f);
+            var temp_2 = lhs_1.GetFloat("VAL");
+            if (temp_2 == 0f)
+            {
+                yield return SAVE_MENU();
+                yield break;
+            }
             yield return CLEAR_MENU();
-            yield return LOAD_GAME();
-            yield break;
-            yield break;
-        }
-        public IEnumerator LOAD_NAME2()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "SLOT");
-            lhs_1.SetFloat("VAL", 2f);
-            yield return CLEAR_MENU();
-            yield return LOAD_GAME();
-            yield break;
-            yield break;
-        }
-        public IEnumerator LOAD_NAME3()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "SLOT");
-            lhs_1.SetFloat("VAL", 3f);
-            yield return CLEAR_MENU();
-            yield return LOAD_GAME();
-            yield break;
-            yield break;
-        }
-        public IEnumerator LOAD_NAME4()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "SLOT");
-            lhs_1.SetFloat("VAL", 4f);
-            yield return CLEAR_MENU();
-            yield return LOAD_GAME();
-            yield break;
-            yield break;
-        }
-        public IEnumerator LOAD_NAME5()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "SLOT");
-            lhs_1.SetFloat("VAL", 5f);
-            yield return CLEAR_MENU();
-            yield return LOAD_GAME();
-            yield break;
-            yield break;
-        }
-        public IEnumerator SET_DIFF1()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "DIFFICULTY");
-            lhs_1.SetFloat("VAL", 1f);
-            yield return LEVEL_MENU();
-            yield break;
-            yield break;
-        }
-        public IEnumerator SET_DIFF2()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "DIFFICULTY");
-            lhs_1.SetFloat("VAL", 2f);
-            yield return LEVEL_MENU();
-            yield break;
-            yield break;
-        }
-        public IEnumerator SET_DIFF3()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "DIFFICULTY");
-            lhs_1.SetFloat("VAL", 3f);
-            yield return LEVEL_MENU();
-            yield break;
-            yield break;
-        }
-        public IEnumerator SET_DIFF4()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "DIFFICULTY");
-            lhs_1.SetFloat("VAL", 4f);
-            yield return LEVEL_MENU();
-            yield break;
-            yield break;
-        }
-        public IEnumerator START_LEVEL1()
-        {
-            //Unknown keyword: SAVE_INFO
-            yield break;
-        }
-        public IEnumerator START_LEVEL2()
-        {
-            //Unknown keyword: SAVE_INFO
-            yield break;
-        }
-        public IEnumerator START_LEVEL3()
-        {
-            //Unknown keyword: SAVE_INFO
-            yield break;
-        }
-        public IEnumerator START_LEVEL4()
-        {
-            //Unknown keyword: SAVE_INFO
-            yield break;
-        }
-        public IEnumerator START_LEVEL5()
-        {
-            //Unknown keyword: SAVE_INFO
-            yield break;
-        }
-        public IEnumerator INIT_GLOBALS()
-        {
-            //Unknown keyword: LOAD_INFO
-            yield break;
-        }
-        public IEnumerator UPDATE_DBPANEL()
-        {
-            var lhs_0 = _world.GetObject(ObjectType.Skill, "FPS");
-            var temp_3 = _world.GetObject(ObjectType.Skill, "FPS");
-            var temp_4 = temp_3.GetFloat("VAL");
-            var temp_8 = _world.GetObject(ObjectType.Skill, "TIME_FAC");
-            var temp_9 = temp_8.GetFloat("VAL");
-            lhs_0.SetFloat("VAL", 0.9f * temp_4 + 0.1f * temp_9);
-            yield break;
-        }
-        public IEnumerator SET_DEBUG()
-        {
-            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"UPDATE_DBPANEL");
-            _world.AcknexObject.SetString("EACH_TICK.10", rhs_0.GetString("NAME"));
-            var rhs_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"DEBUG_PANEL");
-            //Unknown Property Type: World.PANELS.10
-            var rhs_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"DEBUG_TEXT_1");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.10", rhs_4);
+            var rhs_3 = _world.AcknexObject.GetAcknexObject("QSAV_YESNO");
+            var acknexObject_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            acknexObject_5.SetAcknexObject("STRING", rhs_3);
+            var rhs_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_GAME");
+            _world.AcknexObject.SetString("IF_J", rhs_5.GetString("NAME"));
+            var rhs_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_GAME");
+            _world.AcknexObject.SetString("IF_Y", rhs_7.GetString("NAME"));
+            var rhs_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SAVE_GAME");
+            _world.AcknexObject.SetString("IF_Z", rhs_9.GetString("NAME"));
+            yield return WAIT_YESNO();
             yield break;
         }
         public IEnumerator SET_ADJUST()
@@ -1732,174 +1809,6 @@ namespace Tests
             _world.AcknexObject.SetString("IF_8", rhs_121.GetString("NAME"));
             //Unknown keyword: BEEP
             yield break;
-            yield break;
-        }
-        public IEnumerator GET_ADJX()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            if (temp_2 == 0f)
-            {
-                var acknexObject_4 = _world.GetSynonymObject("ADJUST_WALL");
-                var temp_4 = acknexObject_4.GetFloat("OFFSET_X");
-                var lhs_5 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                lhs_5.SetFloat("VAL", temp_4);
-            }
-            var lhs_7 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_8 = lhs_7.GetFloat("VAL");
-            if (temp_8 == 1f)
-            {
-                var acknexObject_10 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_10 = acknexObject_10.GetFloat("FLOOR_OFFS_X");
-                var lhs_11 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                lhs_11.SetFloat("VAL", temp_10);
-            }
-            var lhs_13 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_14 = lhs_13.GetFloat("VAL");
-            if (temp_14 == 2f)
-            {
-                var acknexObject_16 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_16 = acknexObject_16.GetFloat("CEIL_OFFS_X");
-                var lhs_17 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                lhs_17.SetFloat("VAL", temp_16);
-            }
-            var lhs_19 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_20 = lhs_19.GetFloat("VAL");
-            if (temp_20 == 3f)
-            {
-                var lhs_21 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var acknexObject_23 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_23 = acknexObject_23.GetFloat("FLOOR_HGT");
-                lhs_21.SetFloat("VAL", temp_23 * 10f);
-            }
-            var lhs_27 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_28 = lhs_27.GetFloat("VAL");
-            if (temp_28 == 4f)
-            {
-                var acknexObject_30 = _world.GetSynonymObject("ADJUST_TEX");
-                var temp_30 = acknexObject_30.GetFloat("POS_X");
-                var lhs_31 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                lhs_31.SetFloat("VAL", temp_30);
-            }
-            var lhs_33 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_34 = lhs_33.GetFloat("VAL");
-            if (temp_34 == 5f)
-            {
-                var lhs_35 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var acknexObject_37 = _world.GetSynonymObject("ADJUST_TEX");
-                var temp_37 = acknexObject_37.GetFloat("SCALE_X");
-                lhs_35.SetFloat("VAL", temp_37 * 10f);
-            }
-            var lhs_41 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_42 = lhs_41.GetFloat("VAL");
-            if (temp_42 == 6f)
-            {
-                var acknexObject_44 = _world.GetSynonymObject("ADJUST_WALL");
-                var temp_44 = acknexObject_44.GetFloat("OFFSET_X");
-                var lhs_45 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                lhs_45.SetFloat("VAL", temp_44);
-            }
-            var lhs_47 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_48 = lhs_47.GetFloat("VAL");
-            if (temp_48 == 7f)
-            {
-                var lhs_49 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var acknexObject_51 = _world.GetSynonymObject("ADJUST_TEX");
-                var temp_51 = acknexObject_51.GetFloat("AMBIENT");
-                lhs_49.SetFloat("VAL", temp_51 * 10f);
-            }
-            var lhs_55 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_56 = lhs_55.GetFloat("VAL");
-            if (temp_56 == 8f)
-            {
-                var lhs_57 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-                var acknexObject_59 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_59 = acknexObject_59.GetFloat("AMBIENT");
-                lhs_57.SetFloat("VAL", temp_59 * 10f);
-            }
-            yield break;
-        }
-        public IEnumerator GET_ADJY()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            if (temp_2 == 0f)
-            {
-                var acknexObject_4 = _world.GetSynonymObject("ADJUST_WALL");
-                var temp_4 = acknexObject_4.GetFloat("OFFSET_Y");
-                var lhs_5 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                lhs_5.SetFloat("VAL", temp_4);
-            }
-            var lhs_7 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_8 = lhs_7.GetFloat("VAL");
-            if (temp_8 == 1f)
-            {
-                var acknexObject_10 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_10 = acknexObject_10.GetFloat("FLOOR_OFFS_Y");
-                var lhs_11 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                lhs_11.SetFloat("VAL", temp_10);
-            }
-            var lhs_13 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_14 = lhs_13.GetFloat("VAL");
-            if (temp_14 == 2f)
-            {
-                var acknexObject_16 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_16 = acknexObject_16.GetFloat("CEIL_OFFS_Y");
-                var lhs_17 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                lhs_17.SetFloat("VAL", temp_16);
-            }
-            var lhs_19 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_20 = lhs_19.GetFloat("VAL");
-            if (temp_20 == 3f)
-            {
-                var lhs_21 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var acknexObject_23 = _world.GetSynonymObject("ADJUST_REG");
-                var temp_23 = acknexObject_23.GetFloat("CEIL_HGT");
-                lhs_21.SetFloat("VAL", temp_23 * 10f);
-            }
-            var lhs_27 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_28 = lhs_27.GetFloat("VAL");
-            if (temp_28 == 4f)
-            {
-                var acknexObject_30 = _world.GetSynonymObject("ADJUST_TEX");
-                var temp_30 = acknexObject_30.GetFloat("POS_Y");
-                var lhs_31 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                lhs_31.SetFloat("VAL", temp_30);
-            }
-            var lhs_33 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_34 = lhs_33.GetFloat("VAL");
-            if (temp_34 == 5f)
-            {
-                var lhs_35 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var acknexObject_37 = _world.GetSynonymObject("ADJUST_TEX");
-                var temp_37 = acknexObject_37.GetFloat("SCALE_Y");
-                lhs_35.SetFloat("VAL", temp_37 * 10f);
-            }
-            var lhs_41 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_42 = lhs_41.GetFloat("VAL");
-            if (temp_42 == 6f)
-            {
-                var lhs_43 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var acknexObject_45 = _world.GetSynonymObject("ADJUST_WALL");
-                var temp_45 = acknexObject_45.GetFloat("POSITION");
-                lhs_43.SetFloat("VAL", temp_45 * 10f);
-            }
-            var lhs_49 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_50 = lhs_49.GetFloat("VAL");
-            if (temp_50 == 7f)
-            {
-                var lhs_51 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                var acknexObject_53 = _world.GetSynonymObject("ADJUST_TEX");
-                var temp_53 = acknexObject_53.GetFloat("ALBEDO");
-                lhs_51.SetFloat("VAL", temp_53 * 10f);
-            }
-            var lhs_57 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            var temp_58 = lhs_57.GetFloat("VAL");
-            if (temp_58 == 8f)
-            {
-                var lhs_60 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-                lhs_60.SetFloat("VAL", 0f);
-            }
             yield break;
         }
         public IEnumerator SET_ADJX()
@@ -2075,227 +1984,6 @@ namespace Tests
             lhs_57.SetFloat("VAL", 1f);
             yield break;
         }
-        public IEnumerator ADJUST_XPLUS()
-        {
-            yield return GET_ADJX();
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            lhs_3.SetFloat("VAL", temp_2 + 1f);
-            yield return SET_ADJX();
-            yield return new WaitForTicks(8f);
-            AGAIN:
-            var lhs_6 = _world.GetObject(ObjectType.Skill, "KEY_6");
-            var temp_7 = lhs_6.GetFloat("VAL");
-            if (temp_7 == 0f)
-            {
-                yield break;
-            }
-            yield return GET_ADJX();
-            var lhs_9 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            var temp_10 = lhs_9.GetFloat("VAL");
-            var lhs_11 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            lhs_11.SetFloat("VAL", temp_10 + 1f);
-            yield return SET_ADJX();
-            yield return new WaitForTicks(2f);
-            goto AGAIN;
-            yield break;
-        }
-        public IEnumerator ADJUST_XMINUS()
-        {
-            yield return GET_ADJX();
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            lhs_3.SetFloat("VAL", temp_2 + -1f);
-            yield return SET_ADJX();
-            yield return new WaitForTicks(8f);
-            AGAIN:
-            var lhs_6 = _world.GetObject(ObjectType.Skill, "KEY_5");
-            var temp_7 = lhs_6.GetFloat("VAL");
-            if (temp_7 == 0f)
-            {
-                yield break;
-            }
-            yield return GET_ADJX();
-            var lhs_9 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            var temp_10 = lhs_9.GetFloat("VAL");
-            var lhs_11 = _world.GetObject(ObjectType.Skill, "ADJUST_X");
-            lhs_11.SetFloat("VAL", temp_10 + -1f);
-            yield return SET_ADJX();
-            yield return new WaitForTicks(2f);
-            goto AGAIN;
-            yield break;
-        }
-        public IEnumerator ADJUST_YPLUS()
-        {
-            yield return GET_ADJY();
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            lhs_3.SetFloat("VAL", temp_2 + 1f);
-            yield return SET_ADJY();
-            yield return new WaitForTicks(8f);
-            AGAIN:
-            var lhs_6 = _world.GetObject(ObjectType.Skill, "KEY_8");
-            var temp_7 = lhs_6.GetFloat("VAL");
-            if (temp_7 == 0f)
-            {
-                yield break;
-            }
-            yield return GET_ADJY();
-            var lhs_9 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            var temp_10 = lhs_9.GetFloat("VAL");
-            var lhs_11 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            lhs_11.SetFloat("VAL", temp_10 + 1f);
-            yield return SET_ADJY();
-            yield return new WaitForTicks(2f);
-            goto AGAIN;
-            yield break;
-        }
-        public IEnumerator ADJUST_YMINUS()
-        {
-            yield return GET_ADJY();
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            var temp_2 = lhs_1.GetFloat("VAL");
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            lhs_3.SetFloat("VAL", temp_2 + -1f);
-            yield return SET_ADJY();
-            yield return new WaitForTicks(8f);
-            AGAIN:
-            var lhs_6 = _world.GetObject(ObjectType.Skill, "KEY_7");
-            var temp_7 = lhs_6.GetFloat("VAL");
-            if (temp_7 == 0f)
-            {
-                yield break;
-            }
-            yield return GET_ADJY();
-            var lhs_9 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            var temp_10 = lhs_9.GetFloat("VAL");
-            var lhs_11 = _world.GetObject(ObjectType.Skill, "ADJUST_Y");
-            lhs_11.SetFloat("VAL", temp_10 + -1f);
-            yield return SET_ADJY();
-            yield return new WaitForTicks(2f);
-            goto AGAIN;
-            yield break;
-        }
-        public IEnumerator SET_WMODE()
-        {
-            var acknexObject_1 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            var temp_1 = acknexObject_1.GetFloat("POS_Y");
-            var acknexObject_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            acknexObject_3.SetFloat("POS_Y", temp_1);
-            _world.Shoot();
-            var lhs_4 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
-            var temp_5 = lhs_4.GetFloat("VAL");
-            if (temp_5 == 0f)
-            {
-                yield break;
-            }
-            var rhs_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            //Unknown Property Type: World.PANELS.9
-            var rhs_8 = _world.GetSynonymObject("HIT");
-            _world.SetSynonymObject("ADJUST_WALL", rhs_8);
-            var acknexObject_12 = _world.GetSynonymObject("ADJUST_WALL");
-            var temp_12 = acknexObject_12.GetFloat("FENCE");
-            if (temp_12 == 1f)
-            {
-                goto SET_POSMODE;
-            }
-            var lhs_14 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            lhs_14.SetFloat("VAL", 0f);
-            var rhs_15 = _world.AcknexObject.GetAcknexObject("WALL_MODE");
-            var acknexObject_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            acknexObject_17.SetAcknexObject("STRING", rhs_15);
-            yield return GET_ADJX();
-            yield return GET_ADJY();
-            yield break;
-            SET_POSMODE:
-            var lhs_18 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            lhs_18.SetFloat("VAL", 6f);
-            var rhs_19 = _world.AcknexObject.GetAcknexObject("POS_MODE");
-            var acknexObject_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            acknexObject_21.SetAcknexObject("STRING", rhs_19);
-            yield return GET_ADJX();
-            yield return GET_ADJY();
-            yield break;
-        }
-        public IEnumerator SET_FMODE()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            lhs_1.SetFloat("VAL", 1f);
-            var acknexObject_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            var temp_3 = acknexObject_3.GetFloat("POS_Y");
-            var acknexObject_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            acknexObject_5.SetFloat("POS_Y", temp_3);
-            var rhs_5 = _world.AcknexObject.GetAcknexObject("FLO_MODE");
-            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            acknexObject_7.SetAcknexObject("STRING", rhs_5);
-            var rhs_7 = _world.GetSynonymObject("HERE");
-            _world.SetSynonymObject("ADJUST_REG", rhs_7);
-            var rhs_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            //Unknown Property Type: World.PANELS.9
-            yield return GET_ADJX();
-            yield return GET_ADJY();
-            yield break;
-        }
-        public IEnumerator SET_CMODE()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            lhs_1.SetFloat("VAL", 2f);
-            var acknexObject_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            var temp_3 = acknexObject_3.GetFloat("POS_Y");
-            var acknexObject_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            acknexObject_5.SetFloat("POS_Y", temp_3);
-            var rhs_5 = _world.AcknexObject.GetAcknexObject("CEIL_MODE");
-            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            acknexObject_7.SetAcknexObject("STRING", rhs_5);
-            var rhs_7 = _world.GetSynonymObject("HERE");
-            _world.SetSynonymObject("ADJUST_REG", rhs_7);
-            var rhs_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            //Unknown Property Type: World.PANELS.9
-            yield return GET_ADJX();
-            yield return GET_ADJY();
-            yield break;
-        }
-        public IEnumerator SET_RMODE()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            lhs_1.SetFloat("VAL", 3f);
-            var acknexObject_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            var temp_3 = acknexObject_3.GetFloat("POS_Y");
-            var acknexObject_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            acknexObject_5.SetFloat("POS_Y", temp_3);
-            var rhs_5 = _world.AcknexObject.GetAcknexObject("REGIO_MODE");
-            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            acknexObject_7.SetAcknexObject("STRING", rhs_5);
-            var rhs_7 = _world.GetSynonymObject("HERE");
-            _world.SetSynonymObject("ADJUST_REG", rhs_7);
-            var rhs_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            //Unknown Property Type: World.PANELS.9
-            yield return GET_ADJX();
-            yield return GET_ADJY();
-            yield break;
-        }
-        public IEnumerator SET_VMODE()
-        {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            lhs_1.SetFloat("VAL", 8f);
-            var acknexObject_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            var temp_3 = acknexObject_3.GetFloat("POS_Y");
-            var acknexObject_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            acknexObject_5.SetFloat("POS_Y", temp_3);
-            var rhs_5 = _world.AcknexObject.GetAcknexObject("REGAMB_MODE");
-            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            acknexObject_7.SetAcknexObject("STRING", rhs_5);
-            var rhs_7 = _world.GetSynonymObject("HERE");
-            _world.SetSynonymObject("ADJUST_REG", rhs_7);
-            var rhs_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            //Unknown Property Type: World.PANELS.9
-            yield return GET_ADJX();
-            yield return GET_ADJY();
-            yield break;
-        }
         public IEnumerator SET_AMODE()
         {
             var acknexObject_1 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
@@ -2349,33 +2037,9 @@ namespace Tests
             yield return GET_ADJY();
             yield break;
         }
-        public IEnumerator SET_SMODE()
+        public IEnumerator SET_BLUE()
         {
-            var acknexObject_1 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            var temp_1 = acknexObject_1.GetFloat("POS_Y");
-            var acknexObject_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            acknexObject_3.SetFloat("POS_Y", temp_1);
-            _world.Shoot();
-            var lhs_4 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
-            var temp_5 = lhs_4.GetFloat("VAL");
-            if (temp_5 == 0f)
-            {
-                yield break;
-            }
-            var rhs_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-            //Unknown Property Type: World.PANELS.9
-            var acknexObject_9 = _world.GetSynonymObject("HIT");
-            var temp_9 = acknexObject_9.GetAcknexObject("TEXTURE");
-            _world.SetSynonymObject("ADJUST_TEX", temp_9);
-            var rhs_11 = _world.GetSynonymObject("HIT");
-            _world.SetSynonymObject("ADJUST_WALL", rhs_11);
-            var lhs_14 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
-            lhs_14.SetFloat("VAL", 5f);
-            var rhs_15 = _world.AcknexObject.GetAcknexObject("SCALE_MODE");
-            var acknexObject_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
-            acknexObject_17.SetAcknexObject("STRING", rhs_15);
-            yield return GET_ADJX();
-            yield return GET_ADJY();
+            //Unknown keyword: FADE_PAL
             yield break;
         }
         public IEnumerator SET_BMODE()
@@ -2407,45 +2071,556 @@ namespace Tests
             yield return GET_ADJY();
             yield break;
         }
-        public IEnumerator FADE_IN()
+        public IEnumerator SET_CMODE()
         {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "FADE");
-            lhs_1.SetFloat("VAL", 0f);
-            LOOP:
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "FADE");
-            var temp_4 = lhs_3.GetFloat("VAL");
-            var lhs_5 = _world.GetObject(ObjectType.Skill, "FADE");
-            lhs_5.SetFloat("VAL", temp_4 + 0.1f);
-            //Unknown keyword: FADE_PAL
-            yield return new WaitForCycles(1f);
-            var lhs_8 = _world.GetObject(ObjectType.Skill, "FADE");
-            var temp_9 = lhs_8.GetFloat("VAL");
-            if (temp_9 < 1f)
-            {
-                goto LOOP;
-            }
-            //Unknown keyword: FADE_PAL
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            lhs_1.SetFloat("VAL", 2f);
+            var acknexObject_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            var temp_3 = acknexObject_3.GetFloat("POS_Y");
+            var acknexObject_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            acknexObject_5.SetFloat("POS_Y", temp_3);
+            var rhs_5 = _world.AcknexObject.GetAcknexObject("CEIL_MODE");
+            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            acknexObject_7.SetAcknexObject("STRING", rhs_5);
+            var rhs_7 = _world.GetSynonymObject("HERE");
+            _world.SetSynonymObject("ADJUST_REG", rhs_7);
+            var rhs_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            //Unknown Property Type: World.PANELS.9
+            yield return GET_ADJX();
+            yield return GET_ADJY();
             yield break;
         }
-        public IEnumerator FADE_OUT()
+        public IEnumerator SET_DEBUG()
         {
-            var lhs_1 = _world.GetObject(ObjectType.Skill, "FADE");
+            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"UPDATE_DBPANEL");
+            _world.AcknexObject.SetString("EACH_TICK.10", rhs_0.GetString("NAME"));
+            var rhs_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"DEBUG_PANEL");
+            //Unknown Property Type: World.PANELS.10
+            var rhs_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"DEBUG_TEXT_1");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.10", rhs_4);
+            yield break;
+        }
+        public IEnumerator SET_DIFF1()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "DIFFICULTY");
             lhs_1.SetFloat("VAL", 1f);
-            LOOP:
-            var lhs_3 = _world.GetObject(ObjectType.Skill, "FADE");
-            var temp_4 = lhs_3.GetFloat("VAL");
-            var lhs_5 = _world.GetObject(ObjectType.Skill, "FADE");
-            lhs_5.SetFloat("VAL", temp_4 + 0.1f);
-            //Unknown keyword: FADE_PAL
-            yield return new WaitForCycles(1f);
-            var lhs_8 = _world.GetObject(ObjectType.Skill, "FADE");
-            var temp_9 = lhs_8.GetFloat("VAL");
-            if (temp_9 < 1f)
+            yield return LEVEL_MENU();
+            yield break;
+            yield break;
+        }
+        public IEnumerator SET_DIFF2()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "DIFFICULTY");
+            lhs_1.SetFloat("VAL", 2f);
+            yield return LEVEL_MENU();
+            yield break;
+            yield break;
+        }
+        public IEnumerator SET_DIFF3()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "DIFFICULTY");
+            lhs_1.SetFloat("VAL", 3f);
+            yield return LEVEL_MENU();
+            yield break;
+            yield break;
+        }
+        public IEnumerator SET_DIFF4()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "DIFFICULTY");
+            lhs_1.SetFloat("VAL", 4f);
+            yield return LEVEL_MENU();
+            yield break;
+            yield break;
+        }
+        public IEnumerator SET_DIVING()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "FRIC");
+            lhs_1.SetFloat("VAL", 0.3f);
+            var rhs_2 = _world.GetObject(ObjectType.Skill, "MODE_TAUCHEN");
+            var temp_3 = rhs_2.GetFloat("VAL");
+            var lhs_4 = _world.GetObject(ObjectType.Skill, "MOVING");
+            lhs_4.SetFloat("VAL", temp_3);
+            var lhs_6 = _world.GetObject(ObjectType.Skill, "STRENGTH");
+            lhs_6.SetFloat("VAL", 0.1f);
+            var lhs_8 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
+            lhs_8.SetFloat("VAL", 0.03f);
+            var lhs_10 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
+            lhs_10.SetFloat("VAL", 0.05f);
+            var lhs_12 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
+            lhs_12.SetFloat("VAL", 0f);
+            var lhs_14 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
+            lhs_14.SetFloat("VAL", 0.7f);
+            var lhs_16 = _world.GetObject(ObjectType.Skill, "GRAVITY");
+            lhs_16.SetFloat("VAL", 0f);
+            var rhs_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MOVE_ME");
+            _world.AcknexObject.SetString("EACH_TICK.16", rhs_17.GetString("NAME"));
+            yield break;
+        }
+        public IEnumerator SET_FMODE()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            lhs_1.SetFloat("VAL", 1f);
+            var acknexObject_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            var temp_3 = acknexObject_3.GetFloat("POS_Y");
+            var acknexObject_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            acknexObject_5.SetFloat("POS_Y", temp_3);
+            var rhs_5 = _world.AcknexObject.GetAcknexObject("FLO_MODE");
+            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            acknexObject_7.SetAcknexObject("STRING", rhs_5);
+            var rhs_7 = _world.GetSynonymObject("HERE");
+            _world.SetSynonymObject("ADJUST_REG", rhs_7);
+            var rhs_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            //Unknown Property Type: World.PANELS.9
+            yield return GET_ADJX();
+            yield return GET_ADJY();
+            yield break;
+        }
+        public IEnumerator SET_MENU()
+        {
+            var rhs_0 = _world.GetSynonymObject("MENU1_STR");
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
+            acknexObject_2.SetAcknexObject("STRING", rhs_0);
+            var rhs_2 = _world.GetSynonymObject("MENU2_STR");
+            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
+            acknexObject_4.SetAcknexObject("STRING", rhs_2);
+            var rhs_4 = _world.GetSynonymObject("MENU3_STR");
+            var acknexObject_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
+            acknexObject_6.SetAcknexObject("STRING", rhs_4);
+            var rhs_6 = _world.GetSynonymObject("MENU4_STR");
+            var acknexObject_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
+            acknexObject_8.SetAcknexObject("STRING", rhs_6);
+            var rhs_8 = _world.GetSynonymObject("MENU5_STR");
+            var acknexObject_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
+            acknexObject_10.SetAcknexObject("STRING", rhs_8);
+            var rhs_10 = _world.GetSynonymObject("MENU6_STR");
+            var acknexObject_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
+            acknexObject_12.SetAcknexObject("STRING", rhs_10);
+            var rhs_12 = _world.AcknexObject.GetAcknexObject("EXIT_STR");
+            var acknexObject_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
+            acknexObject_14.SetAcknexObject("STRING", rhs_12);
+            yield break;
+        }
+        public IEnumerator SET_MOVING()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var temp_2 = lhs_1.GetFloat("VAL");
+            if (temp_2 == 0f)
             {
-                goto LOOP;
+                yield break;
             }
-            //Unknown keyword: FADE_PAL
-            Application.Quit();
+            var rhs_3 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
+            var temp_4 = rhs_3.GetFloat("VAL");
+            var lhs_5 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var temp_6 = lhs_5.GetFloat("VAL");
+            if (temp_6 == temp_4)
+            {
+                yield return SET_WALKING();
+                yield break;
+            }
+            var rhs_7 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
+            var temp_8 = rhs_7.GetFloat("VAL");
+            var lhs_9 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var temp_10 = lhs_9.GetFloat("VAL");
+            if (temp_10 == temp_8)
+            {
+                yield return SET_SWIMMING();
+                yield break;
+            }
+            var rhs_11 = _world.GetObject(ObjectType.Skill, "MODE_TAUCHEN");
+            var temp_12 = rhs_11.GetFloat("VAL");
+            var lhs_13 = _world.GetObject(ObjectType.Skill, "MOVING");
+            var temp_14 = lhs_13.GetFloat("VAL");
+            if (temp_14 == temp_12)
+            {
+                yield return SET_DIVING();
+                yield break;
+            }
+            yield break;
+        }
+        public IEnumerator SET_RMODE()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            lhs_1.SetFloat("VAL", 3f);
+            var acknexObject_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            var temp_3 = acknexObject_3.GetFloat("POS_Y");
+            var acknexObject_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            acknexObject_5.SetFloat("POS_Y", temp_3);
+            var rhs_5 = _world.AcknexObject.GetAcknexObject("REGIO_MODE");
+            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            acknexObject_7.SetAcknexObject("STRING", rhs_5);
+            var rhs_7 = _world.GetSynonymObject("HERE");
+            _world.SetSynonymObject("ADJUST_REG", rhs_7);
+            var rhs_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            //Unknown Property Type: World.PANELS.9
+            yield return GET_ADJX();
+            yield return GET_ADJY();
+            yield break;
+        }
+        public IEnumerator SET_SMODE()
+        {
+            var acknexObject_1 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            var temp_1 = acknexObject_1.GetFloat("POS_Y");
+            var acknexObject_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            acknexObject_3.SetFloat("POS_Y", temp_1);
+            _world.Shoot();
+            var lhs_4 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
+            var temp_5 = lhs_4.GetFloat("VAL");
+            if (temp_5 == 0f)
+            {
+                yield break;
+            }
+            var rhs_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            //Unknown Property Type: World.PANELS.9
+            var acknexObject_9 = _world.GetSynonymObject("HIT");
+            var temp_9 = acknexObject_9.GetAcknexObject("TEXTURE");
+            _world.SetSynonymObject("ADJUST_TEX", temp_9);
+            var rhs_11 = _world.GetSynonymObject("HIT");
+            _world.SetSynonymObject("ADJUST_WALL", rhs_11);
+            var lhs_14 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            lhs_14.SetFloat("VAL", 5f);
+            var rhs_15 = _world.AcknexObject.GetAcknexObject("SCALE_MODE");
+            var acknexObject_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            acknexObject_17.SetAcknexObject("STRING", rhs_15);
+            yield return GET_ADJX();
+            yield return GET_ADJY();
+            yield break;
+        }
+        public IEnumerator SET_SWIMMING()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "FRIC");
+            lhs_1.SetFloat("VAL", 0.3f);
+            var rhs_2 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
+            var temp_3 = rhs_2.GetFloat("VAL");
+            var lhs_4 = _world.GetObject(ObjectType.Skill, "MOVING");
+            lhs_4.SetFloat("VAL", temp_3);
+            var lhs_6 = _world.GetObject(ObjectType.Skill, "STRENGTH");
+            lhs_6.SetFloat("VAL", 0.15f);
+            var lhs_8 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
+            lhs_8.SetFloat("VAL", 0.08f);
+            var lhs_10 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
+            lhs_10.SetFloat("VAL", 0f);
+            var lhs_12 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
+            lhs_12.SetFloat("VAL", 0.2f);
+            var lhs_14 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
+            lhs_14.SetFloat("VAL", 0.5f);
+            var lhs_16 = _world.GetObject(ObjectType.Skill, "GRAVITY");
+            lhs_16.SetFloat("VAL", -0.05f);
+            var rhs_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MOVE_ME");
+            _world.AcknexObject.SetString("EACH_TICK.16", rhs_17.GetString("NAME"));
+            yield break;
+        }
+        public IEnumerator SET_VMODE()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            lhs_1.SetFloat("VAL", 8f);
+            var acknexObject_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            var temp_3 = acknexObject_3.GetFloat("POS_Y");
+            var acknexObject_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            acknexObject_5.SetFloat("POS_Y", temp_3);
+            var rhs_5 = _world.AcknexObject.GetAcknexObject("REGAMB_MODE");
+            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            acknexObject_7.SetAcknexObject("STRING", rhs_5);
+            var rhs_7 = _world.GetSynonymObject("HERE");
+            _world.SetSynonymObject("ADJUST_REG", rhs_7);
+            var rhs_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            //Unknown Property Type: World.PANELS.9
+            yield return GET_ADJX();
+            yield return GET_ADJY();
+            yield break;
+        }
+        public IEnumerator SET_WALKING()
+        {
+            var rhs_0 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
+            var temp_1 = rhs_0.GetFloat("VAL");
+            var lhs_2 = _world.GetObject(ObjectType.Skill, "MOVING");
+            lhs_2.SetFloat("VAL", temp_1);
+            var lhs_4 = _world.GetObject(ObjectType.Skill, "FRIC");
+            lhs_4.SetFloat("VAL", 0.2f);
+            var lhs_6 = _world.GetObject(ObjectType.Skill, "STRENGTH");
+            lhs_6.SetFloat("VAL", 0.15f);
+            var lhs_8 = _world.GetObject(ObjectType.Skill, "WAVE_STR");
+            lhs_8.SetFloat("VAL", 0f);
+            var lhs_10 = _world.GetObject(ObjectType.Skill, "FLOAT_STR");
+            lhs_10.SetFloat("VAL", 0f);
+            var lhs_12 = _world.GetObject(ObjectType.Skill, "DUCK_STR");
+            lhs_12.SetFloat("VAL", 0.5f);
+            var lhs_14 = _world.GetObject(ObjectType.Skill, "FRIC_AIR");
+            lhs_14.SetFloat("VAL", 0.04f);
+            var lhs_16 = _world.GetObject(ObjectType.Skill, "GRAVITY");
+            lhs_16.SetFloat("VAL", -0.13f);
+            var rhs_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MOVE_ME");
+            _world.AcknexObject.SetString("EACH_TICK.16", rhs_17.GetString("NAME"));
+            yield break;
+        }
+        public IEnumerator SET_WMODE()
+        {
+            var acknexObject_1 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            var temp_1 = acknexObject_1.GetFloat("POS_Y");
+            var acknexObject_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            acknexObject_3.SetFloat("POS_Y", temp_1);
+            _world.Shoot();
+            var lhs_4 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
+            var temp_5 = lhs_4.GetFloat("VAL");
+            if (temp_5 == 0f)
+            {
+                yield break;
+            }
+            var rhs_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
+            //Unknown Property Type: World.PANELS.9
+            var rhs_8 = _world.GetSynonymObject("HIT");
+            _world.SetSynonymObject("ADJUST_WALL", rhs_8);
+            var acknexObject_12 = _world.GetSynonymObject("ADJUST_WALL");
+            var temp_12 = acknexObject_12.GetFloat("FENCE");
+            if (temp_12 == 1f)
+            {
+                goto SET_POSMODE;
+            }
+            var lhs_14 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            lhs_14.SetFloat("VAL", 0f);
+            var rhs_15 = _world.AcknexObject.GetAcknexObject("WALL_MODE");
+            var acknexObject_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            acknexObject_17.SetAcknexObject("STRING", rhs_15);
+            yield return GET_ADJX();
+            yield return GET_ADJY();
+            yield break;
+            SET_POSMODE:
+            var lhs_18 = _world.GetObject(ObjectType.Skill, "ADJUST_MODE");
+            lhs_18.SetFloat("VAL", 6f);
+            var rhs_19 = _world.AcknexObject.GetAcknexObject("POS_MODE");
+            var acknexObject_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
+            acknexObject_21.SetAcknexObject("STRING", rhs_19);
+            yield return GET_ADJX();
+            yield return GET_ADJY();
+            yield break;
+        }
+        public IEnumerator SHOW_MENU()
+        {
+            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MENU_EXEC");
+            _world.AcknexObject.SetString("IF_ENTER", rhs_0.GetString("NAME"));
+            var rhs_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CLEAR_MENU");
+            _world.AcknexObject.SetString("IF_ESC", rhs_2.GetString("NAME"));
+            var rhs_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MENU_UP");
+            _world.AcknexObject.SetString("IF_CUU", rhs_4.GetString("NAME"));
+            var rhs_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MENU_DOWN");
+            _world.AcknexObject.SetString("IF_CUD", rhs_6.GetString("NAME"));
+            var lhs_9 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
+            lhs_9.SetFloat("VAL", 0f);
+            var acknexObject_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
+            acknexObject_12.SetFloat("MIN", 1f);
+            var lhs_13 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_14 = lhs_13.GetFloat("VAL");
+            if (temp_14 == 0f)
+            {
+                var lhs_16 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+                lhs_16.SetFloat("VAL", 1f);
+            }
+            var acknexObject_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
+            var acknexObject_19 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
+            var temp_19 = acknexObject_19.GetFloat("POS_Y");
+            var acknexObject_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
+            var temp_22 = acknexObject_22.GetFloat("MAX");
+            acknexObject_18.SetFloat("POS_Y", temp_19 + temp_22 * 16f - 8f);
+            var rhs_27 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.10", rhs_27);
+            var rhs_29 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.11", rhs_29);
+            var rhs_31 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.12", rhs_31);
+            var rhs_33 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.13", rhs_33);
+            var rhs_35 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.14", rhs_35);
+            var rhs_37 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.15", rhs_37);
+            var rhs_39 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.16", rhs_39);
+            BLINK:
+            yield return SET_MENU();
+            yield return new WaitForTicks(3f);
+            var lhs_42 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_43 = lhs_42.GetFloat("VAL");
+            if (temp_43 > lhs_42.GetFloat("MAX"))
+            {
+                var rhs_44 = _world.AcknexObject.GetAcknexObject("EMPTY");
+                var acknexObject_46 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
+                acknexObject_46.SetAcknexObject("STRING", rhs_44);
+            }
+            var lhs_47 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_48 = lhs_47.GetFloat("VAL");
+            if (temp_48 == 1f)
+            {
+                var rhs_49 = _world.AcknexObject.GetAcknexObject("EMPTY");
+                var acknexObject_51 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
+                acknexObject_51.SetAcknexObject("STRING", rhs_49);
+            }
+            var lhs_52 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_53 = lhs_52.GetFloat("VAL");
+            if (temp_53 == 2f)
+            {
+                var rhs_54 = _world.AcknexObject.GetAcknexObject("EMPTY");
+                var acknexObject_56 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
+                acknexObject_56.SetAcknexObject("STRING", rhs_54);
+            }
+            var lhs_57 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_58 = lhs_57.GetFloat("VAL");
+            if (temp_58 == 3f)
+            {
+                var rhs_59 = _world.AcknexObject.GetAcknexObject("EMPTY");
+                var acknexObject_61 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
+                acknexObject_61.SetAcknexObject("STRING", rhs_59);
+            }
+            var lhs_62 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_63 = lhs_62.GetFloat("VAL");
+            if (temp_63 == 4f)
+            {
+                var rhs_64 = _world.AcknexObject.GetAcknexObject("EMPTY");
+                var acknexObject_66 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
+                acknexObject_66.SetAcknexObject("STRING", rhs_64);
+            }
+            var lhs_67 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_68 = lhs_67.GetFloat("VAL");
+            if (temp_68 == 5f)
+            {
+                var rhs_69 = _world.AcknexObject.GetAcknexObject("EMPTY");
+                var acknexObject_71 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
+                acknexObject_71.SetAcknexObject("STRING", rhs_69);
+            }
+            var lhs_72 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_73 = lhs_72.GetFloat("VAL");
+            if (temp_73 == 6f)
+            {
+                var rhs_74 = _world.AcknexObject.GetAcknexObject("EMPTY");
+                var acknexObject_76 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
+                acknexObject_76.SetAcknexObject("STRING", rhs_74);
+            }
+            var lhs_77 = _world.GetObject(ObjectType.Skill, "MENU_POS");
+            var temp_78 = lhs_77.GetFloat("VAL");
+            if (temp_78 == 0f)
+            {
+                yield break;
+            }
+            yield return new WaitForTicks(3f);
+            goto BLINK;
+            yield break;
+        }
+        public IEnumerator SHOW_MESSAGE()
+        {
+            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.14", rhs_0);
+            yield return new WaitForTicks(48f);
+            _world.AcknexObject.SetAcknexObject("MESSAGES.14", null);
+            yield break;
+        }
+        public IEnumerator SHOW_OPTIONS()
+        {
+            yield return CLEAR_MENU();
+            var rhs_0 = _world.AcknexObject.GetAcknexObject("OPTION_STR");
+            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            acknexObject_2.SetAcknexObject("STRING", rhs_0);
+            yield return WAIT_YESNO();
+            yield break;
+        }
+        public IEnumerator START_LEVEL1()
+        {
+            //Unknown keyword: SAVE_INFO
+            yield break;
+        }
+        public IEnumerator START_LEVEL2()
+        {
+            //Unknown keyword: SAVE_INFO
+            yield break;
+        }
+        public IEnumerator START_LEVEL3()
+        {
+            //Unknown keyword: SAVE_INFO
+            yield break;
+        }
+        public IEnumerator START_LEVEL4()
+        {
+            //Unknown keyword: SAVE_INFO
+            yield break;
+        }
+        public IEnumerator START_LEVEL5()
+        {
+            //Unknown keyword: SAVE_INFO
+            yield break;
+        }
+        public IEnumerator START_QUAKE()
+        {
+            yield return QUAKE();
+            yield break;
+            yield break;
+        }
+        public IEnumerator STOP_MOVING()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
+            lhs_1.SetFloat("VAL", 0f);
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
+            lhs_3.SetFloat("VAL", 0f);
+            var lhs_5 = _world.GetObject(ObjectType.Skill, "PLAYER_VZ");
+            lhs_5.SetFloat("VAL", 0f);
+            var lhs_7 = _world.GetObject(ObjectType.Skill, "PLAYER_VROT");
+            lhs_7.SetFloat("VAL", 0f);
+            yield break;
+        }
+        public IEnumerator TOGGLE_MAP()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "MAP_ROT");
+            lhs_1.SetFloat("VAL", 1f);
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
+            var temp_4 = lhs_3.GetFloat("VAL");
+            var lhs_5 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
+            lhs_5.SetFloat("VAL", temp_4 + 0.5f);
+            var lhs_7 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
+            var temp_8 = lhs_7.GetFloat("VAL");
+            if (temp_8 > 0.5f)
+            {
+                var lhs_10 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
+                lhs_10.SetFloat("VAL", 0f);
+            }
+            yield break;
+        }
+        public IEnumerator TOGGLE_MBLUR()
+        {
+            var lhs_1 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
+            var temp_2 = lhs_1.GetFloat("VAL");
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
+            lhs_3.SetFloat("VAL", temp_2 + 0.5f);
+            var lhs_5 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
+            var temp_6 = lhs_5.GetFloat("VAL");
+            if (temp_6 > 0.5f)
+            {
+                var lhs_8 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
+                lhs_8.SetFloat("VAL", 0f);
+            }
+            var rhs_9 = _world.AcknexObject.GetAcknexObject("MBLUR_ON");
+            var acknexObject_11 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            acknexObject_11.SetAcknexObject("STRING", rhs_9);
+            var lhs_12 = _world.GetObject(ObjectType.Skill, "MOTION_BLUR");
+            var temp_13 = lhs_12.GetFloat("VAL");
+            if (temp_13 == 0f)
+            {
+                var rhs_14 = _world.AcknexObject.GetAcknexObject("MBLUR_OFF");
+                var acknexObject_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+                acknexObject_16.SetAcknexObject("STRING", rhs_14);
+            }
+            yield return SHOW_MESSAGE();
+            yield break;
+            yield break;
+        }
+        public IEnumerator TUNIX()
+        {
+            yield break;
+            yield break;
+        }
+        public IEnumerator UPDATE_DBPANEL()
+        {
+            var lhs_0 = _world.GetObject(ObjectType.Skill, "FPS");
+            var temp_3 = _world.GetObject(ObjectType.Skill, "FPS");
+            var temp_4 = temp_3.GetFloat("VAL");
+            var temp_8 = _world.GetObject(ObjectType.Skill, "TIME_FAC");
+            var temp_9 = temp_8.GetFloat("VAL");
+            lhs_0.SetFloat("VAL", 0.9f * temp_4 + 0.1f * temp_9);
             yield break;
         }
         public IEnumerator VRDEMO_START()
@@ -2458,191 +2633,16 @@ namespace Tests
             _world.SetSynonymObject("SET_OVERWATER", rhs_2);
             yield break;
         }
-        public IEnumerator ENTER_WATER()
+        public IEnumerator WAIT_YESNO()
         {
-            //Unknown keyword: PLAY_SOUND
-            yield return SET_SWIMMING();
-            yield break;
-        }
-        public IEnumerator LEAVE_WATER()
-        {
-            yield return SET_WALKING();
-            yield break;
-        }
-        public IEnumerator DIVE_UP()
-        {
-            //Unknown keyword: PLAY_SOUND
-            yield return RESET_BLUE();
-            yield break;
-        }
-        public IEnumerator PULSUP()
-        {
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
-            var temp_2 = acknexObject_2.GetFloat("AMBIENT");
-            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
-            acknexObject_4.SetFloat("AMBIENT", temp_2 + 0.1f);
-            var acknexObject_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
-            var temp_6 = acknexObject_6.GetFloat("AMBIENT");
-            if (temp_6 > 1f)
-            {
-                var rhs_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"PULSDOWN");
-                var acknexObject_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
-                acknexObject_9.SetString("EACH_TICK", rhs_7.GetString("NAME"));
-            }
-            yield break;
-        }
-        public IEnumerator PULSDOWN()
-        {
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
-            var temp_2 = acknexObject_2.GetFloat("AMBIENT");
-            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
-            acknexObject_4.SetFloat("AMBIENT", temp_2 + -0.1f);
-            var acknexObject_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
-            var temp_6 = acknexObject_6.GetFloat("AMBIENT");
-            if (temp_6 < 0f)
-            {
-                var rhs_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"PULSUP");
-                var acknexObject_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"SPHERE");
-                acknexObject_9.SetString("EACH_TICK", rhs_7.GetString("NAME"));
-            }
-            yield break;
-        }
-        public IEnumerator FALLTUER()
-        {
-            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LIFT_DOWN");
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            acknexObject_2.SetString("EACH_TICK", rhs_0.GetString("NAME"));
-            yield break;
-        }
-        public IEnumerator ARSCHTRITT()
-        {
-            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LIFT_UP");
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            acknexObject_2.SetString("EACH_TICK", rhs_0.GetString("NAME"));
-            yield break;
-        }
-        public IEnumerator LIFT_DOWN()
-        {
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            var temp_2 = acknexObject_2.GetFloat("FLOOR_HGT");
-            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            acknexObject_4.SetFloat("FLOOR_HGT", temp_2 + -0.3f);
-            //Unknown keyword: PLAY_SOUND
-            var lhs_5 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            var temp_6 = lhs_5.GetFloat("VAL");
-            var lhs_7 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            lhs_7.SetFloat("VAL", temp_6 + -0.3f);
-            var lhs_9 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
-            lhs_9.SetFloat("VAL", 1f);
-            var acknexObject_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            var temp_12 = acknexObject_12.GetFloat("FLOOR_HGT");
-            if (temp_12 > 0f)
-            {
-                yield break;
-            }
-            var acknexObject_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            acknexObject_15.SetFloat("FLOOR_HGT", 0f);
-            var acknexObject_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            acknexObject_17.SetString("EACH_TICK", null);
-            var rhs_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ARSCHTRITT");
-            var acknexObject_19 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            acknexObject_19.SetString("IF_ENTER", rhs_17.GetString("NAME"));
-            var acknexObject_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"DUNKELGANGSPERRE");
-            acknexObject_21.SetFloat("CEIL_HGT", 6f);
-            yield break;
-        }
-        public IEnumerator LIFT_UP()
-        {
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            var temp_2 = acknexObject_2.GetFloat("FLOOR_HGT");
-            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            acknexObject_4.SetFloat("FLOOR_HGT", temp_2 + 0.3f);
-            var lhs_5 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            var temp_6 = lhs_5.GetFloat("VAL");
-            var lhs_7 = _world.GetObject(ObjectType.Skill, "PLAYER_Z");
-            lhs_7.SetFloat("VAL", temp_6 + 0.3f);
-            var lhs_9 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
-            lhs_9.SetFloat("VAL", 1f);
-            //Unknown keyword: PLAY_SOUND
-            var acknexObject_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            var temp_12 = acknexObject_12.GetFloat("FLOOR_HGT");
-            if (temp_12 < 15.5f)
-            {
-                yield break;
-            }
-            var acknexObject_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            acknexObject_15.SetFloat("FLOOR_HGT", 15.5f);
-            var acknexObject_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            acknexObject_17.SetString("EACH_TICK", null);
-            var rhs_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"FALLTUER");
-            var acknexObject_19 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-            acknexObject_19.SetString("IF_ENTER", rhs_17.GetString("NAME"));
-            yield break;
-        }
-        public IEnumerator CHECK_OPEN()
-        {
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"SECRET_DOOR");
-            var temp_2 = acknexObject_2.GetFloat("CEIL_HGT");
-            if (temp_2 < 8f)
-            {
-                var rhs_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"OPENDOOR");
-                _world.AcknexObject.SetString("EACH_TICK.10", rhs_3.GetString("NAME"));
-            }
-            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"SECRET_DOOR");
-            var temp_7 = acknexObject_7.GetFloat("CEIL_HGT");
-            if (temp_7 < 5.1f)
-            {
-                //Unknown keyword: PLAY_SOUND
-            }
-            yield break;
-        }
-        public IEnumerator OPENDOOR()
-        {
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"SECRET_DOOR");
-            var temp_2 = acknexObject_2.GetFloat("CEIL_HGT");
-            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"SECRET_DOOR");
-            acknexObject_4.SetFloat("CEIL_HGT", temp_2 + 0.3f);
-            var lhs_5 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
-            lhs_5.SetFloat("VAL", 1f);
-            var acknexObject_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"SECRET_DOOR");
-            var temp_8 = acknexObject_8.GetFloat("CEIL_HGT");
-            if (temp_8 > 16f)
-            {
-                _world.AcknexObject.SetString("EACH_TICK.10", null);
-            }
-            yield break;
-        }
-        public IEnumerator IST_OPEN()
-        {
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"GEHEIMTUER");
-            var temp_2 = acknexObject_2.GetFloat("CEIL_HGT");
-            if (temp_2 < 8f)
-            {
-                var rhs_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"AUFGEH");
-                _world.AcknexObject.SetString("EACH_TICK.11", rhs_3.GetString("NAME"));
-            }
-            var acknexObject_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"GEHEIMTUER");
-            var temp_7 = acknexObject_7.GetFloat("CEIL_HGT");
-            if (temp_7 < 2.7f)
-            {
-                //Unknown keyword: PLAY_SOUND
-            }
-            yield break;
-        }
-        public IEnumerator AUFGEH()
-        {
-            var acknexObject_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"GEHEIMTUER");
-            var temp_2 = acknexObject_2.GetFloat("CEIL_HGT");
-            var acknexObject_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"GEHEIMTUER");
-            acknexObject_4.SetFloat("CEIL_HGT", temp_2 + 0.3f);
-            var lhs_5 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
-            lhs_5.SetFloat("VAL", 1f);
-            var acknexObject_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"GEHEIMTUER");
-            var temp_8 = acknexObject_8.GetFloat("CEIL_HGT");
-            if (temp_8 > 12f)
-            {
-                _world.AcknexObject.SetString("EACH_TICK.11", null);
-            }
+            var rhs_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"SCREEN_TXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.14", rhs_0);
+            var lhs_3 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
+            lhs_3.SetFloat("VAL", 0f);
+            var rhs_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CLEAR_YESNO");
+            _world.AcknexObject.SetString("IF_N", rhs_4.GetString("NAME"));
+            var rhs_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CLEAR_YESNO");
+            _world.AcknexObject.SetString("IF_ESC", rhs_6.GetString("NAME"));
             yield break;
         }
     }
