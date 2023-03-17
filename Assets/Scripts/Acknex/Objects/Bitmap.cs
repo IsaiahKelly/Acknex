@@ -72,6 +72,10 @@ namespace Acknex
             {
                 return;
             }
+            if (wallOrRegion != null && World.Instance.DisableWallTextures)
+            {
+                return;
+            }
             var width = Width;
             var height = Height;
             var x = X;

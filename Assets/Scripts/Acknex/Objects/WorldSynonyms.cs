@@ -58,10 +58,10 @@ namespace Acknex
                     isValid = target.Type == ObjectType.Action;
                     break;
             }
-            if (!isValid)
-            {
-                throw new Exception($"Invalid Synonym attribution. Expected: {type}. Got: {target.Type}");
-            }
+            //if (!isValid)
+            //{
+            //    throw new Exception($"Invalid Synonym attribution. Expected: {type}. Got: {target.Type}");
+            //}
             var objectName = target.GetString("NAME");
             synonym.AcknexObject.SetString("VAL", objectName);
             synonym.AcknexObject.SetAcknexObject("INSTANCE", target);
@@ -126,7 +126,16 @@ namespace Acknex
 
         public IEnumerator CallSynonymAction(string synonymName)
         {
-            throw new NotImplementedException();
+            if (SynonymsByName.TryGetValue(synonymName, out var synonym))
+            {
+                var objectName = synonym.AcknexObject.GetString("VAL");
+                var objectType = GetSynonymType(synonymName);
+                var action = GetObject(objectType, objectName);
+                if (action != null)
+                {
+                    yield return CallAction(null, action.GetString("NAME"));
+                }
+            }
         }
     }
 }

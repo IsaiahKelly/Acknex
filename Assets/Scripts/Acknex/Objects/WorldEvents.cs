@@ -10,29 +10,39 @@ namespace Acknex
         public WaitForSeconds WaitForTick;
         public WaitForSeconds WaitForSecond;
 
-        public void CallAction(IAcknexObject source, string name)
+        public IEnumerator CallAction(IAcknexObject source, string name)
         {
-            if (_runtime == null)
+            if (_game == null)
             {
-                return;
+                yield break;
             }
             if (source != null)
             {
                 SetSynonymObject("MY", source);
             }
-            _runtime.CallAction(name);
+            var method = _game.GetType().GetMethod(name);
+            if (method != null)
+            {
+               var enumerator = method.Invoke(_game, null);
+               yield return (IEnumerator)enumerator;
+            }
         }
 
         public void TriggerEvent(IAcknexObject source, string eventName)
         {
-            if (_runtime == null)
+            if (_game == null)
             {
                 return;
             }
             if (source.TryGetString(eventName, out var @event))
             {
                 SetSynonymObject("MY", source);
-                _runtime.CallAction(@event);
+                var method = _game.GetType().GetMethod(@event);
+                if (method != null)
+                {
+                    var result = method.Invoke(_game, null);
+                    StartCoroutine((IEnumerator)result);
+                }
             }
         }
 
@@ -48,22 +58,22 @@ namespace Acknex
         {
             while (true)
             {
-                CallActionSlot(acknexObject, "EACH_TICK.1");
-                CallActionSlot(acknexObject, "EACH_TICK.2");
-                CallActionSlot(acknexObject, "EACH_TICK.3");
-                CallActionSlot(acknexObject, "EACH_TICK.4");
-                CallActionSlot(acknexObject, "EACH_TICK.5");
-                CallActionSlot(acknexObject, "EACH_TICK.6");
-                CallActionSlot(acknexObject, "EACH_TICK.7");
-                CallActionSlot(acknexObject, "EACH_TICK.8");
-                CallActionSlot(acknexObject, "EACH_TICK.9");
-                CallActionSlot(acknexObject, "EACH_TICK.10");
-                CallActionSlot(acknexObject, "EACH_TICK.11");
-                CallActionSlot(acknexObject, "EACH_TICK.12");
-                CallActionSlot(acknexObject, "EACH_TICK.13");
-                CallActionSlot(acknexObject, "EACH_TICK.14");
-                CallActionSlot(acknexObject, "EACH_TICK.15");
-                CallActionSlot(acknexObject, "EACH_TICK.16");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.1");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.2");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.3");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.4");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.5");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.6");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.7");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.8");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.9");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.10");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.11");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.12");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.13");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.14");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.15");
+                yield return CallActionSlot(acknexObject, "EACH_TICK.16");
                 yield return WaitForTick;
             }
         }
@@ -72,22 +82,22 @@ namespace Acknex
         {
             while (true)
             {
-                CallActionSlot(acknexObject, "EACH_SEC.1");
-                CallActionSlot(acknexObject, "EACH_SEC.2");
-                CallActionSlot(acknexObject, "EACH_SEC.3");
-                CallActionSlot(acknexObject, "EACH_SEC.4");
-                CallActionSlot(acknexObject, "EACH_SEC.5");
-                CallActionSlot(acknexObject, "EACH_SEC.6");
-                CallActionSlot(acknexObject, "EACH_SEC.7");
-                CallActionSlot(acknexObject, "EACH_SEC.8");
-                CallActionSlot(acknexObject, "EACH_SEC.9");
-                CallActionSlot(acknexObject, "EACH_SEC.10");
-                CallActionSlot(acknexObject, "EACH_SEC.11");
-                CallActionSlot(acknexObject, "EACH_SEC.12");
-                CallActionSlot(acknexObject, "EACH_SEC.13");
-                CallActionSlot(acknexObject, "EACH_SEC.14");
-                CallActionSlot(acknexObject, "EACH_SEC.15");
-                CallActionSlot(acknexObject, "EACH_SEC.16");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.1");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.2");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.3");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.4");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.5");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.6");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.7");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.8");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.9");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.10");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.11");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.12");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.13");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.14");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.15");
+                yield return CallActionSlot(acknexObject, "EACH_SEC.16");
                 yield return WaitForSecond;
             }
         }
@@ -164,6 +174,7 @@ namespace Acknex
             TriggerEventConditional(AcknexObject, "IF_F12", Input.GetKeyDown(KeyCode.F12));
             TriggerEventConditional(AcknexObject, "IF_HOME", Input.GetKeyDown(KeyCode.Home));
             TriggerEventConditional(AcknexObject, "IF_INS", Input.GetKeyDown(KeyCode.Insert));
+            TriggerEventConditional(AcknexObject, "IF_DEL", Input.GetKeyDown(KeyCode.Delete));
             TriggerEventConditional(AcknexObject, "IF_LEFT", Input.GetMouseButtonDown(0));
             TriggerEventConditional(AcknexObject, "IF_MIDDLE", Input.GetMouseButtonDown(1));
             TriggerEventConditional(AcknexObject, "IF_RIGHT", Input.GetMouseButtonDown(2));
@@ -182,11 +193,11 @@ namespace Acknex
             TriggerEventConditional(AcknexObject, "IF_PLUS", Input.GetKeyDown(KeyCode.Plus) || Input.GetKeyDown(KeyCode.KeypadPlus));
         }
 
-        public void CallActionSlot(IAcknexObject acknexObject, string eventName)
+        public IEnumerator CallActionSlot(IAcknexObject acknexObject, string eventName)
         {
             if (AcknexObject.TryGetString(eventName, out var action))
             {
-                CallAction(acknexObject, action);
+                yield return CallAction(acknexObject, action);
             }
         }
     }

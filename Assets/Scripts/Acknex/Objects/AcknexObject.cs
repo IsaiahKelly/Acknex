@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Acknex.Interfaces;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Acknex
 {
@@ -10,8 +11,8 @@ namespace Acknex
     {
         public ObjectType Type { get; set; }
 
-        public Dictionary<string, float> NumberProperties = new Dictionary<string, float>();
-        public Dictionary<string, object> ObjectProperties = new Dictionary<string, object>();
+        public SortedDictionary<string, float> NumberProperties = new SortedDictionary<string, float>();
+        public SortedDictionary<string, object> ObjectProperties = new SortedDictionary<string, object>();
 
         public IAcknexObjectContainer Container { get; set; }
 
@@ -52,6 +53,17 @@ namespace Acknex
 
         public void SetFloat(string propertyName, float value)
         {
+            if (Type == ObjectType.Skill)
+            {
+                if (TryGetFloat("MAX", out var max))
+                {
+                    value = Mathf.Min(max, value);
+                }
+                if (TryGetFloat("MIN", out var min))
+                {
+                    value = Mathf.Max(min, value);
+                }
+            }
             NumberProperties[propertyName] = value;
             //IsDirty = true;
         }
@@ -247,7 +259,7 @@ namespace Acknex
 
         public AcknexObject(Func<string, IAcknexObject> getTemplateCallback)
         {
-            SetObject("FLAGS", new HashSet<string>());
+            //SetObject("FLAGS", new HashSet<string>());
             GetTemplateCallback = getTemplateCallback;
         }
 

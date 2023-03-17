@@ -1,9 +1,20 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Acknex.Interfaces
 {
     public static class AngleUtils
     {
+        public static float Sin(float radians)
+        {
+            return Mathf.Sin(radians + (Mathf.Deg2Rad * 90f));
+        }
+
+        public static float Cos(float radians)
+        {
+            return Mathf.Cos(radians + (Mathf.Deg2Rad * 90f));
+        }
+
         public static float Angle(Vector3 from, Vector3 to)
         {
             var angle = Vector3.SignedAngle(to, from, Vector3.up);
@@ -14,19 +25,16 @@ namespace Acknex.Interfaces
             return angle;
         }
 
-        public static float ConvertUnityToAcknexAngle(float unityAngle)
+        public static float ConvertUnityToAcknexAngle(float degrees)
         {
-            return Mathf.Repeat(Mathf.Deg2Rad * (unityAngle + 180f), 360f);
+            return Mathf.Repeat(Mathf.Rad2Deg * degrees - 90f, 360f);
+            //return Mathf.Repeat(Mathf.Deg2Rad * (unityAngle + 180f), 360f);
         }
         
-        public static float ConvertAcknexToUnityAngle(float acknexAngle)
+        public static float ConvertAcknexToUnityAngle(float radians)
         {
-            return Mathf.Repeat(Mathf.Rad2Deg * acknexAngle - 180f, 360f);
-        }
-
-        public static float ConvertAcknexToUnityAnglePerTick(float acknexAngle)
-        {
-            return Mathf.Repeat(Mathf.Rad2Deg * (acknexAngle * TimeUtils.TimeToTicks(Time.deltaTime)) - 180f, 360f);
+            return Mathf.Repeat(Mathf.Rad2Deg * radians + 90f, 360f);
+            //return Mathf.Repeat(Mathf.Rad2Deg * acknexAngle - 180f, 360f);
         }
 
         public static Vector3 To2D(Vector3 position)
@@ -38,6 +46,7 @@ namespace Acknex.Interfaces
         {
             return new Vector3(x, 0f, y);
         }
+
 
         //public static Vector3 ConvertVector(Vector3 vector)
         //{

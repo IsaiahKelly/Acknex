@@ -6,6 +6,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using Acknex.Interfaces;
 using LibTessDotNet;
+using Tests;
 using UnityEngine;
 using UnityEngine.UI;
 using Resolution = Acknex.Interfaces.Resolution;
@@ -31,7 +32,7 @@ namespace Acknex
 
 
         private Resolution _resolution = Resolution.Res320x200;
-        private IAcknexRuntime _runtime;
+        private Game _game;
 
         public Resolution GameResolution
         {
@@ -141,6 +142,7 @@ namespace Acknex
                         action.AcknexObject.Type = type;
                         action.AcknexObject.SetString("NAME", name);
                         ActionsByName.Add(name, action);
+                        AcknexObject.SetAcknexObject(name, action.AcknexObject);
                         return action.AcknexObject;
                     }
                 case ObjectType.Actor:
@@ -156,6 +158,7 @@ namespace Acknex
                         actor.AcknexObject.SetFloat("SCALE_Y", 16);
                         actor.Disable();
                         ActorsByName.Add(name, actor);
+                        AcknexObject.SetAcknexObject(name, actor.AcknexObject);
                         return actor.AcknexObject;
                     }
                 case ObjectType.Bitmap:
@@ -168,6 +171,7 @@ namespace Acknex
                         bitmap.AcknexObject.Type = type;
                         bitmap.AcknexObject.SetString("NAME", name);
                         BitmapsByName.Add(name, bitmap);
+                        AcknexObject.SetAcknexObject(name, bitmap.AcknexObject);
                         return bitmap.AcknexObject;
                     }
                 case ObjectType.Region:
@@ -181,6 +185,7 @@ namespace Acknex
                         region.AcknexObject.SetString("NAME", name);
                         region.Disable();
                         RegionsByName.Add(name, region);
+                        AcknexObject.SetAcknexObject(name, region.AcknexObject);
                         if (WMPContainsRegionsByName)
                         {
                             RegionsByIndex.Add(region);
@@ -193,9 +198,10 @@ namespace Acknex
                         {
                             return skill.AcknexObject;
                         }
-                        skill = CreateSkill(name, 0, 0, 0);
+                        skill = CreateSkill(name, 0, Mathf.NegativeInfinity, Mathf.Infinity);
                         skill.AcknexObject.Type = type;
                         skill.AcknexObject.SetString("NAME", name);
+                        AcknexObject.SetAcknexObject(name, skill.AcknexObject);
                         return skill.AcknexObject;
                     }
                 case ObjectType.Synonym:
@@ -207,6 +213,7 @@ namespace Acknex
                         synonym = CreateSynonym(name);
                         synonym.AcknexObject.Type = type;
                         synonym.AcknexObject.SetString("NAME", name);
+                        AcknexObject.SetAcknexObject(name, synonym.AcknexObject);
                         return synonym.AcknexObject;
                     }
                 case ObjectType.Texture:
@@ -219,6 +226,7 @@ namespace Acknex
                         texture.AcknexObject.Type = type;
                         texture.AcknexObject.SetString("NAME", name);
                         TexturesByName.Add(name, texture);
+                        AcknexObject.SetAcknexObject(name, texture.AcknexObject);
                         return texture.AcknexObject;
                     }
                 case ObjectType.Thing:
@@ -234,6 +242,7 @@ namespace Acknex
                         thing.AcknexObject.SetFloat("SCALE_Y", 16);
                         thing.Disable();
                         ThingsByName.Add(name, thing);
+                        AcknexObject.SetAcknexObject(name, thing.AcknexObject);
                         return thing.AcknexObject;
                     }
                 case ObjectType.Wall:
@@ -247,6 +256,7 @@ namespace Acknex
                         wall.AcknexObject.SetString("NAME", name);
                         wall.Disable();
                         WallsByName.Add(name, wall);
+                        AcknexObject.SetAcknexObject(name, wall.AcknexObject);
                         return wall.AcknexObject;
                     }
                 case ObjectType.Way:
@@ -260,6 +270,7 @@ namespace Acknex
                         way.AcknexObject.SetString("NAME", name);
                         way.Disable();
                         WaysByName.Add(name, way);
+                        AcknexObject.SetAcknexObject(name, way.AcknexObject);
                         return way.AcknexObject;
                     }
                 case ObjectType.Overlay:
@@ -273,6 +284,7 @@ namespace Acknex
                         overlay.AcknexObject.SetString("NAME", name);
                         overlay.Disable();
                         OverlaysByName.Add(name, overlay);
+                        AcknexObject.SetAcknexObject(name, overlay.AcknexObject);
                         return overlay.AcknexObject;
                     }
                 case ObjectType.Flic:
@@ -285,6 +297,7 @@ namespace Acknex
                         flic.AcknexObject.Type = type;
                         flic.AcknexObject.SetString("NAME", name);
                         FlicsByName.Add(name, flic);
+                        AcknexObject.SetAcknexObject(name, flic.AcknexObject);
                         return flic.AcknexObject;
                     }
                 case ObjectType.Text:
@@ -296,6 +309,7 @@ namespace Acknex
                         var text = new Text();
                         text.AcknexObject.Type = type;
                         text.AcknexObject.SetString("NAME", name);
+                        AcknexObject.SetAcknexObject(name, text.AcknexObject);
                         TextsByName.Add(name, text);
                         return text.AcknexObject;
                     }
@@ -309,6 +323,7 @@ namespace Acknex
                         font.AcknexObject.Type = type;
                         font.AcknexObject.SetString("NAME", name);
                         FontsByName.Add(name, font);
+                        AcknexObject.SetAcknexObject(name, font.AcknexObject);
                         return font.AcknexObject;
                     }
                 case ObjectType.Sound:
@@ -321,6 +336,7 @@ namespace Acknex
                         sound.AcknexObject.Type = type;
                         sound.AcknexObject.SetString("NAME", name);
                         SoundsByName.Add(name, sound);
+                        AcknexObject.SetAcknexObject(name, sound.AcknexObject);
                         return sound.AcknexObject;
                     }
                 case ObjectType.Model:
@@ -334,6 +350,7 @@ namespace Acknex
                         model.AcknexObject.SetString("NAME", name);
                         model.Disable();
                         ModelsByName.Add(name, model);
+                        AcknexObject.SetAcknexObject(name, model.AcknexObject);
                         return model.AcknexObject;
                     }
                 case ObjectType.Palette:
@@ -346,6 +363,7 @@ namespace Acknex
                         palette.AcknexObject.Type = type;
                         palette.AcknexObject.SetString("NAME", name);
                         PalettesByName.Add(name, palette);
+                        AcknexObject.SetAcknexObject(name, palette.AcknexObject);
                         return palette.AcknexObject;
                     }
                 case ObjectType.Panel:
@@ -359,6 +377,7 @@ namespace Acknex
                         panel.AcknexObject.SetString("NAME", name);
                         panel.Disable();
                         PanelsByName.Add(name, panel);
+                        AcknexObject.SetAcknexObject(name, panel.AcknexObject);
                         return panel.AcknexObject;
                     }
                 case ObjectType.World:
@@ -410,23 +429,31 @@ namespace Acknex
         public void PostSetupWMP()
         {
             BuildRegionsAndWalls(_regionWalls, _contourVertices);
-            var sourceStringBuilder = new StringBuilder();
-            sourceStringBuilder.AppendLine("using Acknex;");
-            sourceStringBuilder.AppendLine("using Acknex.Interfaces;");
-            sourceStringBuilder.AppendLine("using System.Collections;");
-            sourceStringBuilder.AppendLine("using UnityEngine;");
-            sourceStringBuilder.AppendLine("public class Game {");
-            foreach (var action in ActionsByName)
+            if (!DisableEvents)
             {
-                action.Value.WriteHeader();
-                action.Value.ParseAllStatements(_textParser);
-                action.Value.WriteFooter();
-                sourceStringBuilder.Append(action.Value.CodeStringBuilder);
+                var sourceStringBuilder = new StringBuilder();
+                sourceStringBuilder.AppendLine("using Acknex.Interfaces;");
+                sourceStringBuilder.AppendLine("using System.Collections;");
+                sourceStringBuilder.AppendLine("using UnityEngine;");
+                sourceStringBuilder.AppendLine("namespace Tests {");
+                sourceStringBuilder.AppendLine("    public class Game {");
+                sourceStringBuilder.AppendLine("        private IAcknexWorld _world;");
+                sourceStringBuilder.AppendLine("        public void SetWorld(IAcknexWorld world) {");
+                sourceStringBuilder.AppendLine("            _world = world;");
+                sourceStringBuilder.AppendLine("        }");
+                foreach (var action in ActionsByName)
+                {
+                    action.Value.WriteHeader();
+                    action.Value.ParseAllStatements(_textParser);
+                    action.Value.WriteFooter();
+                    sourceStringBuilder.Append(action.Value.CodeStringBuilder);
+                }
+                sourceStringBuilder.AppendLine("    }");
+                sourceStringBuilder.AppendLine("}");
+                File.WriteAllText(SourceGenerationPath, sourceStringBuilder.ToString());
+                _game = new Game();
+                _game.SetWorld(this);
             }
-            sourceStringBuilder.AppendLine("}");
-            var sourcePath = Application.temporaryCachePath + "/source.cs";
-            File.WriteAllText(sourcePath, sourceStringBuilder.ToString());
-            Process.Start(sourcePath);
         }
 
         public void AddVertex(float x, float y, float z)
@@ -546,10 +573,6 @@ namespace Acknex
             return 0;
         }
 
-        public void SetRuntime(IAcknexRuntime runtime)
-        {
-            _runtime = runtime;
-        }
 
         public void WaitForCycles(ActionIdentifier identifier, int cycles)
         {

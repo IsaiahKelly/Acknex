@@ -222,8 +222,8 @@ namespace Acknex
                 newRegion.name = region.Below.name;
                 var acknexObject = ((AcknexObject)newRegion.AcknexObject);
                 var belowAcknexObject = ((AcknexObject)region.Below.AcknexObject);
-                acknexObject.ObjectProperties = new Dictionary<string, object>(belowAcknexObject.ObjectProperties);
-                acknexObject.NumberProperties = new Dictionary<string, float>(belowAcknexObject.NumberProperties);
+                acknexObject.ObjectProperties = new SortedDictionary<string, object>(belowAcknexObject.ObjectProperties);
+                acknexObject.NumberProperties = new SortedDictionary<string, float>(belowAcknexObject.NumberProperties);
                 acknexObject.Type = belowAcknexObject.Type;
                 region.Below = newRegion;
                 BuildRegionFloorAndCeiling(newRegion, contouredRegion);

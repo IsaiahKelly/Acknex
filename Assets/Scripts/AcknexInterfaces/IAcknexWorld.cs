@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace Acknex.Interfaces
 {
@@ -96,11 +97,6 @@ namespace Acknex.Interfaces
         int GetRegionIndex(string value);
 
         /// <summary>
-        /// Sets the scripting runtime to be used by the engine.
-        /// </summary>
-        void SetRuntime(IAcknexRuntime runtime);
-
-        /// <summary>
         /// Halts the given task `identifier` for the given number of cycles.
         /// </summary>
         void WaitForCycles(ActionIdentifier identifier, int cycles);
@@ -150,5 +146,10 @@ namespace Acknex.Interfaces
         /// Stores the keyboard input into the given string object.
         /// </summary>
         void ReadInkey(string stringName);
+
+        /// <summary>
+        /// Calls the IEnumerator from the given action.
+        /// </summary>
+        IEnumerator CallSynonymAction(string actionName);
     }
 }

@@ -14,16 +14,24 @@ namespace Acknex
 
         private CharacterController _characterController;
 
+        private void Start()
+        {
+            var playerX = World.Instance.GetSkillValue("PLAYER_X");
+            var playerY = World.Instance.GetSkillValue("PLAYER_Y");
+            var playerZ = World.Instance.GetSkillValue("PLAYER_Z");
+            //todo: this block should only run on carefully flagged
+            StickToTheGround(playerX, playerY, ref playerZ);
+            World.Instance.UpdateSkillValue("PLAYER_X", playerX);
+            World.Instance.UpdateSkillValue("PLAYER_Y", playerY);
+            World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
+        }
+
 
         public void UpdateObject()
         {
             var playerX = World.Instance.GetSkillValue("PLAYER_X");
             var playerY = World.Instance.GetSkillValue("PLAYER_Y");
             var playerZ = World.Instance.GetSkillValue("PLAYER_Z");
-
-            //todo: this block should only run on carefully flagged
-            StickToTheGround(playerX, playerY, ref playerZ);
-
             var playerAngle = World.Instance.GetSkillValue("PLAYER_ANGLE");
             var unityPlayerAngle = AngleUtils.ConvertAcknexToUnityAngle(playerAngle);
             _characterController.transform.rotation = Quaternion.Euler(0f, unityPlayerAngle, 0f);
@@ -40,23 +48,22 @@ namespace Acknex
                 playerRotation * Vector3.up * World.Instance.GetSkillValue("PLAYER_VZ") +
                 playerRotation * Vector3.forward * World.Instance.GetSkillValue("PLAYER_VY") +
                 playerRotation * Vector3.right * World.Instance.GetSkillValue("PLAYER_VX");
-            var moveAngle = playerMove.magnitude > 0f ? AngleUtils.ConvertUnityToAcknexAngle(Quaternion.LookRotation(playerMove).eulerAngles.y) : 0f;
-            var deltaAngle = moveAngle - World.Instance.GetSkillValue("MOVE_ANGLE");
-            World.Instance.UpdateSkillValue("MOVE_ANGLE", moveAngle);
-            World.Instance.UpdateSkillValue("DELTA_ANGLE", deltaAngle);
-            //_characterController.Move(playerMove * TimeUtils.TicksToTime(1));
-            //transform.Rotate(Vector3.up, AngleUtils.ConvertAcknexToUnityAnglePerTick(World.Instance.GetSkillValue("PLAYER_VROT")), Space.Self);
-            //playerAngle = AngleUtils.ConvertUnityToAcknexAngle(transform.eulerAngles.y);
+            //var moveAngle = playerMove.magnitude > 0f ? AngleUtils.ConvertUnityToAcknexAngle(Quaternion.LookRotation(playerMove).eulerAngles.y) : 0f;
+            //var deltaAngle = moveAngle - World.Instance.GetSkillValue("MOVE_ANGLE");
+            //World.Instance.UpdateSkillValue("MOVE_ANGLE", moveAngle);
+            //World.Instance.UpdateSkillValue("DELTA_ANGLE", deltaAngle);
+            _characterController.Move(playerMove * TimeUtils.TicksToTime(1));
+            playerAngle += TimeUtils.TimeToTicks(Time.deltaTime) * World.Instance.GetSkillValue("PLAYER_VROT");
             World.Instance.UpdateSkillValue("LAST_PLAYER_X", World.Instance.GetSkillValue("PLAYER_X"));
             World.Instance.UpdateSkillValue("LAST_PLAYER_Y", World.Instance.GetSkillValue("PLAYER_Y"));
             World.Instance.UpdateSkillValue("LAST_PLAYER_Z", World.Instance.GetSkillValue("PLAYER_Z"));
-            World.Instance.UpdateSkillValue("PLAYER_SPEED", _characterController.velocity.magnitude);
+            //World.Instance.UpdateSkillValue("PLAYER_SPEED", _characterController.velocity.magnitude);
             World.Instance.UpdateSkillValue("PLAYER_X", _characterController.transform.position.x);
             World.Instance.UpdateSkillValue("PLAYER_Y", _characterController.transform.position.z);
             World.Instance.UpdateSkillValue("PLAYER_Z", _characterController.transform.position.y);
-            World.Instance.UpdateSkillValue("PLAYER_SIN", Mathf.Sin(playerAngle));
-            World.Instance.UpdateSkillValue("PLAYER_COS", Mathf.Cos(playerAngle));
-            //World.Instance.UpdateSkillValue("PLAYER_ANGLE", playerAngle);
+            World.Instance.UpdateSkillValue("PLAYER_SIN", AngleUtils.Sin(playerAngle));
+            World.Instance.UpdateSkillValue("PLAYER_COS", AngleUtils.Cos(playerAngle));
+            World.Instance.UpdateSkillValue("PLAYER_ANGLE", playerAngle);
         }
 
         private void StickToTheGround(float playerX, float playerY, ref float playerZ)

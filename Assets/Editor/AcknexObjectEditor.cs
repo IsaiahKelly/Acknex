@@ -66,6 +66,7 @@ public class AcknexObjectEditor : Editor
                     EditorGUILayout.EndFoldoutHeaderGroup();
                 }
             }
+            Repaint();
         }
     }
 }
@@ -186,6 +187,7 @@ public class WorldEditor : Editor
         //    EditorGUILayout.EndHorizontal();
         //}
         EditorGUILayout.EndFoldoutHeaderGroup();
+        Repaint();
     }
 }
 

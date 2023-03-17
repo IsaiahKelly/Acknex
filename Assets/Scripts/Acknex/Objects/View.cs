@@ -26,7 +26,7 @@ namespace Acknex
                 var transformLocalPosition = transform.localPosition;
                 transformLocalPosition.y = World.Instance.GetSkillValue("PLAYER_SIZE");
                 transform.localPosition = transformLocalPosition;
-                Shader.SetGlobalFloat("_CAMERA_PITCH",  Mathf.DeltaAngle(CameraExtensions.GetLastActiveCamera().transform.localEulerAngles.x, 0f));
+                //Shader.SetGlobalFloat("_CAMERA_PITCH",  Mathf.DeltaAngle(CameraExtensions.GetLastActiveCamera().transform.localEulerAngles.x, 0f));
             }
             var ray = _camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hitInfo))
