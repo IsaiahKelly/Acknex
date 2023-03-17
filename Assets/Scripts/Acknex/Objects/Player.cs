@@ -41,7 +41,7 @@ namespace Acknex
             var playerSize = World.Instance.GetSkillValue("PLAYER_SIZE");
             _characterController.height = playerSize;
             var characterControllerCenter = _characterController.center;
-            characterControllerCenter.y = playerSize * 0.5f;
+            characterControllerCenter.y = _characterController.height * 0.5f;
             _characterController.center = characterControllerCenter;
             var playerMove = new Vector3(World.Instance.GetSkillValue("PLAYER_VX"), World.Instance.GetSkillValue("PLAYER_VZ"), World.Instance.GetSkillValue("PLAYER_VY"));
             //var moveAngle = playerMove.magnitude > 0f ? AngleUtils.ConvertUnityToAcknexAngle(Quaternion.LookRotation(playerMove).eulerAngles.y) : 0f;
@@ -61,7 +61,7 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_X", playerX);
             World.Instance.UpdateSkillValue("PLAYER_Y", playerY);
             World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
-            World.Instance.UpdateSkillValue("PLAYER_SIN", AngleUtils.Sin(playerAngle));
+            World.Instance.UpdateSkillValue("PLAYER_SIN", -AngleUtils.Sin(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_COS", AngleUtils.Cos(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_ANGLE", playerAngle);
             StickToTheGround(playerX, playerY, ref playerZ);

@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Acknex.Interfaces;
+using CodiceApp.EventTracking.Plastic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Acknex
 {
@@ -44,51 +47,84 @@ namespace Acknex
             }
         }
 
+        private static string[] _tickEvents = new string[]
+        {
+            "EACH_TICK.1",
+            "EACH_TICK.2",
+            "EACH_TICK.3",
+            "EACH_TICK.4",
+            "EACH_TICK.5",
+            "EACH_TICK.6",
+            "EACH_TICK.7",
+            "EACH_TICK.8",
+            "EACH_TICK.9",
+            "EACH_TICK.10",
+            "EACH_TICK.11",
+            "EACH_TICK.12",
+            "EACH_TICK.13",
+            "EACH_TICK.14",
+            "EACH_TICK.15",
+            "EACH_TICK.16",
+        };
+
+        private static string[] _secEvents = new string[]
+ {
+            "EACH_SEC.1",
+            "EACH_SEC.2",
+            "EACH_SEC.3",
+            "EACH_SEC.4",
+            "EACH_SEC.5",
+            "EACH_SEC.6",
+            "EACH_SEC.7",
+            "EACH_SEC.8",
+            "EACH_SEC.9",
+            "EACH_SEC.10",
+            "EACH_SEC.11",
+            "EACH_SEC.12",
+            "EACH_SEC.13",
+            "EACH_SEC.14",
+            "EACH_SEC.15",
+            "EACH_SEC.16",
+ };
+
         private IEnumerator TriggerTickEvents(IAcknexObject acknexObject)
         {
             while (true)
             {
-                yield return CallActionSlot(acknexObject, "EACH_TICK.1");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.2");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.3");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.4");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.5");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.6");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.7");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.8");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.9");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.10");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.11");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.12");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.13");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.14");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.15");
-                yield return CallActionSlot(acknexObject, "EACH_TICK.16");
-                yield return WaitForTick;
+                var usedSlot = false;
+                foreach (var tickEvent in _tickEvents)
+                {
+                    if (AcknexObject.TryGetString(tickEvent, out var action) && action != null)
+                    {
+                        usedSlot = true;
+                        yield return CallAction(acknexObject, action);
+                    }
+                }
+                if (!usedSlot)
+                {
+                    yield return WaitForTick;
+                }
             }
         }
+
 
         private IEnumerator TriggerSecEvents(IAcknexObject acknexObject)
         {
             while (true)
             {
-                yield return CallActionSlot(acknexObject, "EACH_SEC.1");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.2");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.3");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.4");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.5");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.6");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.7");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.8");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.9");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.10");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.11");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.12");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.13");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.14");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.15");
-                yield return CallActionSlot(acknexObject, "EACH_SEC.16");
-                yield return WaitForSecond;
+                var usedSlot = false;
+                foreach (var secEvent in _secEvents)
+                {
+                    if (AcknexObject.TryGetString(secEvent, out var action) && action != null)
+                    {
+                        usedSlot = true; 
+                        yield return CallAction(acknexObject, action);
+                    }
+                }
+                if (!usedSlot)
+                {
+                    yield return WaitForSecond;
+                }
             }
         }
 
@@ -181,14 +217,6 @@ namespace Acknex
             TriggerEventConditional(AcknexObject, "IF_APO", Input.GetKeyDown(KeyCode.Quote));
             TriggerEventConditional(AcknexObject, "IF_MINUS", Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.KeypadMinus));
             TriggerEventConditional(AcknexObject, "IF_PLUS", Input.GetKeyDown(KeyCode.Plus) || Input.GetKeyDown(KeyCode.KeypadPlus));
-        }
-
-        public IEnumerator CallActionSlot(IAcknexObject acknexObject, string eventName)
-        {
-            if (AcknexObject.TryGetString(eventName, out var action))
-            {
-                yield return CallAction(acknexObject, action);
-            }
         }
     }
 }

@@ -246,7 +246,7 @@ namespace Acknex
             UpdateSkillValue("TICKS", TimeUtils.TimeToTicks(Time.time));
             UpdateSkillValue("SECS", (int)Time.time);
             //todo: how to calc timecorr?
-            var timeCorr =  TimeUtils.OneTick / TimeUtils.TimeToTicks(Time.deltaTime);
+            var timeCorr = 1f;// TimeUtils.OneTick / TimeUtils.TimeToTicks(Time.deltaTime);
             UpdateSkillValue("TIME_CORR", timeCorr);
             UpdateSkillValue("TIME_FAC", 1f - timeCorr);
             UpdateSkillValue("FORCE_AHEAD", Input.GetAxis("Vertical"));
@@ -254,6 +254,8 @@ namespace Acknex
             UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X"));
             UpdateSkillValue("FORCE_TILT", Input.GetAxis("Mouse Y"));
             UpdateSkillValue("FORCE_UP", Input.GetButton("Jump") ? 1 : Input.GetButton("Crouch") ? -1 : 0);
+
+            //todo: WALK_PERIOD, WALK_TIME, WAVE_PERIOD, WALK, WAVE
 
             UpdateSkillValue("RANDOM", Random.value);
             _lastMousePosition = mousePosition;
