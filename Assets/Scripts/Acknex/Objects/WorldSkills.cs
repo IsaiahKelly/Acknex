@@ -140,11 +140,11 @@ namespace Acknex
             CreateSkill("JOY_SENSE", 1f, Mathf.NegativeInfinity, Mathf.Infinity); //todo
 
             CreateSkill("PLAYER_HGT", 0, Mathf.NegativeInfinity, Mathf.Infinity);
-            CreateSkill("FORCE_AHEAD", 0, Mathf.NegativeInfinity, Mathf.Infinity);
-            CreateSkill("FORCE_STRAFE", 0, Mathf.NegativeInfinity, Mathf.Infinity);
-            CreateSkill("FORCE_ROT", 0, Mathf.NegativeInfinity, Mathf.Infinity);
-            CreateSkill("FORCE_TILT", 0, Mathf.NegativeInfinity, Mathf.Infinity);
-            CreateSkill("FORCE_UP", 0, Mathf.NegativeInfinity, Mathf.Infinity);
+            CreateSkill("FORCE_AHEAD", 0, -1f, 1f);
+            CreateSkill("FORCE_STRAFE", 0, -1f, 1f);
+            CreateSkill("FORCE_ROT", 0, -1f, 1f);
+            CreateSkill("FORCE_TILT", 0, -1f, 1f);
+            CreateSkill("FORCE_UP", 0, -1f, 1f);
 
             //CreateSkill("KEY_ANYKEY", Input.anyKeyDown);
             CreateSkill("KEY_0", 0, 0, 1);
@@ -227,6 +227,8 @@ namespace Acknex
         }
 
         private Vector3 _lastMousePosition;
+        private float _tilt;
+
         private void UpdateSkills()
         {
             var mousePosition = Input.mousePosition;
@@ -250,9 +252,11 @@ namespace Acknex
             UpdateSkillValue("TIME_CORR", timeCorr);
             UpdateSkillValue("TIME_FAC", 1f - timeCorr);
             UpdateSkillValue("FORCE_AHEAD", Input.GetAxis("Vertical"));
-            UpdateSkillValue("FORCE_STRAFE", Input.GetAxis("Horizontal"));
+            //todo: is it inverted in the original?
+            UpdateSkillValue("FORCE_STRAFE", -Input.GetAxis("Horizontal"));
             UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X"));
-            UpdateSkillValue("FORCE_TILT", Input.GetAxis("Mouse Y"));
+            _tilt = Mathf.Clamp(_tilt - Input.GetAxis("Mouse Y"), -90f, 90f);
+            UpdateSkillValue("FORCE_TILT", _tilt);
             UpdateSkillValue("FORCE_UP", Input.GetButton("Jump") ? 1 : Input.GetButton("Crouch") ? -1 : 0);
 
             //todo: WALK_PERIOD, WALK_TIME, WAVE_PERIOD, WALK, WAVE
