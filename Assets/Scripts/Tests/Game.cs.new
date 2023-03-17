@@ -150,7 +150,7 @@ var SECRET_DOOR_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"S
 var temp_10 =SECRET_DOOR_9.GetFloat("CEIL_HGT");
 if (temp_10 < 5.1f)
 {
-//Unknown keyword: PLAY_SOUND
+_world.PlaySound("STONEDOOR",0.7f);
 }
 yield break;
 }
@@ -258,12 +258,12 @@ yield break;
 yield break;
 }
 public IEnumerator DIVE_UP(){
-//Unknown keyword: PLAY_SOUND
+_world.PlaySound("AUFTAUCH",0.8f);
 yield return RESET_BLUE();
 yield break;
 }
 public IEnumerator ENTER_WATER(){
-//Unknown keyword: PLAY_SOUND
+_world.PlaySound("WASSERNORM",0.8f);
 yield return SET_SWIMMING();
 yield break;
 }
@@ -536,7 +536,7 @@ var GEHEIMTUER_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"GE
 var temp_10 =GEHEIMTUER_9.GetFloat("CEIL_HGT");
 if (temp_10 < 2.7f)
 {
-//Unknown keyword: PLAY_SOUND
+_world.PlaySound("STONEDOOR",0.5f);
 }
 yield break;
 }
@@ -577,28 +577,28 @@ var RUMPELKAMMERSOCKEL_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Regi
 var temp_3 =RUMPELKAMMERSOCKEL_2.GetFloat("FLOOR_HGT");
 var RUMPELKAMMERSOCKEL_5 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
 RUMPELKAMMERSOCKEL_5.SetFloat("FLOOR_HGT",temp_3 + -0.3f);
-//Unknown keyword: PLAY_SOUND
-var PLAYER_Z_7 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
-var PLAYER_Z_7_val = PLAYER_Z_7.GetFloat("VAL");
+_world.PlaySound("STONELIFT",0.3f);
 var PLAYER_Z_8 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
-PLAYER_Z_8.SetFloat("VAL",PLAYER_Z_7_val + -0.3f);
-var RENDER_MODE_10 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
-RENDER_MODE_10.SetFloat("VAL",1f);
-var RUMPELKAMMERSOCKEL_13 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-var temp_14 =RUMPELKAMMERSOCKEL_13.GetFloat("FLOOR_HGT");
-if (temp_14 > 0f)
+var PLAYER_Z_8_val = PLAYER_Z_8.GetFloat("VAL");
+var PLAYER_Z_9 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
+PLAYER_Z_9.SetFloat("VAL",PLAYER_Z_8_val + -0.3f);
+var RENDER_MODE_11 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
+RENDER_MODE_11.SetFloat("VAL",1f);
+var RUMPELKAMMERSOCKEL_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+var temp_15 =RUMPELKAMMERSOCKEL_14.GetFloat("FLOOR_HGT");
+if (temp_15 > 0f)
 {
 yield break;
 }
-var RUMPELKAMMERSOCKEL_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-RUMPELKAMMERSOCKEL_17.SetFloat("FLOOR_HGT",0f);
-var RUMPELKAMMERSOCKEL_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-RUMPELKAMMERSOCKEL_20.SetString("EACH_TICK",null);
-var ARSCHTRITT_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ARSCHTRITT");
-var RUMPELKAMMERSOCKEL_23 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-RUMPELKAMMERSOCKEL_23.SetString("IF_ENTER",ARSCHTRITT_21.GetString("NAME"));
-var DUNKELGANGSPERRE_26 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"DUNKELGANGSPERRE");
-DUNKELGANGSPERRE_26.SetFloat("CEIL_HGT",6f);
+var RUMPELKAMMERSOCKEL_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+RUMPELKAMMERSOCKEL_18.SetFloat("FLOOR_HGT",0f);
+var RUMPELKAMMERSOCKEL_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+RUMPELKAMMERSOCKEL_21.SetString("EACH_TICK",null);
+var ARSCHTRITT_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ARSCHTRITT");
+var RUMPELKAMMERSOCKEL_24 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+RUMPELKAMMERSOCKEL_24.SetString("IF_ENTER",ARSCHTRITT_22.GetString("NAME"));
+var DUNKELGANGSPERRE_27 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"DUNKELGANGSPERRE");
+DUNKELGANGSPERRE_27.SetFloat("CEIL_HGT",6f);
 yield break;
 }
 public IEnumerator LIFT_UP(){
@@ -612,20 +612,20 @@ var PLAYER_Z_8 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
 PLAYER_Z_8.SetFloat("VAL",PLAYER_Z_7_val + 0.3f);
 var RENDER_MODE_10 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
 RENDER_MODE_10.SetFloat("VAL",1f);
-//Unknown keyword: PLAY_SOUND
-var RUMPELKAMMERSOCKEL_13 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-var temp_14 =RUMPELKAMMERSOCKEL_13.GetFloat("FLOOR_HGT");
-if (temp_14 < 15.5f)
+_world.PlaySound("STONELIFT",0.3f);
+var RUMPELKAMMERSOCKEL_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+var temp_15 =RUMPELKAMMERSOCKEL_14.GetFloat("FLOOR_HGT");
+if (temp_15 < 15.5f)
 {
 yield break;
 }
-var RUMPELKAMMERSOCKEL_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-RUMPELKAMMERSOCKEL_17.SetFloat("FLOOR_HGT",15.5f);
-var RUMPELKAMMERSOCKEL_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-RUMPELKAMMERSOCKEL_20.SetString("EACH_TICK",null);
-var FALLTUER_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"FALLTUER");
-var RUMPELKAMMERSOCKEL_23 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
-RUMPELKAMMERSOCKEL_23.SetString("IF_ENTER",FALLTUER_21.GetString("NAME"));
+var RUMPELKAMMERSOCKEL_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+RUMPELKAMMERSOCKEL_18.SetFloat("FLOOR_HGT",15.5f);
+var RUMPELKAMMERSOCKEL_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+RUMPELKAMMERSOCKEL_21.SetString("EACH_TICK",null);
+var FALLTUER_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"FALLTUER");
+var RUMPELKAMMERSOCKEL_24 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Region,*/"RUMPELKAMMERSOCKEL");
+RUMPELKAMMERSOCKEL_24.SetString("IF_ENTER",FALLTUER_22.GetString("NAME"));
 yield break;
 }
 public IEnumerator LOAD_GAME(){
@@ -766,61 +766,61 @@ yield break;
 yield break;
 }
 public IEnumerator MENU_DOWN(){
-//Unknown keyword: PLAY_SOUND
+_world.PlaySound("KLICK",0.5f);
 yield return SET_MENU();
-var MENU_POS_1 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_1_val = MENU_POS_1.GetFloat("VAL");
 var MENU_POS_2 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-MENU_POS_2.SetFloat("VAL",MENU_POS_1_val + 1f);
+var MENU_POS_2_val = MENU_POS_2.GetFloat("VAL");
+var MENU_POS_3 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+MENU_POS_3.SetFloat("VAL",MENU_POS_2_val + 1f);
 yield break;
 }
 public IEnumerator MENU_EXEC(){
-//Unknown keyword: PLAY_SOUND
-var MENU_POS_0 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_0_val = MENU_POS_0.GetFloat("VAL");
-if (MENU_POS_0_val > MENU_POS_0.GetFloat("MAX"))
+_world.PlaySound("KLICK",0.5f);
+var MENU_POS_1 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_1_val = MENU_POS_1.GetFloat("VAL");
+if (MENU_POS_1_val > MENU_POS_1.GetFloat("MAX"))
 {
 yield return CLEAR_MENU();
 yield break;
 }
-var MENU_POS_2 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_2_val = MENU_POS_2.GetFloat("VAL");
-if (MENU_POS_2_val == 1f)
+var MENU_POS_3 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_3_val = MENU_POS_3.GetFloat("VAL");
+if (MENU_POS_3_val == 1f)
 {
 yield return _world.CallSynonymAction("MENU1_ACT");
 yield break;
 }
-var MENU_POS_4 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_4_val = MENU_POS_4.GetFloat("VAL");
-if (MENU_POS_4_val == 2f)
+var MENU_POS_5 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_5_val = MENU_POS_5.GetFloat("VAL");
+if (MENU_POS_5_val == 2f)
 {
 yield return _world.CallSynonymAction("MENU2_ACT");
 yield break;
 }
-var MENU_POS_6 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_6_val = MENU_POS_6.GetFloat("VAL");
-if (MENU_POS_6_val == 3f)
+var MENU_POS_7 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_7_val = MENU_POS_7.GetFloat("VAL");
+if (MENU_POS_7_val == 3f)
 {
 yield return _world.CallSynonymAction("MENU3_ACT");
 yield break;
 }
-var MENU_POS_8 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_8_val = MENU_POS_8.GetFloat("VAL");
-if (MENU_POS_8_val == 4f)
+var MENU_POS_9 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_9_val = MENU_POS_9.GetFloat("VAL");
+if (MENU_POS_9_val == 4f)
 {
 yield return _world.CallSynonymAction("MENU4_ACT");
 yield break;
 }
-var MENU_POS_10 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_10_val = MENU_POS_10.GetFloat("VAL");
-if (MENU_POS_10_val == 5f)
+var MENU_POS_11 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_11_val = MENU_POS_11.GetFloat("VAL");
+if (MENU_POS_11_val == 5f)
 {
 yield return _world.CallSynonymAction("MENU5_ACT");
 yield break;
 }
-var MENU_POS_12 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_12_val = MENU_POS_12.GetFloat("VAL");
-if (MENU_POS_12_val == 6f)
+var MENU_POS_13 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_13_val = MENU_POS_13.GetFloat("VAL");
+if (MENU_POS_13_val == 6f)
 {
 yield return _world.CallSynonymAction("MENU6_ACT");
 yield break;
@@ -828,12 +828,12 @@ yield break;
 yield break;
 }
 public IEnumerator MENU_UP(){
-//Unknown keyword: PLAY_SOUND
+_world.PlaySound("KLICK",0.5f);
 yield return SET_MENU();
-var MENU_POS_1 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_1_val = MENU_POS_1.GetFloat("VAL");
 var MENU_POS_2 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-MENU_POS_2.SetFloat("VAL",MENU_POS_1_val + -1f);
+var MENU_POS_2_val = MENU_POS_2.GetFloat("VAL");
+var MENU_POS_3 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+MENU_POS_3.SetFloat("VAL",MENU_POS_2_val + -1f);
 yield break;
 }
 public IEnumerator MOVE_ME(){
@@ -2541,12 +2541,12 @@ FPS_0.SetFloat("VAL",0.9f*FPS_3_val+0.1f*TIME_FAC_7_val);
 yield break;
 }
 public IEnumerator VRDEMO_START(){
-_world.PlaySong("DEMOSONG",1);
+_world.PlaySong("DEMOSONG",1f);
 yield return SET_WALKING();
-var MY_SIZE_1 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
-MY_SIZE_1.SetFloat("VAL",5f);
-var DIVE_UP_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"DIVE_UP");
-_world.SetSynonymObject("SET_OVERWATER",DIVE_UP_2);
+var MY_SIZE_2 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
+MY_SIZE_2.SetFloat("VAL",5f);
+var DIVE_UP_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"DIVE_UP");
+_world.SetSynonymObject("SET_OVERWATER",DIVE_UP_3);
 yield break;
 }
 public IEnumerator WAIT_YESNO(){

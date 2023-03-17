@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Acknex.Interfaces;
+using AudioSynthesis.Synthesis;
 using Unity.Plastic.Newtonsoft.Json.Linq;
 using UnityEngine;
 
@@ -247,7 +248,24 @@ namespace Acknex
                         case "PLAY_SONG":
                             {
                                 var volume = GetValue(tokens, textParser);
-                                CodeStringBuilder.Append("_world.PlaySong(\"").Append(labelOrStatement).Append("\",").Append(volume).AppendLine(");");
+                                var rhs = GetValueAndType(volume, "rhs");
+                                CodeStringBuilder.Append("_world.PlaySong(\"").Append(labelOrStatement).Append("\",").Append(rhs.property).AppendLine(");");
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
+                        case "PLAY_SOUND":
+                            {
+                                var volume = GetValue(tokens, textParser);
+                                var rhs = GetValueAndType(volume, "rhs");
+                                var next = textParser.GetNextToken(tokens);
+                                if (next != ";") {
+                                    CodeStringBuilder.Append("_world.PlaySound(\"").Append(labelOrStatement).Append("\",").Append(rhs.property).Append(",\"").Append(next).AppendLine("\");");
+                                } else
+                                {
+
+                                    CodeStringBuilder.Append("_world.PlaySound(\"").Append(labelOrStatement).Append("\",").Append(rhs.property).AppendLine(");");
+                                }
                                 HandleIfStack();
                                 ReadUntilSemiColon(tokens);
                                 break;

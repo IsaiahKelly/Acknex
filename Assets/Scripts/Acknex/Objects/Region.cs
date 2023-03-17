@@ -41,10 +41,17 @@ namespace Acknex
         private HashSet<IAcknexObject> _dive = new HashSet<IAcknexObject>();
 
         public ContouredRegion ContouredRegion;
+        private AudioSource _audioSource;
 
         private void Awake()
         {
             AcknexObject.Container = this;
+        }
+
+        private void Start()
+        {
+            //todo: move to middle
+            _audioSource = gameObject.AddComponent<AudioSource>();
         }
 
         private void Update()

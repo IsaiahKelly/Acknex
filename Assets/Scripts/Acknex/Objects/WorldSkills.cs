@@ -227,7 +227,6 @@ namespace Acknex
         }
 
         private Vector3 _lastMousePosition;
-        private float _tilt;
 
         private void UpdateSkills()
         {
@@ -255,8 +254,7 @@ namespace Acknex
             //todo: is it inverted in the original?
             UpdateSkillValue("FORCE_STRAFE", -Input.GetAxis("Horizontal"));
             UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X"));
-            _tilt = Mathf.Clamp(_tilt - Input.GetAxis("Mouse Y"), -90f, 90f);
-            UpdateSkillValue("FORCE_TILT", _tilt);
+            UpdateSkillValue("FORCE_TILT", GetSkillValue("FORCE_TILT") - (Input.GetAxis("Mouse Y") * 0.1f));
             UpdateSkillValue("FORCE_UP", Input.GetButton("Jump") ? 1 : Input.GetButton("Crouch") ? -1 : 0);
 
             //todo: WALK_PERIOD, WALK_TIME, WAVE_PERIOD, WALK, WAVE

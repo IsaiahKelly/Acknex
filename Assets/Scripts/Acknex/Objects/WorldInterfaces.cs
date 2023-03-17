@@ -563,6 +563,10 @@ namespace Acknex
             {
                 music.Setup();
             }
+            else if (acknexObject.Type == ObjectType.Sound && acknexObject.Container is Sound sound)
+            {
+                sound.Setup();
+            }
         }
 
         public void AddWayPoint(IAcknexObject way, float x, float y)
@@ -597,12 +601,24 @@ namespace Acknex
 
         public void PlaySong(string songName, float volume)
         {
-            if (MusicsByName.TryGetValue(songName, out var music))
+            if (MusicsByName.TryGetValue(songName, out var song))
             {
-                MidiPlayer.midiSource = music.Resource;
+                //todo: volume
+                MidiPlayer.midiSource = song.Resource;
                 MidiPlayer.LoadBank(new PatchBank(MidiPlayer.bankSource));
                 MidiPlayer.LoadMidi(new MidiFile(MidiPlayer.midiSource));
                 MidiPlayer.Play();
+            }
+        }
+
+        public AudioClip AudioClip;
+
+        public void PlaySound(string songName, float volume, string balance = null)
+        {
+            if (SoundsByName.TryGetValue(songName, out var sound))
+            {
+                AudioClip = sound.AudioClip;
+                AudioSource.PlayClipAtPoint(sound.AudioClip, View.Instance.transform.position, volume);
             }
         }
 

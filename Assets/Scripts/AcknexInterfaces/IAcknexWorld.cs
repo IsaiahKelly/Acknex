@@ -156,5 +156,10 @@ namespace Acknex.Interfaces
         /// Plays the given song.
         /// </summary>
         void PlaySong(string songName, float volume);
+
+        /// <summary>
+        /// Plays the given sound.
+        /// </summary>
+        void PlaySound(string songName, float volume, string balance = null);
     }
 }

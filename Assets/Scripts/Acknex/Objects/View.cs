@@ -1,4 +1,5 @@
 ﻿using Acknex.Interfaces;
+using System;
 using UnityEngine;
 
 namespace Acknex
@@ -27,7 +28,7 @@ namespace Acknex
                 transformLocalPosition.y = World.Instance.GetSkillValue("PLAYER_SIZE");
                 transform.localPosition = transformLocalPosition;
                 var transformLocalRotation = transform.localRotation;
-                transformLocalRotation.eulerAngles = new Vector3(World.Instance.GetSkillValue("PLAYER_TILT"), 0f, 0f);
+                transformLocalRotation.eulerAngles = new Vector3(World.Instance.GetSkillValue("PLAYER_TILT") * Mathf.Rad2Deg, 0f, 0f);
                 transform.localRotation = transformLocalRotation;
                 //Shader.SetGlobalFloat("_CAMERA_PITCH",  Mathf.DeltaAngle(CameraExtensions.GetLastActiveCamera().transform.localEulerAngles.x, 0f));
             }

@@ -78,6 +78,7 @@ namespace Acknex
         private RegionWalls _regionWalls;
 
         public MidiPlayer MidiPlayer;
+        public AudioSource AudioSource;
 
         private void Awake()
         {
@@ -87,6 +88,9 @@ namespace Acknex
         private void Start()
         {
             Instance = this;
+
+            AudioListener.volume = 10f;
+
             CreateDefaultSynonyms();
             CreateDefaultSkills();
             CreatePropertyDescriptors();

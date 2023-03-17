@@ -29,6 +29,7 @@ namespace Acknex
         private MeshRenderer _meshRenderer;
         private GameObject _thingGameObject;
         private CapsuleCollider _collider;
+        private AudioSource _audioSource;
 
         private GameObject _attached;
 
@@ -53,6 +54,7 @@ namespace Acknex
             collisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
             _collider = _thingGameObject.AddComponent<CapsuleCollider>();
             _collider.height = 1f;
+            _audioSource = gameObject.AddComponent<AudioSource>();
             StartCoroutine(Animate());
             StartCoroutine(TriggerTickEvents());
             StartCoroutine(TriggerSecEvents());

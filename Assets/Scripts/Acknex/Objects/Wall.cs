@@ -36,6 +36,7 @@ namespace Acknex
         public Matrix4x4 BottomUV;
 
         private Vector3 XAxis;
+        private AudioSource _audioSource;
 
         public Texture TextureObject => AcknexObject.GetString("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.GetString("TEXTURE"), out var textureObject) ? textureObject : null;
 
@@ -44,6 +45,12 @@ namespace Acknex
         private void Awake()
         {
             AcknexObject.Container = this;
+        }
+
+        private void Start()
+        {
+            //todo: move to middle
+            _audioSource = gameObject.AddComponent<AudioSource>();
         }
 
         private void Update()
