@@ -6,6 +6,7 @@ using LibTessDotNet;
 using UnityEditor;
 #endif
 using UnityEngine;
+using UnityMidi;
 using WdlEngine;
 
 namespace Acknex
@@ -61,6 +62,7 @@ namespace Acknex
         public readonly SortedDictionary<string, Font> FontsByName = new SortedDictionary<string, Font>();
         public readonly SortedDictionary<string, Palette> PalettesByName = new SortedDictionary<string, Palette>();
         public readonly SortedDictionary<string, Sound> SoundsByName = new SortedDictionary<string, Sound>();
+        public readonly SortedDictionary<string, Music> MusicsByName = new SortedDictionary<string, Music>();
         public readonly SortedDictionary<string, Model> ModelsByName = new SortedDictionary<string, Model>();
 
         public readonly List<string> Paths = new List<string>();
@@ -74,6 +76,8 @@ namespace Acknex
         private TextParser _textParser;
         private List<ContourVertex> _contourVertices;
         private RegionWalls _regionWalls;
+
+        public MidiPlayer MidiPlayer;
 
         private void Awake()
         {

@@ -2541,7 +2541,7 @@ FPS_0.SetFloat("VAL",0.9f*FPS_3_val+0.1f*TIME_FAC_7_val);
 yield break;
 }
 public IEnumerator VRDEMO_START(){
-//Unknown keyword: PLAY_SONG
+_world.PlaySong("DEMOSONG",1);
 yield return SET_WALKING();
 var MY_SIZE_1 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
 MY_SIZE_1.SetFloat("VAL",5f);

@@ -378,7 +378,16 @@ namespace Acknex
                             case "SOUND":
                                 {
                                     var sound = _world.CreateObjectTemplate(ObjectType.Sound, GetNextToken(tokens));
-                                    sound.SetString("FILENAME", GetNextToken(tokens));
+                                    sound.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                    World.Instance.PostSetupObjectTemplate(sound);
+                                    CheckSemiColon(tokens);
+                                    break;
+                                }
+                            case "MUSIC":
+                                {
+                                    var music = _world.CreateObjectTemplate(ObjectType.Music, GetNextToken(tokens));
+                                    music.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                    World.Instance.PostSetupObjectTemplate(music);
                                     CheckSemiColon(tokens);
                                     break;
                                 }

@@ -5,6 +5,8 @@ using System.IO;
 using System.Net.NetworkInformation;
 using System.Text;
 using Acknex.Interfaces;
+using AudioSynthesis.Bank;
+using AudioSynthesis.Midi;
 using LibTessDotNet;
 using Tests;
 using UnityEngine;
@@ -321,6 +323,18 @@ namespace Acknex
                         AcknexObject.SetAcknexObject(name, sound.AcknexObject);
                         return sound.AcknexObject;
                     }
+                case ObjectType.Music:
+                    {
+                        if (MusicsByName.ContainsKey(name))
+                        {
+                            throw new Exception("Music [" + name + "] already registered.");
+                        }
+                        var music = new Music();
+                        music.AcknexObject.SetString("NAME", name);
+                        MusicsByName.Add(name, music);
+                        AcknexObject.SetAcknexObject(name, music.AcknexObject);
+                        return music.AcknexObject;
+                    }
                 case ObjectType.Model:
                     {
                         if (ModelsByName.ContainsKey(name))
@@ -381,7 +395,6 @@ namespace Acknex
                     return SkillsByName.TryGetValue(name, out var skill) ? skill.AcknexObject : null;
                 case ObjectType.Synonym:
                     return GetSynonymObject(name);
-                //return SynonymsByName.TryGetValue(name, out var synonym) ? synonym.AcknexObject : null;
                 case ObjectType.Texture:
                     return TexturesByName.TryGetValue(name, out var texture) ? texture.AcknexObject : null;
                 case ObjectType.Thing:
@@ -394,6 +407,10 @@ namespace Acknex
                     return OverlaysByName.TryGetValue(name, out var overlay) ? overlay.AcknexObject : null;
                 case ObjectType.Flic:
                     return FlicsByName.TryGetValue(name, out var flic) ? flic.AcknexObject : null;
+                case ObjectType.Sound:
+                    return SoundsByName.TryGetValue(name, out var sound) ? sound.AcknexObject : null;
+                case ObjectType.Music:
+                    return MusicsByName.TryGetValue(name, out var music) ? music.AcknexObject : null;
                 case ObjectType.Player:
                     return Player.Instance.AcknexObject;
             }
@@ -542,6 +559,10 @@ namespace Acknex
             {
                 model.Setup();
             }
+            else if (acknexObject.Type == ObjectType.Music && acknexObject.Container is Music music)
+            {
+                music.Setup();
+            }
         }
 
         public void AddWayPoint(IAcknexObject way, float x, float y)
@@ -572,6 +593,17 @@ namespace Acknex
                 result = 0f;
             }
             return result;
+        }
+
+        public void PlaySong(string songName, float volume)
+        {
+            if (MusicsByName.TryGetValue(songName, out var music))
+            {
+                MidiPlayer.midiSource = music.Resource;
+                MidiPlayer.LoadBank(new PatchBank(MidiPlayer.bankSource));
+                MidiPlayer.LoadMidi(new MidiFile(MidiPlayer.midiSource));
+                MidiPlayer.Play();
+            }
         }
 
         public void SetRuntime(IAcknexRuntime runtime)

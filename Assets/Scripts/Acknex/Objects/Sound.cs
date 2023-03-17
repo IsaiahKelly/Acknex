@@ -2,6 +2,7 @@
 
 namespace Acknex
 {
+
     public class Sound : IAcknexObjectContainer
     {
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Sound);

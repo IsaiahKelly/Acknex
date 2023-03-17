@@ -151,5 +151,10 @@ namespace Acknex.Interfaces
         /// Accelerates a value by the given amount.
         /// </summary>
         float Accelerate(float value, float amount);
+
+        /// <summary>
+        /// Plays the given song.
+        /// </summary>
+        void PlaySong(string songName, float volume);
     }
 }

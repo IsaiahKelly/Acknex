@@ -244,6 +244,14 @@ namespace Acknex
                                 ReadUntilSemiColon(tokens);
                                 break;
                             }
+                        case "PLAY_SONG":
+                            {
+                                var volume = GetValue(tokens, textParser);
+                                CodeStringBuilder.Append("_world.PlaySong(\"").Append(labelOrStatement).Append("\",").Append(volume).AppendLine(");");
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
+                                break;
+                            }
                         case "SHOOT":
                             {
                                 var next = labelOrStatement;

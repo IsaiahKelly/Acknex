@@ -28,6 +28,7 @@
         //Rule,
         Palette,
         Font,
-        Model
+        Model,
+        Music
     }
 }

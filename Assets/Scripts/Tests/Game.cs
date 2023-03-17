@@ -2640,7 +2640,7 @@ namespace Tests
         }
         public IEnumerator VRDEMO_START()
         {
-            //Unknown keyword: PLAY_SONG
+            _world.PlaySong("DEMOSONG", 1);
             yield return SET_WALKING();
             var MY_SIZE_1 = _world.GetObject(ObjectType.Skill, "MY_SIZE");
             MY_SIZE_1.SetFloat("VAL", 5f);
