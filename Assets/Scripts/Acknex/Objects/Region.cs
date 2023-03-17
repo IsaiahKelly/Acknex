@@ -299,7 +299,7 @@ namespace Acknex
 
 
         //todo: replace MaxHeightCheck
-        public static void Locate(IAcknexObject source, ref int regionIndex, float thingX, float thingY, ref float thingZ, bool onGround = false, bool onCeil = false)
+        public static void Locate(IAcknexObject source, ref int regionIndex, float thingX, float thingY, ref float thingZ, /*ref float height,*/ bool onGround = false, bool onCeil = false)
         {
             if (regionIndex >= World.Instance.RegionsByIndex.Count || regionIndex < 0)
             {
@@ -308,10 +308,11 @@ namespace Acknex
             var currentRegion = World.Instance.RegionsByIndex[regionIndex];
             if (onCeil)
             {
-                var point = new Vector3(thingX, currentRegion.AcknexObject.GetFloat("FLOOR_HGT"), thingY);
+                var maxHeight = currentRegion.AcknexObject.GetFloat("FLOOR_HGT");
+                var point = new Vector3(thingX, maxHeight, thingY);
                 if (Physics.Raycast(new Ray(point, Vector3.up), out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
                 {
-                    if (raycastHit.transform.TryGetComponent<Region>(out var region))
+                    if (raycastHit.transform.parent != null && raycastHit.transform.parent.TryGetComponent<Region>(out var region))
                     {
                         thingZ = onGround ? 0 : raycastHit.point.y;
                         var newRegionIndex = World.Instance.RegionsByIndex.IndexOf(region);
@@ -327,6 +328,7 @@ namespace Acknex
                                 World.Instance.TriggerEvent(source, "IF_ENTER");
                             }
                         }
+                        //height = raycastHit.distance - maxHeight;
                         regionIndex = newRegionIndex;
                         return;
                     }
@@ -334,10 +336,11 @@ namespace Acknex
             }
             else
             {
-                var point = new Vector3(thingX, currentRegion.AcknexObject.GetFloat("CEIL_HGT"), thingY);
+                var maxHeight = currentRegion.AcknexObject.GetFloat("CEIL_HGT");
+                var point = new Vector3(thingX, maxHeight, thingY);
                 if (Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
                 {
-                    if (raycastHit.transform.TryGetComponent<Region>(out var region))
+                    if (raycastHit.transform.parent != null && raycastHit.transform.parent.TryGetComponent<Region>(out var region))
                     {
                         thingZ = onGround ? 0 : raycastHit.point.y;
                         var newRegionIndex = World.Instance.RegionsByIndex.IndexOf(region);
@@ -353,6 +356,7 @@ namespace Acknex
                                 World.Instance.TriggerEvent(source, "IF_ENTER");
                             }
                         }
+                        //height = raycastHit.distance - maxHeight;
                         regionIndex = newRegionIndex;
                         return;
                     }
