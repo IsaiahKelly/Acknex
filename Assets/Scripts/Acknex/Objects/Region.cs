@@ -29,9 +29,13 @@ namespace Acknex
 
         private const float MaxHeightCheck = 20000f;
 
-        private MeshFilter _meshFilter;
-        private MeshCollider _collider;
-        private MeshRenderer _meshRenderer;
+        private MeshFilter _floorMeshFilter;
+        private MeshCollider _floorCollider;
+        private MeshRenderer _floorMeshRenderer;
+
+        private MeshFilter _ceilMeshFilter;
+        private MeshCollider _ceilCollider;
+        private MeshRenderer _ceilMeshRenderer;
 
         private Region _belowOverride;
         private HashSet<IAcknexObject> _dive = new HashSet<IAcknexObject>();
@@ -50,7 +54,7 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            if (_meshRenderer == null)
+            if (_floorMeshRenderer == null)
             {
                 return;
             }
@@ -65,25 +69,32 @@ namespace Acknex
 
             if (AcknexObject.ContainsFlag("INVISIBLE", false))
             {
-                _meshRenderer.enabled = false;
-                _collider.enabled = false;
+                _floorMeshRenderer.enabled = false;
+                _floorCollider.enabled = false;
+                _ceilMeshRenderer.enabled = false;
+                _ceilCollider.enabled = false;
             }
             else
             {
-                _meshRenderer.enabled = true;
-                _collider.enabled = true;
+                _floorMeshRenderer.enabled = true;
+                _floorCollider.enabled = true;
+                _ceilMeshRenderer.enabled = true;
+                _ceilCollider.enabled = true;
             }
 
-            _meshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
+            _floorMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
+            _ceilMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
+
             var floorTexture = AcknexObject.GetString("FLOOR_TEX");
             if (floorTexture != null && World.Instance.TexturesByName.TryGetValue(floorTexture, out var floorTextureObject))
             {
                 var bitmapImage = floorTextureObject.GetBitmapAt(0);
                 if (bitmapImage != null)
                 {
-                    bitmapImage.UpdateMaterial(_meshRenderer.materials[0], floorTextureObject, 0, false, AcknexObject);
+                    bitmapImage.UpdateMaterial(_floorMeshRenderer.material, floorTextureObject, 0, false, AcknexObject);
                 }
             }
+            _floorCollider.gameObject.layer = AcknexObject.TryGetString("IF_DIVE", out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.WallsAndRegionsLayer.LayerIndex;
 
             var ceilTexture = AcknexObject.GetString("CEIL_TEX");
             if (ceilTexture != null && World.Instance.TexturesByName.TryGetValue(ceilTexture, out var ceilTextureObject))
@@ -91,11 +102,9 @@ namespace Acknex
                 var bitmapImage = ceilTextureObject.GetBitmapAt(0);
                 if (bitmapImage != null)
                 {
-                    bitmapImage.UpdateMaterial(_meshRenderer.materials[1], ceilTextureObject, 0, false, AcknexObject);
+                    bitmapImage.UpdateMaterial(_ceilMeshRenderer.material, ceilTextureObject, 0, false, AcknexObject);
                 }
-
-                //todo: will need two mesh renderers to handle that correctly
-                _meshRenderer.shadowCastingMode = ceilTextureObject.AcknexObject.ContainsFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
+                _ceilMeshRenderer.shadowCastingMode = ceilTextureObject.AcknexObject.ContainsFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             }
         }
 
@@ -164,41 +173,46 @@ namespace Acknex
             AcknexObject.RemoveFlag("VISIBLE");
         }
 
-        public static void BuildFloorMesh(List<Vector3> allVertices, List<Vector2> allUVS, Dictionary<int, List<int>> allTriangles,
-            Region region, string ceilTexture, string floorTexture)
+        public static void BuildFloorMesh(List<Vector3> allVertices, List<Vector2> allUVS, Dictionary<int, List<int>> allTriangles, Region region, string ceilTexture, string floorTexture)
         {
-            var mesh = new Mesh();
-            mesh.SetVertices(allVertices);
-            mesh.SetUVs(0, allUVS);
-
-            mesh.subMeshCount = allTriangles.Count;
-            foreach (var kvp in allTriangles)
             {
-                var tris = kvp.Value;
-                //tris.Reverse();
-                mesh.SetTriangles(tris, kvp.Key);
+                var floorGameObject = new GameObject("Floor");
+                floorGameObject.transform.SetParent(region.transform, false);
+                floorGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
+                var _floorMesh = new Mesh();
+                _floorMesh.SetVertices(allVertices);
+                _floorMesh.SetUVs(0, allUVS);
+                _floorMesh.subMeshCount = 1;
+                _floorMesh.SetTriangles(allTriangles[0], 0);
+                _floorMesh.RecalculateNormals();
+                _floorMesh.UploadMeshData(true);
+                region._floorMeshFilter = floorGameObject.AddComponent<MeshFilter>();
+                region._floorMeshFilter.mesh = _floorMesh;
+                region._floorMeshRenderer = floorGameObject.AddComponent<MeshRenderer>();
+                var material = World.Instance.BuildMaterial(floorTexture);
+                region._floorMeshRenderer.material = material;
+                region._floorCollider = floorGameObject.AddComponent<MeshCollider>();
+                region._floorCollider.sharedMesh = _floorMesh;
             }
-
-            mesh.RecalculateNormals();
-            mesh.UploadMeshData(true);
-
-            region._meshFilter = region.gameObject.AddComponent<MeshFilter>();
-            region._meshFilter.mesh = mesh;
-
-            region._meshRenderer = region.gameObject.AddComponent<MeshRenderer>();
-            var materials = new Material[mesh.subMeshCount];
-
-            for (var i = 0; i < materials.Length; i++)
             {
-                var textureName = i == 0 ? floorTexture : ceilTexture;
-                var material = World.Instance.BuildMaterial(textureName);
-                materials[i] = material;
+                var ceilGameObject = new GameObject("Ceil");
+                ceilGameObject.transform.SetParent(region.transform, false);
+                ceilGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
+                var _ceilMesh = new Mesh();
+                _ceilMesh.SetVertices(allVertices);
+                _ceilMesh.SetUVs(0, allUVS);
+                _ceilMesh.subMeshCount = 1;
+                _ceilMesh.SetTriangles(allTriangles[1], 0);
+                _ceilMesh.RecalculateNormals();
+                _ceilMesh.UploadMeshData(true);
+                region._ceilMeshFilter = ceilGameObject.AddComponent<MeshFilter>();
+                region._ceilMeshFilter.mesh = _ceilMesh;
+                region._ceilMeshRenderer = ceilGameObject.AddComponent<MeshRenderer>();
+                var material = World.Instance.BuildMaterial(ceilTexture);
+                region._ceilMeshRenderer.material = material;
+                region._ceilCollider = ceilGameObject.AddComponent<MeshCollider>();
+                region._ceilCollider.sharedMesh = _ceilMesh;
             }
-
-            region._meshRenderer.materials = materials;
-
-            region._collider = region.gameObject.AddComponent<MeshCollider>();
-            region._collider.sharedMesh = mesh;
         }
 
         public static void BuildRegionFloorAndCeiling(Region region, ContouredRegion contouredRegion)

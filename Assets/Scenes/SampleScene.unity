@@ -666,6 +666,8 @@ MonoBehaviour:
     m_LayerIndex: 8
   ThingsAndActorsLayer:
     m_LayerIndex: 9
+  WaterLayer:
+    m_LayerIndex: 4
   Canvas: {fileID: 1116186326}
   AmbientLight: {fileID: 705507994}
 --- !u!114 &1246573633

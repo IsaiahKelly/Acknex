@@ -32,6 +32,7 @@ namespace Acknex
         public bool UseWDLEngine;
         public SingleUnityLayer WallsAndRegionsLayer;
         public SingleUnityLayer ThingsAndActorsLayer;
+        public SingleUnityLayer WaterLayer;
 
         public readonly List<Region> RegionsByIndex = new List<Region>();
 
