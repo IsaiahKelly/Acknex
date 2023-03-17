@@ -3,21 +3,22 @@ using UnityEngine;
 
 namespace Acknex.Interfaces
 {
-    //todo: how to convert cycles to time?
     public class WaitForCycles : CustomYieldInstruction
     {
-      
+        private int _startCycles;
+        private float _totalCycles;
 
         public WaitForCycles(float cycles)
         {
-          
+            _startCycles = Time.frameCount;
+            _totalCycles = cycles;
         }
 
         public override bool keepWaiting
         {
             get
             {
-                return false;
+               return Time.frameCount - _startCycles < _totalCycles;
             }
         }
     }

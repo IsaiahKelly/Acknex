@@ -9,6 +9,11 @@ namespace Acknex.Interfaces
     public interface IAcknexWorld : IAcknexObjectContainer
     {
         /// <summary>
+        /// Sets the world scripting runtime.
+        /// </summary>
+        void SetRuntime(IAcknexRuntime runtime);
+
+        /// <summary>
         /// Creates an object template.
         /// The `name` parameter defines the object property 'NAME' value.
         /// </summary>
@@ -95,16 +100,6 @@ namespace Acknex.Interfaces
         /// This value must be passed to the objects created when processing an WMP file.
         /// </summary>
         int GetRegionIndex(string value);
-
-        /// <summary>
-        /// Halts the given task `identifier` for the given number of cycles.
-        /// </summary>
-        void WaitForCycles(ActionIdentifier identifier, int cycles);
-
-        /// <summary>
-        /// Halts the given task `identifier` for the given number of ticks.
-        /// </summary>
-        void WaitForTicks(ActionIdentifier identifier, int ticks);
 
         /// <summary>
         /// Sets a float property value for all objects with the given name.

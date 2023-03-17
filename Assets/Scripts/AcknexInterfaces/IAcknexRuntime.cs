@@ -1,4 +1,5 @@
-﻿namespace Acknex.Interfaces
+﻿using System.Collections;
+namespace Acknex.Interfaces
 {
     /// <summary>
     /// Represents the scripting runtime interface.
@@ -6,12 +7,12 @@
     public interface IAcknexRuntime
     {
         /// <summary>
+        /// Sets the world instance in the runtime.
+        /// </summary>
+        void SetWorld(IAcknexWorld world);
+        /// <summary>
         /// Calls the action with the given name.
         /// </summary>
-        void CallAction(string name);
-        /// <summary>
-        /// Resumes the given action.
-        /// </summary>
-        void ResumeAction(ActionIdentifier identifier);
+        IEnumerator CallAction(string name);
     }
 }

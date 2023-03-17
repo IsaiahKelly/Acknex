@@ -1,9 +1,11 @@
 ﻿using Acknex.Interfaces;
 using System.Collections;
 using UnityEngine;
+using static Codice.Client.Common.WebApi.WebApiEndpoints;
+
 namespace Tests
 {
-    public class Game
+    public class Game : IAcknexRuntime
     {
         private IAcknexWorld _world;
         public void SetWorld(IAcknexWorld world)
@@ -2644,6 +2646,17 @@ namespace Tests
             var CLEAR_YESNO_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CLEAR_YESNO");
             _world.AcknexObject.SetString("IF_ESC", CLEAR_YESNO_7.GetString("NAME"));
             yield break;
+        }
+
+        public IEnumerator CallAction(string name)
+        {
+            var method = this.GetType().GetMethod(name);
+            if (method != null)
+            {
+                var result = method.Invoke(this, null);
+                return (IEnumerator)result;
+            }
+            return null;
         }
     }
 }

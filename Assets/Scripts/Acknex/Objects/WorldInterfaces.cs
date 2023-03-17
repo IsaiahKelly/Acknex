@@ -33,7 +33,7 @@ namespace Acknex
 
 
         private Resolution _resolution = Resolution.Res320x200;
-        private Game _game;
+        private IAcknexRuntime _runtime;
 
         public Resolution GameResolution
         {
@@ -408,17 +408,27 @@ namespace Acknex
         public void PostSetupWMP()
         {
             BuildRegionsAndWalls(_regionWalls, _contourVertices);
-            if (!DisableEvents)
+            if (!DisableEvents && !UseWDLEngine)
             {
                 var sourceStringBuilder = new StringBuilder();
                 sourceStringBuilder.AppendLine("using Acknex.Interfaces;");
                 sourceStringBuilder.AppendLine("using System.Collections;");
                 sourceStringBuilder.AppendLine("using UnityEngine;");
                 sourceStringBuilder.AppendLine("namespace Tests {");
-                sourceStringBuilder.AppendLine("    public class Game {");
+                sourceStringBuilder.AppendLine("    public class Game : IAcknexRuntime {");
                 sourceStringBuilder.AppendLine("        private IAcknexWorld _world;");
                 sourceStringBuilder.AppendLine("        public void SetWorld(IAcknexWorld world) {");
                 sourceStringBuilder.AppendLine("            _world = world;");
+                sourceStringBuilder.AppendLine("        }");
+                sourceStringBuilder.AppendLine("        public IEnumerator CallAction(string name)");
+                sourceStringBuilder.AppendLine("        {");
+                sourceStringBuilder.AppendLine("            var method = this.GetType().GetMethod(name);");
+                sourceStringBuilder.AppendLine("            if (method != null)");
+                sourceStringBuilder.AppendLine("            {");
+                sourceStringBuilder.AppendLine("                var result = method.Invoke(this, null);");
+                sourceStringBuilder.AppendLine("                return (IEnumerator)result;");
+                sourceStringBuilder.AppendLine("            }");
+                sourceStringBuilder.AppendLine("            return null;");
                 sourceStringBuilder.AppendLine("        }");
                 foreach (var action in ActionsByName)
                 {
@@ -430,8 +440,8 @@ namespace Acknex
                 sourceStringBuilder.AppendLine("    }");
                 sourceStringBuilder.AppendLine("}");
                 File.WriteAllText(SourceGenerationPath, sourceStringBuilder.ToString());
-                _game = new Game();
-                _game.SetWorld(this);
+                _runtime = new Game();
+                _runtime.SetWorld(this);
             }
         }
 
@@ -552,17 +562,6 @@ namespace Acknex
             return 0;
         }
 
-
-        public void WaitForCycles(ActionIdentifier identifier, int cycles)
-        {
-
-        }
-
-        public void WaitForTicks(ActionIdentifier identifier, int ticks)
-        {
-
-        }
-
         public float Accelerate(float value, float amount)
         {
             //todo: RULE PLAYER_VX = (1 - TIME_CORR * fric) * PLAYER_VX + TIME_CORR * (force_x +drift_x)/ mass;
@@ -573,6 +572,11 @@ namespace Acknex
                 result = 0f;
             }
             return result;
+        }
+
+        public void SetRuntime(IAcknexRuntime runtime)
+        {
+            _runtime = runtime;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Acknex
 
         public IEnumerator CallAction(IAcknexObject source, string name)
         {
-            if (_game == null)
+            if (_runtime == null)
             {
                 yield break;
             }
@@ -20,29 +20,19 @@ namespace Acknex
             {
                 SetSynonymObject("MY", source);
             }
-            var method = _game.GetType().GetMethod(name);
-            if (method != null)
-            {
-               var enumerator = method.Invoke(_game, null);
-               yield return (IEnumerator)enumerator;
-            }
+            yield return (IEnumerator)_runtime.CallAction(name);
         }
 
         public void TriggerEvent(IAcknexObject source, string eventName)
         {
-            if (_game == null)
+            if (_runtime == null)
             {
                 return;
             }
             if (source.TryGetString(eventName, out var @event))
             {
                 SetSynonymObject("MY", source);
-                var method = _game.GetType().GetMethod(@event);
-                if (method != null)
-                {
-                    var result = method.Invoke(_game, null);
-                    StartCoroutine((IEnumerator)result);
-                }
+                StartCoroutine(_runtime.CallAction(@event));
             }
         }
 
