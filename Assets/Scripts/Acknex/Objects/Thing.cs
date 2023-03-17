@@ -296,7 +296,14 @@ namespace Acknex
             var thingZ = AcknexObject.GetFloat("Z");
 
             //todo: this block should only run on carefully flagged
-            StickToTheGround(thingX, thingY, ref thingZ);
+            if (AcknexObject.ContainsFlag("CANDELABER"))
+            {
+                StickToTheCeiling(thingX, thingY, ref thingZ);
+            }
+            else
+            {
+                StickToTheGround(thingX, thingY, ref thingZ);
+            }
             transform.position = new Vector3(thingX, thingZ, thingY);
 
             var thingPosition = _thingGameObject.transform.position;
@@ -359,6 +366,14 @@ namespace Acknex
             return regionObject;
         }
 
+        public void StickToTheCeiling(float thingX, float thingY, ref float thingZ)
+        {
+            var regionIndex = AcknexObject.GetInteger("REGION");
+            Region.Locate(AcknexObject, ref regionIndex, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"), true);
+            thingZ = thingZ - transform.localScale.y;
+            AcknexObject.SetInteger("REGION", regionIndex);
+            AcknexObject.SetFloat("Z", thingZ);
+        }
 
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)
         {

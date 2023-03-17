@@ -283,38 +283,65 @@ namespace Acknex
             meshIndex++;
         }
 
+
         //todo: replace MaxHeightCheck
-        public static void Locate(IAcknexObject source, ref int regionIndex, float thingX, float thingY, ref float thingZ, bool onGround = false)
+        public static void Locate(IAcknexObject source, ref int regionIndex, float thingX, float thingY, ref float thingZ, bool onGround = false, bool onCeil = false)
         {
             if (regionIndex >= World.Instance.RegionsByIndex.Count || regionIndex < 0)
             {
                 return;
             }
             var currentRegion = World.Instance.RegionsByIndex[regionIndex];
-            var point = new Vector3(thingX, currentRegion.AcknexObject.GetFloat("CEIL_HGT"), thingY);
-            if (Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
+            if (onCeil)
             {
-                if (raycastHit.transform.TryGetComponent<Region>(out var region))
+                var point = new Vector3(thingX, currentRegion.AcknexObject.GetFloat("FLOOR_HGT"), thingY);
+                if (Physics.Raycast(new Ray(point, Vector3.up), out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
                 {
-                    thingZ = onGround ? 0 : raycastHit.point.y;
-                    var newRegionIndex = World.Instance.RegionsByIndex.IndexOf(region);
-                    if (
-                        source.Type == ObjectType.Player ||
-                        source.ContainsFlag("MASTER", false))
+                    if (raycastHit.transform.TryGetComponent<Region>(out var region))
                     {
-                        if (newRegionIndex != regionIndex)
+                        thingZ = onGround ? 0 : raycastHit.point.y;
+                        var newRegionIndex = World.Instance.RegionsByIndex.IndexOf(region);
+                        if (
+                            source.Type == ObjectType.Player ||
+                            source.ContainsFlag("MASTER", false))
                         {
-                            //var oldRegionIndex = source.GetInteger("REGION");
-                            //var oldRegion = World.Instance.RegionsByIndex[oldRegionIndex];
-                            World.Instance.SetSynonymObject("THERE", currentRegion.AcknexObject);
-                            World.Instance.TriggerEvent(source, "IF_LEAVE");
-
-                            World.Instance.SetSynonymObject("THERE", region.AcknexObject);
-                            World.Instance.TriggerEvent(source, "IF_ENTER");
+                            if (newRegionIndex != regionIndex)
+                            {
+                                World.Instance.SetSynonymObject("THERE", currentRegion.AcknexObject);
+                                World.Instance.TriggerEvent(source, "IF_LEAVE");
+                                World.Instance.SetSynonymObject("THERE", region.AcknexObject);
+                                World.Instance.TriggerEvent(source, "IF_ENTER");
+                            }
                         }
+                        regionIndex = newRegionIndex;
+                        return;
                     }
-                    regionIndex = newRegionIndex;
-                    return;
+                }
+            }
+            else
+            {
+                var point = new Vector3(thingX, currentRegion.AcknexObject.GetFloat("CEIL_HGT"), thingY);
+                if (Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
+                {
+                    if (raycastHit.transform.TryGetComponent<Region>(out var region))
+                    {
+                        thingZ = onGround ? 0 : raycastHit.point.y;
+                        var newRegionIndex = World.Instance.RegionsByIndex.IndexOf(region);
+                        if (
+                            source.Type == ObjectType.Player ||
+                            source.ContainsFlag("MASTER", false))
+                        {
+                            if (newRegionIndex != regionIndex)
+                            {
+                                World.Instance.SetSynonymObject("THERE", currentRegion.AcknexObject);
+                                World.Instance.TriggerEvent(source, "IF_LEAVE");
+                                World.Instance.SetSynonymObject("THERE", region.AcknexObject);
+                                World.Instance.TriggerEvent(source, "IF_ENTER");
+                            }
+                        }
+                        regionIndex = newRegionIndex;
+                        return;
+                    }
                 }
             }
             if (onGround)
