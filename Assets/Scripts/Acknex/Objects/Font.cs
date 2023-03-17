@@ -4,7 +4,7 @@ namespace Acknex
 {
     public class Font :  IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Font);
         public void UpdateObject()
         {
 

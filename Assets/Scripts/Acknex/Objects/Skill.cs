@@ -4,7 +4,7 @@ namespace Acknex
 {
     public class Skill : IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Skill);
 
         private static IAcknexObject GetTemplateCallback(string name)
         {

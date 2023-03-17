@@ -7,7 +7,7 @@ namespace Acknex
 
     public class Panel : MonoBehaviour, IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Panel);
         public void UpdateObject()
         {
             

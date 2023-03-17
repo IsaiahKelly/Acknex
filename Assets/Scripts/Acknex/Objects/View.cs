@@ -5,7 +5,7 @@ namespace Acknex
 {
     public class View : MonoBehaviour, IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.View);
         private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;

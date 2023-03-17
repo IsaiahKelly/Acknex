@@ -89,7 +89,6 @@ namespace Acknex
                 case ObjectType.Thing:
                     {
                         var container = CreateThing(name);
-                        container.AcknexObject.Type = type;
                         container.AcknexObject.SetFloat("SCALE_X", 16);
                         container.AcknexObject.SetFloat("SCALE_Y", 16);
                         return container.AcknexObject;
@@ -97,7 +96,6 @@ namespace Acknex
                 case ObjectType.Actor:
                     {
                         var container = CreateActor(name);
-                        container.AcknexObject.Type = type;
                         container.AcknexObject.SetFloat("SCALE_X", 16);
                         container.AcknexObject.SetFloat("SCALE_Y", 16);
                         return container.AcknexObject;
@@ -105,7 +103,6 @@ namespace Acknex
                 case ObjectType.Region:
                     {
                         var container = CreateRegion(name);
-                        container.AcknexObject.Type = type;
                         if (!WMPContainsRegionsByName)
                         {
                             RegionsByIndex.Add(container);
@@ -122,7 +119,6 @@ namespace Acknex
                 case ObjectType.Way:
                     {
                         var container = CreateWay(name);
-                        container.AcknexObject.Type = type;
                         return container.AcknexObject;
                     }
             }
@@ -140,7 +136,6 @@ namespace Acknex
                             throw new Exception("Action [" + name + "] already registered.");
                         }
                         var action = new Action();
-                        action.AcknexObject.Type = type;
                         action.AcknexObject.SetString("NAME", name);
                         ActionsByName.Add(name, action);
                         AcknexObject.SetAcknexObject(name, action.AcknexObject);
@@ -153,7 +148,6 @@ namespace Acknex
                             throw new Exception("Actor [" + name + "] already registered.");
                         }
                         var actor = CreateActor(name, true);
-                        actor.AcknexObject.Type = type;
                         actor.AcknexObject.SetString("NAME", name);
                         actor.AcknexObject.SetFloat("SCALE_X", 16);
                         actor.AcknexObject.SetFloat("SCALE_Y", 16);
@@ -169,7 +163,6 @@ namespace Acknex
                             throw new Exception("Bitmap [" + name + "] already registered.");
                         }
                         var bitmap = new Bitmap();
-                        bitmap.AcknexObject.Type = type;
                         bitmap.AcknexObject.SetString("NAME", name);
                         BitmapsByName.Add(name, bitmap);
                         AcknexObject.SetAcknexObject(name, bitmap.AcknexObject);
@@ -182,7 +175,6 @@ namespace Acknex
                             throw new Exception("Region [" + name + "] already registered.");
                         }
                         var region = CreateRegion(name, true);
-                        region.AcknexObject.Type = type;
                         region.AcknexObject.SetString("NAME", name);
                         region.Disable();
                         RegionsByName.Add(name, region);
@@ -200,7 +192,6 @@ namespace Acknex
                             return skill.AcknexObject;
                         }
                         skill = CreateSkill(name, 0, Mathf.NegativeInfinity, Mathf.Infinity);
-                        skill.AcknexObject.Type = type;
                         skill.AcknexObject.SetString("NAME", name);
                         AcknexObject.SetAcknexObject(name, skill.AcknexObject);
                         return skill.AcknexObject;
@@ -212,7 +203,6 @@ namespace Acknex
                             return synonym.AcknexObject;
                         }
                         synonym = CreateSynonym(name);
-                        synonym.AcknexObject.Type = type;
                         synonym.AcknexObject.SetString("NAME", name);
                         AcknexObject.SetAcknexObject(name, synonym.AcknexObject);
                         return synonym.AcknexObject;
@@ -224,7 +214,6 @@ namespace Acknex
                             throw new Exception("Texture [" + name + "] already registered.");
                         }
                         var texture = new Texture();
-                        texture.AcknexObject.Type = type;
                         texture.AcknexObject.SetString("NAME", name);
                         TexturesByName.Add(name, texture);
                         AcknexObject.SetAcknexObject(name, texture.AcknexObject);
@@ -237,7 +226,6 @@ namespace Acknex
                             throw new Exception("Thing [" + name + "] already registered.");
                         }
                         var thing = CreateThing(name, true);
-                        thing.AcknexObject.Type = type;
                         thing.AcknexObject.SetString("NAME", name);
                         thing.AcknexObject.SetFloat("SCALE_X", 16);
                         thing.AcknexObject.SetFloat("SCALE_Y", 16);
@@ -253,7 +241,6 @@ namespace Acknex
                             throw new Exception("Wall [" + name + "] already registered.");
                         }
                         var wall = CreateWall(name, true);
-                        wall.AcknexObject.Type = type;
                         wall.AcknexObject.SetString("NAME", name);
                         wall.Disable();
                         WallsByName.Add(name, wall);
@@ -267,7 +254,6 @@ namespace Acknex
                             throw new Exception("Way [" + name + "] already registered.");
                         }
                         var way = CreateWay(name, true);
-                        way.AcknexObject.Type = type;
                         way.AcknexObject.SetString("NAME", name);
                         way.Disable();
                         WaysByName.Add(name, way);
@@ -281,7 +267,6 @@ namespace Acknex
                             throw new Exception("Overlay [" + name + "] already registered.");
                         }
                         var overlay = CreateOverlay(name, true);
-                        overlay.AcknexObject.Type = type;
                         overlay.AcknexObject.SetString("NAME", name);
                         overlay.Disable();
                         OverlaysByName.Add(name, overlay);
@@ -295,7 +280,6 @@ namespace Acknex
                             throw new Exception("Flic [" + name + "] already registered.");
                         }
                         var flic = new Flic();
-                        flic.AcknexObject.Type = type;
                         flic.AcknexObject.SetString("NAME", name);
                         FlicsByName.Add(name, flic);
                         AcknexObject.SetAcknexObject(name, flic.AcknexObject);
@@ -308,7 +292,6 @@ namespace Acknex
                             throw new Exception("Text [" + name + "] already registered.");
                         }
                         var text = new Text();
-                        text.AcknexObject.Type = type;
                         text.AcknexObject.SetString("NAME", name);
                         AcknexObject.SetAcknexObject(name, text.AcknexObject);
                         TextsByName.Add(name, text);
@@ -321,7 +304,6 @@ namespace Acknex
                             throw new Exception("Font [" + name + "] already registered.");
                         }
                         var font = new Font();
-                        font.AcknexObject.Type = type;
                         font.AcknexObject.SetString("NAME", name);
                         FontsByName.Add(name, font);
                         AcknexObject.SetAcknexObject(name, font.AcknexObject);
@@ -334,7 +316,6 @@ namespace Acknex
                             throw new Exception("Sound [" + name + "] already registered.");
                         }
                         var sound = new Sound();
-                        sound.AcknexObject.Type = type;
                         sound.AcknexObject.SetString("NAME", name);
                         SoundsByName.Add(name, sound);
                         AcknexObject.SetAcknexObject(name, sound.AcknexObject);
@@ -347,7 +328,6 @@ namespace Acknex
                             throw new Exception("Model [" + name + "] already registered.");
                         }
                         var model = new Model();
-                        model.AcknexObject.Type = type;
                         model.AcknexObject.SetString("NAME", name);
                         model.Disable();
                         ModelsByName.Add(name, model);
@@ -361,7 +341,6 @@ namespace Acknex
                             throw new Exception("Palette [" + name + "] already registered.");
                         }
                         var palette = new Palette();
-                        palette.AcknexObject.Type = type;
                         palette.AcknexObject.SetString("NAME", name);
                         PalettesByName.Add(name, palette);
                         AcknexObject.SetAcknexObject(name, palette.AcknexObject);
@@ -374,7 +353,6 @@ namespace Acknex
                             throw new Exception("Panel [" + name + "] already registered.");
                         }
                         var panel = CreatePanel(name, true);
-                        panel.AcknexObject.Type = type;
                         panel.AcknexObject.SetString("NAME", name);
                         panel.Disable();
                         PanelsByName.Add(name, panel);
@@ -588,7 +566,13 @@ namespace Acknex
         public float Accelerate(float value, float amount)
         {
             //todo: RULE PLAYER_VX = (1 - TIME_CORR * fric) * PLAYER_VX + TIME_CORR * (force_x +drift_x)/ mass;
-            return value + amount;
+            var timeCorr = GetSkillValue("TIME_CORR");
+            var result = (1f - timeCorr * GetSkillValue("FRICTION")) * value + timeCorr * (amount) / GetSkillValue("INERTIA");
+            if (Mathf.Abs(result) < 0.0001f)
+            {
+                result = 0f;
+            }
+            return result;
         }
     }
 }

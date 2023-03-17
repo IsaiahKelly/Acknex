@@ -1,8 +1,10 @@
-﻿namespace Acknex.Interfaces
+﻿using UnityEngine;
+
+namespace Acknex.Interfaces
 {
     public static class TimeUtils
     {
-        private const float OneTick = 1.0f / 16f;
+        public const float OneTick = 1.0f / 16f;
 
         public static float TicksToTime(int ticks)
         {
@@ -11,7 +13,7 @@
 
         public static int TimeToTicks(float time)
         {
-            return (int)(time / OneTick);
+            return (int)Mathf.Max(1, (time / OneTick));
         }
     }
 }

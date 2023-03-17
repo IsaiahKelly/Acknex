@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Acknex.Interfaces;
 using Unity.Plastic.Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace Acknex
     //TODO: categorize actions in IEnumerators and not IEnumeratros (depending on actions that uses WAIT or WAITT)
     public class Action : IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Action);
         public StringBuilder CodeStringBuilder = new StringBuilder();
         public long PositionInFile;
         public BinaryReader BinaryReader;
@@ -99,6 +100,7 @@ namespace Acknex
                                 //todo: different assignments (-= += /= *=)
                                 if (assignmentOp1 == "-" || assignmentOp1 == "+" || assignmentOp1 == "*" || assignmentOp1 == "/")
                                 {
+                                    throw new NotImplementedException();
                                     var assignmentOp2 = textParser.GetNextToken(tokens);
                                     if (assignmentOp2 != "=")
                                     {
@@ -443,7 +445,8 @@ namespace Acknex
 
         (string property, PropertyType propertyType, ObjectType objectType, string source) GetValueAndType(string objectOrPropertyOrValue, string propertyAssignmentVariable = "propertyValue", bool outputGetter = true, PropertyType returnType = PropertyType.Null)
         {
-            propertyAssignmentVariable = Sanitize(propertyAssignmentVariable);
+            propertyAssignmentVariable = Sanitize(objectOrPropertyOrValue);
+            //propertyAssignmentVariable = Sanitize(propertyAssignmentVariable);
             propertyAssignmentVariable += $"_{_varCounter++}";
             switch (objectOrPropertyOrValue)
             {
@@ -508,7 +511,8 @@ namespace Acknex
             if (valueIndexOfDot > -1)
             {
                 var valueObjectName = objectOrPropertyOrValue.Substring(0, valueIndexOfDot);
-                var objectAssignmentVariable = $"acknexObject_{_varCounter}";
+                var objectAssignmentVariable = Sanitize(valueObjectName);//$"acknexObject_{_varCounter}";
+                objectAssignmentVariable += $"_{_varCounter++}";
                 HandleObject(valueObjectName, objectAssignmentVariable, true, out var innerObjectDeclaration);
                 var valueProperty = objectOrPropertyOrValue.Substring(valueIndexOfDot + 1);
                 if (World.Instance.SynonymsByName.ContainsKey(valueObjectName))
@@ -736,7 +740,7 @@ namespace Acknex
 
         private string Sanitize(string value)
         {
-            return value;
+            return Regex.Replace(value, @"[^A-z0-9]", "_");
         }
 
         public void UpdateObject()

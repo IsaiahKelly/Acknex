@@ -7,12 +7,12 @@ namespace Acknex.Interfaces
     {
         public static float Sin(float radians)
         {
-            return Mathf.Sin(radians + (Mathf.Deg2Rad * 90f));
+            return Mathf.Sin(radians);
         }
 
         public static float Cos(float radians)
         {
-            return Mathf.Cos(radians + (Mathf.Deg2Rad * 90f));
+            return Mathf.Cos(radians);
         }
 
         public static float Angle(Vector3 from, Vector3 to)

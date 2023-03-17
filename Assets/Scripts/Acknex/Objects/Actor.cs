@@ -5,7 +5,7 @@ namespace Acknex
 {
     public class Actor : Thing
     {
-        public override IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallbackActor);
+        public override IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallbackActor, ObjectType.Actor);
 
         private static IAcknexObject GetDefinitionCallbackActor(string name)
         {

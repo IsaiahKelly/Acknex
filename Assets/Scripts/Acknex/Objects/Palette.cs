@@ -4,7 +4,7 @@ namespace Acknex
 {
     public class Palette : IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Palette);
         public void UpdateObject()
         {
 

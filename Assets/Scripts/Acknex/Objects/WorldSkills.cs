@@ -246,12 +246,11 @@ namespace Acknex
             UpdateSkillValue("TICKS", TimeUtils.TimeToTicks(Time.time));
             UpdateSkillValue("SECS", (int)Time.time);
             //todo: how to calc timecorr?
-            //var timeCorr = 0f;
-            //UpdateSkillValue("TIME_CORR", timeCorr);
-            //UpdateSkillValue("TIME_FAC", 1f - timeCorr);
-            //todo: really negative?
+            var timeCorr = 1f;// TimeUtils.OneTick / TimeUtils.TimeToTicks(Time.deltaTime);
+            UpdateSkillValue("TIME_CORR", timeCorr);
+            UpdateSkillValue("TIME_FAC", 1f - timeCorr);
             UpdateSkillValue("FORCE_AHEAD", Input.GetAxis("Vertical"));
-            UpdateSkillValue("FORCE_STRAFE", -Input.GetAxis("Horizontal"));
+            UpdateSkillValue("FORCE_STRAFE", Input.GetAxis("Horizontal"));
             UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X"));
             UpdateSkillValue("FORCE_TILT", Input.GetAxis("Mouse Y"));
             //TODO: FORCE_UP
@@ -351,7 +350,7 @@ namespace Acknex
             }
             else
             {
-                CreateSkill(name, value);
+                CreateSkill(name, value, Mathf.NegativeInfinity, Mathf.Infinity);
             }
         }
 

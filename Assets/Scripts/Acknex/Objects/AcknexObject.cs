@@ -257,10 +257,10 @@ namespace Acknex
             return false;
         }
 
-        public AcknexObject(Func<string, IAcknexObject> getTemplateCallback)
+        public AcknexObject(Func<string, IAcknexObject> getTemplateCallback, ObjectType type)
         {
-            //SetObject("FLAGS", new HashSet<string>());
             GetTemplateCallback = getTemplateCallback;
+            Type = type;
         }
 
         public Func<string, IAcknexObject> GetTemplateCallback { get; }

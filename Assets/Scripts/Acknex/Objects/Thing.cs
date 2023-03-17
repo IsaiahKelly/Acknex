@@ -14,7 +14,7 @@ namespace Acknex
     //todo: skill ACTOR_WIDTH & THING_WIDTH
     public class Thing : MonoBehaviour, IAcknexObjectContainer
     {
-        public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Thing);
 
         private static IAcknexObject GetTemplateCallback(string name)
         {

@@ -12,7 +12,7 @@ namespace Acknex
 {
     public partial class World : MonoBehaviour, IAcknexWorld
     {
-        public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.World);
 
         private static IAcknexObject GetTemplateCallback(string name)
         {
@@ -77,7 +77,6 @@ namespace Acknex
         private void Awake()
         {
             AcknexObject.Container = this;
-            AcknexObject.Type = ObjectType.World;
         }
 
         private void Start()

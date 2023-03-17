@@ -8,7 +8,7 @@ namespace Acknex
 {
     public class Way : MonoBehaviour, IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Way);
 
         private static IAcknexObject GetTemplateCallback(string name)
         {

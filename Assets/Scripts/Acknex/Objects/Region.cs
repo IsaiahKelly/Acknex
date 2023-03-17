@@ -16,7 +16,7 @@ namespace Acknex
     //todo: tesselation needs to implement the method to create new vertices
     public class Region : MonoBehaviour, IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Region);
 
         private static IAcknexObject GetTemplateCallback(string name)
         {

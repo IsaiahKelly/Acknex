@@ -5,7 +5,7 @@ namespace Acknex
 {
     public class Texture : IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Texture);
 
         private static IAcknexObject GetTemplateCallback(string name)
         {

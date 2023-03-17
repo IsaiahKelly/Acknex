@@ -4,7 +4,7 @@ namespace Acknex
 {
     public class Text : IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Text);
         public void UpdateObject()
         {
 

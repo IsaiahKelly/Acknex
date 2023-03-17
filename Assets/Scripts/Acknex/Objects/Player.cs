@@ -6,7 +6,7 @@ namespace Acknex
 {
     public class Player : MonoBehaviour, IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Player);
         private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
@@ -43,27 +43,43 @@ namespace Acknex
             var characterControllerCenter = _characterController.center;
             characterControllerCenter.y = playerSize * 0.5f;
             _characterController.center = characterControllerCenter;
-            var playerRotation = Quaternion.Euler(0f, unityPlayerAngle, 0f);
-            var playerMove =
-                playerRotation * Vector3.up * World.Instance.GetSkillValue("PLAYER_VZ") +
-                playerRotation * Vector3.forward * World.Instance.GetSkillValue("PLAYER_VY") +
-                playerRotation * Vector3.right * World.Instance.GetSkillValue("PLAYER_VX");
+            var playerMove = new Vector3(World.Instance.GetSkillValue("PLAYER_VX"), World.Instance.GetSkillValue("PLAYER_VZ"), World.Instance.GetSkillValue("PLAYER_VY"));
             //var moveAngle = playerMove.magnitude > 0f ? AngleUtils.ConvertUnityToAcknexAngle(Quaternion.LookRotation(playerMove).eulerAngles.y) : 0f;
             //var deltaAngle = moveAngle - World.Instance.GetSkillValue("MOVE_ANGLE");
             //World.Instance.UpdateSkillValue("MOVE_ANGLE", moveAngle);
             //World.Instance.UpdateSkillValue("DELTA_ANGLE", deltaAngle);
-            _characterController.Move(playerMove * TimeUtils.TicksToTime(1));
-            playerAngle += /*TimeUtils.TimeToTicks(Time.deltaTime) **/ World.Instance.GetSkillValue("PLAYER_VROT");
+            _characterController.Move(playerMove/* * TimeUtils.TicksToTime(1)*/);
+            playerX = _characterController.transform.position.x;
+            playerY = _characterController.transform.position.z;
+            playerZ = _characterController.transform.position.y;
+            playerAngle = Mathf.Repeat(playerAngle + World.Instance.GetSkillValue("PLAYER_VROT"), Mathf.PI * 2f);
+            //playerAngle += /*TimeUtils.TimeToTicks(Time.deltaTime) **/ World.Instance.GetSkillValue("PLAYER_VROT");
             World.Instance.UpdateSkillValue("LAST_PLAYER_X", World.Instance.GetSkillValue("PLAYER_X"));
             World.Instance.UpdateSkillValue("LAST_PLAYER_Y", World.Instance.GetSkillValue("PLAYER_Y"));
             World.Instance.UpdateSkillValue("LAST_PLAYER_Z", World.Instance.GetSkillValue("PLAYER_Z"));
             //World.Instance.UpdateSkillValue("PLAYER_SPEED", _characterController.velocity.magnitude);
-            World.Instance.UpdateSkillValue("PLAYER_X", _characterController.transform.position.x);
-            World.Instance.UpdateSkillValue("PLAYER_Y", _characterController.transform.position.z);
-            World.Instance.UpdateSkillValue("PLAYER_Z", _characterController.transform.position.y);
+            World.Instance.UpdateSkillValue("PLAYER_X", playerX);
+            World.Instance.UpdateSkillValue("PLAYER_Y", playerY);
+            World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
             World.Instance.UpdateSkillValue("PLAYER_SIN", AngleUtils.Sin(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_COS", AngleUtils.Cos(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_ANGLE", playerAngle);
+            StickToTheGround(playerX, playerY, ref playerZ);
+            World.Instance.UpdateSkillValue("PLAYER_HGT", playerZ - GetRegion().GetFloat("FLOOR_HGT"));
+        }
+
+        private void OnGUI()
+        {
+            GUILayout.BeginVertical();
+            GUILayout.Label($"PLAYER_ANGLE:{World.Instance.GetSkillValue("PLAYER_ANGLE")}");
+            GUILayout.Label($"PLAYER_VX:{World.Instance.GetSkillValue("PLAYER_VX")}");
+            GUILayout.Label($"PLAYER_VY:{World.Instance.GetSkillValue("PLAYER_VY")}");
+            GUILayout.Label($"PLAYER_VZ:{World.Instance.GetSkillValue("PLAYER_VZ")}");
+            GUILayout.Label($"PLAYER_VROT:{World.Instance.GetSkillValue("PLAYER_VROT")}");
+            GUILayout.Label($"PLAYER_SIN:{World.Instance.GetSkillValue("PLAYER_SIN")}");
+            GUILayout.Label($"PLAYER_COS:{World.Instance.GetSkillValue("PLAYER_COS")}");
+            GUILayout.Label($"PLAYER_HGT:{World.Instance.GetSkillValue("PLAYER_HGT")}");
+            GUILayout.EndVertical();
         }
 
         private void StickToTheGround(float playerX, float playerY, ref float playerZ)
@@ -80,7 +96,7 @@ namespace Acknex
             AcknexObject.SetInteger("REGION", playerRegion);
         }
 
-        public IAcknexObject GetRegion(int? actualPlayerRegion)
+        public IAcknexObject GetRegion(int? actualPlayerRegion = null)
         {
             var playerRegion = actualPlayerRegion ?? AcknexObject.GetInteger("REGION");
             if (playerRegion >= World.Instance.RegionsByIndex.Count)

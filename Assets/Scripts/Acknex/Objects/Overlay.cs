@@ -7,7 +7,7 @@ namespace Acknex
 {
     public class Overlay : MonoBehaviour, IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Overlay);
 
         private static IAcknexObject GetTemplateCallback(string name)
         {

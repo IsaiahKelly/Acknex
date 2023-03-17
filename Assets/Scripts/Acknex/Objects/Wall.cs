@@ -10,7 +10,7 @@ namespace Acknex
 {
     public class Wall : MonoBehaviour, IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Wall);
 
         private static IAcknexObject GetTemplateCallback(string name)
         {

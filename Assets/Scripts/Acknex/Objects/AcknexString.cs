@@ -4,7 +4,7 @@ namespace Acknex
 {
     public class AcknexString : IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallbackActor);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallbackActor, ObjectType.String);
 
         private static IAcknexObject GetDefinitionCallbackActor(string name)
         {
