@@ -19,9 +19,8 @@ namespace Acknex
             var playerX = World.Instance.GetSkillValue("PLAYER_X");
             var playerY = World.Instance.GetSkillValue("PLAYER_Y");
             var playerZ = World.Instance.GetSkillValue("PLAYER_Z");
-            var height = World.Instance.GetSkillValue("PLAYER_HGT");
             //todo: this block should only run on carefully flagged
-            StickToTheGround(playerX, playerY, ref playerZ, ref height);
+            StickToTheGround(playerX, playerY, ref playerZ);
             World.Instance.UpdateSkillValue("PLAYER_X", playerX);
             World.Instance.UpdateSkillValue("PLAYER_Y", playerY);
             World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
@@ -34,7 +33,6 @@ namespace Acknex
             var playerY = World.Instance.GetSkillValue("PLAYER_Y");
             var playerZ = World.Instance.GetSkillValue("PLAYER_Z");
             var playerAngle = World.Instance.GetSkillValue("PLAYER_ANGLE");
-            var playerHeight = World.Instance.GetSkillValue("PLAYER_HGT");
             var unityPlayerAngle = AngleUtils.ConvertAcknexToUnityAngle(playerAngle);
             _characterController.transform.rotation = Quaternion.Euler(0f, unityPlayerAngle, 0f);
             _characterController.transform.position = new Vector3(playerX, playerZ, playerY);
@@ -63,17 +61,25 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_X", playerX);
             World.Instance.UpdateSkillValue("PLAYER_Y", playerY);
             World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
-            World.Instance.UpdateSkillValue("PLAYER_SIN", -AngleUtils.Sin(playerAngle));
+            World.Instance.UpdateSkillValue("PLAYER_SIN", AngleUtils.Sin(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_COS", AngleUtils.Cos(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_ANGLE", playerAngle);
-            StickToTheGround(playerX, playerY, ref playerZ, ref playerHeight);
-            World.Instance.UpdateSkillValue("PLAYER_HGT", playerHeight);
+
+            var groundZ = playerZ;
+            StickToTheGround(playerX, playerY, ref groundZ, false);
+            var playerHgt = playerZ - groundZ;
+            if (playerHgt < 0.1f)
+            {
+                playerHgt = 0f;
+            }
+            World.Instance.UpdateSkillValue("PLAYER_HGT", playerHgt);
         }
 
         private void OnGUI()
         {
             GUILayout.BeginVertical();
             GUILayout.Label($"PLAYER_ANGLE:{World.Instance.GetSkillValue("PLAYER_ANGLE")}");
+            GUILayout.Label($"PLAYER_TILT:{World.Instance.GetSkillValue("PLAYER_TILT")}");
             GUILayout.Label($"PLAYER_VX:{World.Instance.GetSkillValue("PLAYER_VX")}");
             GUILayout.Label($"PLAYER_VY:{World.Instance.GetSkillValue("PLAYER_VY")}");
             GUILayout.Label($"PLAYER_VZ:{World.Instance.GetSkillValue("PLAYER_VZ")}");
@@ -81,33 +87,20 @@ namespace Acknex
             GUILayout.Label($"PLAYER_SIN:{World.Instance.GetSkillValue("PLAYER_SIN")}");
             GUILayout.Label($"PLAYER_COS:{World.Instance.GetSkillValue("PLAYER_COS")}");
             GUILayout.Label($"PLAYER_HGT:{World.Instance.GetSkillValue("PLAYER_HGT")}");
+            GUILayout.Label($"RGN:{Player.Instance.GetRegion().GetString("NAME")}");
             GUILayout.EndVertical();
         }
 
-        private void StickToTheGround(float playerX, float playerY, ref float playerZ, ref float playerHeight)
+        private void StickToTheGround(float playerX, float playerY, ref float playerZ, bool initial = true)
         {
             var playerRegion = AcknexObject.GetInteger("REGION");
-            Region.Locate(AcknexObject, ref playerRegion, playerX, playerY, ref playerZ, false, false);
-            var playerRegionObject = GetRegion(playerRegion);
-            if (playerRegionObject != null)
-            {
-                World.Instance.SetSynonymObject("HERE", playerRegionObject);
-                World.Instance.UpdateSkillValue("FLOOR_HGT", playerRegionObject.GetFloat("FLOOR_HGT"));
-                World.Instance.UpdateSkillValue("CEIL_HGT", playerRegionObject.GetFloat("CEIL_HGT"));
-                playerHeight = playerZ - playerRegionObject.GetFloat("FLOOR_HGT");
-            }
-            AcknexObject.SetInteger("REGION", playerRegion);
+            Region.Locate(AcknexObject, playerRegion, playerX, playerY, ref playerZ, false, false, initial);
         }
 
-        public IAcknexObject GetRegion(int? actualPlayerRegion = null)
+        public IAcknexObject GetRegion(int? currentRegionIndex = null)
         {
-            var playerRegion = actualPlayerRegion ?? AcknexObject.GetInteger("REGION");
-            if (playerRegion >= World.Instance.RegionsByIndex.Count || playerRegion < 0)
-            {
-                return null;
-            }
-            var playerRegionObject = World.Instance.RegionsByIndex[playerRegion].AcknexObject;
-            return playerRegionObject;
+            var regionIndex = currentRegionIndex ?? AcknexObject.GetInteger("REGION");
+            return World.Instance.GetRegionByIndex(regionIndex)?.AcknexObject;
         }
 
         public void Enable()

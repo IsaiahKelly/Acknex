@@ -128,12 +128,10 @@ namespace Acknex
         {
             if (SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
-                var objectName = synonym.AcknexObject.GetString("VAL");
-                var objectType = GetSynonymType(synonymName);
-                var action = GetObject(objectType, objectName);
-                if (action != null)
+                var objectName = synonym.AcknexObject.GetString("VAL") ?? synonym.AcknexObject.GetString("DEFAULT");
+                if (objectName != null)
                 {
-                    yield return CallAction(null, action.GetString("NAME"));
+                    yield return CallAction(GetSynonymObject("MY"), objectName);
                 }
             }
         }

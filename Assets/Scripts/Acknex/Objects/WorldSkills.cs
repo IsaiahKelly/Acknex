@@ -250,14 +250,19 @@ namespace Acknex
             var timeCorr = 1f;// TimeUtils.OneTick / TimeUtils.TimeToTicks(Time.deltaTime);
             UpdateSkillValue("TIME_CORR", timeCorr);
             UpdateSkillValue("TIME_FAC", 1f - timeCorr);
-            UpdateSkillValue("FORCE_AHEAD", Input.GetAxis("Vertical"));
+
+            var keySense = GetSkillValue("KEY_SENSE");
+            UpdateSkillValue("FORCE_AHEAD", Input.GetAxis("Vertical") * keySense);
             //todo: is it inverted in the original?
-            UpdateSkillValue("FORCE_STRAFE", -Input.GetAxis("Horizontal"));
-            UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X"));
-            UpdateSkillValue("FORCE_TILT", GetSkillValue("FORCE_TILT") - (Input.GetAxis("Mouse Y") * 0.1f));
-            UpdateSkillValue("FORCE_UP", Input.GetButton("Jump") ? 1 : Input.GetButton("Crouch") ? -1 : 0);
+            UpdateSkillValue("FORCE_STRAFE", -Input.GetAxis("Horizontal") * keySense);
+            UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X") * keySense);
+            UpdateSkillValue("FORCE_TILT", (GetSkillValue("FORCE_TILT") - (Input.GetAxis("Mouse Y") * 0.1f * keySense)));
+            UpdateSkillValue("FORCE_UP", (Input.GetButton("Jump") ? 1 : Input.GetButton("Crouch") ? -1 : 0) * keySense);
 
             //todo: WALK_PERIOD, WALK_TIME, WAVE_PERIOD, WALK, WAVE
+            //var oneStepTime = TimeUtils.TicksToTime((int)(GetSkillValue("WALK_TIME")));
+            //var walkFactor = Mathf.Sin(-1f + ((Time.time % oneStepTime) * 2f));
+            //UpdateSkillValue("WALK", walkFactor);
 
             UpdateSkillValue("RANDOM", Random.value);
             _lastMousePosition = mousePosition;

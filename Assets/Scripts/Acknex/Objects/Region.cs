@@ -10,6 +10,8 @@ using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 using UnityEngine.Rendering;
 using Utils;
+using Debug = System.Diagnostics.Debug;
+using GK;
 
 namespace Acknex
 {
@@ -27,8 +29,6 @@ namespace Acknex
             return null;
         }
 
-        private const float MaxHeightCheck = 20000f;
-
         private MeshFilter _floorMeshFilter;
         private MeshCollider _floorCollider;
         private MeshRenderer _floorMeshRenderer;
@@ -38,10 +38,15 @@ namespace Acknex
         private MeshRenderer _ceilMeshRenderer;
 
         private Region _belowOverride;
-        private HashSet<IAcknexObject> _dive = new HashSet<IAcknexObject>();
+        private Region _aboveOverride;
 
         public ContouredRegion ContouredRegion;
         private AudioSource _audioSource;
+        private GameObject floorGameObject;
+        private GameObject ceilGameObject;
+        private GameObject triggerGameObject;
+        private MeshCollider triggerCollider;
+        private CollisionCallback triggerCollisionCallback;
 
         private void Awake()
         {
@@ -117,27 +122,24 @@ namespace Acknex
 
         private void UpdateEvents()
         {
-            //todo: masters
-            var playerZ = World.Instance.GetSkillValue("PLAYER_Z");
-            //todo: needs to take the bottom offset?
-            var ceilHgt = AcknexObject.GetFloat("CEIL_HGT");
-            if (playerZ <= ceilHgt && !_dive.Contains(Player.Instance.AcknexObject))
+            //var playerZ = World.Instance.GetSkillValue("PLAYER_Z");
+            //if (playerZ < AcknexObject.GetFloat("FLOOR_HGT") && !_dive.Contains(Player.Instance.AcknexObject))
+            //{
+            //    World.Instance.TriggerEvent(AcknexObject, "IF_DIVE");
+            //    _dive.Add(Player.Instance.AcknexObject);
+            //}
+            //else if (playerZ > AcknexObject.GetFloat("CEIL_HGT") && !_dive.Contains(Player.Instance.AcknexObject))
+            //{
+            //    World.Instance.TriggerEvent(AcknexObject, "IF_ARISE");
+            //    _dive.Remove(Player.Instance.AcknexObject);
+            //}
+        }
+
+        public Region Above
+        {
+            get
             {
-                if (AcknexObject.TryGetString("IF_DIVE", out var ifDive))
-                {
-                    World.Instance.SetSynonymObject("THERE", AcknexObject);
-                    World.Instance.TriggerEvent(Player.Instance.AcknexObject, "IF_DIVE");
-                }
-                _dive.Add(Player.Instance.AcknexObject);
-            }
-            else if (playerZ > ceilHgt && !_dive.Contains(Player.Instance.AcknexObject))
-            {
-                if (AcknexObject.TryGetString("IF_ARISE", out var ifDive))
-                {
-                    World.Instance.SetSynonymObject("THERE", AcknexObject);
-                    World.Instance.TriggerEvent(Player.Instance.AcknexObject, "IF_ARISE");
-                }
-                _dive.Remove(Player.Instance.AcknexObject);
+                return _aboveOverride;
             }
         }
 
@@ -159,15 +161,6 @@ namespace Acknex
             set => _belowOverride = value;
         }
 
-        private Region GetGroundRegion(Region region)
-        {
-            while (region.Below != null)
-            {
-                region = region.Below;
-            }
-            return region;
-        }
-
         public void Enable()
         {
             AcknexObject.RemoveFlag("INVISIBLE");
@@ -183,42 +176,101 @@ namespace Acknex
         public static void BuildFloorMesh(List<Vector3> allVertices, List<Vector2> allUVS, Dictionary<int, List<int>> allTriangles, Region region, string ceilTexture, string floorTexture)
         {
             {
-                var floorGameObject = new GameObject("Floor");
-                floorGameObject.transform.SetParent(region.transform, false);
-                floorGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
-                var _floorMesh = new Mesh();
-                _floorMesh.SetVertices(allVertices);
-                _floorMesh.SetUVs(0, allUVS);
-                _floorMesh.subMeshCount = 1;
-                _floorMesh.SetTriangles(allTriangles[0], 0);
-                _floorMesh.RecalculateNormals();
-                _floorMesh.UploadMeshData(true);
-                region._floorMeshFilter = floorGameObject.AddComponent<MeshFilter>();
-                region._floorMeshFilter.mesh = _floorMesh;
-                region._floorMeshRenderer = floorGameObject.AddComponent<MeshRenderer>();
+                region.floorGameObject = new GameObject("Floor");
+                region.floorGameObject.transform.SetParent(region.transform, false);
+                region.floorGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
+                var floorMesh = new Mesh();
+                floorMesh.SetVertices(allVertices);
+                floorMesh.SetUVs(0, allUVS);
+                floorMesh.subMeshCount = 1;
+                floorMesh.SetTriangles(allTriangles[0], 0);
+                floorMesh.RecalculateNormals();
+                floorMesh.UploadMeshData(true);
+                region._floorMeshFilter = region.floorGameObject.AddComponent<MeshFilter>();
+                region._floorMeshFilter.mesh = floorMesh;
+                region._floorMeshRenderer = region.floorGameObject.AddComponent<MeshRenderer>();
                 var material = World.Instance.BuildMaterial(floorTexture);
                 region._floorMeshRenderer.material = material;
-                region._floorCollider = floorGameObject.AddComponent<MeshCollider>();
-                region._floorCollider.sharedMesh = _floorMesh;
+                region._floorCollider = region.floorGameObject.AddComponent<MeshCollider>();
+                region._floorCollider.sharedMesh = floorMesh;
             }
             {
-                var ceilGameObject = new GameObject("Ceil");
-                ceilGameObject.transform.SetParent(region.transform, false);
-                ceilGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
-                var _ceilMesh = new Mesh();
-                _ceilMesh.SetVertices(allVertices);
-                _ceilMesh.SetUVs(0, allUVS);
-                _ceilMesh.subMeshCount = 1;
-                _ceilMesh.SetTriangles(allTriangles[1], 0);
-                _ceilMesh.RecalculateNormals();
-                _ceilMesh.UploadMeshData(true);
-                region._ceilMeshFilter = ceilGameObject.AddComponent<MeshFilter>();
-                region._ceilMeshFilter.mesh = _ceilMesh;
-                region._ceilMeshRenderer = ceilGameObject.AddComponent<MeshRenderer>();
+                region.ceilGameObject = new GameObject("Ceil");
+                region.ceilGameObject.transform.SetParent(region.transform, false);
+                region.ceilGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
+                var ceilMesh = new Mesh();
+                ceilMesh.SetVertices(allVertices);
+                ceilMesh.SetUVs(0, allUVS);
+                ceilMesh.subMeshCount = 1;
+                ceilMesh.SetTriangles(allTriangles[1], 0);
+                ceilMesh.RecalculateNormals();
+                ceilMesh.UploadMeshData(true);
+                region._ceilMeshFilter = region.ceilGameObject.AddComponent<MeshFilter>();
+                region._ceilMeshFilter.mesh = ceilMesh;
+                region._ceilMeshRenderer = region.ceilGameObject.AddComponent<MeshRenderer>();
                 var material = World.Instance.BuildMaterial(ceilTexture);
                 region._ceilMeshRenderer.material = material;
-                region._ceilCollider = ceilGameObject.AddComponent<MeshCollider>();
-                region._ceilCollider.sharedMesh = _ceilMesh;
+                region._ceilCollider = region.ceilGameObject.AddComponent<MeshCollider>();
+                region._ceilCollider.sharedMesh = ceilMesh;
+            }
+            {
+                var convexHull = new ConvexHullCalculator();
+                var verts = new List<Vector3>();
+                var tris = new List<int>();
+                var normals = new List<Vector3>();
+                convexHull.GenerateHull(allVertices, false, ref verts, ref tris, ref normals);
+                var triggerMesh = new Mesh();
+                triggerMesh.SetVertices(verts);
+                triggerMesh.SetNormals(normals);
+                triggerMesh.SetTriangles(tris, 0);
+                triggerMesh.UploadMeshData(true);
+                region.triggerGameObject = new GameObject("Trigger");
+                region.triggerGameObject.layer = World.Instance.TriggersLayer.LayerIndex;
+                region.triggerGameObject.transform.SetParent(region.transform, false);
+                region.triggerCollider = region.triggerGameObject.AddComponent<MeshCollider>();
+                region.triggerCollider.sharedMesh = triggerMesh;
+                region.triggerCollider.convex = true;
+                region.triggerCollider.isTrigger = true;
+                region.triggerCollisionCallback = region.triggerGameObject.AddComponent<CollisionCallback>();
+                region.triggerCollisionCallback.OnTriggerEnterCallback += region.OnTriggerEnterCallback;
+                region.triggerCollisionCallback.OnTriggerExitCallback += region.OnTriggerExitCallback;
+            }
+        }
+
+        private void OnTriggerExitCallback(Collider collider)
+        {
+            if (collider.TryGetComponent<Thing>(out var thing))
+            {
+                World.Instance.SetSynonymObject("THERE", AcknexObject);
+                World.Instance.TriggerEvent(AcknexObject, "IF_LEAVE");
+            }
+            else if (collider.TryGetComponent<Player>(out var player))
+            {
+                World.Instance.SetSynonymObject("THERE", AcknexObject);
+                World.Instance.TriggerEvent(AcknexObject, "IF_LEAVE");
+                World.Instance.TriggerEvent(AcknexObject, "IF_ARISE");
+            }
+        }
+
+        private void OnTriggerEnterCallback(Collider collider)
+        {
+            if (collider.TryGetComponent<Thing>(out var thing))
+            {
+                World.Instance.SetSynonymObject("THERE", AcknexObject);
+                World.Instance.TriggerEvent(AcknexObject, "IF_ENTER");
+                var regionIndex = World.Instance.GetRegionIndex(this);
+                thing.AcknexObject.SetFloat("REGION", regionIndex);
+            }
+            else if (collider.TryGetComponent<Player>(out var player))
+            {
+                World.Instance.SetSynonymObject("THERE", AcknexObject);
+                var regionIndex = World.Instance.GetRegionIndex(this);
+                player.AcknexObject.SetFloat("REGION", regionIndex);
+                World.Instance.TriggerEvent(AcknexObject, "IF_ENTER");
+                if (Above != null)
+                {
+                    World.Instance.TriggerEvent(Above.AcknexObject, "IF_DIVE");
+                }
             }
         }
 
@@ -241,6 +293,7 @@ namespace Acknex
                 var newRegion = Instantiate(region.Below.gameObject).GetComponent<Region>();
                 newRegion.transform.SetParent(World.Instance.transform, false);
                 newRegion.name = region.Below.name;
+                newRegion._aboveOverride = region;
                 var acknexObject = ((AcknexObject)newRegion.AcknexObject);
                 var belowAcknexObject = ((AcknexObject)region.Below.AcknexObject);
                 acknexObject.ObjectProperties = new SortedDictionary<string, object>(belowAcknexObject.ObjectProperties);
@@ -305,66 +358,38 @@ namespace Acknex
         }
 
 
-        //todo: replace MaxHeightCheck
-        public static void Locate(IAcknexObject source, ref int regionIndex, float thingX, float thingY, ref float thingZ, /*ref float height,*/ bool onGround = false, bool onCeil = false)
+        public static void Locate(IAcknexObject source, int regionIndex, float thingX, float thingY, ref float thingZ, bool onGround = false, bool onCeil = false, bool initial = true)
         {
-            if (regionIndex >= World.Instance.RegionsByIndex.Count || regionIndex < 0)
+            bool GetValue(RaycastHit raycastHit, Region region, ref float outThingZ, ref int outRegionIndex)
             {
-                return;
+                if (raycastHit.transform.parent != null && raycastHit.transform.parent.TryGetComponent<Region>(out var newRegion))
+                {
+                    outThingZ = onGround ? 0 : raycastHit.point.y;
+                    return true;
+                }
+                return false;
             }
-            var currentRegion = World.Instance.RegionsByIndex[regionIndex];
+            var currentRegion = World.Instance.GetRegionByIndex(regionIndex);
             if (onCeil)
             {
-                var maxHeight = currentRegion.AcknexObject.GetFloat("FLOOR_HGT");
-                var point = new Vector3(thingX, maxHeight, thingY);
-                if (Physics.Raycast(new Ray(point, Vector3.up), out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
+                var zCheck = initial ? currentRegion.AcknexObject.GetFloat("FLOOR_HGT") : thingZ + 1.0f;
+                var point = new Vector3(thingX, zCheck, thingY);
+                if (Physics.Raycast(new Ray(point, Vector3.up), out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
-                    if (raycastHit.transform.parent != null && raycastHit.transform.parent.TryGetComponent<Region>(out var region))
+                    if (GetValue(raycastHit, currentRegion, ref thingZ, ref regionIndex))
                     {
-                        thingZ = onGround ? 0 : raycastHit.point.y;
-                        var newRegionIndex = World.Instance.RegionsByIndex.IndexOf(region);
-                        if (
-                            source.Type == ObjectType.Player ||
-                            source.ContainsFlag("MASTER", false))
-                        {
-                            if (newRegionIndex != regionIndex)
-                            {
-                                World.Instance.SetSynonymObject("THERE", currentRegion.AcknexObject);
-                                World.Instance.TriggerEvent(source, "IF_LEAVE");
-                                World.Instance.SetSynonymObject("THERE", region.AcknexObject);
-                                World.Instance.TriggerEvent(source, "IF_ENTER");
-                            }
-                        }
-                        //height = raycastHit.distance - maxHeight;
-                        regionIndex = newRegionIndex;
                         return;
                     }
                 }
             }
             else
             {
-                var maxHeight = currentRegion.AcknexObject.GetFloat("CEIL_HGT");
-                var point = new Vector3(thingX, maxHeight, thingY);
-                if (Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
+                var zCheck = initial ? currentRegion.AcknexObject.GetFloat("CEIL_HGT") : thingZ + 1.0f;
+                var point = new Vector3(thingX, zCheck, thingY);
+                if (Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
-                    if (raycastHit.transform.parent != null && raycastHit.transform.parent.TryGetComponent<Region>(out var region))
+                    if (GetValue(raycastHit, currentRegion, ref thingZ, ref regionIndex))
                     {
-                        thingZ = onGround ? 0 : raycastHit.point.y;
-                        var newRegionIndex = World.Instance.RegionsByIndex.IndexOf(region);
-                        if (
-                            source.Type == ObjectType.Player ||
-                            source.ContainsFlag("MASTER", false))
-                        {
-                            if (newRegionIndex != regionIndex)
-                            {
-                                World.Instance.SetSynonymObject("THERE", currentRegion.AcknexObject);
-                                World.Instance.TriggerEvent(source, "IF_LEAVE");
-                                World.Instance.SetSynonymObject("THERE", region.AcknexObject);
-                                World.Instance.TriggerEvent(source, "IF_ENTER");
-                            }
-                        }
-                        //height = raycastHit.distance - maxHeight;
-                        regionIndex = newRegionIndex;
                         return;
                     }
                 }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Acknex.Interfaces;
-using CodiceApp.EventTracking.Plastic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Acknex
 {
@@ -32,7 +29,7 @@ namespace Acknex
             {
                 return;
             }
-            if (source.TryGetString(eventName, out var @event))
+            if (source.TryGetString(eventName, out var @event) && @event != null)
             {
                 SetSynonymObject("MY", source);
                 StartCoroutine(_runtime.CallAction(@event));
@@ -47,7 +44,7 @@ namespace Acknex
             }
         }
 
-        private static string[] _tickEvents = new string[]
+        private static readonly string[] TickEvents = new string[]
         {
             "EACH_TICK.1",
             "EACH_TICK.2",
@@ -67,8 +64,8 @@ namespace Acknex
             "EACH_TICK.16",
         };
 
-        private static string[] _secEvents = new string[]
- {
+        private static readonly string[] SecEvents = new string[]
+        {
             "EACH_SEC.1",
             "EACH_SEC.2",
             "EACH_SEC.3",
@@ -85,46 +82,29 @@ namespace Acknex
             "EACH_SEC.14",
             "EACH_SEC.15",
             "EACH_SEC.16",
- };
+        };
 
         private IEnumerator TriggerTickEvents(IAcknexObject acknexObject)
         {
             while (true)
             {
-                var usedSlot = false;
-                foreach (var tickEvent in _tickEvents)
+                foreach (var tickEvent in TickEvents)
                 {
-                    if (AcknexObject.TryGetString(tickEvent, out var action) && action != null)
-                    {
-                        usedSlot = true;
-                        yield return CallAction(acknexObject, action);
-                    }
+                    TriggerEvent(acknexObject, tickEvent);
                 }
-                if (!usedSlot)
-                {
-                    yield return WaitForTick;
-                }
+                yield return null;
             }
         }
-
 
         private IEnumerator TriggerSecEvents(IAcknexObject acknexObject)
         {
             while (true)
             {
-                var usedSlot = false;
-                foreach (var secEvent in _secEvents)
+                foreach (var secEvent in SecEvents)
                 {
-                    if (AcknexObject.TryGetString(secEvent, out var action) && action != null)
-                    {
-                        usedSlot = true; 
-                        yield return CallAction(acknexObject, action);
-                    }
+                    TriggerEvent(acknexObject, secEvent);
                 }
-                if (!usedSlot)
-                {
-                    yield return WaitForSecond;
-                }
+                yield return null;
             }
         }
 

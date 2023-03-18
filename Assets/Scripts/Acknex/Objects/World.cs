@@ -34,6 +34,8 @@ namespace Acknex
         public SingleUnityLayer WallsAndRegionsLayer;
         public SingleUnityLayer ThingsAndActorsLayer;
         public SingleUnityLayer WaterLayer;
+        public SingleUnityLayer TriggersLayer;
+        public LayerMask WallsWaterAndRegions;
 
         public readonly List<Region> RegionsByIndex = new List<Region>();
 
@@ -511,6 +513,30 @@ namespace Acknex
         public void ReadInkey(string stringName)
         {
             
+        }
+
+        public int GetRegionIndex(Region region)
+        {
+            var indexOf = RegionsByIndex.IndexOf(region);
+            if (indexOf >= 0)
+            {
+                return indexOf;
+            }
+            var template = region.AcknexObject.GetTemplateCallback(region.AcknexObject.GetString("NAME"));
+            if (template.Container is Region templateRegion)
+            {
+                return RegionsByIndex.IndexOf(templateRegion);
+            }
+            return -1;
+        }
+
+        public Region GetRegionByIndex(int index)
+        {
+            if (index < RegionsByIndex.Count && index >= 0)
+            {
+                return RegionsByIndex[index];
+            }
+            return null;
         }
     }
 }

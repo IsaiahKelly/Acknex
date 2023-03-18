@@ -37,6 +37,12 @@ namespace Acknex
 
         private Vector3 XAxis;
         private AudioSource _audioSource;
+        private GameObject _vertexGameObjectA;
+        private SphereCollider _vertexTriggerA;
+        private GameObject _vertexGameObjectB;
+        private SphereCollider _vertexTriggerB;
+        private CollisionCallback _collisionCallbackA;
+        private CollisionCallback _collisionCallbackB;
 
         public Texture TextureObject => AcknexObject.GetString("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.GetString("TEXTURE"), out var textureObject) ? textureObject : null;
 
@@ -51,6 +57,40 @@ namespace Acknex
         {
             //todo: move to middle
             _audioSource = gameObject.AddComponent<AudioSource>();
+
+            _vertexGameObjectA = new GameObject("VertexA");
+            _vertexGameObjectA.transform.SetParent(transform, false);
+            _vertexGameObjectA.layer = World.Instance.TriggersLayer.LayerIndex;
+            _vertexTriggerA = _vertexGameObjectA.AddComponent<SphereCollider>();
+            _vertexTriggerA.isTrigger = true;
+            _collisionCallbackA = _vertexGameObjectA.AddComponent<CollisionCallback>();
+            _collisionCallbackA.OnTriggerEnterCallback += OnWallTriggerEnter;
+            _collisionCallbackA.OnTriggerExitCallback += OnWallTriggerExit;
+
+            _vertexGameObjectB = new GameObject("VertexB");
+            _vertexGameObjectB.transform.SetParent(transform, false);
+            _vertexGameObjectB.layer = World.Instance.TriggersLayer.LayerIndex;
+            _vertexTriggerB = _vertexGameObjectA.AddComponent<SphereCollider>();
+            _vertexTriggerB.isTrigger = true;
+            _collisionCallbackB = _vertexGameObjectB.AddComponent<CollisionCallback>();
+            _collisionCallbackB.OnTriggerEnterCallback += OnWallTriggerEnter;
+            _collisionCallbackB.OnTriggerExitCallback += OnWallTriggerExit;
+        }
+
+        private void OnWallTriggerExit(Collider collider)
+        {
+            if (collider.TryGetComponent<Player>(out var player))
+            {
+                World.Instance.TriggerEvent(AcknexObject, "IF_FAR");
+            }
+        }
+
+        private void OnWallTriggerEnter(Collider collider)
+        {
+            if (collider.TryGetComponent<Player>(out var player))
+            {
+                World.Instance.TriggerEvent(AcknexObject, "IF_NEAR");
+            }
         }
 
         private void Update()
@@ -102,6 +142,10 @@ namespace Acknex
             _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.AcknexObject.ContainsFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             //todo: conflict?
             _collider.enabled = !AcknexObject.ContainsFlag("PASSABLE");
+            _vertexTriggerB.radius =  _vertexTriggerA.radius = AcknexObject.GetFloat("DIST");
+            _vertexTriggerB.enabled = _vertexTriggerA.enabled = AcknexObject.TryGetString("IF_NEAR", out _) || AcknexObject.TryGetString("IF_FAR", out _);
+            _vertexGameObjectA.transform.position = BottomQuad.GetColumn(3);
+            _vertexGameObjectB.transform.position = BottomQuad.GetColumn(2);
             //todo: update <X1, <Y1, <Z1 <X2, <Y2, <Z2, DISTANCE, LENGTH, SIZE_X, LEFT, RIGHT skills
         }
 

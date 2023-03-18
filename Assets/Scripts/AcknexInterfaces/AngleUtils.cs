@@ -7,7 +7,7 @@ namespace Acknex.Interfaces
     {
         public static float Sin(float radians)
         {
-            return Mathf.Sin(radians);
+            return -Mathf.Sin(radians);
         }
 
         public static float Cos(float radians)

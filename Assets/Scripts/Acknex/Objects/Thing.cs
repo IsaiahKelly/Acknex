@@ -364,24 +364,22 @@ namespace Acknex
         public IAcknexObject GetRegion()
         {
             var region = AcknexObject.GetInteger("REGION");
-            var regionObject = World.Instance.RegionsByIndex[region].AcknexObject;
+            var regionObject = World.Instance.GetRegionByIndex(region)?.AcknexObject;
             return regionObject;
         }
 
         public void StickToTheCeiling(float thingX, float thingY, ref float thingZ)
         {
             var regionIndex = AcknexObject.GetInteger("REGION");
-            Region.Locate(AcknexObject, ref regionIndex, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"), true);
+            Region.Locate(AcknexObject, regionIndex, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"), true);
             thingZ = thingZ - transform.localScale.y;
-            AcknexObject.SetInteger("REGION", regionIndex);
             AcknexObject.SetFloat("Z", thingZ);
         }
 
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)
         {
             var regionIndex = AcknexObject.GetInteger("REGION");
-            Region.Locate(AcknexObject, ref regionIndex, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"));
-            AcknexObject.SetInteger("REGION", regionIndex);
+            Region.Locate(AcknexObject, regionIndex, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"));
             AcknexObject.SetFloat("Z", thingZ);
         }
 

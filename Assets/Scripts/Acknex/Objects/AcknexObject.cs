@@ -228,7 +228,7 @@ namespace Acknex
 
         public bool TryGetString(string propertyName, out string result, bool fromTemplate = true)
         {
-            if (ObjectProperties.TryGetValue(propertyName, out var obj))
+            if (ObjectProperties.TryGetValue(propertyName, out var obj) && obj != null)
             {
                 result = obj.ToString();
                 return true;
