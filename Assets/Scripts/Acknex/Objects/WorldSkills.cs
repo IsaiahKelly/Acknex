@@ -247,7 +247,7 @@ namespace Acknex
             UpdateSkillValue("TICKS", TimeUtils.TimeToTicks(Time.time));
             UpdateSkillValue("SECS", (int)Time.time);
             //todo: how to calc timecorr?
-            var timeCorr = 1f;//TimeUtils.OneTick / TimeUtils.TimeToTicks(Time.deltaTime);
+            var timeCorr = Time.deltaTime / TimeUtils.OneTick;
             UpdateSkillValue("TIME_CORR", timeCorr);
             UpdateSkillValue("TIME_FAC", 1f - timeCorr);
 
