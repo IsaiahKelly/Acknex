@@ -19,8 +19,10 @@ namespace Acknex
         public float X => AcknexObject.GetFloat("X");
         public float Y => AcknexObject.GetFloat("Y");
 
-        public Texture2D Texture2D;
         private Texture2DArray _bmaps;
+
+        public Texture2D Texture2D;
+        public Texture2D BitmapTexture2D;
 
         public Bitmap()
         {
@@ -37,7 +39,7 @@ namespace Acknex
                 {
                     Texture2D = PcxReader.Load(filename);
                     Texture2D.name = AcknexObject.GetString("NAME");
-                    TextureUtils.Dilate(Texture2D);
+                    //TextureUtils.Dilate(Texture2D);
                     World.Instance.TextureCache.Add(filename, Texture2D);
                 }
                 else if (lowerInvariant.EndsWith("lbm"))
@@ -48,10 +50,15 @@ namespace Acknex
                     {
                         Texture2D = iff.Ilbms[0].Texture2D;
                         Texture2D.name = AcknexObject.GetString("NAME");
-                        TextureUtils.Dilate(Texture2D);
+                        //TextureUtils.Dilate(Texture2D);
                         World.Instance.TextureCache.Add(filename, Texture2D);
                     }
                 }
+            }
+            if (Texture2D != null && BitmapTexture2D == null)
+            {
+                BitmapTexture2D = new Texture2D((int)Width, (int)Height, Texture2D.graphicsFormat, TextureCreationFlags.MipChain);
+                TextureUtils.CopyTextureCPU(Texture2D, BitmapTexture2D, true, false, (int)X, (int)Y, (int)Width, (int)Height);
             }
         }
 
@@ -68,7 +75,7 @@ namespace Acknex
 
         public void UpdateMaterial(Material material, Texture texture = null, int index = 0, bool mirror = false, IAcknexObject wallOrRegion = null)
         {
-            if (Texture2D == null)
+            if (BitmapTexture2D == null)
             {
                 return;
             }
@@ -76,10 +83,6 @@ namespace Acknex
             {
                 return;
             }
-            var width = Width;
-            var height = Height;
-            var x = X;
-            var y = Y;
             var scaleX = 16f;
             var scaleY = 16f;
             var offsetX = 0f;
@@ -130,10 +133,10 @@ namespace Acknex
                     if (_bmaps == null)
                     {
                         var bitmapCount = texture.BitmapCount;
-                        _bmaps = new Texture2DArray((int)width, (int)height, bitmapCount, Texture2D.graphicsFormat, TextureCreationFlags.MipChain);
+                        _bmaps = new Texture2DArray((int)Width, (int)Height, bitmapCount, BitmapTexture2D.graphicsFormat, TextureCreationFlags.MipChain);
                         for (var i = 0; i < bitmapCount; i++)
                         {
-                            _bmaps.SetPixels(texture.GetBitmapAt(i).Texture2D.GetPixels(), i);
+                            _bmaps.SetPixels(texture.GetBitmapAt(i).BitmapTexture2D.GetPixels(), i);
                         }
                         _bmaps.Apply(true, false);
                     }
@@ -141,10 +144,10 @@ namespace Acknex
                     //todo: SKY_OFFS_Y
                 }
             }
-            var x0 = mirror ? x + width : x;
-            var y0 = y;
-            var x1 = mirror ? x : x + width;
-            var y1 = y + height;
+            var x0 = mirror ? 0 + Width : 0;
+            var y0 = 0;
+            var x1 = mirror ? 0 : 0 + Width;
+            var y1 = 0 + Height;
             material.SetFloat("_X0", x0);
             material.SetFloat("_Y0", y0);
             material.SetFloat("_X1", x1);
@@ -155,7 +158,7 @@ namespace Acknex
             material.SetFloat("_SCALEY", scaleY);
             material.SetInt("_CullMode", (int)cullMode);
             //material.SetFloat("_AMBIENT", ambient);
-            material.mainTexture = Texture2D;
+            material.mainTexture = BitmapTexture2D;
         }
     }
 }
