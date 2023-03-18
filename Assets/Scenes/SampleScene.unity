@@ -657,7 +657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b52af5bca98fed4c9690969a13ed559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WDLPath: C:\games\acknex\DEMO\VRDEMO.WDL
+  WDLPath: C:\games\acknex\SKAPH\SKAPH.WDL
   SourceGenerationPath: Assets\Scripts\Tests\Game.cs.new
   DisableWallTextures: 1
   DisableEvents: 0

@@ -78,6 +78,7 @@ namespace Acknex
                     case '|':
                     case '^':
                     case '&':
+                    case '=':
                         return true;
                 }
                 return false;

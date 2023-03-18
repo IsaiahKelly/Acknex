@@ -266,6 +266,8 @@ namespace Acknex
                 World.Instance.SetSynonymObject("THERE", AcknexObject);
                 var regionIndex = World.Instance.GetRegionIndex(this);
                 player.AcknexObject.SetFloat("REGION", regionIndex);
+                World.Instance.UpdateSkillValue("FLOOR_HGT", AcknexObject.GetFloat("FLOOR_HGT"));
+                World.Instance.UpdateSkillValue("CEIL_HGT", AcknexObject.GetFloat("CEIL_HGT"));
                 World.Instance.TriggerEvent(AcknexObject, "IF_ENTER");
                 if (Above != null)
                 {

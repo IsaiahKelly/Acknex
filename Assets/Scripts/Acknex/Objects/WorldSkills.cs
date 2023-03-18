@@ -219,13 +219,35 @@ namespace Acknex
             CreateSkill("KEY_CUR", 0, 0, 1);
             CreateSkill("KEY_CUL", 0, 0, 1);
             CreateSkill("KEY_SHIFT", 0, 0, 1);
+            CreateSkill("KEY_MINUS", 0, 1);
+            CreateSkill("KEY_PLUS", 0, 1);
 
-            //todo: is this right?
+            CreateSkill("KEY_JOY0", 0, 0, 1);
+            CreateSkill("KEY_JOY1", 0, 0, 1);
+            CreateSkill("KEY_JOY2", 0, 0, 1);
+            CreateSkill("KEY_JOY3", 0, 0, 1);
+            CreateSkill("KEY_JOY4", 0, 0, 1);
+            CreateSkill("KEY_JOY5", 0, 0, 1);
+            CreateSkill("KEY_JOY6", 0, 0, 1);
+            CreateSkill("KEY_JOY7", 0, 0, 1);
+            CreateSkill("KEY_JOY8", 0, 0, 1);
+            CreateSkill("KEY_JOY9", 0, 0, 1);
+
             CreateSkill("FLOOR_HGT", 0, Mathf.NegativeInfinity, Mathf.Infinity);
             CreateSkill("CEIL_HGT", 0, Mathf.NegativeInfinity, Mathf.Infinity);
 
             CreateSkill("TIME_CORR", 0, Mathf.NegativeInfinity, Mathf.Infinity);
             CreateSkill("TIME_FAC", 0, Mathf.NegativeInfinity, Mathf.Infinity);
+
+            CreateSkill("SLOPE_AHEAD", 0, Mathf.NegativeInfinity, Mathf.Infinity);
+            CreateSkill("SLOPE_SIDE", 0, Mathf.NegativeInfinity, Mathf.Infinity);
+
+            CreateSkill("ACCELERATION", 0, Mathf.NegativeInfinity, Mathf.Infinity);
+
+            CreateSkill("IMPACT_VX", 0, Mathf.NegativeInfinity, Mathf.Infinity);
+            CreateSkill("IMPACT_VY", 0, Mathf.NegativeInfinity, Mathf.Infinity);
+
+
         }
 
         private void UpdateSkills()

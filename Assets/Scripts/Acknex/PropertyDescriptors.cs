@@ -139,7 +139,40 @@ namespace Acknex
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.14");
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.15");
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "MESSAGES.16");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.1");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.2");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.3");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.4");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.5");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.6");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.7");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.8");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.9");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.10");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.11");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.12");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.13");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.14");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.15");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.16");
 
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.1");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.2");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.3");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.4");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.5");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.6");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.7");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.8");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.9");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.10");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.11");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.12");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.13");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.14");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.15");
+            AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.16");
+            
             AddObjectProperty(ObjectType.Actor, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "AMBIENT");
             AddObjectProperty(ObjectType.Actor, PropertyType.ObjectReference, "TEXTURE");
@@ -170,7 +203,6 @@ namespace Acknex
             AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "EACH_TICK");
             AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "EACH_CYCLE");
             AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "IF_ARRIVED");
-            AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "IF_HIT");
             AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "IF_NEAR");
             AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "IF_FAR");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "ANGLE");
@@ -183,6 +215,19 @@ namespace Acknex
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "CEIL_HGT");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "DISTANCE");
             AddObjectProperty(ObjectType.Actor, PropertyType.ObjectReference, "GENIUS");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "INVISIBLE");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "VISIBLE");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "PASSABLE");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "CAREFULLY");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FRAGILE");
+            AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "IF_HIT");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "OFFSET_X");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "OFFSET_Y");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "TRANSPARENT");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "GROUND");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SENSITIVE");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SIZE_X");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SIZE_Y");
 
 
             AddObjectProperty(ObjectType.Thing, PropertyType.String, "NAME");
@@ -215,7 +260,6 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "EACH_TICK");
             AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "EACH_CYCLE");
             AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "IF_ARRIVED");
-            AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "IF_HIT");
             AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "IF_NEAR");
             AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "IF_FAR");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "ANGLE");
@@ -228,6 +272,19 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "CEIL_HGT");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "DISTANCE");
             AddObjectProperty(ObjectType.Thing, PropertyType.ObjectReference, "GENIUS");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "INVISIBLE");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "VISIBLE");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "PASSABLE");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "CAREFULLY");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "FRAGILE");
+            AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "IF_HIT");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "OFFSET_X");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "OFFSET_Y");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "TRANSPARENT");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "GROUND");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "SENSITIVE");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "SIZE_X");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "SIZE_Y");
 
 
             AddObjectProperty(ObjectType.Overlay, PropertyType.String, "NAME");
@@ -316,6 +373,11 @@ namespace Acknex
             AddObjectProperty(ObjectType.Wall, PropertyType.ObjectReference, "GENIUS");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "POSITION");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "FENCE");
+            AddObjectProperty(ObjectType.Wall, PropertyType.ActionReference, "IF_HIT");
+            AddObjectProperty(ObjectType.Wall, PropertyType.Float, "X1");
+            AddObjectProperty(ObjectType.Wall, PropertyType.Float, "Y1");
+            AddObjectProperty(ObjectType.Wall, PropertyType.Float, "X2");
+            AddObjectProperty(ObjectType.Wall, PropertyType.Float, "Y2");
 
 
             AddObjectProperty(ObjectType.Texture, PropertyType.String, "NAME");

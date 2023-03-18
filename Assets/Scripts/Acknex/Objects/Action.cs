@@ -99,6 +99,7 @@ namespace Acknex
                         case "ABS":
                         case "INT":
                         case "EXP":
+                        case "RANDOM":
                             {
                                 //todo
                                 //var input = labelOrStatement;
@@ -108,12 +109,12 @@ namespace Acknex
                         case "RULE":
                             {
                                 var identifier = labelOrStatement;
-                                var identifierAndType = GetValueAndType(identifier, "lhs", false);
+                                var lhsSetter = GetValueAndType(identifier, "lhsSetter", false);
+                                var lhsGetter = GetValueAndType(identifier, "lhsGetter", true);
                                 var assignmentOp1 = textParser.GetNextToken(tokens);
                                 //todo: different assignments (-= += /= *=)
                                 if (assignmentOp1 == "-" || assignmentOp1 == "+" || assignmentOp1 == "*" || assignmentOp1 == "/")
                                 {
-                                    throw new NotImplementedException();
                                     var assignmentOp2 = textParser.GetNextToken(tokens);
                                     if (assignmentOp2 != "=")
                                     {
@@ -127,15 +128,29 @@ namespace Acknex
                                     var tokenAndType = GetValueAndType(token, "temp");
                                     if (tokenAndType.propertyType == PropertyType.Function)
                                     {
-                                        ruleStringBuilder.Append(HandleFunction(tokenAndType.property));
+                                        tokenAndType.property = HandleFunction(tokenAndType.property);
                                     }
-                                    else
-                                    {
-                                        ruleStringBuilder.Append(tokenAndType.property);
-                                    }
+                                    ruleStringBuilder.Append(tokenAndType.property);
                                     token = textParser.GetNextToken(tokens);
                                 }
-                                HandleAssignment(identifierAndType, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null));
+                                switch (assignmentOp1)
+                                {
+                                    case "=":
+                                        HandleAssignment(lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null));
+                                        break;
+                                    case "+":
+                                        HandleAdd(lhsGetter, lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null), "ADD");
+                                        break;
+                                    case "-":
+                                        HandleAdd(lhsGetter, lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null), "SUB");
+                                        break;
+                                    case "*":
+                                        HandleAdd(lhsGetter, lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null), "MUL");
+                                        break;
+                                    case "/":
+                                        HandleAdd(lhsGetter, lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null), "DIV");
+                                        break;
+                                }
                                 HandleIfStack();
                                 ReadUntilSemiColon(tokens);
                                 break;
@@ -156,6 +171,7 @@ namespace Acknex
                                 break;
                             }
                         case "ACCEL":
+                        case "SUB":
                         case "ADD":
                         case "ADDT":
                             {
@@ -174,6 +190,7 @@ namespace Acknex
                                 break;
                             }
                         case "WAITT":
+                        case "WAIT_TICKS":
                         case "WAIT":
                             {
                                 var value = GetValue(tokens, textParser, labelOrStatement);
@@ -259,9 +276,11 @@ namespace Acknex
                                 var volume = GetValue(tokens, textParser);
                                 var rhs = GetValueAndType(volume, "rhs");
                                 var next = textParser.GetNextToken(tokens);
-                                if (next != ";") {
+                                if (next != ";") 
+                                {
                                     CodeStringBuilder.Append("_world.PlaySound(\"").Append(labelOrStatement).Append("\",").Append(rhs.property).Append(",\"").Append(next).AppendLine("\");");
-                                } else
+                                } 
+                                else
                                 {
 
                                     CodeStringBuilder.Append("_world.PlaySound(\"").Append(labelOrStatement).Append("\",").Append(rhs.property).AppendLine(");");
@@ -286,6 +305,14 @@ namespace Acknex
                                 ReadUntilSemiColon(tokens);
                                 break;
                             }
+                        case "DROP":
+                        {
+                            var next = labelOrStatement;
+                            CodeStringBuilder.Append("_world.Drop(").Append("\"").Append(next).AppendLine("\");");
+                            HandleIfStack();
+                            ReadUntilSemiColon(tokens);
+                            break;
+                        }
                         case "INKEY":
                             {
                                 var key = labelOrStatement;
@@ -313,6 +340,14 @@ namespace Acknex
                                 var value = GetValue(tokens, textParser);
                                 var rhs = GetValueAndType(value, "rhs");
                                 var lhs = GetValueAndType(identifier, "lhs");
+                                if (lhs.propertyType == PropertyType.Function)
+                                {
+                                    lhs.property = HandleFunction(lhs.property);
+                                }
+                                if (rhs.propertyType == PropertyType.Function)
+                                {
+                                    rhs.property = HandleFunction(rhs.property);
+                                }
                                 switch (keyword)
                                 {
                                     case "IF_EQUAL":
@@ -424,7 +459,10 @@ namespace Acknex
             }
         }
 
-        private void HandleAssignment((string property, PropertyType propertyType, ObjectType objectType, string source) lhs, (string property, PropertyType propertyType, ObjectType objectType, string source) rhs)
+        private void HandleAssignment(
+            (string property, PropertyType propertyType, ObjectType objectType, string source) lhs, 
+            (string property, PropertyType propertyType, ObjectType objectType, string source) rhs
+        )
         {
             switch (lhs.objectType)
             {
@@ -459,19 +497,6 @@ namespace Acknex
             string mode
             )
         {
-            //switch (lhsGetter.objectType)
-            //{
-            //    case ObjectType.Skill:
-            //    case ObjectType.Action:
-            //    case ObjectType.Actor:
-            //    case ObjectType.Thing:
-            //    case ObjectType.Texture:
-            //    case ObjectType.World:
-            //    case ObjectType.Way:
-            //    case ObjectType.Region:
-            //    case ObjectType.Wall:
-            //    case ObjectType.Bitmap:
-            //    case ObjectType.Overlay:
             switch (lhsGetter.propertyType)
             {
                 case PropertyType.Float:
@@ -487,10 +512,20 @@ namespace Acknex
                     {
                         CodeStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsSetter.property).Append(",").Append(lhsGetter.property).Append(" + ").Append(rhs.property).AppendLine(");");
                     }
+                    else if (mode == "SUB")
+                    {
+                        CodeStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsSetter.property).Append(",").Append(lhsGetter.property).Append(" - ").Append(rhs.property).AppendLine(");");
+                    }
+                    else if (mode == "DIV")
+                    {
+                        CodeStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsSetter.property).Append(",").Append(lhsGetter.property).Append(" / ").Append(rhs.property).AppendLine(");");
+                    }
+                    if (mode == "MUL")
+                    {
+                        CodeStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsSetter.property).Append(",").Append(lhsGetter.property).Append(" * ").Append(rhs.property).AppendLine(");");
+                    }
                     break;
             }
-            //        break;
-            //}
         }
 
 

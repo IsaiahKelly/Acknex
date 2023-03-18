@@ -9,13 +9,16 @@ namespace Tests {
         }
         public IEnumerator CallAction(string name)
         {
+            if (name == null) {
+                yield break;
+            }
             var method = this.GetType().GetMethod(name);
             if (method != null)
             {
                 var result = method.Invoke(this, null);
-                return (IEnumerator)result;
+                yield return (IEnumerator)result;
             }
-            return null;
+            yield break;
         }
 public IEnumerator ADJUST_XMINUS(){
 yield return GET_ADJX();
@@ -363,54 +366,62 @@ var ADJUST_MODE_19_val = ADJUST_MODE_19.GetFloat("VAL");
 if (ADJUST_MODE_19_val == 3f)
 {
 var ADJUST_X_20 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_REG_22 = _world.GetSynonymObject("ADJUST_REG");
-var temp_23 =ADJUST_REG_22.GetFloat("FLOOR_HGT");
-ADJUST_X_20.SetFloat("VAL",temp_23*10f);
+var ADJUST_X_21 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_21_val = ADJUST_X_21.GetFloat("VAL");
+var ADJUST_REG_23 = _world.GetSynonymObject("ADJUST_REG");
+var temp_24 =ADJUST_REG_23.GetFloat("FLOOR_HGT");
+ADJUST_X_20.SetFloat("VAL",temp_24*10f);
 }
-var ADJUST_MODE_27 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_27_val = ADJUST_MODE_27.GetFloat("VAL");
-if (ADJUST_MODE_27_val == 4f)
+var ADJUST_MODE_28 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_28_val = ADJUST_MODE_28.GetFloat("VAL");
+if (ADJUST_MODE_28_val == 4f)
 {
-var ADJUST_TEX_29 = _world.GetSynonymObject("ADJUST_TEX");
-var temp_30 =ADJUST_TEX_29.GetFloat("POS_X");
-var ADJUST_X_31 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-ADJUST_X_31.SetFloat("VAL",temp_30);
+var ADJUST_TEX_30 = _world.GetSynonymObject("ADJUST_TEX");
+var temp_31 =ADJUST_TEX_30.GetFloat("POS_X");
+var ADJUST_X_32 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+ADJUST_X_32.SetFloat("VAL",temp_31);
 }
-var ADJUST_MODE_33 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_33_val = ADJUST_MODE_33.GetFloat("VAL");
-if (ADJUST_MODE_33_val == 5f)
+var ADJUST_MODE_34 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_34_val = ADJUST_MODE_34.GetFloat("VAL");
+if (ADJUST_MODE_34_val == 5f)
 {
-var ADJUST_X_34 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_TEX_36 = _world.GetSynonymObject("ADJUST_TEX");
-var temp_37 =ADJUST_TEX_36.GetFloat("SCALE_X");
-ADJUST_X_34.SetFloat("VAL",temp_37*10f);
+var ADJUST_X_35 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_36 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_36_val = ADJUST_X_36.GetFloat("VAL");
+var ADJUST_TEX_38 = _world.GetSynonymObject("ADJUST_TEX");
+var temp_39 =ADJUST_TEX_38.GetFloat("SCALE_X");
+ADJUST_X_35.SetFloat("VAL",temp_39*10f);
 }
-var ADJUST_MODE_41 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_41_val = ADJUST_MODE_41.GetFloat("VAL");
-if (ADJUST_MODE_41_val == 6f)
+var ADJUST_MODE_43 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_43_val = ADJUST_MODE_43.GetFloat("VAL");
+if (ADJUST_MODE_43_val == 6f)
 {
-var ADJUST_WALL_43 = _world.GetSynonymObject("ADJUST_WALL");
-var temp_44 =ADJUST_WALL_43.GetFloat("OFFSET_X");
-var ADJUST_X_45 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-ADJUST_X_45.SetFloat("VAL",temp_44);
+var ADJUST_WALL_45 = _world.GetSynonymObject("ADJUST_WALL");
+var temp_46 =ADJUST_WALL_45.GetFloat("OFFSET_X");
+var ADJUST_X_47 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+ADJUST_X_47.SetFloat("VAL",temp_46);
 }
-var ADJUST_MODE_47 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_47_val = ADJUST_MODE_47.GetFloat("VAL");
-if (ADJUST_MODE_47_val == 7f)
+var ADJUST_MODE_49 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_49_val = ADJUST_MODE_49.GetFloat("VAL");
+if (ADJUST_MODE_49_val == 7f)
 {
-var ADJUST_X_48 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_TEX_50 = _world.GetSynonymObject("ADJUST_TEX");
-var temp_51 =ADJUST_TEX_50.GetFloat("AMBIENT");
-ADJUST_X_48.SetFloat("VAL",temp_51*10f);
+var ADJUST_X_50 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_51 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_51_val = ADJUST_X_51.GetFloat("VAL");
+var ADJUST_TEX_53 = _world.GetSynonymObject("ADJUST_TEX");
+var temp_54 =ADJUST_TEX_53.GetFloat("AMBIENT");
+ADJUST_X_50.SetFloat("VAL",temp_54*10f);
 }
-var ADJUST_MODE_55 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_55_val = ADJUST_MODE_55.GetFloat("VAL");
-if (ADJUST_MODE_55_val == 8f)
+var ADJUST_MODE_58 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_58_val = ADJUST_MODE_58.GetFloat("VAL");
+if (ADJUST_MODE_58_val == 8f)
 {
-var ADJUST_X_56 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_REG_58 = _world.GetSynonymObject("ADJUST_REG");
-var temp_59 =ADJUST_REG_58.GetFloat("AMBIENT");
-ADJUST_X_56.SetFloat("VAL",temp_59*10f);
+var ADJUST_X_59 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_60 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_60_val = ADJUST_X_60.GetFloat("VAL");
+var ADJUST_REG_62 = _world.GetSynonymObject("ADJUST_REG");
+var temp_63 =ADJUST_REG_62.GetFloat("AMBIENT");
+ADJUST_X_59.SetFloat("VAL",temp_63*10f);
 }
 yield break;
 }
@@ -447,52 +458,60 @@ var ADJUST_MODE_19_val = ADJUST_MODE_19.GetFloat("VAL");
 if (ADJUST_MODE_19_val == 3f)
 {
 var ADJUST_Y_20 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-var ADJUST_REG_22 = _world.GetSynonymObject("ADJUST_REG");
-var temp_23 =ADJUST_REG_22.GetFloat("CEIL_HGT");
-ADJUST_Y_20.SetFloat("VAL",temp_23*10f);
+var ADJUST_Y_21 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_21_val = ADJUST_Y_21.GetFloat("VAL");
+var ADJUST_REG_23 = _world.GetSynonymObject("ADJUST_REG");
+var temp_24 =ADJUST_REG_23.GetFloat("CEIL_HGT");
+ADJUST_Y_20.SetFloat("VAL",temp_24*10f);
 }
-var ADJUST_MODE_27 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_27_val = ADJUST_MODE_27.GetFloat("VAL");
-if (ADJUST_MODE_27_val == 4f)
+var ADJUST_MODE_28 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_28_val = ADJUST_MODE_28.GetFloat("VAL");
+if (ADJUST_MODE_28_val == 4f)
 {
-var ADJUST_TEX_29 = _world.GetSynonymObject("ADJUST_TEX");
-var temp_30 =ADJUST_TEX_29.GetFloat("POS_Y");
-var ADJUST_Y_31 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-ADJUST_Y_31.SetFloat("VAL",temp_30);
+var ADJUST_TEX_30 = _world.GetSynonymObject("ADJUST_TEX");
+var temp_31 =ADJUST_TEX_30.GetFloat("POS_Y");
+var ADJUST_Y_32 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+ADJUST_Y_32.SetFloat("VAL",temp_31);
 }
-var ADJUST_MODE_33 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_33_val = ADJUST_MODE_33.GetFloat("VAL");
-if (ADJUST_MODE_33_val == 5f)
+var ADJUST_MODE_34 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_34_val = ADJUST_MODE_34.GetFloat("VAL");
+if (ADJUST_MODE_34_val == 5f)
 {
-var ADJUST_Y_34 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-var ADJUST_TEX_36 = _world.GetSynonymObject("ADJUST_TEX");
-var temp_37 =ADJUST_TEX_36.GetFloat("SCALE_Y");
-ADJUST_Y_34.SetFloat("VAL",temp_37*10f);
+var ADJUST_Y_35 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_36 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_36_val = ADJUST_Y_36.GetFloat("VAL");
+var ADJUST_TEX_38 = _world.GetSynonymObject("ADJUST_TEX");
+var temp_39 =ADJUST_TEX_38.GetFloat("SCALE_Y");
+ADJUST_Y_35.SetFloat("VAL",temp_39*10f);
 }
-var ADJUST_MODE_41 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_41_val = ADJUST_MODE_41.GetFloat("VAL");
-if (ADJUST_MODE_41_val == 6f)
+var ADJUST_MODE_43 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_43_val = ADJUST_MODE_43.GetFloat("VAL");
+if (ADJUST_MODE_43_val == 6f)
 {
-var ADJUST_Y_42 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-var ADJUST_WALL_44 = _world.GetSynonymObject("ADJUST_WALL");
-var temp_45 =ADJUST_WALL_44.GetFloat("POSITION");
-ADJUST_Y_42.SetFloat("VAL",temp_45*10f);
+var ADJUST_Y_44 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_45 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_45_val = ADJUST_Y_45.GetFloat("VAL");
+var ADJUST_WALL_47 = _world.GetSynonymObject("ADJUST_WALL");
+var temp_48 =ADJUST_WALL_47.GetFloat("POSITION");
+ADJUST_Y_44.SetFloat("VAL",temp_48*10f);
 }
-var ADJUST_MODE_49 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_49_val = ADJUST_MODE_49.GetFloat("VAL");
-if (ADJUST_MODE_49_val == 7f)
+var ADJUST_MODE_52 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_52_val = ADJUST_MODE_52.GetFloat("VAL");
+if (ADJUST_MODE_52_val == 7f)
 {
-var ADJUST_Y_50 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-var ADJUST_TEX_52 = _world.GetSynonymObject("ADJUST_TEX");
-var temp_53 =ADJUST_TEX_52.GetFloat("ALBEDO");
-ADJUST_Y_50.SetFloat("VAL",temp_53*10f);
+var ADJUST_Y_53 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_54 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_54_val = ADJUST_Y_54.GetFloat("VAL");
+var ADJUST_TEX_56 = _world.GetSynonymObject("ADJUST_TEX");
+var temp_57 =ADJUST_TEX_56.GetFloat("ALBEDO");
+ADJUST_Y_53.SetFloat("VAL",temp_57*10f);
 }
-var ADJUST_MODE_57 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_57_val = ADJUST_MODE_57.GetFloat("VAL");
-if (ADJUST_MODE_57_val == 8f)
+var ADJUST_MODE_61 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_61_val = ADJUST_MODE_61.GetFloat("VAL");
+if (ADJUST_MODE_61_val == 8f)
 {
-var ADJUST_Y_59 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-ADJUST_Y_59.SetFloat("VAL",0f);
+var ADJUST_Y_63 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+ADJUST_Y_63.SetFloat("VAL",0f);
 }
 yield break;
 }
@@ -845,498 +864,544 @@ var MOVING_1_val = MOVING_1.GetFloat("VAL");
 if (MOVING_1_val == MODE_GEHEN_0_val)
 {
 var PLAYER_SIZE_2 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
-var MY_SIZE_3 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
-var MY_SIZE_3_val = MY_SIZE_3.GetFloat("VAL");
-var WALK_7 = _world.GetObject(ObjectType.Skill,"WALK");
-var WALK_7_val = WALK_7.GetFloat("VAL");
-PLAYER_SIZE_2.SetFloat("VAL",MY_SIZE_3_val+0.2f*WALK_7_val);
+var PLAYER_SIZE_3 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_3_val = PLAYER_SIZE_3.GetFloat("VAL");
+var MY_SIZE_4 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
+var MY_SIZE_4_val = MY_SIZE_4.GetFloat("VAL");
+var WALK_8 = _world.GetObject(ObjectType.Skill,"WALK");
+var WALK_8_val = WALK_8.GetFloat("VAL");
+PLAYER_SIZE_2.SetFloat("VAL",MY_SIZE_4_val+0.2f*WALK_8_val);
 }
-var MODE_SCHWIMMEN_8 = _world.GetObject(ObjectType.Skill,"MODE_SCHWIMMEN");
-var MODE_SCHWIMMEN_8_val = MODE_SCHWIMMEN_8.GetFloat("VAL");
-var MOVING_9 = _world.GetObject(ObjectType.Skill,"MOVING");
-var MOVING_9_val = MOVING_9.GetFloat("VAL");
-if (MOVING_9_val == MODE_SCHWIMMEN_8_val)
+var MODE_SCHWIMMEN_9 = _world.GetObject(ObjectType.Skill,"MODE_SCHWIMMEN");
+var MODE_SCHWIMMEN_9_val = MODE_SCHWIMMEN_9.GetFloat("VAL");
+var MOVING_10 = _world.GetObject(ObjectType.Skill,"MOVING");
+var MOVING_10_val = MOVING_10.GetFloat("VAL");
+if (MOVING_10_val == MODE_SCHWIMMEN_9_val)
 {
-var PLAYER_SIZE_10 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
-var WAVE_15 = _world.GetObject(ObjectType.Skill,"WAVE");
-var WAVE_15_val = WAVE_15.GetFloat("VAL");
-PLAYER_SIZE_10.SetFloat("VAL",1f+0.12f*WAVE_15_val);
+var PLAYER_SIZE_11 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_12 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_12_val = PLAYER_SIZE_12.GetFloat("VAL");
+var WAVE_17 = _world.GetObject(ObjectType.Skill,"WAVE");
+var WAVE_17_val = WAVE_17.GetFloat("VAL");
+PLAYER_SIZE_11.SetFloat("VAL",1f+0.12f*WAVE_17_val);
 }
-var MODE_TAUCHEN_16 = _world.GetObject(ObjectType.Skill,"MODE_TAUCHEN");
-var MODE_TAUCHEN_16_val = MODE_TAUCHEN_16.GetFloat("VAL");
-var MOVING_17 = _world.GetObject(ObjectType.Skill,"MOVING");
-var MOVING_17_val = MOVING_17.GetFloat("VAL");
-if (MOVING_17_val == MODE_TAUCHEN_16_val)
+var MODE_TAUCHEN_18 = _world.GetObject(ObjectType.Skill,"MODE_TAUCHEN");
+var MODE_TAUCHEN_18_val = MODE_TAUCHEN_18.GetFloat("VAL");
+var MOVING_19 = _world.GetObject(ObjectType.Skill,"MOVING");
+var MOVING_19_val = MOVING_19.GetFloat("VAL");
+if (MOVING_19_val == MODE_TAUCHEN_18_val)
 {
-var PLAYER_SIZE_18 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
-PLAYER_SIZE_18.SetFloat("VAL",1f);
+var PLAYER_SIZE_20 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_21 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_21_val = PLAYER_SIZE_21.GetFloat("VAL");
+PLAYER_SIZE_20.SetFloat("VAL",1f);
 }
-var MODE_GEHEN_20 = _world.GetObject(ObjectType.Skill,"MODE_GEHEN");
-var MODE_GEHEN_20_val = MODE_GEHEN_20.GetFloat("VAL");
-var MOVING_21 = _world.GetObject(ObjectType.Skill,"MOVING");
-var MOVING_21_val = MOVING_21.GetFloat("VAL");
-if (MOVING_21_val == MODE_GEHEN_20_val)
+var MODE_GEHEN_23 = _world.GetObject(ObjectType.Skill,"MODE_GEHEN");
+var MODE_GEHEN_23_val = MODE_GEHEN_23.GetFloat("VAL");
+var MOVING_24 = _world.GetObject(ObjectType.Skill,"MOVING");
+var MOVING_24_val = MOVING_24.GetFloat("VAL");
+if (MOVING_24_val == MODE_GEHEN_23_val)
 {
-var PLAYER_SIZE_22 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
-var PLAYER_SIZE_23 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
-var PLAYER_SIZE_23_val = PLAYER_SIZE_23.GetFloat("VAL");
-var PLAYER_DEPTH_25 = _world.GetObject(ObjectType.Skill,"PLAYER_DEPTH");
-var PLAYER_DEPTH_25_val = PLAYER_DEPTH_25.GetFloat("VAL");
-PLAYER_SIZE_22.SetFloat("VAL",PLAYER_SIZE_23_val-PLAYER_DEPTH_25_val);
+var PLAYER_SIZE_25 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_26 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_26_val = PLAYER_SIZE_26.GetFloat("VAL");
+var PLAYER_SIZE_27 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_27_val = PLAYER_SIZE_27.GetFloat("VAL");
+var PLAYER_DEPTH_29 = _world.GetObject(ObjectType.Skill,"PLAYER_DEPTH");
+var PLAYER_DEPTH_29_val = PLAYER_DEPTH_29.GetFloat("VAL");
+PLAYER_SIZE_25.SetFloat("VAL",PLAYER_SIZE_27_val-PLAYER_DEPTH_29_val);
 }
 NO_WATEN:
-var MODE_SCHWIMMEN_26 = _world.GetObject(ObjectType.Skill,"MODE_SCHWIMMEN");
-var MODE_SCHWIMMEN_26_val = MODE_SCHWIMMEN_26.GetFloat("VAL");
-var MOVING_27 = _world.GetObject(ObjectType.Skill,"MOVING");
-var MOVING_27_val = MOVING_27.GetFloat("VAL");
-if (MOVING_27_val != MODE_SCHWIMMEN_26_val)
+var MODE_SCHWIMMEN_30 = _world.GetObject(ObjectType.Skill,"MODE_SCHWIMMEN");
+var MODE_SCHWIMMEN_30_val = MODE_SCHWIMMEN_30.GetFloat("VAL");
+var MOVING_31 = _world.GetObject(ObjectType.Skill,"MOVING");
+var MOVING_31_val = MOVING_31.GetFloat("VAL");
+if (MOVING_31_val != MODE_SCHWIMMEN_30_val)
 {
 goto NO_SWIM;
 }
-var PLAYER_DEPTH_29 = _world.GetObject(ObjectType.Skill,"PLAYER_DEPTH");
-var PLAYER_DEPTH_29_val = PLAYER_DEPTH_29.GetFloat("VAL");
-if (PLAYER_DEPTH_29_val > 1.5f)
+var PLAYER_DEPTH_33 = _world.GetObject(ObjectType.Skill,"PLAYER_DEPTH");
+var PLAYER_DEPTH_33_val = PLAYER_DEPTH_33.GetFloat("VAL");
+if (PLAYER_DEPTH_33_val > 1.5f)
 {
 goto NO_WATER;
 }
 yield return SET_WALKING();
 goto START;
 NO_SWIM:
-var MODE_GEHEN_30 = _world.GetObject(ObjectType.Skill,"MODE_GEHEN");
-var MODE_GEHEN_30_val = MODE_GEHEN_30.GetFloat("VAL");
-var MOVING_31 = _world.GetObject(ObjectType.Skill,"MOVING");
-var MOVING_31_val = MOVING_31.GetFloat("VAL");
-if (MOVING_31_val != MODE_GEHEN_30_val)
+var MODE_GEHEN_34 = _world.GetObject(ObjectType.Skill,"MODE_GEHEN");
+var MODE_GEHEN_34_val = MODE_GEHEN_34.GetFloat("VAL");
+var MOVING_35 = _world.GetObject(ObjectType.Skill,"MOVING");
+var MOVING_35_val = MOVING_35.GetFloat("VAL");
+if (MOVING_35_val != MODE_GEHEN_34_val)
 {
 goto NO_WATER;
 }
-var PLAYER_DEPTH_33 = _world.GetObject(ObjectType.Skill,"PLAYER_DEPTH");
-var PLAYER_DEPTH_33_val = PLAYER_DEPTH_33.GetFloat("VAL");
-if (PLAYER_DEPTH_33_val < 2.5f)
+var PLAYER_DEPTH_37 = _world.GetObject(ObjectType.Skill,"PLAYER_DEPTH");
+var PLAYER_DEPTH_37_val = PLAYER_DEPTH_37.GetFloat("VAL");
+if (PLAYER_DEPTH_37_val < 2.5f)
 {
 goto NO_WATER;
 }
 yield return SET_SWIMMING();
 goto START;
 NO_WATER:
-var MOUSE_MIDDLE_35 = _world.GetObject(ObjectType.Skill,"MOUSE_MIDDLE");
-var MOUSE_MIDDLE_35_val = MOUSE_MIDDLE_35.GetFloat("VAL");
-if (MOUSE_MIDDLE_35_val == 0f)
+var MOUSE_MIDDLE_39 = _world.GetObject(ObjectType.Skill,"MOUSE_MIDDLE");
+var MOUSE_MIDDLE_39_val = MOUSE_MIDDLE_39.GetFloat("VAL");
+if (MOUSE_MIDDLE_39_val == 0f)
 {
 goto NO_MOUSE;
 }
-var KEY_SENSE_36 = _world.GetObject(ObjectType.Skill,"KEY_SENSE");
-var KEY_SENSE_36_val = KEY_SENSE_36.GetFloat("VAL");
-var FORCE_AHEAD_37 = _world.GetObject(ObjectType.Skill,"FORCE_AHEAD");
-FORCE_AHEAD_37.SetFloat("VAL",KEY_SENSE_36_val);
-var KEY_SHIFT_39 = _world.GetObject(ObjectType.Skill,"KEY_SHIFT");
-var KEY_SHIFT_39_val = KEY_SHIFT_39.GetFloat("VAL");
-if (KEY_SHIFT_39_val == 1f)
-{
-var FORCE_AHEAD_40 = _world.GetObject(ObjectType.Skill,"FORCE_AHEAD");
+var KEY_SENSE_40 = _world.GetObject(ObjectType.Skill,"KEY_SENSE");
+var KEY_SENSE_40_val = KEY_SENSE_40.GetFloat("VAL");
 var FORCE_AHEAD_41 = _world.GetObject(ObjectType.Skill,"FORCE_AHEAD");
-var FORCE_AHEAD_41_val = FORCE_AHEAD_41.GetFloat("VAL");
-var SHIFT_SENSE_43 = _world.GetObject(ObjectType.Skill,"SHIFT_SENSE");
-var SHIFT_SENSE_43_val = SHIFT_SENSE_43.GetFloat("VAL");
-FORCE_AHEAD_40.SetFloat("VAL",FORCE_AHEAD_41_val*SHIFT_SENSE_43_val);
+FORCE_AHEAD_41.SetFloat("VAL",KEY_SENSE_40_val);
+var KEY_SHIFT_43 = _world.GetObject(ObjectType.Skill,"KEY_SHIFT");
+var KEY_SHIFT_43_val = KEY_SHIFT_43.GetFloat("VAL");
+if (KEY_SHIFT_43_val == 1f)
+{
+var FORCE_AHEAD_44 = _world.GetObject(ObjectType.Skill,"FORCE_AHEAD");
+var FORCE_AHEAD_45 = _world.GetObject(ObjectType.Skill,"FORCE_AHEAD");
+var FORCE_AHEAD_45_val = FORCE_AHEAD_45.GetFloat("VAL");
+var FORCE_AHEAD_46 = _world.GetObject(ObjectType.Skill,"FORCE_AHEAD");
+var FORCE_AHEAD_46_val = FORCE_AHEAD_46.GetFloat("VAL");
+var SHIFT_SENSE_48 = _world.GetObject(ObjectType.Skill,"SHIFT_SENSE");
+var SHIFT_SENSE_48_val = SHIFT_SENSE_48.GetFloat("VAL");
+FORCE_AHEAD_44.SetFloat("VAL",FORCE_AHEAD_46_val*SHIFT_SENSE_48_val);
 }
 NO_MOUSE:
-var BOOSTER_45 = _world.GetObject(ObjectType.Skill,"BOOSTER");
-BOOSTER_45.SetFloat("VAL",1f);
-var MASS_46 = _world.GetObject(ObjectType.Skill,"MASS");
-var MASS_46_val = MASS_46.GetFloat("VAL");
-var INERTIA_47 = _world.GetObject(ObjectType.Skill,"INERTIA");
-INERTIA_47.SetFloat("VAL",MASS_46_val);
-var FRICTION_48 = _world.GetObject(ObjectType.Skill,"FRICTION");
-var FRIC_49 = _world.GetObject(ObjectType.Skill,"FRIC");
-var FRIC_49_val = FRIC_49.GetFloat("VAL");
-var DEPTH_53 = _world.GetObject(ObjectType.Skill,"DEPTH");
-var DEPTH_53_val = DEPTH_53.GetFloat("VAL");
-FRICTION_48.SetFloat("VAL",FRIC_49_val+0.1f*DEPTH_53_val);
-var FORCE_54 = _world.GetObject(ObjectType.Skill,"FORCE");
-var STRENGTH_56 = _world.GetObject(ObjectType.Skill,"STRENGTH");
-var STRENGTH_56_val = STRENGTH_56.GetFloat("VAL");
-var WAVE_STR_58 = _world.GetObject(ObjectType.Skill,"WAVE_STR");
-var WAVE_STR_58_val = WAVE_STR_58.GetFloat("VAL");
-var WAVE_60 = _world.GetObject(ObjectType.Skill,"WAVE");
-var WAVE_60_val = WAVE_60.GetFloat("VAL");
-var BOOSTER_63 = _world.GetObject(ObjectType.Skill,"BOOSTER");
-var BOOSTER_63_val = BOOSTER_63.GetFloat("VAL");
-var FORCE_AHEAD_66 = _world.GetObject(ObjectType.Skill,"FORCE_AHEAD");
-var FORCE_AHEAD_66_val = FORCE_AHEAD_66.GetFloat("VAL");
-var PLAYER_COS_68 = _world.GetObject(ObjectType.Skill,"PLAYER_COS");
-var PLAYER_COS_68_val = PLAYER_COS_68.GetFloat("VAL");
-var FORCE_STRAFE_72 = _world.GetObject(ObjectType.Skill,"FORCE_STRAFE");
-var FORCE_STRAFE_72_val = FORCE_STRAFE_72.GetFloat("VAL");
-var PLAYER_SIN_74 = _world.GetObject(ObjectType.Skill,"PLAYER_SIN");
-var PLAYER_SIN_74_val = PLAYER_SIN_74.GetFloat("VAL");
-var DRIFT_X_77 = _world.GetObject(ObjectType.Skill,"DRIFT_X");
-var DRIFT_X_77_val = DRIFT_X_77.GetFloat("VAL");
-FORCE_54.SetFloat("VAL",(STRENGTH_56_val+WAVE_STR_58_val*WAVE_60_val)*BOOSTER_63_val*(FORCE_AHEAD_66_val*PLAYER_COS_68_val-0.5f*FORCE_STRAFE_72_val*PLAYER_SIN_74_val)+DRIFT_X_77_val);
-var FORCE_78 = _world.GetObject(ObjectType.Skill,"FORCE");
-var FORCE_78_val = FORCE_78.GetFloat("VAL");
-var PLAYER_VX_79 = _world.GetObject(ObjectType.Skill,"PLAYER_VX");
-var PLAYER_VX_79_val = PLAYER_VX_79.GetFloat("VAL");
-var PLAYER_VX_80 = _world.GetObject(ObjectType.Skill,"PLAYER_VX");
-PLAYER_VX_80.SetFloat("VAL",_world.Accelerate(PLAYER_VX_79_val,FORCE_78_val));
-var FORCE_81 = _world.GetObject(ObjectType.Skill,"FORCE");
-var STRENGTH_83 = _world.GetObject(ObjectType.Skill,"STRENGTH");
-var STRENGTH_83_val = STRENGTH_83.GetFloat("VAL");
-var WAVE_STR_85 = _world.GetObject(ObjectType.Skill,"WAVE_STR");
-var WAVE_STR_85_val = WAVE_STR_85.GetFloat("VAL");
-var WAVE_87 = _world.GetObject(ObjectType.Skill,"WAVE");
-var WAVE_87_val = WAVE_87.GetFloat("VAL");
-var BOOSTER_90 = _world.GetObject(ObjectType.Skill,"BOOSTER");
-var BOOSTER_90_val = BOOSTER_90.GetFloat("VAL");
-var FORCE_AHEAD_93 = _world.GetObject(ObjectType.Skill,"FORCE_AHEAD");
-var FORCE_AHEAD_93_val = FORCE_AHEAD_93.GetFloat("VAL");
-var PLAYER_SIN_95 = _world.GetObject(ObjectType.Skill,"PLAYER_SIN");
-var PLAYER_SIN_95_val = PLAYER_SIN_95.GetFloat("VAL");
-var FORCE_STRAFE_99 = _world.GetObject(ObjectType.Skill,"FORCE_STRAFE");
-var FORCE_STRAFE_99_val = FORCE_STRAFE_99.GetFloat("VAL");
-var PLAYER_COS_101 = _world.GetObject(ObjectType.Skill,"PLAYER_COS");
-var PLAYER_COS_101_val = PLAYER_COS_101.GetFloat("VAL");
-var DRIFT_Y_104 = _world.GetObject(ObjectType.Skill,"DRIFT_Y");
-var DRIFT_Y_104_val = DRIFT_Y_104.GetFloat("VAL");
-FORCE_81.SetFloat("VAL",(STRENGTH_83_val+WAVE_STR_85_val*WAVE_87_val)*BOOSTER_90_val*(FORCE_AHEAD_93_val*PLAYER_SIN_95_val+0.5f*FORCE_STRAFE_99_val*PLAYER_COS_101_val)+DRIFT_Y_104_val);
-var FORCE_105 = _world.GetObject(ObjectType.Skill,"FORCE");
-var FORCE_105_val = FORCE_105.GetFloat("VAL");
-var PLAYER_VY_106 = _world.GetObject(ObjectType.Skill,"PLAYER_VY");
-var PLAYER_VY_106_val = PLAYER_VY_106.GetFloat("VAL");
-var PLAYER_VY_107 = _world.GetObject(ObjectType.Skill,"PLAYER_VY");
-PLAYER_VY_107.SetFloat("VAL",_world.Accelerate(PLAYER_VY_106_val,FORCE_105_val));
-var FRICTION_109 = _world.GetObject(ObjectType.Skill,"FRICTION");
-FRICTION_109.SetFloat("VAL",0.5f);
-var MODE_GEHEN_110 = _world.GetObject(ObjectType.Skill,"MODE_GEHEN");
-var MODE_GEHEN_110_val = MODE_GEHEN_110.GetFloat("VAL");
-var MOVING_111 = _world.GetObject(ObjectType.Skill,"MOVING");
-var MOVING_111_val = MOVING_111.GetFloat("VAL");
-if (MOVING_111_val != MODE_GEHEN_110_val)
+var BOOSTER_50 = _world.GetObject(ObjectType.Skill,"BOOSTER");
+BOOSTER_50.SetFloat("VAL",1f);
+var MASS_51 = _world.GetObject(ObjectType.Skill,"MASS");
+var MASS_51_val = MASS_51.GetFloat("VAL");
+var INERTIA_52 = _world.GetObject(ObjectType.Skill,"INERTIA");
+INERTIA_52.SetFloat("VAL",MASS_51_val);
+var FRICTION_53 = _world.GetObject(ObjectType.Skill,"FRICTION");
+var FRICTION_54 = _world.GetObject(ObjectType.Skill,"FRICTION");
+var FRICTION_54_val = FRICTION_54.GetFloat("VAL");
+var FRIC_55 = _world.GetObject(ObjectType.Skill,"FRIC");
+var FRIC_55_val = FRIC_55.GetFloat("VAL");
+var DEPTH_59 = _world.GetObject(ObjectType.Skill,"DEPTH");
+var DEPTH_59_val = DEPTH_59.GetFloat("VAL");
+FRICTION_53.SetFloat("VAL",FRIC_55_val+0.1f*DEPTH_59_val);
+var FORCE_60 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_61 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_61_val = FORCE_61.GetFloat("VAL");
+var STRENGTH_63 = _world.GetObject(ObjectType.Skill,"STRENGTH");
+var STRENGTH_63_val = STRENGTH_63.GetFloat("VAL");
+var WAVE_STR_65 = _world.GetObject(ObjectType.Skill,"WAVE_STR");
+var WAVE_STR_65_val = WAVE_STR_65.GetFloat("VAL");
+var WAVE_67 = _world.GetObject(ObjectType.Skill,"WAVE");
+var WAVE_67_val = WAVE_67.GetFloat("VAL");
+var BOOSTER_70 = _world.GetObject(ObjectType.Skill,"BOOSTER");
+var BOOSTER_70_val = BOOSTER_70.GetFloat("VAL");
+var FORCE_AHEAD_73 = _world.GetObject(ObjectType.Skill,"FORCE_AHEAD");
+var FORCE_AHEAD_73_val = FORCE_AHEAD_73.GetFloat("VAL");
+var PLAYER_COS_75 = _world.GetObject(ObjectType.Skill,"PLAYER_COS");
+var PLAYER_COS_75_val = PLAYER_COS_75.GetFloat("VAL");
+var FORCE_STRAFE_79 = _world.GetObject(ObjectType.Skill,"FORCE_STRAFE");
+var FORCE_STRAFE_79_val = FORCE_STRAFE_79.GetFloat("VAL");
+var PLAYER_SIN_81 = _world.GetObject(ObjectType.Skill,"PLAYER_SIN");
+var PLAYER_SIN_81_val = PLAYER_SIN_81.GetFloat("VAL");
+var DRIFT_X_84 = _world.GetObject(ObjectType.Skill,"DRIFT_X");
+var DRIFT_X_84_val = DRIFT_X_84.GetFloat("VAL");
+FORCE_60.SetFloat("VAL",(STRENGTH_63_val+WAVE_STR_65_val*WAVE_67_val)*BOOSTER_70_val*(FORCE_AHEAD_73_val*PLAYER_COS_75_val-0.5f*FORCE_STRAFE_79_val*PLAYER_SIN_81_val)+DRIFT_X_84_val);
+var FORCE_85 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_85_val = FORCE_85.GetFloat("VAL");
+var PLAYER_VX_86 = _world.GetObject(ObjectType.Skill,"PLAYER_VX");
+var PLAYER_VX_86_val = PLAYER_VX_86.GetFloat("VAL");
+var PLAYER_VX_87 = _world.GetObject(ObjectType.Skill,"PLAYER_VX");
+PLAYER_VX_87.SetFloat("VAL",_world.Accelerate(PLAYER_VX_86_val,FORCE_85_val));
+var FORCE_88 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_89 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_89_val = FORCE_89.GetFloat("VAL");
+var STRENGTH_91 = _world.GetObject(ObjectType.Skill,"STRENGTH");
+var STRENGTH_91_val = STRENGTH_91.GetFloat("VAL");
+var WAVE_STR_93 = _world.GetObject(ObjectType.Skill,"WAVE_STR");
+var WAVE_STR_93_val = WAVE_STR_93.GetFloat("VAL");
+var WAVE_95 = _world.GetObject(ObjectType.Skill,"WAVE");
+var WAVE_95_val = WAVE_95.GetFloat("VAL");
+var BOOSTER_98 = _world.GetObject(ObjectType.Skill,"BOOSTER");
+var BOOSTER_98_val = BOOSTER_98.GetFloat("VAL");
+var FORCE_AHEAD_101 = _world.GetObject(ObjectType.Skill,"FORCE_AHEAD");
+var FORCE_AHEAD_101_val = FORCE_AHEAD_101.GetFloat("VAL");
+var PLAYER_SIN_103 = _world.GetObject(ObjectType.Skill,"PLAYER_SIN");
+var PLAYER_SIN_103_val = PLAYER_SIN_103.GetFloat("VAL");
+var FORCE_STRAFE_107 = _world.GetObject(ObjectType.Skill,"FORCE_STRAFE");
+var FORCE_STRAFE_107_val = FORCE_STRAFE_107.GetFloat("VAL");
+var PLAYER_COS_109 = _world.GetObject(ObjectType.Skill,"PLAYER_COS");
+var PLAYER_COS_109_val = PLAYER_COS_109.GetFloat("VAL");
+var DRIFT_Y_112 = _world.GetObject(ObjectType.Skill,"DRIFT_Y");
+var DRIFT_Y_112_val = DRIFT_Y_112.GetFloat("VAL");
+FORCE_88.SetFloat("VAL",(STRENGTH_91_val+WAVE_STR_93_val*WAVE_95_val)*BOOSTER_98_val*(FORCE_AHEAD_101_val*PLAYER_SIN_103_val+0.5f*FORCE_STRAFE_107_val*PLAYER_COS_109_val)+DRIFT_Y_112_val);
+var FORCE_113 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_113_val = FORCE_113.GetFloat("VAL");
+var PLAYER_VY_114 = _world.GetObject(ObjectType.Skill,"PLAYER_VY");
+var PLAYER_VY_114_val = PLAYER_VY_114.GetFloat("VAL");
+var PLAYER_VY_115 = _world.GetObject(ObjectType.Skill,"PLAYER_VY");
+PLAYER_VY_115.SetFloat("VAL",_world.Accelerate(PLAYER_VY_114_val,FORCE_113_val));
+var FRICTION_117 = _world.GetObject(ObjectType.Skill,"FRICTION");
+FRICTION_117.SetFloat("VAL",0.5f);
+var MODE_GEHEN_118 = _world.GetObject(ObjectType.Skill,"MODE_GEHEN");
+var MODE_GEHEN_118_val = MODE_GEHEN_118.GetFloat("VAL");
+var MOVING_119 = _world.GetObject(ObjectType.Skill,"MOVING");
+var MOVING_119_val = MOVING_119.GetFloat("VAL");
+if (MOVING_119_val != MODE_GEHEN_118_val)
 {
-var FRICTION_113 = _world.GetObject(ObjectType.Skill,"FRICTION");
-FRICTION_113.SetFloat("VAL",0.85f);
+var FRICTION_121 = _world.GetObject(ObjectType.Skill,"FRICTION");
+FRICTION_121.SetFloat("VAL",0.85f);
 }
-var FORCE_114 = _world.GetObject(ObjectType.Skill,"FORCE");
-var FORCE_ROT_117 = _world.GetObject(ObjectType.Skill,"FORCE_ROT");
-var FORCE_ROT_117_val = FORCE_ROT_117.GetFloat("VAL");
-FORCE_114.SetFloat("VAL",0.05f*FORCE_ROT_117_val);
-var FORCE_118 = _world.GetObject(ObjectType.Skill,"FORCE");
-var FORCE_118_val = FORCE_118.GetFloat("VAL");
-var PLAYER_VROT_119 = _world.GetObject(ObjectType.Skill,"PLAYER_VROT");
-var PLAYER_VROT_119_val = PLAYER_VROT_119.GetFloat("VAL");
-var PLAYER_VROT_120 = _world.GetObject(ObjectType.Skill,"PLAYER_VROT");
-PLAYER_VROT_120.SetFloat("VAL",_world.Accelerate(PLAYER_VROT_119_val,FORCE_118_val));
-var FORCE_121 = _world.GetObject(ObjectType.Skill,"FORCE");
-var GRAVITY_122 = _world.GetObject(ObjectType.Skill,"GRAVITY");
-var GRAVITY_122_val = GRAVITY_122.GetFloat("VAL");
-var FLOAT_STR_124 = _world.GetObject(ObjectType.Skill,"FLOAT_STR");
-var FLOAT_STR_124_val = FLOAT_STR_124.GetFloat("VAL");
-var FORCE_UP_126 = _world.GetObject(ObjectType.Skill,"FORCE_UP");
-var FORCE_UP_126_val = FORCE_UP_126.GetFloat("VAL");
-FORCE_121.SetFloat("VAL",GRAVITY_122_val+FLOAT_STR_124_val*FORCE_UP_126_val);
-var FRIC_AIR_127 = _world.GetObject(ObjectType.Skill,"FRIC_AIR");
-var FRIC_AIR_127_val = FRIC_AIR_127.GetFloat("VAL");
-var FRICTION_128 = _world.GetObject(ObjectType.Skill,"FRICTION");
-FRICTION_128.SetFloat("VAL",FRIC_AIR_127_val);
-var PLAYER_HGT_130 = _world.GetObject(ObjectType.Skill,"PLAYER_HGT");
-var PLAYER_HGT_130_val = PLAYER_HGT_130.GetFloat("VAL");
-if (PLAYER_HGT_130_val > 0f)
+var FORCE_122 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_123 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_123_val = FORCE_123.GetFloat("VAL");
+var FORCE_ROT_126 = _world.GetObject(ObjectType.Skill,"FORCE_ROT");
+var FORCE_ROT_126_val = FORCE_ROT_126.GetFloat("VAL");
+FORCE_122.SetFloat("VAL",0.05f*FORCE_ROT_126_val);
+var FORCE_127 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_127_val = FORCE_127.GetFloat("VAL");
+var PLAYER_VROT_128 = _world.GetObject(ObjectType.Skill,"PLAYER_VROT");
+var PLAYER_VROT_128_val = PLAYER_VROT_128.GetFloat("VAL");
+var PLAYER_VROT_129 = _world.GetObject(ObjectType.Skill,"PLAYER_VROT");
+PLAYER_VROT_129.SetFloat("VAL",_world.Accelerate(PLAYER_VROT_128_val,FORCE_127_val));
+var FORCE_130 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_131 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_131_val = FORCE_131.GetFloat("VAL");
+var GRAVITY_132 = _world.GetObject(ObjectType.Skill,"GRAVITY");
+var GRAVITY_132_val = GRAVITY_132.GetFloat("VAL");
+var FLOAT_STR_134 = _world.GetObject(ObjectType.Skill,"FLOAT_STR");
+var FLOAT_STR_134_val = FLOAT_STR_134.GetFloat("VAL");
+var FORCE_UP_136 = _world.GetObject(ObjectType.Skill,"FORCE_UP");
+var FORCE_UP_136_val = FORCE_UP_136.GetFloat("VAL");
+FORCE_130.SetFloat("VAL",GRAVITY_132_val+FLOAT_STR_134_val*FORCE_UP_136_val);
+var FRIC_AIR_137 = _world.GetObject(ObjectType.Skill,"FRIC_AIR");
+var FRIC_AIR_137_val = FRIC_AIR_137.GetFloat("VAL");
+var FRICTION_138 = _world.GetObject(ObjectType.Skill,"FRICTION");
+FRICTION_138.SetFloat("VAL",FRIC_AIR_137_val);
+var PLAYER_HGT_140 = _world.GetObject(ObjectType.Skill,"PLAYER_HGT");
+var PLAYER_HGT_140_val = PLAYER_HGT_140.GetFloat("VAL");
+if (PLAYER_HGT_140_val > 0f)
 {
 goto AIRBORNE;
 }
-var FRICTION_132 = _world.GetObject(ObjectType.Skill,"FRICTION");
-FRICTION_132.SetFloat("VAL",0.98f);
-var FORCE_133 = _world.GetObject(ObjectType.Skill,"FORCE");
-var FORCE_134 = _world.GetObject(ObjectType.Skill,"FORCE");
-var FORCE_134_val = FORCE_134.GetFloat("VAL");
-var PLAYER_HGT_138 = _world.GetObject(ObjectType.Skill,"PLAYER_HGT");
-var PLAYER_HGT_138_val = PLAYER_HGT_138.GetFloat("VAL");
-FORCE_133.SetFloat("VAL",FORCE_134_val-0.2f*PLAYER_HGT_138_val);
+var FRICTION_142 = _world.GetObject(ObjectType.Skill,"FRICTION");
+FRICTION_142.SetFloat("VAL",0.98f);
+var FORCE_143 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_144 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_144_val = FORCE_144.GetFloat("VAL");
+var FORCE_145 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_145_val = FORCE_145.GetFloat("VAL");
+var PLAYER_HGT_149 = _world.GetObject(ObjectType.Skill,"PLAYER_HGT");
+var PLAYER_HGT_149_val = PLAYER_HGT_149.GetFloat("VAL");
+FORCE_143.SetFloat("VAL",FORCE_145_val-0.2f*PLAYER_HGT_149_val);
 AIRBORNE:
-var FORCE_139 = _world.GetObject(ObjectType.Skill,"FORCE");
-var FORCE_139_val = FORCE_139.GetFloat("VAL");
-var PLAYER_VZ_140 = _world.GetObject(ObjectType.Skill,"PLAYER_VZ");
-var PLAYER_VZ_140_val = PLAYER_VZ_140.GetFloat("VAL");
-var PLAYER_VZ_141 = _world.GetObject(ObjectType.Skill,"PLAYER_VZ");
-PLAYER_VZ_141.SetFloat("VAL",_world.Accelerate(PLAYER_VZ_140_val,FORCE_139_val));
-var DUCK_VAL_142 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
-var DUCK_VAL_145 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
-var DUCK_VAL_145_val = DUCK_VAL_145.GetFloat("VAL");
-DUCK_VAL_142.SetFloat("VAL",0.8f*DUCK_VAL_145_val);
-var MODE_SCHWIMMEN_146 = _world.GetObject(ObjectType.Skill,"MODE_SCHWIMMEN");
-var MODE_SCHWIMMEN_146_val = MODE_SCHWIMMEN_146.GetFloat("VAL");
-var MOVING_147 = _world.GetObject(ObjectType.Skill,"MOVING");
-var MOVING_147_val = MOVING_147.GetFloat("VAL");
-if (MOVING_147_val == MODE_SCHWIMMEN_146_val)
+var FORCE_150 = _world.GetObject(ObjectType.Skill,"FORCE");
+var FORCE_150_val = FORCE_150.GetFloat("VAL");
+var PLAYER_VZ_151 = _world.GetObject(ObjectType.Skill,"PLAYER_VZ");
+var PLAYER_VZ_151_val = PLAYER_VZ_151.GetFloat("VAL");
+var PLAYER_VZ_152 = _world.GetObject(ObjectType.Skill,"PLAYER_VZ");
+PLAYER_VZ_152.SetFloat("VAL",_world.Accelerate(PLAYER_VZ_151_val,FORCE_150_val));
+var DUCK_VAL_153 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
+var DUCK_VAL_154 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
+var DUCK_VAL_154_val = DUCK_VAL_154.GetFloat("VAL");
+var DUCK_VAL_157 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
+var DUCK_VAL_157_val = DUCK_VAL_157.GetFloat("VAL");
+DUCK_VAL_153.SetFloat("VAL",0.8f*DUCK_VAL_157_val);
+var MODE_SCHWIMMEN_158 = _world.GetObject(ObjectType.Skill,"MODE_SCHWIMMEN");
+var MODE_SCHWIMMEN_158_val = MODE_SCHWIMMEN_158.GetFloat("VAL");
+var MOVING_159 = _world.GetObject(ObjectType.Skill,"MOVING");
+var MOVING_159_val = MOVING_159.GetFloat("VAL");
+if (MOVING_159_val == MODE_SCHWIMMEN_158_val)
 {
 goto DUCK;
 }
-var FORCE_UP_149 = _world.GetObject(ObjectType.Skill,"FORCE_UP");
-var FORCE_UP_149_val = FORCE_UP_149.GetFloat("VAL");
-if (FORCE_UP_149_val > 0f)
+var FORCE_UP_161 = _world.GetObject(ObjectType.Skill,"FORCE_UP");
+var FORCE_UP_161_val = FORCE_UP_161.GetFloat("VAL");
+if (FORCE_UP_161_val > 0f)
 {
 goto NO_DUCK;
 }
 DUCK:
-var DUCK_VAL_150 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
-var DUCK_VAL_151 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
-var DUCK_VAL_151_val = DUCK_VAL_151.GetFloat("VAL");
-var DUCK_STR_153 = _world.GetObject(ObjectType.Skill,"DUCK_STR");
-var DUCK_STR_153_val = DUCK_STR_153.GetFloat("VAL");
-var FORCE_UP_155 = _world.GetObject(ObjectType.Skill,"FORCE_UP");
-var FORCE_UP_155_val = FORCE_UP_155.GetFloat("VAL");
-DUCK_VAL_150.SetFloat("VAL",DUCK_VAL_151_val+DUCK_STR_153_val*FORCE_UP_155_val);
+var DUCK_VAL_162 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
+var DUCK_VAL_163 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
+var DUCK_VAL_163_val = DUCK_VAL_163.GetFloat("VAL");
+var DUCK_VAL_164 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
+var DUCK_VAL_164_val = DUCK_VAL_164.GetFloat("VAL");
+var DUCK_STR_166 = _world.GetObject(ObjectType.Skill,"DUCK_STR");
+var DUCK_STR_166_val = DUCK_STR_166.GetFloat("VAL");
+var FORCE_UP_168 = _world.GetObject(ObjectType.Skill,"FORCE_UP");
+var FORCE_UP_168_val = FORCE_UP_168.GetFloat("VAL");
+DUCK_VAL_162.SetFloat("VAL",DUCK_VAL_164_val+DUCK_STR_166_val*FORCE_UP_168_val);
 NO_DUCK:
-var PLAYER_SIZE_156 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
-var PLAYER_SIZE_157 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
-var PLAYER_SIZE_157_val = PLAYER_SIZE_157.GetFloat("VAL");
-var DUCK_VAL_159 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
-var DUCK_VAL_159_val = DUCK_VAL_159.GetFloat("VAL");
-PLAYER_SIZE_156.SetFloat("VAL",PLAYER_SIZE_157_val+DUCK_VAL_159_val);
-var MODE_GEHEN_160 = _world.GetObject(ObjectType.Skill,"MODE_GEHEN");
-var MODE_GEHEN_160_val = MODE_GEHEN_160.GetFloat("VAL");
-var MOVING_161 = _world.GetObject(ObjectType.Skill,"MOVING");
-var MOVING_161_val = MOVING_161.GetFloat("VAL");
-if (MOVING_161_val != MODE_GEHEN_160_val)
+var PLAYER_SIZE_169 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_170 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_170_val = PLAYER_SIZE_170.GetFloat("VAL");
+var PLAYER_SIZE_171 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_171_val = PLAYER_SIZE_171.GetFloat("VAL");
+var DUCK_VAL_173 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
+var DUCK_VAL_173_val = DUCK_VAL_173.GetFloat("VAL");
+PLAYER_SIZE_169.SetFloat("VAL",PLAYER_SIZE_171_val+DUCK_VAL_173_val);
+var MODE_GEHEN_174 = _world.GetObject(ObjectType.Skill,"MODE_GEHEN");
+var MODE_GEHEN_174_val = MODE_GEHEN_174.GetFloat("VAL");
+var MOVING_175 = _world.GetObject(ObjectType.Skill,"MOVING");
+var MOVING_175_val = MOVING_175.GetFloat("VAL");
+if (MOVING_175_val != MODE_GEHEN_174_val)
 {
 goto NO_JUMP;
 }
-var JUMP_PHASE_163 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
-var JUMP_PHASE_163_val = JUMP_PHASE_163.GetFloat("VAL");
-if (JUMP_PHASE_163_val > 0f)
+var JUMP_PHASE_177 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
+var JUMP_PHASE_177_val = JUMP_PHASE_177.GetFloat("VAL");
+if (JUMP_PHASE_177_val > 0f)
 {
 goto JUMP_1;
 }
-var FORCE_UP_165 = _world.GetObject(ObjectType.Skill,"FORCE_UP");
-var FORCE_UP_165_val = FORCE_UP_165.GetFloat("VAL");
-if (FORCE_UP_165_val < 0.1f)
+var FORCE_UP_179 = _world.GetObject(ObjectType.Skill,"FORCE_UP");
+var FORCE_UP_179_val = FORCE_UP_179.GetFloat("VAL");
+if (FORCE_UP_179_val < 0.1f)
 {
 goto NO_JUMP;
 }
-var JUMP_PHASE_167 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
-JUMP_PHASE_167.SetFloat("VAL",1f);
+var JUMP_PHASE_181 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
+JUMP_PHASE_181.SetFloat("VAL",1f);
 JUMP_1:
-var JUMP_PHASE_169 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
-var JUMP_PHASE_169_val = JUMP_PHASE_169.GetFloat("VAL");
-if (JUMP_PHASE_169_val > 1f)
+var JUMP_PHASE_183 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
+var JUMP_PHASE_183_val = JUMP_PHASE_183.GetFloat("VAL");
+if (JUMP_PHASE_183_val > 1f)
 {
 goto JUMP_2;
 }
-var DUCK_VAL_170 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
-var DUCK_VAL_171 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
-var DUCK_VAL_171_val = DUCK_VAL_171.GetFloat("VAL");
-DUCK_VAL_170.SetFloat("VAL",DUCK_VAL_171_val-0.5f);
-var DUCK_VAL_175 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
-var DUCK_VAL_175_val = DUCK_VAL_175.GetFloat("VAL");
-if (DUCK_VAL_175_val < -0.7f)
+var DUCK_VAL_184 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
+var DUCK_VAL_185 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
+var DUCK_VAL_185_val = DUCK_VAL_185.GetFloat("VAL");
+var DUCK_VAL_186 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
+var DUCK_VAL_186_val = DUCK_VAL_186.GetFloat("VAL");
+DUCK_VAL_184.SetFloat("VAL",DUCK_VAL_186_val-0.5f);
+var DUCK_VAL_190 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
+var DUCK_VAL_190_val = DUCK_VAL_190.GetFloat("VAL");
+if (DUCK_VAL_190_val < -0.7f)
 {
-var JUMP_PHASE_177 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
-JUMP_PHASE_177.SetFloat("VAL",2f);
+var JUMP_PHASE_192 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
+JUMP_PHASE_192.SetFloat("VAL",2f);
 }
 goto NO_JUMP;
 JUMP_2:
-var JUMP_PHASE_179 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
-var JUMP_PHASE_179_val = JUMP_PHASE_179.GetFloat("VAL");
-if (JUMP_PHASE_179_val > 2f)
+var JUMP_PHASE_194 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
+var JUMP_PHASE_194_val = JUMP_PHASE_194.GetFloat("VAL");
+if (JUMP_PHASE_194_val > 2f)
 {
 goto JUMP_3;
 }
-var DUCK_VAL_181 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
-DUCK_VAL_181.SetFloat("VAL",0f);
-var PLAYER_Z_182 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
-var FLOOR_HGT_183 = _world.GetObject(ObjectType.Skill,"FLOOR_HGT");
-var FLOOR_HGT_183_val = FLOOR_HGT_183.GetFloat("VAL");
-var MY_SIZE_185 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
-var MY_SIZE_185_val = MY_SIZE_185.GetFloat("VAL");
-PLAYER_Z_182.SetFloat("VAL",FLOOR_HGT_183_val+MY_SIZE_185_val);
-var PLAYER_VZ_187 = _world.GetObject(ObjectType.Skill,"PLAYER_VZ");
-PLAYER_VZ_187.SetFloat("VAL",0.5f);
-var JUMP_PHASE_189 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
-JUMP_PHASE_189.SetFloat("VAL",3f);
+var DUCK_VAL_196 = _world.GetObject(ObjectType.Skill,"DUCK_VAL");
+DUCK_VAL_196.SetFloat("VAL",0f);
+var PLAYER_Z_197 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
+var PLAYER_Z_198 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
+var PLAYER_Z_198_val = PLAYER_Z_198.GetFloat("VAL");
+var FLOOR_HGT_199 = _world.GetObject(ObjectType.Skill,"FLOOR_HGT");
+var FLOOR_HGT_199_val = FLOOR_HGT_199.GetFloat("VAL");
+var MY_SIZE_201 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
+var MY_SIZE_201_val = MY_SIZE_201.GetFloat("VAL");
+PLAYER_Z_197.SetFloat("VAL",FLOOR_HGT_199_val+MY_SIZE_201_val);
+var PLAYER_VZ_203 = _world.GetObject(ObjectType.Skill,"PLAYER_VZ");
+PLAYER_VZ_203.SetFloat("VAL",0.5f);
+var JUMP_PHASE_205 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
+JUMP_PHASE_205.SetFloat("VAL",3f);
 goto NO_JUMP;
 JUMP_3:
-var PLAYER_VZ_191 = _world.GetObject(ObjectType.Skill,"PLAYER_VZ");
-var PLAYER_VZ_191_val = PLAYER_VZ_191.GetFloat("VAL");
-if (PLAYER_VZ_191_val > 0f)
+var PLAYER_VZ_207 = _world.GetObject(ObjectType.Skill,"PLAYER_VZ");
+var PLAYER_VZ_207_val = PLAYER_VZ_207.GetFloat("VAL");
+if (PLAYER_VZ_207_val > 0f)
 {
 goto NO_JUMP;
 }
-var PLAYER_HGT_193 = _world.GetObject(ObjectType.Skill,"PLAYER_HGT");
-var PLAYER_HGT_193_val = PLAYER_HGT_193.GetFloat("VAL");
-if (PLAYER_HGT_193_val > 0f)
+var PLAYER_HGT_209 = _world.GetObject(ObjectType.Skill,"PLAYER_HGT");
+var PLAYER_HGT_209_val = PLAYER_HGT_209.GetFloat("VAL");
+if (PLAYER_HGT_209_val > 0f)
 {
 goto NO_JUMP;
 }
-var JUMP_PHASE_195 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
-JUMP_PHASE_195.SetFloat("VAL",0f);
+var JUMP_PHASE_211 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
+JUMP_PHASE_211.SetFloat("VAL",0f);
 NO_JUMP:
-var PLAYER_SPEED_SQR_196 = _world.GetObject(ObjectType.Skill,"PLAYER_SPEED_SQR");
-var PLAYER_VX_197 = _world.GetObject(ObjectType.Skill,"PLAYER_VX");
-var PLAYER_VX_197_val = PLAYER_VX_197.GetFloat("VAL");
-var PLAYER_VX_199 = _world.GetObject(ObjectType.Skill,"PLAYER_VX");
-var PLAYER_VX_199_val = PLAYER_VX_199.GetFloat("VAL");
-var PLAYER_VY_201 = _world.GetObject(ObjectType.Skill,"PLAYER_VY");
-var PLAYER_VY_201_val = PLAYER_VY_201.GetFloat("VAL");
-var PLAYER_VY_203 = _world.GetObject(ObjectType.Skill,"PLAYER_VY");
-var PLAYER_VY_203_val = PLAYER_VY_203.GetFloat("VAL");
-PLAYER_SPEED_SQR_196.SetFloat("VAL",PLAYER_VX_197_val*PLAYER_VX_199_val+PLAYER_VY_201_val*PLAYER_VY_203_val);
-var TILT_DECREASE_205 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
-var TILT_DECREASE_205_val = TILT_DECREASE_205.GetFloat("VAL");
-if (TILT_DECREASE_205_val != 1f)
+var PLAYER_SPEED_SQR_212 = _world.GetObject(ObjectType.Skill,"PLAYER_SPEED_SQR");
+var PLAYER_SPEED_SQR_213 = _world.GetObject(ObjectType.Skill,"PLAYER_SPEED_SQR");
+var PLAYER_SPEED_SQR_213_val = PLAYER_SPEED_SQR_213.GetFloat("VAL");
+var PLAYER_VX_214 = _world.GetObject(ObjectType.Skill,"PLAYER_VX");
+var PLAYER_VX_214_val = PLAYER_VX_214.GetFloat("VAL");
+var PLAYER_VX_216 = _world.GetObject(ObjectType.Skill,"PLAYER_VX");
+var PLAYER_VX_216_val = PLAYER_VX_216.GetFloat("VAL");
+var PLAYER_VY_218 = _world.GetObject(ObjectType.Skill,"PLAYER_VY");
+var PLAYER_VY_218_val = PLAYER_VY_218.GetFloat("VAL");
+var PLAYER_VY_220 = _world.GetObject(ObjectType.Skill,"PLAYER_VY");
+var PLAYER_VY_220_val = PLAYER_VY_220.GetFloat("VAL");
+PLAYER_SPEED_SQR_212.SetFloat("VAL",PLAYER_VX_214_val*PLAYER_VX_216_val+PLAYER_VY_218_val*PLAYER_VY_220_val);
+var TILT_DECREASE_222 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
+var TILT_DECREASE_222_val = TILT_DECREASE_222.GetFloat("VAL");
+if (TILT_DECREASE_222_val != 1f)
 {
 goto CALC_TILT;
 }
-var MAX_PLAYER_TILT_P_206 = _world.GetObject(ObjectType.Skill,"MAX_PLAYER_TILT_P");
-var MAX_PLAYER_TILT_P_206_val = MAX_PLAYER_TILT_P_206.GetFloat("VAL");
-var PLAYER_TILT_207 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
-var PLAYER_TILT_207_val = PLAYER_TILT_207.GetFloat("VAL");
-if (PLAYER_TILT_207_val > MAX_PLAYER_TILT_P_206_val)
+var MAX_PLAYER_TILT_P_223 = _world.GetObject(ObjectType.Skill,"MAX_PLAYER_TILT_P");
+var MAX_PLAYER_TILT_P_223_val = MAX_PLAYER_TILT_P_223.GetFloat("VAL");
+var PLAYER_TILT_224 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_224_val = PLAYER_TILT_224.GetFloat("VAL");
+if (PLAYER_TILT_224_val > MAX_PLAYER_TILT_P_223_val)
 {
 goto CHECK_SPEED_TILT;
 }
-var MAX_PLAYER_TILT_N_208 = _world.GetObject(ObjectType.Skill,"MAX_PLAYER_TILT_N");
-var MAX_PLAYER_TILT_N_208_val = MAX_PLAYER_TILT_N_208.GetFloat("VAL");
-var PLAYER_TILT_209 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
-var PLAYER_TILT_209_val = PLAYER_TILT_209.GetFloat("VAL");
-if (PLAYER_TILT_209_val > MAX_PLAYER_TILT_N_208_val)
+var MAX_PLAYER_TILT_N_225 = _world.GetObject(ObjectType.Skill,"MAX_PLAYER_TILT_N");
+var MAX_PLAYER_TILT_N_225_val = MAX_PLAYER_TILT_N_225.GetFloat("VAL");
+var PLAYER_TILT_226 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_226_val = PLAYER_TILT_226.GetFloat("VAL");
+if (PLAYER_TILT_226_val > MAX_PLAYER_TILT_N_225_val)
 {
 goto DECR_TILT;
 }
 CHECK_SPEED_TILT:
-var PLAYER_SPEED_SQR_211 = _world.GetObject(ObjectType.Skill,"PLAYER_SPEED_SQR");
-var PLAYER_SPEED_SQR_211_val = PLAYER_SPEED_SQR_211.GetFloat("VAL");
-if (PLAYER_SPEED_SQR_211_val > 0.4f)
+var PLAYER_SPEED_SQR_228 = _world.GetObject(ObjectType.Skill,"PLAYER_SPEED_SQR");
+var PLAYER_SPEED_SQR_228_val = PLAYER_SPEED_SQR_228.GetFloat("VAL");
+if (PLAYER_SPEED_SQR_228_val > 0.4f)
 {
 goto DECR_TILT;
 }
-var PLAYER_VZ_213 = _world.GetObject(ObjectType.Skill,"PLAYER_VZ");
-var PLAYER_VZ_213_val = PLAYER_VZ_213.GetFloat("VAL");
-if (PLAYER_VZ_213_val != 0f)
+var PLAYER_VZ_230 = _world.GetObject(ObjectType.Skill,"PLAYER_VZ");
+var PLAYER_VZ_230_val = PLAYER_VZ_230.GetFloat("VAL");
+if (PLAYER_VZ_230_val != 0f)
 {
 goto DECR_TILT;
 }
 goto CALC_TILT;
 DECR_TILT:
-var TILT_DECREASE_215 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
-TILT_DECREASE_215.SetFloat("VAL",0.8f);
+var TILT_DECREASE_232 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
+TILT_DECREASE_232.SetFloat("VAL",0.8f);
 CALC_TILT:
-var PLAYER_TILT_216 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
-var TILT_DECREASE_217 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
-var TILT_DECREASE_217_val = TILT_DECREASE_217.GetFloat("VAL");
-var PLAYER_TILT_219 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
-var PLAYER_TILT_219_val = PLAYER_TILT_219.GetFloat("VAL");
-var FORCE_TILT_223 = _world.GetObject(ObjectType.Skill,"FORCE_TILT");
-var FORCE_TILT_223_val = FORCE_TILT_223.GetFloat("VAL");
-var FLOAT_STR_227 = _world.GetObject(ObjectType.Skill,"FLOAT_STR");
-var FLOAT_STR_227_val = FLOAT_STR_227.GetFloat("VAL");
-var FORCE_UP_229 = _world.GetObject(ObjectType.Skill,"FORCE_UP");
-var FORCE_UP_229_val = FORCE_UP_229.GetFloat("VAL");
-var FLY_MODE_234 = _world.GetObject(ObjectType.Skill,"FLY_MODE");
-var FLY_MODE_234_val = FLY_MODE_234.GetFloat("VAL");
-PLAYER_TILT_216.SetFloat("VAL",TILT_DECREASE_217_val*PLAYER_TILT_219_val+0.3f*FORCE_TILT_223_val-0.3f*FLOAT_STR_227_val*FORCE_UP_229_val*(1f-FLY_MODE_234_val));
-var PLAYER_SPEED_SQR_237 = _world.GetObject(ObjectType.Skill,"PLAYER_SPEED_SQR");
-var PLAYER_SPEED_SQR_237_val = PLAYER_SPEED_SQR_237.GetFloat("VAL");
-if (PLAYER_SPEED_SQR_237_val > 0f)
+var PLAYER_TILT_233 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_234 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_234_val = PLAYER_TILT_234.GetFloat("VAL");
+var TILT_DECREASE_235 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
+var TILT_DECREASE_235_val = TILT_DECREASE_235.GetFloat("VAL");
+var PLAYER_TILT_237 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_237_val = PLAYER_TILT_237.GetFloat("VAL");
+var FORCE_TILT_241 = _world.GetObject(ObjectType.Skill,"FORCE_TILT");
+var FORCE_TILT_241_val = FORCE_TILT_241.GetFloat("VAL");
+var FLOAT_STR_245 = _world.GetObject(ObjectType.Skill,"FLOAT_STR");
+var FLOAT_STR_245_val = FLOAT_STR_245.GetFloat("VAL");
+var FORCE_UP_247 = _world.GetObject(ObjectType.Skill,"FORCE_UP");
+var FORCE_UP_247_val = FORCE_UP_247.GetFloat("VAL");
+var FLY_MODE_252 = _world.GetObject(ObjectType.Skill,"FLY_MODE");
+var FLY_MODE_252_val = FLY_MODE_252.GetFloat("VAL");
+PLAYER_TILT_233.SetFloat("VAL",TILT_DECREASE_235_val*PLAYER_TILT_237_val+0.3f*FORCE_TILT_241_val-0.3f*FLOAT_STR_245_val*FORCE_UP_247_val*(1f-FLY_MODE_252_val));
+var PLAYER_SPEED_SQR_255 = _world.GetObject(ObjectType.Skill,"PLAYER_SPEED_SQR");
+var PLAYER_SPEED_SQR_255_val = PLAYER_SPEED_SQR_255.GetFloat("VAL");
+if (PLAYER_SPEED_SQR_255_val > 0f)
 {
-goto skip_238;
+goto skip_256;
 }
-var MAX_PLAYER_TILT_P_239 = _world.GetObject(ObjectType.Skill,"MAX_PLAYER_TILT_P");
-var MAX_PLAYER_TILT_P_239_val = MAX_PLAYER_TILT_P_239.GetFloat("VAL");
-var PLAYER_TILT_240 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
-var PLAYER_TILT_240_val = PLAYER_TILT_240.GetFloat("VAL");
-if (PLAYER_TILT_240_val > MAX_PLAYER_TILT_P_239_val)
+var MAX_PLAYER_TILT_P_257 = _world.GetObject(ObjectType.Skill,"MAX_PLAYER_TILT_P");
+var MAX_PLAYER_TILT_P_257_val = MAX_PLAYER_TILT_P_257.GetFloat("VAL");
+var PLAYER_TILT_258 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_258_val = PLAYER_TILT_258.GetFloat("VAL");
+if (PLAYER_TILT_258_val > MAX_PLAYER_TILT_P_257_val)
 {
-var TILT_DECREASE_242 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
-TILT_DECREASE_242.SetFloat("VAL",1f);
-}
-var MAX_PLAYER_TILT_N_243 = _world.GetObject(ObjectType.Skill,"MAX_PLAYER_TILT_N");
-var MAX_PLAYER_TILT_N_243_val = MAX_PLAYER_TILT_N_243.GetFloat("VAL");
-var PLAYER_TILT_244 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
-var PLAYER_TILT_244_val = PLAYER_TILT_244.GetFloat("VAL");
-if (PLAYER_TILT_244_val < MAX_PLAYER_TILT_N_243_val)
-{
-var TILT_DECREASE_246 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
-TILT_DECREASE_246.SetFloat("VAL",1f);
-}
-skip_238:
-var MODE_SCHWIMMEN_247 = _world.GetObject(ObjectType.Skill,"MODE_SCHWIMMEN");
-var MODE_SCHWIMMEN_247_val = MODE_SCHWIMMEN_247.GetFloat("VAL");
-var MOVING_248 = _world.GetObject(ObjectType.Skill,"MOVING");
-var MOVING_248_val = MOVING_248.GetFloat("VAL");
-if (MOVING_248_val == MODE_SCHWIMMEN_247_val)
-{
-var PLAYER_TILT_249 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
-var PLAYER_TILT_250 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
-var PLAYER_TILT_250_val = PLAYER_TILT_250.GetFloat("VAL");
-var WAVE_254 = _world.GetObject(ObjectType.Skill,"WAVE");
-var WAVE_254_val = WAVE_254.GetFloat("VAL");
-PLAYER_TILT_249.SetFloat("VAL",PLAYER_TILT_250_val+0.01f*WAVE_254_val);
-}
-var MODE_TAUCHEN_255 = _world.GetObject(ObjectType.Skill,"MODE_TAUCHEN");
-var MODE_TAUCHEN_255_val = MODE_TAUCHEN_255.GetFloat("VAL");
-var MOVING_256 = _world.GetObject(ObjectType.Skill,"MOVING");
-var MOVING_256_val = MOVING_256.GetFloat("VAL");
-if (MOVING_256_val == MODE_TAUCHEN_255_val)
-{
-goto NO_HTILT;
-}
-var JUMP_PHASE_258 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
-var JUMP_PHASE_258_val = JUMP_PHASE_258.GetFloat("VAL");
-if (JUMP_PHASE_258_val > 0f)
-{
-goto NO_HTILT;
-}
 var TILT_DECREASE_260 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
-var TILT_DECREASE_260_val = TILT_DECREASE_260.GetFloat("VAL");
-if (TILT_DECREASE_260_val < 1f)
-{
-var PLAYER_TILT_261 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+TILT_DECREASE_260.SetFloat("VAL",1f);
+}
+var MAX_PLAYER_TILT_N_261 = _world.GetObject(ObjectType.Skill,"MAX_PLAYER_TILT_N");
+var MAX_PLAYER_TILT_N_261_val = MAX_PLAYER_TILT_N_261.GetFloat("VAL");
 var PLAYER_TILT_262 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
 var PLAYER_TILT_262_val = PLAYER_TILT_262.GetFloat("VAL");
-var PLAYER_HGT_267 = _world.GetObject(ObjectType.Skill,"PLAYER_HGT");
-var PLAYER_HGT_267_val = PLAYER_HGT_267.GetFloat("VAL");
-PLAYER_TILT_261.SetFloat("VAL",PLAYER_TILT_262_val+0.03f*(PLAYER_HGT_267_val+0.3f));
+if (PLAYER_TILT_262_val < MAX_PLAYER_TILT_N_261_val)
+{
+var TILT_DECREASE_264 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
+TILT_DECREASE_264.SetFloat("VAL",1f);
+}
+skip_256:
+var MODE_SCHWIMMEN_265 = _world.GetObject(ObjectType.Skill,"MODE_SCHWIMMEN");
+var MODE_SCHWIMMEN_265_val = MODE_SCHWIMMEN_265.GetFloat("VAL");
+var MOVING_266 = _world.GetObject(ObjectType.Skill,"MOVING");
+var MOVING_266_val = MOVING_266.GetFloat("VAL");
+if (MOVING_266_val == MODE_SCHWIMMEN_265_val)
+{
+var PLAYER_TILT_267 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_268 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_268_val = PLAYER_TILT_268.GetFloat("VAL");
+var PLAYER_TILT_269 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_269_val = PLAYER_TILT_269.GetFloat("VAL");
+var WAVE_273 = _world.GetObject(ObjectType.Skill,"WAVE");
+var WAVE_273_val = WAVE_273.GetFloat("VAL");
+PLAYER_TILT_267.SetFloat("VAL",PLAYER_TILT_269_val+0.01f*WAVE_273_val);
+}
+var MODE_TAUCHEN_274 = _world.GetObject(ObjectType.Skill,"MODE_TAUCHEN");
+var MODE_TAUCHEN_274_val = MODE_TAUCHEN_274.GetFloat("VAL");
+var MOVING_275 = _world.GetObject(ObjectType.Skill,"MOVING");
+var MOVING_275_val = MOVING_275.GetFloat("VAL");
+if (MOVING_275_val == MODE_TAUCHEN_274_val)
+{
+goto NO_HTILT;
+}
+var JUMP_PHASE_277 = _world.GetObject(ObjectType.Skill,"JUMP_PHASE");
+var JUMP_PHASE_277_val = JUMP_PHASE_277.GetFloat("VAL");
+if (JUMP_PHASE_277_val > 0f)
+{
+goto NO_HTILT;
+}
+var TILT_DECREASE_279 = _world.GetObject(ObjectType.Skill,"TILT_DECREASE");
+var TILT_DECREASE_279_val = TILT_DECREASE_279.GetFloat("VAL");
+if (TILT_DECREASE_279_val < 1f)
+{
+var PLAYER_TILT_280 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_281 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_281_val = PLAYER_TILT_281.GetFloat("VAL");
+var PLAYER_TILT_282 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
+var PLAYER_TILT_282_val = PLAYER_TILT_282.GetFloat("VAL");
+var PLAYER_HGT_287 = _world.GetObject(ObjectType.Skill,"PLAYER_HGT");
+var PLAYER_HGT_287_val = PLAYER_HGT_287.GetFloat("VAL");
+PLAYER_TILT_280.SetFloat("VAL",PLAYER_TILT_282_val+0.03f*(PLAYER_HGT_287_val+0.3f));
 }
 NO_HTILT:
-var RICHTER_272 = _world.GetObject(ObjectType.Skill,"RICHTER");
-var RICHTER_272_val = RICHTER_272.GetFloat("VAL");
-if (RICHTER_272_val == 0f)
+var RICHTER_292 = _world.GetObject(ObjectType.Skill,"RICHTER");
+var RICHTER_292_val = RICHTER_292.GetFloat("VAL");
+if (RICHTER_292_val == 0f)
 {
 goto NO_QUAKE;
 }
-var PLAYER_Z_273 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
-var PLAYER_Z_274 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
-var PLAYER_Z_274_val = PLAYER_Z_274.GetFloat("VAL");
-var RICHTER_276 = _world.GetObject(ObjectType.Skill,"RICHTER");
-var RICHTER_276_val = RICHTER_276.GetFloat("VAL");
-var RANDOM_2_279 = _world.GetObject(ObjectType.Skill,"RANDOM_2");
-var RANDOM_2_279_val = RANDOM_2_279.GetFloat("VAL");
-PLAYER_Z_273.SetFloat("VAL",PLAYER_Z_274_val+RICHTER_276_val*(RANDOM_2_279_val-0.5f));
-var RANDOM_1_283 = _world.GetObject(ObjectType.Skill,"RANDOM_1");
-var RANDOM_1_283_val = RANDOM_1_283.GetFloat("VAL");
-var RANDOM_2_284 = _world.GetObject(ObjectType.Skill,"RANDOM_2");
-RANDOM_2_284.SetFloat("VAL",RANDOM_1_283_val);
-var RANDOM_1_286 = _world.GetObject(ObjectType.Skill,"RANDOM_1");
-RANDOM_1_286.SetFloat("VAL",UnityEngine.Random.value);
+var PLAYER_Z_293 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
+var PLAYER_Z_294 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
+var PLAYER_Z_294_val = PLAYER_Z_294.GetFloat("VAL");
+var PLAYER_Z_295 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
+var PLAYER_Z_295_val = PLAYER_Z_295.GetFloat("VAL");
+var RICHTER_297 = _world.GetObject(ObjectType.Skill,"RICHTER");
+var RICHTER_297_val = RICHTER_297.GetFloat("VAL");
+var RANDOM_2_300 = _world.GetObject(ObjectType.Skill,"RANDOM_2");
+var RANDOM_2_300_val = RANDOM_2_300.GetFloat("VAL");
+PLAYER_Z_293.SetFloat("VAL",PLAYER_Z_295_val+RICHTER_297_val*(RANDOM_2_300_val-0.5f));
+var RANDOM_1_304 = _world.GetObject(ObjectType.Skill,"RANDOM_1");
+var RANDOM_1_304_val = RANDOM_1_304.GetFloat("VAL");
+var RANDOM_2_305 = _world.GetObject(ObjectType.Skill,"RANDOM_2");
+RANDOM_2_305.SetFloat("VAL",RANDOM_1_304_val);
+var RANDOM_1_307 = _world.GetObject(ObjectType.Skill,"RANDOM_1");
+RANDOM_1_307.SetFloat("VAL",UnityEngine.Random.value);
 NO_QUAKE:
 yield break;
-var KEY_INS_288 = _world.GetObject(ObjectType.Skill,"KEY_INS");
-var KEY_INS_288_val = KEY_INS_288.GetFloat("VAL");
-if (KEY_INS_288_val > 0f)
+var KEY_INS_309 = _world.GetObject(ObjectType.Skill,"KEY_INS");
+var KEY_INS_309_val = KEY_INS_309.GetFloat("VAL");
+if (KEY_INS_309_val > 0f)
 {
-var PLAYER_ARC_289 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
-var PLAYER_ARC_290 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
-var PLAYER_ARC_290_val = PLAYER_ARC_290.GetFloat("VAL");
-PLAYER_ARC_289.SetFloat("VAL",PLAYER_ARC_290_val-0.1f);
+var PLAYER_ARC_310 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
+var PLAYER_ARC_311 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
+var PLAYER_ARC_311_val = PLAYER_ARC_311.GetFloat("VAL");
+var PLAYER_ARC_312 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
+var PLAYER_ARC_312_val = PLAYER_ARC_312.GetFloat("VAL");
+PLAYER_ARC_310.SetFloat("VAL",PLAYER_ARC_312_val-0.1f);
 }
-var KEY_DEL_294 = _world.GetObject(ObjectType.Skill,"KEY_DEL");
-var KEY_DEL_294_val = KEY_DEL_294.GetFloat("VAL");
-if (KEY_DEL_294_val > 0f)
+var KEY_DEL_316 = _world.GetObject(ObjectType.Skill,"KEY_DEL");
+var KEY_DEL_316_val = KEY_DEL_316.GetFloat("VAL");
+if (KEY_DEL_316_val > 0f)
 {
-var PLAYER_ARC_295 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
-var PLAYER_ARC_296 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
-var PLAYER_ARC_296_val = PLAYER_ARC_296.GetFloat("VAL");
-PLAYER_ARC_295.SetFloat("VAL",PLAYER_ARC_296_val+0.1f);
+var PLAYER_ARC_317 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
+var PLAYER_ARC_318 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
+var PLAYER_ARC_318_val = PLAYER_ARC_318.GetFloat("VAL");
+var PLAYER_ARC_319 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
+var PLAYER_ARC_319_val = PLAYER_ARC_319.GetFloat("VAL");
+PLAYER_ARC_317.SetFloat("VAL",PLAYER_ARC_319_val+0.1f);
 }
 yield break;
 }
@@ -1350,7 +1415,9 @@ yield break;
 var MAP_SCALE_2 = _world.GetObject(ObjectType.Skill,"MAP_SCALE");
 var MAP_SCALE_3 = _world.GetObject(ObjectType.Skill,"MAP_SCALE");
 var MAP_SCALE_3_val = MAP_SCALE_3.GetFloat("VAL");
-MAP_SCALE_2.SetFloat("VAL",MAP_SCALE_3_val*0.9f);
+var MAP_SCALE_4 = _world.GetObject(ObjectType.Skill,"MAP_SCALE");
+var MAP_SCALE_4_val = MAP_SCALE_4.GetFloat("VAL");
+MAP_SCALE_2.SetFloat("VAL",MAP_SCALE_4_val*0.9f);
 yield break;
 }
 public IEnumerator MSCALE_PLUS(){
@@ -1363,7 +1430,9 @@ yield break;
 var MAP_SCALE_2 = _world.GetObject(ObjectType.Skill,"MAP_SCALE");
 var MAP_SCALE_3 = _world.GetObject(ObjectType.Skill,"MAP_SCALE");
 var MAP_SCALE_3_val = MAP_SCALE_3.GetFloat("VAL");
-MAP_SCALE_2.SetFloat("VAL",MAP_SCALE_3_val*1.1f);
+var MAP_SCALE_4 = _world.GetObject(ObjectType.Skill,"MAP_SCALE");
+var MAP_SCALE_4_val = MAP_SCALE_4.GetFloat("VAL");
+MAP_SCALE_2.SetFloat("VAL",MAP_SCALE_4_val*1.1f);
 yield break;
 }
 public IEnumerator OPENDOOR(){
@@ -1449,19 +1518,27 @@ UNDERWATER_3.SetFloat("VAL",0f);
 var PLAYER_ARC_4 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
 var PLAYER_ARC_5 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
 var PLAYER_ARC_5_val = PLAYER_ARC_5.GetFloat("VAL");
-PLAYER_ARC_4.SetFloat("VAL",PLAYER_ARC_5_val-0.3f);
-var MY_SIZE_8 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
+var PLAYER_ARC_6 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
+var PLAYER_ARC_6_val = PLAYER_ARC_6.GetFloat("VAL");
+PLAYER_ARC_4.SetFloat("VAL",PLAYER_ARC_6_val-0.3f);
 var MY_SIZE_9 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
-var MY_SIZE_9_val = MY_SIZE_9.GetFloat("VAL");
-MY_SIZE_8.SetFloat("VAL",MY_SIZE_9_val+0.2f);
-var PLAYER_SIZE_12 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
-var PLAYER_SIZE_13 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
-var PLAYER_SIZE_13_val = PLAYER_SIZE_13.GetFloat("VAL");
-PLAYER_SIZE_12.SetFloat("VAL",PLAYER_SIZE_13_val+0.2f);
-var PLAYER_Z_16 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
-var PLAYER_Z_17 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
-var PLAYER_Z_17_val = PLAYER_Z_17.GetFloat("VAL");
-PLAYER_Z_16.SetFloat("VAL",PLAYER_Z_17_val+0.2f);
+var MY_SIZE_10 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
+var MY_SIZE_10_val = MY_SIZE_10.GetFloat("VAL");
+var MY_SIZE_11 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
+var MY_SIZE_11_val = MY_SIZE_11.GetFloat("VAL");
+MY_SIZE_9.SetFloat("VAL",MY_SIZE_11_val+0.2f);
+var PLAYER_SIZE_14 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_15 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_15_val = PLAYER_SIZE_15.GetFloat("VAL");
+var PLAYER_SIZE_16 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_16_val = PLAYER_SIZE_16.GetFloat("VAL");
+PLAYER_SIZE_14.SetFloat("VAL",PLAYER_SIZE_16_val+0.2f);
+var PLAYER_Z_19 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
+var PLAYER_Z_20 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
+var PLAYER_Z_20_val = PLAYER_Z_20.GetFloat("VAL");
+var PLAYER_Z_21 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
+var PLAYER_Z_21_val = PLAYER_Z_21.GetFloat("VAL");
+PLAYER_Z_19.SetFloat("VAL",PLAYER_Z_21_val+0.2f);
 yield return _world.CallSynonymAction("SET_OVERWATER");
 yield return SET_SWIMMING();
 yield break;
@@ -1478,19 +1555,27 @@ UNDERWATER_3.SetFloat("VAL",1f);
 var PLAYER_ARC_4 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
 var PLAYER_ARC_5 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
 var PLAYER_ARC_5_val = PLAYER_ARC_5.GetFloat("VAL");
-PLAYER_ARC_4.SetFloat("VAL",PLAYER_ARC_5_val+0.3f);
-var MY_SIZE_8 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
+var PLAYER_ARC_6 = _world.GetObject(ObjectType.Skill,"PLAYER_ARC");
+var PLAYER_ARC_6_val = PLAYER_ARC_6.GetFloat("VAL");
+PLAYER_ARC_4.SetFloat("VAL",PLAYER_ARC_6_val+0.3f);
 var MY_SIZE_9 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
-var MY_SIZE_9_val = MY_SIZE_9.GetFloat("VAL");
-MY_SIZE_8.SetFloat("VAL",MY_SIZE_9_val-0.2f);
-var PLAYER_SIZE_12 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
-var PLAYER_SIZE_13 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
-var PLAYER_SIZE_13_val = PLAYER_SIZE_13.GetFloat("VAL");
-PLAYER_SIZE_12.SetFloat("VAL",PLAYER_SIZE_13_val-0.2f);
-var PLAYER_Z_16 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
-var PLAYER_Z_17 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
-var PLAYER_Z_17_val = PLAYER_Z_17.GetFloat("VAL");
-PLAYER_Z_16.SetFloat("VAL",PLAYER_Z_17_val-0.2f);
+var MY_SIZE_10 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
+var MY_SIZE_10_val = MY_SIZE_10.GetFloat("VAL");
+var MY_SIZE_11 = _world.GetObject(ObjectType.Skill,"MY_SIZE");
+var MY_SIZE_11_val = MY_SIZE_11.GetFloat("VAL");
+MY_SIZE_9.SetFloat("VAL",MY_SIZE_11_val-0.2f);
+var PLAYER_SIZE_14 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_15 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_15_val = PLAYER_SIZE_15.GetFloat("VAL");
+var PLAYER_SIZE_16 = _world.GetObject(ObjectType.Skill,"PLAYER_SIZE");
+var PLAYER_SIZE_16_val = PLAYER_SIZE_16.GetFloat("VAL");
+PLAYER_SIZE_14.SetFloat("VAL",PLAYER_SIZE_16_val-0.2f);
+var PLAYER_Z_19 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
+var PLAYER_Z_20 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
+var PLAYER_Z_20_val = PLAYER_Z_20.GetFloat("VAL");
+var PLAYER_Z_21 = _world.GetObject(ObjectType.Skill,"PLAYER_Z");
+var PLAYER_Z_21_val = PLAYER_Z_21.GetFloat("VAL");
+PLAYER_Z_19.SetFloat("VAL",PLAYER_Z_21_val-0.2f);
 yield return _world.CallSynonymAction("SET_UNDERWATER");
 yield return SET_DIVING();
 yield break;
@@ -1724,7 +1809,7 @@ _world.AcknexObject.SetString("IF_8",ADJUST_YPLUS_92.GetString("NAME"));
 yield break;
 DISABLE:
 _world.AcknexObject.SetAcknexObject("MESSAGES.9",null);
-//Unknown Property Type: World.PANELS.9
+_world.AcknexObject.SetAcknexObject("PANELS.9",null);
 var ADJUST_MODE_101 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
 ADJUST_MODE_101.SetFloat("VAL",-1f);
 var AW_OLD_102 = _world.GetSynonymObject("AW_OLD");
@@ -1792,63 +1877,71 @@ var ADJUST_MODE_16_val = ADJUST_MODE_16.GetFloat("VAL");
 if (ADJUST_MODE_16_val == 3f)
 {
 var ADJUST_REG_18 = _world.GetSynonymObject("ADJUST_REG");
-var ADJUST_X_19 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_X_19_val = ADJUST_X_19.GetFloat("VAL");
-ADJUST_REG_18.SetFloat("FLOOR_HGT",ADJUST_X_19_val/10f);
+var ADJUST_REG_20 = _world.GetSynonymObject("ADJUST_REG");
+var temp_21 =ADJUST_REG_20.GetFloat("FLOOR_HGT");
+var ADJUST_X_22 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_22_val = ADJUST_X_22.GetFloat("VAL");
+ADJUST_REG_18.SetFloat("FLOOR_HGT",ADJUST_X_22_val/10f);
 }
-var ADJUST_MODE_23 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_23_val = ADJUST_MODE_23.GetFloat("VAL");
-if (ADJUST_MODE_23_val == 4f)
+var ADJUST_MODE_26 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_26_val = ADJUST_MODE_26.GetFloat("VAL");
+if (ADJUST_MODE_26_val == 4f)
 {
-var ADJUST_X_24 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_X_24_val = ADJUST_X_24.GetFloat("VAL");
-var ADJUST_TEX_26 = _world.GetSynonymObject("ADJUST_TEX");
-ADJUST_TEX_26.SetFloat("POS_X",ADJUST_X_24_val);
+var ADJUST_X_27 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_27_val = ADJUST_X_27.GetFloat("VAL");
+var ADJUST_TEX_29 = _world.GetSynonymObject("ADJUST_TEX");
+ADJUST_TEX_29.SetFloat("POS_X",ADJUST_X_27_val);
 }
-var ADJUST_MODE_28 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_28_val = ADJUST_MODE_28.GetFloat("VAL");
-if (ADJUST_MODE_28_val != 5f)
+var ADJUST_MODE_31 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_31_val = ADJUST_MODE_31.GetFloat("VAL");
+if (ADJUST_MODE_31_val != 5f)
 {
-goto skip_29;
+goto skip_32;
 }
-var ADJUST_TEX_31 = _world.GetSynonymObject("ADJUST_TEX");
-var ADJUST_X_32 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_X_32_val = ADJUST_X_32.GetFloat("VAL");
-ADJUST_TEX_31.SetFloat("SCALE_X",ADJUST_X_32_val/10f);
+var ADJUST_TEX_34 = _world.GetSynonymObject("ADJUST_TEX");
+var ADJUST_TEX_36 = _world.GetSynonymObject("ADJUST_TEX");
+var temp_37 =ADJUST_TEX_36.GetFloat("SCALE_X");
+var ADJUST_X_38 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_38_val = ADJUST_X_38.GetFloat("VAL");
+ADJUST_TEX_34.SetFloat("SCALE_X",ADJUST_X_38_val/10f);
 //Unknown keyword: SET_ALL
-skip_29:
-var ADJUST_MODE_36 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_36_val = ADJUST_MODE_36.GetFloat("VAL");
-if (ADJUST_MODE_36_val == 6f)
+skip_32:
+var ADJUST_MODE_42 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_42_val = ADJUST_MODE_42.GetFloat("VAL");
+if (ADJUST_MODE_42_val == 6f)
 {
-var ADJUST_X_37 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_X_37_val = ADJUST_X_37.GetFloat("VAL");
-var ADJUST_WALL_39 = _world.GetSynonymObject("ADJUST_WALL");
-ADJUST_WALL_39.SetFloat("OFFSET_X",ADJUST_X_37_val);
+var ADJUST_X_43 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_43_val = ADJUST_X_43.GetFloat("VAL");
+var ADJUST_WALL_45 = _world.GetSynonymObject("ADJUST_WALL");
+ADJUST_WALL_45.SetFloat("OFFSET_X",ADJUST_X_43_val);
 }
-var ADJUST_MODE_41 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_41_val = ADJUST_MODE_41.GetFloat("VAL");
-if (ADJUST_MODE_41_val != 7f)
+var ADJUST_MODE_47 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_47_val = ADJUST_MODE_47.GetFloat("VAL");
+if (ADJUST_MODE_47_val != 7f)
 {
-goto skip_42;
+goto skip_48;
 }
-var ADJUST_TEX_44 = _world.GetSynonymObject("ADJUST_TEX");
-var ADJUST_X_45 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_X_45_val = ADJUST_X_45.GetFloat("VAL");
-ADJUST_TEX_44.SetFloat("AMBIENT",ADJUST_X_45_val/10f);
+var ADJUST_TEX_50 = _world.GetSynonymObject("ADJUST_TEX");
+var ADJUST_TEX_52 = _world.GetSynonymObject("ADJUST_TEX");
+var temp_53 =ADJUST_TEX_52.GetFloat("AMBIENT");
+var ADJUST_X_54 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_54_val = ADJUST_X_54.GetFloat("VAL");
+ADJUST_TEX_50.SetFloat("AMBIENT",ADJUST_X_54_val/10f);
 //Unknown keyword: SET_ALL
-skip_42:
-var ADJUST_MODE_49 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_49_val = ADJUST_MODE_49.GetFloat("VAL");
-if (ADJUST_MODE_49_val == 8f)
+skip_48:
+var ADJUST_MODE_58 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_58_val = ADJUST_MODE_58.GetFloat("VAL");
+if (ADJUST_MODE_58_val == 8f)
 {
-var ADJUST_REG_51 = _world.GetSynonymObject("ADJUST_REG");
-var ADJUST_X_52 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
-var ADJUST_X_52_val = ADJUST_X_52.GetFloat("VAL");
-ADJUST_REG_51.SetFloat("AMBIENT",ADJUST_X_52_val/10f);
+var ADJUST_REG_60 = _world.GetSynonymObject("ADJUST_REG");
+var ADJUST_REG_62 = _world.GetSynonymObject("ADJUST_REG");
+var temp_63 =ADJUST_REG_62.GetFloat("AMBIENT");
+var ADJUST_X_64 = _world.GetObject(ObjectType.Skill,"ADJUST_X");
+var ADJUST_X_64_val = ADJUST_X_64.GetFloat("VAL");
+ADJUST_REG_60.SetFloat("AMBIENT",ADJUST_X_64_val/10f);
 }
-var RENDER_MODE_56 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
-RENDER_MODE_56.SetFloat("VAL",1f);
+var RENDER_MODE_68 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
+RENDER_MODE_68.SetFloat("VAL",1f);
 yield break;
 }
 public IEnumerator SET_ADJY(){
@@ -1884,54 +1977,62 @@ var ADJUST_MODE_16_val = ADJUST_MODE_16.GetFloat("VAL");
 if (ADJUST_MODE_16_val == 3f)
 {
 var ADJUST_REG_18 = _world.GetSynonymObject("ADJUST_REG");
-var ADJUST_Y_19 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-var ADJUST_Y_19_val = ADJUST_Y_19.GetFloat("VAL");
-ADJUST_REG_18.SetFloat("CEIL_HGT",ADJUST_Y_19_val/10f);
+var ADJUST_REG_20 = _world.GetSynonymObject("ADJUST_REG");
+var temp_21 =ADJUST_REG_20.GetFloat("CEIL_HGT");
+var ADJUST_Y_22 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_22_val = ADJUST_Y_22.GetFloat("VAL");
+ADJUST_REG_18.SetFloat("CEIL_HGT",ADJUST_Y_22_val/10f);
 }
-var ADJUST_MODE_23 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_23_val = ADJUST_MODE_23.GetFloat("VAL");
-if (ADJUST_MODE_23_val == 4f)
+var ADJUST_MODE_26 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_26_val = ADJUST_MODE_26.GetFloat("VAL");
+if (ADJUST_MODE_26_val == 4f)
 {
-var ADJUST_Y_24 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-var ADJUST_Y_24_val = ADJUST_Y_24.GetFloat("VAL");
-var ADJUST_TEX_26 = _world.GetSynonymObject("ADJUST_TEX");
-ADJUST_TEX_26.SetFloat("POS_Y",ADJUST_Y_24_val);
+var ADJUST_Y_27 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_27_val = ADJUST_Y_27.GetFloat("VAL");
+var ADJUST_TEX_29 = _world.GetSynonymObject("ADJUST_TEX");
+ADJUST_TEX_29.SetFloat("POS_Y",ADJUST_Y_27_val);
 }
-var ADJUST_MODE_28 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_28_val = ADJUST_MODE_28.GetFloat("VAL");
-if (ADJUST_MODE_28_val != 5f)
+var ADJUST_MODE_31 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_31_val = ADJUST_MODE_31.GetFloat("VAL");
+if (ADJUST_MODE_31_val != 5f)
 {
-goto skip_29;
+goto skip_32;
 }
-var ADJUST_TEX_31 = _world.GetSynonymObject("ADJUST_TEX");
-var ADJUST_Y_32 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-var ADJUST_Y_32_val = ADJUST_Y_32.GetFloat("VAL");
-ADJUST_TEX_31.SetFloat("SCALE_Y",ADJUST_Y_32_val/10f);
+var ADJUST_TEX_34 = _world.GetSynonymObject("ADJUST_TEX");
+var ADJUST_TEX_36 = _world.GetSynonymObject("ADJUST_TEX");
+var temp_37 =ADJUST_TEX_36.GetFloat("SCALE_Y");
+var ADJUST_Y_38 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_38_val = ADJUST_Y_38.GetFloat("VAL");
+ADJUST_TEX_34.SetFloat("SCALE_Y",ADJUST_Y_38_val/10f);
 //Unknown keyword: SET_ALL
-skip_29:
-var ADJUST_MODE_36 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_36_val = ADJUST_MODE_36.GetFloat("VAL");
-if (ADJUST_MODE_36_val == 6f)
+skip_32:
+var ADJUST_MODE_42 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_42_val = ADJUST_MODE_42.GetFloat("VAL");
+if (ADJUST_MODE_42_val == 6f)
 {
-var ADJUST_WALL_38 = _world.GetSynonymObject("ADJUST_WALL");
-var ADJUST_Y_39 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-var ADJUST_Y_39_val = ADJUST_Y_39.GetFloat("VAL");
-ADJUST_WALL_38.SetFloat("POSITION",ADJUST_Y_39_val/10f);
+var ADJUST_WALL_44 = _world.GetSynonymObject("ADJUST_WALL");
+var ADJUST_WALL_46 = _world.GetSynonymObject("ADJUST_WALL");
+var temp_47 =ADJUST_WALL_46.GetFloat("POSITION");
+var ADJUST_Y_48 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_48_val = ADJUST_Y_48.GetFloat("VAL");
+ADJUST_WALL_44.SetFloat("POSITION",ADJUST_Y_48_val/10f);
 }
-var ADJUST_MODE_43 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
-var ADJUST_MODE_43_val = ADJUST_MODE_43.GetFloat("VAL");
-if (ADJUST_MODE_43_val != 7f)
+var ADJUST_MODE_52 = _world.GetObject(ObjectType.Skill,"ADJUST_MODE");
+var ADJUST_MODE_52_val = ADJUST_MODE_52.GetFloat("VAL");
+if (ADJUST_MODE_52_val != 7f)
 {
-goto skip_44;
+goto skip_53;
 }
-var ADJUST_TEX_46 = _world.GetSynonymObject("ADJUST_TEX");
-var ADJUST_Y_47 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
-var ADJUST_Y_47_val = ADJUST_Y_47.GetFloat("VAL");
-ADJUST_TEX_46.SetFloat("ALBEDO",ADJUST_Y_47_val/10f);
+var ADJUST_TEX_55 = _world.GetSynonymObject("ADJUST_TEX");
+var ADJUST_TEX_57 = _world.GetSynonymObject("ADJUST_TEX");
+var temp_58 =ADJUST_TEX_57.GetFloat("ALBEDO");
+var ADJUST_Y_59 = _world.GetObject(ObjectType.Skill,"ADJUST_Y");
+var ADJUST_Y_59_val = ADJUST_Y_59.GetFloat("VAL");
+ADJUST_TEX_55.SetFloat("ALBEDO",ADJUST_Y_59_val/10f);
 //Unknown keyword: SET_ALL
-skip_44:
-var RENDER_MODE_51 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
-RENDER_MODE_51.SetFloat("VAL",1f);
+skip_53:
+var RENDER_MODE_63 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
+RENDER_MODE_63.SetFloat("VAL",1f);
 yield break;
 }
 public IEnumerator SET_AMODE(){
@@ -1958,7 +2059,7 @@ var ATTACH_MODE_11 = _world.AcknexObject.GetAcknexObject("ATTACH_MODE");
 var ADJUST_TEXT_13 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ADJUST_TEXT");
 ADJUST_TEXT_13.SetAcknexObject("STRING",ATTACH_MODE_11);
 var ADJUST_PANEL_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-//Unknown Property Type: World.PANELS.9
+_world.AcknexObject.SetAcknexObject("PANELS.9",ADJUST_PANEL_14);
 var HIT_18 = _world.GetSynonymObject("HIT");
 var temp_19 =HIT_18.GetAcknexObject("TEXTURE");
 _world.SetSynonymObject("ADJUST_TEX",temp_19);
@@ -2003,7 +2104,7 @@ if (HIT_DIST_6_val == 0f)
 yield break;
 }
 var ADJUST_PANEL_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-//Unknown Property Type: World.PANELS.9
+_world.AcknexObject.SetAcknexObject("PANELS.9",ADJUST_PANEL_7);
 var HIT_11 = _world.GetSynonymObject("HIT");
 var temp_12 =HIT_11.GetAcknexObject("TEXTURE");
 _world.SetSynonymObject("ADJUST_TEX",temp_12);
@@ -2031,7 +2132,7 @@ ADJUST_TEXT_9.SetAcknexObject("STRING",CEIL_MODE_7);
 var HERE_10 = _world.GetSynonymObject("HERE");
 _world.SetSynonymObject("ADJUST_REG",HERE_10);
 var ADJUST_PANEL_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-//Unknown Property Type: World.PANELS.9
+_world.AcknexObject.SetAcknexObject("PANELS.9",ADJUST_PANEL_12);
 yield return GET_ADJX();
 yield return GET_ADJY();
 yield break;
@@ -2040,7 +2141,7 @@ public IEnumerator SET_DEBUG(){
 var UPDATE_DBPANEL_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"UPDATE_DBPANEL");
 _world.AcknexObject.SetString("EACH_TICK.10",UPDATE_DBPANEL_0.GetString("NAME"));
 var DEBUG_PANEL_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"DEBUG_PANEL");
-//Unknown Property Type: World.PANELS.10
+_world.AcknexObject.SetAcknexObject("PANELS.10",DEBUG_PANEL_3);
 var DEBUG_TEXT_1_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"DEBUG_TEXT_1");
 _world.AcknexObject.SetAcknexObject("MESSAGES.10",DEBUG_TEXT_1_6);
 yield break;
@@ -2109,7 +2210,7 @@ ADJUST_TEXT_9.SetAcknexObject("STRING",FLO_MODE_7);
 var HERE_10 = _world.GetSynonymObject("HERE");
 _world.SetSynonymObject("ADJUST_REG",HERE_10);
 var ADJUST_PANEL_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-//Unknown Property Type: World.PANELS.9
+_world.AcknexObject.SetAcknexObject("PANELS.9",ADJUST_PANEL_12);
 yield return GET_ADJX();
 yield return GET_ADJY();
 yield break;
@@ -2187,7 +2288,7 @@ ADJUST_TEXT_9.SetAcknexObject("STRING",REGIO_MODE_7);
 var HERE_10 = _world.GetSynonymObject("HERE");
 _world.SetSynonymObject("ADJUST_REG",HERE_10);
 var ADJUST_PANEL_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-//Unknown Property Type: World.PANELS.9
+_world.AcknexObject.SetAcknexObject("PANELS.9",ADJUST_PANEL_12);
 yield return GET_ADJX();
 yield return GET_ADJY();
 yield break;
@@ -2205,7 +2306,7 @@ if (HIT_DIST_6_val == 0f)
 yield break;
 }
 var ADJUST_PANEL_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-//Unknown Property Type: World.PANELS.9
+_world.AcknexObject.SetAcknexObject("PANELS.9",ADJUST_PANEL_7);
 var HIT_11 = _world.GetSynonymObject("HIT");
 var temp_12 =HIT_11.GetAcknexObject("TEXTURE");
 _world.SetSynonymObject("ADJUST_TEX",temp_12);
@@ -2256,7 +2357,7 @@ ADJUST_TEXT_9.SetAcknexObject("STRING",REGAMB_MODE_7);
 var HERE_10 = _world.GetSynonymObject("HERE");
 _world.SetSynonymObject("ADJUST_REG",HERE_10);
 var ADJUST_PANEL_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-//Unknown Property Type: World.PANELS.9
+_world.AcknexObject.SetAcknexObject("PANELS.9",ADJUST_PANEL_12);
 yield return GET_ADJX();
 yield return GET_ADJY();
 yield break;
@@ -2297,7 +2398,7 @@ if (HIT_DIST_6_val == 0f)
 yield break;
 }
 var ADJUST_PANEL_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"ADJUST_PANEL");
-//Unknown Property Type: World.PANELS.9
+_world.AcknexObject.SetAcknexObject("PANELS.9",ADJUST_PANEL_7);
 var HIT_10 = _world.GetSynonymObject("HIT");
 _world.SetSynonymObject("ADJUST_WALL",HIT_10);
 var ADJUST_WALL_14 = _world.GetSynonymObject("ADJUST_WALL");
@@ -2345,87 +2446,89 @@ var MENU_POS_16 = _world.GetObject(ObjectType.Skill,"MENU_POS");
 MENU_POS_16.SetFloat("VAL",1f);
 }
 var MENUEXIT_TXT_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
-var MENU1_TXT_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
-var temp_21 =MENU1_TXT_20.GetFloat("POS_Y");
-var MENU_POS_24 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
-var temp_25 =MENU_POS_24.GetFloat("MAX");
-MENUEXIT_TXT_18.SetFloat("POS_Y",temp_21+temp_25*16f-8f);
-var MENU1_TXT_30 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
-_world.AcknexObject.SetAcknexObject("MESSAGES.10",MENU1_TXT_30);
-var MENU2_TXT_33 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
-_world.AcknexObject.SetAcknexObject("MESSAGES.11",MENU2_TXT_33);
-var MENU3_TXT_36 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
-_world.AcknexObject.SetAcknexObject("MESSAGES.12",MENU3_TXT_36);
-var MENU4_TXT_39 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
-_world.AcknexObject.SetAcknexObject("MESSAGES.13",MENU4_TXT_39);
-var MENU5_TXT_42 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
-_world.AcknexObject.SetAcknexObject("MESSAGES.14",MENU5_TXT_42);
-var MENU6_TXT_45 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
-_world.AcknexObject.SetAcknexObject("MESSAGES.15",MENU6_TXT_45);
-var MENUEXIT_TXT_48 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
-_world.AcknexObject.SetAcknexObject("MESSAGES.16",MENUEXIT_TXT_48);
+var MENUEXIT_TXT_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
+var temp_21 =MENUEXIT_TXT_20.GetFloat("POS_Y");
+var MENU1_TXT_23 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
+var temp_24 =MENU1_TXT_23.GetFloat("POS_Y");
+var MENU_POS_27 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Skill,*/"MENU_POS");
+var temp_28 =MENU_POS_27.GetFloat("MAX");
+MENUEXIT_TXT_18.SetFloat("POS_Y",temp_24+temp_28*16f-8f);
+var MENU1_TXT_33 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
+_world.AcknexObject.SetAcknexObject("MESSAGES.10",MENU1_TXT_33);
+var MENU2_TXT_36 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
+_world.AcknexObject.SetAcknexObject("MESSAGES.11",MENU2_TXT_36);
+var MENU3_TXT_39 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
+_world.AcknexObject.SetAcknexObject("MESSAGES.12",MENU3_TXT_39);
+var MENU4_TXT_42 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
+_world.AcknexObject.SetAcknexObject("MESSAGES.13",MENU4_TXT_42);
+var MENU5_TXT_45 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
+_world.AcknexObject.SetAcknexObject("MESSAGES.14",MENU5_TXT_45);
+var MENU6_TXT_48 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
+_world.AcknexObject.SetAcknexObject("MESSAGES.15",MENU6_TXT_48);
+var MENUEXIT_TXT_51 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
+_world.AcknexObject.SetAcknexObject("MESSAGES.16",MENUEXIT_TXT_51);
 BLINK:
 yield return SET_MENU();
 yield return new WaitForTicks(3f);
-var MENU_POS_52 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_52_val = MENU_POS_52.GetFloat("VAL");
-if (MENU_POS_52_val > MENU_POS_52.GetFloat("MAX"))
+var MENU_POS_55 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_55_val = MENU_POS_55.GetFloat("VAL");
+if (MENU_POS_55_val > MENU_POS_55.GetFloat("MAX"))
 {
-var EMPTY_53 = _world.AcknexObject.GetAcknexObject("EMPTY");
-var MENUEXIT_TXT_55 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
-MENUEXIT_TXT_55.SetAcknexObject("STRING",EMPTY_53);
+var EMPTY_56 = _world.AcknexObject.GetAcknexObject("EMPTY");
+var MENUEXIT_TXT_58 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENUEXIT_TXT");
+MENUEXIT_TXT_58.SetAcknexObject("STRING",EMPTY_56);
 }
-var MENU_POS_57 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_57_val = MENU_POS_57.GetFloat("VAL");
-if (MENU_POS_57_val == 1f)
+var MENU_POS_60 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_60_val = MENU_POS_60.GetFloat("VAL");
+if (MENU_POS_60_val == 1f)
 {
-var EMPTY_58 = _world.AcknexObject.GetAcknexObject("EMPTY");
-var MENU1_TXT_60 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
-MENU1_TXT_60.SetAcknexObject("STRING",EMPTY_58);
+var EMPTY_61 = _world.AcknexObject.GetAcknexObject("EMPTY");
+var MENU1_TXT_63 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU1_TXT");
+MENU1_TXT_63.SetAcknexObject("STRING",EMPTY_61);
 }
-var MENU_POS_62 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_62_val = MENU_POS_62.GetFloat("VAL");
-if (MENU_POS_62_val == 2f)
+var MENU_POS_65 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_65_val = MENU_POS_65.GetFloat("VAL");
+if (MENU_POS_65_val == 2f)
 {
-var EMPTY_63 = _world.AcknexObject.GetAcknexObject("EMPTY");
-var MENU2_TXT_65 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
-MENU2_TXT_65.SetAcknexObject("STRING",EMPTY_63);
+var EMPTY_66 = _world.AcknexObject.GetAcknexObject("EMPTY");
+var MENU2_TXT_68 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU2_TXT");
+MENU2_TXT_68.SetAcknexObject("STRING",EMPTY_66);
 }
-var MENU_POS_67 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_67_val = MENU_POS_67.GetFloat("VAL");
-if (MENU_POS_67_val == 3f)
+var MENU_POS_70 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_70_val = MENU_POS_70.GetFloat("VAL");
+if (MENU_POS_70_val == 3f)
 {
-var EMPTY_68 = _world.AcknexObject.GetAcknexObject("EMPTY");
-var MENU3_TXT_70 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
-MENU3_TXT_70.SetAcknexObject("STRING",EMPTY_68);
+var EMPTY_71 = _world.AcknexObject.GetAcknexObject("EMPTY");
+var MENU3_TXT_73 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU3_TXT");
+MENU3_TXT_73.SetAcknexObject("STRING",EMPTY_71);
 }
-var MENU_POS_72 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_72_val = MENU_POS_72.GetFloat("VAL");
-if (MENU_POS_72_val == 4f)
+var MENU_POS_75 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_75_val = MENU_POS_75.GetFloat("VAL");
+if (MENU_POS_75_val == 4f)
 {
-var EMPTY_73 = _world.AcknexObject.GetAcknexObject("EMPTY");
-var MENU4_TXT_75 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
-MENU4_TXT_75.SetAcknexObject("STRING",EMPTY_73);
+var EMPTY_76 = _world.AcknexObject.GetAcknexObject("EMPTY");
+var MENU4_TXT_78 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU4_TXT");
+MENU4_TXT_78.SetAcknexObject("STRING",EMPTY_76);
 }
-var MENU_POS_77 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_77_val = MENU_POS_77.GetFloat("VAL");
-if (MENU_POS_77_val == 5f)
+var MENU_POS_80 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_80_val = MENU_POS_80.GetFloat("VAL");
+if (MENU_POS_80_val == 5f)
 {
-var EMPTY_78 = _world.AcknexObject.GetAcknexObject("EMPTY");
-var MENU5_TXT_80 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
-MENU5_TXT_80.SetAcknexObject("STRING",EMPTY_78);
+var EMPTY_81 = _world.AcknexObject.GetAcknexObject("EMPTY");
+var MENU5_TXT_83 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU5_TXT");
+MENU5_TXT_83.SetAcknexObject("STRING",EMPTY_81);
 }
-var MENU_POS_82 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_82_val = MENU_POS_82.GetFloat("VAL");
-if (MENU_POS_82_val == 6f)
+var MENU_POS_85 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_85_val = MENU_POS_85.GetFloat("VAL");
+if (MENU_POS_85_val == 6f)
 {
-var EMPTY_83 = _world.AcknexObject.GetAcknexObject("EMPTY");
-var MENU6_TXT_85 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
-MENU6_TXT_85.SetAcknexObject("STRING",EMPTY_83);
+var EMPTY_86 = _world.AcknexObject.GetAcknexObject("EMPTY");
+var MENU6_TXT_88 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"MENU6_TXT");
+MENU6_TXT_88.SetAcknexObject("STRING",EMPTY_86);
 }
-var MENU_POS_87 = _world.GetObject(ObjectType.Skill,"MENU_POS");
-var MENU_POS_87_val = MENU_POS_87.GetFloat("VAL");
-if (MENU_POS_87_val == 0f)
+var MENU_POS_90 = _world.GetObject(ObjectType.Skill,"MENU_POS");
+var MENU_POS_90_val = MENU_POS_90.GetFloat("VAL");
+if (MENU_POS_90_val == 0f)
 {
 yield break;
 }
@@ -2533,11 +2636,13 @@ yield break;
 }
 public IEnumerator UPDATE_DBPANEL(){
 var FPS_0 = _world.GetObject(ObjectType.Skill,"FPS");
-var FPS_3 = _world.GetObject(ObjectType.Skill,"FPS");
-var FPS_3_val = FPS_3.GetFloat("VAL");
-var TIME_FAC_7 = _world.GetObject(ObjectType.Skill,"TIME_FAC");
-var TIME_FAC_7_val = TIME_FAC_7.GetFloat("VAL");
-FPS_0.SetFloat("VAL",0.9f*FPS_3_val+0.1f*TIME_FAC_7_val);
+var FPS_1 = _world.GetObject(ObjectType.Skill,"FPS");
+var FPS_1_val = FPS_1.GetFloat("VAL");
+var FPS_4 = _world.GetObject(ObjectType.Skill,"FPS");
+var FPS_4_val = FPS_4.GetFloat("VAL");
+var TIME_FAC_8 = _world.GetObject(ObjectType.Skill,"TIME_FAC");
+var TIME_FAC_8_val = TIME_FAC_8.GetFloat("VAL");
+FPS_0.SetFloat("VAL",0.9f*FPS_4_val+0.1f*TIME_FAC_8_val);
 yield break;
 }
 public IEnumerator VRDEMO_START(){

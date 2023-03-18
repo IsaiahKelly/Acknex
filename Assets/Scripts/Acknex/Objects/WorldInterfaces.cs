@@ -439,13 +439,16 @@ namespace Acknex
                 sourceStringBuilder.AppendLine("        }");
                 sourceStringBuilder.AppendLine("        public IEnumerator CallAction(string name)");
                 sourceStringBuilder.AppendLine("        {");
+                sourceStringBuilder.AppendLine("            if (name == null) {");
+                sourceStringBuilder.AppendLine("                yield break;");
+                sourceStringBuilder.AppendLine("            }");
                 sourceStringBuilder.AppendLine("            var method = this.GetType().GetMethod(name);");
                 sourceStringBuilder.AppendLine("            if (method != null)");
                 sourceStringBuilder.AppendLine("            {");
                 sourceStringBuilder.AppendLine("                var result = method.Invoke(this, null);");
-                sourceStringBuilder.AppendLine("                return (IEnumerator)result;");
+                sourceStringBuilder.AppendLine("                yield return (IEnumerator)result;");
                 sourceStringBuilder.AppendLine("            }");
-                sourceStringBuilder.AppendLine("            return null;");
+                sourceStringBuilder.AppendLine("            yield break;");
                 sourceStringBuilder.AppendLine("        }");
                 foreach (var action in ActionsByName)
                 {
