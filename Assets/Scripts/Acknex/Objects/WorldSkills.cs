@@ -5,6 +5,9 @@ namespace Acknex
 {
     public partial class World
     {
+        private Vector3 _lastMousePosition;
+        private const float MouseMultiplier = 0.1f;
+
         private void CreateDefaultSkills()
         {
             CreateSkill("SCREEN_WIDTH", 320, 0, 320);
@@ -217,7 +220,6 @@ namespace Acknex
             CreateSkill("KEY_CUL", 0, 0, 1);
             CreateSkill("KEY_SHIFT", 0, 0, 1);
 
-
             //todo: is this right?
             CreateSkill("FLOOR_HGT", 0, Mathf.NegativeInfinity, Mathf.Infinity);
             CreateSkill("CEIL_HGT", 0, Mathf.NegativeInfinity, Mathf.Infinity);
@@ -225,8 +227,6 @@ namespace Acknex
             CreateSkill("TIME_CORR", 0, Mathf.NegativeInfinity, Mathf.Infinity);
             CreateSkill("TIME_FAC", 0, Mathf.NegativeInfinity, Mathf.Infinity);
         }
-
-        private Vector3 _lastMousePosition;
 
         private void UpdateSkills()
         {
@@ -247,7 +247,7 @@ namespace Acknex
             UpdateSkillValue("TICKS", TimeUtils.TimeToTicks(Time.time));
             UpdateSkillValue("SECS", (int)Time.time);
             //todo: how to calc timecorr?
-            var timeCorr = 1f;// TimeUtils.OneTick / TimeUtils.TimeToTicks(Time.deltaTime);
+            var timeCorr = 1f;//TimeUtils.OneTick / TimeUtils.TimeToTicks(Time.deltaTime);
             UpdateSkillValue("TIME_CORR", timeCorr);
             UpdateSkillValue("TIME_FAC", 1f - timeCorr);
 
@@ -256,7 +256,7 @@ namespace Acknex
             //todo: is it inverted in the original?
             UpdateSkillValue("FORCE_STRAFE", -Input.GetAxis("Horizontal") * keySense);
             UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X") * keySense);
-            UpdateSkillValue("FORCE_TILT", (GetSkillValue("FORCE_TILT") - (Input.GetAxis("Mouse Y") * 0.1f * keySense)));
+            UpdateSkillValue("FORCE_TILT", (GetSkillValue("FORCE_TILT") - (Input.GetAxis("Mouse Y") * MouseMultiplier * keySense)));
             UpdateSkillValue("FORCE_UP", (Input.GetButton("Jump") ? 1 : Input.GetButton("Crouch") ? -1 : 0) * keySense);
 
             //todo: WALK_PERIOD, WALK_TIME, WAVE_PERIOD, WALK, WAVE

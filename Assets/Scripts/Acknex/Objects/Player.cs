@@ -48,7 +48,7 @@ namespace Acknex
             //var deltaAngle = moveAngle - World.Instance.GetSkillValue("MOVE_ANGLE");
             //World.Instance.UpdateSkillValue("MOVE_ANGLE", moveAngle);
             //World.Instance.UpdateSkillValue("DELTA_ANGLE", deltaAngle);
-            _characterController.Move(playerMove);
+            _characterController.Move(playerMove * TimeUtils.TimeToTicks(Time.deltaTime));
             playerX = _characterController.transform.position.x;
             playerY = _characterController.transform.position.z;
             playerZ = _characterController.transform.position.y;
