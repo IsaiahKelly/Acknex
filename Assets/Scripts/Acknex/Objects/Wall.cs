@@ -5,6 +5,7 @@ using Acknex.Interfaces;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Utils;
+using System.Collections;
 
 namespace Acknex
 {
@@ -75,6 +76,21 @@ namespace Acknex
             _collisionCallbackB = _vertexGameObjectB.AddComponent<CollisionCallback>();
             _collisionCallbackB.OnTriggerEnterCallback += OnWallTriggerEnter;
             _collisionCallbackB.OnTriggerExitCallback += OnWallTriggerExit;
+
+            StartCoroutine(Animate());
+        }
+
+        private IEnumerator Animate()
+        {
+            while (TextureObject == null)
+            {
+                yield return null;
+            }
+            var enumerator = TextureObject.AnimateTexture(true, _meshRenderer, _meshFilter, null, AcknexObject, null);
+            while (enumerator.MoveNext())
+            {
+                yield return enumerator.Current;
+            }
         }
 
         private void OnWallTriggerExit(Collider collider)
@@ -138,7 +154,7 @@ namespace Acknex
 
             Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, XAxis, BottomQuad.GetColumn(0), true);
 
-            BitmapImage?.UpdateMaterial(_meshRenderer.material, TextureObject, 0, false, AcknexObject);
+            //BitmapImage?.UpdateMaterial(_meshRenderer.material, TextureObject, 0, false, AcknexObject);
             _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.AcknexObject.ContainsFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             //todo: conflict?
             _collider.enabled = !AcknexObject.ContainsFlag("PASSABLE");

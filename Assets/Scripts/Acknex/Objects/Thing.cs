@@ -111,12 +111,11 @@ namespace Acknex
 
         private IEnumerator Animate()
         {
-            var texture = TextureObject;
-            while (texture == null)
+            while (TextureObject == null)
             {
                 yield return null;
             }
-            var enumerator = texture.AnimateTexture(_meshRenderer, _meshFilter, _thingGameObject, AcknexObject, transform);
+            var enumerator = TextureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _thingGameObject, AcknexObject, transform);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
@@ -316,7 +315,7 @@ namespace Acknex
             var toTarget = pos - nextPoint;
             //todo: why angle inverted?
             var angle = AngleUtils.ConvertUnityToAcknexAngle(Mathf.Atan2(toTarget.x, toTarget.y) * Mathf.Rad2Deg);
-            var newPos = Vector2.MoveTowards(pos, nextPoint, speed * (Time.deltaTime / TimeUtils.TicksToTime(1)));
+            var newPos = Vector2.MoveTowards(pos, nextPoint, speed * World.Instance.GetSkillValue("TIME_CORR"));
             AcknexObject.SetFloat("X", newPos.x);
             AcknexObject.SetFloat("Y", newPos.y);
             AcknexObject.SetFloat("ANGLE", angle);
