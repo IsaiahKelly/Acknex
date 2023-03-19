@@ -554,21 +554,25 @@ namespace Acknex
 
         public void PostSetupObjectTemplate(IAcknexObject acknexObject)
         {
-            if (acknexObject.Type == ObjectType.Bitmap)
+            if (acknexObject.Container is Bitmap bitmap)
             {
-                acknexObject.Container.UpdateObject();
+                bitmap.Setup();
             }
-            else if (acknexObject.Type == ObjectType.Model && acknexObject.Container is Model model)
+            else if (acknexObject.Container is Model model)
             {
                 model.Setup();
             }
-            else if (acknexObject.Type == ObjectType.Music && acknexObject.Container is Music music)
+            else if (acknexObject.Container is Music music)
             {
                 music.Setup();
             }
-            else if (acknexObject.Type == ObjectType.Sound && acknexObject.Container is Sound sound)
+            else if (acknexObject.Container is Sound sound)
             {
                 sound.Setup();
+            }
+            else if (acknexObject.Container is Texture texture)
+            {
+                texture.Setup();
             }
         }
 

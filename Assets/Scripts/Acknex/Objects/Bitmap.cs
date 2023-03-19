@@ -14,8 +14,8 @@ namespace Acknex
             return null;
         }
 
-        public float Width => AcknexObject.GetFloat("DX") == 0 && Texture2D != null ? Texture2D.width : AcknexObject.GetFloat("DX");
-        public float Height => AcknexObject.GetFloat("DY") == 0 && Texture2D != null ? Texture2D.height : AcknexObject.GetFloat("DY");
+        public float Width => AcknexObject.GetFloat("DX") != 0 ? AcknexObject.GetFloat("DX") : Texture2D != null ? Texture2D.width : 0;
+        public float Height => AcknexObject.GetFloat("DY") != 0 ? AcknexObject.GetFloat("DY") : Texture2D != null ? Texture2D.height : 0;
         public float X => AcknexObject.GetFloat("X");
         public float Y => AcknexObject.GetFloat("Y");
 
@@ -31,16 +31,34 @@ namespace Acknex
 
         public void UpdateObject()
         {
+
+        }
+
+        public void Setup()
+        {
             var filename = AcknexObject.GetString("FILENAME");
-            if (!World.Instance.TextureCache.TryGetValue(filename, out Texture2D))
+            CreateBitmapTexture(filename, (int)X, (int)Y, (int)Width, (int)Height, out Texture2D, ref BitmapTexture2D);
+        }
+
+        public static void CreateBitmapTexture(string filename, int x, int y, int width, int height, out Texture2D texture2D, ref Texture2D bitmapTexture2D)
+        {
+            if (!World.Instance.TextureCache.TryGetValue(filename, out texture2D))
             {
                 var lowerInvariant = filename.ToLowerInvariant();
                 if (lowerInvariant.EndsWith("pcx"))
                 {
-                    Texture2D = PcxReader.Load(filename);
-                    Texture2D.name = AcknexObject.GetString("NAME");
+                    texture2D = PcxReader.Load(filename);
+                    //texture2D.name = filename;//AcknexObject.GetString("NAME");
                     //TextureUtils.Dilate(Texture2D);
-                    World.Instance.TextureCache.Add(filename, Texture2D);
+                    World.Instance.TextureCache.Add(filename, texture2D);
+                    if (width == 0)
+                    {
+                        width = texture2D.width;
+                    }
+                    if (height == 0)
+                    {
+                        height = texture2D.height;
+                    }
                 }
                 else if (lowerInvariant.EndsWith("lbm"))
                 {
@@ -48,17 +66,25 @@ namespace Acknex
                     var iff = parser.Read(filename);
                     if (iff.Ilbms.Count > 0)
                     {
-                        Texture2D = iff.Ilbms[0].Texture2D;
-                        Texture2D.name = AcknexObject.GetString("NAME");
+                        texture2D = iff.Ilbms[0].Texture2D;
+                        //texture2D.name = filename;//AcknexObject.GetString("NAME");
                         //TextureUtils.Dilate(Texture2D);
-                        World.Instance.TextureCache.Add(filename, Texture2D);
+                        World.Instance.TextureCache.Add(filename, texture2D);
+                        if (width == 0)
+                        {
+                            width = texture2D.width;
+                        }
+                        if (height == 0)
+                        {
+                            height = texture2D.height;
+                        }
                     }
                 }
             }
-            if (Texture2D != null && BitmapTexture2D == null)
+            if (texture2D != null)
             {
-                BitmapTexture2D = new Texture2D((int)Width, (int)Height, Texture2D.graphicsFormat, TextureCreationFlags.MipChain);
-                TextureUtils.CopyTextureCPU(Texture2D, BitmapTexture2D, true, false, (int)X, (int)Y, (int)Width, (int)Height);
+                bitmapTexture2D = new Texture2D(width, height, texture2D.graphicsFormat, TextureCreationFlags.MipChain);
+                TextureUtils.CopyTextureCPU(texture2D, bitmapTexture2D, true, false, x, y, width, height);
             }
         }
 
@@ -88,8 +114,13 @@ namespace Acknex
             var offsetX = 0f;
             var offsetY = 0f;
             var cullMode = UnityEngine.Rendering.CullMode.Back;
+            var ambient = 1f;
             if (wallOrRegion != null)
             {
+                if (wallOrRegion.TryGetFloat("AMBIENT", out var wallOrRegionAmbient))
+                {
+                    ambient *= wallOrRegionAmbient;
+                }
                 if (wallOrRegion.TryGetFloat("OFFSET_X", out var offsetXVal))
                 {
                     offsetX = offsetXVal;
@@ -116,6 +147,10 @@ namespace Acknex
             }
             if (texture != null)
             {
+                if (texture.AcknexObject.TryGetFloat("AMBIENT", out var textureAmbient))
+                {
+                    ambient *= textureAmbient;
+                }
                 if (texture.AcknexObject.TryGetObject<List<float>>("OFFSET_X", out var offsetXList))
                 {
                     offsetX = offsetXList[index];
@@ -136,7 +171,9 @@ namespace Acknex
                         _bmaps = new Texture2DArray((int)Width, (int)Height, bitmapCount, BitmapTexture2D.graphicsFormat, TextureCreationFlags.MipChain);
                         for (var i = 0; i < bitmapCount; i++)
                         {
-                            _bmaps.SetPixels(texture.GetBitmapAt(i).BitmapTexture2D.GetPixels(), i);
+                            var bitmap = texture.GetBitmapAt(i);
+                            var bitmapTexture2D = bitmap.BitmapTexture2D;
+                            _bmaps.SetPixels(bitmapTexture2D.GetPixels(), i);
                         }
                         _bmaps.Apply(true, false);
                     }
@@ -157,7 +194,7 @@ namespace Acknex
             material.SetFloat("_SCALEX", scaleX);
             material.SetFloat("_SCALEY", scaleY);
             material.SetInt("_CullMode", (int)cullMode);
-            //material.SetFloat("_AMBIENT", ambient);
+            material.SetFloat("_AMBIENT", ambient);
             material.mainTexture = BitmapTexture2D;
         }
     }

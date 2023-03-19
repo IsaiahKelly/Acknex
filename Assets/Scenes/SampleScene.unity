@@ -230,7 +230,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -586,7 +586,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -657,9 +657,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b52af5bca98fed4c9690969a13ed559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WDLPath: C:\games\acknex\SKAPH\SKAPH.WDL
+  WDLPath: C:\games\acknex\DEMO\VRDEMO.WDL
   SourceGenerationPath: Assets\Scripts\Tests\Game.cs.new
-  DisableWallTextures: 1
+  DisableWallTextures: 0
   DisableEvents: 0
   CanvasWidthRatio: 1.6
   WMPContainsRegionsByName: 1
@@ -971,6 +971,6 @@ CharacterController:
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.01
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.5, z: 0}

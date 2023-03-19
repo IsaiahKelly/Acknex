@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using LibTessDotNet;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Acknex.Interfaces;
 using Codice.CM.WorkspaceServer;
 using UnityEngine;
@@ -48,6 +50,32 @@ namespace Acknex
         private MeshCollider triggerCollider;
         private CollisionCallback triggerCollisionCallback;
 
+        public Texture FloorTexture
+        {
+            get
+            {
+                var floorTexture = AcknexObject.GetString("FLOOR_TEX");
+                if (floorTexture != null && World.Instance.TexturesByName.TryGetValue(floorTexture, out var floorTextureObject))
+                {
+                    return floorTextureObject;
+                }
+                return null;
+            }
+        }
+
+        public Texture CeilTexture
+        {
+            get
+            {
+                var ceilTexture = AcknexObject.GetString("CEIL_TEX");
+                if (ceilTexture != null && World.Instance.TexturesByName.TryGetValue(ceilTexture, out var ceilTextureObject))
+                {
+                    return ceilTextureObject;
+                }
+                return null;
+            }
+        }
+
         private void Awake()
         {
             AcknexObject.Container = this;
@@ -57,6 +85,34 @@ namespace Acknex
         {
             //todo: move to middle
             _audioSource = gameObject.AddComponent<AudioSource>();
+            StartCoroutine(AnimateCeil());
+            StartCoroutine(AnimateFloor());
+        }
+
+        private IEnumerator AnimateCeil()
+        {
+            while (CeilTexture == null)
+            {
+                yield return null;
+            }
+            var enumerator = CeilTexture.AnimateTexture(_ceilMeshRenderer, _ceilMeshFilter, null, AcknexObject, null);
+            while (enumerator.MoveNext())
+            {
+                yield return enumerator.Current;
+            }
+        }
+
+        private IEnumerator AnimateFloor()
+        {
+            while (FloorTexture == null)
+            {
+                yield return null;
+            }
+            var enumerator = FloorTexture.AnimateTexture(_floorMeshRenderer, _floorMeshFilter, null, AcknexObject, null);
+            while (enumerator.MoveNext())
+            {
+                yield return enumerator.Current;
+            }
         }
 
         private void Update()
@@ -96,27 +152,25 @@ namespace Acknex
 
             _floorMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
             _ceilMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
-
-            var floorTexture = AcknexObject.GetString("FLOOR_TEX");
-            if (floorTexture != null && World.Instance.TexturesByName.TryGetValue(floorTexture, out var floorTextureObject))
+            ;
+            if (FloorTexture != null)
             {
-                var bitmapImage = floorTextureObject.GetBitmapAt(0);
+                var bitmapImage = FloorTexture.GetBitmapAt(0);
                 if (bitmapImage != null)
                 {
-                    bitmapImage.UpdateMaterial(_floorMeshRenderer.material, floorTextureObject, 0, false, AcknexObject);
+                    bitmapImage.UpdateMaterial(_floorMeshRenderer.material, FloorTexture, 0, false, AcknexObject);
                 }
             }
             _floorCollider.gameObject.layer = AcknexObject.TryGetString("IF_DIVE", out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.WallsAndRegionsLayer.LayerIndex;
 
-            var ceilTexture = AcknexObject.GetString("CEIL_TEX");
-            if (ceilTexture != null && World.Instance.TexturesByName.TryGetValue(ceilTexture, out var ceilTextureObject))
+            if (CeilTexture != null)
             {
-                var bitmapImage = ceilTextureObject.GetBitmapAt(0);
+                var bitmapImage = CeilTexture.GetBitmapAt(0);
                 if (bitmapImage != null)
                 {
-                    bitmapImage.UpdateMaterial(_ceilMeshRenderer.material, ceilTextureObject, 0, false, AcknexObject);
+                    bitmapImage.UpdateMaterial(_ceilMeshRenderer.material, CeilTexture, 0, false, AcknexObject);
                 }
-                _ceilMeshRenderer.shadowCastingMode = ceilTextureObject.AcknexObject.ContainsFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
+                _ceilMeshRenderer.shadowCastingMode = CeilTexture.AcknexObject.ContainsFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             }
         }
 

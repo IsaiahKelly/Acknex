@@ -362,9 +362,9 @@ namespace Acknex
                             case "FONT":
                                 {
                                     var font = _world.CreateObjectTemplate(ObjectType.Font, GetNextToken(tokens));
-                                    font.SetString("FILENAME", GetNextToken(tokens));
-                                    font.SetFloat("X", ParseFloat(tokens));
-                                    font.SetFloat("Y", ParseFloat(tokens));
+                                    font.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                    font.SetFloat("WIDTH", ParseFloat(tokens));
+                                    font.SetFloat("HEIGHT", ParseFloat(tokens));
                                     CheckSemiColon(tokens);
                                     break;
                                 }

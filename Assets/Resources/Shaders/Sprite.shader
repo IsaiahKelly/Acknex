@@ -60,7 +60,8 @@
 
         half4 LightingSprite(SurfaceOutput s, half3 lightDir, half atten) {
             half4 c;
-            c.rgb = s.Albedo * lerp(1.0, _LightColor0.rgb * atten, _LightMultiplier);
+            float ambient = (1.0 - _AMBIENT);
+            c.rgb = s.Albedo * lerp(1.0, _LightColor0.rgb * atten, _LightMultiplier) * ambient;
             c.a = s.Alpha;
             return c;
         }

@@ -117,7 +117,6 @@ namespace Acknex
             StartCoroutine(TriggerSecEvents(AcknexObject));
         }
 
-
         private void UpdateEvents()
         {
             TriggerEventConditional(AcknexObject, "IF_ANYKEY", Input.anyKeyDown);

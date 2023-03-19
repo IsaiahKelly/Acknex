@@ -33,12 +33,9 @@ namespace Acknex
 
         private GameObject _attached;
 
-        private List<WaitForSeconds> _textureObjectDelay;
-
         //Deltas for comparison
         private Texture _lastTextureObject;
         private string _lastTarget;
-        private readonly HashSet<IAcknexObject> _near = new HashSet<IAcknexObject>();
 
         public Texture TextureObject => AcknexObject.GetString("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.GetString("TEXTURE"), out var textureObject) ? textureObject : null;
 
@@ -119,84 +116,11 @@ namespace Acknex
             {
                 yield return null;
             }
-            var cycles = Mathf.Max(1, texture.AcknexObject.GetInteger("CYCLES"));
-            var sides = Mathf.Max(1, texture.AcknexObject.GetInteger("SIDES"));
-            var mirror = texture.AcknexObject.GetObject<List<float>>("MIRROR");
-            var cycle = 0;
-            while (true)
+            var enumerator = texture.AnimateTexture(_meshRenderer, _meshFilter, _thingGameObject, AcknexObject, transform);
+            while (enumerator.MoveNext())
             {
-                var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : null;
-                UpdateAngleFrameScale(texture, cycles, sides, cycle, mirror, currentDelay);
-                yield return currentDelay;
-                cycle = (int)Mathf.Repeat(cycle + 1, cycles);
-                World.Instance.TriggerEvent(AcknexObject, "EACH_CYCLE");
+                yield return enumerator.Current;
             }
-        }
-
-        private void UpdateAngleFrameScale(Texture texture, int cycles, int sides, int animFrame, List<float> mirror, WaitForSeconds delay)
-        {
-            if (HasModel(texture, out var modelObject))
-            {
-                _meshRenderer.material = modelObject.Material;
-                _meshRenderer.material.mainTexture = modelObject.Texture2D;
-                _meshFilter.mesh = modelObject.Mesh;
-                _thingGameObject.transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
-                transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-            }
-            else
-            {
-                var halfStep = 180f / sides;
-                var camera = CameraExtensions.GetLastActiveCamera();
-                int side;
-                if (camera != null)
-                {
-                    var cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(camera.transform.position - _thingGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
-                    var thingAngle = AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE"));
-                    var thingDirection = Quaternion.Euler(0f, thingAngle, 0f) * Vector3.back;
-                    var angle = Mathf.Repeat(AngleUtils.Angle(thingDirection, cameraToThingDirection) + halfStep, 360f);
-                    var normalizedAngle = angle / 360f;
-                    side = Mathf.RoundToInt(Mathf.Lerp(0, sides - 1, normalizedAngle));
-                }
-                else
-                {
-                    side = 0;
-                };
-                Bitmap bitmap;
-                int angleFrame;
-                if (mirror != null && mirror[side] > 0) //mirrored
-                {
-                    angleFrame = side * cycles;
-                    var frame = angleFrame + animFrame;
-                    bitmap = texture.GetBitmapAt(frame);
-                    if (_meshRenderer.material != null && bitmap != null)
-                    {
-                        UpdateFrame(bitmap, texture, _meshRenderer.material, true, frame);
-                    }
-                }
-                else
-                {
-                    angleFrame = side * cycles;
-                    var frame = angleFrame + animFrame;
-                    bitmap = texture.GetBitmapAt(frame);
-                    if (_meshRenderer.material != null && bitmap != null)
-                    {
-                        UpdateFrame(bitmap, texture, _meshRenderer.material, false, frame);
-                    }
-                }
-                transform.localScale = TextureUtils.CalculateObjectSize(bitmap, texture);
-            }
-        }
-
-        private static bool HasModel(Texture texture, out Model modelObject)
-        {
-            modelObject = null;
-            return texture.AcknexObject.TryGetString("MODEL", out var model) && World.Instance.ModelsByName.TryGetValue(model, out modelObject);
-        }
-
-        private static void UpdateFrame(Bitmap bitmap, Texture textureObject, Material unityMaterial, bool mirror = false, int frameIndex = 0)
-        {
-            //todo: null here to avoid scale
-            bitmap.UpdateMaterial(unityMaterial, null, frameIndex, mirror);
         }
 
         private void Awake()
@@ -207,7 +131,7 @@ namespace Acknex
         protected virtual void Update()
         {
             UpdateObject();
-            if (!HasModel(TextureObject, out _))
+            if (!TextureObject.HasModel(out _))
             {
                 var camera = CameraExtensions.GetLastActiveCamera();
                 if (camera == null)
@@ -278,20 +202,20 @@ namespace Acknex
                 _lastTarget = target;
             }
 
-            //todo: better way to do that?
-            if (TextureObject != _lastTextureObject)
-            {
-                var delay = TextureObject.AcknexObject.GetObject<List<float>>("DELAY");
-                if (delay != null)
-                {
-                    _textureObjectDelay = new List<WaitForSeconds>(delay.Count);
-                    for (var i = 0; i < delay.Count; i++)
-                    {
-                        _textureObjectDelay.Add(new WaitForSeconds(TimeUtils.TicksToTime((int)delay[i])));
-                    }
-                }
-                _lastTextureObject = TextureObject;
-            }
+            ////todo: better way to do that?
+            //if (TextureObject != _lastTextureObject)
+            //{
+            //    var delay = TextureObject.AcknexObject.GetObject<List<float>>("DELAY");
+            //    if (delay != null)
+            //    {
+            //        _textureObjectDelay = new List<WaitForSeconds>(delay.Count);
+            //        for (var i = 0; i < delay.Count; i++)
+            //        {
+            //            _textureObjectDelay.Add(new WaitForSeconds(TimeUtils.TicksToTime((int)delay[i])));
+            //        }
+            //    }
+            //    _lastTextureObject = TextureObject;
+            //}
 
             var thingX = AcknexObject.GetFloat("X");
             var thingY = AcknexObject.GetFloat("Y");
@@ -335,30 +259,30 @@ namespace Acknex
 
         public virtual void UpdateEvents()
         {
-            if (AcknexObject.TryGetFloat("DIST", out var dist))
-            {
-                //todo: use MASTER objects as well
-                var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
-                var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"));
-                if (!_near.Contains(Player.Instance.AcknexObject))
-                {
-                    if (Vector2.Distance(playerPos, pos) <= dist)
-                    {
-                        World.Instance.SetSynonymObject("THERE", GetRegion());
-                        World.Instance.TriggerEvent(AcknexObject, "IF_NEAR");
-                        _near.Add(Player.Instance.AcknexObject);
-                    }
-                }
-                else
-                {
-                    if (Vector2.Distance(playerPos, pos) > dist)
-                    {
-                        World.Instance.SetSynonymObject("THERE", GetRegion());
-                        World.Instance.TriggerEvent(AcknexObject, "IF_FAR");
-                        _near.Remove(Player.Instance.AcknexObject);
-                    }
-                }
-            }
+            //if (AcknexObject.TryGetFloat("DIST", out var dist))
+            //{
+            //    //todo: use MASTER objects as well
+            //    var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
+            //    var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"));
+            //    if (!_near.Contains(Player.Instance.AcknexObject))
+            //    {
+            //        if (Vector2.Distance(playerPos, pos) <= dist)
+            //        {
+            //            World.Instance.SetSynonymObject("THERE", GetRegion());
+            //            World.Instance.TriggerEvent(AcknexObject, "IF_NEAR");
+            //            _near.Add(Player.Instance.AcknexObject);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (Vector2.Distance(playerPos, pos) > dist)
+            //        {
+            //            World.Instance.SetSynonymObject("THERE", GetRegion());
+            //            World.Instance.TriggerEvent(AcknexObject, "IF_FAR");
+            //            _near.Remove(Player.Instance.AcknexObject);
+            //        }
+            //    }
+            //}
         }
 
         public IAcknexObject GetRegion()
