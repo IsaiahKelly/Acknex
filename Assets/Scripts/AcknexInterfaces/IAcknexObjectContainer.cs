@@ -21,5 +21,10 @@
         /// Disables the Unity object representation.
         /// </summary>
         void Disable();
+
+        /// <summary>
+        /// Method to call to post-setup an object template.
+        /// </summary>
+        void SetupTemplate();
     }
 }

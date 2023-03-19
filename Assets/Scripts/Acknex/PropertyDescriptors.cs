@@ -210,7 +210,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "Y");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "Z");
             AddObjectProperty(ObjectType.Actor, PropertyType.ObjectReference, "REGION");
-            AddObjectProperty(ObjectType.Actor, PropertyType.String, "TARGET");
+            AddObjectProperty(ObjectType.Actor, PropertyType.ObjectReference, "TARGET");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FLOOR_HGT");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "CEIL_HGT");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "DISTANCE");
@@ -228,6 +228,10 @@ namespace Acknex
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SENSITIVE");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SIZE_X");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SIZE_Y");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "TARGET_X");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "TARGET_Y");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "BERKELEY");
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "IMMATERIAL");
 
 
             AddObjectProperty(ObjectType.Thing, PropertyType.String, "NAME");
@@ -267,7 +271,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "Y");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "Z");
             AddObjectProperty(ObjectType.Thing, PropertyType.ObjectReference, "REGION");
-            AddObjectProperty(ObjectType.Thing, PropertyType.String, "TARGET");
+            AddObjectProperty(ObjectType.Thing, PropertyType.ObjectReference, "TARGET");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "FLOOR_HGT");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "CEIL_HGT");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "DISTANCE");
@@ -285,6 +289,10 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "SENSITIVE");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "SIZE_X");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "SIZE_Y");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "TARGET_X");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "TARGET_Y");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "BERKELEY");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "IMMATERIAL");
 
 
             AddObjectProperty(ObjectType.Overlay, PropertyType.String, "NAME");
@@ -397,10 +405,14 @@ namespace Acknex
             AddObjectProperty(ObjectType.Texture, PropertyType.ObjectReference, "MODEL");
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, "AMBIENT");
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, "ALBEDO");
+            AddObjectProperty(ObjectType.Texture, PropertyType.Float, "SVOL");
+            AddObjectProperty(ObjectType.Texture, PropertyType.ObjectReference, "SOUND");
 
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "POS_X");
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "POS_Y");
             AddObjectProperty(ObjectType.Text, PropertyType.ObjectReference, "STRING");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "VISIBLE");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "INDEX");
 
             AddObjectProperty(ObjectType.Panel, PropertyType.Float, "POS_X");
             AddObjectProperty(ObjectType.Panel, PropertyType.Float, "POS_Y");

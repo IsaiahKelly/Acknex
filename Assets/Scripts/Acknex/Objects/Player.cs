@@ -87,20 +87,15 @@ namespace Acknex
             GUILayout.Label($"PLAYER_SIN:{World.Instance.GetSkillValue("PLAYER_SIN")}");
             GUILayout.Label($"PLAYER_COS:{World.Instance.GetSkillValue("PLAYER_COS")}");
             GUILayout.Label($"PLAYER_HGT:{World.Instance.GetSkillValue("PLAYER_HGT")}");
-            GUILayout.Label($"RGN:{Player.Instance.GetRegion().GetString("NAME")}");
+            var region = Player.Instance.AcknexObject.GetAcknexObject("REGION");
+            GUILayout.Label($"RGN:{region?.GetString("NAME")}");
             GUILayout.EndVertical();
         }
 
         private void StickToTheGround(float playerX, float playerY, ref float playerZ, bool initial = true)
         {
-            var playerRegion = AcknexObject.GetInteger("REGION");
-            Region.Locate(AcknexObject, playerRegion, playerX, playerY, ref playerZ, false, false, initial);
-        }
-
-        public IAcknexObject GetRegion(int? currentRegionIndex = null)
-        {
-            var regionIndex = currentRegionIndex ?? AcknexObject.GetInteger("REGION");
-            return World.Instance.GetRegionByIndex(regionIndex)?.AcknexObject;
+            var playerRegion = AcknexObject.GetAcknexObject("REGION")?.Container as Region;
+            Region.PutOnGround(AcknexObject, playerRegion, playerX, playerY, ref playerZ, false, false, initial);
         }
 
         public void Enable()
@@ -111,6 +106,11 @@ namespace Acknex
         public void Disable()
         {
 
+        }
+
+        public void SetupTemplate()
+        {
+            
         }
 
         public static Player Instance { get; private set; }

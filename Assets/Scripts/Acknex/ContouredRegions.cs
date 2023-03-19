@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using Acknex.Interfaces;
 
 namespace Acknex
 {
-    public class ContouredRegions : Dictionary<int, ContouredRegion>
+    public class ContouredRegions : Dictionary<IAcknexObject, ContouredRegion>
     {
-        public ContouredRegion GetContouredRegion(int index)
+        public ContouredRegion GetContouredRegion(IAcknexObject index)
         {
             if (!TryGetValue(index, out var contouredRegion))
             {

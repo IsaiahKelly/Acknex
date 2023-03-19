@@ -35,7 +35,7 @@ namespace Acknex
             AcknexObject.Container = this;
         }
 
-        public void Setup()
+        public void SetupTemplate()
         {
             if (AcknexObject.TryGetString("FILENAME", out var filename))
             {

@@ -30,7 +30,7 @@ namespace Acknex
             return null;
         }
 
-        public void Setup()
+        public void SetupTemplate()
         {
             var filename = AcknexObject.GetString("FILENAME");
             var width = AcknexObject.GetFloat("WIDTH");

@@ -151,7 +151,7 @@ public class WorldEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);
-            EditorGUILayout.LabelField(kvp.Value.Value);
+            EditorGUILayout.LabelField(kvp.Value.AcknexObject.GetString("VAL"));
             //EditorGUILayout.LabelField("");
             EditorGUILayout.EndHorizontal();
         }

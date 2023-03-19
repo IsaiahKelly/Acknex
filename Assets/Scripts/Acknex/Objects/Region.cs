@@ -49,15 +49,15 @@ namespace Acknex
         private GameObject triggerGameObject;
         private MeshCollider triggerCollider;
         private CollisionCallback triggerCollisionCallback;
+        private bool _instance;
 
         public Texture FloorTexture
         {
             get
             {
-                var floorTexture = AcknexObject.GetString("FLOOR_TEX");
-                if (floorTexture != null && World.Instance.TexturesByName.TryGetValue(floorTexture, out var floorTextureObject))
+                if (AcknexObject.TryGetAcknexObject("FLOOR_TEX", out var floorTextureObject))
                 {
-                    return floorTextureObject;
+                    return floorTextureObject.Container as Texture;
                 }
                 return null;
             }
@@ -67,10 +67,9 @@ namespace Acknex
         {
             get
             {
-                var ceilTexture = AcknexObject.GetString("CEIL_TEX");
-                if (ceilTexture != null && World.Instance.TexturesByName.TryGetValue(ceilTexture, out var ceilTextureObject))
+                if (AcknexObject.TryGetAcknexObject("CEIL_TEX", out var ceilTextureObject))
                 {
-                    return ceilTextureObject;
+                    return ceilTextureObject.Container as Texture;
                 }
                 return null;
             }
@@ -79,14 +78,8 @@ namespace Acknex
         private void Awake()
         {
             AcknexObject.Container = this;
-        }
-
-        private void Start()
-        {
             //todo: move to middle
             _audioSource = gameObject.AddComponent<AudioSource>();
-            StartCoroutine(AnimateCeil());
-            StartCoroutine(AnimateFloor());
         }
 
         private IEnumerator AnimateCeil()
@@ -117,6 +110,10 @@ namespace Acknex
 
         private void Update()
         {
+            if (!_instance)
+            {
+                return;
+            }
             UpdateObject();
         }
 
@@ -161,7 +158,7 @@ namespace Acknex
                     bitmapImage.UpdateMaterial(_floorMeshRenderer.material, FloorTexture, 0, false, AcknexObject);
                 }
             }
-            _floorCollider.gameObject.layer = AcknexObject.TryGetString("IF_DIVE", out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.WallsAndRegionsLayer.LayerIndex;
+            _floorCollider.gameObject.layer = AcknexObject.TryGetAcknexObject("IF_DIVE", out var ifDive) && ifDive.GetString("VAL") != null ? World.Instance.WaterLayer.LayerIndex : World.Instance.WallsAndRegionsLayer.LayerIndex;
 
             if (CeilTexture != null)
             {
@@ -205,8 +202,8 @@ namespace Acknex
                 {
                     return _belowOverride;
                 }
-                var below = AcknexObject.GetString("BELOW");
-                if (below != null && World.Instance.RegionsByName.TryGetValue(below, out var region))
+                var below = AcknexObject.GetAcknexObject("BELOW");
+                if (below != null && below.Container is Region region)
                 {
                     return region;
                 }
@@ -227,7 +224,19 @@ namespace Acknex
             AcknexObject.RemoveFlag("VISIBLE");
         }
 
-        public static void BuildFloorMesh(List<Vector3> allVertices, List<Vector2> allUVS, Dictionary<int, List<int>> allTriangles, Region region, string ceilTexture, string floorTexture)
+        public void SetupTemplate()
+        {
+            
+        }
+
+        public void SetupInstance()
+        {
+            _instance = true;
+            StartCoroutine(AnimateCeil());
+            StartCoroutine(AnimateFloor());
+        }
+
+        public static void BuildFloorMesh(List<Vector3> allVertices, List<Vector2> allUVS, Dictionary<int, List<int>> allTriangles, Region region, IAcknexObject ceilTexture, IAcknexObject floorTexture)
         {
             {
                 region.floorGameObject = new GameObject("Floor");
@@ -310,16 +319,15 @@ namespace Acknex
         {
             if (collider.TryGetComponent<Thing>(out var thing))
             {
+                thing.AcknexObject.SetAcknexObject("REGION", this.AcknexObject);
                 World.Instance.SetSynonymObject("THERE", AcknexObject);
                 World.Instance.TriggerEvent(AcknexObject, "IF_ENTER");
-                var regionIndex = World.Instance.GetRegionIndex(this);
-                thing.AcknexObject.SetFloat("REGION", regionIndex);
             }
             else if (collider.TryGetComponent<Player>(out var player))
             {
+                player.AcknexObject.SetAcknexObject("REGION", this.AcknexObject);
                 World.Instance.SetSynonymObject("THERE", AcknexObject);
-                var regionIndex = World.Instance.GetRegionIndex(this);
-                player.AcknexObject.SetFloat("REGION", regionIndex);
+                World.Instance.SetSynonymObject("HERE", AcknexObject);
                 World.Instance.UpdateSkillValue("FLOOR_HGT", AcknexObject.GetFloat("FLOOR_HGT"));
                 World.Instance.UpdateSkillValue("CEIL_HGT", AcknexObject.GetFloat("CEIL_HGT"));
                 World.Instance.TriggerEvent(AcknexObject, "IF_ENTER");
@@ -341,7 +349,7 @@ namespace Acknex
             {
                 BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex);
                 BuildFloor(contouredRegion, region, allVertices, allUVs, allTriangles, ref meshIndex, true);
-                BuildFloorMesh(allVertices, allUVs, allTriangles, region, region.AcknexObject.GetString("CEIL_TEX"), region.AcknexObject.GetString("FLOOR_TEX"));
+                BuildFloorMesh(allVertices, allUVs, allTriangles, region, region.AcknexObject.GetAcknexObject("CEIL_TEX"), region.AcknexObject.GetAcknexObject("FLOOR_TEX"));
             }
             region.Enable();
             if (region.Below != null)
@@ -414,25 +422,24 @@ namespace Acknex
         }
 
 
-        public static void Locate(IAcknexObject source, int regionIndex, float thingX, float thingY, ref float thingZ, bool onGround = false, bool onCeil = false, bool initial = true)
+        public static void PutOnGround(IAcknexObject source, Region currentRegion, float thingX, float thingY, ref float thingZ, bool onGround = false, bool onCeil = false, bool initial = true)
         {
-            bool GetValue(RaycastHit raycastHit, Region region, ref float outThingZ, ref int outRegionIndex)
+            bool GetValue(RaycastHit raycastHit, Region region, ref float outThingZ)
             {
-                if (raycastHit.transform.parent != null && raycastHit.transform.parent.TryGetComponent<Region>(out var newRegion))
+                if (raycastHit.transform.parent != null && raycastHit.transform.parent.TryGetComponent<Region>(out _))
                 {
                     outThingZ = onGround ? 0 : raycastHit.point.y;
                     return true;
                 }
                 return false;
             }
-            var currentRegion = World.Instance.GetRegionByIndex(regionIndex);
             if (onCeil)
             {
                 var zCheck = initial ? currentRegion.AcknexObject.GetFloat("FLOOR_HGT") : thingZ + 1.0f;
                 var point = new Vector3(thingX, zCheck, thingY);
                 if (Physics.Raycast(new Ray(point, Vector3.up), out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
-                    if (GetValue(raycastHit, currentRegion, ref thingZ, ref regionIndex))
+                    if (GetValue(raycastHit, currentRegion, ref thingZ))
                     {
                         return;
                     }
@@ -444,7 +451,7 @@ namespace Acknex
                 var point = new Vector3(thingX, zCheck, thingY);
                 if (Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
-                    if (GetValue(raycastHit, currentRegion, ref thingZ, ref regionIndex))
+                    if (GetValue(raycastHit, currentRegion, ref thingZ))
                     {
                         return;
                     }

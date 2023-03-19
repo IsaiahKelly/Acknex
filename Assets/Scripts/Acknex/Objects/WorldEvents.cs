@@ -10,39 +10,7 @@ namespace Acknex
         public WaitForSeconds WaitForTick;
         public WaitForSeconds WaitForSecond;
 
-        public IEnumerator CallAction(IAcknexObject source, string name)
-        {
-            if (_runtime == null)
-            {
-                yield break;
-            }
-            if (source != null)
-            {
-                SetSynonymObject("MY", source);
-            }
-            yield return (IEnumerator)_runtime.CallAction(name);
-        }
 
-        public void TriggerEvent(IAcknexObject source, string eventName)
-        {
-            if (_runtime == null)
-            {
-                return;
-            }
-            if (source.TryGetString(eventName, out var @event) && @event != null)
-            {
-                SetSynonymObject("MY", source);
-                StartCoroutine(_runtime.CallAction(@event));
-            }
-        }
-
-        public void TriggerEventConditional(IAcknexObject source, string eventName, bool condition)
-        {
-            if (condition)
-            {
-                TriggerEvent(source, eventName);
-            }
-        }
 
         private static readonly string[] TickEvents = new string[]
         {
@@ -83,6 +51,43 @@ namespace Acknex
             "EACH_SEC.15",
             "EACH_SEC.16",
         };
+
+        public IEnumerator CallAction(IAcknexObject source, string name)
+        {
+            if (_runtime == null)
+            {
+                yield break;
+            }
+            if (source != null)
+            {
+                SetSynonymObject("MY", source);
+            }
+            yield return (IEnumerator)_runtime.CallAction(name);
+        }
+
+        public void TriggerEvent(IAcknexObject source, string eventName)
+        {
+            if (_runtime == null)
+            {
+                return;
+            }
+            if (source.TryGetAcknexObject(eventName, out var acknexObject) && acknexObject != null)
+            {
+                if (acknexObject.TryGetString("NAME", out var value) && value != null)
+                {
+                    SetSynonymObject("MY", source);
+                    StartCoroutine(_runtime.CallAction(value));
+                }
+            }
+        }
+
+        public void TriggerEventConditional(IAcknexObject source, string eventName, bool condition)
+        {
+            if (condition)
+            {
+                TriggerEvent(source, eventName);
+            }
+        }
 
         private IEnumerator TriggerTickEvents(IAcknexObject acknexObject)
         {

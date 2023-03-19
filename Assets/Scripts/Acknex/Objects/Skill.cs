@@ -26,6 +26,11 @@ namespace Acknex
             
         }
 
+        public void SetupTemplate()
+        {
+            
+        }
+
         public Skill()
         {
             AcknexObject.Container = this;

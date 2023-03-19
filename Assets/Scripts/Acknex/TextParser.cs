@@ -183,7 +183,7 @@ namespace Acknex
                     }
                     if (_openObject != null && keyword == "}")
                     {
-                        _world.PostSetupObjectTemplate(_openObject);
+                        //_world.PostSetupObjectTemplate(_openObject);
                         _openObject = null;
                         continue;
                     }
@@ -191,7 +191,7 @@ namespace Acknex
                     {
                         if (_openObject.Type != ObjectType.Action)
                         {
-                            var propertyType = World.Instance.GetPropertyType(_openObject.Type, keyword);
+                            var propertyType = _world.GetPropertyType(_openObject.Type, keyword);
                             if (!HandleProperty(_openObject, tokens, keyword, propertyType))
                             {
                                 while (keyword != ";" && keyword != null)
@@ -311,7 +311,7 @@ namespace Acknex
                                     {
                                         _openObject.SetFloat("DY", ParseFloat(tokens, token));
                                     }
-                                    _world.PostSetupObjectTemplate(_openObject);
+                                    //_world.PostSetupObjectTemplate(_openObject);
                                     _openObject = null;
                                     break;
                                 }
@@ -372,7 +372,7 @@ namespace Acknex
                                 {
                                     var model = _world.CreateObjectTemplate(ObjectType.Model, GetNextToken(tokens));
                                     model.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
-                                    World.Instance.PostSetupObjectTemplate(model);
+                                    //_world.PostSetupObjectTemplate(model);
                                     CheckSemiColon(tokens);
                                     break;
                                 }
@@ -380,7 +380,7 @@ namespace Acknex
                                 {
                                     var sound = _world.CreateObjectTemplate(ObjectType.Sound, GetNextToken(tokens));
                                     sound.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
-                                    World.Instance.PostSetupObjectTemplate(sound);
+                                    //_world.PostSetupObjectTemplate(sound);
                                     CheckSemiColon(tokens);
                                     break;
                                 }
@@ -388,7 +388,7 @@ namespace Acknex
                                 {
                                     var music = _world.CreateObjectTemplate(ObjectType.Music, GetNextToken(tokens));
                                     music.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
-                                    World.Instance.PostSetupObjectTemplate(music);
+                                    //_world.PostSetupObjectTemplate(music);
                                     CheckSemiColon(tokens);
                                     break;
                                 }
@@ -403,8 +403,8 @@ namespace Acknex
                             default:
                                 {
 
-                                    var propertyType = World.Instance.GetPropertyType(ObjectType.World, keyword);
-                                    if (!HandleProperty(World.Instance.AcknexObject, tokens, keyword, propertyType))
+                                    var propertyType = _world.GetPropertyType(ObjectType.World, keyword);
+                                    if (!HandleProperty(_world.AcknexObject, tokens, keyword, propertyType))
                                     {
                                         while (keyword != ";" && keyword != null)
                                         {
@@ -432,11 +432,8 @@ namespace Acknex
                     CheckSemiColon(tokens);
                     return true;
                 case PropertyType.ActionReference:
-                    acknexObject.SetString(keyword, GetNextToken(tokens));
-                    CheckSemiColon(tokens);
-                    return true;
                 case PropertyType.ObjectReference:
-                    acknexObject.SetString(keyword, GetNextToken(tokens));
+                    _world.AddPostResolve((acknexObject, keyword, GetNextToken(tokens)));
                     CheckSemiColon(tokens);
                     return true;
                 case PropertyType.Flags:
@@ -529,7 +526,7 @@ namespace Acknex
         {
             token = token.Substring(1, token.Length - 2);
             var filename = $"{_baseDir}/{token}";
-            return filename;
+            return Path.GetFullPath(filename);
         }
 
         public void ParseWMP(string wmpFilename)
@@ -556,7 +553,7 @@ namespace Acknex
                                 _world.UpdateSkillValue("PLAYER_X", ParseFloat(tokens));
                                 _world.UpdateSkillValue("PLAYER_Y", ParseFloat(tokens));
                                 _world.UpdateSkillValue("PLAYER_ANGLE", Mathf.Deg2Rad * ParseFloat(tokens));
-                                player.SetFloat("REGION", ParseRegionIndex(tokens));
+                                ParseRegionIndex(player, "REGION", tokens);
                                 break;
                             }
                         case "THING":
@@ -567,7 +564,7 @@ namespace Acknex
                                 thing.SetFloat("X", ParseFloat(tokens));
                                 thing.SetFloat("Y", ParseFloat(tokens));
                                 thing.SetFloat("ANGLE", Mathf.Deg2Rad * ParseFloat(tokens));
-                                thing.SetFloat("REGION", ParseRegionIndex(tokens));
+                                ParseRegionIndex(thing, "REGION", tokens);
                                 _world.PostSetupObjectInstance(thing);
                                 break;
                             }
@@ -594,8 +591,8 @@ namespace Acknex
                                 var wall = _world.CreateObjectInstance(ObjectType.Wall, wallName);
                                 wall.SetFloat("VERTEX2", ParseFloat(tokens));
                                 wall.SetFloat("VERTEX1", ParseFloat(tokens));
-                                wall.SetFloat("REGION1", ParseRegionIndex(tokens));
-                                wall.SetFloat("REGION2", ParseRegionIndex(tokens));
+                                ParseRegionIndex(wall, "REGION1", tokens);
+                                ParseRegionIndex(wall, "REGION2", tokens);
                                 wall.SetFloat("OFFSET_X", ParseFloat(tokens));
                                 wall.SetFloat("OFFSET_Y", ParseFloat(tokens));
                                 _world.PostSetupObjectInstance(wall);
@@ -622,14 +619,18 @@ namespace Acknex
             }
         }
 
-        private float ParseRegionIndex(IEnumerator<string> tokens)
+        private void ParseRegionIndex(IAcknexObject acknexObject, string propertyName, IEnumerator<string> tokens)
         {
             if (!_wmpContainsRegionsByName)
             {
-                return ParseFloat(tokens);
+                var regionIndex = (int)ParseFloat(tokens);
+                acknexObject.SetAcknexObject(propertyName, World.Instance.RegionsByIndex[regionIndex].AcknexObject);
             }
-            var index = _world.GetRegionIndex(GetNextToken(tokens));
-            return index;
+            else
+            {
+                var regionName = GetNextToken(tokens);
+                acknexObject.SetAcknexObject(propertyName, World.Instance.RegionsByName[regionName].AcknexObject);
+            }
         }
 
         public void ParseInitialWDL(string wdlPath)

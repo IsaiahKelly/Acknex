@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Acknex.Interfaces
@@ -48,7 +49,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// This method should be called when any WDL string is processed.
         /// </summary>
-        void AddString(string name, string value);
+        IAcknexObject AddString(string name, string value);
 
         /// <summary>
         /// This method should be called when any WDL path is processed.
@@ -63,6 +64,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// This method should be called when all properties from a given object template have been processed.
         /// </summary>
+        [Obsolete("Deprecated. Use AddPostResolve instead.")]
         void PostSetupObjectTemplate(IAcknexObject acknexObject);
 
         /// <summary>
@@ -161,5 +163,15 @@ namespace Acknex.Interfaces
         /// Plays the given sound.
         /// </summary>
         void PlaySound(string songName, float volume, string balance = null);
+
+        /// <summary>
+        /// Drops the given thing or actor in front of player.
+        /// </summary>
+        void Drop(string name);
+
+        /// <summary>
+        /// Register an object to be post-processed.
+        /// </summary>
+        void AddPostResolve((IAcknexObject acknexObject, string keyword, string objectName) postResolve);
     }
 }

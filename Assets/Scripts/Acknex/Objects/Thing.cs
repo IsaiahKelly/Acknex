@@ -30,41 +30,29 @@ namespace Acknex
         private GameObject _thingGameObject;
         private CapsuleCollider _collider;
         private AudioSource _audioSource;
-
-        private GameObject _attached;
+        private CollisionCallback _collisionCallback;
 
         //Deltas for comparison
+        private GameObject _attached;
         private Texture _lastTextureObject;
-        private string _lastTarget;
+        private IAcknexObject _lastTarget;
 
-        public Texture TextureObject => AcknexObject.GetString("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.GetString("TEXTURE"), out var textureObject) ? textureObject : null;
+        public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
 
-        protected virtual void Start()
-        {
-            _thingGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
-            var collisionCallback = _thingGameObject.AddComponent<CollisionCallback>();
-            collisionCallback.OnCollisionEnterCallback += OnCollisionEnterCallback;
-            collisionCallback.OnCollisionExitCallback += OnCollisionExitCallback;
-            collisionCallback.OnTriggerEnterCallback += OnTriggerEnterCallback;
-            collisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
-            _collider = _thingGameObject.AddComponent<CapsuleCollider>();
-            _collider.height = 1f;
-            _audioSource = gameObject.AddComponent<AudioSource>();
-            StartCoroutine(Animate());
-            StartCoroutine(TriggerTickEvents());
-            StartCoroutine(TriggerSecEvents());
-        }
+        public bool IsTemplate;
+        private bool _instance;
 
         private IEnumerator TriggerSecEvents()
         {
             while (true)
             {
-                if (AcknexObject.TryGetString("EACH_SEC", out var action))
-                {
-                    World.Instance.CallAction(AcknexObject, action);
-                }
+                //if (AcknexObject.TryGetString("EACH_SEC", out var action))
+                //{
+                //    World.Instance.CallAction(AcknexObject, action);
+                //}
+                World.Instance.TriggerEvent(AcknexObject, "EACH_SEC");
                 yield return World.Instance.WaitForSecond;
             }
         }
@@ -73,22 +61,23 @@ namespace Acknex
         {
             while (true)
             {
-                if (AcknexObject.TryGetString("EACH_TICK", out var action))
-                {
-                    World.Instance.CallAction(AcknexObject, action);
-                }
+                //if (AcknexObject.TryGetString("EACH_TICK", out var action))
+                //{
+                //    World.Instance.CallAction(AcknexObject, action);
+                //}
+                World.Instance.TriggerEvent(AcknexObject, "EACH_TICK");
                 yield return World.Instance.WaitForTick;
             }
         }
 
         private void OnTriggerExitCallback(Collider obj)
         {
-
+            World.Instance.TriggerEvent(AcknexObject, "IF_FAR");
         }
 
         private void OnTriggerEnterCallback(Collider obj)
         {
-
+            World.Instance.TriggerEvent(AcknexObject, "IF_NEAR");
         }
 
         private void OnCollisionExitCallback(Collision obj)
@@ -101,13 +90,13 @@ namespace Acknex
 
         }
 
-        private void OnDrawGizmosSelected()
-        {
-            if (AcknexObject.TryGetFloat("DIST", out var dist))
-            {
-                DebugExtension.DrawCircle(transform.position, Vector3.up, Color.magenta, dist);
-            }
-        }
+        //private void OnDrawGizmosSelected()
+        //{
+        //    if (AcknexObject.TryGetFloat("DIST", out var dist))
+        //    {
+        //        DebugExtension.DrawCircle(transform.position, Vector3.up, Color.magenta, dist);
+        //    }
+        //}
 
         private IEnumerator Animate()
         {
@@ -122,15 +111,24 @@ namespace Acknex
             }
         }
 
-        private void Awake()
+        protected virtual void Awake()
         {
             AcknexObject.Container = this;
+            _thingGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
+            _collisionCallback = _thingGameObject.AddComponent<CollisionCallback>();
+            _collider = _thingGameObject.AddComponent<CapsuleCollider>();
+            _collider.height = 1f;
+            _audioSource = gameObject.AddComponent<AudioSource>();
         }
 
         protected virtual void Update()
         {
+            if (!_instance)
+            {
+                return;
+            }
             UpdateObject();
-            if (!TextureObject.HasModel(out _))
+            if (TextureObject == null || !TextureObject.HasModel(out _))
             {
                 var camera = CameraExtensions.GetLastActiveCamera();
                 if (camera == null)
@@ -162,6 +160,23 @@ namespace Acknex
             AcknexObject.RemoveFlag("VISIBLE");
         }
 
+        public void SetupTemplate()
+        {
+
+        }
+
+        public void SetupInstance()
+        {
+            _instance = true;
+            _collisionCallback.OnCollisionEnterCallback += OnCollisionEnterCallback;
+            _collisionCallback.OnCollisionExitCallback += OnCollisionExitCallback;
+            _collisionCallback.OnTriggerEnterCallback += OnTriggerEnterCallback;
+            _collisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
+            StartCoroutine(Animate());
+            StartCoroutine(TriggerTickEvents());
+            StartCoroutine(TriggerSecEvents());
+        }
+
         public virtual void UpdateObject()
         {
             if (_meshRenderer == null)
@@ -188,15 +203,16 @@ namespace Acknex
                 _collider.enabled = true;
             }
 
-            if (AcknexObject.TryGetString("TARGET", out var target) && target != _lastTarget)
+            if (AcknexObject.TryGetAcknexObject("TARGET", out var target) && target != _lastTarget)
             {
-                if (target == "FOLLOW")
+                var value = target.GetString("VAL");
+                if (value == "FOLLOW")
                 {
                     StartCoroutine(MoveToPlayer());
                 }
-                if (World.Instance.AllWaysByName.TryGetValue(target, out var wayList))
+                else if (target.Container is Way way)
                 {
-                    StartCoroutine(wayList.First().MoveThingOrActor(AcknexObject));
+                    StartCoroutine(way.MoveThingOrActor(AcknexObject));
                 }
                 _lastTarget = target;
             }
@@ -236,11 +252,10 @@ namespace Acknex
             _thingGameObject.transform.position = thingPosition;
 
             _collider.isTrigger = AcknexObject.ContainsFlag("PASSABLE");
+            _collider.radius = AcknexObject.GetFloat("DIST") > 0f ? AcknexObject.GetFloat("DIST") * 0.5f : 0.5f;
 
-            //todo: how to?
-            //_collider.radius = AcknexObject.GetNumber("DIST") > 0f ? AcknexObject.GetNumber("DIST") * 0.5f : 0.5f;
-
-            Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, transform.right);
+            //todo: reimplement
+            //Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, transform.right);
         }
 
         private IEnumerator MoveToPlayer()
@@ -286,23 +301,22 @@ namespace Acknex
 
         public IAcknexObject GetRegion()
         {
-            var region = AcknexObject.GetInteger("REGION");
-            var regionObject = World.Instance.GetRegionByIndex(region)?.AcknexObject;
+            var regionObject = AcknexObject.GetAcknexObject("REGION");
             return regionObject;
         }
 
         public void StickToTheCeiling(float thingX, float thingY, ref float thingZ)
         {
-            var regionIndex = AcknexObject.GetInteger("REGION");
-            Region.Locate(AcknexObject, regionIndex, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"), true);
+            var region = AcknexObject.GetAcknexObject("REGION")?.Container as Region;
+            Region.PutOnGround(AcknexObject, region, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"), true);
             thingZ = thingZ - transform.localScale.y;
             AcknexObject.SetFloat("Z", thingZ);
         }
 
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)
         {
-            var regionIndex = AcknexObject.GetInteger("REGION");
-            Region.Locate(AcknexObject, regionIndex, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"));
+            var region = AcknexObject.GetAcknexObject("REGION")?.Container as Region;
+            Region.PutOnGround(AcknexObject, region, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"));
             AcknexObject.SetFloat("Z", thingZ);
         }
 

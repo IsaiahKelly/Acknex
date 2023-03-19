@@ -26,6 +26,11 @@ namespace Acknex
             
         }
 
+        public void SetupTemplate()
+        {
+            
+        }
+
         public Synonym()
         {
             AcknexObject.Container = this;

@@ -146,7 +146,7 @@ namespace Acknex
         {
             if (ObjectProperties.TryGetValue(propertyName, out var obj))
             {
-                return obj.ToString();
+                return obj?.ToString();
             }
             if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
             {

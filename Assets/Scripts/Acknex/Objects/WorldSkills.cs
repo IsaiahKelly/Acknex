@@ -247,7 +247,9 @@ namespace Acknex
             CreateSkill("IMPACT_VX", 0, Mathf.NegativeInfinity, Mathf.Infinity);
             CreateSkill("IMPACT_VY", 0, Mathf.NegativeInfinity, Mathf.Infinity);
 
-
+            CreateSkill("HALF_PI", Mathf.PI*0.5f, Mathf.NegativeInfinity, Mathf.Infinity);
+            CreateSkill("PI", Mathf.PI, Mathf.NegativeInfinity, Mathf.Infinity);
+            CreateSkill("TWO_PI", Mathf.PI*2f, Mathf.NegativeInfinity, Mathf.Infinity);
         }
 
         private void UpdateSkills()

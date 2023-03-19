@@ -23,6 +23,11 @@ namespace Acknex
             
         }
 
+        public void SetupTemplate()
+        {
+            
+        }
+
         private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;

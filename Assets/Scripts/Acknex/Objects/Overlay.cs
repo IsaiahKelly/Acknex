@@ -47,6 +47,11 @@ namespace Acknex
 
         }
 
+        public void SetupTemplate()
+        {
+            
+        }
+
         private void Awake()
         {
             AcknexObject.Container = this;

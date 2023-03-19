@@ -20,6 +20,7 @@ namespace Acknex
         }
 
         public List<Vector2> Points = new List<Vector2>();
+        private bool _instance;
 
         public void OnDrawGizmos()
         {
@@ -34,7 +35,6 @@ namespace Acknex
         public void UpdateObject()
         {
             UpdateEvents();
-
             if (!AcknexObject.IsDirty)
             {
                 return;
@@ -57,9 +57,28 @@ namespace Acknex
             gameObject.SetActive(false);
         }
 
+        public void SetupTemplate()
+        {
+
+        }
+
+        public void SetupInstance()
+        {
+            _instance = true;
+        }
+
         private void Awake()
         {
             AcknexObject.Container = this;
+        }
+
+        private void Update()
+        {
+            if (!_instance)
+            {
+                return;
+            }
+            UpdateObject();
         }
 
         public IEnumerator MoveThingOrActor(IAcknexObject thingOrActor)

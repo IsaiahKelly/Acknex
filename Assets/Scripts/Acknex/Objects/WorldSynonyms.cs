@@ -22,64 +22,16 @@ namespace Acknex
             if (!SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
                 throw new Exception("Synonym [" + synonymName + "] not found");
-                //synonym = new Synonym();
-                //SynonymsByName.Add(synonymName, synonym);
             }
-            var isValid = true;
-            var type = synonym.AcknexObject.GetString("TYPE");
-            switch (type)
+            if (target == null)
             {
-                case "OVERLAY":
-                    isValid = target.Type == ObjectType.Overlay;
-                    break;
-                case "TEXTURE":
-                    isValid = target.Type == ObjectType.Texture;
-                    break;
-                case "WALL":
-                    isValid = target.Type == ObjectType.Wall;
-                    break;
-                case "THING":
-                case "ACTOR":
-                    isValid = target.Type == ObjectType.Thing || target.Type == ObjectType.Actor;
-                    break;
-                case "REGION":
-                    isValid = target.Type == ObjectType.Region ;
-                    break;
-                case "PANEL":
-                    isValid = target.Type == ObjectType.Panel;
-                    break;
-                case "TEXT":
-                    isValid = target.Type == ObjectType.Text;
-                    break;
-                case "STRING":
-                    isValid = target.Type == ObjectType.String;
-                    break;
-                case "ACTION":
-                    isValid = target.Type == ObjectType.Action;
-                    break;
+                synonym.AcknexObject.SetString("VAL", null);
+                synonym.AcknexObject.SetAcknexObject("INSTANCE", null);
+                return;
             }
-            //if (!isValid)
-            //{
-            //    throw new Exception($"Invalid Synonym attribution. Expected: {type}. Got: {target.Type}");
-            //}
             var objectName = target.GetString("NAME");
             synonym.AcknexObject.SetString("VAL", objectName);
             synonym.AcknexObject.SetAcknexObject("INSTANCE", target);
-            //switch (target.Type)
-            //{
-            //    case ObjectType.Actor:
-            //        synonym.AcknexObject.SetInteger("INDEX", AllActorsByName[objectName].IndexOf((Actor)target.Container));
-            //        break;
-            //    case ObjectType.Thing:
-            //        synonym.AcknexObject.SetInteger("INDEX", AllThingsByName[objectName].IndexOf((Thing)target.Container));
-            //        break;
-            //    case ObjectType.Wall:
-            //        synonym.AcknexObject.SetInteger("INDEX", AllWallsByName[objectName].IndexOf((Wall)target.Container));
-            //        break;
-            //    case ObjectType.Region:
-            //        synonym.AcknexObject.SetInteger("INDEX", AllRegionsByName[objectName].IndexOf((Region)target.Container));
-            //        break;
-            //}
         }
 
         public ObjectType GetSynonymType(string synonymName)
@@ -128,10 +80,11 @@ namespace Acknex
         {
             if (SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
-                var objectName = synonym.AcknexObject.GetString("VAL") ?? synonym.AcknexObject.GetString("DEFAULT");
-                if (objectName != null)
+                var value = synonym.AcknexObject.GetAcknexObject("VAL") ?? synonym.AcknexObject.GetAcknexObject("DEFAULT");
+                //var objectName = synonym.AcknexObject.GetString("VAL") ?? synonym.AcknexObject.GetString("DEFAULT") ?? synonym.AcknexObject.GetString("NAME");
+                if (value != null)
                 {
-                    yield return CallAction(GetSynonymObject("MY"), objectName);
+                    yield return CallAction(GetSynonymObject("MY"), value.GetString("NAME"));
                 }
             }
         }

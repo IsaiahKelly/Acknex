@@ -164,7 +164,7 @@ namespace Acknex
             AcknexObject.Container = this;
         }
 
-        public void Setup()
+        public void SetupTemplate()
         {
             var delay = AcknexObject.GetObject<List<float>>("DELAY");
             if (delay != null)

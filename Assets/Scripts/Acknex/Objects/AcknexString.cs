@@ -11,26 +11,29 @@ namespace Acknex
             return null;
         }
 
-        public string Value;
-
         public AcknexString(string value)
         {
-            Value = value;
+            AcknexObject.SetString("VAL", value);
         }
 
         public void UpdateObject()
         {
-            
+
         }
 
         public void Enable()
         {
-            
+
         }
 
         public void Disable()
         {
-           
+
+        }
+
+        public void SetupTemplate()
+        {
+            
         }
     }
 }

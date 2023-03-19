@@ -34,7 +34,7 @@ namespace Acknex
 
         }
 
-        public void Setup()
+        public void SetupTemplate()
         {
             var filename = AcknexObject.GetString("FILENAME");
             CreateBitmapTexture(filename, (int)X, (int)Y, (int)Width, (int)Height, out Texture2D, ref BitmapTexture2D);

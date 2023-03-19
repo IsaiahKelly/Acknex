@@ -44,18 +44,16 @@ namespace Acknex
         private SphereCollider _vertexTriggerB;
         private CollisionCallback _collisionCallbackA;
         private CollisionCallback _collisionCallbackB;
+        private bool _instance;
 
-        public Texture TextureObject => AcknexObject.GetString("TEXTURE") != null && World.Instance.TexturesByName.TryGetValue(AcknexObject.GetString("TEXTURE"), out var textureObject) ? textureObject : null;
+        public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
 
         private void Awake()
         {
             AcknexObject.Container = this;
-        }
 
-        private void Start()
-        {
             //todo: move to middle
             _audioSource = gameObject.AddComponent<AudioSource>();
 
@@ -65,8 +63,6 @@ namespace Acknex
             _vertexTriggerA = _vertexGameObjectA.AddComponent<SphereCollider>();
             _vertexTriggerA.isTrigger = true;
             _collisionCallbackA = _vertexGameObjectA.AddComponent<CollisionCallback>();
-            _collisionCallbackA.OnTriggerEnterCallback += OnWallTriggerEnter;
-            _collisionCallbackA.OnTriggerExitCallback += OnWallTriggerExit;
 
             _vertexGameObjectB = new GameObject("VertexB");
             _vertexGameObjectB.transform.SetParent(transform, false);
@@ -74,10 +70,6 @@ namespace Acknex
             _vertexTriggerB = _vertexGameObjectA.AddComponent<SphereCollider>();
             _vertexTriggerB.isTrigger = true;
             _collisionCallbackB = _vertexGameObjectB.AddComponent<CollisionCallback>();
-            _collisionCallbackB.OnTriggerEnterCallback += OnWallTriggerEnter;
-            _collisionCallbackB.OnTriggerExitCallback += OnWallTriggerExit;
-
-            StartCoroutine(Animate());
         }
 
         private IEnumerator Animate()
@@ -111,6 +103,10 @@ namespace Acknex
 
         private void Update()
         {
+            if (!_instance)
+            {
+                return;
+            }
             UpdateObject();
         }
 
@@ -152,14 +148,14 @@ namespace Acknex
                 _collider.enabled = true;
             }
 
-            Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, XAxis, BottomQuad.GetColumn(0), true);
+            //todo reimplement
+            //Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, XAxis, BottomQuad.GetColumn(0), true);
 
-            //BitmapImage?.UpdateMaterial(_meshRenderer.material, TextureObject, 0, false, AcknexObject);
             _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.AcknexObject.ContainsFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             //todo: conflict?
             _collider.enabled = !AcknexObject.ContainsFlag("PASSABLE");
-            _vertexTriggerB.radius =  _vertexTriggerA.radius = AcknexObject.GetFloat("DIST");
-            _vertexTriggerB.enabled = _vertexTriggerA.enabled = AcknexObject.TryGetString("IF_NEAR", out _) || AcknexObject.TryGetString("IF_FAR", out _);
+            _vertexTriggerB.radius = _vertexTriggerA.radius = AcknexObject.GetFloat("DIST");
+            _vertexTriggerB.enabled = _vertexTriggerA.enabled = AcknexObject.TryGetAcknexObject("IF_NEAR", out var ifNear) && ifNear.GetString("VAL") != null || AcknexObject.TryGetAcknexObject("IF_FAR", out var ifFar) && ifFar.GetString("VAL") != null;
             _vertexGameObjectA.transform.position = BottomQuad.GetColumn(3);
             _vertexGameObjectB.transform.position = BottomQuad.GetColumn(2);
             //todo: update <X1, <Y1, <Z1 <X2, <Y2, <Z2, DISTANCE, LENGTH, SIZE_X, LEFT, RIGHT skills
@@ -182,11 +178,26 @@ namespace Acknex
             AcknexObject.RemoveFlag("VISIBLE");
         }
 
+        public void SetupTemplate()
+        {
+
+        }
+
+        public void SetupInstance()
+        {
+            _instance = true;
+            _collisionCallbackA.OnTriggerEnterCallback += OnWallTriggerEnter;
+            _collisionCallbackA.OnTriggerExitCallback += OnWallTriggerExit;
+            _collisionCallbackB.OnTriggerEnterCallback += OnWallTriggerEnter;
+            _collisionCallbackB.OnTriggerExitCallback += OnWallTriggerExit;
+            StartCoroutine(Animate());
+        }
+
         public void ProcessWall(
             List<ContourVertex> allContourVertices,
             List<ContourVertex> contourVertices,
             Wall wallA,
-            KeyValuePair<int, RegionWall> kvp,
+            KeyValuePair<IAcknexObject, RegionWall> kvp,
             ref int vertexCount,
             bool inverted = false)
         {
@@ -268,7 +279,7 @@ namespace Acknex
             for (var i = 0; i < texturesList.Count; i++)
             {
                 var textureName = texturesList[i];
-                var material = World.Instance.BuildMaterial(textureName);
+                var material = World.Instance.BuildMaterial(World.Instance.TexturesByName[textureName].AcknexObject);
                 materials[i] = material;
             }
 
@@ -342,7 +353,7 @@ namespace Acknex
                     var v1 = new Vector3(vertexB.Position.X, ceil + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, floor + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v3 = new Vector3(vertexA.Position.X, floor + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                    MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, wall.AcknexObject.GetString("TEXTURE"), allVertices.Count);
+                    MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, wall.AcknexObject.GetAcknexObject("TEXTURE").GetString("NAME"), allVertices.Count);
                     //todo: double-sided walls glitch Unity shadows
                     //MeshUtils.AddQuad(3, 2, 1, 0, allTriangles, wall.AcknexObject.GetString("TEXTURE"), allVertices.Count);
                     allVertices.Add(v0); //a
@@ -392,7 +403,7 @@ namespace Acknex
                         var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                         var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                         var v3 = new Vector3(vertexA.Position.X, heightRight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                        MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, wall.AcknexObject.GetString("TEXTURE"), allVertices.Count);
+                        MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, wall.AcknexObject.GetAcknexObject("TEXTURE").GetString("NAME"), allVertices.Count);
                         allVertices.Add(v0); //a
                         allVertices.Add(v1); //b
                         allVertices.Add(v2); //c
@@ -431,7 +442,7 @@ namespace Acknex
                         var v1 = new Vector3(vertexB.Position.X, heightLeft + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                         var v2 = new Vector3(vertexB.Position.X, heightRight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                         var v3 = new Vector3(vertexA.Position.X, heightRight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                        MeshUtils.AddQuad(3, 2, 1, 0, allTriangles, wall.AcknexObject.GetString("TEXTURE"), allVertices.Count);
+                        MeshUtils.AddQuad(3, 2, 1, 0, allTriangles, wall.AcknexObject.GetAcknexObject("TEXTURE").GetString("NAME"), allVertices.Count);
                         allVertices.Add(v0);
                         allVertices.Add(v1);
                         allVertices.Add(v2);
@@ -496,8 +507,8 @@ namespace Acknex
             var allVertices = new List<Vector3>();
             var allUVs = new List<Vector2>();
             var allTriangles = new Dictionary<string, List<int>>();
-            var rightRegion = World.Instance.RegionsByIndex[wall.AcknexObject.GetInteger("REGION1")];
-            var leftRegion = World.Instance.RegionsByIndex[wall.AcknexObject.GetInteger("REGION2")];
+            var rightRegion = wall.AcknexObject.GetAcknexObject("REGION1").Container as Region;
+            var leftRegion = wall.AcknexObject.GetAcknexObject("REGION2").Container as Region;
             BuildWall(wall, rightRegion, leftRegion, contourVertices, allVertices, allUVs, allTriangles);
             BuildWallMesh(allVertices, allUVs, allTriangles, wall);
         }

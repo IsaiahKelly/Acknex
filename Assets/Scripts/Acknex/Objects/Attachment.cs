@@ -16,52 +16,52 @@ namespace Acknex
         private GameObject _attached;
 
         //todo: looks like an attachment disappear when it gets outside a given wall area, so we'll need barycentric interpolation to handle that
-        public static void HandleAttachment(
-            ref GameObject attached,
-            GameObject parent,
-            IAcknexObject acknexObject,
-            Texture textureObject,
-            Vector3 baseRightDirection,
-            Vector3? basePosition = null,
-            bool pivotAtLeft = false)
-        {
-            var attach = acknexObject.GetString("ATTACH");
-            if (attach == null && textureObject != null)
-            {
-                attach = textureObject.AcknexObject.GetString("ATTACH");
-            }
-            if (string.IsNullOrEmpty(attach) && attached != null || attached != null && attach != attached.name)
-            {
-                Object.Destroy(attached);
-            }
-            if (!string.IsNullOrEmpty(attach) && attached == null)
-            {
-                if (World.Instance.TexturesByName.TryGetValue(attach, out var toAttachTextureObject))
-                {
-                    var toAttachBitmapImage = toAttachTextureObject.GetBitmapAt();
-                    attached = TextureUtils.BuildTextureGameObject(parent.transform, toAttachTextureObject.AcknexObject.GetString("NAME"), toAttachBitmapImage, out _, out var toAttachMeshRenderer, pivotAtLeft);
-                    var transformPosition = attached.transform.position;
-                    if (basePosition.HasValue)
-                    {
-                        transformPosition = basePosition.Value;
-                    }
-                    var baseForwardDirection = Vector3.Cross(baseRightDirection, Vector3.up);
-                    attached.transform.rotation = Quaternion.LookRotation(baseForwardDirection);
-                    var posX = textureObject.AcknexObject.GetFloat("POS_X") + toAttachTextureObject.AcknexObject.GetFloat("POS_X");
-                    var posY = textureObject.AcknexObject.GetFloat("POS_Y") + toAttachTextureObject.AcknexObject.GetFloat("POS_Y");
-                    var upperLeftPos = baseRightDirection * (posX / toAttachTextureObject.ScaleX);
-                    var upperTopPos = Vector3.down * (posY / toAttachTextureObject.ScaleY);
-                    transformPosition += upperLeftPos + upperTopPos - (baseForwardDirection * 0.01f);
-                    attached.transform.position = transformPosition;
-                    var attachment = attached.AddComponent<Attachment>();
-                    attachment.AcknexObject = acknexObject;
-                    attachment.AcknexObject.Container = attachment;
-                    attachment.TextureObject = toAttachTextureObject;
-                    attachment.BitmapImage = toAttachBitmapImage;
-                    attachment.Material = toAttachMeshRenderer.material;
-                }
-            }
-        }
+        //public static void HandleAttachment(
+        //    ref GameObject attached,
+        //    GameObject parent,
+        //    IAcknexObject acknexObject,
+        //    Texture textureObject,
+        //    Vector3 baseRightDirection,
+        //    Vector3? basePosition = null,
+        //    bool pivotAtLeft = false)
+        //{
+        //    var attach = acknexObject.GetAcknexObject("ATTACH");
+        //    if (attach == null && textureObject != null)
+        //    {
+        //        attach = textureObject.AcknexObject.GetAcknexObject("ATTACH");
+        //    }
+        //    if (attach != null && attached != null || attached != null && attach != attached)
+        //    {
+        //        Object.Destroy(attached);
+        //    }
+        //    if (attach != null && attached == null)
+        //    {
+        //        if (attach.Container is Texture toAttachTextureObject)
+        //        {
+        //            var toAttachBitmapImage = toAttachTextureObject.GetBitmapAt();
+        //            attached = TextureUtils.BuildTextureGameObject(parent.transform, toAttachTextureObject.AcknexObject.GetString("NAME"), toAttachBitmapImage, out _, out var toAttachMeshRenderer, pivotAtLeft);
+        //            var transformPosition = attached.transform.position;
+        //            if (basePosition.HasValue)
+        //            {
+        //                transformPosition = basePosition.Value;
+        //            }
+        //            var baseForwardDirection = Vector3.Cross(baseRightDirection, Vector3.up);
+        //            attached.transform.rotation = Quaternion.LookRotation(baseForwardDirection);
+        //            var posX = textureObject.AcknexObject.GetFloat("POS_X") + toAttachTextureObject.AcknexObject.GetFloat("POS_X");
+        //            var posY = textureObject.AcknexObject.GetFloat("POS_Y") + toAttachTextureObject.AcknexObject.GetFloat("POS_Y");
+        //            var upperLeftPos = baseRightDirection * (posX / toAttachTextureObject.ScaleX);
+        //            var upperTopPos = Vector3.down * (posY / toAttachTextureObject.ScaleY);
+        //            transformPosition += upperLeftPos + upperTopPos - (baseForwardDirection * 0.01f);
+        //            attached.transform.position = transformPosition;
+        //            var attachment = attached.AddComponent<Attachment>();
+        //            attachment.AcknexObject = acknexObject;
+        //            attachment.AcknexObject.Container = attachment;
+        //            attachment.TextureObject = toAttachTextureObject;
+        //            attachment.BitmapImage = toAttachBitmapImage;
+        //            attachment.Material = toAttachMeshRenderer.material;
+        //        }
+        //    }
+        //}
 
         public void UpdateObject()
         {
@@ -84,6 +84,11 @@ namespace Acknex
         public void Disable()
         {
 
+        }
+
+        public void SetupTemplate()
+        {
+            
         }
 
         private void Update()

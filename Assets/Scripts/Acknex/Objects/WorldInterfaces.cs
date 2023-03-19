@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Net.NetworkInformation;
 using System.Text;
 using Acknex.Interfaces;
 using AudioSynthesis.Bank;
@@ -11,13 +9,15 @@ using LibTessDotNet;
 using Tests;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.ShaderData;
 using Resolution = Acknex.Interfaces.Resolution;
 
 namespace Acknex
 {
     public partial class World
     {
+        private Resolution _resolution = Resolution.Res320x200;
+        private IAcknexRuntime _runtime;
+
         public void UpdateObject()
         {
             AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("LIGHT_ANGLE")), 0f) * Quaternion.Euler(45f, 0f, 0f);
@@ -33,9 +33,10 @@ namespace Acknex
         {
         }
 
-
-        private Resolution _resolution = Resolution.Res320x200;
-        private IAcknexRuntime _runtime;
+        public void SetupTemplate()
+        {
+            
+        }
 
         public Resolution GameResolution
         {
@@ -90,17 +91,13 @@ namespace Acknex
             {
                 case ObjectType.Thing:
                     {
-                        var container = CreateThing(name);
-                        container.AcknexObject.SetFloat("SCALE_X", 16);
-                        container.AcknexObject.SetFloat("SCALE_Y", 16);
-                        return container.AcknexObject;
+                        var thing = CreateThing(name);
+                        return thing.AcknexObject;
                     }
                 case ObjectType.Actor:
                     {
-                        var container = CreateActor(name);
-                        container.AcknexObject.SetFloat("SCALE_X", 16);
-                        container.AcknexObject.SetFloat("SCALE_Y", 16);
-                        return container.AcknexObject;
+                        var actor = CreateActor(name);
+                        return actor.AcknexObject;
                     }
                 case ObjectType.Region:
                     {
@@ -114,7 +111,6 @@ namespace Acknex
                 case ObjectType.Wall:
                     {
                         var container = CreateWall(name);
-                        container.AcknexObject.Type = type;
                         Walls.Add(container);
                         return container.AcknexObject;
                     }
@@ -133,26 +129,12 @@ namespace Acknex
             {
                 case ObjectType.Action:
                     {
-                        if (ActionsByName.ContainsKey(name))
-                        {
-                            throw new Exception("Action [" + name + "] already registered.");
-                        }
-                        var action = new Action();
-                        action.AcknexObject.SetString("NAME", name);
-                        ActionsByName.Add(name, action);
-                        AcknexObject.SetAcknexObject(name, action.AcknexObject);
+                        var action = CreateAction(name);
                         return action.AcknexObject;
                     }
                 case ObjectType.Actor:
                     {
-                        if (ActorsByName.ContainsKey(name))
-                        {
-                            throw new Exception("Actor [" + name + "] already registered.");
-                        }
-                        var actor = CreateActor(name, true);
-                        actor.AcknexObject.SetString("NAME", name);
-                        actor.AcknexObject.SetFloat("SCALE_X", 16);
-                        actor.AcknexObject.SetFloat("SCALE_Y", 16);
+                        var actor = CreateActor(name);
                         actor.Disable();
                         ActorsByName.Add(name, actor);
                         AcknexObject.SetAcknexObject(name, actor.AcknexObject);
@@ -160,10 +142,6 @@ namespace Acknex
                     }
                 case ObjectType.Bitmap:
                     {
-                        if (BitmapsByName.ContainsKey(name))
-                        {
-                            throw new Exception("Bitmap [" + name + "] already registered.");
-                        }
                         var bitmap = new Bitmap();
                         bitmap.AcknexObject.SetString("NAME", name);
                         BitmapsByName.Add(name, bitmap);
@@ -172,12 +150,7 @@ namespace Acknex
                     }
                 case ObjectType.Region:
                     {
-                        if (RegionsByName.ContainsKey(name))
-                        {
-                            throw new Exception("Region [" + name + "] already registered.");
-                        }
-                        var region = CreateRegion(name, true);
-                        region.AcknexObject.SetString("NAME", name);
+                        var region = CreateRegion(name);
                         region.Disable();
                         RegionsByName.Add(name, region);
                         AcknexObject.SetAcknexObject(name, region.AcknexObject);
@@ -189,48 +162,22 @@ namespace Acknex
                     }
                 case ObjectType.Skill:
                     {
-                        if (SkillsByName.TryGetValue(name, out var skill))
-                        {
-                            return skill.AcknexObject;
-                        }
-                        skill = CreateSkill(name, 0, Mathf.NegativeInfinity, Mathf.Infinity);
-                        skill.AcknexObject.SetString("NAME", name);
-                        AcknexObject.SetAcknexObject(name, skill.AcknexObject);
+                        var skill = CreateSkill(name, 0, Mathf.NegativeInfinity, Mathf.Infinity);
                         return skill.AcknexObject;
                     }
                 case ObjectType.Synonym:
                     {
-                        if (SynonymsByName.TryGetValue(name, out var synonym))
-                        {
-                            return synonym.AcknexObject;
-                        }
-                        synonym = CreateSynonym(name);
-                        synonym.AcknexObject.SetString("NAME", name);
-                        AcknexObject.SetAcknexObject(name, synonym.AcknexObject);
+                        var synonym = CreateSynonym(name);
                         return synonym.AcknexObject;
                     }
                 case ObjectType.Texture:
                     {
-                        if (TexturesByName.ContainsKey(name))
-                        {
-                            throw new Exception("Texture [" + name + "] already registered.");
-                        }
-                        var texture = new Texture();
-                        texture.AcknexObject.SetString("NAME", name);
-                        TexturesByName.Add(name, texture);
-                        AcknexObject.SetAcknexObject(name, texture.AcknexObject);
+                        var texture = CreateTexture(name);
                         return texture.AcknexObject;
                     }
                 case ObjectType.Thing:
                     {
-                        if (ThingsByName.ContainsKey(name))
-                        {
-                            throw new Exception("Thing [" + name + "] already registered.");
-                        }
-                        var thing = CreateThing(name, true);
-                        thing.AcknexObject.SetString("NAME", name);
-                        thing.AcknexObject.SetFloat("SCALE_X", 16);
-                        thing.AcknexObject.SetFloat("SCALE_Y", 16);
+                        var thing = CreateThing(name);
                         thing.Disable();
                         ThingsByName.Add(name, thing);
                         AcknexObject.SetAcknexObject(name, thing.AcknexObject);
@@ -238,12 +185,7 @@ namespace Acknex
                     }
                 case ObjectType.Wall:
                     {
-                        if (WallsByName.ContainsKey(name))
-                        {
-                            throw new Exception("Wall [" + name + "] already registered.");
-                        }
-                        var wall = CreateWall(name, true);
-                        wall.AcknexObject.SetString("NAME", name);
+                        var wall = CreateWall(name);
                         wall.Disable();
                         WallsByName.Add(name, wall);
                         AcknexObject.SetAcknexObject(name, wall.AcknexObject);
@@ -251,12 +193,7 @@ namespace Acknex
                     }
                 case ObjectType.Way:
                     {
-                        if (WaysByName.ContainsKey(name))
-                        {
-                            throw new Exception("Way [" + name + "] already registered.");
-                        }
-                        var way = CreateWay(name, true);
-                        way.AcknexObject.SetString("NAME", name);
+                        var way = CreateWay(name);
                         way.Disable();
                         WaysByName.Add(name, way);
                         AcknexObject.SetAcknexObject(name, way.AcknexObject);
@@ -264,113 +201,47 @@ namespace Acknex
                     }
                 case ObjectType.Overlay:
                     {
-                        if (OverlaysByName.ContainsKey(name))
-                        {
-                            throw new Exception("Overlay [" + name + "] already registered.");
-                        }
-                        var overlay = CreateOverlay(name, true);
-                        overlay.AcknexObject.SetString("NAME", name);
-                        overlay.Disable();
-                        OverlaysByName.Add(name, overlay);
-                        AcknexObject.SetAcknexObject(name, overlay.AcknexObject);
+                        var overlay = CreateOverlay(name);
                         return overlay.AcknexObject;
                     }
                 case ObjectType.Flic:
                     {
-                        if (FlicsByName.ContainsKey(name))
-                        {
-                            throw new Exception("Flic [" + name + "] already registered.");
-                        }
-                        var flic = new Flic();
-                        flic.AcknexObject.SetString("NAME", name);
-                        FlicsByName.Add(name, flic);
-                        AcknexObject.SetAcknexObject(name, flic.AcknexObject);
+                        var flic = CreateFlic(name);
                         return flic.AcknexObject;
                     }
                 case ObjectType.Text:
                     {
-                        if (TextsByName.ContainsKey(name))
-                        {
-                            throw new Exception("Text [" + name + "] already registered.");
-                        }
-                        var text = new Text();
-                        text.AcknexObject.SetString("NAME", name);
-                        AcknexObject.SetAcknexObject(name, text.AcknexObject);
-                        TextsByName.Add(name, text);
+                        var text = CreateText(name);
                         return text.AcknexObject;
                     }
                 case ObjectType.Font:
                     {
-                        if (FontsByName.ContainsKey(name))
-                        {
-                            throw new Exception("Font [" + name + "] already registered.");
-                        }
-                        var font = new Font();
-                        font.AcknexObject.SetString("NAME", name);
-                        FontsByName.Add(name, font);
-                        AcknexObject.SetAcknexObject(name, font.AcknexObject);
+                        var font = CreateFont(name);
                         return font.AcknexObject;
                     }
                 case ObjectType.Sound:
                     {
-                        if (SoundsByName.ContainsKey(name))
-                        {
-                            throw new Exception("Sound [" + name + "] already registered.");
-                        }
-                        var sound = new Sound();
-                        sound.AcknexObject.SetString("NAME", name);
-                        SoundsByName.Add(name, sound);
-                        AcknexObject.SetAcknexObject(name, sound.AcknexObject);
+                        var sound = CreateSound(name);
                         return sound.AcknexObject;
                     }
                 case ObjectType.Music:
                     {
-                        if (MusicsByName.ContainsKey(name))
-                        {
-                            throw new Exception("Music [" + name + "] already registered.");
-                        }
-                        var music = new Music();
-                        music.AcknexObject.SetString("NAME", name);
-                        MusicsByName.Add(name, music);
-                        AcknexObject.SetAcknexObject(name, music.AcknexObject);
+                        var music = CreateMusic(name);
                         return music.AcknexObject;
                     }
                 case ObjectType.Model:
                     {
-                        if (ModelsByName.ContainsKey(name))
-                        {
-                            throw new Exception("Model [" + name + "] already registered.");
-                        }
-                        var model = new Model();
-                        model.AcknexObject.SetString("NAME", name);
-                        model.Disable();
-                        ModelsByName.Add(name, model);
-                        AcknexObject.SetAcknexObject(name, model.AcknexObject);
+                        var model = CreateModel(name);
                         return model.AcknexObject;
                     }
                 case ObjectType.Palette:
                     {
-                        if (PalettesByName.ContainsKey(name))
-                        {
-                            throw new Exception("Palette [" + name + "] already registered.");
-                        }
-                        var palette = new Palette();
-                        palette.AcknexObject.SetString("NAME", name);
-                        PalettesByName.Add(name, palette);
-                        AcknexObject.SetAcknexObject(name, palette.AcknexObject);
+                        var palette = CreatePalette(name);
                         return palette.AcknexObject;
                     }
                 case ObjectType.Panel:
                     {
-                        if (PanelsByName.ContainsKey(name))
-                        {
-                            throw new Exception("Panel [" + name + "] already registered.");
-                        }
-                        var panel = CreatePanel(name, true);
-                        panel.AcknexObject.SetString("NAME", name);
-                        panel.Disable();
-                        PanelsByName.Add(name, panel);
-                        AcknexObject.SetAcknexObject(name, panel.AcknexObject);
+                        var panel = CreatePanel(name);
                         return panel.AcknexObject;
                     }
                 case ObjectType.World:
@@ -379,40 +250,16 @@ namespace Acknex
             throw new NotImplementedException();
         }
 
+
         public IAcknexObject GetObject(ObjectType type, string name)
         {
-            switch (type)
+            if (type == ObjectType.Player)
             {
-                case ObjectType.Action:
-                    return ActionsByName.TryGetValue(name, out var action) ? action.AcknexObject : null;
-                case ObjectType.Actor:
-                    return ActorsByName.TryGetValue(name, out var actor) ? actor.AcknexObject : null;
-                case ObjectType.Bitmap:
-                    return BitmapsByName.TryGetValue(name, out var bitmap) ? bitmap.AcknexObject : null;
-                case ObjectType.Region:
-                    return RegionsByName.TryGetValue(name, out var region) ? region.AcknexObject : null;
-                case ObjectType.Skill:
-                    return SkillsByName.TryGetValue(name, out var skill) ? skill.AcknexObject : null;
-                case ObjectType.Synonym:
-                    return GetSynonymObject(name);
-                case ObjectType.Texture:
-                    return TexturesByName.TryGetValue(name, out var texture) ? texture.AcknexObject : null;
-                case ObjectType.Thing:
-                    return ThingsByName.TryGetValue(name, out var thing) ? thing.AcknexObject : null;
-                case ObjectType.Wall:
-                    return WallsByName.TryGetValue(name, out var wall) ? wall.AcknexObject : null;
-                case ObjectType.Way:
-                    return WaysByName.TryGetValue(name, out var way) ? way.AcknexObject : null;
-                case ObjectType.Overlay:
-                    return OverlaysByName.TryGetValue(name, out var overlay) ? overlay.AcknexObject : null;
-                case ObjectType.Flic:
-                    return FlicsByName.TryGetValue(name, out var flic) ? flic.AcknexObject : null;
-                case ObjectType.Sound:
-                    return SoundsByName.TryGetValue(name, out var sound) ? sound.AcknexObject : null;
-                case ObjectType.Music:
-                    return MusicsByName.TryGetValue(name, out var music) ? music.AcknexObject : null;
-                case ObjectType.Player:
-                    return Player.Instance.AcknexObject;
+                return Player.Instance.AcknexObject;
+            }
+            if (name != null && AcknexObject.TryGetAcknexObject(name, out var acknexObject))
+            {
+                return acknexObject;
             }
             return null;
         }
@@ -424,62 +271,83 @@ namespace Acknex
 
         public void PostSetupWMP()
         {
+            DoPostResolve();
             BuildRegionsAndWalls(_regionWalls, _contourVertices);
             if (!DisableEvents && !UseWDLEngine)
             {
-                var sourceStringBuilder = new StringBuilder();
-                sourceStringBuilder.AppendLine("using Acknex.Interfaces;");
-                sourceStringBuilder.AppendLine("using System.Collections;");
-                sourceStringBuilder.AppendLine("using UnityEngine;");
-                sourceStringBuilder.AppendLine("namespace Tests {");
-                sourceStringBuilder.AppendLine("    public class Game : IAcknexRuntime {");
-                sourceStringBuilder.AppendLine("        private IAcknexWorld _world;");
-                sourceStringBuilder.AppendLine("        public void SetWorld(IAcknexWorld world) {");
-                sourceStringBuilder.AppendLine("            _world = world;");
-                sourceStringBuilder.AppendLine("        }");
-                sourceStringBuilder.AppendLine("        public IEnumerator CallAction(string name)");
-                sourceStringBuilder.AppendLine("        {");
-                sourceStringBuilder.AppendLine("            if (name == null) {");
-                sourceStringBuilder.AppendLine("                yield break;");
-                sourceStringBuilder.AppendLine("            }");
-                sourceStringBuilder.AppendLine("            var method = this.GetType().GetMethod(name);");
-                sourceStringBuilder.AppendLine("            if (method != null)");
-                sourceStringBuilder.AppendLine("            {");
-                sourceStringBuilder.AppendLine("                var result = method.Invoke(this, null);");
-                sourceStringBuilder.AppendLine("                yield return (IEnumerator)result;");
-                sourceStringBuilder.AppendLine("            }");
-                sourceStringBuilder.AppendLine("            yield break;");
-                sourceStringBuilder.AppendLine("        }");
-                foreach (var action in ActionsByName)
-                {
-                    action.Value.WriteHeader();
-                    action.Value.ParseAllStatements(_textParser);
-                    action.Value.WriteFooter();
-                    sourceStringBuilder.Append(action.Value.CodeStringBuilder);
-                }
-                sourceStringBuilder.AppendLine("    }");
-                sourceStringBuilder.AppendLine("}");
-                File.WriteAllText(SourceGenerationPath, sourceStringBuilder.ToString());
+                ConvertActionsToCS();
                 _runtime = new Game();
                 _runtime.SetWorld(this);
             }
         }
 
+        private readonly List<(IAcknexObject acknexObject, string keyword, string objectName)> _postResolve = new List<(IAcknexObject acknexObject, string keyword, string objectName)>();
+
+        public void AddPostResolve((IAcknexObject acknexObject, string keyword, string objectName) postResolve)
+        {
+            _postResolve.Add(postResolve);
+        }
+
+        private void DoPostResolve()
+        {
+            foreach (var item in _postResolve)
+            {
+                if (AcknexObject.TryGetAcknexObject(item.objectName, out var acknexObject))
+                {
+                    item.acknexObject.SetAcknexObject(item.keyword, acknexObject);
+                }
+            }
+            var worldAcknexObject = (AcknexObject)AcknexObject;
+            foreach (var obj in worldAcknexObject.ObjectProperties.Values)
+            {
+                if (obj is IAcknexObject ackObj && ackObj.Container != null)
+                {
+                    ackObj.Container.SetupTemplate();
+                }
+            }
+        }
+
+        private void ConvertActionsToCS()
+        {
+            var sourceStringBuilder = new StringBuilder();
+            sourceStringBuilder.AppendLine("using Acknex.Interfaces;");
+            sourceStringBuilder.AppendLine("using System.Collections;");
+            sourceStringBuilder.AppendLine("using UnityEngine;");
+            sourceStringBuilder.AppendLine("namespace Tests {");
+            sourceStringBuilder.AppendLine("    public class Game : IAcknexRuntime {");
+            sourceStringBuilder.AppendLine("        private IAcknexWorld _world;");
+            sourceStringBuilder.AppendLine("        public void SetWorld(IAcknexWorld world) {");
+            sourceStringBuilder.AppendLine("            _world = world;");
+            sourceStringBuilder.AppendLine("        }");
+            sourceStringBuilder.AppendLine("        public IEnumerator CallAction(string name)");
+            sourceStringBuilder.AppendLine("        {");
+            sourceStringBuilder.AppendLine("            if (name == null) {");
+            sourceStringBuilder.AppendLine("                yield break;");
+            sourceStringBuilder.AppendLine("            }");
+            sourceStringBuilder.AppendLine("            var method = this.GetType().GetMethod(name);");
+            sourceStringBuilder.AppendLine("            if (method != null)");
+            sourceStringBuilder.AppendLine("            {");
+            sourceStringBuilder.AppendLine("                var result = method.Invoke(this, null);");
+            sourceStringBuilder.AppendLine("                yield return (IEnumerator)result;");
+            sourceStringBuilder.AppendLine("            }");
+            sourceStringBuilder.AppendLine("            yield break;");
+            sourceStringBuilder.AppendLine("        }");
+            foreach (var action in ActionsByName)
+            {
+                action.Value.WriteHeader();
+                action.Value.ParseAllStatements(_textParser);
+                action.Value.WriteFooter();
+                sourceStringBuilder.Append(action.Value.CodeStringBuilder);
+            }
+
+            sourceStringBuilder.AppendLine("    }");
+            sourceStringBuilder.AppendLine("}");
+            File.WriteAllText(SourceGenerationPath, sourceStringBuilder.ToString());
+        }
+
         public void AddVertex(float x, float y, float z)
         {
             _contourVertices.Add(new ContourVertex(new Vec3(x, y, z)));
-        }
-
-        public void AddString(string name, string value)
-        {
-            if (StringsByName.ContainsKey(name))
-            {
-                throw new Exception("String [" + name + "] already registered.");
-            }
-            var str = new AcknexString(value);
-            str.AcknexObject.Type = ObjectType.String;
-            str.AcknexObject.SetString("NAME", name);
-            StringsByName.Add(name, str);
         }
 
         public void AddPath(string value)
@@ -499,8 +367,9 @@ namespace Acknex
                     AllWallsByName.Add(name, list);
                 }
                 list.Add(wall);
-                _regionWalls.GetWallsList(wall.AcknexObject.GetInteger("REGION1")).Add(wall);
-                _regionWalls.GetWallsList(wall.AcknexObject.GetInteger("REGION2")).Add(wall);
+                _regionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION1")).Add(wall);
+                _regionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION2")).Add(wall);
+                wall.SetupInstance();
             }
 
             var region = acknexObject.Container as Region;
@@ -513,6 +382,7 @@ namespace Acknex
                     AllRegionsByName.Add(name, list);
                 }
                 list.Add(region);
+                region.SetupInstance();
             }
 
             var actor = acknexObject.Container as Actor;
@@ -525,6 +395,7 @@ namespace Acknex
                     AllActorsByName.Add(name, list);
                 }
                 list.Add(actor);
+                actor.SetupInstance();
             }
 
             var thing = acknexObject.Container as Thing;
@@ -537,6 +408,7 @@ namespace Acknex
                     AllThingsByName.Add(name, list);
                 }
                 list.Add(thing);
+                thing.SetupInstance();
             }
 
             var way = acknexObject.Container as Way;
@@ -549,31 +421,32 @@ namespace Acknex
                     AllWaysByName.Add(name, list);
                 }
                 list.Add(way);
+                way.SetupInstance();
             }
         }
 
         public void PostSetupObjectTemplate(IAcknexObject acknexObject)
         {
-            if (acknexObject.Container is Bitmap bitmap)
-            {
-                bitmap.Setup();
-            }
-            else if (acknexObject.Container is Model model)
-            {
-                model.Setup();
-            }
-            else if (acknexObject.Container is Music music)
-            {
-                music.Setup();
-            }
-            else if (acknexObject.Container is Sound sound)
-            {
-                sound.Setup();
-            }
-            else if (acknexObject.Container is Texture texture)
-            {
-                texture.Setup();
-            }
+            //if (acknexObject.Container is Bitmap bitmap)
+            //{
+            //    bitmap.Setup();
+            //}
+            //else if (acknexObject.Container is Model model)
+            //{
+            //    model.Setup();
+            //}
+            //else if (acknexObject.Container is Music music)
+            //{
+            //    music.Setup();
+            //}
+            //else if (acknexObject.Container is Sound sound)
+            //{
+            //    sound.Setup();
+            //}
+            //else if (acknexObject.Container is Texture texture)
+            //{
+            //    texture.Setup();
+            //}
         }
 
         public void AddWayPoint(IAcknexObject way, float x, float y)
@@ -618,20 +491,59 @@ namespace Acknex
             }
         }
 
-        public AudioClip AudioClip;
-
         public void PlaySound(string songName, float volume, string balance = null)
         {
             if (SoundsByName.TryGetValue(songName, out var sound))
             {
-                AudioClip = sound.AudioClip;
                 AudioSource.PlayClipAtPoint(sound.AudioClip, View.Instance.transform.position, volume);
             }
+        }
+
+        public void Drop(string name)
+        {
+
         }
 
         public void SetRuntime(IAcknexRuntime runtime)
         {
             _runtime = runtime;
         }
+
+        public void Shoot(string objectName = null)
+        {
+
+        }
+
+        public void ReadInkey(string stringName)
+        {
+
+        }
+
+        public void SetFloatAll(string objectName, string propertyName, float value)
+        {
+
+        }
+
+        public void SetIntegerAll(string objectName, string propertyName, int value)
+        {
+
+        }
+
+        public void SetStringAll(string objectName, string propertyName, string value)
+        {
+
+        }
+
+        public void SetObjectAll<T>(string objectName, string propertyName, T value)
+        {
+
+        }
+
+        public void SetAcknexObjectAll(string objectName, string propertyName, IAcknexObject value)
+        {
+
+        }
+
+
     }
 }
