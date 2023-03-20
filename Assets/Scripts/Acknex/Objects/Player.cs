@@ -94,6 +94,7 @@ namespace Acknex
             GUILayout.EndVertical();
         }
 
+        //todo: IF_ARISE only happens when leaving upwards
         private void Locate(float playerX, float playerY, ref float playerZ, bool initial = true)
         {
             var region = (Region)AcknexObject.GetAcknexObject("REGION").Container;

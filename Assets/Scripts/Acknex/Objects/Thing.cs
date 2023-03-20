@@ -289,6 +289,7 @@ namespace Acknex
             AcknexObject.SetAcknexObject("REGION", region.AcknexObject);
         }
 
+        //todo: IF_ARISE only happens when leaving upwards
         public void Locate(float thingX, float thingY, ref float thingZ)
         {
             var region = (Region)AcknexObject.GetAcknexObject("REGION").Container;

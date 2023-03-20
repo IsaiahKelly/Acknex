@@ -32,7 +32,7 @@ Shader "Acknex/Surfaces"
 
 			CGPROGRAM
 			// Physically based Standard lighting model, and enable shadows on all light types
-			#pragma surface surf SimpleLambert addshadow vertex:vert 
+			#pragma surface surf Standard addshadow vertex:vert 
 
 			// Use shader model 3.0 target, to get nicer looking lighting
 			#pragma target 3.0
@@ -81,16 +81,16 @@ Shader "Acknex/Surfaces"
 				//v.vertex.xyz += v.normal * _Amount;
 			}
 
-			half4 LightingSimpleLambert(SurfaceOutput s, half3 lightDir, half atten) {
-				half NdotL = dot(s.Normal, lightDir);
-				half4 c;
-				float ambient = (1.0 - _AMBIENT);
-				c.rgb = s.Albedo * _LightColor0.rgb * (NdotL * atten) * ambient;
-				c.a = s.Alpha;
-				return c;
-			}
+			//half4 LightingSimpleLambert(SurfaceOutput s, half3 lightDir, half atten) {
+			//	half NdotL = dot(s.Normal, lightDir);
+			//	half4 c;
+			//	float ambient = 1.0;// (1.0 - _AMBIENT);
+			//	c.rgb = s.Albedo * _LightColor0.rgb * (NdotL * atten) * ambient;
+			//	c.a = s.Alpha;
+			//	return c;
+			//}
 
-			void surf(Input IN, inout SurfaceOutput o)
+			void surf(Input IN, inout SurfaceOutputStandard o)
 			{
 				//todo: lerp between V0H V1H
 				if (_FENCE) {
@@ -106,7 +106,6 @@ Shader "Acknex/Surfaces"
 				float2 rectMax = float2(rectMin.x + _SCALEX, rectMin.y + _SCALEY);
 				float2 uv = lerp(rectMin, rectMax, IN.uv_MainTex);
 				uv *= _MainTex_TexelSize.xy;
-				// Albedo comes from a texture tinted by color
 				fixed4 c = tex2D(_MainTex, uv) * _Color;
 				if (_PORTCULLIS || _FENCE) {
 					/* Sharpen texture alpha to the width of a pixel */
@@ -114,7 +113,6 @@ Shader "Acknex/Surfaces"
 					clip(o.Alpha - 0.5);
 				}
 				o.Albedo = c.rgb;
-				// Metallic and smoothness come from slider variables
 				//o.Metallic = _Metallic;
 				//o.Smoothness = _Glossiness;
 			}
