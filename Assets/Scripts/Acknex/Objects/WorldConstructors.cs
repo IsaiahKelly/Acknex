@@ -27,7 +27,7 @@ namespace Acknex
                 throw new Exception("Expected: name");
             }
             var newGameObject = new GameObject(name);
-            newGameObject.transform.SetParent(transform, false);
+            newGameObject.transform.SetParent(Canvas.transform, false);
             var newPanel = newGameObject.AddComponent<Panel>();
             newPanel.AcknexObject.SetString("NAME", name);
             newPanel.AcknexObject.Type = ObjectType.Panel;
@@ -44,7 +44,7 @@ namespace Acknex
                 throw new Exception("Expected: name");
             }
             var newGameObject = new GameObject(name);
-            newGameObject.transform.SetParent(transform, false);
+            newGameObject.transform.SetParent(Canvas.transform, false);
             var newOverlay = newGameObject.AddComponent<Overlay>();
             newOverlay.AcknexObject.SetString("NAME", name);
             newOverlay.AcknexObject.Type = ObjectType.Overlay;

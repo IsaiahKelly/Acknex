@@ -20,7 +20,7 @@ namespace Acknex
             var playerY = World.Instance.GetSkillValue("PLAYER_Y");
             var playerZ = World.Instance.GetSkillValue("PLAYER_Z");
             //todo: this block should only run on carefully flagged
-            StickToTheGround(playerX, playerY, ref playerZ);
+            Locate(playerX, playerY, ref playerZ);
             World.Instance.UpdateSkillValue("PLAYER_X", playerX);
             World.Instance.UpdateSkillValue("PLAYER_Y", playerY);
             World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
@@ -41,12 +41,16 @@ namespace Acknex
             var characterControllerCenter = _characterController.center;
             characterControllerCenter.y = _characterController.height * 0.5f;
             _characterController.center = characterControllerCenter;
-            var playerMove = new Vector3(World.Instance.GetSkillValue("PLAYER_VX"), World.Instance.GetSkillValue("PLAYER_VZ"), World.Instance.GetSkillValue("PLAYER_VY"));
+            var playerMove = new Vector3(World.Instance.GetSkillValue("PLAYER_VX"), World.Instance.GetSkillValue("PLAYER_VZ"), World.Instance.GetSkillValue("PLAYER_VY")) * World.Instance.GetSkillValue("TIME_CORR");
             //var moveAngle = playerMove.magnitude > 0f ? AngleUtils.ConvertUnityToAcknexAngle(Quaternion.LookRotation(playerMove).eulerAngles.y) : 0f;
             //var deltaAngle = moveAngle - World.Instance.GetSkillValue("MOVE_ANGLE");
             //World.Instance.UpdateSkillValue("MOVE_ANGLE", moveAngle);
             //World.Instance.UpdateSkillValue("DELTA_ANGLE", deltaAngle);
-            _characterController.Move(playerMove * World.Instance.GetSkillValue("TIME_CORR"));
+            _characterController.Move(playerMove);
+            if (World.Instance.GetSkillValue("FORCE_UP") < 0f && World.Instance.GetSkillValue("PLAYER_HGT") < 0.1f && GetRegion().TryGetAcknexObject("IF_DIVE", out _))
+            {
+                transform.Translate(0f, -playerSize, 0f);
+            }
             playerX = _characterController.transform.position.x;
             playerY = _characterController.transform.position.z;
             playerZ = _characterController.transform.position.y;
@@ -64,7 +68,7 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_ANGLE", playerAngle);
 
             var groundZ = playerZ;
-            StickToTheGround(playerX, playerY, ref groundZ, false);
+            Locate(playerX, playerY, ref groundZ, false);
             var playerHgt = playerZ - groundZ;
             if (playerHgt < 0.1f)
             {
@@ -90,10 +94,25 @@ namespace Acknex
             GUILayout.EndVertical();
         }
 
-        private void StickToTheGround(float playerX, float playerY, ref float playerZ, bool initial = true)
+        private void Locate(float playerX, float playerY, ref float playerZ, bool initial = true)
         {
-            var playerRegion = AcknexObject.GetAcknexObject("REGION")?.Container as Region;
-            Region.PutOnGround(AcknexObject, playerRegion, World.Instance.GetSkillValue("PLAYER_WIDTH"), playerX, playerY, ref playerZ, false, false, initial);
+            var region = (Region)AcknexObject.GetAcknexObject("REGION").Container;
+            var newRegion = Region.Locate(AcknexObject, region, World.Instance.GetSkillValue("PLAYER_WIDTH"), playerX, playerY, ref playerZ, false, false, initial);
+            if (newRegion != region)
+            {
+                World.Instance.TriggerEvent(region.AcknexObject, AcknexObject, region.AcknexObject, "IF_LEAVE");
+                World.Instance.TriggerEvent(region.AcknexObject, AcknexObject, region.AcknexObject, "IF_ARISE");
+                region = newRegion;
+                World.Instance.UpdateSkillValue("FLOOR_HGT", region.AcknexObject.GetFloat("FLOOR_HGT"));
+                World.Instance.UpdateSkillValue("CEIL_HGT", region.AcknexObject.GetFloat("CEIL_HGT"));
+                World.Instance.TriggerEvent(region.AcknexObject, AcknexObject, region.AcknexObject, "IF_ENTER");
+                if (region.Above != null)
+                {
+                    World.Instance.TriggerEvent(region.Above.AcknexObject, AcknexObject, region.Above.AcknexObject, "IF_DIVE");
+                }
+            }
+            World.Instance.SetSynonymObject("HERE", region.AcknexObject);
+            AcknexObject.SetAcknexObject("REGION", region.AcknexObject);
         }
 
         public IAcknexObject GetRegion()
@@ -114,12 +133,12 @@ namespace Acknex
 
         public void SetupTemplate()
         {
-            
+
         }
 
         public void SetupInstance()
         {
-            
+
         }
 
         public static Player Instance { get; private set; }

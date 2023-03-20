@@ -8,7 +8,6 @@ namespace Acknex
 
     public partial class World
     {
-        public WaitForSeconds WaitForTick;
         public WaitForSeconds WaitForSecond;
 
         private struct Event
@@ -132,14 +131,13 @@ namespace Acknex
                 {
                     TriggerEvent(acknexObject, acknexObject, null, secEvent);
                 }
-                yield return null;
+                yield return WaitForSecond;
             }
         }
 
         private void SetupEvents()
         {
             TriggerEvent(AcknexObject, AcknexObject, null, "IF_START");
-            WaitForTick = new WaitForSeconds(TimeUtils.TicksToTime(1));
             WaitForSecond = new WaitForSeconds(1f);
             StartCoroutine(TriggerTickEvents(AcknexObject));
             StartCoroutine(TriggerSecEvents(AcknexObject));

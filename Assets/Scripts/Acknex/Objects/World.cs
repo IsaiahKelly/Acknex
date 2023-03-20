@@ -40,6 +40,11 @@ namespace Acknex
         public SingleUnityLayer TriggersLayer;
         public LayerMask WallsWaterAndRegions;
 
+        public Canvas Canvas;
+        public Light AmbientLight;
+        public MidiPlayer MidiPlayer;
+        public AudioSource AudioSource;
+
         public readonly List<Region> RegionsByIndex = new List<Region>();
 
         public readonly Dictionary<string, HashSet<Region>> AllRegionsByName = new Dictionary<string, HashSet<Region>>();
@@ -74,16 +79,12 @@ namespace Acknex
 
         public readonly List<Wall> Walls = new List<Wall>();
 
-        public Canvas Canvas;
-        public Light AmbientLight;
 
         //Text parser variables
         private TextParser _textParser;
         private List<ContourVertex> _contourVertices;
         private RegionWalls _regionWalls;
 
-        public MidiPlayer MidiPlayer;
-        public AudioSource AudioSource;
 
         private void Awake()
         {

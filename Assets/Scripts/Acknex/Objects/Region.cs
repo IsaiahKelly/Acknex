@@ -40,9 +40,9 @@ namespace Acknex
         private Region _belowOverride;
         private Region _aboveOverride;
 
-        private GameObject _triggerGameObject;
-        private MeshCollider _triggerCollider;
-        private CollisionCallback _triggerCollisionCallback;
+        //private GameObject _triggerGameObject;
+        //private MeshCollider _triggerCollider;
+        //private CollisionCallback _triggerCollisionCallback;
 
         private AudioSource _audioSource;
 
@@ -275,63 +275,63 @@ namespace Acknex
                 region._ceilCollider = region._ceilGameObject.AddComponent<MeshCollider>();
                 region._ceilCollider.sharedMesh = ceilMesh;
             }
-            {
-                var convexHull = new ConvexHullCalculator();
-                var verts = new List<Vector3>();
-                var tris = new List<int>();
-                var normals = new List<Vector3>();
-                convexHull.GenerateHull(allVertices, false, ref verts, ref tris, ref normals);
-                var triggerMesh = new Mesh();
-                triggerMesh.SetVertices(verts);
-                triggerMesh.SetNormals(normals);
-                triggerMesh.SetTriangles(tris, 0);
-                triggerMesh.UploadMeshData(true);
-                region._triggerGameObject = new GameObject("Trigger");
-                region._triggerGameObject.layer = World.Instance.TriggersLayer.LayerIndex;
-                region._triggerGameObject.transform.SetParent(region.transform, false);
-                region._triggerCollider = region._triggerGameObject.AddComponent<MeshCollider>();
-                region._triggerCollider.sharedMesh = triggerMesh;
-                region._triggerCollider.convex = true;
-                region._triggerCollider.isTrigger = true;
-                region._triggerCollisionCallback = region._triggerGameObject.AddComponent<CollisionCallback>();
-                region._triggerCollisionCallback.OnTriggerEnterCallback += region.OnTriggerEnterCallback;
-                region._triggerCollisionCallback.OnTriggerExitCallback += region.OnTriggerExitCallback;
-            }
+            //{
+                //var convexHull = new ConvexHullCalculator();
+                //var verts = new List<Vector3>();
+                //var tris = new List<int>();
+                //var normals = new List<Vector3>();
+                //convexHull.GenerateHull(allVertices, false, ref verts, ref tris, ref normals);
+                //var triggerMesh = new Mesh();
+                //triggerMesh.SetVertices(verts);
+                //triggerMesh.SetNormals(normals);
+                //triggerMesh.SetTriangles(tris, 0);
+                //triggerMesh.UploadMeshData(true);
+                //region._triggerGameObject = new GameObject("Trigger");
+                //region._triggerGameObject.layer = World.Instance.TriggersLayer.LayerIndex;
+                //region._triggerGameObject.transform.SetParent(region.transform, false);
+                //region._triggerCollider = region._triggerGameObject.AddComponent<MeshCollider>();
+                //region._triggerCollider.sharedMesh = triggerMesh;
+                //region._triggerCollider.convex = true;
+                //region._triggerCollider.isTrigger = true;
+                //region._triggerCollisionCallback = region._triggerGameObject.AddComponent<CollisionCallback>();
+                //region._triggerCollisionCallback.OnTriggerEnterCallback += region.OnTriggerEnterCallback;
+                //region._triggerCollisionCallback.OnTriggerExitCallback += region.OnTriggerExitCallback;
+            //}
         }
 
-        private void OnTriggerExitCallback(Collider collider)
-        {
-            if (collider.TryGetComponent<Thing>(out var thing))
-            {
-                World.Instance.TriggerEvent(AcknexObject, thing.AcknexObject, AcknexObject, "IF_LEAVE");
-            }
-            else if (collider.TryGetComponent<Player>(out var player))
-            {
-                World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, AcknexObject, "IF_LEAVE");
-                World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, AcknexObject, "IF_ARISE");
-            }
-        }
+        //private void OnTriggerExitCallback(Collider collider)
+        //{
+        //    if (collider.TryGetComponent<Thing>(out var thing))
+        //    {
+        //        World.Instance.TriggerEvent(AcknexObject, thing.AcknexObject, AcknexObject, "IF_LEAVE");
+        //    }
+        //    else if (collider.TryGetComponent<Player>(out var player))
+        //    {
+        //        World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, AcknexObject, "IF_LEAVE");
+        //        World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, AcknexObject, "IF_ARISE");
+        //    }
+        //}
 
-        private void OnTriggerEnterCallback(Collider collider)
-        {
-            if (collider.TryGetComponent<Thing>(out var thing))
-            {
-                thing.AcknexObject.SetAcknexObject("REGION", AcknexObject);
-                World.Instance.TriggerEvent(AcknexObject, thing.AcknexObject, AcknexObject, "IF_ENTER");
-            }
-            else if (collider.TryGetComponent<Player>(out var player))
-            {
-                player.AcknexObject.SetAcknexObject("REGION", this.AcknexObject);
-                World.Instance.SetSynonymObject("HERE", AcknexObject);
-                World.Instance.UpdateSkillValue("FLOOR_HGT", AcknexObject.GetFloat("FLOOR_HGT"));
-                World.Instance.UpdateSkillValue("CEIL_HGT", AcknexObject.GetFloat("CEIL_HGT"));
-                World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, AcknexObject, "IF_ENTER");
-                if (Above != null)
-                {
-                    World.Instance.TriggerEvent(Above.AcknexObject, player.AcknexObject, Above.AcknexObject, "IF_DIVE");
-                }
-            }
-        }
+        //private void OnTriggerEnterCallback(Collider collider)
+        //{
+        //    if (collider.TryGetComponent<Thing>(out var thing))
+        //    {
+        //        thing.AcknexObject.SetAcknexObject("REGION", AcknexObject);
+        //        World.Instance.TriggerEvent(AcknexObject, thing.AcknexObject, AcknexObject, "IF_ENTER");
+        //    }
+        //    else if (collider.TryGetComponent<Player>(out var player))
+        //    {
+        //        player.AcknexObject.SetAcknexObject("REGION", this.AcknexObject);
+        //        World.Instance.SetSynonymObject("HERE", AcknexObject);
+        //        World.Instance.UpdateSkillValue("FLOOR_HGT", AcknexObject.GetFloat("FLOOR_HGT"));
+        //        World.Instance.UpdateSkillValue("CEIL_HGT", AcknexObject.GetFloat("CEIL_HGT"));
+        //        World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, AcknexObject, "IF_ENTER");
+        //        if (Above != null)
+        //        {
+        //            World.Instance.TriggerEvent(Above.AcknexObject, player.AcknexObject, Above.AcknexObject, "IF_DIVE");
+        //        }
+        //    }
+        //}
 
         public static void BuildRegionFloorAndCeiling(Region region, ContouredRegion contouredRegion)
         {
@@ -418,15 +418,16 @@ namespace Acknex
         }
 
 
-        public static void PutOnGround(IAcknexObject source, Region currentRegion, float radius, float thingX, float thingY, ref float thingZ, bool onGround = false, bool onCeil = false, bool initial = true)
+        public static Region Locate(IAcknexObject source, Region currentRegion, float radius, float thingX, float thingY, ref float thingZ, bool onGround = false, bool onCeil = false, bool initial = true)
         {
-            bool GetValue(RaycastHit raycastHit, Region region, ref float outThingZ)
+            bool GetValue(RaycastHit raycastHit, ref float outThingZ, out Region outRegion)
             {
-                if (raycastHit.transform.parent != null && raycastHit.transform.parent.TryGetComponent<Region>(out _))
+                if (raycastHit.transform.parent != null && raycastHit.transform.parent.TryGetComponent<Region>(out outRegion))
                 {
                     outThingZ = onGround ? 0 : raycastHit.point.y;
                     return true;
                 }
+                outRegion = currentRegion;
                 return false;
             }
             if (onCeil)
@@ -435,9 +436,10 @@ namespace Acknex
                 var point = new Vector3(thingX, zCheck + radius, thingY);
                 if (Physics.SphereCast(new Ray(point, Vector3.up), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
-                    if (GetValue(raycastHit, currentRegion, ref thingZ))
+                    if (GetValue(raycastHit, ref thingZ, out var outRegion))
                     {
-                        return;
+                        Debug.DrawLine(point, raycastHit.point, Color.red);
+                        return outRegion;
                     }
                 }
             }
@@ -447,9 +449,10 @@ namespace Acknex
                 var point = new Vector3(thingX, zCheck + radius, thingY);
                 if (Physics.SphereCast(new Ray(point, Vector3.down), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
-                    if (GetValue(raycastHit, currentRegion, ref thingZ))
+                    if (GetValue(raycastHit, ref thingZ, out var outRegion))
                     {
-                        return;
+                        Debug.DrawLine(point, raycastHit.point, Color.red);
+                        return outRegion;
                     }
                 }
             }
@@ -457,6 +460,7 @@ namespace Acknex
             {
                 thingZ = 0f;
             }
+            return currentRegion;
         }
     }
 }

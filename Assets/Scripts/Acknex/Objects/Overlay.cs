@@ -64,7 +64,6 @@ namespace Acknex
 
         private void Start()
         {
-            transform.SetParent(World.Instance.Canvas.transform, false);
             SetupInnerGameObject(gameObject, out _overlayGraphic);
         }
 

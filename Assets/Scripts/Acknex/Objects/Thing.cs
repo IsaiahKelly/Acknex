@@ -44,10 +44,6 @@ namespace Acknex
         {
             while (true)
             {
-                //if (AcknexObject.TryGetString("EACH_SEC", out var action))
-                //{
-                //    World.Instance.CallAction(AcknexObject, action);
-                //}
                 World.Instance.TriggerEvent(AcknexObject, AcknexObject, GetRegion(), "EACH_SEC");
                 yield return World.Instance.WaitForSecond;
             }
@@ -57,12 +53,8 @@ namespace Acknex
         {
             while (true)
             {
-                //if (AcknexObject.TryGetString("EACH_TICK", out var action))
-                //{
-                //    World.Instance.CallAction(AcknexObject, action);
-                //}
                 World.Instance.TriggerEvent(AcknexObject, AcknexObject, GetRegion(), "EACH_TICK");
-                yield return World.Instance.WaitForTick;
+                yield return null;
             }
         }
 
@@ -243,7 +235,7 @@ namespace Acknex
             }
             else
             {
-                StickToTheGround(thingX, thingY, ref thingZ);
+                Locate(thingX, thingY, ref thingZ);
             }
             transform.position = new Vector3(thingX, thingZ, thingY);
 
@@ -285,16 +277,33 @@ namespace Acknex
         public void StickToTheCeiling(float thingX, float thingY, ref float thingZ)
         {
             var region = AcknexObject.GetAcknexObject("REGION")?.Container as Region;
-            Region.PutOnGround(AcknexObject, region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"), true);
+            region = Region.Locate(AcknexObject, region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"), true);
             thingZ = thingZ - transform.localScale.y;
             AcknexObject.SetFloat("Z", thingZ);
+            AcknexObject.SetAcknexObject("REGION", region.AcknexObject);
         }
 
-        public void StickToTheGround(float thingX, float thingY, ref float thingZ)
+        public void Locate(float thingX, float thingY, ref float thingZ)
         {
-            var region = AcknexObject.GetAcknexObject("REGION")?.Container as Region;
-            Region.PutOnGround(AcknexObject, region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"));
+            var region = (Region)AcknexObject.GetAcknexObject("REGION").Container;
+            var newRegion = Region.Locate(AcknexObject, region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"));
             AcknexObject.SetFloat("Z", thingZ);
+            if (AcknexObject.ContainsFlag("MASTER") && newRegion != region)
+            {
+                World.Instance.TriggerEvent(region.AcknexObject, AcknexObject, region.AcknexObject, "IF_LEAVE");
+                World.Instance.TriggerEvent(region.AcknexObject, AcknexObject, region.AcknexObject, "IF_ARISE");
+                region = newRegion;
+                World.Instance.TriggerEvent(region.AcknexObject, AcknexObject, region.AcknexObject, "IF_ENTER");
+                if (region.Above != null)
+                {
+                    World.Instance.TriggerEvent(region.Above.AcknexObject, AcknexObject, region.Above.AcknexObject, "IF_DIVE");
+                }
+            } 
+            else
+            {
+                region = newRegion;
+            }
+            AcknexObject.SetAcknexObject("REGION", region.AcknexObject);
         }
 
         public bool MoveTo(Vector2 nextPoint)

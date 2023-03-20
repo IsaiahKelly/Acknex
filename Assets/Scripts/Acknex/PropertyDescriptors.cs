@@ -172,7 +172,8 @@ namespace Acknex
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.14");
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.15");
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.16");
-            
+            AddObjectProperty(ObjectType.World, PropertyType.Float, "CLIP_DIST");
+
             AddObjectProperty(ObjectType.Actor, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Actor, PropertyType.Float, "AMBIENT");
             AddObjectProperty(ObjectType.Actor, PropertyType.ObjectReference, "TEXTURE");
@@ -315,6 +316,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Skill, PropertyType.Float, "VAL");
             AddObjectProperty(ObjectType.Skill, PropertyType.Float, "MIN");
             AddObjectProperty(ObjectType.Skill, PropertyType.Float, "MAX");
+            AddObjectProperty(ObjectType.Skill, PropertyType.String, "TYPE");
 
 
             AddObjectProperty(ObjectType.Region, PropertyType.String, "NAME");
@@ -351,6 +353,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "IF_DIVE");
             AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "IF_ARISE");
             AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "GENIUS");
+            AddObjectProperty(ObjectType.Region, PropertyType.Float, "CLIP_DIST");
 
 
             AddObjectProperty(ObjectType.Wall, PropertyType.String, "NAME");
@@ -407,15 +410,42 @@ namespace Acknex
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, "ALBEDO");
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, "SVOL");
             AddObjectProperty(ObjectType.Texture, PropertyType.ObjectReference, "SOUND");
+            AddObjectProperty(ObjectType.Texture, PropertyType.Float, "RADIANCE");
+            AddObjectProperty(ObjectType.Texture, PropertyType.Float, "SVDIST");
+            AddObjectProperty(ObjectType.Texture, PropertyType.Float, "SDIST");
+            AddObjectProperty(ObjectType.Texture, PropertyType.FloatList, "SCYCLES");
 
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "POS_X");
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "POS_Y");
             AddObjectProperty(ObjectType.Text, PropertyType.ObjectReference, "STRING");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "STRINGS");
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "VISIBLE");
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "INDEX");
+            AddObjectProperty(ObjectType.Text, PropertyType.ObjectReference, "FONT");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "SIZE_X");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "SIZE_Y");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "LAYER");
 
             AddObjectProperty(ObjectType.Panel, PropertyType.Float, "POS_X");
             AddObjectProperty(ObjectType.Panel, PropertyType.Float, "POS_Y");
+            AddObjectProperty(ObjectType.Panel, PropertyType.Float, "LAYER");
+            AddObjectProperty(ObjectType.Panel, PropertyType.ObjectReference, "PAN_MAP");
+            AddObjectProperty(ObjectType.Panel, PropertyType.Flags, "FLAGS");
+            AddObjectProperty(ObjectType.Panel, PropertyType.ActionReference, "IF_KLICK");
+            //TODO: digits
+            //TODO: picture
+            //TODO: BUTTON
+            //todo: VSLIDER
+            //todo: HSLIDER
+            //todo: VBAR
+            //todo: HBAR
+            //todo: WINDOW
+            //todo: MSPRITE
+            //todo: STRING
+
+            AddObjectProperty(ObjectType.Palette, PropertyType.Flags, "FLAGS");
+            AddObjectProperty(ObjectType.Palette, PropertyType.String, "PALFILE");
+            //todo: range
         }
 
         public void AddObjectProperty(ObjectType objectType, PropertyType propertyType, string property)
