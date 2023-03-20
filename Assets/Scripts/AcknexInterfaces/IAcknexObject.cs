@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Acknex.Interfaces
 {
@@ -15,6 +14,11 @@ namespace Acknex.Interfaces
         /// </remarks>
         /// </summary>
         ObjectType Type { get; set; }
+
+        /// <summary>
+        /// Defines whether the object is an instance.
+        /// </summary>
+        bool IsInstance { get; set; }
 
         /// <summary>
         /// Gets/Sets the object container (Unity representation).

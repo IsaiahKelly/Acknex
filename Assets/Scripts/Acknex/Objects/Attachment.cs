@@ -91,6 +91,11 @@ namespace Acknex
             
         }
 
+        public void SetupInstance()
+        {
+            
+        }
+
         private void Update()
         {
             UpdateObject();

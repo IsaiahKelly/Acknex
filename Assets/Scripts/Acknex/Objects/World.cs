@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Acknex.Interfaces;
 using LibTessDotNet;
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEditorInternal.VersionControl;
 #endif
 using UnityEngine;
 using UnityMidi;
@@ -15,6 +13,10 @@ namespace Acknex
     public partial class World : MonoBehaviour, IAcknexWorld
     {
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.World);
+        public void SetupInstance()
+        {
+            
+        }
 
         private static IAcknexObject GetTemplateCallback(string name)
         {

@@ -44,7 +44,6 @@ namespace Acknex
         private SphereCollider _vertexTriggerB;
         private CollisionCallback _collisionCallbackA;
         private CollisionCallback _collisionCallbackB;
-        private bool _instance;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
 
@@ -53,23 +52,6 @@ namespace Acknex
         private void Awake()
         {
             AcknexObject.Container = this;
-
-            //todo: move to middle
-            _audioSource = gameObject.AddComponent<AudioSource>();
-
-            _vertexGameObjectA = new GameObject("VertexA");
-            _vertexGameObjectA.transform.SetParent(transform, false);
-            _vertexGameObjectA.layer = World.Instance.TriggersLayer.LayerIndex;
-            _vertexTriggerA = _vertexGameObjectA.AddComponent<SphereCollider>();
-            _vertexTriggerA.isTrigger = true;
-            _collisionCallbackA = _vertexGameObjectA.AddComponent<CollisionCallback>();
-
-            _vertexGameObjectB = new GameObject("VertexB");
-            _vertexGameObjectB.transform.SetParent(transform, false);
-            _vertexGameObjectB.layer = World.Instance.TriggersLayer.LayerIndex;
-            _vertexTriggerB = _vertexGameObjectA.AddComponent<SphereCollider>();
-            _vertexTriggerB.isTrigger = true;
-            _collisionCallbackB = _vertexGameObjectB.AddComponent<CollisionCallback>();
         }
 
         private IEnumerator Animate()
@@ -78,7 +60,7 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = TextureObject.AnimateTexture(true, _meshRenderer, _meshFilter, null, AcknexObject, null);
+            var enumerator = TextureObject.AnimateTexture(true, _meshRenderer, _meshFilter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
@@ -89,7 +71,7 @@ namespace Acknex
         {
             if (collider.TryGetComponent<Player>(out var player))
             {
-                World.Instance.TriggerEvent(AcknexObject, "IF_FAR");
+                World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, player.GetRegion(), "IF_FAR");
             }
         }
 
@@ -97,17 +79,23 @@ namespace Acknex
         {
             if (collider.TryGetComponent<Player>(out var player))
             {
-                World.Instance.TriggerEvent(AcknexObject, "IF_NEAR");
+                World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, player.GetRegion(), "IF_NEAR");
             }
         }
 
-        private void Update()
+
+        private IEnumerator UpdateInstance()
         {
-            if (!_instance)
+            while (!AcknexObject.IsInstance)
             {
-                return;
+                yield return null;
             }
-            UpdateObject();
+            while (true)
+            {
+                UpdateObject();
+                UpdateEvents();
+                yield return null;
+            }
         }
 
         private void OnDrawGizmos()
@@ -124,13 +112,6 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            if (_meshRenderer == null)
-            {
-                return;
-            }
-
-            UpdateEvents();
-
             if (!AcknexObject.IsDirty)
             {
                 return;
@@ -185,11 +166,29 @@ namespace Acknex
 
         public void SetupInstance()
         {
-            _instance = true;
+            //todo: move to middle
+            _audioSource = gameObject.AddComponent<AudioSource>();
+
+            _vertexGameObjectA = new GameObject("VertexA");
+            _vertexGameObjectA.transform.SetParent(transform, false);
+            _vertexGameObjectA.layer = World.Instance.TriggersLayer.LayerIndex;
+            _vertexTriggerA = _vertexGameObjectA.AddComponent<SphereCollider>();
+            _vertexTriggerA.isTrigger = true;
+            _collisionCallbackA = _vertexGameObjectA.AddComponent<CollisionCallback>();
+
+            _vertexGameObjectB = new GameObject("VertexB");
+            _vertexGameObjectB.transform.SetParent(transform, false);
+            _vertexGameObjectB.layer = World.Instance.TriggersLayer.LayerIndex;
+            _vertexTriggerB = _vertexGameObjectA.AddComponent<SphereCollider>();
+            _vertexTriggerB.isTrigger = true;
+            _collisionCallbackB = _vertexGameObjectB.AddComponent<CollisionCallback>();
+
             _collisionCallbackA.OnTriggerEnterCallback += OnWallTriggerEnter;
             _collisionCallbackA.OnTriggerExitCallback += OnWallTriggerExit;
             _collisionCallbackB.OnTriggerEnterCallback += OnWallTriggerEnter;
             _collisionCallbackB.OnTriggerExitCallback += OnWallTriggerExit;
+
+            StartCoroutine(UpdateInstance());
             StartCoroutine(Animate());
         }
 

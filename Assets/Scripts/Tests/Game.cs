@@ -129,7 +129,17 @@ namespace Tests
             {
                 yield break;
             }
-            yield return VANISHSTOP();
+            {
+                var enumerator = VANISHSTOP();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -150,12 +160,32 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_N", RESETANSWER_16);
             var HLP02STR_18 = _world.AcknexObject.GetAcknexObject("HLP02STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP02STR_18);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator BEAM()
         {
-            yield return CHOOSEPARTICLE();
+            {
+                var enumerator = CHOOSEPARTICLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var PARTICLE_1 = _world.GetSynonymObject("PARTICLE");
             if (PARTICLE_1 == null)
             {
@@ -179,7 +209,17 @@ namespace Tests
             var AMMO_15_val = AMMO_15.GetFloat("VAL");
             var AMMO_16 = _world.GetObject(ObjectType.Skill, "AMMO");
             AMMO_16.SetFloat("VAL", AMMO_15_val + -1f);
-            yield return DECAMMO();
+            {
+                var enumerator = DECAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var AMMO_18 = _world.GetObject(ObjectType.Skill, "AMMO");
             var AMMO_18_val = AMMO_18.GetFloat("VAL");
             if (AMMO_18_val > 20f)
@@ -367,7 +407,17 @@ namespace Tests
         }
         public IEnumerator BEAMREACT()
         {
-            yield return CHOOSEPARTICLE();
+            {
+                var enumerator = CHOOSEPARTICLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var PARTICLE_1 = _world.GetSynonymObject("PARTICLE");
             if (PARTICLE_1 == null)
             {
@@ -478,7 +528,17 @@ namespace Tests
             var AMMO_1_val = AMMO_1.GetFloat("VAL");
             if (AMMO_1_val < 3f)
             {
-                yield return FIRE();
+                {
+                    var enumerator = FIRE();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var GUNFIRING_3 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
@@ -510,7 +570,17 @@ namespace Tests
                 var AMMO_24 = _world.GetObject(ObjectType.Skill, "AMMO");
                 AMMO_24.SetFloat("VAL", 0f);
             }
-            yield return DECAMMO();
+            {
+                var enumerator = DECAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var AMMO_26 = _world.GetObject(ObjectType.Skill, "AMMO");
             var AMMO_26_val = AMMO_26.GetFloat("VAL");
             if (AMMO_26_val > 20f)
@@ -572,7 +642,17 @@ namespace Tests
             var temp_74 = HIT_73.GetFloat("FRAGILE");
             if (temp_74 == 1f)
             {
-                yield return CASTBLOOD();
+                {
+                    var enumerator = CASTBLOOD();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
             }
             SHOOT2:
             var SHOOT_X_76 = _world.GetObject(ObjectType.Skill, "SHOOT_X");
@@ -592,7 +672,17 @@ namespace Tests
             var temp_87 = HIT_86.GetFloat("FRAGILE");
             if (temp_87 == 1f)
             {
-                yield return CASTBLOOD();
+                {
+                    var enumerator = CASTBLOOD();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
             }
             SHOOT3:
             var DSHOOTXMINUS_88 = _world.GetObject(ObjectType.Skill, "DSHOOTXMINUS");
@@ -614,7 +704,17 @@ namespace Tests
             var temp_100 = HIT_99.GetFloat("FRAGILE");
             if (temp_100 == 1f)
             {
-                yield return CASTBLOOD();
+                {
+                    var enumerator = CASTBLOOD();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
             }
             NOHIT:
             yield return new WaitForCycles(1f);
@@ -752,7 +852,17 @@ namespace Tests
             }
             _world.PlaySound("BIP02SND", 0.5f);
             _world.AcknexObject.SetAcknexObject("IF_ENTER", null);
-            yield return HIDEMENU();
+            {
+                var enumerator = HIDEMENU();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MOVE_MODE_8 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
             MOVE_MODE_8.SetFloat("VAL", 0f);
             //Unknown keyword: PLAY_CD
@@ -944,28 +1054,68 @@ namespace Tests
             var MENUITEM_7_val = MENUITEM_7.GetFloat("VAL");
             if (MENUITEM_7_val == 1f)
             {
-                yield return SHOWSOUNDVOLUMEMENU();
+                {
+                    var enumerator = SHOWSOUNDVOLUMEMENU();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var MENUITEM_9 = _world.GetObject(ObjectType.Skill, "MENUITEM");
             var MENUITEM_9_val = MENUITEM_9.GetFloat("VAL");
             if (MENUITEM_9_val == 2f)
             {
-                yield return SHOWSAVEMENU();
+                {
+                    var enumerator = SHOWSAVEMENU();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var MENUITEM_11 = _world.GetObject(ObjectType.Skill, "MENUITEM");
             var MENUITEM_11_val = MENUITEM_11.GetFloat("VAL");
             if (MENUITEM_11_val == 3f)
             {
-                yield return SHOWLOADMENU();
+                {
+                    var enumerator = SHOWLOADMENU();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var MENUITEM_13 = _world.GetObject(ObjectType.Skill, "MENUITEM");
             var MENUITEM_13_val = MENUITEM_13.GetFloat("VAL");
             if (MENUITEM_13_val == 4f)
             {
-                yield return ASKFOREXIT();
+                {
+                    var enumerator = ASKFOREXIT();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             yield break;
@@ -1007,7 +1157,17 @@ namespace Tests
             {
                 goto CONT;
             }
-            yield return REGIO_ARISE();
+            {
+                var enumerator = REGIO_ARISE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             CONT:
             var SHOTSECCOUNT_22 = _world.GetObject(ObjectType.Skill, "SHOTSECCOUNT");
             var SHOTSECCOUNT_22_val = SHOTSECCOUNT_22.GetFloat("VAL");
@@ -1099,12 +1259,32 @@ namespace Tests
             }
             var PLAYER_RESULT_10 = _world.GetObject(ObjectType.Skill, "PLAYER_RESULT");
             PLAYER_RESULT_10.SetFloat("VAL", 2f);
-            yield return HITPLAYER();
+            {
+                var enumerator = HITPLAYER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator CYCLEREPTATTACK()
         {
-            yield return LOCATEACTOR();
+            {
+                var enumerator = LOCATEACTOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_2 = _world.GetSynonymObject("MY");
             MY_2.SetFloat("GROUND", 0f);
             var MY_5 = _world.GetSynonymObject("MY");
@@ -1113,16 +1293,46 @@ namespace Tests
             MY_8.SetFloat("VSPEED", 0f);
             var MY_11 = _world.GetSynonymObject("MY");
             MY_11.SetAcknexObject("EACH_TICK", null);
-            yield return REPTTALK();
+            {
+                var enumerator = REPTTALK();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var SHOT_SOUND_ON_13 = _world.GetObject(ObjectType.Skill, "SHOT_SOUND_ON");
             var SHOT_SOUND_ON_13_val = SHOT_SOUND_ON_13.GetFloat("VAL");
             if (SHOT_SOUND_ON_13_val == 0f)
             {
                 goto CONT;
             }
-            yield return REPTLOOKFOR();
+            {
+                var enumerator = REPTLOOKFOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             CONT:
-            yield return LOOKPLAYER();
+            {
+                var enumerator = LOOKPLAYER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_16 = _world.GetSynonymObject("MY");
             var temp_17 = MY_16.GetFloat("FLAG1");
             if (temp_17 == 0f)
@@ -1139,13 +1349,33 @@ namespace Tests
             MY_24.SetFloat("FLAG2", 1f);
             _world.PlaySound("REPT02SND", 0.7f, "MY");
             CONT1:
-            yield return REPTFOLLOWATTACK();
+            {
+                var enumerator = REPTFOLLOWATTACK();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
         public IEnumerator CYCLEREPTHIDE()
         {
-            yield return LOCATEACTOR();
+            {
+                var enumerator = LOCATEACTOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_2 = _world.GetSynonymObject("MY");
             MY_2.SetFloat("GROUND", 0f);
             var MY_5 = _world.GetSynonymObject("MY");
@@ -1175,12 +1405,32 @@ namespace Tests
         }
         public IEnumerator CYCLEREPTSHOOT()
         {
-            yield return LOCATEACTOR();
+            {
+                var enumerator = LOCATEACTOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_2 = _world.GetSynonymObject("MY");
             var temp_3 = MY_2.GetFloat("SKILL1");
             if (temp_3 > 9f)
             {
-                yield return REPTDIE();
+                {
+                    var enumerator = REPTDIE();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var MY_6 = _world.GetSynonymObject("MY");
@@ -1191,7 +1441,17 @@ namespace Tests
             MY_12.SetFloat("VSPEED", 0f);
             var MY_15 = _world.GetSynonymObject("MY");
             MY_15.SetAcknexObject("EACH_TICK", null);
-            yield return LOOKPLAYER();
+            {
+                var enumerator = LOOKPLAYER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_18 = _world.GetSynonymObject("MY");
             var temp_19 = MY_18.GetFloat("FLAG1");
             if (temp_19 == 0f)
@@ -1206,7 +1466,17 @@ namespace Tests
             {
                 goto ATTACK;
             }
-            yield return REPTWAIT();
+            {
+                var enumerator = REPTWAIT();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             PLAYERSEEN:
             var MY_26 = _world.GetSynonymObject("MY");
@@ -1218,16 +1488,46 @@ namespace Tests
             {
                 goto ATTACK;
             }
-            yield return REPTSHOOT();
+            {
+                var enumerator = REPTSHOOT();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             ATTACK:
-            yield return REPTFOLLOWATTACK();
+            {
+                var enumerator = REPTFOLLOWATTACK();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
         public IEnumerator CYCLETROPATTACK()
         {
-            yield return PROBE();
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_2 = _world.GetSynonymObject("MY");
             var temp_3 = MY_2.GetFloat("FLAG2");
             if (temp_3 != 0f)
@@ -1240,9 +1540,29 @@ namespace Tests
             {
                 goto CONT;
             }
-            yield return TROPLOOKFOR();
+            {
+                var enumerator = TROPLOOKFOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             CONT:
-            yield return LOOKPLAYER();
+            {
+                var enumerator = LOOKPLAYER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_8 = _world.GetSynonymObject("MY");
             var temp_9 = MY_8.GetFloat("FLAG1");
             if (temp_9 == 0f)
@@ -1259,45 +1579,115 @@ namespace Tests
             var temp_15 = MY_14.GetFloat("DISTANCE");
             if (temp_15 < 20f)
             {
-                yield return TROPFOLLOWWARNING();
+                {
+                    var enumerator = TROPFOLLOWWARNING();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             yield break;
             ATTACK:
             var MY_18 = _world.GetSynonymObject("MY");
             MY_18.SetFloat("FLAG2", 1f);
-            yield return TROPTALK();
+            {
+                var enumerator = TROPTALK();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_21 = _world.GetSynonymObject("MY");
             var temp_22 = MY_21.GetFloat("DISTANCE");
             if (temp_22 < 200f)
             {
-                yield return TROPFOLLOWATTACK();
+                {
+                    var enumerator = TROPFOLLOWATTACK();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             yield break;
         }
         public IEnumerator CYCLETROPBACK()
         {
-            yield return PROBE();
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator CYCLETROPHIDE()
         {
-            yield return REPELANGLE();
+            {
+                var enumerator = REPELANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_1 = _world.GetSynonymObject("MY");
             var MY_3 = _world.GetSynonymObject("MY");
             var temp_4 = MY_3.GetFloat("ANGLE");
             var MY_6 = _world.GetSynonymObject("MY");
             var temp_7 = MY_6.GetFloat("ANGLE");
             MY_1.SetFloat("ANGLE", temp_7 + (UnityEngine.Random.value - 0.5f) * 2f);
-            yield return PROBE();
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_18 = _world.GetSynonymObject("MY");
             var temp_19 = MY_18.GetFloat("VISIBLE");
             if (temp_19 == 1f)
             {
                 yield break;
             }
-            yield return LOOKPLAYER();
+            {
+                var enumerator = LOOKPLAYER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_22 = _world.GetSynonymObject("MY");
             var temp_23 = MY_22.GetFloat("FLAG1");
             if (temp_23 == 0f)
@@ -1319,19 +1709,49 @@ namespace Tests
         }
         public IEnumerator CYCLETROPSHOOT()
         {
-            yield return PROBE();
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_2 = _world.GetSynonymObject("MY");
             var temp_3 = MY_2.GetFloat("SKILL1");
             if (temp_3 > 9f)
             {
-                yield return TROPDIE();
+                {
+                    var enumerator = TROPDIE();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var MY_6 = _world.GetSynonymObject("MY");
             var temp_7 = MY_6.GetFloat("DISTANCE");
             if (temp_7 > 300f)
             {
-                yield return TROPWAIT();
+                {
+                    var enumerator = TROPWAIT();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var MY_10 = _world.GetSynonymObject("MY");
@@ -1340,8 +1760,28 @@ namespace Tests
             {
                 goto ATTACK;
             }
-            yield return FOLLOWANGLE();
-            yield return LOOKPLAYER();
+            {
+                var enumerator = FOLLOWANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = LOOKPLAYER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_14 = _world.GetSynonymObject("MY");
             var temp_15 = MY_14.GetFloat("FLAG1");
             if (temp_15 == 0f)
@@ -1355,24 +1795,74 @@ namespace Tests
             SHOTSECCOUNT_19.SetFloat("VAL", 0f);
             if (UnityEngine.Random.value > 0.8f)
             {
-                yield return TROPAIM();
+                {
+                    var enumerator = TROPAIM();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
-            yield return TROPSHOOT();
+            {
+                var enumerator = TROPSHOOT();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             ATTACK:
-            yield return TROPFOLLOWATTACK();
+            {
+                var enumerator = TROPFOLLOWATTACK();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
         public IEnumerator CYCLETROPWARNING()
         {
-            yield return PROBE();
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var GUN_ON_1 = _world.GetObject(ObjectType.Skill, "GUN_ON");
             var GUN_ON_1_val = GUN_ON_1.GetFloat("VAL");
             if (GUN_ON_1_val != 0f)
             {
-                yield return TROPFOLLOWATTACK();
+                {
+                    var enumerator = TROPFOLLOWATTACK();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var MY_4 = _world.GetSynonymObject("MY");
@@ -1383,17 +1873,47 @@ namespace Tests
             }
             var MY_8 = _world.GetSynonymObject("MY");
             MY_8.SetAcknexObject("EACH_CYCLE", null);
-            yield return TROPWARNING();
+            {
+                var enumerator = TROPWARNING();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             CONT:
             var MY_11 = _world.GetSynonymObject("MY");
             var temp_12 = MY_11.GetFloat("DISTANCE");
             if (temp_12 > 40f)
             {
-                yield return TROPWAIT();
+                {
+                    var enumerator = TROPWAIT();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
-            yield return FOLLOWANGLE();
+            {
+                var enumerator = FOLLOWANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator DECAMMO()
@@ -1457,7 +1977,17 @@ namespace Tests
         public IEnumerator DIVE_UP()
         {
             _world.PlaySound("PLAYERINSPSND", 0.8f);
-            yield return RESET_BLUE();
+            {
+                var enumerator = RESET_BLUE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator DRILLHOLE()
@@ -1879,7 +2409,17 @@ namespace Tests
             }
             var LOAD08STR_25 = _world.AcknexObject.GetAcknexObject("LOAD08STR");
             _world.SetSynonymObject("MESSAGE_TEXT", LOAD08STR_25);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var PLAYER_HEALTH_28 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
             PLAYER_HEALTH_28.SetFloat("VAL", 100f);
             //Unknown keyword: PLAY_CD
@@ -1892,8 +2432,17 @@ namespace Tests
             CONT:
             var LOAD_STRING_36 = _world.GetSynonymObject("LOAD_STRING");
             _world.SetSynonymObject("MESSAGE_TEXT", LOAD_STRING_36);
-            yield return DISPLAYMESSAGE();
-            //Unknown keyword: PLAY_CD
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }//Unknown keyword: PLAY_CD
             yield return new WaitForCycles(16f);
             Application.Quit();
             yield break;
@@ -1901,7 +2450,17 @@ namespace Tests
         public IEnumerator ENTER_WATER()
         {
             _world.PlaySound("FWT01SND", 0.8f);
-            yield return SET_SWIMMING();
+            {
+                var enumerator = SET_SWIMMING();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator EXITGAME()
@@ -1915,7 +2474,17 @@ namespace Tests
         }
         public IEnumerator EXPLODEMISSILE()
         {
-            yield return LOCATEACTOR();
+            {
+                var enumerator = LOCATEACTOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var EXPLOSIONSTART_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXPLOSIONSTART");
             var MY_2 = _world.GetSynonymObject("MY");
             MY_2.SetAcknexObject("EACH_TICK", EXPLOSIONSTART_0);
@@ -1961,7 +2530,17 @@ namespace Tests
             {
                 goto CONT;
             }
-            yield return HITPLAYERDELAY();
+            {
+                var enumerator = HITPLAYERDELAY();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             CONT:
             var MY_40 = _world.GetSynonymObject("MY");
             MY_40.SetFloat("SPEED", 0f);
@@ -2015,7 +2594,17 @@ namespace Tests
             {
                 yield break;
             }
-            yield return EXPLODEMISSILE();
+            {
+                var enumerator = EXPLODEMISSILE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -2044,7 +2633,17 @@ namespace Tests
             var EXPLOSIONSMOKE_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXPLOSIONSMOKE");
             var MY_5 = _world.GetSynonymObject("MY");
             MY_5.SetAcknexObject("EACH_CYCLE", EXPLOSIONSMOKE_3);
-            yield return FLASHREGION();
+            {
+                var enumerator = FLASHREGION();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -2147,7 +2746,17 @@ namespace Tests
             var TOUGHNESS_16 = _world.GetObject(ObjectType.Skill, "TOUGHNESS");
             var TOUGHNESS_16_val = TOUGHNESS_16.GetFloat("VAL");
             AMMO_12.SetFloat("VAL", AMMO_14_val - TOUGHNESS_16_val);
-            yield return DECAMMO();
+            {
+                var enumerator = DECAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var AMMO_18 = _world.GetObject(ObjectType.Skill, "AMMO");
             var AMMO_18_val = AMMO_18.GetFloat("VAL");
             if (AMMO_18_val > 20f)
@@ -2286,7 +2895,17 @@ namespace Tests
                 goto NOHIT;
             }
             CONTHIT:
-            yield return CASTBLOOD();
+            {
+                var enumerator = CASTBLOOD();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_TARGET_103 = _world.GetSynonymObject("MY_TARGET");
             MY_TARGET_103.SetFloat("SKILL3", 1f);
             NOHIT:
@@ -2369,7 +2988,17 @@ namespace Tests
             var UNDERWATER_10_val = UNDERWATER_10.GetFloat("VAL");
             if (UNDERWATER_10_val != 0f)
             {
-                yield return SET_BLUE();
+                {
+                    var enumerator = SET_BLUE();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
             }
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", null);
             var PLAYER_HIT_15 = _world.GetObject(ObjectType.Skill, "PLAYER_HIT");
@@ -2774,12 +3403,32 @@ namespace Tests
             {
                 goto NOWATER;
             }
-            yield return SET_BLUE();
+            {
+                var enumerator = SET_BLUE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             goto CONT;
             NOWATER:
             //Unknown keyword: FADE_PAL
             CONT:
-            yield return SHOWWEAPON();
+            {
+                var enumerator = SHOWWEAPON();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MOVE_MODE_19 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
             MOVE_MODE_19.SetFloat("VAL", 1f);
             yield break;
@@ -2953,7 +3602,17 @@ namespace Tests
         public IEnumerator HITPLAYERDELAY()
         {
             yield return new WaitForTicks(8f);
-            yield return HITPLAYER();
+            {
+                var enumerator = HITPLAYER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -3407,7 +4066,17 @@ namespace Tests
             //Unknown keyword: LOCATE
             var MY_14 = _world.GetSynonymObject("MY");
             MY_14.SetFloat("GROUND", 0f);
-            yield return FLASHREGION();
+            {
+                var enumerator = FLASHREGION();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -3417,7 +4086,17 @@ namespace Tests
             var MODE_GEHEN_0_val = MODE_GEHEN_0.GetFloat("VAL");
             var MOVING_1 = _world.GetObject(ObjectType.Skill, "MOVING");
             MOVING_1.SetFloat("VAL", MODE_GEHEN_0_val);
-            yield return SET_MOVING();
+            {
+                var enumerator = SET_MOVING();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator INNOCENTKILLED()
@@ -3451,7 +4130,17 @@ namespace Tests
             CONT:
             var END01STR_12 = _world.AcknexObject.GetAcknexObject("END01STR");
             _world.SetSynonymObject("GAMEOVER_TEXT", END01STR_12);
-            yield return SHOWPDAGAMEOVER();
+            {
+                var enumerator = SHOWPDAGAMEOVER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator KILLPLAYER()
@@ -3469,7 +4158,17 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_SEC.1", SELECTNONE_4);
             //Unknown keyword: FADE_PAL
             _world.PlaySound("DEATH00SND", 1f);
-            yield return SET_DEATH();
+            {
+                var enumerator = SET_DEATH();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var DEATHCOUNTER_9 = _world.GetObject(ObjectType.Skill, "DEATHCOUNTER");
             DEATHCOUNTER_9.SetFloat("VAL", 0f);
             yield break;
@@ -3506,7 +4205,17 @@ namespace Tests
         }
         public IEnumerator LAUNCH()
         {
-            yield return CHOOSEMISSILE();
+            {
+                var enumerator = CHOOSEMISSILE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MISSILE_1 = _world.GetSynonymObject("MISSILE");
             if (MISSILE_1 == null)
             {
@@ -3530,7 +4239,17 @@ namespace Tests
             var AMMO_15_val = AMMO_15.GetFloat("VAL");
             var AMMO_16 = _world.GetObject(ObjectType.Skill, "AMMO");
             AMMO_16.SetFloat("VAL", AMMO_15_val + -1f);
-            yield return DECAMMO();
+            {
+                var enumerator = DECAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var AMMO_18 = _world.GetObject(ObjectType.Skill, "AMMO");
             var AMMO_18_val = AMMO_18.GetFloat("VAL");
             if (AMMO_18_val > 5f)
@@ -3874,16 +4593,35 @@ namespace Tests
             MISSILE_156.SetFloat("INVISIBLE", 0f);
             var WRN17STR_157 = _world.AcknexObject.GetAcknexObject("WRN17STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN17STR_157);
-            yield return DISPLAYMESSAGE();
-            //Unknown keyword: SET_ALL
-            //Unknown keyword: SET_ALL
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }//Unknown keyword: SET_ALL
+             //Unknown keyword: SET_ALL
             var SHOT_SOUND_ON_160 = _world.GetObject(ObjectType.Skill, "SHOT_SOUND_ON");
             SHOT_SOUND_ON_160.SetFloat("VAL", 1f);
             yield break;
         }
         public IEnumerator LEAVE_WATER()
         {
-            yield return SET_WALKING();
+            {
+                var enumerator = SET_WALKING();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator LOCATEACTOR()
@@ -4012,7 +4750,17 @@ namespace Tests
             var temp_95 = MY_94.GetFloat("VISIBLE");
             if (temp_95 == 0f)
             {
-                yield return VANISHSTOP();
+                {
+                    var enumerator = VANISHSTOP();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
             }
             yield break;
         }
@@ -4034,15 +4782,45 @@ namespace Tests
             var PLAYER_RESULT_10 = _world.GetObject(ObjectType.Skill, "PLAYER_RESULT");
             var PLAYER_RESULT_10_val = PLAYER_RESULT_10.GetFloat("VAL");
             PLAYER_RESULT_9.SetFloat("VAL", 10f * (UnityEngine.Random.value + 0.5f));
-            yield return FLASHPLAYER();
+            {
+                var enumerator = FLASHPLAYER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             _world.PlaySound("QGUN04SND", 0.7f);
-            yield return VANISHSTOP();
+            {
+                var enumerator = VANISHSTOP();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
         public IEnumerator LOCATEREPT()
         {
-            yield return LOCATEACTOR();
+            {
+                var enumerator = LOCATEACTOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_2 = _world.GetSynonymObject("MY");
             var temp_3 = MY_2.GetFloat("WAYPOINT");
             if (temp_3 < 11f)
@@ -4053,7 +4831,17 @@ namespace Tests
             GOLCOUNTER_5.SetFloat("VAL", 0f);
             var WALLTIMER_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"WALLTIMER");
             _world.AcknexObject.SetAcknexObject("EACH_SEC.4", WALLTIMER_6);
-            yield return VANISHSTOP();
+            {
+                var enumerator = VANISHSTOP();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -4383,7 +5171,17 @@ namespace Tests
             {
                 goto NO_WATER;
             }
-            yield return SET_WALKING();
+            {
+                var enumerator = SET_WALKING();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             goto START;
             NO_SWIM:
             var MODE_GEHEN_41 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
@@ -4400,7 +5198,17 @@ namespace Tests
             {
                 goto NO_WATER;
             }
-            yield return SET_SWIMMING();
+            {
+                var enumerator = SET_SWIMMING();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             goto START;
             NO_WATER:
             var MOUSE_MIDDLE_46 = _world.GetObject(ObjectType.Skill, "MOUSE_MIDDLE");
@@ -4663,7 +5471,17 @@ namespace Tests
             var PLAYER_RESULT_251_val = PLAYER_RESULT_251.GetFloat("VAL");
             if (PLAYER_RESULT_251_val > 0f)
             {
-                yield return HITPLAYER();
+                {
+                    var enumerator = HITPLAYER();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
             }
             var FALLING_HEIGHT_253 = _world.GetObject(ObjectType.Skill, "FALLING_HEIGHT");
             FALLING_HEIGHT_253.SetFloat("VAL", 0f);
@@ -5083,13 +5901,63 @@ namespace Tests
             var SELECTQUANTUM_19 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SELECTQUANTUM");
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_19);
             _world.AcknexObject.SetAcknexObject("PANELS.16", null);
-            yield return SELECTNONE();
+            {
+                var enumerator = SELECTNONE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var BLANKSTR_24 = _world.AcknexObject.GetAcknexObject("BLANKSTR");
             _world.SetSynonymObject("MESSAGE_TEXT", BLANKSTR_24);
-            yield return DISPLAYMESSAGE();
-            yield return SHOWWEAPON();
-            yield return SELECTNONE();
-            yield return ENDOFLEVEL();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = SHOWWEAPON();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = SELECTNONE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = ENDOFLEVEL();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator PICKAMMO()
@@ -5098,13 +5966,33 @@ namespace Tests
             var AMMO_MP5_1_val = AMMO_MP5_1.GetFloat("VAL");
             var AMMO_MP5_2 = _world.GetObject(ObjectType.Skill, "AMMO_MP5");
             AMMO_MP5_2.SetFloat("VAL", AMMO_MP5_1_val + 30f);
-            yield return SHOWAMMO();
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_5 = _world.GetSynonymObject("MY");
             MY_5.SetFloat("INVISIBLE", 1f);
             _world.PlaySound("AMMO01SND", 0.3f);
             var GET01STR_7 = _world.AcknexObject.GetAcknexObject("GET01STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET01STR_7);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -5116,13 +6004,33 @@ namespace Tests
             var AMMO_GRANADE_3_val = AMMO_GRANADE_3.GetFloat("VAL");
             var AMMO_GRANADE_4 = _world.GetObject(ObjectType.Skill, "AMMO_GRANADE");
             AMMO_GRANADE_4.SetFloat("VAL", AMMO_GRANADE_3_val + 1f);
-            yield return SHOWAMMO();
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_7 = _world.GetSynonymObject("MY");
             MY_7.SetFloat("INVISIBLE", 1f);
             _world.PlaySound("GRAN01SND", 0.5f);
             var GET05STR_9 = _world.AcknexObject.GetAcknexObject("GET05STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET05STR_9);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -5135,7 +6043,17 @@ namespace Tests
             KEY1_5.SetFloat("VAL", 1f);
             var GET03STR_6 = _world.AcknexObject.GetAcknexObject("GET03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET03STR_6);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -5148,7 +6066,17 @@ namespace Tests
             KEY2_5.SetFloat("VAL", 1f);
             var GET04STR_6 = _world.AcknexObject.GetAcknexObject("GET04STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET04STR_6);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -5158,13 +6086,33 @@ namespace Tests
             var AMMO_QUANTUM_1_val = AMMO_QUANTUM_1.GetFloat("VAL");
             var AMMO_QUANTUM_2 = _world.GetObject(ObjectType.Skill, "AMMO_QUANTUM");
             AMMO_QUANTUM_2.SetFloat("VAL", AMMO_QUANTUM_1_val + 1f);
-            yield return SHOWAMMO();
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_5 = _world.GetSynonymObject("MY");
             MY_5.SetFloat("INVISIBLE", 1f);
             _world.PlaySound("QGUN01SND", 0.2f);
             var GET07STR_7 = _world.AcknexObject.GetAcknexObject("GET07STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET07STR_7);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -5174,13 +6122,33 @@ namespace Tests
             var AMMO_STINGER_1_val = AMMO_STINGER_1.GetFloat("VAL");
             var AMMO_STINGER_2 = _world.GetObject(ObjectType.Skill, "AMMO_STINGER");
             AMMO_STINGER_2.SetFloat("VAL", AMMO_STINGER_1_val + 10f);
-            yield return SHOWAMMO();
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_5 = _world.GetSynonymObject("MY");
             MY_5.SetFloat("INVISIBLE", 1f);
             _world.PlaySound("AMMO01SND", 0.5f);
             var GET06STR_7 = _world.AcknexObject.GetAcknexObject("GET06STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET06STR_7);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -5190,13 +6158,33 @@ namespace Tests
             var AMMO_MP5_1_val = AMMO_MP5_1.GetFloat("VAL");
             var AMMO_MP5_2 = _world.GetObject(ObjectType.Skill, "AMMO_MP5");
             AMMO_MP5_2.SetFloat("VAL", AMMO_MP5_1_val + 30f);
-            yield return SHOWAMMO();
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_5 = _world.GetSynonymObject("MY");
             MY_5.SetAcknexObject("IF_NEAR", null);
             _world.PlaySound("AMMO01SND", 0.3f);
             var GET01STR_7 = _world.AcknexObject.GetAcknexObject("GET01STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET01STR_7);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -5217,7 +6205,17 @@ namespace Tests
             _world.PlaySound("ARMO01SND", 0.5f);
             var GET10STR_9 = _world.AcknexObject.GetAcknexObject("GET10STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET10STR_9);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator PICKUPARMOUR()
@@ -5237,14 +6235,33 @@ namespace Tests
             _world.PlaySound("ARMO01SND", 0.5f);
             var GET10STR_9 = _world.AcknexObject.GetAcknexObject("GET10STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET10STR_9);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator PICKUPLOCALMP5()
         {
-            yield return PICKUPMP5();
-            //Unknown keyword: SAVE_INFO
-            //Unknown keyword: SAVE_INFO
+            {
+                var enumerator = PICKUPMP5();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }//Unknown keyword: SAVE_INFO
+             //Unknown keyword: SAVE_INFO
             yield return new WaitForTicks(32f);
             Application.Quit();
             yield break;
@@ -5266,7 +6283,17 @@ namespace Tests
             _world.PlaySound("MP_501SND", 0.5f);
             var GET11STR_9 = _world.AcknexObject.GetAcknexObject("GET11STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET11STR_9);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator PICKUPMP5()
@@ -5281,7 +6308,17 @@ namespace Tests
             var WEAPONSEL_6_val = WEAPONSEL_6.GetFloat("VAL");
             if (WEAPONSEL_6_val < 2f)
             {
-                yield return SELECTMP5();
+                {
+                    var enumerator = SELECTMP5();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
             }
             var WEAPONSEL_8 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
             var WEAPONSEL_8_val = WEAPONSEL_8.GetFloat("VAL");
@@ -5289,12 +6326,32 @@ namespace Tests
             {
                 _world.PlaySound("AMMO01SND", 0.3f);
             }
-            yield return SHOWAMMO();
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_12 = _world.GetSynonymObject("MY");
             MY_12.SetFloat("INVISIBLE", 1f);
             var GET02STR_13 = _world.AcknexObject.GetAcknexObject("GET02STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET02STR_13);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator PICKUPQUANTUM()
@@ -5309,14 +6366,44 @@ namespace Tests
             var WEAPONSEL_6_val = WEAPONSEL_6.GetFloat("VAL");
             if (WEAPONSEL_6_val < 5f)
             {
-                yield return SELECTQUANTUM();
+                {
+                    var enumerator = SELECTQUANTUM();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
             }
-            yield return SHOWAMMO();
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_9 = _world.GetSynonymObject("MY");
             MY_9.SetFloat("INVISIBLE", 1f);
             var GET09STR_10 = _world.AcknexObject.GetAcknexObject("GET09STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET09STR_10);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator PICKUPSTINGER()
@@ -5331,14 +6418,44 @@ namespace Tests
             var WEAPONSEL_6_val = WEAPONSEL_6.GetFloat("VAL");
             if (WEAPONSEL_6_val < 4f)
             {
-                yield return SELECTSTINGER();
+                {
+                    var enumerator = SELECTSTINGER();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
             }
-            yield return SHOWAMMO();
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_9 = _world.GetSynonymObject("MY");
             MY_9.SetFloat("INVISIBLE", 1f);
             var GET08STR_10 = _world.AcknexObject.GetAcknexObject("GET08STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET08STR_10);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator PROBE()
@@ -5377,7 +6494,17 @@ namespace Tests
             var temp_25 = WATER_REGION_24.GetFloat("FLAG2");
             if (temp_25 == 1f)
             {
-                yield return VANISHFORGOOD();
+                {
+                    var enumerator = VANISHFORGOOD();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var WATER_REGION_28 = _world.GetSynonymObject("WATER_REGION");
@@ -5658,7 +6785,17 @@ namespace Tests
             {
                 goto NOWATER;
             }
-            yield return SET_BLUE();
+            {
+                var enumerator = SET_BLUE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var PLAYER_ARC_15 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
             PLAYER_ARC_15.SetFloat("VAL", 1.3f);
             goto FINISH;
@@ -5742,9 +6879,39 @@ namespace Tests
             var PLAYER_LIGHT_25_val = PLAYER_LIGHT_25.GetFloat("VAL");
             var PLAYER_LIGHT_26 = _world.GetObject(ObjectType.Skill, "PLAYER_LIGHT");
             PLAYER_LIGHT_26.SetFloat("VAL", PLAYER_LIGHT_25_val + -0.2f);
-            yield return _world.CallSynonymAction("SET_OVERWATER");
-            yield return SET_SWIMMING();
-            yield return DIVE_UP();
+            {
+                var enumerator = _world.CallSynonymAction("SET_OVERWATER");
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = SET_SWIMMING();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = DIVE_UP();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator REGIO_DIVE()
@@ -5786,8 +6953,28 @@ namespace Tests
             var PLAYER_LIGHT_26_val = PLAYER_LIGHT_26.GetFloat("VAL");
             var PLAYER_LIGHT_27 = _world.GetObject(ObjectType.Skill, "PLAYER_LIGHT");
             PLAYER_LIGHT_27.SetFloat("VAL", PLAYER_LIGHT_26_val + 0.2f);
-            yield return _world.CallSynonymAction("SET_UNDERWATER");
-            yield return SET_DIVING();
+            {
+                var enumerator = _world.CallSynonymAction("SET_UNDERWATER");
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = SET_DIVING();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator REPEATMUSIC()
@@ -5815,7 +7002,17 @@ namespace Tests
         }
         public IEnumerator REPELANGLE()
         {
-            yield return FOLLOWANGLE();
+            {
+                var enumerator = FOLLOWANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var PI_0 = _world.GetObject(ObjectType.Skill, "PI");
             var PI_0_val = PI_0.GetFloat("VAL");
             var MY_2 = _world.GetSynonymObject("MY");
@@ -6026,7 +7223,17 @@ namespace Tests
             MY_17.SetAcknexObject("IF_HIT", REPTHIT_15);
             var MY_20 = _world.GetSynonymObject("MY");
             MY_20.SetFloat("SKILL4", 4f);
-            yield return REPELANGLE();
+            {
+                var enumerator = REPELANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_22 = _world.GetSynonymObject("MY");
             var MY_24 = _world.GetSynonymObject("MY");
             var temp_25 = MY_24.GetFloat("ANGLE");
@@ -6054,7 +7261,17 @@ namespace Tests
             var temp_57 = MY_56.GetFloat("SKILL1");
             var MY_59 = _world.GetSynonymObject("MY");
             MY_59.SetFloat("SKILL1", temp_57 + -2f);
-            yield return REPTWANDER();
+            {
+                var enumerator = REPTWANDER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -6089,7 +7306,17 @@ namespace Tests
             var temp_11 = MY_10.GetFloat("VISIBLE");
             if (temp_11 == 1f)
             {
-                yield return REPTIMPLODE();
+                {
+                    var enumerator = REPTIMPLODE();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             CONT:
@@ -6129,17 +7356,57 @@ namespace Tests
             var MY_46 = _world.GetSynonymObject("MY");
             MY_46.SetAcknexObject("TEXTURE", REPT_TEX_44);
             _world.PlaySound("REPT02SND", 0.7f, "MY");
-            yield return REPTHIDE();
+            {
+                var enumerator = REPTHIDE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             DIE:
             var MY_50 = _world.GetSynonymObject("MY");
             MY_50.SetFloat("SKILL1", 10f);
-            yield return REPTDIE();
+            {
+                var enumerator = REPTDIE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
             OBSTACLE:
-            yield return REPTTALK();
-            yield return REPTTURN();
+            {
+                var enumerator = REPTTALK();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = REPTTURN();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -6178,7 +7445,17 @@ namespace Tests
             var DISTX_51_val = DISTX_51.GetFloat("VAL");
             if (DISTX_51_val > 10f)
             {
-                yield return BEAMREACT();
+                {
+                    var enumerator = BEAMREACT();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var MY_54 = _world.GetSynonymObject("MY");
@@ -6213,7 +7490,17 @@ namespace Tests
             {
                 goto BLOODSMELL;
             }
-            yield return LOOKPLAYER();
+            {
+                var enumerator = LOOKPLAYER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_6 = _world.GetSynonymObject("MY");
             var temp_7 = MY_6.GetFloat("FLAG1");
             if (temp_7 == 0f)
@@ -6221,7 +7508,17 @@ namespace Tests
                 yield break;
             }
             BLOODSMELL:
-            yield return REPTTALK();
+            {
+                var enumerator = REPTTALK();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -6251,7 +7548,17 @@ namespace Tests
             var temp_28 = MY_27.GetFloat("SKILL1");
             if (temp_28 < 9f)
             {
-                yield return REPTWANDER();
+                {
+                    var enumerator = REPTWANDER();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             yield break;
@@ -6330,15 +7637,45 @@ namespace Tests
             var REPTHIT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHIT");
             var MY_11 = _world.GetSynonymObject("MY");
             MY_11.SetAcknexObject("IF_HIT", REPTHIT_9);
-            yield return LOOKPLAYER();
+            {
+                var enumerator = LOOKPLAYER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_14 = _world.GetSynonymObject("MY");
             var temp_15 = MY_14.GetFloat("FLAG1");
             if (temp_15 == 0f)
             {
-                yield return REPTWAIT();
+                {
+                    var enumerator = REPTWAIT();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
-            yield return REPTFOLLOWATTACK();
+            {
+                var enumerator = REPTFOLLOWATTACK();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -6387,7 +7724,17 @@ namespace Tests
             WAITTIME_0.SetFloat("VAL", 64f * UnityEngine.Random.value + 16f);
             if (UnityEngine.Random.value < 0.07f)
             {
-                yield return REPTLISTEN();
+                {
+                    var enumerator = REPTLISTEN();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             if (UnityEngine.Random.value > 0.95f)
@@ -6405,10 +7752,30 @@ namespace Tests
             var RIGHTTURNREPT_24_val = RIGHTTURNREPT_24.GetFloat("VAL");
             if (RIGHTTURNREPT_24_val > RIGHTTURNREPT_24.GetFloat("MAX"))
             {
-                yield return TURNRIGHT();
+                {
+                    var enumerator = TURNRIGHT();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
-            yield return TURNLEFT();
+            {
+                var enumerator = TURNLEFT();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -6481,7 +7848,17 @@ namespace Tests
             _world.PlaySound("BIP02SND", 0.5f);
             //Unknown Property Type: World.IF_TAST
             _world.AcknexObject.SetAcknexObject("IF_S", null);
-            yield return HIDEMENU();
+            {
+                var enumerator = HIDEMENU();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator RESETWARN()
@@ -6517,7 +7894,17 @@ namespace Tests
             }
             var WRN03STR_6 = _world.AcknexObject.GetAcknexObject("WRN03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN03STR_6);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             HASGOT:
             var WEAPONSEL_9 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
@@ -6558,8 +7945,28 @@ namespace Tests
                 goto WAITFIRE;
             }
             NOGUN:
-            yield return TARGETOFF();
-            yield return SHOWAMMO();
+            {
+                var enumerator = TARGETOFF();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MAP_MODE_42 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             MAP_MODE_42.SetFloat("VAL", 0f);
             _world.AcknexObject.SetAcknexObject("LAYERS.13", null);
@@ -6570,7 +7977,17 @@ namespace Tests
             }
             var MY_GUN_50 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_50.SetFloat("INVISIBLE", 0f);
-            yield return LOWER();
+            {
+                var enumerator = LOWER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING:
             yield return new WaitForTicks(2f);
             var MY_GUN_54 = _world.GetSynonymObject("MY_GUN");
@@ -6584,7 +8001,17 @@ namespace Tests
             _world.SetSynonymObject("MY_GUN", GRANACT_56);
             var MY_GUN_60 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_60.SetFloat("INVISIBLE", 0f);
-            yield return RAISE();
+            {
+                var enumerator = RAISE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING1:
             yield return new WaitForTicks(1f);
             var MY_GUN_64 = _world.GetSynonymObject("MY_GUN");
@@ -6645,7 +8072,17 @@ namespace Tests
             }
             var WRN03STR_6 = _world.AcknexObject.GetAcknexObject("WRN03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN03STR_6);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             HASGOT:
             var WEAPONSEL_9 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
@@ -6678,8 +8115,28 @@ namespace Tests
                 goto WAITFIRE;
             }
             NOGUN:
-            yield return TARGETON();
-            yield return SHOWAMMO();
+            {
+                var enumerator = TARGETON();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MAP_MODE_36 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             MAP_MODE_36.SetFloat("VAL", 0f);
             _world.AcknexObject.SetAcknexObject("LAYERS.13", null);
@@ -6690,7 +8147,17 @@ namespace Tests
             }
             var MY_GUN_44 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_44.SetFloat("INVISIBLE", 0f);
-            yield return LOWER();
+            {
+                var enumerator = LOWER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING:
             yield return new WaitForTicks(8f);
             var MY_GUN_48 = _world.GetSynonymObject("MY_GUN");
@@ -6704,7 +8171,17 @@ namespace Tests
             _world.SetSynonymObject("MY_GUN", MP5ACT_50);
             var MY_GUN_54 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_54.SetFloat("INVISIBLE", 0f);
-            yield return RAISE();
+            {
+                var enumerator = RAISE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING1:
             yield return new WaitForTicks(1f);
             var MY_GUN_58 = _world.GetSynonymObject("MY_GUN");
@@ -6764,7 +8241,17 @@ namespace Tests
             }
             var WRN03STR_6 = _world.AcknexObject.GetAcknexObject("WRN03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN03STR_6);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             HASGOT:
             var WEAPONSEL_9 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
@@ -6799,8 +8286,28 @@ namespace Tests
                 goto WAITFIRE;
             }
             NOGUN:
-            yield return TARGETON();
-            yield return SHOWAMMO();
+            {
+                var enumerator = TARGETON();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MAP_MODE_40 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             MAP_MODE_40.SetFloat("VAL", 0f);
             _world.AcknexObject.SetAcknexObject("LAYERS.13", null);
@@ -6811,7 +8318,17 @@ namespace Tests
             }
             var MY_GUN_48 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_48.SetFloat("INVISIBLE", 0f);
-            yield return LOWER();
+            {
+                var enumerator = LOWER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING:
             yield return new WaitForTicks(8f);
             var MY_GUN_52 = _world.GetSynonymObject("MY_GUN");
@@ -6825,7 +8342,17 @@ namespace Tests
             _world.SetSynonymObject("MY_GUN", MP5ACT_54);
             var MY_GUN_58 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_58.SetFloat("INVISIBLE", 0f);
-            yield return RAISE();
+            {
+                var enumerator = RAISE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING1:
             yield return new WaitForTicks(1f);
             var MY_GUN_62 = _world.GetSynonymObject("MY_GUN");
@@ -6897,8 +8424,28 @@ namespace Tests
                 goto WAITFIRE;
             }
             NOGUN:
-            yield return TARGETOFF();
-            yield return SHOWAMMO();
+            {
+                var enumerator = TARGETOFF();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MAP_MODE_32 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             MAP_MODE_32.SetFloat("VAL", 0f);
             var PDATEXT_35 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"PDATEXT");
@@ -6911,7 +8458,17 @@ namespace Tests
             }
             var MY_GUN_43 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_43.SetFloat("INVISIBLE", 0f);
-            yield return LOWER();
+            {
+                var enumerator = LOWER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING:
             yield return new WaitForTicks(16f);
             var MY_GUN_47 = _world.GetSynonymObject("MY_GUN");
@@ -6968,7 +8525,17 @@ namespace Tests
             }
             var WRN03STR_6 = _world.AcknexObject.GetAcknexObject("WRN03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN03STR_6);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             HASGOT:
             var WEAPONSEL_9 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
@@ -7003,10 +8570,30 @@ namespace Tests
                 goto WAITFIRE;
             }
             NOGUN:
-            yield return TARGETON();
+            {
+                var enumerator = TARGETON();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var WEAPONSEL_40 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
             WEAPONSEL_40.SetFloat("VAL", 5f);
-            yield return SHOWAMMO();
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MAP_MODE_42 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             MAP_MODE_42.SetFloat("VAL", 0f);
             _world.AcknexObject.SetAcknexObject("LAYERS.13", null);
@@ -7017,7 +8604,17 @@ namespace Tests
             }
             var MY_GUN_50 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_50.SetFloat("INVISIBLE", 0f);
-            yield return LOWER();
+            {
+                var enumerator = LOWER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING:
             yield return new WaitForTicks(2f);
             var MY_GUN_54 = _world.GetSynonymObject("MY_GUN");
@@ -7031,7 +8628,17 @@ namespace Tests
             _world.SetSynonymObject("MY_GUN", QGUNACT_56);
             var MY_GUN_60 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_60.SetFloat("INVISIBLE", 0f);
-            yield return RAISE();
+            {
+                var enumerator = RAISE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING1:
             yield return new WaitForTicks(1f);
             var MY_GUN_64 = _world.GetSynonymObject("MY_GUN");
@@ -7091,7 +8698,17 @@ namespace Tests
             }
             var WRN03STR_6 = _world.AcknexObject.GetAcknexObject("WRN03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN03STR_6);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             HASGOT:
             var WEAPONSEL_9 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
@@ -7126,10 +8743,30 @@ namespace Tests
                 goto WAITFIRE;
             }
             NOGUN:
-            yield return TARGETON();
+            {
+                var enumerator = TARGETON();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var WEAPONSEL_40 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
             WEAPONSEL_40.SetFloat("VAL", 4f);
-            yield return SHOWAMMO();
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MAP_MODE_42 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             MAP_MODE_42.SetFloat("VAL", 0f);
             _world.AcknexObject.SetAcknexObject("LAYERS.13", null);
@@ -7140,7 +8777,17 @@ namespace Tests
             }
             var MY_GUN_50 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_50.SetFloat("INVISIBLE", 0f);
-            yield return LOWER();
+            {
+                var enumerator = LOWER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING:
             yield return new WaitForTicks(2f);
             var MY_GUN_54 = _world.GetSynonymObject("MY_GUN");
@@ -7154,7 +8801,17 @@ namespace Tests
             _world.SetSynonymObject("MY_GUN", STNGACT_56);
             var MY_GUN_60 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_60.SetFloat("INVISIBLE", 0f);
-            yield return RAISE();
+            {
+                var enumerator = RAISE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING1:
             yield return new WaitForTicks(1f);
             var MY_GUN_64 = _world.GetSynonymObject("MY_GUN");
@@ -7204,7 +8861,17 @@ namespace Tests
             var MAP_MODE_3_val = MAP_MODE_3.GetFloat("VAL");
             if (MAP_MODE_3_val > 0f)
             {
-                yield return SELECTNONE();
+                {
+                    var enumerator = SELECTNONE();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var HAS_PDA_5 = _world.GetObject(ObjectType.Skill, "HAS_PDA");
@@ -7215,7 +8882,17 @@ namespace Tests
             }
             var WRN04STR_6 = _world.AcknexObject.GetAcknexObject("WRN04STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN04STR_6);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             HASGOT:
             var WEAPONSEL_9 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
@@ -7250,8 +8927,28 @@ namespace Tests
                 goto WAITFIRE;
             }
             NOGUN:
-            yield return TARGETOFF();
-            yield return SHOWAMMO();
+            {
+                var enumerator = TARGETOFF();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MAP_MODE_40 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             MAP_MODE_40.SetFloat("VAL", 0f);
             _world.AcknexObject.SetAcknexObject("LAYERS.13", null);
@@ -7264,7 +8961,17 @@ namespace Tests
             }
             var MY_GUN_52 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_52.SetFloat("INVISIBLE", 0f);
-            yield return LOWER();
+            {
+                var enumerator = LOWER();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING:
             yield return new WaitForTicks(8f);
             var MY_GUN_56 = _world.GetSynonymObject("MY_GUN");
@@ -7278,7 +8985,17 @@ namespace Tests
             _world.SetSynonymObject("MY_GUN", TRICACT_58);
             var MY_GUN_62 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_62.SetFloat("INVISIBLE", 0f);
-            yield return RAISE();
+            {
+                var enumerator = RAISE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING1:
             yield return new WaitForTicks(1f);
             var MY_GUN_66 = _world.GetSynonymObject("MY_GUN");
@@ -7391,7 +9108,17 @@ namespace Tests
             var MOVING_3_val = MOVING_3.GetFloat("VAL");
             if (MOVING_3_val == MODE_GEHEN_2_val)
             {
-                yield return SET_WALKING();
+                {
+                    var enumerator = SET_WALKING();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var MODE_SCHWIMMEN_4 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
@@ -7400,7 +9127,17 @@ namespace Tests
             var MOVING_5_val = MOVING_5.GetFloat("VAL");
             if (MOVING_5_val == MODE_SCHWIMMEN_4_val)
             {
-                yield return SET_SWIMMING();
+                {
+                    var enumerator = SET_SWIMMING();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var MODE_TAUCHEN_6 = _world.GetObject(ObjectType.Skill, "MODE_TAUCHEN");
@@ -7409,7 +9146,17 @@ namespace Tests
             var MOVING_7_val = MOVING_7.GetFloat("VAL");
             if (MOVING_7_val == MODE_TAUCHEN_6_val)
             {
-                yield return SET_DIVING();
+                {
+                    var enumerator = SET_DIVING();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             yield break;
@@ -7612,7 +9359,17 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("MESSAGES.16", LOADSAVETEXT_44);
             var HLP01STR_47 = _world.AcknexObject.GetAcknexObject("HLP01STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP01STR_47);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator SHOWMAINMENU()
@@ -7646,7 +9403,17 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_CUR", MENUUP_17);
             var MENUDOWN_19 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MENUDOWN");
             _world.AcknexObject.SetAcknexObject("IF_CUL", MENUDOWN_19);
-            yield return HIDEWEAPON();
+            {
+                var enumerator = HIDEWEAPON();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var CHOOSESUBMENU_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CHOOSESUBMENU");
             _world.AcknexObject.SetAcknexObject("IF_ENTER", CHOOSESUBMENU_21);
             var MENUPANEL_23 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Panel,*/"MENUPANEL");
@@ -7655,12 +9422,32 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("MESSAGES.16", MAINMENUTEXT_26);
             var HLP01STR_29 = _world.AcknexObject.GetAcknexObject("HLP01STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP01STR_29);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator SHOWPDABRIEFING()
         {
-            yield return SELECTNONE();
+            {
+                var enumerator = SELECTNONE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING0:
             yield return new WaitForTicks(2f);
             var temp_3 = _world.AcknexObject?.GetAcknexObject("IF_2");
@@ -7674,10 +9461,30 @@ namespace Tests
             {
                 goto WAITING0;
             }
-            yield return HIDEWEAPON();
+            {
+                var enumerator = HIDEWEAPON();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var WEAPONSEL_7 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
             WEAPONSEL_7.SetFloat("VAL", 1f);
-            yield return SHOWAMMO();
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MAP_MODE_9 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             MAP_MODE_9.SetFloat("VAL", 0f);
             _world.AcknexObject.SetAcknexObject("LAYERS.13", null);
@@ -7690,7 +9497,17 @@ namespace Tests
             _world.SetSynonymObject("MY_GUN", TRICACT_22);
             var MY_GUN_26 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_26.SetFloat("INVISIBLE", 0f);
-            yield return RAISE();
+            {
+                var enumerator = RAISE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING2:
             yield return new WaitForTicks(2f);
             var MY_GUN_30 = _world.GetSynonymObject("MY_GUN");
@@ -7714,7 +9531,17 @@ namespace Tests
             var HLP03STR_46 = _world.AcknexObject.GetAcknexObject("HLP03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP03STR_46);
             //Unknown keyword: FADE_PAL
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var RENDER_MODE_49 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
             RENDER_MODE_49.SetFloat("VAL", 1f);
             yield return new WaitForTicks(1f);
@@ -7725,7 +9552,17 @@ namespace Tests
         public IEnumerator SHOWPDAGAMEOVER()
         {
             _world.PlaySound("ALARM03SND", 0.7f);
-            yield return SELECTNONE();
+            {
+                var enumerator = SELECTNONE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING0:
             yield return new WaitForTicks(2f);
             var temp_4 = _world.AcknexObject?.GetAcknexObject("IF_2");
@@ -7739,10 +9576,30 @@ namespace Tests
             {
                 goto WAITING0;
             }
-            yield return HIDEWEAPON();
+            {
+                var enumerator = HIDEWEAPON();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var WEAPONSEL_8 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
             WEAPONSEL_8.SetFloat("VAL", 1f);
-            yield return SHOWAMMO();
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MAP_MODE_10 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             MAP_MODE_10.SetFloat("VAL", 0f);
             _world.AcknexObject.SetAcknexObject("LAYERS.13", null);
@@ -7754,7 +9611,17 @@ namespace Tests
             _world.SetSynonymObject("MY_GUN", TRICACT_21);
             var MY_GUN_25 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_25.SetFloat("INVISIBLE", 0f);
-            yield return RAISE();
+            {
+                var enumerator = RAISE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             WAITING2:
             yield return new WaitForTicks(2f);
             var MY_GUN_29 = _world.GetSynonymObject("MY_GUN");
@@ -7779,7 +9646,17 @@ namespace Tests
             var HLP04STR_47 = _world.AcknexObject.GetAcknexObject("HLP04STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP04STR_47);
             //Unknown keyword: FADE_PAL
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var RENDER_MODE_50 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
             RENDER_MODE_50.SetFloat("VAL", 1f);
             yield return new WaitForTicks(2f);
@@ -7843,7 +9720,17 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("MESSAGES.16", LOADSAVETEXT_44);
             var HLP01STR_47 = _world.AcknexObject.GetAcknexObject("HLP01STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP01STR_47);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator SHOWSOUNDVOLUMEMENU()
@@ -7871,7 +9758,17 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("MESSAGES.16", SOUNDVOLUMETEXT_20);
             var HLP01STR_23 = _world.AcknexObject.GetAcknexObject("HLP01STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP01STR_23);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator SHOWWEAPON()
@@ -7918,7 +9815,17 @@ namespace Tests
             }
             var ASSAULTSTARTED_3 = _world.GetObject(ObjectType.Skill, "ASSAULTSTARTED");
             ASSAULTSTARTED_3.SetFloat("VAL", 1f);
-            yield return LAUNCHMISSILES();
+            {
+                var enumerator = LAUNCHMISSILES();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield return new WaitForTicks(64f);
             var HUMM1ACT_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"HUMM1ACT");
             HUMM1ACT_7.SetFloat("INVISIBLE", 0f);
@@ -7972,7 +9879,17 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("PANELS.15", INFOPANEL_36);
             var PNLMSKOVL_39 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Overlay,*/"PNLMSKOVL");
             _world.AcknexObject.SetAcknexObject("LAYERS.15", PNLMSKOVL_39);
-            yield return SET_WALKING();
+            {
+                var enumerator = SET_WALKING();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var DROPPED_43 = _world.GetObject(ObjectType.Skill, "DROPPED");
             DROPPED_43.SetFloat("VAL", 0f);
             var AMMO_45 = _world.GetObject(ObjectType.Skill, "AMMO");
@@ -8019,7 +9936,17 @@ namespace Tests
             _world.SetSynonymObject("ACTION_TRIGGER", STARTASSAULT_84);
             var GOLCOUNTER_87 = _world.GetObject(ObjectType.Skill, "GOLCOUNTER");
             GOLCOUNTER_87.SetFloat("VAL", 0f);
-            yield return FADEIN();
+            {
+                var enumerator = FADEIN();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -8088,10 +10015,30 @@ namespace Tests
             var AMMO_1_val = AMMO_1.GetFloat("VAL");
             if (AMMO_1_val == 0f)
             {
-                yield return SELECTNONE();
+                {
+                    var enumerator = SELECTNONE();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
-            yield return CHOOSEGRANADE();
+            {
+                var enumerator = CHOOSEGRANADE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var GRANADE_3 = _world.GetSynonymObject("GRANADE");
             if (GRANADE_3 == null)
             {
@@ -8195,7 +10142,17 @@ namespace Tests
             var AMMO_126_val = AMMO_126.GetFloat("VAL");
             var AMMO_127 = _world.GetObject(ObjectType.Skill, "AMMO");
             AMMO_127.SetFloat("VAL", AMMO_126_val + -1f);
-            yield return DECAMMO();
+            {
+                var enumerator = DECAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield return new WaitForCycles(2f);
             var GRAN2TEX_129 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"GRAN2TEX");
             var GRANADE_131 = _world.GetSynonymObject("GRANADE");
@@ -8218,7 +10175,17 @@ namespace Tests
             _world.SetSynonymObject("MY_GUN", null);
             var GUNFIRING_146 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
             GUNFIRING_146.SetFloat("VAL", 0f);
-            yield return SELECTNONE();
+            {
+                var enumerator = SELECTNONE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             MOREGRANADES:
             yield return new WaitForCycles(8f);
@@ -8253,7 +10220,17 @@ namespace Tests
             }
             var MY_12 = _world.GetSynonymObject("MY");
             MY_12.SetFloat("SKILL1", 0f);
-            yield return IMPLODEPARTICLE();
+            {
+                var enumerator = IMPLODEPARTICLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -8269,14 +10246,34 @@ namespace Tests
             }
             var HLP06STR_5 = _world.AcknexObject.GetAcknexObject("HLP06STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP06STR_5);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var GOD_MODE_8 = _world.GetObject(ObjectType.Skill, "GOD_MODE");
             GOD_MODE_8.SetFloat("VAL", 0f);
             yield break;
             GODMODE:
             var HLP05STR_9 = _world.AcknexObject.GetAcknexObject("HLP05STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP05STR_9);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var GOD_MODE_12 = _world.GetObject(ObjectType.Skill, "GOD_MODE");
             GOD_MODE_12.SetFloat("VAL", 1f);
             var HAS_MP5_14 = _world.GetObject(ObjectType.Skill, "HAS_MP5");
@@ -8305,7 +10302,17 @@ namespace Tests
             KEY3_36.SetFloat("VAL", 1f);
             var KEY4_38 = _world.GetObject(ObjectType.Skill, "KEY4");
             KEY4_38.SetFloat("VAL", 1f);
-            yield return SHOWAMMO();
+            {
+                var enumerator = SHOWAMMO();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator TROPAIM()
@@ -8331,8 +10338,28 @@ namespace Tests
             MY_23.SetAcknexObject("TEXTURE", TROP3ATEX_21);
             var MY_26 = _world.GetSynonymObject("MY");
             MY_26.SetFloat("SPEED", 0f);
-            yield return FOLLOWANGLE();
-            yield return TROPSHOUT();
+            {
+                var enumerator = FOLLOWANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = TROPSHOUT();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -8380,23 +10407,63 @@ namespace Tests
             var BULLET_27 = _world.AcknexObject.GetAcknexObject("BULLET");
             var MY_29 = _world.GetSynonymObject("MY");
             MY_29.SetAcknexObject("TARGET", BULLET_27);
-            yield return REPELANGLE();
+            {
+                var enumerator = REPELANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_31 = _world.GetSynonymObject("MY");
             var MY_33 = _world.GetSynonymObject("MY");
             var temp_34 = MY_33.GetFloat("ANGLE");
             var MY_36 = _world.GetSynonymObject("MY");
             var temp_37 = MY_36.GetFloat("ANGLE");
             MY_31.SetFloat("ANGLE", temp_37 + UnityEngine.Random.value - 0.5f);
-            yield return PROBE();
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield return new WaitForTicks(64f);
-            yield return FOLLOWANGLE();
+            {
+                var enumerator = FOLLOWANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_45 = _world.GetSynonymObject("MY");
             var temp_46 = MY_45.GetFloat("SKILL1");
             if (temp_46 > 5f)
             {
                 yield break;
             }
-            yield return TROPWAIT();
+            {
+                var enumerator = TROPWAIT();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -8466,7 +10533,17 @@ namespace Tests
             var temp_18 = MY_17.GetFloat("FLAG4");
             if (temp_18 != 0f)
             {
-                yield return TROPDROPKEY();
+                {
+                    var enumerator = TROPDROPKEY();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
             }
             var MY_21 = _world.GetSynonymObject("MY");
             MY_21.SetFloat("SKILL4", 8f);
@@ -8534,7 +10611,17 @@ namespace Tests
             MY_26.SetFloat("DIST", 30f);
             var MY_29 = _world.GetSynonymObject("MY");
             MY_29.SetFloat("SPEED", 0.4f);
-            yield return REPELANGLE();
+            {
+                var enumerator = REPELANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_31 = _world.GetSynonymObject("MY");
             var MY_33 = _world.GetSynonymObject("MY");
             var temp_34 = MY_33.GetFloat("ANGLE");
@@ -8544,8 +10631,28 @@ namespace Tests
             var BULLET_46 = _world.AcknexObject.GetAcknexObject("BULLET");
             var MY_48 = _world.GetSynonymObject("MY");
             MY_48.SetAcknexObject("TARGET", BULLET_46);
-            yield return LOCATEACTOR();
-            yield return PROBE();
+            {
+                var enumerator = LOCATEACTOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -8572,9 +10679,39 @@ namespace Tests
             MY_23.SetAcknexObject("TEXTURE", TROP1TEX_21);
             var MY_26 = _world.GetSynonymObject("MY");
             MY_26.SetFloat("SPEED", 0.4f);
-            yield return FOLLOWANGLE();
-            yield return LOCATEACTOR();
-            yield return PROBE();
+            {
+                var enumerator = FOLLOWANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = LOCATEACTOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -8604,9 +10741,39 @@ namespace Tests
             var BULLET_27 = _world.AcknexObject.GetAcknexObject("BULLET");
             var MY_29 = _world.GetSynonymObject("MY");
             MY_29.SetAcknexObject("TARGET", BULLET_27);
-            yield return FOLLOWANGLE();
-            yield return LOCATEACTOR();
-            yield return PROBE();
+            {
+                var enumerator = FOLLOWANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = LOCATEACTOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -8636,9 +10803,39 @@ namespace Tests
             var BULLET_27 = _world.AcknexObject.GetAcknexObject("BULLET");
             var MY_29 = _world.GetSynonymObject("MY");
             MY_29.SetAcknexObject("TARGET", BULLET_27);
-            yield return FOLLOWANGLE();
-            yield return LOCATEACTOR();
-            yield return PROBE();
+            {
+                var enumerator = FOLLOWANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = LOCATEACTOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -8669,7 +10866,17 @@ namespace Tests
             }
             var MY_27 = _world.GetSynonymObject("MY");
             MY_27.SetFloat("SKILL4", 4f);
-            yield return REPELANGLE();
+            {
+                var enumerator = REPELANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_29 = _world.GetSynonymObject("MY");
             var MY_31 = _world.GetSynonymObject("MY");
             var temp_32 = MY_31.GetFloat("ANGLE");
@@ -8686,8 +10893,28 @@ namespace Tests
             var BULLET_53 = _world.AcknexObject.GetAcknexObject("BULLET");
             var MY_55 = _world.GetSynonymObject("MY");
             MY_55.SetAcknexObject("TARGET", BULLET_53);
-            yield return LOCATEACTOR();
-            yield return PROBE();
+            {
+                var enumerator = LOCATEACTOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield return new WaitForTicks(384f);
             var MY_59 = _world.GetSynonymObject("MY");
             var temp_60 = MY_59.GetFloat("SKILL1");
@@ -8699,10 +10926,30 @@ namespace Tests
             var temp_64 = MY_63.GetFloat("SKILL1");
             var MY_66 = _world.GetSynonymObject("MY");
             MY_66.SetFloat("SKILL1", temp_64 + -2f);
-            yield return TROPFOLLOWATTACK();
+            {
+                var enumerator = TROPFOLLOWATTACK();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             HIDDING:
-            yield return REPELANGLE();
+            {
+                var enumerator = REPELANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_68 = _world.GetSynonymObject("MY");
             var MY_70 = _world.GetSynonymObject("MY");
             var temp_71 = MY_70.GetFloat("ANGLE");
@@ -8719,7 +10966,17 @@ namespace Tests
             var BULLET_92 = _world.AcknexObject.GetAcknexObject("BULLET");
             var MY_94 = _world.GetSynonymObject("MY");
             MY_94.SetAcknexObject("TARGET", BULLET_92);
-            yield return PROBE();
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator TROPHIT()
@@ -8780,7 +11037,17 @@ namespace Tests
             var temp_54 = MY_53.GetFloat("VISIBLE");
             if (temp_54 == 1f)
             {
-                yield return TROPIMPLODE();
+                {
+                    var enumerator = TROPIMPLODE();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             yield break;
@@ -8857,25 +11124,65 @@ namespace Tests
             var temp_136 = MY_135.GetFloat("SKILL1");
             if (temp_136 > 4f)
             {
-                yield return TROPHIDE();
+                {
+                    var enumerator = TROPHIDE();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var MY_139 = _world.GetSynonymObject("MY");
             var temp_140 = MY_139.GetFloat("SKILL4");
             if (temp_140 != 4f)
             {
-                yield return TROPFOLLOWATTACK();
+                {
+                    var enumerator = TROPFOLLOWATTACK();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             yield break;
             DIE:
             var MY_143 = _world.GetSynonymObject("MY");
             MY_143.SetFloat("SKILL1", 10f);
-            yield return TROPDIE();
+            {
+                var enumerator = TROPDIE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
             OBSTACLE:
-            yield return TROPTURN();
+            {
+                var enumerator = TROPTURN();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -8914,7 +11221,17 @@ namespace Tests
             var DISTX_51_val = DISTX_51.GetFloat("VAL");
             if (DISTX_51_val > 10f)
             {
-                yield return BEAMREACT();
+                {
+                    var enumerator = BEAMREACT();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var MY_54 = _world.GetSynonymObject("MY");
@@ -8943,7 +11260,17 @@ namespace Tests
             var temp_85 = MY_84.GetFloat("FLAG4");
             if (temp_85 != 0f)
             {
-                yield return TROPDROPKEY();
+                {
+                    var enumerator = TROPDROPKEY();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
             }
             yield break;
         }
@@ -9005,7 +11332,17 @@ namespace Tests
             var temp_50 = MY_49.GetFloat("SKILL1");
             if (temp_50 < 9f)
             {
-                yield return TROPWANDER();
+                {
+                    var enumerator = TROPWANDER();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             yield break;
@@ -9028,7 +11365,17 @@ namespace Tests
             var temp_11 = MY_10.GetFloat("FLAG2");
             if (temp_11 == 1f)
             {
-                yield return TROPFOLLOWATTACK();
+                {
+                    var enumerator = TROPFOLLOWATTACK();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             var FOLLOW_12 = _world.AcknexObject.GetAcknexObject("FOLLOW");
@@ -9106,8 +11453,28 @@ namespace Tests
             var BULLET_30 = _world.AcknexObject.GetAcknexObject("BULLET");
             var MY_32 = _world.GetSynonymObject("MY");
             MY_32.SetAcknexObject("TARGET", BULLET_30);
-            yield return LOCATEACTOR();
-            yield return PROBE();
+            {
+                var enumerator = LOCATEACTOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -9134,7 +11501,17 @@ namespace Tests
             MY_23.SetAcknexObject("TEXTURE", TROP3TEX_21);
             var MY_26 = _world.GetSynonymObject("MY");
             MY_26.SetFloat("SPEED", 0f);
-            yield return FOLLOWANGLE();
+            {
+                var enumerator = FOLLOWANGLE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var SHOOT_SECTOR_28 = _world.GetObject(ObjectType.Skill, "SHOOT_SECTOR");
             SHOOT_SECTOR_28.SetFloat("VAL", 2f);
             var TROPSHOOTFACTOR_29 = _world.GetObject(ObjectType.Skill, "TROPSHOOTFACTOR");
@@ -9156,10 +11533,30 @@ namespace Tests
             var RESULT_37_val = RESULT_37.GetFloat("VAL");
             var PLAYER_RESULT_38 = _world.GetObject(ObjectType.Skill, "PLAYER_RESULT");
             PLAYER_RESULT_38.SetFloat("VAL", RESULT_37_val);
-            yield return HITPLAYERDELAY();
+            {
+                var enumerator = HITPLAYERDELAY();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             MISS:
-            yield return TROPFOLLOWATTACK();
+            {
+                var enumerator = TROPFOLLOWATTACK();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -9227,7 +11624,17 @@ namespace Tests
             WAITTIME_0.SetFloat("VAL", 64f * UnityEngine.Random.value + 16f);
             if (UnityEngine.Random.value < 0.07f)
             {
-                yield return TROPLISTEN();
+                {
+                    var enumerator = TROPLISTEN();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             if (UnityEngine.Random.value > 0.95f)
@@ -9245,10 +11652,30 @@ namespace Tests
             var RIGHTTURNTROP_24_val = RIGHTTURNTROP_24.GetFloat("VAL");
             if (RIGHTTURNTROP_24_val > RIGHTTURNTROP_24.GetFloat("MAX"))
             {
-                yield return TURNRIGHT();
+                {
+                    var enumerator = TURNRIGHT();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
-            yield return TURNLEFT();
+            {
+                var enumerator = TURNLEFT();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -9327,8 +11754,28 @@ namespace Tests
             var BULLET_33 = _world.AcknexObject.GetAcknexObject("BULLET");
             var MY_35 = _world.GetSynonymObject("MY");
             MY_35.SetAcknexObject("TARGET", BULLET_33);
-            yield return LOCATEACTOR();
-            yield return PROBE();
+            {
+                var enumerator = LOCATEACTOR();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -9410,7 +11857,17 @@ namespace Tests
                 var temp_67 = MY_66.GetFloat("ANGLE");
                 MY_61.SetFloat("ANGLE", temp_67 - 2f);
             }
-            yield return TROPBACKOFF();
+            {
+                var enumerator = TROPBACKOFF();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -9420,7 +11877,17 @@ namespace Tests
             var temp_3 = MY_2.GetFloat("ANGLE");
             var MY_5 = _world.GetSynonymObject("MY");
             MY_5.SetFloat("ANGLE", temp_3 + 0.524f);
-            yield return PROBE();
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -9430,7 +11897,17 @@ namespace Tests
             var temp_3 = MY_2.GetFloat("ANGLE");
             var MY_5 = _world.GetSynonymObject("MY");
             MY_5.SetFloat("ANGLE", temp_3 + -0.524f);
-            yield return PROBE();
+            {
+                var enumerator = PROBE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
             yield break;
         }
@@ -9490,7 +11967,17 @@ namespace Tests
             var RESULT_32_val = RESULT_32.GetFloat("VAL");
             if (RESULT_32_val < 0f)
             {
-                yield return SAVEERRORMESSAGE();
+                {
+                    var enumerator = SAVEERRORMESSAGE();
+                    while (enumerator.MoveNext())
+                    {
+                        var current = enumerator.Current;
+                        if (current != null)
+                        {
+                            yield return current;
+                        }
+                    }
+                }
                 yield break;
             }
             //Unknown keyword: PLAY_CD
@@ -9700,12 +12187,32 @@ namespace Tests
             MY_2.SetFloat("DIST", 20f);
             var WRN22STR_3 = _world.AcknexObject.GetAcknexObject("WRN22STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN22STR_3);
-            yield return DISPLAYMESSAGE();
+            {
+                var enumerator = DISPLAYMESSAGE();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             yield break;
         }
         public IEnumerator WAYGUARD1()
         {
-            yield return TROPTALK();
+            {
+                var enumerator = TROPTALK();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_2 = _world.GetSynonymObject("MY");
             var temp_3 = MY_2.GetFloat("WAYPOINT");
             if (temp_3 != 15f)
@@ -9726,7 +12233,17 @@ namespace Tests
         }
         public IEnumerator WAYGUARD2()
         {
-            yield return TROPTALK();
+            {
+                var enumerator = TROPTALK();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_2 = _world.GetSynonymObject("MY");
             var temp_3 = MY_2.GetFloat("WAYPOINT");
             if (temp_3 != 11f)
@@ -9747,7 +12264,17 @@ namespace Tests
         }
         public IEnumerator WAYGUARD3()
         {
-            yield return TROPTALK();
+            {
+                var enumerator = TROPTALK();
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    if (current != null)
+                    {
+                        yield return current;
+                    }
+                }
+            }
             var MY_2 = _world.GetSynonymObject("MY");
             var temp_3 = MY_2.GetFloat("WAYPOINT");
             if (temp_3 != 8f)

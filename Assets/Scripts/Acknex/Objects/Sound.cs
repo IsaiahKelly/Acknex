@@ -49,5 +49,9 @@ namespace Acknex
             }
         }
 
+        public void SetupInstance()
+        {
+            
+        }
     }
 }

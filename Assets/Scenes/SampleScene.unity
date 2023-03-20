@@ -679,7 +679,6 @@ MonoBehaviour:
   AmbientLight: {fileID: 705507994}
   MidiPlayer: {fileID: 1246573634}
   AudioSource: {fileID: 1477033083}
-  AudioClip: {fileID: 0}
 --- !u!114 &1246573633
 MonoBehaviour:
   m_ObjectHideFlags: 0

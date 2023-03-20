@@ -25,8 +25,6 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_Y", playerY);
             World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
         }
-
-
         public void UpdateObject()
         {
             var playerX = World.Instance.GetSkillValue("PLAYER_X");
@@ -95,7 +93,13 @@ namespace Acknex
         private void StickToTheGround(float playerX, float playerY, ref float playerZ, bool initial = true)
         {
             var playerRegion = AcknexObject.GetAcknexObject("REGION")?.Container as Region;
-            Region.PutOnGround(AcknexObject, playerRegion, playerX, playerY, ref playerZ, false, false, initial);
+            Region.PutOnGround(AcknexObject, playerRegion, World.Instance.GetSkillValue("PLAYER_WIDTH"), playerX, playerY, ref playerZ, false, false, initial);
+        }
+
+        public IAcknexObject GetRegion()
+        {
+            var regionObject = AcknexObject.GetAcknexObject("REGION");
+            return regionObject;
         }
 
         public void Enable()
@@ -109,6 +113,11 @@ namespace Acknex
         }
 
         public void SetupTemplate()
+        {
+            
+        }
+
+        public void SetupInstance()
         {
             
         }

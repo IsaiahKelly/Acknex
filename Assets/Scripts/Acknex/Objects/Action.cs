@@ -8,7 +8,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Acknex.Interfaces;
 using AudioSynthesis.Synthesis;
-using Unity.Plastic.Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace Acknex
@@ -17,6 +16,8 @@ namespace Acknex
     //TODO: categorize actions in IEnumerators and not IEnumeratros (depending on actions that uses WAIT or WAITT)
     public class Action : IAcknexObjectContainer
     {
+        private const string CallEnumeratorTemplate = "{{\r\n    var enumerator = {0};\r\n    while (enumerator.MoveNext())\r\n    {{\r\n        var current = enumerator.Current;\r\n        if (current != null)\r\n        {{\r\n            yield return current;\r\n        }}\r\n    }}\r\n}}";
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Action);
         public StringBuilder CodeStringBuilder = new StringBuilder();
         public long PositionInFile;
@@ -351,16 +352,16 @@ namespace Acknex
                                 switch (keyword)
                                 {
                                     case "IF_EQUAL":
-                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" == ").Append(HandleGetString(lhs.propertyType, rhs)).AppendLine(")");
+                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" == ").Append(rhs.property).AppendLine(")");
                                         break;
                                     case "IF_NEQUAL":
-                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" != ").Append(HandleGetString(lhs.propertyType, rhs)).AppendLine(")");
+                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" != ").Append(rhs.property).AppendLine(")");
                                         break;
                                     case "IF_BELOW":
-                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" < ").Append(HandleGetString(lhs.propertyType, rhs)).AppendLine(")");
+                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" < ").Append(rhs.property).AppendLine(")");
                                         break;
                                     default:
-                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" > ").Append(HandleGetString(lhs.propertyType, rhs)).AppendLine(")");
+                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" > ").Append(rhs.property).AppendLine(")");
                                         break;
                                 }
                                 CodeStringBuilder.AppendLine("{");
@@ -385,11 +386,14 @@ namespace Acknex
             var action = labelOrStatement;
             if (!World.Instance.SynonymsByName.ContainsKey(action))
             {
-                CodeStringBuilder.Append("yield return ").Append(Sanitize(action)).AppendLine("();");
+                CodeStringBuilder.AppendFormat(CallEnumeratorTemplate, $"{Sanitize(action)}()");
+                //CodeStringBuilder.Append("CallEnumerator(").Append(Sanitize(action)).AppendLine("());");
             }
             else
             {
-                CodeStringBuilder.Append("yield return _world.CallSynonymAction(\"").Append(Sanitize(action)).AppendLine("\");");
+                var actionGetter = $"_world.CallSynonymAction(\"{Sanitize(action)}\")";
+                CodeStringBuilder.AppendFormat(CallEnumeratorTemplate, actionGetter);
+                //CodeStringBuilder.Append("CallEnumerator(_world.CallSynonymAction(\"").Append(Sanitize(action)).AppendLine("\"));");
             }
         }
 
@@ -477,35 +481,15 @@ namespace Acknex
                             break;
                         case PropertyType.Null:
                         case PropertyType.String:
-                            CodeStringBuilder.Append($"{lhs.source}.SetString(").Append(lhs.property).Append(",").Append(HandleGetString(lhs.propertyType, rhs)).AppendLine(");");
+                            CodeStringBuilder.Append($"{lhs.source}.SetString(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                             break;
                         case PropertyType.ActionReference:
                         case PropertyType.ObjectReference:
-                            CodeStringBuilder.Append($"{lhs.source}.SetAcknexObject(").Append(lhs.property).Append(",").Append(HandleGetString(lhs.propertyType, rhs)).AppendLine(");");
+                            CodeStringBuilder.Append($"{lhs.source}.SetAcknexObject(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                             break;
                     }
                     break;
             }
-        }
-
-        private string HandleGetString(PropertyType lhsPropertyType, (string property, PropertyType propertyType, ObjectType objectType, string source) rhs)
-        {
-            var result = rhs.property;
-            //if (lhsPropertyType == PropertyType.String || lhsPropertyType == PropertyType.ActionReference)
-            //{
-            //    if (rhs.property != "null")
-            //    {
-            //        if (rhs.objectType == ObjectType.String)
-            //        {
-            //            return $"{result}.GetString(\"VALUE\")";
-            //        }
-            //        if (rhs.objectType != ObjectType.Internal && rhs.objectType != ObjectType.World)
-            //        {
-            //            return $"{result}.GetString(\"NAME\")";
-            //        }
-            //    }
-            //}
-            return result;
         }
 
         private void HandleAdd(
@@ -896,6 +880,11 @@ namespace Acknex
         }
 
         public void SetupTemplate()
+        {
+            
+        }
+
+        public void SetupInstance()
         {
             
         }

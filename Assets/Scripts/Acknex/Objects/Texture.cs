@@ -69,7 +69,8 @@ namespace Acknex
             MeshFilter meshFilter,
             GameObject thingGameObject,
             IAcknexObject acknexObject,
-            Transform transform
+            IAcknexObject regionAcknexObject,
+            Transform thingTransform
         )
         {
             var sides = Mathf.Max(1, this.AcknexObject.GetInteger("SIDES"));
@@ -77,17 +78,17 @@ namespace Acknex
             var mirror = this.AcknexObject.GetObject<List<float>>("MIRROR");
             if (cycles == 1)
             {
-                UpdateAngleFrameScale(scaleTexture, cycles, sides, 0, mirror, null, meshRenderer, meshFilter, thingGameObject, acknexObject, transform);
+                UpdateAngleFrameScale(scaleTexture, cycles, sides, 0, mirror, null, meshRenderer, meshFilter, thingGameObject, acknexObject, thingTransform);
                 yield break;
             }
             var cycle = 0;
             while (true)
             {
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : null;
-                UpdateAngleFrameScale(scaleTexture, cycles, sides, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, acknexObject, transform);
+                UpdateAngleFrameScale(scaleTexture, cycles, sides, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, acknexObject, thingTransform);
                 yield return currentDelay;
                 cycle = (int)Mathf.Repeat(cycle + 1, cycles);
-                World.Instance.TriggerEvent(acknexObject, "EACH_CYCLE");
+                World.Instance.TriggerEvent(acknexObject, acknexObject, regionAcknexObject, "EACH_CYCLE");
             }
         }
 
@@ -175,6 +176,11 @@ namespace Acknex
                     _textureObjectDelay.Add(new WaitForSeconds(TimeUtils.TicksToTime((int)delay[i])));
                 }
             }
+        }
+
+        public void SetupInstance()
+        {
+            
         }
     }
 }

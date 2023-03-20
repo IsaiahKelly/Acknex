@@ -13,6 +13,7 @@ public class AcknexObjectEditor : Editor
         base.OnInspectorGUI();
         if (target is IAcknexObjectContainer container)
         {
+            EditorGUILayout.Toggle("Is Instance", container.AcknexObject.IsInstance);
             EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Instance");
             foreach (var property in ((AcknexObject)container.AcknexObject).ObjectProperties)
             {
@@ -24,7 +25,7 @@ public class AcknexObjectEditor : Editor
                 }
                 else
                 {
-                    EditorGUILayout.LabelField(property.Value.ToString());
+                    EditorGUILayout.LabelField(property.Value?.ToString());
                 }
                 EditorGUILayout.EndHorizontal();
             }
@@ -32,7 +33,7 @@ public class AcknexObjectEditor : Editor
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(property.Key);
-                EditorGUILayout.LabelField(property.Value.ToString());
+                EditorGUILayout.LabelField(property.Value.ToString(CultureInfo.InvariantCulture));
                 EditorGUILayout.EndHorizontal();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
@@ -52,7 +53,7 @@ public class AcknexObjectEditor : Editor
                         }
                         else
                         {
-                            EditorGUILayout.LabelField(property.Value.ToString());
+                            EditorGUILayout.LabelField(property.Value?.ToString());
                         }
                         EditorGUILayout.EndHorizontal();
                     }

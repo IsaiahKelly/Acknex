@@ -10,15 +10,21 @@ namespace Acknex
     public class AcknexObject : IAcknexObject
     {
         public ObjectType Type { get; set; }
+        public bool IsInstance { get; set; }
 
         public SortedDictionary<string, float> NumberProperties = new SortedDictionary<string, float>();
         public SortedDictionary<string, object> ObjectProperties = new SortedDictionary<string, object>();
 
         public IAcknexObjectContainer Container { get; set; }
 
-        //private HashSet<string> Flags => GetObject<HashSet<string>>("FLAGS", true);
-
-        //private HashSet<string> InstanceFlags => GetObject<HashSet<string>>("FLAGS", false);
+        public override string ToString()
+        {
+            if (TryGetString("NAME", out var name))
+            {
+                return name;
+            }
+            return base.ToString();
+        }
 
         public void AddFlag(string flag)
         {

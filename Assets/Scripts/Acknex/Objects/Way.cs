@@ -20,7 +20,6 @@ namespace Acknex
         }
 
         public List<Vector2> Points = new List<Vector2>();
-        private bool _instance;
 
         public void OnDrawGizmos()
         {
@@ -32,9 +31,22 @@ namespace Acknex
             }
         }
 
+        private IEnumerator UpdateInstance()
+        {
+            while (!AcknexObject.IsInstance)
+            {
+                yield return null;
+            }
+            while (true)
+            {
+                UpdateObject();
+                UpdateEvents();
+                yield return null;
+            }
+        }
+
         public void UpdateObject()
         {
-            UpdateEvents();
             if (!AcknexObject.IsDirty)
             {
                 return;
@@ -64,21 +76,12 @@ namespace Acknex
 
         public void SetupInstance()
         {
-            _instance = true;
+            StartCoroutine(UpdateInstance());
         }
 
         private void Awake()
         {
             AcknexObject.Container = this;
-        }
-
-        private void Update()
-        {
-            if (!_instance)
-            {
-                return;
-            }
-            UpdateObject();
         }
 
         public IEnumerator MoveThingOrActor(IAcknexObject thingOrActor)
@@ -87,7 +90,8 @@ namespace Acknex
             thingOrActor.SetInteger("WAYPOINT", waypoint);
             if (Points.Count == 0)
             {
-                World.Instance.TriggerEvent(AcknexObject, "IF_ARRIVED");
+                //todo: event objects
+                //World.Instance.TriggerEvent(null, AcknexObject, null, "IF_ARRIVED");
                 yield break;
             }
             var thing = (Thing)thingOrActor.Container;

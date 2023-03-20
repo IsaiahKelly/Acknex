@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
 using Acknex.Interfaces;
 
 namespace Acknex
@@ -23,15 +24,7 @@ namespace Acknex
             {
                 throw new Exception("Synonym [" + synonymName + "] not found");
             }
-            if (target == null)
-            {
-                synonym.AcknexObject.SetString("VAL", null);
-                synonym.AcknexObject.SetAcknexObject("INSTANCE", null);
-                return;
-            }
-            var objectName = target.GetString("NAME");
-            synonym.AcknexObject.SetString("VAL", objectName);
-            synonym.AcknexObject.SetAcknexObject("INSTANCE", target);
+            synonym.AcknexObject.SetAcknexObject("VAL", target);
         }
 
         public ObjectType GetSynonymType(string synonymName)
@@ -64,29 +57,27 @@ namespace Acknex
             }
         }
 
-        //todo: add instance check "INDEX"  
         public IAcknexObject GetSynonymObject(string synonymName)
         {
             if (SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
-                var objectName = synonym.AcknexObject.GetString("VAL");
-                var objectType = GetSynonymType(synonymName);
-                return GetObject(objectType, objectName);
+                //var objectName = synonym.AcknexObject.GetString("VAL");
+                //var objectType = GetSynonymType(synonymName);
+                //var result = GetObject(objectType, objectName);
+                //if (result == null)
+                //{
+                //    UnityEngine.Debug.Log("Trying to get the null synonym:" + synonymName);
+                //}
+                //else
+                //{
+                //    if (synonymName == "MY" && !result.IsInstance)
+                //    {
+                //        UnityEngine.Debug.Log("Trying to get the MY synonym using a non-template object:" + result.ToString());
+                //    }
+                //}
+                return synonym.AcknexObject.GetAcknexObject("VAL");
             }
             return null;
-        }
-
-        public IEnumerator CallSynonymAction(string synonymName)
-        {
-            if (SynonymsByName.TryGetValue(synonymName, out var synonym))
-            {
-                var value = synonym.AcknexObject.GetAcknexObject("VAL") ?? synonym.AcknexObject.GetAcknexObject("DEFAULT");
-                //var objectName = synonym.AcknexObject.GetString("VAL") ?? synonym.AcknexObject.GetString("DEFAULT") ?? synonym.AcknexObject.GetString("NAME");
-                if (value != null)
-                {
-                    yield return CallAction(GetSynonymObject("MY"), value.GetString("NAME"));
-                }
-            }
         }
     }
 }

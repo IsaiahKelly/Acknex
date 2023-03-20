@@ -40,6 +40,11 @@ namespace Acknex
             }
         }
 
+        public void SetupInstance()
+        {
+            
+        }
+
         public Music()
         {
             AcknexObject.Container = this;

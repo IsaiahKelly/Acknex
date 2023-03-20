@@ -40,6 +40,11 @@ namespace Acknex
             CreateBitmapTexture(filename, (int)X, (int)Y, (int)Width, (int)Height, out Texture2D, ref BitmapTexture2D);
         }
 
+        public void SetupInstance()
+        {
+            
+        }
+
         public static void CreateBitmapTexture(string filename, int x, int y, int width, int height, out Texture2D texture2D, ref Texture2D bitmapTexture2D)
         {
             if (!World.Instance.TextureCache.TryGetValue(filename, out texture2D))

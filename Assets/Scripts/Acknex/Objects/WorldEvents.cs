@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Acknex.Interfaces;
 using UnityEngine;
 
@@ -10,7 +11,13 @@ namespace Acknex
         public WaitForSeconds WaitForTick;
         public WaitForSeconds WaitForSecond;
 
-
+        private struct Event
+        {
+            public IAcknexObject My;
+            public string ActionName;
+            public IAcknexObject Extra;
+            public IAcknexObject There;
+        }
 
         private static readonly string[] TickEvents = new string[]
         {
@@ -52,6 +59,21 @@ namespace Acknex
             "EACH_SEC.16",
         };
 
+        private Queue<Event> _events = new Queue<Event>();
+
+        public IEnumerator CallSynonymAction(string synonymName)
+        {
+            if (SynonymsByName.TryGetValue(synonymName, out var synonym))
+            {
+                var value = synonym.AcknexObject.GetAcknexObject("VAL") ?? synonym.AcknexObject.GetAcknexObject("DEFAULT");
+                //var objectName = synonym.AcknexObject.GetString("VAL") ?? synonym.AcknexObject.GetString("DEFAULT") ?? synonym.AcknexObject.GetString("NAME");
+                if (value != null)
+                {
+                    yield return CallAction(GetSynonymObject("MY"), value.GetString("NAME"));
+                }
+            }
+        }
+
         public IEnumerator CallAction(IAcknexObject source, string name)
         {
             if (_runtime == null)
@@ -65,27 +87,28 @@ namespace Acknex
             yield return (IEnumerator)_runtime.CallAction(name);
         }
 
-        public void TriggerEvent(IAcknexObject source, string eventName)
+        public void TriggerEvent(IAcknexObject source, IAcknexObject my, IAcknexObject there, string name)
         {
             if (_runtime == null)
             {
                 return;
             }
-            if (source.TryGetAcknexObject(eventName, out var acknexObject) && acknexObject != null)
+            if (source.TryGetAcknexObject(name, out var acknexObject) && acknexObject != null)
             {
                 if (acknexObject.TryGetString("NAME", out var value) && value != null)
                 {
-                    SetSynonymObject("MY", source);
+                    SetSynonymObject("MY", my);
+                    SetSynonymObject("THERE", there);
                     StartCoroutine(_runtime.CallAction(value));
                 }
             }
         }
 
-        public void TriggerEventConditional(IAcknexObject source, string eventName, bool condition)
+        public void TriggerEventConditional(IAcknexObject acknexObject, string eventName, bool condition)
         {
             if (condition)
             {
-                TriggerEvent(source, eventName);
+                TriggerEvent(acknexObject, acknexObject, null, eventName);
             }
         }
 
@@ -95,7 +118,7 @@ namespace Acknex
             {
                 foreach (var tickEvent in TickEvents)
                 {
-                    TriggerEvent(acknexObject, tickEvent);
+                    TriggerEvent(acknexObject, acknexObject, null, tickEvent);
                 }
                 yield return null;
             }
@@ -107,7 +130,7 @@ namespace Acknex
             {
                 foreach (var secEvent in SecEvents)
                 {
-                    TriggerEvent(acknexObject, secEvent);
+                    TriggerEvent(acknexObject, acknexObject, null, secEvent);
                 }
                 yield return null;
             }
@@ -115,92 +138,112 @@ namespace Acknex
 
         private void SetupEvents()
         {
-            TriggerEvent(AcknexObject, "IF_START");
+            TriggerEvent(AcknexObject, AcknexObject, null, "IF_START");
             WaitForTick = new WaitForSeconds(TimeUtils.TicksToTime(1));
             WaitForSecond = new WaitForSeconds(1f);
             StartCoroutine(TriggerTickEvents(AcknexObject));
             StartCoroutine(TriggerSecEvents(AcknexObject));
+            StartCoroutine(UpdateEvents());
         }
 
-        private void UpdateEvents()
+        private IEnumerator UpdateEvents()
         {
-            TriggerEventConditional(AcknexObject, "IF_ANYKEY", Input.anyKeyDown);
-            TriggerEventConditional(AcknexObject, "IF_0", Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0));
-            TriggerEventConditional(AcknexObject, "IF_1", Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1));
-            TriggerEventConditional(AcknexObject, "IF_2", Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2));
-            TriggerEventConditional(AcknexObject, "IF_3", Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3));
-            TriggerEventConditional(AcknexObject, "IF_4", Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4));
-            TriggerEventConditional(AcknexObject, "IF_5", Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5));
-            TriggerEventConditional(AcknexObject, "IF_6", Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6));
-            TriggerEventConditional(AcknexObject, "IF_7", Input.GetKeyDown(KeyCode.Keypad7) || Input.GetKeyDown(KeyCode.Alpha7));
-            TriggerEventConditional(AcknexObject, "IF_8", Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.Alpha8));
-            TriggerEventConditional(AcknexObject, "IF_9", Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.Alpha9));
-            TriggerEventConditional(AcknexObject, "IF_A", Input.GetKeyDown(KeyCode.A));
-            TriggerEventConditional(AcknexObject, "IF_B", Input.GetKeyDown(KeyCode.B));
-            TriggerEventConditional(AcknexObject, "IF_C", Input.GetKeyDown(KeyCode.C));
-            TriggerEventConditional(AcknexObject, "IF_D", Input.GetKeyDown(KeyCode.D));
-            TriggerEventConditional(AcknexObject, "IF_E", Input.GetKeyDown(KeyCode.E));
-            TriggerEventConditional(AcknexObject, "IF_F", Input.GetKeyDown(KeyCode.F));
-            TriggerEventConditional(AcknexObject, "IF_G", Input.GetKeyDown(KeyCode.G));
-            TriggerEventConditional(AcknexObject, "IF_H", Input.GetKeyDown(KeyCode.H));
-            TriggerEventConditional(AcknexObject, "IF_I", Input.GetKeyDown(KeyCode.I));
-            TriggerEventConditional(AcknexObject, "IF_J", Input.GetKeyDown(KeyCode.J));
-            TriggerEventConditional(AcknexObject, "IF_K", Input.GetKeyDown(KeyCode.K));
-            TriggerEventConditional(AcknexObject, "IF_L", Input.GetKeyDown(KeyCode.L));
-            TriggerEventConditional(AcknexObject, "IF_M", Input.GetKeyDown(KeyCode.M));
-            TriggerEventConditional(AcknexObject, "IF_N", Input.GetKeyDown(KeyCode.N));
-            TriggerEventConditional(AcknexObject, "IF_O", Input.GetKeyDown(KeyCode.O));
-            TriggerEventConditional(AcknexObject, "IF_P", Input.GetKeyDown(KeyCode.P));
-            TriggerEventConditional(AcknexObject, "IF_Q", Input.GetKeyDown(KeyCode.Q));
-            TriggerEventConditional(AcknexObject, "IF_R", Input.GetKeyDown(KeyCode.R));
-            TriggerEventConditional(AcknexObject, "IF_S", Input.GetKeyDown(KeyCode.S));
-            TriggerEventConditional(AcknexObject, "IF_T", Input.GetKeyDown(KeyCode.T));
-            TriggerEventConditional(AcknexObject, "IF_U", Input.GetKeyDown(KeyCode.U));
-            TriggerEventConditional(AcknexObject, "IF_V", Input.GetKeyDown(KeyCode.V));
-            TriggerEventConditional(AcknexObject, "IF_X", Input.GetKeyDown(KeyCode.X));
-            TriggerEventConditional(AcknexObject, "IF_Y", Input.GetKeyDown(KeyCode.Y));
-            TriggerEventConditional(AcknexObject, "IF_Z", Input.GetKeyDown(KeyCode.Z));
-            TriggerEventConditional(AcknexObject, "IF_W", Input.GetKeyDown(KeyCode.W));
-            TriggerEventConditional(AcknexObject, "IF_ALT", Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt));
-            TriggerEventConditional(AcknexObject, "IF_BKSP", Input.GetKeyDown(KeyCode.Backspace));
-            TriggerEventConditional(AcknexObject, "IF_CAL", Input.GetKeyDown(KeyCode.Comma));
-            TriggerEventConditional(AcknexObject, "IF_CAR", Input.GetKeyDown(KeyCode.Period));
-            TriggerEventConditional(AcknexObject, "IF_CTRL", Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl));
-            TriggerEventConditional(AcknexObject, "IF_DEL", Input.GetKeyDown(KeyCode.Delete));
-            TriggerEventConditional(AcknexObject, "IF_END", Input.GetKeyDown(KeyCode.End));
-            TriggerEventConditional(AcknexObject, "IF_ENTER", Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return));
-            TriggerEventConditional(AcknexObject, "IF_ESC", Input.GetKeyDown(KeyCode.Escape));
-            TriggerEventConditional(AcknexObject, "IF_F1", Input.GetKeyDown(KeyCode.F1));
-            TriggerEventConditional(AcknexObject, "IF_F2", Input.GetKeyDown(KeyCode.F2));
-            TriggerEventConditional(AcknexObject, "IF_F3", Input.GetKeyDown(KeyCode.F3));
-            TriggerEventConditional(AcknexObject, "IF_F4", Input.GetKeyDown(KeyCode.F4));
-            TriggerEventConditional(AcknexObject, "IF_F5", Input.GetKeyDown(KeyCode.F5));
-            TriggerEventConditional(AcknexObject, "IF_F6", Input.GetKeyDown(KeyCode.F6));
-            TriggerEventConditional(AcknexObject, "IF_F7", Input.GetKeyDown(KeyCode.F7));
-            TriggerEventConditional(AcknexObject, "IF_F8", Input.GetKeyDown(KeyCode.F8));
-            TriggerEventConditional(AcknexObject, "IF_F9", Input.GetKeyDown(KeyCode.F9));
-            TriggerEventConditional(AcknexObject, "IF_F10", Input.GetKeyDown(KeyCode.F10));
-            TriggerEventConditional(AcknexObject, "IF_F11", Input.GetKeyDown(KeyCode.F11));
-            TriggerEventConditional(AcknexObject, "IF_F12", Input.GetKeyDown(KeyCode.F12));
-            TriggerEventConditional(AcknexObject, "IF_HOME", Input.GetKeyDown(KeyCode.Home));
-            TriggerEventConditional(AcknexObject, "IF_INS", Input.GetKeyDown(KeyCode.Insert));
-            TriggerEventConditional(AcknexObject, "IF_DEL", Input.GetKeyDown(KeyCode.Delete));
-            TriggerEventConditional(AcknexObject, "IF_LEFT", Input.GetMouseButtonDown(0));
-            TriggerEventConditional(AcknexObject, "IF_MIDDLE", Input.GetMouseButtonDown(1));
-            TriggerEventConditional(AcknexObject, "IF_RIGHT", Input.GetMouseButtonDown(2));
-            TriggerEventConditional(AcknexObject, "IF_PAUSE", Input.GetKeyDown(KeyCode.Pause));
-            TriggerEventConditional(AcknexObject, "IF_PGDN", Input.GetKeyDown(KeyCode.PageDown));
-            TriggerEventConditional(AcknexObject, "IF_PGUP", Input.GetKeyDown(KeyCode.PageUp));
-            TriggerEventConditional(AcknexObject, "IF_SPACE", Input.GetKeyDown(KeyCode.Space));
-            TriggerEventConditional(AcknexObject, "IF_TAB", Input.GetKeyDown(KeyCode.Tab));
-            TriggerEventConditional(AcknexObject, "IF_CUU", Input.GetKeyDown(KeyCode.UpArrow));
-            TriggerEventConditional(AcknexObject, "IF_CUD", Input.GetKeyDown(KeyCode.DownArrow));
-            TriggerEventConditional(AcknexObject, "IF_CUR", Input.GetKeyDown(KeyCode.RightArrow));
-            TriggerEventConditional(AcknexObject, "IF_CUL", Input.GetKeyDown(KeyCode.LeftArrow));
-            TriggerEventConditional(AcknexObject, "IF_SHIFT", Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift));
-            TriggerEventConditional(AcknexObject, "IF_APO", Input.GetKeyDown(KeyCode.Quote));
-            TriggerEventConditional(AcknexObject, "IF_MINUS", Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.KeypadMinus));
-            TriggerEventConditional(AcknexObject, "IF_PLUS", Input.GetKeyDown(KeyCode.Plus) || Input.GetKeyDown(KeyCode.KeypadPlus));
+            while (true)
+            {
+                TriggerEventConditional(AcknexObject, "IF_ANYKEY", Input.anyKeyDown);
+                TriggerEventConditional(AcknexObject, "IF_0", Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0));
+                TriggerEventConditional(AcknexObject, "IF_1", Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1));
+                TriggerEventConditional(AcknexObject, "IF_2", Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2));
+                TriggerEventConditional(AcknexObject, "IF_3", Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3));
+                TriggerEventConditional(AcknexObject, "IF_4", Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4));
+                TriggerEventConditional(AcknexObject, "IF_5", Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5));
+                TriggerEventConditional(AcknexObject, "IF_6", Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6));
+                TriggerEventConditional(AcknexObject, "IF_7", Input.GetKeyDown(KeyCode.Keypad7) || Input.GetKeyDown(KeyCode.Alpha7));
+                TriggerEventConditional(AcknexObject, "IF_8", Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.Alpha8));
+                TriggerEventConditional(AcknexObject, "IF_9", Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.Alpha9));
+                TriggerEventConditional(AcknexObject, "IF_A", Input.GetKeyDown(KeyCode.A));
+                TriggerEventConditional(AcknexObject, "IF_B", Input.GetKeyDown(KeyCode.B));
+                TriggerEventConditional(AcknexObject, "IF_C", Input.GetKeyDown(KeyCode.C));
+                TriggerEventConditional(AcknexObject, "IF_D", Input.GetKeyDown(KeyCode.D));
+                TriggerEventConditional(AcknexObject, "IF_E", Input.GetKeyDown(KeyCode.E));
+                TriggerEventConditional(AcknexObject, "IF_F", Input.GetKeyDown(KeyCode.F));
+                TriggerEventConditional(AcknexObject, "IF_G", Input.GetKeyDown(KeyCode.G));
+                TriggerEventConditional(AcknexObject, "IF_H", Input.GetKeyDown(KeyCode.H));
+                TriggerEventConditional(AcknexObject, "IF_I", Input.GetKeyDown(KeyCode.I));
+                TriggerEventConditional(AcknexObject, "IF_J", Input.GetKeyDown(KeyCode.J));
+                TriggerEventConditional(AcknexObject, "IF_K", Input.GetKeyDown(KeyCode.K));
+                TriggerEventConditional(AcknexObject, "IF_L", Input.GetKeyDown(KeyCode.L));
+                TriggerEventConditional(AcknexObject, "IF_M", Input.GetKeyDown(KeyCode.M));
+                TriggerEventConditional(AcknexObject, "IF_N", Input.GetKeyDown(KeyCode.N));
+                TriggerEventConditional(AcknexObject, "IF_O", Input.GetKeyDown(KeyCode.O));
+                TriggerEventConditional(AcknexObject, "IF_P", Input.GetKeyDown(KeyCode.P));
+                TriggerEventConditional(AcknexObject, "IF_Q", Input.GetKeyDown(KeyCode.Q));
+                TriggerEventConditional(AcknexObject, "IF_R", Input.GetKeyDown(KeyCode.R));
+                TriggerEventConditional(AcknexObject, "IF_S", Input.GetKeyDown(KeyCode.S));
+                TriggerEventConditional(AcknexObject, "IF_T", Input.GetKeyDown(KeyCode.T));
+                TriggerEventConditional(AcknexObject, "IF_U", Input.GetKeyDown(KeyCode.U));
+                TriggerEventConditional(AcknexObject, "IF_V", Input.GetKeyDown(KeyCode.V));
+                TriggerEventConditional(AcknexObject, "IF_X", Input.GetKeyDown(KeyCode.X));
+                TriggerEventConditional(AcknexObject, "IF_Y", Input.GetKeyDown(KeyCode.Y));
+                TriggerEventConditional(AcknexObject, "IF_Z", Input.GetKeyDown(KeyCode.Z));
+                TriggerEventConditional(AcknexObject, "IF_W", Input.GetKeyDown(KeyCode.W));
+                TriggerEventConditional(AcknexObject, "IF_ALT", Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt));
+                TriggerEventConditional(AcknexObject, "IF_BKSP", Input.GetKeyDown(KeyCode.Backspace));
+                TriggerEventConditional(AcknexObject, "IF_CAL", Input.GetKeyDown(KeyCode.Comma));
+                TriggerEventConditional(AcknexObject, "IF_CAR", Input.GetKeyDown(KeyCode.Period));
+                TriggerEventConditional(AcknexObject, "IF_CTRL", Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl));
+                TriggerEventConditional(AcknexObject, "IF_DEL", Input.GetKeyDown(KeyCode.Delete));
+                TriggerEventConditional(AcknexObject, "IF_END", Input.GetKeyDown(KeyCode.End));
+                TriggerEventConditional(AcknexObject, "IF_ENTER", Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return));
+                TriggerEventConditional(AcknexObject, "IF_ESC", Input.GetKeyDown(KeyCode.Escape));
+                TriggerEventConditional(AcknexObject, "IF_F1", Input.GetKeyDown(KeyCode.F1));
+                TriggerEventConditional(AcknexObject, "IF_F2", Input.GetKeyDown(KeyCode.F2));
+                TriggerEventConditional(AcknexObject, "IF_F3", Input.GetKeyDown(KeyCode.F3));
+                TriggerEventConditional(AcknexObject, "IF_F4", Input.GetKeyDown(KeyCode.F4));
+                TriggerEventConditional(AcknexObject, "IF_F5", Input.GetKeyDown(KeyCode.F5));
+                TriggerEventConditional(AcknexObject, "IF_F6", Input.GetKeyDown(KeyCode.F6));
+                TriggerEventConditional(AcknexObject, "IF_F7", Input.GetKeyDown(KeyCode.F7));
+                TriggerEventConditional(AcknexObject, "IF_F8", Input.GetKeyDown(KeyCode.F8));
+                TriggerEventConditional(AcknexObject, "IF_F9", Input.GetKeyDown(KeyCode.F9));
+                TriggerEventConditional(AcknexObject, "IF_F10", Input.GetKeyDown(KeyCode.F10));
+                TriggerEventConditional(AcknexObject, "IF_F11", Input.GetKeyDown(KeyCode.F11));
+                TriggerEventConditional(AcknexObject, "IF_F12", Input.GetKeyDown(KeyCode.F12));
+                TriggerEventConditional(AcknexObject, "IF_HOME", Input.GetKeyDown(KeyCode.Home));
+                TriggerEventConditional(AcknexObject, "IF_INS", Input.GetKeyDown(KeyCode.Insert));
+                TriggerEventConditional(AcknexObject, "IF_DEL", Input.GetKeyDown(KeyCode.Delete));
+                TriggerEventConditional(AcknexObject, "IF_LEFT", Input.GetMouseButtonDown(0));
+                TriggerEventConditional(AcknexObject, "IF_MIDDLE", Input.GetMouseButtonDown(1));
+                TriggerEventConditional(AcknexObject, "IF_RIGHT", Input.GetMouseButtonDown(2));
+                TriggerEventConditional(AcknexObject, "IF_PAUSE", Input.GetKeyDown(KeyCode.Pause));
+                TriggerEventConditional(AcknexObject, "IF_PGDN", Input.GetKeyDown(KeyCode.PageDown));
+                TriggerEventConditional(AcknexObject, "IF_PGUP", Input.GetKeyDown(KeyCode.PageUp));
+                TriggerEventConditional(AcknexObject, "IF_SPACE", Input.GetKeyDown(KeyCode.Space));
+                TriggerEventConditional(AcknexObject, "IF_TAB", Input.GetKeyDown(KeyCode.Tab));
+                TriggerEventConditional(AcknexObject, "IF_CUU", Input.GetKeyDown(KeyCode.UpArrow));
+                TriggerEventConditional(AcknexObject, "IF_CUD", Input.GetKeyDown(KeyCode.DownArrow));
+                TriggerEventConditional(AcknexObject, "IF_CUR", Input.GetKeyDown(KeyCode.RightArrow));
+                TriggerEventConditional(AcknexObject, "IF_CUL", Input.GetKeyDown(KeyCode.LeftArrow));
+                TriggerEventConditional(AcknexObject, "IF_SHIFT", Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift));
+                TriggerEventConditional(AcknexObject, "IF_APO", Input.GetKeyDown(KeyCode.Quote));
+                TriggerEventConditional(AcknexObject, "IF_MINUS", Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.KeypadMinus));
+                TriggerEventConditional(AcknexObject, "IF_PLUS", Input.GetKeyDown(KeyCode.Plus) || Input.GetKeyDown(KeyCode.KeypadPlus));
+                //while (_events.Count > 0)
+                //{
+                //    var currentEvent = _events.Dequeue();
+                //    SetSynonymObject("MY", currentEvent.My);
+                //    SetSynonymObject("THERE", currentEvent.There);
+                //    var enumerator = _runtime.CallAction(currentEvent.ActionName);
+                //    while (enumerator.MoveNext())
+                //    {
+                //        var current = enumerator.Current;
+                //        if (current != null)
+                //        {
+                //            yield return current;
+                //        }
+                //    }
+                //}
+                yield return null;
+            }
         }
     }
 }

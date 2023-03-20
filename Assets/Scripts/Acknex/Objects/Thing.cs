@@ -38,11 +38,7 @@ namespace Acknex
         private IAcknexObject _lastTarget;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
-
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
-
-        public bool IsTemplate;
-        private bool _instance;
 
         private IEnumerator TriggerSecEvents()
         {
@@ -52,7 +48,7 @@ namespace Acknex
                 //{
                 //    World.Instance.CallAction(AcknexObject, action);
                 //}
-                World.Instance.TriggerEvent(AcknexObject, "EACH_SEC");
+                World.Instance.TriggerEvent(AcknexObject, AcknexObject, GetRegion(), "EACH_SEC");
                 yield return World.Instance.WaitForSecond;
             }
         }
@@ -65,19 +61,25 @@ namespace Acknex
                 //{
                 //    World.Instance.CallAction(AcknexObject, action);
                 //}
-                World.Instance.TriggerEvent(AcknexObject, "EACH_TICK");
+                World.Instance.TriggerEvent(AcknexObject, AcknexObject, GetRegion(), "EACH_TICK");
                 yield return World.Instance.WaitForTick;
             }
         }
 
         private void OnTriggerExitCallback(Collider obj)
         {
-            World.Instance.TriggerEvent(AcknexObject, "IF_FAR");
+            if (obj.TryGetComponent<Player>(out var player))
+            {
+                World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, player.GetRegion(), "IF_FAR");
+            }
         }
 
         private void OnTriggerEnterCallback(Collider obj)
         {
-            World.Instance.TriggerEvent(AcknexObject, "IF_NEAR");
+            if (obj.TryGetComponent<Player>(out var player))
+            {
+                World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, player.GetRegion(), "IF_NEAR");
+            }
         }
 
         private void OnCollisionExitCallback(Collision obj)
@@ -104,7 +106,7 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = TextureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _thingGameObject, AcknexObject, transform);
+            var enumerator = TextureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _thingGameObject, AcknexObject, GetRegion(), transform);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
@@ -114,37 +116,20 @@ namespace Acknex
         protected virtual void Awake()
         {
             AcknexObject.Container = this;
-            _thingGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
-            _collisionCallback = _thingGameObject.AddComponent<CollisionCallback>();
-            _collider = _thingGameObject.AddComponent<CapsuleCollider>();
-            _collider.height = 1f;
-            _audioSource = gameObject.AddComponent<AudioSource>();
         }
 
-        protected virtual void Update()
+
+        private IEnumerator UpdateInstance()
         {
-            if (!_instance)
+            while (!AcknexObject.IsInstance)
             {
-                return;
+                yield return null;
             }
-            UpdateObject();
-            if (TextureObject == null || !TextureObject.HasModel(out _))
+            while (true)
             {
-                var camera = CameraExtensions.GetLastActiveCamera();
-                if (camera == null)
-                {
-                    return;
-                }
-                var eulerAngles = transform.eulerAngles;
-                eulerAngles.y = camera.transform.eulerAngles.y;
-                transform.eulerAngles = eulerAngles;
-            }
-            else
-            {
-                var angle = AcknexObject.GetFloat("ANGLE");
-                var eulerAngles = transform.eulerAngles;
-                eulerAngles.y = AngleUtils.ConvertAcknexToUnityAngle(angle);
-                transform.eulerAngles = eulerAngles;
+                UpdateObject();
+                UpdateEvents();
+                yield return null;
             }
         }
 
@@ -167,7 +152,12 @@ namespace Acknex
 
         public void SetupInstance()
         {
-            _instance = true;
+            _thingGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
+            _collisionCallback = _thingGameObject.AddComponent<CollisionCallback>();
+            _collider = _thingGameObject.AddComponent<CapsuleCollider>();
+            _collider.height = 1f;
+            _audioSource = gameObject.AddComponent<AudioSource>();
+            StartCoroutine(UpdateInstance());
             _collisionCallback.OnCollisionEnterCallback += OnCollisionEnterCallback;
             _collisionCallback.OnCollisionExitCallback += OnCollisionExitCallback;
             _collisionCallback.OnTriggerEnterCallback += OnTriggerEnterCallback;
@@ -179,19 +169,30 @@ namespace Acknex
 
         public virtual void UpdateObject()
         {
-            if (_meshRenderer == null)
+            if (TextureObject == null || !TextureObject.HasModel(out _))
             {
-                return;
+                var camera = CameraExtensions.GetLastActiveCamera();
+                if (camera == null)
+                {
+                    return;
+                }
+                var eulerAngles = transform.eulerAngles;
+                eulerAngles.y = camera.transform.eulerAngles.y;
+                transform.eulerAngles = eulerAngles;
             }
-
-            UpdateEvents();
+            else
+            {
+                var angle = AcknexObject.GetFloat("ANGLE");
+                var eulerAngles = transform.eulerAngles;
+                eulerAngles.y = AngleUtils.ConvertAcknexToUnityAngle(angle);
+                transform.eulerAngles = eulerAngles;
+            }
 
             if (!AcknexObject.IsDirty)
             {
                 return;
             }
             AcknexObject.IsDirty = false;
-
             if (AcknexObject.ContainsFlag("INVISIBLE", false))
             {
                 _meshRenderer.enabled = false;
@@ -202,7 +203,6 @@ namespace Acknex
                 _meshRenderer.enabled = true;
                 _collider.enabled = true;
             }
-
             if (AcknexObject.TryGetAcknexObject("TARGET", out var target) && target != _lastTarget)
             {
                 var value = target.GetString("VAL");
@@ -273,30 +273,7 @@ namespace Acknex
 
         public virtual void UpdateEvents()
         {
-            //if (AcknexObject.TryGetFloat("DIST", out var dist))
-            //{
-            //    //todo: use MASTER objects as well
-            //    var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
-            //    var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"));
-            //    if (!_near.Contains(Player.Instance.AcknexObject))
-            //    {
-            //        if (Vector2.Distance(playerPos, pos) <= dist)
-            //        {
-            //            World.Instance.SetSynonymObject("THERE", GetRegion());
-            //            World.Instance.TriggerEvent(AcknexObject, "IF_NEAR");
-            //            _near.Add(Player.Instance.AcknexObject);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (Vector2.Distance(playerPos, pos) > dist)
-            //        {
-            //            World.Instance.SetSynonymObject("THERE", GetRegion());
-            //            World.Instance.TriggerEvent(AcknexObject, "IF_FAR");
-            //            _near.Remove(Player.Instance.AcknexObject);
-            //        }
-            //    }
-            //}
+
         }
 
         public IAcknexObject GetRegion()
@@ -308,7 +285,7 @@ namespace Acknex
         public void StickToTheCeiling(float thingX, float thingY, ref float thingZ)
         {
             var region = AcknexObject.GetAcknexObject("REGION")?.Container as Region;
-            Region.PutOnGround(AcknexObject, region, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"), true);
+            Region.PutOnGround(AcknexObject, region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"), true);
             thingZ = thingZ - transform.localScale.y;
             AcknexObject.SetFloat("Z", thingZ);
         }
@@ -316,7 +293,7 @@ namespace Acknex
         public void StickToTheGround(float thingX, float thingY, ref float thingZ)
         {
             var region = AcknexObject.GetAcknexObject("REGION")?.Container as Region;
-            Region.PutOnGround(AcknexObject, region, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"));
+            Region.PutOnGround(AcknexObject, region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"));
             AcknexObject.SetFloat("Z", thingZ);
         }
 

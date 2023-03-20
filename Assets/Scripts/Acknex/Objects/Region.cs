@@ -3,16 +3,12 @@ using System.Collections;
 using LibTessDotNet;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Acknex.Interfaces;
-using Codice.CM.WorkspaceServer;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 using UnityEngine.Rendering;
-using Utils;
-using Debug = System.Diagnostics.Debug;
 using GK;
 
 namespace Acknex
@@ -34,22 +30,23 @@ namespace Acknex
         private MeshFilter _floorMeshFilter;
         private MeshCollider _floorCollider;
         private MeshRenderer _floorMeshRenderer;
+        private GameObject _floorGameObject;
 
         private MeshFilter _ceilMeshFilter;
         private MeshCollider _ceilCollider;
         private MeshRenderer _ceilMeshRenderer;
+        private GameObject _ceilGameObject;
 
         private Region _belowOverride;
         private Region _aboveOverride;
 
-        public ContouredRegion ContouredRegion;
+        private GameObject _triggerGameObject;
+        private MeshCollider _triggerCollider;
+        private CollisionCallback _triggerCollisionCallback;
+
         private AudioSource _audioSource;
-        private GameObject floorGameObject;
-        private GameObject ceilGameObject;
-        private GameObject triggerGameObject;
-        private MeshCollider triggerCollider;
-        private CollisionCallback triggerCollisionCallback;
-        private bool _instance;
+
+        public ContouredRegion ContouredRegion;
 
         public Texture FloorTexture
         {
@@ -78,8 +75,6 @@ namespace Acknex
         private void Awake()
         {
             AcknexObject.Container = this;
-            //todo: move to middle
-            _audioSource = gameObject.AddComponent<AudioSource>();
         }
 
         private IEnumerator AnimateCeil()
@@ -88,7 +83,7 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = CeilTexture.AnimateTexture(true, _ceilMeshRenderer, _ceilMeshFilter, null, AcknexObject, null);
+            var enumerator = CeilTexture.AnimateTexture(true, _ceilMeshRenderer, _ceilMeshFilter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
@@ -101,31 +96,33 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = FloorTexture.AnimateTexture(true, _floorMeshRenderer, _floorMeshFilter, null, AcknexObject, null);
+            var enumerator = FloorTexture.AnimateTexture(true, _floorMeshRenderer, _floorMeshFilter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
             }
         }
 
-        private void Update()
+        private IEnumerator UpdateInstance()
         {
-            if (!_instance)
+            while (!AcknexObject.IsInstance)
             {
-                return;
+                yield return null;
             }
-            UpdateObject();
+            while (true)
+            {
+                UpdateObject();
+                UpdateEvents();
+                yield return null;
+            }
         }
 
         public void UpdateObject()
         {
-            if (_floorMeshRenderer == null)
+            if (_floorMeshRenderer == null || _ceilMeshRenderer == null)
             {
                 return;
             }
-
-            UpdateEvents();
-
             if (!AcknexObject.IsDirty)
             {
                 return;
@@ -203,7 +200,7 @@ namespace Acknex
                     return _belowOverride;
                 }
                 var below = AcknexObject.GetAcknexObject("BELOW");
-                if (below != null && below.Container is Region region)
+                if (below?.Container is Region region)
                 {
                     return region;
                 }
@@ -231,7 +228,9 @@ namespace Acknex
 
         public void SetupInstance()
         {
-            _instance = true;
+            //todo: move to middle
+            _audioSource = gameObject.AddComponent<AudioSource>();
+            StartCoroutine(UpdateInstance());
             StartCoroutine(AnimateCeil());
             StartCoroutine(AnimateFloor());
         }
@@ -239,9 +238,9 @@ namespace Acknex
         public static void BuildFloorMesh(List<Vector3> allVertices, List<Vector2> allUVS, Dictionary<int, List<int>> allTriangles, Region region, IAcknexObject ceilTexture, IAcknexObject floorTexture)
         {
             {
-                region.floorGameObject = new GameObject("Floor");
-                region.floorGameObject.transform.SetParent(region.transform, false);
-                region.floorGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
+                region._floorGameObject = new GameObject("Floor");
+                region._floorGameObject.transform.SetParent(region.transform, false);
+                region._floorGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
                 var floorMesh = new Mesh();
                 floorMesh.SetVertices(allVertices);
                 floorMesh.SetUVs(0, allUVS);
@@ -249,18 +248,18 @@ namespace Acknex
                 floorMesh.SetTriangles(allTriangles[0], 0);
                 floorMesh.RecalculateNormals();
                 floorMesh.UploadMeshData(true);
-                region._floorMeshFilter = region.floorGameObject.AddComponent<MeshFilter>();
+                region._floorMeshFilter = region._floorGameObject.AddComponent<MeshFilter>();
                 region._floorMeshFilter.mesh = floorMesh;
-                region._floorMeshRenderer = region.floorGameObject.AddComponent<MeshRenderer>();
+                region._floorMeshRenderer = region._floorGameObject.AddComponent<MeshRenderer>();
                 var material = World.Instance.BuildMaterial(floorTexture);
                 region._floorMeshRenderer.material = material;
-                region._floorCollider = region.floorGameObject.AddComponent<MeshCollider>();
+                region._floorCollider = region._floorGameObject.AddComponent<MeshCollider>();
                 region._floorCollider.sharedMesh = floorMesh;
             }
             {
-                region.ceilGameObject = new GameObject("Ceil");
-                region.ceilGameObject.transform.SetParent(region.transform, false);
-                region.ceilGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
+                region._ceilGameObject = new GameObject("Ceil");
+                region._ceilGameObject.transform.SetParent(region.transform, false);
+                region._ceilGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
                 var ceilMesh = new Mesh();
                 ceilMesh.SetVertices(allVertices);
                 ceilMesh.SetUVs(0, allUVS);
@@ -268,12 +267,12 @@ namespace Acknex
                 ceilMesh.SetTriangles(allTriangles[1], 0);
                 ceilMesh.RecalculateNormals();
                 ceilMesh.UploadMeshData(true);
-                region._ceilMeshFilter = region.ceilGameObject.AddComponent<MeshFilter>();
+                region._ceilMeshFilter = region._ceilGameObject.AddComponent<MeshFilter>();
                 region._ceilMeshFilter.mesh = ceilMesh;
-                region._ceilMeshRenderer = region.ceilGameObject.AddComponent<MeshRenderer>();
+                region._ceilMeshRenderer = region._ceilGameObject.AddComponent<MeshRenderer>();
                 var material = World.Instance.BuildMaterial(ceilTexture);
                 region._ceilMeshRenderer.material = material;
-                region._ceilCollider = region.ceilGameObject.AddComponent<MeshCollider>();
+                region._ceilCollider = region._ceilGameObject.AddComponent<MeshCollider>();
                 region._ceilCollider.sharedMesh = ceilMesh;
             }
             {
@@ -287,16 +286,16 @@ namespace Acknex
                 triggerMesh.SetNormals(normals);
                 triggerMesh.SetTriangles(tris, 0);
                 triggerMesh.UploadMeshData(true);
-                region.triggerGameObject = new GameObject("Trigger");
-                region.triggerGameObject.layer = World.Instance.TriggersLayer.LayerIndex;
-                region.triggerGameObject.transform.SetParent(region.transform, false);
-                region.triggerCollider = region.triggerGameObject.AddComponent<MeshCollider>();
-                region.triggerCollider.sharedMesh = triggerMesh;
-                region.triggerCollider.convex = true;
-                region.triggerCollider.isTrigger = true;
-                region.triggerCollisionCallback = region.triggerGameObject.AddComponent<CollisionCallback>();
-                region.triggerCollisionCallback.OnTriggerEnterCallback += region.OnTriggerEnterCallback;
-                region.triggerCollisionCallback.OnTriggerExitCallback += region.OnTriggerExitCallback;
+                region._triggerGameObject = new GameObject("Trigger");
+                region._triggerGameObject.layer = World.Instance.TriggersLayer.LayerIndex;
+                region._triggerGameObject.transform.SetParent(region.transform, false);
+                region._triggerCollider = region._triggerGameObject.AddComponent<MeshCollider>();
+                region._triggerCollider.sharedMesh = triggerMesh;
+                region._triggerCollider.convex = true;
+                region._triggerCollider.isTrigger = true;
+                region._triggerCollisionCallback = region._triggerGameObject.AddComponent<CollisionCallback>();
+                region._triggerCollisionCallback.OnTriggerEnterCallback += region.OnTriggerEnterCallback;
+                region._triggerCollisionCallback.OnTriggerExitCallback += region.OnTriggerExitCallback;
             }
         }
 
@@ -304,14 +303,12 @@ namespace Acknex
         {
             if (collider.TryGetComponent<Thing>(out var thing))
             {
-                World.Instance.SetSynonymObject("THERE", AcknexObject);
-                World.Instance.TriggerEvent(AcknexObject, "IF_LEAVE");
+                World.Instance.TriggerEvent(AcknexObject, thing.AcknexObject, AcknexObject, "IF_LEAVE");
             }
             else if (collider.TryGetComponent<Player>(out var player))
             {
-                World.Instance.SetSynonymObject("THERE", AcknexObject);
-                World.Instance.TriggerEvent(AcknexObject, "IF_LEAVE");
-                World.Instance.TriggerEvent(AcknexObject, "IF_ARISE");
+                World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, AcknexObject, "IF_LEAVE");
+                World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, AcknexObject, "IF_ARISE");
             }
         }
 
@@ -319,21 +316,19 @@ namespace Acknex
         {
             if (collider.TryGetComponent<Thing>(out var thing))
             {
-                thing.AcknexObject.SetAcknexObject("REGION", this.AcknexObject);
-                World.Instance.SetSynonymObject("THERE", AcknexObject);
-                World.Instance.TriggerEvent(AcknexObject, "IF_ENTER");
+                thing.AcknexObject.SetAcknexObject("REGION", AcknexObject);
+                World.Instance.TriggerEvent(AcknexObject, thing.AcknexObject, AcknexObject, "IF_ENTER");
             }
             else if (collider.TryGetComponent<Player>(out var player))
             {
                 player.AcknexObject.SetAcknexObject("REGION", this.AcknexObject);
-                World.Instance.SetSynonymObject("THERE", AcknexObject);
                 World.Instance.SetSynonymObject("HERE", AcknexObject);
                 World.Instance.UpdateSkillValue("FLOOR_HGT", AcknexObject.GetFloat("FLOOR_HGT"));
                 World.Instance.UpdateSkillValue("CEIL_HGT", AcknexObject.GetFloat("CEIL_HGT"));
-                World.Instance.TriggerEvent(AcknexObject, "IF_ENTER");
+                World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, AcknexObject, "IF_ENTER");
                 if (Above != null)
                 {
-                    World.Instance.TriggerEvent(Above.AcknexObject, "IF_DIVE");
+                    World.Instance.TriggerEvent(Above.AcknexObject, player.AcknexObject, Above.AcknexObject, "IF_DIVE");
                 }
             }
         }
@@ -363,6 +358,7 @@ namespace Acknex
                 acknexObject.ObjectProperties = new SortedDictionary<string, object>(belowAcknexObject.ObjectProperties);
                 acknexObject.NumberProperties = new SortedDictionary<string, float>(belowAcknexObject.NumberProperties);
                 acknexObject.Type = belowAcknexObject.Type;
+                World.Instance.PostSetupObjectInstance(newRegion.AcknexObject);
                 region.Below = newRegion;
                 BuildRegionFloorAndCeiling(newRegion, contouredRegion);
             }
@@ -422,7 +418,7 @@ namespace Acknex
         }
 
 
-        public static void PutOnGround(IAcknexObject source, Region currentRegion, float thingX, float thingY, ref float thingZ, bool onGround = false, bool onCeil = false, bool initial = true)
+        public static void PutOnGround(IAcknexObject source, Region currentRegion, float radius, float thingX, float thingY, ref float thingZ, bool onGround = false, bool onCeil = false, bool initial = true)
         {
             bool GetValue(RaycastHit raycastHit, Region region, ref float outThingZ)
             {
@@ -436,8 +432,8 @@ namespace Acknex
             if (onCeil)
             {
                 var zCheck = initial ? currentRegion.AcknexObject.GetFloat("FLOOR_HGT") : thingZ + 1.0f;
-                var point = new Vector3(thingX, zCheck, thingY);
-                if (Physics.Raycast(new Ray(point, Vector3.up), out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
+                var point = new Vector3(thingX, zCheck + radius, thingY);
+                if (Physics.SphereCast(new Ray(point, Vector3.up), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, currentRegion, ref thingZ))
                     {
@@ -448,8 +444,8 @@ namespace Acknex
             else
             {
                 var zCheck = initial ? currentRegion.AcknexObject.GetFloat("CEIL_HGT") : thingZ + 1.0f;
-                var point = new Vector3(thingX, zCheck, thingY);
-                if (Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
+                var point = new Vector3(thingX, zCheck + radius, thingY);
+                if (Physics.SphereCast(new Ray(point, Vector3.down), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, currentRegion, ref thingZ))
                     {

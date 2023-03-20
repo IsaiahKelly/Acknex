@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -15,6 +16,8 @@ namespace Acknex
 {
     public partial class World
     {
+        private readonly List<(IAcknexObject acknexObject, string keyword, string objectName)> _postResolve = new List<(IAcknexObject acknexObject, string keyword, string objectName)>();
+
         private Resolution _resolution = Resolution.Res320x200;
         private IAcknexRuntime _runtime;
 
@@ -22,7 +25,6 @@ namespace Acknex
         {
             AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("LIGHT_ANGLE")), 0f) * Quaternion.Euler(45f, 0f, 0f);
             UpdateSkills();
-            UpdateEvents();
         }
 
         public void Enable()
@@ -35,7 +37,7 @@ namespace Acknex
 
         public void SetupTemplate()
         {
-            
+
         }
 
         public Resolution GameResolution
@@ -250,7 +252,6 @@ namespace Acknex
             throw new NotImplementedException();
         }
 
-
         public IAcknexObject GetObject(ObjectType type, string name)
         {
             if (type == ObjectType.Player)
@@ -271,8 +272,9 @@ namespace Acknex
 
         public void PostSetupWMP()
         {
-            DoPostResolve();
+            ResolveReferences();
             BuildRegionsAndWalls(_regionWalls, _contourVertices);
+            PostSetupObjects();
             if (!DisableEvents && !UseWDLEngine)
             {
                 ConvertActionsToCS();
@@ -281,28 +283,68 @@ namespace Acknex
             }
         }
 
-        private readonly List<(IAcknexObject acknexObject, string keyword, string objectName)> _postResolve = new List<(IAcknexObject acknexObject, string keyword, string objectName)>();
+        private void PostSetupObjects()
+        {
+            var worldAcknexObject = (AcknexObject)AcknexObject;
+            foreach (var @object in worldAcknexObject.ObjectProperties.Values)
+            {
+                if (@object is IAcknexObject acknexObject)
+                {
+                    if (!acknexObject.IsInstance)
+                    {
+                        acknexObject.Container?.SetupTemplate();
+                    }
+                }
+            }
+            foreach (var items in AllThingsByName.Values)
+            {
+                foreach (var item in items)
+                {
+                    item.SetupInstance();
+                }
+            }
+            foreach (var items in AllActorsByName.Values)
+            {
+                foreach (var item in items)
+                {
+                    item.SetupInstance();
+                }
+            }
+            foreach (var items in AllRegionsByName.Values)
+            {
+                foreach (var item in items)
+                {
+                    item.SetupInstance();
+                }
+            }
+            foreach (var items in AllWallsByName.Values)
+            {
+                foreach (var item in items)
+                {
+                    item.SetupInstance();
+                }
+            }
+            foreach (var items in AllWaysByName.Values)
+            {
+                foreach (var item in items)
+                {
+                    item.SetupInstance();
+                }
+            }
+        }
 
         public void AddPostResolve((IAcknexObject acknexObject, string keyword, string objectName) postResolve)
         {
             _postResolve.Add(postResolve);
         }
 
-        private void DoPostResolve()
+        private void ResolveReferences()
         {
             foreach (var item in _postResolve)
             {
                 if (AcknexObject.TryGetAcknexObject(item.objectName, out var acknexObject))
                 {
                     item.acknexObject.SetAcknexObject(item.keyword, acknexObject);
-                }
-            }
-            var worldAcknexObject = (AcknexObject)AcknexObject;
-            foreach (var obj in worldAcknexObject.ObjectProperties.Values)
-            {
-                if (obj is IAcknexObject ackObj && ackObj.Container != null)
-                {
-                    ackObj.Container.SetupTemplate();
                 }
             }
         }
@@ -339,7 +381,6 @@ namespace Acknex
                 action.Value.WriteFooter();
                 sourceStringBuilder.Append(action.Value.CodeStringBuilder);
             }
-
             sourceStringBuilder.AppendLine("    }");
             sourceStringBuilder.AppendLine("}");
             File.WriteAllText(SourceGenerationPath, sourceStringBuilder.ToString());
@@ -357,96 +398,72 @@ namespace Acknex
 
         public void PostSetupObjectInstance(IAcknexObject acknexObject)
         {
-            var wall = acknexObject.Container as Wall;
-            if (wall != null)
+            switch (acknexObject.Container)
             {
-                var name = acknexObject.GetString("NAME");
-                if (!AllWallsByName.TryGetValue(name, out var list))
-                {
-                    list = new HashSet<Wall>();
-                    AllWallsByName.Add(name, list);
-                }
-                list.Add(wall);
-                _regionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION1")).Add(wall);
-                _regionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION2")).Add(wall);
-                wall.SetupInstance();
+                case Wall wall:
+                    {
+                        var name = acknexObject.GetString("NAME");
+                        if (!AllWallsByName.TryGetValue(name, out var list))
+                        {
+                            list = new HashSet<Wall>();
+                            AllWallsByName.Add(name, list);
+                        }
+                        list.Add(wall);
+                        _regionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION1")).Add(wall);
+                        _regionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION2")).Add(wall);
+                        break;
+                    }
+                case Region region:
+                    {
+                        var name = acknexObject.GetString("NAME");
+                        if (!AllRegionsByName.TryGetValue(name, out var list))
+                        {
+                            list = new HashSet<Region>();
+                            AllRegionsByName.Add(name, list);
+                        }
+                        list.Add(region);
+                        break;
+                    }
+                case Actor actor:
+                    {
+                        var name = acknexObject.GetString("NAME");
+                        if (!AllActorsByName.TryGetValue(name, out var list))
+                        {
+                            list = new HashSet<Actor>();
+                            AllActorsByName.Add(name, list);
+                        }
+                        list.Add(actor);
+                        break;
+                    }
+                case Thing thing:
+                    {
+                        var name = acknexObject.GetString("NAME");
+                        if (!AllThingsByName.TryGetValue(name, out var list))
+                        {
+                            list = new HashSet<Thing>();
+                            AllThingsByName.Add(name, list);
+                        }
+                        list.Add(thing);
+                        break;
+                    }
+                case Way way:
+                    {
+                        var name = acknexObject.GetString("NAME");
+                        if (!AllWaysByName.TryGetValue(name, out var list))
+                        {
+                            list = new HashSet<Way>();
+                            AllWaysByName.Add(name, list);
+                        }
+                        list.Add(way);
+                        break;
+                    }
             }
-
-            var region = acknexObject.Container as Region;
-            if (region != null)
-            {
-                var name = acknexObject.GetString("NAME");
-                if (!AllRegionsByName.TryGetValue(name, out var list))
-                {
-                    list = new HashSet<Region>();
-                    AllRegionsByName.Add(name, list);
-                }
-                list.Add(region);
-                region.SetupInstance();
-            }
-
-            var actor = acknexObject.Container as Actor;
-            if (actor != null)
-            {
-                var name = acknexObject.GetString("NAME");
-                if (!AllActorsByName.TryGetValue(name, out var list))
-                {
-                    list = new HashSet<Actor>();
-                    AllActorsByName.Add(name, list);
-                }
-                list.Add(actor);
-                actor.SetupInstance();
-            }
-
-            var thing = acknexObject.Container as Thing;
-            if (thing != null)
-            {
-                var name = acknexObject.GetString("NAME");
-                if (!AllThingsByName.TryGetValue(name, out var list))
-                {
-                    list = new HashSet<Thing>();
-                    AllThingsByName.Add(name, list);
-                }
-                list.Add(thing);
-                thing.SetupInstance();
-            }
-
-            var way = acknexObject.Container as Way;
-            if (way != null)
-            {
-                var name = acknexObject.GetString("NAME");
-                if (!AllWaysByName.TryGetValue(name, out var list))
-                {
-                    list = new HashSet<Way>();
-                    AllWaysByName.Add(name, list);
-                }
-                list.Add(way);
-                way.SetupInstance();
-            }
+            acknexObject.IsInstance = true;
         }
 
         public void PostSetupObjectTemplate(IAcknexObject acknexObject)
         {
-            //if (acknexObject.Container is Bitmap bitmap)
-            //{
-            //    bitmap.Setup();
-            //}
-            //else if (acknexObject.Container is Model model)
-            //{
-            //    model.Setup();
-            //}
-            //else if (acknexObject.Container is Music music)
-            //{
-            //    music.Setup();
-            //}
-            //else if (acknexObject.Container is Sound sound)
-            //{
-            //    sound.Setup();
-            //}
-            //else if (acknexObject.Container is Texture texture)
-            //{
-            //    texture.Setup();
-            //}
+
         }
 
         public void AddWayPoint(IAcknexObject way, float x, float y)
@@ -543,7 +560,5 @@ namespace Acknex
         {
 
         }
-
-
     }
 }

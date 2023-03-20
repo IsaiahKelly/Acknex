@@ -9,6 +9,7 @@
         /// Gets/Sets the AcknexObject this container holds.
         /// </summary>
         IAcknexObject AcknexObject { get; set; }
+        
         /// <summary>
         /// Updates the Unity object representation when any property changes.
         /// </summary>
@@ -26,5 +27,10 @@
         /// Method to call to post-setup an object template.
         /// </summary>
         void SetupTemplate();
+
+        /// <summary>
+        /// Method to call to post-setup an object instance.
+        /// </summary>
+        void SetupInstance();
     }
 }

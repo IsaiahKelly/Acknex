@@ -38,5 +38,9 @@ namespace Acknex
             Bitmap.CreateBitmapTexture(filename, 0,0, (int)width, (int)height, out Texture2D, ref BitmapTexture2D);
         }
 
+        public void SetupInstance()
+        {
+            
+        }
     }
 }

@@ -65,6 +65,11 @@ namespace Acknex
             
         }
 
+        public void SetupInstance()
+        {
+            
+        }
+
         private void Awake()
         {
             Instance = this;

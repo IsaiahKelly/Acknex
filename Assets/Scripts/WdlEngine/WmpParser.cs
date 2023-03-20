@@ -60,7 +60,7 @@ namespace WdlEngine
                     obj.SetFloat("Y", ParseNumber());
                     obj.SetFloat("ANGLE", Mathf.Deg2Rad * ParseNumber());
                     obj.SetFloat("REGION", Expect(TokenType.Integer).IntValue);
-                    _world.PostSetupObjectInstance(obj);
+                    obj.IsInstance = true;
                     Expect(TokenType.Semicolon);
                     return;
                 }
@@ -79,7 +79,7 @@ namespace WdlEngine
                     var region = _world.CreateObjectInstance(ObjectType.Region, name);
                     region.SetFloat("FLOOR_HGT", ParseNumber());
                     region.SetFloat("CEIL_HGT", ParseNumber());
-                    _world.PostSetupObjectInstance(region);
+                    region.IsInstance = true;
                     Expect(TokenType.Semicolon);
                     return;
                 }
@@ -93,7 +93,7 @@ namespace WdlEngine
                     obj.SetFloat("REGION2", Expect(TokenType.Integer).IntValue);
                     obj.SetFloat("OFFSET_X", ParseNumber());
                     obj.SetFloat("OFFSET_Y", ParseNumber());
-                    _world.PostSetupObjectInstance(obj);
+                    obj.IsInstance = true;
                     Expect(TokenType.Semicolon);
                     return;
                 }
@@ -105,7 +105,7 @@ namespace WdlEngine
                     {
                         _world.AddWayPoint(way, ParseNumber(), ParseNumber());
                     }
-                    _world.PostSetupObjectInstance(way);
+                    way.IsInstance = true;
                     return;
                 }
                 }

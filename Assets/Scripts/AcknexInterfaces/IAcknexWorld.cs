@@ -64,7 +64,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// This method should be called when all properties from a given object template have been processed.
         /// </summary>
-        [Obsolete("Deprecated. Use AddPostResolve instead.")]
+        [Obsolete("Deprecated.")]
         void PostSetupObjectTemplate(IAcknexObject acknexObject);
 
         /// <summary>
