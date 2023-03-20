@@ -149,6 +149,7 @@ namespace Acknex
             while (true)
             {
                 TriggerEventConditional(AcknexObject, "IF_ANYKEY", Input.anyKeyDown);
+                TriggerEventConditional(AcknexObject, "IF_TAST", Input.anyKeyDown);
                 TriggerEventConditional(AcknexObject, "IF_0", Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0));
                 TriggerEventConditional(AcknexObject, "IF_1", Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1));
                 TriggerEventConditional(AcknexObject, "IF_2", Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2));

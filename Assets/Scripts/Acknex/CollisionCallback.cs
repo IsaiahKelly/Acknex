@@ -12,22 +12,26 @@ namespace Acknex
 
         private void OnCollisionEnter(Collision collision)
         {
-            OnCollisionEnterCallback(collision);
+            if (OnCollisionEnterCallback != null)
+                OnCollisionEnterCallback(collision);
         }
 
         private void OnCollisionExit(Collision collision)
         {
-            OnCollisionExitCallback(collision);
+            if (OnCollisionExitCallback != null)
+                OnCollisionExitCallback(collision);
         }
 
         private void OnTriggerEnter(Collider collider)
         {
-            OnTriggerEnterCallback(collider);
+            if (OnTriggerEnterCallback != null)
+                OnTriggerEnterCallback(collider);
         }
 
         private void OnTriggerExit(Collider collider)
         {
-            OnTriggerExitCallback(collider);
+            if (OnTriggerExitCallback != null)
+                OnTriggerExitCallback(collider);
         }
     }
 }

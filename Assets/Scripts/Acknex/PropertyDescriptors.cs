@@ -47,6 +47,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "EACH_SEC.15");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "EACH_SEC.16");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_ANYKEY");
+            AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_TAST");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_0");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_1");
             AddObjectProperty(ObjectType.World, PropertyType.ActionReference, "IF_2");

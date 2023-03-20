@@ -42,14 +42,14 @@ namespace Acknex
         {
             if (NumberProperties.TryGetValue(flag, out var value))
             {
-                return value == 1f;
+                return value > 0f;
             }
             if (fromTemplate)
             {
                 var template = GetTemplateCallback(GetString("NAME", false));
                 if (template != null && template.ContainsFlag(flag, false))
                 {
-                    return true;
+                    return true;// todo: check for ? value > 0f;
                 }
             }
             return false;

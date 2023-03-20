@@ -7590,7 +7590,7 @@ yield break;
 }
 public IEnumerator RESETANSWER(){
 _world.PlaySound("BIP02SND",0.5f);
-//Unknown Property Type: World.IF_TAST
+_world.AcknexObject.SetAcknexObject("IF_TAST",null);
 _world.AcknexObject.SetAcknexObject("IF_S",null);
 {
     var enumerator = HIDEMENU();

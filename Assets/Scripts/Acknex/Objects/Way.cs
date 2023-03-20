@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Acknex.Interfaces;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
@@ -88,25 +89,25 @@ namespace Acknex
         {
             var waypoint = 1;
             thingOrActor.SetInteger("WAYPOINT", waypoint);
-            if (Points.Count == 0)
+            var thing = (Thing)thingOrActor.Container;
+            var firstInstance = World.Instance.AllWaysByName[AcknexObject.GetString("NAME")].First();
+            if (firstInstance.Points.Count == 0)
             {
-                //todo: event objects
-                //World.Instance.TriggerEvent(null, AcknexObject, null, "IF_ARRIVED");
+                World.Instance.TriggerEvent(thingOrActor, AcknexObject, thing.GetRegion(), "IF_ARRIVED");
                 yield break;
             }
-            var thing = (Thing)thingOrActor.Container;
-            var nextPoint = Points[waypoint - 1];
+            var nextPoint = firstInstance.Points[waypoint - 1];
             for (; ; )
             {
                 if (thing.MoveTo(nextPoint))
                 {
                     waypoint++;
-                    if (waypoint > Points.Count)
+                    if (waypoint > firstInstance.Points.Count)
                     {
                         yield break;
                     }
                     AcknexObject.SetInteger("WAYPOINT", waypoint);
-                    nextPoint = Points[waypoint - 1];
+                    nextPoint = firstInstance.Points[waypoint - 1];
                 }
                 yield return null;
             }
