@@ -39,6 +39,7 @@ namespace Acknex
         private GameObject _triggerGameObject;
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;
+        private bool _movingToPlayer;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -243,10 +244,10 @@ namespace Acknex
             thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
             _thingGameObject.transform.position = thingPosition;
 
-            _thingCollider.radius = 0.5f; //AcknexObject.GetFloat("DIST") > 0f ? AcknexObject.GetFloat("DIST") * 0.5f : 0.5f;
+            _thingCollider.radius = 0.5f;
+            _thingCollider.isTrigger = AcknexObject.ContainsFlag("PASSABLE");
 
             _triggerCollider.radius = AcknexObject.GetFloat("DIST") * 0.5f;
-            //_triggerCollider.isTrigger = AcknexObject.ContainsFlag("PASSABLE");
 
             //todo: reimplement
             //Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, transform.right);
@@ -254,15 +255,18 @@ namespace Acknex
 
         private IEnumerator MoveToPlayer()
         {
+            _movingToPlayer = true;
             var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
             for (; ; )
             {
                 if (MoveTo(playerPos))
                 {
+                    _movingToPlayer = false;
                     yield break;
                 }
                 yield return null;
             }
+            _movingToPlayer = false;
         }
 
         public virtual void UpdateEvents()
@@ -292,6 +296,10 @@ namespace Acknex
             AcknexObject.SetFloat("Z", thingZ);
             if (AcknexObject.ContainsFlag("MASTER") && newRegion != region)
             {
+                if (_movingToPlayer)
+                {
+                    World.Instance.TriggerEvent(AcknexObject, Player.Instance.AcknexObject, region.AcknexObject, "IF_ARRIVED");
+                }
                 World.Instance.TriggerEvent(region.AcknexObject, AcknexObject, region.AcknexObject, "IF_LEAVE");
                 World.Instance.TriggerEvent(region.AcknexObject, AcknexObject, region.AcknexObject, "IF_ARISE");
                 region = newRegion;

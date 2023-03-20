@@ -104,13 +104,13 @@ namespace Acknex
         }
 
 
-        public void UpdateMaterial(Material material, Texture texture = null, int index = 0, bool mirror = false, IAcknexObject wallOrRegion = null)
+        public void UpdateMaterial(Material material, Texture texture, int index, bool mirror, IAcknexObject sourceAcknexObject)
         {
             if (BitmapTexture2D == null)
             {
                 return;
             }
-            if (wallOrRegion != null && World.Instance.DisableWallTextures)
+            if (sourceAcknexObject != null && World.Instance.DisableWallTextures)
             {
                 return;
             }
@@ -120,27 +120,29 @@ namespace Acknex
             var offsetY = 0f;
             var cullMode = UnityEngine.Rendering.CullMode.Back;
             var ambient = 1f;
-            if (wallOrRegion != null)
+            BitmapTexture2D.wrapModeV = TextureWrapMode.Repeat;
+            if (sourceAcknexObject != null)
             {
-                if (wallOrRegion.TryGetFloat("AMBIENT", out var wallOrRegionAmbient))
+                if (sourceAcknexObject.TryGetFloat("AMBIENT", out var wallOrRegionAmbient))
                 {
                     ambient *= wallOrRegionAmbient;
                 }
-                if (wallOrRegion.TryGetFloat("OFFSET_X", out var offsetXVal))
+                if (sourceAcknexObject.TryGetFloat("OFFSET_X", out var offsetXVal))
                 {
                     offsetX = offsetXVal;
                 }
-                if (wallOrRegion.TryGetFloat("OFFSET_Y", out var offsetYVal))
+                if (sourceAcknexObject.TryGetFloat("OFFSET_Y", out var offsetYVal))
                 {
                     offsetY = offsetYVal;
                 }
-                if (wallOrRegion.Container is Wall wall)
+                if (sourceAcknexObject.Container is Wall wall)
                 {
                     if (wall.AcknexObject.ContainsFlag("FENCE"))
                     {
                         material.SetFloat("_V0H", wall.BottomUV.m12);
                         material.SetFloat("_V1H", wall.BottomUV.m13);
                         material.SetInt("_FENCE", 1);
+                        BitmapTexture2D.wrapModeV = TextureWrapMode.Clamp;
                         cullMode = UnityEngine.Rendering.CullMode.Off;
                     }
                     if (wall.AcknexObject.ContainsFlag("PORTCULLIS"))

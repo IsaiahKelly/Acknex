@@ -30,7 +30,7 @@ namespace Acknex
                 {
                     _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (AcknexObject.TryGetFloat("SIZE_X", out var width) ? width : bitmap.Width) * World.Instance.CanvasWidthRatio);
                     _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, AcknexObject.TryGetFloat("SIZE_Y", out var height) ? height : bitmap.Height);
-                    bitmap.UpdateMaterial(_overlayGraphic.material, null, 0, false);
+                    bitmap.UpdateMaterial(_overlayGraphic.material, null, 0, false, null);
                 }
                 _overlaySprite = overlaySprite;
             }

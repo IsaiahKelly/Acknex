@@ -68,12 +68,12 @@ namespace Acknex
             //TODO: this is causing an infinite loop
             //TextureUtils.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject.AcknexObject);
             //TextureUtils.UpdateScale(transform, BitmapImage, TextureObject);
-            transform.localScale = TextureUtils.CalculateObjectSize(BitmapImage, TextureObject);
-            BitmapImage?.UpdateMaterial(Material, TextureObject, 0, false); //TODO: flag mirror?
-            if (TextureObject.AcknexObject.ContainsFlag("SHADOW"))
-            {
-                gameObject.SetActive(false);
-            }
+            //transform.localScale = TextureUtils.CalculateObjectSize(BitmapImage, TextureObject);
+            //BitmapImage?.UpdateMaterial(Material, TextureObject, 0, false); //TODO: flag mirror?
+            //if (TextureObject.AcknexObject.ContainsFlag("SHADOW"))
+            //{
+            //    gameObject.SetActive(false);
+            //}
         }
 
         public void Enable()

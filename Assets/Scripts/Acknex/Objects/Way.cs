@@ -107,6 +107,7 @@ namespace Acknex
                         yield break;
                     }
                     AcknexObject.SetInteger("WAYPOINT", waypoint);
+                    World.Instance.TriggerEvent(thingOrActor, AcknexObject, thing.GetRegion(), "IF_ARRIVED");
                     nextPoint = firstInstance.Points[waypoint - 1];
                 }
                 yield return null;

@@ -146,24 +146,24 @@ namespace Acknex
 
             _floorMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
             _ceilMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
-            ;
-            if (FloorTexture != null)
-            {
-                var bitmapImage = FloorTexture.GetBitmapAt(0);
-                if (bitmapImage != null)
-                {
-                    bitmapImage.UpdateMaterial(_floorMeshRenderer.material, FloorTexture, 0, false, AcknexObject);
-                }
-            }
+            
+            //if (FloorTexture != null)
+            //{
+                //var bitmapImage = FloorTexture.GetBitmapAt(0);
+                //if (bitmapImage != null)
+                //{
+                //    bitmapImage.UpdateMaterial(_floorMeshRenderer.material, FloorTexture, 0, false, AcknexObject);
+                //}
+            //}
             _floorCollider.gameObject.layer = AcknexObject.TryGetAcknexObject("IF_DIVE", out var ifDive) && ifDive.GetString("VAL") != null ? World.Instance.WaterLayer.LayerIndex : World.Instance.WallsAndRegionsLayer.LayerIndex;
 
             if (CeilTexture != null)
             {
-                var bitmapImage = CeilTexture.GetBitmapAt(0);
-                if (bitmapImage != null)
-                {
-                    bitmapImage.UpdateMaterial(_ceilMeshRenderer.material, CeilTexture, 0, false, AcknexObject);
-                }
+                //var bitmapImage = CeilTexture.GetBitmapAt(0);
+                //if (bitmapImage != null)
+                //{
+                //    bitmapImage.UpdateMaterial(_ceilMeshRenderer.material, CeilTexture, 0, false, AcknexObject);
+                //}
                 _ceilMeshRenderer.shadowCastingMode = CeilTexture.AcknexObject.ContainsFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             }
         }
