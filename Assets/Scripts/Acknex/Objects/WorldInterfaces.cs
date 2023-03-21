@@ -554,11 +554,16 @@ namespace Acknex
                 {
                     return;
                 }
-                UpdateSkillValue("HIT_DIST", raycastResult.distance);
-                UpdateSkillValue("RESULT", shootFac * (1.0f - raycastResult.distance / shootRange));
+                var distance = acknexObject != null ? Vector3.Distance(acknexObject.Container.GetCenter(), raycastResult.point) : raycastResult.distance;
+                UpdateSkillValue("HIT_DIST", distance);
+                UpdateSkillValue("RESULT", shootFac * (1.0f - distance / shootRange));
                 UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(raycastResult.point), AngleUtils.To2D(ray.origin))));
                 TriggerEvent("IF_HIT", AcknexObject, MY, THERE);
                 Debug.DrawLine(ray.origin, raycastResult.point, Color.white, 1f);
+                if (acknexObject != null)
+                {
+                    Debug.Log(acknexObject.GetString("NAME") + " sees player");
+                }
             }
             UpdateSkillValue("HIT_DIST", 0f);
             UpdateSkillValue("RESULT", 0f);

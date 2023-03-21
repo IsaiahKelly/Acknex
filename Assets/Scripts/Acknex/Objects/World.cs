@@ -125,11 +125,6 @@ namespace Acknex
             }
 
             SetupEvents();
-
-#if UNITY_EDITOR
-            Selection.activeTransform = Player.Instance.transform;
-            SceneView.lastActiveSceneView.FrameSelected();
-#endif
         }
 
         private void CreateDefaultObjects()
