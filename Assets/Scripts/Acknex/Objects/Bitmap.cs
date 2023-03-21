@@ -45,6 +45,11 @@ namespace Acknex
             
         }
 
+        public Vector3 GetCenter()
+        {
+            return default;
+        }
+
         public static void CreateBitmapTexture(string filename, int x, int y, int width, int height, out Texture2D texture2D, ref Texture2D bitmapTexture2D)
         {
             if (!World.Instance.TextureCache.TryGetValue(filename, out texture2D))
@@ -53,8 +58,6 @@ namespace Acknex
                 if (lowerInvariant.EndsWith("pcx"))
                 {
                     texture2D = PcxReader.Load(filename);
-                    //texture2D.name = filename;//AcknexObject.GetString("NAME");
-                    //TextureUtils.Dilate(Texture2D);
                     World.Instance.TextureCache.Add(filename, texture2D);
                     if (width == 0)
                     {
@@ -72,8 +75,6 @@ namespace Acknex
                     if (iff.Ilbms.Count > 0)
                     {
                         texture2D = iff.Ilbms[0].Texture2D;
-                        //texture2D.name = filename;//AcknexObject.GetString("NAME");
-                        //TextureUtils.Dilate(Texture2D);
                         World.Instance.TextureCache.Add(filename, texture2D);
                         if (width == 0)
                         {

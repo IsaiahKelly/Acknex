@@ -46,12 +46,18 @@ namespace Acknex
 
                 }
                 AudioClip = DownloadHandlerAudioClip.GetContent(request);
+                AudioClip.name = AcknexObject.GetString("NAME");
             }
         }
 
         public void SetupInstance()
         {
             
+        }
+
+        public Vector3 GetCenter()
+        {
+            return default;
         }
     }
 }

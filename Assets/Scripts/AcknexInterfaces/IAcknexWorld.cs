@@ -104,27 +104,6 @@ namespace Acknex.Interfaces
         int GetRegionIndex(string value);
 
         /// <summary>
-        /// Sets a float property value for all objects with the given name.
-        /// </summary>
-        void SetFloatAll(string objectName, string propertyName, float value);
-        /// <summary>
-        /// Sets an integer property value for all objects with the given name.
-        /// </summary>
-        void SetIntegerAll(string objectName, string propertyName, int value);
-        /// <summary>
-        /// Sets a string property valuefor all objects with the given name.
-        /// </summary>
-        void SetStringAll(string objectName, string propertyName, string value);
-        /// <summary>
-        /// Sets a typed by reference property value for all objects with the given name.
-        /// </summary>
-        void SetObjectAll<T>(string objectName, string propertyName, T value);
-        /// <summary>
-        /// Sets a float property value to another IAcknexObject for all objects with the given name.
-        /// </summary>
-        void SetAcknexObjectAll(string objectName, string propertyName, IAcknexObject value);
-
-        /// <summary>
         /// Register an object property descriptor.
         /// </summary>
         void AddObjectProperty(ObjectType objectType, PropertyType propertyType, string property);
@@ -137,7 +116,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Shoots the given object.
         /// </summary>
-        void Shoot(string objectName = null);
+        void Shoot(IAcknexObject acknexObject = null);
 
         /// <summary>
         /// Stores the keyboard input into the given string object.

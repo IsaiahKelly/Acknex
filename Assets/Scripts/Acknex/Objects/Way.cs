@@ -22,6 +22,16 @@ namespace Acknex
 
         public List<Vector2> Points = new List<Vector2>();
 
+        public List<Vector2> InstancePoints
+        {
+            get
+            {
+
+                var firstInstance = World.Instance.AllWaysByName[AcknexObject.GetString("NAME")].First();
+                return firstInstance.Points;
+            }
+        }
+
         public void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
@@ -80,38 +90,14 @@ namespace Acknex
             StartCoroutine(UpdateInstance());
         }
 
+        public Vector3 GetCenter()
+        {
+            return transform.position;
+        }
+
         private void Awake()
         {
             AcknexObject.Container = this;
-        }
-
-        public IEnumerator MoveThingOrActor(IAcknexObject thingOrActor)
-        {
-            var waypoint = 1;
-            thingOrActor.SetInteger("WAYPOINT", waypoint);
-            var thing = (Thing)thingOrActor.Container;
-            var firstInstance = World.Instance.AllWaysByName[AcknexObject.GetString("NAME")].First();
-            if (firstInstance.Points.Count == 0)
-            {
-                World.Instance.TriggerEvent(thingOrActor, AcknexObject, thing.GetRegion(), "IF_ARRIVED");
-                yield break;
-            }
-            var nextPoint = firstInstance.Points[waypoint - 1];
-            for (; ; )
-            {
-                if (thing.MoveToPoint(nextPoint))
-                {
-                    waypoint++;
-                    if (waypoint > firstInstance.Points.Count)
-                    {
-                        yield break;
-                    }
-                    AcknexObject.SetInteger("WAYPOINT", waypoint);
-                    World.Instance.TriggerEvent(thingOrActor, AcknexObject, thing.GetRegion(), "IF_ARRIVED");
-                    nextPoint = firstInstance.Points[waypoint - 1];
-                }
-                yield return null;
-            }
         }
     }
 }

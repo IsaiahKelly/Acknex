@@ -29,6 +29,27 @@ namespace Acknex.Interfaces
         IAcknexObjectContainer Container { get; set; }
 
         /// <summary>
+        /// Sets a float property value for all objects with the given name.
+        /// </summary>
+        void SetFloatAll(string propertyName, float value);
+        /// <summary>
+        /// Sets an integer property value for all objects with the given name.
+        /// </summary>
+        void SetIntegerAll(string propertyName, int value);
+        /// <summary>
+        /// Sets a string property value for all objects with the given name.
+        /// </summary>
+        void SetStringAll(string propertyName, string value);
+        /// <summary>
+        /// Sets a typed by reference property value for all objects with the given name.
+        /// </summary>
+        void SetObjectAll<T>(string propertyName, T value);
+        /// <summary>
+        /// Sets a float property value to another IAcknexObject for all objects with the given name.
+        /// </summary>
+        void SetAcknexObjectAll(string propertyName, IAcknexObject value);
+
+        /// <summary>
         /// Sets a float property value.
         /// </summary>
         void SetFloat(string propertyName, float value);

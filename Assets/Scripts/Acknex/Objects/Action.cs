@@ -162,6 +162,7 @@ namespace Acknex
                                 break;
                             }
                         case "SET":
+                        case "SET_ALL":
                             {
                                 var identifier = labelOrStatement;
                                 var value = GetValue(tokens, textParser);
@@ -171,7 +172,7 @@ namespace Acknex
                                 {
                                     rhs.property = HandleFunction(rhs.property);
                                 }
-                                HandleAssignment(lhs, rhs);
+                                HandleAssignment(lhs, rhs, keyword == "SET_ALL");
                                 HandleIfStack();
                                 ReadUntilSemiColon(tokens);
                                 break;
@@ -298,14 +299,14 @@ namespace Acknex
                         case "SHOOT":
                             {
                                 var next = labelOrStatement;
-                                CodeStringBuilder.Append("_world.Shoot(");
                                 if (next != ";")
                                 {
-                                    CodeStringBuilder.Append("\"").Append(next).AppendLine("\");");
+                                    var rhs = GetValueAndType(next, "rhs");
+                                    CodeStringBuilder.Append("_world.Shoot(").Append(rhs.property).AppendLine(");");
                                 }
                                 else
                                 {
-                                    CodeStringBuilder.AppendLine(");");
+                                    CodeStringBuilder.AppendLine("_world.Shoot();");
                                 }
                                 HandleIfStack();
                                 ReadUntilSemiColon(tokens);
@@ -470,7 +471,8 @@ namespace Acknex
 
         private void HandleAssignment(
             (string property, PropertyType propertyType, ObjectType objectType, string source) lhs,
-            (string property, PropertyType propertyType, ObjectType objectType, string source) rhs
+            (string property, PropertyType propertyType, ObjectType objectType, string source) rhs,
+            bool setAll = false
         )
         {
             switch (lhs.objectType)
@@ -482,15 +484,25 @@ namespace Acknex
                     switch (lhs.propertyType)
                     {
                         case PropertyType.Float:
-                            CodeStringBuilder.Append($"{lhs.source}.SetFloat(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            if (setAll)
+
+                                CodeStringBuilder.Append($"{lhs.source}.SetFloatAll(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            else
+                                CodeStringBuilder.Append($"{lhs.source}.SetFloat(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                             break;
                         case PropertyType.Null:
                         case PropertyType.String:
-                            CodeStringBuilder.Append($"{lhs.source}.SetString(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            if (setAll)
+                                CodeStringBuilder.Append($"{lhs.source}.SetStringAll(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            else
+                                CodeStringBuilder.Append($"{lhs.source}.SetString(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                             break;
                         case PropertyType.ActionReference:
                         case PropertyType.ObjectReference:
-                            CodeStringBuilder.Append($"{lhs.source}.SetAcknexObject(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            if (setAll)
+                                CodeStringBuilder.Append($"{lhs.source}.SetAcknexObjectAll(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            else
+                                CodeStringBuilder.Append($"{lhs.source}.SetAcknexObject(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                             break;
                     }
                     break;
@@ -886,12 +898,17 @@ namespace Acknex
 
         public void SetupTemplate()
         {
-            
+
         }
 
         public void SetupInstance()
         {
-            
+
+        }
+
+        public Vector3 GetCenter()
+        {
+            return default;
         }
     }
 }

@@ -675,6 +675,9 @@ MonoBehaviour:
   WallsWaterAndRegions:
     serializedVersion: 2
     m_Bits: 272
+  AllLayers:
+    serializedVersion: 2
+    m_Bits: 784
   Canvas: {fileID: 1116186326}
   AmbientLight: {fileID: 705507994}
   MidiPlayer: {fileID: 1246573634}

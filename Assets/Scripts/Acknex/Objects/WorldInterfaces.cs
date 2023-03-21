@@ -9,7 +9,9 @@ using AudioSynthesis.Midi;
 using LibTessDotNet;
 using Tests;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Utils;
 using Resolution = Acknex.Interfaces.Resolution;
 
 namespace Acknex
@@ -17,6 +19,7 @@ namespace Acknex
     public partial class World
     {
         private readonly List<(IAcknexObject acknexObject, string keyword, string objectName)> _postResolve = new List<(IAcknexObject acknexObject, string keyword, string objectName)>();
+        private RaycastHit[] _raycastResults = new RaycastHit[255];
 
         private Resolution _resolution = Resolution.Res320x200;
         private IAcknexRuntime _runtime;
@@ -526,37 +529,80 @@ namespace Acknex
             _runtime = runtime;
         }
 
-        public void Shoot(string objectName = null)
+        public void Shoot(IAcknexObject acknexObject = null)
         {
-
+            if (View.Instance == null)
+            {
+                return;
+            }
+            var shootX = GetSkillValue("SHOOT_X");
+            var shootY = GetSkillValue("SHOOT_Y");
+            Ray ray;
+            if (acknexObject == null)
+            {
+                ray = View.Instance.ViewCamera.ViewportPointToRay(new Vector3(0.5f + Mathf.Lerp(-1f, 1f, shootX), 0.5f + Mathf.Lerp(-1f, 1f, shootY), 0f));
+            }
+            else
+            {
+                //todo: deviation
+                ray = new Ray(View.Instance.ViewCamera.transform.position, (acknexObject.Container.GetCenter() - View.Instance.ViewCamera.transform.position).normalized);
+            }
+            //todo: shootSector
+            var shootFac = GetSkillValue("SHOOT_FAC");
+            var shootRange = GetSkillValue("SHOOT_RANGE");
+            void HandleHit(RaycastHit raycastResult, IAcknexObject hitAcknexObject)
+            {
+                UpdateSkillValue("HIT_DIST", raycastResult.distance);
+                UpdateSkillValue("RESULT", shootFac * (1.0f - raycastResult.distance / shootRange));
+                UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(raycastResult.point), AngleUtils.To2D(ray.origin))));
+                TriggerEvent(AcknexObject, GetSynonymObject("MY"), null, "IF_HIT");
+            }
+            UpdateSkillValue("HIT_DIST", 0f);
+            UpdateSkillValue("RESULT", 0f);
+            DebugExtension.DebugArrow(ray.origin, ray.direction, Color.black);
+            Physics.RaycastNonAlloc(ray, _raycastResults, shootRange, AllLayers);
+            Array.Sort(_raycastResults, (a, b) => a.distance.CompareTo(b.distance));
+            for (var i = 0; i < _raycastResults.Length; i++)
+            {
+                var raycastResult = _raycastResults[i];
+                if (raycastResult.collider == null)
+                {
+                    continue;
+                }
+                if (raycastResult.transform.parent != null)
+                {
+                    if (raycastResult.transform.parent.TryGetComponent<Wall>(out var wall))
+                    {
+                        if (wall.AcknexObject.ContainsFlag("IMMATERIAL"))
+                        {
+                            continue;
+                        }
+                        HandleHit(raycastResult,  wall.AcknexObject);
+                        return;
+                    }
+                    else if (raycastResult.transform.parent.TryGetComponent<Region>(out var region))
+                    {
+                        if (region.AcknexObject.ContainsFlag("IMMATERIAL"))
+                        {
+                            continue;
+                        }
+                        HandleHit(raycastResult, region.AcknexObject);
+                        return;
+                    }
+                    else if (raycastResult.transform.parent.TryGetComponent<Thing>(out var thing))
+                    {
+                        if (thing.AcknexObject.ContainsFlag("IMMATERIAL"))
+                        {
+                            continue;
+                        }
+                        HandleHit(raycastResult, thing.AcknexObject);
+                        return;
+                    }
+                }
+            }
         }
 
         public void ReadInkey(string stringName)
-        {
-
-        }
-
-        public void SetFloatAll(string objectName, string propertyName, float value)
-        {
-
-        }
-
-        public void SetIntegerAll(string objectName, string propertyName, int value)
-        {
-
-        }
-
-        public void SetStringAll(string objectName, string propertyName, string value)
-        {
-
-        }
-
-        public void SetObjectAll<T>(string objectName, string propertyName, T value)
-        {
-
-        }
-
-        public void SetAcknexObjectAll(string objectName, string propertyName, IAcknexObject value)
         {
 
         }

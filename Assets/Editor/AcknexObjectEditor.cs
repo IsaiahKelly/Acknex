@@ -33,7 +33,7 @@ public class AcknexObjectEditor : Editor
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(property.Key);
-                EditorGUILayout.LabelField(property.Value.ToString(CultureInfo.InvariantCulture));
+                EditorGUILayout.LabelField((property.Key == "ANGLE" ? Mathf.Rad2Deg * property.Value : property.Value).ToString(CultureInfo.InvariantCulture));
                 EditorGUILayout.EndHorizontal();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
@@ -61,7 +61,7 @@ public class AcknexObjectEditor : Editor
                     {
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField(property.Key);
-                        EditorGUILayout.LabelField(property.Value.ToString(CultureInfo.InvariantCulture));
+                        EditorGUILayout.LabelField((property.Key == "ANGLE" ? Mathf.Rad2Deg * property.Value : property.Value).ToString(CultureInfo.InvariantCulture));
                         EditorGUILayout.EndHorizontal();
                     }
                     EditorGUILayout.EndFoldoutHeaderGroup();
@@ -162,7 +162,8 @@ public class WorldEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);
-            EditorGUILayout.LabelField("|" + kvp.Value.AcknexObject.GetFloat("VAL") + "|");
+            var val = kvp.Value.AcknexObject.GetFloat("VAL");
+            EditorGUILayout.LabelField("|" + (kvp.Key == "PLAYER_ANGLE" ? Mathf.Rad2Deg * val : val) + "|");
             //if (GUILayout.Button("Modify"))
             //{
             //    var dialog = InputDialog.ShowDialog(kvp.Value.AcknexObject.GetString("VAL"));

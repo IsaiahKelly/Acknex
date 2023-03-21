@@ -2265,12 +2265,16 @@ DROPPED_7.SetFloat("VAL",1f);
 var MY_10 = _world.GetSynonymObject("MY");
 MY_10.SetFloat("SPEED",0f);
 yield return new WaitForTicks(4f);
-//Unknown keyword: SET_ALL
-//Unknown keyword: SET_ALL
-//Unknown keyword: SET_ALL
+var TROPASSAULT2ACT_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT2ACT");
+TROPASSAULT2ACT_14.SetFloatAll("INVISIBLE",0f);
+var ASSAULT2WAY_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Way,*/"ASSAULT2WAY");
+var TROPASSAULT2ACT_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT2ACT");
+TROPASSAULT2ACT_17.SetAcknexObjectAll("TARGET",ASSAULT2WAY_15);
+var TROPASSAULT2ACT_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT2ACT");
+TROPASSAULT2ACT_20.SetFloatAll("DIST",40f);
 yield return new WaitForTicks(160f);
-var MY_15 = _world.GetSynonymObject("MY");
-MY_15.SetFloat("SPEED",2f);
+var MY_24 = _world.GetSynonymObject("MY");
+MY_24.SetFloat("SPEED",2f);
 yield break;
 }
 public IEnumerator DROPTROOPS3(){
@@ -2288,11 +2292,15 @@ MY_9.SetAcknexObject("TEXTURE",HUMM1ATEX_7);
 var MY_12 = _world.GetSynonymObject("MY");
 MY_12.SetAcknexObject("IF_ARRIVED",null);
 yield return new WaitForTicks(4f);
-//Unknown keyword: SET_ALL
-//Unknown keyword: SET_ALL
-//Unknown keyword: SET_ALL
-var MY_16 = _world.GetSynonymObject("MY");
-MY_16.SetAcknexObject("TARGET",null);
+var TROPASSAULT3ACT_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT3ACT");
+TROPASSAULT3ACT_16.SetFloatAll("INVISIBLE",0f);
+var ASSAULT3WAY_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Way,*/"ASSAULT3WAY");
+var TROPASSAULT3ACT_19 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT3ACT");
+TROPASSAULT3ACT_19.SetAcknexObjectAll("TARGET",ASSAULT3WAY_17);
+var TROPASSAULT3ACT_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT3ACT");
+TROPASSAULT3ACT_22.SetFloatAll("DIST",40f);
+var MY_25 = _world.GetSynonymObject("MY");
+MY_25.SetAcknexObject("TARGET",null);
 yield break;
 }
 public IEnumerator ENDOFLEVEL(){
@@ -2429,10 +2437,11 @@ var SHOOT_FAC_33 = _world.GetObject(ObjectType.Skill,"SHOOT_FAC");
 SHOOT_FAC_33.SetFloat("VAL",0f);
 var SHOOT_RANGE_35 = _world.GetObject(ObjectType.Skill,"SHOOT_RANGE");
 SHOOT_RANGE_35.SetFloat("VAL",40f);
-_world.Shoot("MY");
-var HIT_DIST_37 = _world.GetObject(ObjectType.Skill,"HIT_DIST");
-var HIT_DIST_37_val = HIT_DIST_37.GetFloat("VAL");
-if (HIT_DIST_37_val == 0f)
+var MY_36 = _world.GetSynonymObject("MY");
+_world.Shoot(MY_36);
+var HIT_DIST_38 = _world.GetObject(ObjectType.Skill,"HIT_DIST");
+var HIT_DIST_38_val = HIT_DIST_38.GetFloat("VAL");
+if (HIT_DIST_38_val == 0f)
 {
 goto CONT;
 }
@@ -2447,22 +2456,22 @@ goto CONT;
         }
     }
 }CONT:
-var MY_40 = _world.GetSynonymObject("MY");
-MY_40.SetFloat("SPEED",0f);
-var MY_43 = _world.GetSynonymObject("MY");
-MY_43.SetFloat("CAREFULLY",0f);
-var MY_46 = _world.GetSynonymObject("MY");
-MY_46.SetFloat("GROUND",0f);
-var MY_49 = _world.GetSynonymObject("MY");
-MY_49.SetFloat("HEIGHT",-0.05f);
-var EXP01TEX_50 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"EXP01TEX");
-var MY_52 = _world.GetSynonymObject("MY");
-MY_52.SetAcknexObject("TEXTURE",EXP01TEX_50);
-var MY_55 = _world.GetSynonymObject("MY");
+var MY_41 = _world.GetSynonymObject("MY");
+MY_41.SetFloat("SPEED",0f);
+var MY_44 = _world.GetSynonymObject("MY");
+MY_44.SetFloat("CAREFULLY",0f);
+var MY_47 = _world.GetSynonymObject("MY");
+MY_47.SetFloat("GROUND",0f);
+var MY_50 = _world.GetSynonymObject("MY");
+MY_50.SetFloat("HEIGHT",-0.05f);
+var EXP01TEX_51 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"EXP01TEX");
+var MY_53 = _world.GetSynonymObject("MY");
+MY_53.SetAcknexObject("TEXTURE",EXP01TEX_51);
+var MY_56 = _world.GetSynonymObject("MY");
 //Unknown Property Type: Thing.PLAY
 yield return new WaitForTicks(4f);
-var EXPLOSION_ON_58 = _world.GetObject(ObjectType.Skill,"EXPLOSION_ON");
-EXPLOSION_ON_58.SetFloat("VAL",0f);
+var EXPLOSION_ON_59 = _world.GetObject(ObjectType.Skill,"EXPLOSION_ON");
+EXPLOSION_ON_59.SetFloat("VAL",0f);
 yield break;
 }
 public IEnumerator EXPLODETARGET(){
@@ -4473,10 +4482,14 @@ _world.SetSynonymObject("MESSAGE_TEXT",WRN17STR_157);
             yield return current;
         }
     }
-}//Unknown keyword: SET_ALL
-//Unknown keyword: SET_ALL
-var SHOT_SOUND_ON_160 = _world.GetObject(ObjectType.Skill,"SHOT_SOUND_ON");
-SHOT_SOUND_ON_160.SetFloat("VAL",1f);
+}var REPTFLEE_159 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTFLEE");
+var REPT0ACT_161 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"REPT0ACT");
+REPT0ACT_161.SetAcknexObjectAll("EACH_TICK",REPTFLEE_159);
+var REPTFLEE_162 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTFLEE");
+var REPT1ACT_164 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"REPT1ACT");
+REPT1ACT_164.SetAcknexObjectAll("EACH_TICK",REPTFLEE_162);
+var SHOT_SOUND_ON_166 = _world.GetObject(ObjectType.Skill,"SHOT_SOUND_ON");
+SHOT_SOUND_ON_166.SetFloat("VAL",1f);
 yield break;
 }
 public IEnumerator LEAVE_WATER(){
@@ -4747,27 +4760,28 @@ var SHOOT_RANGE_24 = _world.GetObject(ObjectType.Skill,"SHOOT_RANGE");
 SHOOT_RANGE_24.SetFloat("VAL",200f);
 var SHOOT_Y_26 = _world.GetObject(ObjectType.Skill,"SHOOT_Y");
 SHOOT_Y_26.SetFloat("VAL",0f);
-_world.Shoot("MY");
-var HIT_DIST_28 = _world.GetObject(ObjectType.Skill,"HIT_DIST");
-var HIT_DIST_28_val = HIT_DIST_28.GetFloat("VAL");
-if (HIT_DIST_28_val == 0f)
+var MY_27 = _world.GetSynonymObject("MY");
+_world.Shoot(MY_27);
+var HIT_DIST_29 = _world.GetObject(ObjectType.Skill,"HIT_DIST");
+var HIT_DIST_29_val = HIT_DIST_29.GetFloat("VAL");
+if (HIT_DIST_29_val == 0f)
 {
 goto NOTVISIBLE;
 }
 ISVISIBLE:
-var MY_31 = _world.GetSynonymObject("MY");
-MY_31.SetFloat("FLAG1",1f);
+var MY_32 = _world.GetSynonymObject("MY");
+MY_32.SetFloat("FLAG1",1f);
 yield break;
 MAYBEVISIBLE:
-var MY_34 = _world.GetSynonymObject("MY");
-var temp_35 =MY_34.GetFloat("VISIBLE");
-if (temp_35 == 1f)
+var MY_35 = _world.GetSynonymObject("MY");
+var temp_36 =MY_35.GetFloat("VISIBLE");
+if (temp_36 == 1f)
 {
 goto ISVISIBLE;
 }
 NOTVISIBLE:
-var MY_38 = _world.GetSynonymObject("MY");
-MY_38.SetFloat("FLAG1",0f);
+var MY_39 = _world.GetSynonymObject("MY");
+MY_39.SetFloat("FLAG1",0f);
 yield break;
 }
 public IEnumerator LOWER(){
@@ -9513,8 +9527,10 @@ var HUMM1ACT_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"HUMM1
 HUMM1ACT_7.SetFloat("INVISIBLE",0f);
 var HUMM2ACT_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"HUMM2ACT");
 HUMM2ACT_10.SetFloat("INVISIBLE",0f);
-//Unknown keyword: SET_ALL
-//Unknown keyword: SET_ALL
+var TROPASSAULT1ACT_13 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT1ACT");
+TROPASSAULT1ACT_13.SetFloatAll("INVISIBLE",0f);
+var TROPASSAULT1ACT_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT1ACT");
+TROPASSAULT1ACT_16.SetFloatAll("DIST",40f);
 yield break;
 }
 public IEnumerator STARTLEVEL(){
@@ -11137,17 +11153,18 @@ var SHOOT_RANGE_32 = _world.GetObject(ObjectType.Skill,"SHOOT_RANGE");
 SHOOT_RANGE_32.SetFloat("VAL",100f);
 var SHOOT_Y_34 = _world.GetObject(ObjectType.Skill,"SHOOT_Y");
 SHOOT_Y_34.SetFloat("VAL",0f);
-_world.Shoot("MY");
-var HIT_DIST_36 = _world.GetObject(ObjectType.Skill,"HIT_DIST");
-var HIT_DIST_36_val = HIT_DIST_36.GetFloat("VAL");
-if (HIT_DIST_36_val == 0f)
+var MY_35 = _world.GetSynonymObject("MY");
+_world.Shoot(MY_35);
+var HIT_DIST_37 = _world.GetObject(ObjectType.Skill,"HIT_DIST");
+var HIT_DIST_37_val = HIT_DIST_37.GetFloat("VAL");
+if (HIT_DIST_37_val == 0f)
 {
 goto MISS;
 }
-var RESULT_37 = _world.GetObject(ObjectType.Skill,"RESULT");
-var RESULT_37_val = RESULT_37.GetFloat("VAL");
-var PLAYER_RESULT_38 = _world.GetObject(ObjectType.Skill,"PLAYER_RESULT");
-PLAYER_RESULT_38.SetFloat("VAL",RESULT_37_val);
+var RESULT_38 = _world.GetObject(ObjectType.Skill,"RESULT");
+var RESULT_38_val = RESULT_38.GetFloat("VAL");
+var PLAYER_RESULT_39 = _world.GetObject(ObjectType.Skill,"PLAYER_RESULT");
+PLAYER_RESULT_39.SetFloat("VAL",RESULT_38_val);
 {
     var enumerator = HITPLAYERDELAY();
     while (enumerator.MoveNext())
@@ -11767,7 +11784,8 @@ if (GOLCOUNTER_4_val < 7f)
 {
 yield break;
 }
-//Unknown keyword: SET_ALL
+var WBR01REPTWALL_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Wall,*/"WBR01REPTWALL");
+//Unknown Property Type: Wall.IMPASSABLE
 _world.AcknexObject.SetAcknexObject("EACH_SEC.4",null);
 yield break;
 }
@@ -11863,12 +11881,22 @@ if (temp_3 != 8f)
 {
 yield break;
 }
-//Unknown keyword: SET_ALL
-//Unknown keyword: SET_ALL
-//Unknown keyword: SET_ALL
-//Unknown keyword: SET_ALL
-//Unknown keyword: SET_ALL
-//Unknown keyword: SET_ALL
+var VANISHSTOP_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"VANISHSTOP");
+var TROPASSAULT3ACT_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT3ACT");
+TROPASSAULT3ACT_6.SetAcknexObjectAll("IF_ARRIVED",VANISHSTOP_4);
+var TROPATEX_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROPATEX");
+var TROPASSAULT3ACT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT3ACT");
+TROPASSAULT3ACT_9.SetAcknexObjectAll("TEXTURE",TROPATEX_7);
+var TROPASSAULT3ACT_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT3ACT");
+TROPASSAULT3ACT_12.SetFloatAll("CAREFULLY",0f);
+var LOCATEACTOR_13 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOCATEACTOR");
+var TROPASSAULT3ACT_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT3ACT");
+TROPASSAULT3ACT_15.SetAcknexObjectAll("EACH_CYCLE",LOCATEACTOR_13);
+var REPT1WAY_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Way,*/"REPT1WAY");
+var TROPASSAULT3ACT_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT3ACT");
+TROPASSAULT3ACT_18.SetAcknexObjectAll("TARGET",REPT1WAY_16);
+var TROPASSAULT3ACT_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT3ACT");
+TROPASSAULT3ACT_21.SetFloatAll("SPEED",0.7f);
 yield break;
 }
 public IEnumerator ZOOMMAPIN(){

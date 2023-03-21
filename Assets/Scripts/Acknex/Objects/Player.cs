@@ -142,6 +142,11 @@ namespace Acknex
 
         }
 
+        public Vector3 GetCenter()
+        {
+            return transform.position + new Vector3(0f, World.Instance.GetSkillValue("PLAYER_SIZE") * 0.5f, 0f);
+        }
+
         public static Player Instance { get; private set; }
 
         private void Awake()

@@ -16,6 +16,220 @@ namespace Acknex
         public SortedDictionary<string, object> ObjectProperties = new SortedDictionary<string, object>();
 
         public IAcknexObjectContainer Container { get; set; }
+        public void SetFloatAll(string propertyName, float value)
+        {
+            switch (Type)
+            {
+                case ObjectType.Wall:
+                    {
+                        var all = World.Instance.AllWallsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetFloat(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Region:
+                    {
+                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetFloat(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Thing:
+                    {
+                        var all = World.Instance.AllThingsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetFloat(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Actor:
+                    {
+                        var all = World.Instance.AllActorsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetFloat(propertyName, value);
+                        }
+                        break;
+                    }
+            }
+        }
+
+        public void SetIntegerAll(string propertyName, int value)
+        {
+            switch (Type)
+            {
+                case ObjectType.Wall:
+                    {
+                        var all = World.Instance.AllWallsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetInteger(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Region:
+                    {
+                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetInteger(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Thing:
+                    {
+                        var all = World.Instance.AllThingsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetInteger(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Actor:
+                    {
+                        var all = World.Instance.AllActorsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetInteger(propertyName, value);
+                        }
+                        break;
+                    }
+            }
+        }
+
+        public void SetStringAll(string propertyName, string value)
+        {
+            switch (Type)
+            {
+                case ObjectType.Wall:
+                    {
+                        var all = World.Instance.AllWallsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetString(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Region:
+                    {
+                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetString(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Thing:
+                    {
+                        var all = World.Instance.AllThingsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetString(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Actor:
+                    {
+                        var all = World.Instance.AllActorsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetString(propertyName, value);
+                        }
+                        break;
+                    }
+            }
+        }
+
+        public void SetObjectAll<T>(string propertyName, T value)
+        {
+            switch (Type)
+            {
+                case ObjectType.Wall:
+                    {
+                        var all = World.Instance.AllWallsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetObject(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Region:
+                    {
+                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetObject(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Thing:
+                    {
+                        var all = World.Instance.AllThingsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetObject(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Actor:
+                    {
+                        var all = World.Instance.AllActorsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetObject(propertyName, value);
+                        }
+                        break;
+                    }
+            }
+        }
+
+        public void SetAcknexObjectAll(string propertyName, IAcknexObject value)
+        {
+            switch (Type)
+            {
+                case ObjectType.Wall:
+                    {
+                        var all = World.Instance.AllWallsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetAcknexObject(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Region:
+                    {
+                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetAcknexObject(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Thing:
+                    {
+                        var all = World.Instance.AllThingsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetAcknexObject(propertyName, value);
+                        }
+                        break;
+                    }
+                case ObjectType.Actor:
+                    {
+                        var all = World.Instance.AllActorsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetAcknexObject(propertyName, value);
+                        }
+                        break;
+                    }
+            }
+        }
 
         public override string ToString()
         {

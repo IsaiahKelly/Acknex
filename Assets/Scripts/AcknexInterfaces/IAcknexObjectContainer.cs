@@ -1,4 +1,6 @@
-﻿namespace Acknex.Interfaces
+﻿using UnityEngine;
+
+namespace Acknex.Interfaces
 {
     /// <summary>
     /// Represents a Unity object container which holds an AcknexObject
@@ -32,5 +34,10 @@
         /// Method to call to post-setup an object instance.
         /// </summary>
         void SetupInstance();
+
+        /// <summary>
+        /// Gets the container position in Unity scene.
+        /// </summary>
+        Vector3 GetCenter();
     }
 }

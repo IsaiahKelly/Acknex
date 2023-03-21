@@ -26,11 +26,11 @@ namespace Acknex
             return null;
         }
 
+        private AudioSource _audioSource;
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
-        private GameObject _thingGameObject;
-        private CapsuleCollider _thingCollider;
-        private AudioSource _audioSource;
+        private GameObject _innerGameObject;
+        private CapsuleCollider _innerCollider;
         private CollisionCallback _thingCollisionCallback;
 
         //Deltas for comparison
@@ -90,13 +90,11 @@ namespace Acknex
 
         }
 
-        //private void OnDrawGizmosSelected()
-        //{
-        //    if (AcknexObject.TryGetFloat("DIST", out var dist))
-        //    {
-        //        DebugExtension.DrawCircle(transform.position, Vector3.up, Color.magenta, dist);
-        //    }
-        //}
+        private void OnDrawGizmos()
+        {
+            var quaternion = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE")), 0f);
+            DebugExtension.DrawArrow(transform.position, quaternion * Vector3.forward, Color.cyan);
+        }
 
         private IEnumerator Animate()
         {
@@ -104,7 +102,7 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = TextureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _thingGameObject, AcknexObject, GetRegion(), transform);
+            var enumerator = TextureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), _innerGameObject.transform);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
@@ -150,11 +148,11 @@ namespace Acknex
 
         public void SetupInstance()
         {
-            _thingGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
-            _thingGameObject.layer = World.Instance.ThingsAndActorsLayer.LayerIndex;
-            _thingCollider = _thingGameObject.AddComponent<CapsuleCollider>();
-            _thingCollider.height = 1f;
-            _thingCollisionCallback = _thingGameObject.AddComponent<CollisionCallback>();
+            _innerGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
+            _innerGameObject.layer = World.Instance.ThingsAndActorsLayer.LayerIndex;
+            _innerCollider = _innerGameObject.AddComponent<CapsuleCollider>();
+            _innerCollider.height = 1f;
+            _thingCollisionCallback = _innerGameObject.AddComponent<CollisionCallback>();
             _thingCollisionCallback.OnCollisionEnterCallback += OnCollisionEnterCallback;
             _thingCollisionCallback.OnCollisionExitCallback += OnCollisionExitCallback;
 
@@ -174,10 +172,15 @@ namespace Acknex
             StartCoroutine(TriggerSecEvents());
         }
 
+        public Vector3 GetCenter()
+        {
+            return transform.position + new Vector3(0f, AcknexObject.GetFloat("HEIGHT") * 0.5f, 0f);
+        }
+
         public virtual void UpdateObject()
         {
-            if (TextureObject == null || !TextureObject.HasModel(out _))
-            {
+            //if (TextureObject == null || !TextureObject.HasModel(out _))
+            //{
                 var camera = CameraExtensions.GetLastActiveCamera();
                 if (camera == null)
                 {
@@ -186,14 +189,14 @@ namespace Acknex
                 var eulerAngles = transform.eulerAngles;
                 eulerAngles.y = camera.transform.eulerAngles.y;
                 transform.eulerAngles = eulerAngles;
-            }
-            else
-            {
-                var angle = AcknexObject.GetFloat("ANGLE");
-                var eulerAngles = transform.eulerAngles;
-                eulerAngles.y = AngleUtils.ConvertAcknexToUnityAngle(angle);
-                transform.eulerAngles = eulerAngles;
-            }
+            //}
+            //else
+            //{
+            //    var angle = AcknexObject.GetFloat("ANGLE");
+            //    var eulerAngles = transform.eulerAngles;
+            //    eulerAngles.y = AngleUtils.ConvertAcknexToUnityAngle(angle);
+            //    transform.eulerAngles = eulerAngles;
+            //}
 
             //if (!AcknexObject.IsDirty)
             //{
@@ -204,13 +207,14 @@ namespace Acknex
             if (AcknexObject.ContainsFlag("INVISIBLE", false))
             {
                 _meshRenderer.enabled = false;
-                _thingCollider.enabled = false;
+                _innerCollider.enabled = false;
             }
             else
             {
                 _meshRenderer.enabled = true;
-                _thingCollider.enabled = true;
+                _innerCollider.enabled = true;
             }
+
             if (AcknexObject.TryGetAcknexObject("TARGET", out var target) && target != _lastTarget)
             {
                 if (_movingCoroutine != null)
@@ -219,17 +223,24 @@ namespace Acknex
                 }
                 if (target != null)
                 {
-                    if (target == World.Instance.GetObject(ObjectType.String, "FOLLOW"))
+                    if (target.GetString("NAME") == "FOLLOW")
                     {
+                        Debug.Log(AcknexObject + "moving in direction of player with speed " + AcknexObject.GetFloat("SPEED"));
                         _movingCoroutine = StartCoroutine(MoveToPlayer());
                     }
-                    else if (target == World.Instance.GetObject(ObjectType.String, "MOVE"))
+                    else if (target.GetString("NAME") == "MOVE" || target.GetString("NAME") == "BULLET")
                     {
+                        Debug.Log(AcknexObject + "moving in direction of its angle with speed " + AcknexObject.GetFloat("SPEED"));
                         _movingCoroutine = StartCoroutine(MoveToAngle());
                     }
                     else if (target.Container is Way way)
                     {
-                        _movingCoroutine = StartCoroutine(way.MoveThingOrActor(AcknexObject));
+                        Debug.Log(AcknexObject + "moving in direction of way " + way.AcknexObject + " with speed " + AcknexObject.GetFloat("SPEED"));
+                        _movingCoroutine = StartCoroutine(MoveToWay(way));
+                    }
+                    else
+                    {
+                        Debug.Log(AcknexObject + "moving to nothing");
                     }
                 }
                 _lastTarget = target;
@@ -250,12 +261,12 @@ namespace Acknex
             }
             transform.position = new Vector3(thingX, thingZ, thingY);
 
-            var thingPosition = _thingGameObject.transform.position;
+            var thingPosition = _innerGameObject.transform.position;
             thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
-            _thingGameObject.transform.position = thingPosition;
+            _innerGameObject.transform.position = thingPosition;
 
-            _thingCollider.radius = 0.5f;
-            _thingCollider.isTrigger = AcknexObject.ContainsFlag("PASSABLE");
+            _innerCollider.radius = 0.5f;
+            _innerCollider.isTrigger = AcknexObject.ContainsFlag("PASSABLE");
 
             _triggerCollider.radius = AcknexObject.GetFloat("DIST") * 0.5f;
 
@@ -268,12 +279,40 @@ namespace Acknex
             //Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, transform.right);
         }
 
+        private IEnumerator MoveToWay(Way way)
+        {
+            var points = way.InstancePoints;
+            var waypoint = 1;
+            AcknexObject.SetInteger("WAYPOINT", waypoint);
+            if (points.Count == 0)
+            {
+                World.Instance.TriggerEvent(AcknexObject, way.AcknexObject, GetRegion(), "IF_ARRIVED");
+                yield break;
+            }
+            var nextPoint = points[waypoint - 1];
+            for (; ; )
+            {
+                if (MoveToPoint(nextPoint))
+                {
+                    waypoint++;
+                    if (waypoint > points.Count)
+                    {
+                        yield break;
+                    }
+                    AcknexObject.SetInteger("WAYPOINT", waypoint);
+                    World.Instance.TriggerEvent(AcknexObject, way.AcknexObject, GetRegion(), "IF_ARRIVED");
+                    nextPoint = points[waypoint - 1];
+                }
+                yield return null;
+            }
+        }
+
         private IEnumerator MoveToPlayer()
         {
             _movingToTarget = true;
-            var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
             for (; ; )
             {
+                var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
                 if (MoveToPoint(playerPos))
                 {
                     _movingToTarget = false;
@@ -291,7 +330,7 @@ namespace Acknex
             var timeCorr = World.Instance.GetSkillValue("TIME_CORR");
             var sin = AngleUtils.Sin(angle) * speed * timeCorr;
             var cos = AngleUtils.Cos(angle) * speed * timeCorr;
-            var targetPos = new Vector2(World.Instance.GetSkillValue("X") + sin, World.Instance.GetSkillValue("Y") + cos);
+            var targetPos = new Vector2(AcknexObject.GetFloat("X") + sin, AcknexObject.GetFloat("Y") + cos);
             for (; ; )
             {
                 if (MoveToPoint(targetPos))
@@ -359,7 +398,7 @@ namespace Acknex
             AcknexObject.SetFloat("TARGET_Y", nextPoint.y);
             var toTarget = nextPoint - pos;
             //todo: why angle inverted?
-            var angle = AngleUtils.ConvertUnityToAcknexAngle(Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg);
+            var angle = AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Atan2(toTarget) * Mathf.Rad2Deg);
             var newPos = Vector2.MoveTowards(pos, nextPoint, speed * World.Instance.GetSkillValue("TIME_CORR"));
             DebugExtension.DebugArrow(new Vector3(pos.x, 0f, pos.y), new Vector3(toTarget.x, 0f, toTarget.y), Color.magenta, 1f);
             AcknexObject.SetFloat("X", newPos.x);

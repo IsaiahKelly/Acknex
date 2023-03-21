@@ -96,6 +96,11 @@ namespace Acknex
             
         }
 
+        public Vector3 GetCenter()
+        {
+            return transform.position;
+        }
+
         private void Update()
         {
             UpdateObject();

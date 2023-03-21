@@ -7,12 +7,14 @@ namespace Acknex.Interfaces
     {
         public static float Sin(float radians)
         {
-            return -Mathf.Sin(radians);
+            return -Mathf.Cos(radians);
+            //return -Mathf.Sin(radians);
         }
 
         public static float Cos(float radians)
         {
-            return Mathf.Cos(radians);
+            return -Mathf.Sin(radians);
+            //return Mathf.Cos(radians);
         }
 
         public static float Angle(Vector3 from, Vector3 to)
@@ -27,14 +29,14 @@ namespace Acknex.Interfaces
 
         public static float ConvertUnityToAcknexAngle(float degrees)
         {
-            return Mathf.Repeat(Mathf.Rad2Deg * degrees - 90f, 360f);
-            //return Mathf.Repeat(Mathf.Deg2Rad * (unityAngle + 180f), 360f);
+            //return Mathf.Repeat(Mathf.Rad2Deg * degrees - 90f, 360f);
+            return Mathf.Repeat(Mathf.Deg2Rad * (degrees + 180f), 360f);
         }
         
         public static float ConvertAcknexToUnityAngle(float radians)
         {
-            return Mathf.Repeat(Mathf.Rad2Deg * radians + 90f, 360f);
-            //return Mathf.Repeat(Mathf.Rad2Deg * acknexAngle - 180f, 360f);
+            //return Mathf.Repeat(Mathf.Rad2Deg * radians + 90f, 360f);
+            return Mathf.Repeat(Mathf.Rad2Deg * radians - 180f, 360f);
         }
 
         public static Vector3 To2D(Vector3 position)
@@ -52,5 +54,9 @@ namespace Acknex.Interfaces
         //{
         //    return new Vector3(vector.x, vector.z, vector.y);
         //}
+        public static float Atan2(Vector2 dir)
+        {
+            return Mathf.Atan2(dir.x, dir.y);
+        }
     }
 }

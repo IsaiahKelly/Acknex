@@ -198,6 +198,11 @@ namespace Acknex
             
         }
 
+        public Vector3 GetCenter()
+        {
+            return default;
+        }
+
         private mdl_vertex_t ReadQuakeVertex(BinaryReader binaryReader)
         {
             var vertex = new mdl_vertex_t();

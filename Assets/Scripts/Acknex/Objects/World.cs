@@ -18,6 +18,11 @@ namespace Acknex
             
         }
 
+        public Vector3 GetCenter()
+        {
+            return default;
+        }
+
         private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
@@ -34,11 +39,13 @@ namespace Acknex
         public float CanvasWidthRatio = 2f;
         public bool WMPContainsRegionsByName;
         public bool UseWDLEngine;
+
         public SingleUnityLayer WallsAndRegionsLayer;
         public SingleUnityLayer ThingsAndActorsLayer;
         public SingleUnityLayer WaterLayer;
         public SingleUnityLayer TriggersLayer;
         public LayerMask WallsWaterAndRegions;
+        public LayerMask AllLayers;
 
         public Canvas Canvas;
         public Light AmbientLight;

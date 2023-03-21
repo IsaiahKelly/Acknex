@@ -14,16 +14,22 @@ namespace Acknex
 
         public static View Instance { get; private set; }
 
+        public Camera ViewCamera
+        {
+            get => _viewCamera;
+            set => _viewCamera = value;
+        }
+
         public bool MainView;
 
-        private Camera _camera;
+        private Camera _viewCamera;
 
         public void UpdateObject()
         {
             if (MainView)
             {
                 //todo: check if fov is right
-                _camera.fieldOfView = Mathf.InverseLerp(0.2f, 2.0f, World.Instance.GetSkillValue("PLAYER_ARC")) * 120f;
+                ViewCamera.fieldOfView = Mathf.InverseLerp(0.2f, 2.0f, World.Instance.GetSkillValue("PLAYER_ARC")) * 120f;
                 var transformLocalPosition = transform.localPosition;
                 transformLocalPosition.y = World.Instance.GetSkillValue("PLAYER_SIZE");
                 transform.localPosition = transformLocalPosition;
@@ -32,7 +38,7 @@ namespace Acknex
                 transform.localRotation = transformLocalRotation;
                 Shader.SetGlobalFloat("_CAMERA_PITCH",  Mathf.DeltaAngle(CameraExtensions.GetLastActiveCamera().transform.localEulerAngles.x, 0f));
             }
-            var ray = _camera.ScreenPointToRay(Input.mousePosition);
+            var ray = ViewCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hitInfo))
             {
                 if (hitInfo.collider.TryGetComponent<IAcknexObjectContainer>(out var container))
@@ -70,11 +76,16 @@ namespace Acknex
             
         }
 
+        public Vector3 GetCenter()
+        {
+            return ViewCamera.transform.position;
+        }
+
         private void Awake()
         {
             Instance = this;
             AcknexObject.Container = this;
-            _camera = GetComponent<Camera>();
+            ViewCamera = GetComponent<Camera>();
         }
 
         private void Update()

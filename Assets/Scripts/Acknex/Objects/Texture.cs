@@ -70,7 +70,7 @@ namespace Acknex
             GameObject thingGameObject,
             IAcknexObject sourceAcknexObject,
             IAcknexObject regionAcknexObject,
-            Transform thingTransform
+            Transform sourceTransform
         )
         {
             var sides = Mathf.Max(1, this.AcknexObject.GetInteger("SIDES"));
@@ -78,14 +78,14 @@ namespace Acknex
             var mirror = AcknexObject.GetObject<List<float>>("MIRROR");
             if (cycles == 1)
             {
-                UpdateAngleFrameScale(scaleTexture, cycles, sides, 0, mirror, null, meshRenderer, meshFilter, thingGameObject, sourceAcknexObject, thingTransform);
+                UpdateAngleFrameScale(scaleTexture, cycles, sides, 0, mirror, null, meshRenderer, meshFilter, thingGameObject, sourceAcknexObject, sourceTransform);
                 yield break;
             }
             var cycle = 0;
             while (true)
             {
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : null;
-                UpdateAngleFrameScale(scaleTexture, cycles, sides, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, sourceAcknexObject, thingTransform);
+                UpdateAngleFrameScale(scaleTexture, cycles, sides, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, sourceAcknexObject, sourceTransform);
                 yield return currentDelay;
                 cycle = (int)Mathf.Repeat(cycle + 1, cycles);
                 World.Instance.TriggerEvent(sourceAcknexObject, sourceAcknexObject, regionAcknexObject, "EACH_CYCLE");
@@ -111,7 +111,7 @@ namespace Acknex
                     var halfStep = 180f / sides;
                     var cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(camera.transform.position - sourceGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
                     var thingAngle = AngleUtils.ConvertAcknexToUnityAngle(sourceAcknexObject.GetFloat("ANGLE"));
-                    var thingDirection = Quaternion.Euler(0f, thingAngle, 0f) * Vector3.back;
+                    var thingDirection = Quaternion.Euler(0f, thingAngle, 0f) * Vector3.forward;
                     var angle = Mathf.Repeat(AngleUtils.Angle(thingDirection, cameraToThingDirection) + halfStep, 360f);
                     var normalizedAngle = angle / 360f;
                     side = Mathf.RoundToInt(Mathf.Lerp(0, sides - 1, normalizedAngle));
@@ -181,6 +181,11 @@ namespace Acknex
         public void SetupInstance()
         {
             
+        }
+
+        public Vector3 GetCenter()
+        {
+            return default;
         }
     }
 }

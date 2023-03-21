@@ -27,23 +27,24 @@ namespace Acknex
         public bool DebugMarked;
         public bool Processed;
 
+        private Vector3 _xAxis;
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
         private MeshCollider _collider;
         private GameObject _attached;
-
-        //todo: can remove, debug info
-        public Matrix4x4 BottomQuad;
-        public Matrix4x4 BottomUV;
-
-        private Vector3 XAxis;
         private AudioSource _audioSource;
+        private GameObject _innerGameObject;
         private GameObject _vertexGameObjectA;
         private SphereCollider _vertexTriggerA;
         private GameObject _vertexGameObjectB;
         private SphereCollider _vertexTriggerB;
         private CollisionCallback _collisionCallbackA;
         private CollisionCallback _collisionCallbackB;
+
+        //todo: can remove, debug info
+        public Matrix4x4 BottomQuad;
+        public Matrix4x4 BottomUV;
+
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
 
@@ -192,6 +193,12 @@ namespace Acknex
             StartCoroutine(Animate());
         }
 
+        //todo
+        public Vector3 GetCenter()
+        {
+            return default;
+        }
+
         public void ProcessWall(
             List<ContourVertex> allContourVertices,
             List<ContourVertex> contourVertices,
@@ -282,13 +289,17 @@ namespace Acknex
                 materials[i] = material;
             }
 
-            wall._meshFilter = wall.gameObject.AddComponent<MeshFilter>();
+            wall._innerGameObject = new GameObject("Wall");
+            wall._innerGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
+            wall._innerGameObject.transform.SetParent(wall.transform, false);
+
+            wall._meshFilter = wall._innerGameObject.AddComponent<MeshFilter>();
             wall._meshFilter.mesh = mesh;
 
-            wall._meshRenderer = wall.gameObject.AddComponent<MeshRenderer>();
+            wall._meshRenderer = wall._innerGameObject.AddComponent<MeshRenderer>();
             wall._meshRenderer.materials = materials;
 
-            wall._collider = wall.gameObject.AddComponent<MeshCollider>();
+            wall._collider = wall._innerGameObject.AddComponent<MeshCollider>();
             wall._collider.sharedMesh = mesh;
         }
 
@@ -300,7 +311,7 @@ namespace Acknex
                 var vertexB = vertices[wall.AcknexObject.GetInteger("VERTEX2")];
 
                 var xAxis = (new Vector3(vertexB.Position.X, 0f, vertexB.Position.Y) - new Vector3(vertexA.Position.X, 0f, vertexA.Position.Y)).normalized;
-                wall.XAxis = xAxis;
+                wall._xAxis = xAxis;
 
                 wall.AcknexObject.SetFloat("X1", vertexA.Position.X);
                 wall.AcknexObject.SetFloat("Y1", vertexA.Position.Y);

@@ -1,4 +1,5 @@
 ﻿using Acknex.Interfaces;
+using UnityEngine;
 
 namespace Acknex
 {
@@ -28,6 +29,11 @@ namespace Acknex
         public void SetupInstance()
         {
             
+        }
+
+        public Vector3 GetCenter()
+        {
+            return default;
         }
 
         private static IAcknexObject GetTemplateCallback(string name)

@@ -42,5 +42,10 @@ namespace Acknex
         {
             
         }
+
+        public Vector3 GetCenter()
+        {
+            return default;
+        }
     }
 }

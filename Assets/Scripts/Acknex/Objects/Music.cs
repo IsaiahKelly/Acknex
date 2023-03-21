@@ -1,6 +1,7 @@
 ﻿using Acknex.Interfaces;
 using System.ComponentModel;
 using System.IO;
+using UnityEngine;
 using UnityMidi;
 
 namespace Acknex
@@ -43,6 +44,11 @@ namespace Acknex
         public void SetupInstance()
         {
             
+        }
+
+        public Vector3 GetCenter()
+        {
+            return default;
         }
 
         public Music()
