@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Acknex.Interfaces;
 using CodiceApp.EventTracking.Plastic;
+using UnityEditor;
 using UnityEngine;
 using Utils;
 
@@ -39,7 +40,8 @@ namespace Acknex
         private GameObject _triggerGameObject;
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;
-        private bool _movingToPlayer;
+        private bool _movingToTarget;
+        private Coroutine _movingCoroutine;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -211,15 +213,23 @@ namespace Acknex
             }
             if (AcknexObject.TryGetAcknexObject("TARGET", out var target) && target != _lastTarget)
             {
+                if (_movingCoroutine != null)
+                {
+                    StopCoroutine(_movingCoroutine);
+                }
                 if (target != null)
                 {
                     if (target == World.Instance.GetObject(ObjectType.String, "FOLLOW"))
                     {
-                        StartCoroutine(MoveToPlayer());
+                        _movingCoroutine = StartCoroutine(MoveToPlayer());
+                    }
+                    else if (target == World.Instance.GetObject(ObjectType.String, "MOVE"))
+                    {
+                        _movingCoroutine = StartCoroutine(MoveToAngle());
                     }
                     else if (target.Container is Way way)
                     {
-                        StartCoroutine(way.MoveThingOrActor(AcknexObject));
+                        _movingCoroutine = StartCoroutine(way.MoveThingOrActor(AcknexObject));
                     }
                 }
                 _lastTarget = target;
@@ -249,24 +259,48 @@ namespace Acknex
 
             _triggerCollider.radius = AcknexObject.GetFloat("DIST") * 0.5f;
 
+            AcknexObject.SetFloat("DISTANCE", Vector3.Distance(transform.position, Player.Instance.transform.position) * 0.2f);
+            //Approximate distance(+/ -20 %) of the player
+            //    from the center of the object; only valid for
+            //    objects within the player's CLIP_DIST.
+
             //todo: reimplement
             //Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, transform.right);
         }
 
         private IEnumerator MoveToPlayer()
         {
-            _movingToPlayer = true;
+            _movingToTarget = true;
             var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
             for (; ; )
             {
-                if (MoveTo(playerPos))
+                if (MoveToPoint(playerPos))
                 {
-                    _movingToPlayer = false;
+                    _movingToTarget = false;
                     yield break;
                 }
                 yield return null;
             }
-            _movingToPlayer = false;
+        }
+
+        private IEnumerator MoveToAngle()
+        {
+            _movingToTarget = true;
+            var angle = AcknexObject.GetFloat("ANGLE");
+            var speed = AcknexObject.GetFloat("SPEED");
+            var timeCorr = World.Instance.GetSkillValue("TIME_CORR");
+            var sin = AngleUtils.Sin(angle) * speed * timeCorr;
+            var cos = AngleUtils.Cos(angle) * speed * timeCorr;
+            var targetPos = new Vector2(World.Instance.GetSkillValue("X") + sin, World.Instance.GetSkillValue("Y") + cos);
+            for (; ; )
+            {
+                if (MoveToPoint(targetPos))
+                {
+                    _movingToTarget = false;
+                    yield break;
+                }
+                yield return null;
+            }
         }
 
         public virtual void UpdateEvents()
@@ -297,7 +331,7 @@ namespace Acknex
             AcknexObject.SetFloat("Z", thingZ);
             if (AcknexObject.ContainsFlag("MASTER") && newRegion != region)
             {
-                if (_movingToPlayer)
+                if (_movingToTarget && AcknexObject.ContainsFlag("CAREFULLY"))
                 {
                     World.Instance.TriggerEvent(AcknexObject, Player.Instance.AcknexObject, region.AcknexObject, "IF_ARRIVED");
                 }
@@ -309,7 +343,7 @@ namespace Acknex
                 {
                     World.Instance.TriggerEvent(region.Above.AcknexObject, AcknexObject, region.Above.AcknexObject, "IF_DIVE");
                 }
-            } 
+            }
             else
             {
                 region = newRegion;
@@ -317,25 +351,22 @@ namespace Acknex
             AcknexObject.SetAcknexObject("REGION", region.AcknexObject);
         }
 
-        public bool MoveTo(Vector2 nextPoint)
+        public bool MoveToPoint(Vector2 nextPoint)
         {
             var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"));
             var speed = AcknexObject.GetFloat("SPEED");
             AcknexObject.SetFloat("TARGET_X", nextPoint.x);
             AcknexObject.SetFloat("TARGET_Y", nextPoint.y);
-            var toTarget = pos - nextPoint;
+            var toTarget = nextPoint - pos;
             //todo: why angle inverted?
-            var angle = AngleUtils.ConvertUnityToAcknexAngle(Mathf.Atan2(toTarget.x, toTarget.y) * Mathf.Rad2Deg);
+            var angle = AngleUtils.ConvertUnityToAcknexAngle(Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg);
             var newPos = Vector2.MoveTowards(pos, nextPoint, speed * World.Instance.GetSkillValue("TIME_CORR"));
+            DebugExtension.DebugArrow(new Vector3(pos.x, 0f, pos.y), new Vector3(toTarget.x, 0f, toTarget.y), Color.magenta, 1f);
             AcknexObject.SetFloat("X", newPos.x);
             AcknexObject.SetFloat("Y", newPos.y);
             AcknexObject.SetFloat("ANGLE", angle);
             AcknexObject.IsDirty = true;
-            if (toTarget.magnitude <= speed)
-            {
-                return true;
-            }
-            return false;
+            return toTarget.magnitude <= speed;
         }
     }
 }

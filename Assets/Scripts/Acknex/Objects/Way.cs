@@ -99,7 +99,7 @@ namespace Acknex
             var nextPoint = firstInstance.Points[waypoint - 1];
             for (; ; )
             {
-                if (thing.MoveTo(nextPoint))
+                if (thing.MoveToPoint(nextPoint))
                 {
                     waypoint++;
                     if (waypoint > firstInstance.Points.Count)

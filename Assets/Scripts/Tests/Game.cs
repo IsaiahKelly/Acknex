@@ -3255,36 +3255,42 @@ namespace Tests
             var DISTY_29 = _world.GetObject(ObjectType.Skill, "DISTY");
             var DISTY_29_val = DISTY_29.GetFloat("VAL");
             DISTX_18.SetFloat("VAL", (DISTZ_21_val * DISTZ_23_val) + (DISTY_27_val * DISTY_29_val));
-            //Unknown keyword: DISTX
+            var DISTX_31 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_31_val = DISTX_31.GetFloat("VAL");
             var DISTX_32 = _world.GetObject(ObjectType.Skill, "DISTX");
-            var DISTX_32_val = DISTX_32.GetFloat("VAL");
-            if (DISTX_32_val < 0.1f)
+            DISTX_32.SetFloat("VAL", Mathf.Sqrt(DISTX_31_val));
+            var DISTX_34 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_34_val = DISTX_34.GetFloat("VAL");
+            if (DISTX_34_val < 0.1f)
             {
                 yield break;
             }
-            var DISTY_33 = _world.GetObject(ObjectType.Skill, "DISTY");
-            var DISTY_34 = _world.GetObject(ObjectType.Skill, "DISTY");
-            var DISTY_34_val = DISTY_34.GetFloat("VAL");
             var DISTY_35 = _world.GetObject(ObjectType.Skill, "DISTY");
-            var DISTY_35_val = DISTY_35.GetFloat("VAL");
-            var DISTX_37 = _world.GetObject(ObjectType.Skill, "DISTX");
-            var DISTX_37_val = DISTX_37.GetFloat("VAL");
-            DISTY_33.SetFloat("VAL", DISTY_35_val / DISTX_37_val);
-            //Unknown keyword: DISTY
-            var DISTZ_39 = _world.GetObject(ObjectType.Skill, "DISTZ");
-            var DISTZ_39_val = DISTZ_39.GetFloat("VAL");
-            if (DISTZ_39_val > 0f)
+            var DISTY_36 = _world.GetObject(ObjectType.Skill, "DISTY");
+            var DISTY_36_val = DISTY_36.GetFloat("VAL");
+            var DISTY_37 = _world.GetObject(ObjectType.Skill, "DISTY");
+            var DISTY_37_val = DISTY_37.GetFloat("VAL");
+            var DISTX_39 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_39_val = DISTX_39.GetFloat("VAL");
+            DISTY_35.SetFloat("VAL", DISTY_37_val / DISTX_39_val);
+            var DISTY_40 = _world.GetObject(ObjectType.Skill, "DISTY");
+            var DISTY_40_val = DISTY_40.GetFloat("VAL");
+            var MY_42 = _world.GetSynonymObject("MY");
+            MY_42.SetFloat("ANGLE", Mathf.Asin(DISTY_40_val));
+            var DISTZ_44 = _world.GetObject(ObjectType.Skill, "DISTZ");
+            var DISTZ_44_val = DISTZ_44.GetFloat("VAL");
+            if (DISTZ_44_val > 0f)
             {
                 yield break;
             }
-            var MY_41 = _world.GetSynonymObject("MY");
-            var MY_43 = _world.GetSynonymObject("MY");
-            var temp_44 = MY_43.GetFloat("ANGLE");
-            var PI_45 = _world.GetObject(ObjectType.Skill, "PI");
-            var PI_45_val = PI_45.GetFloat("VAL");
+            var MY_46 = _world.GetSynonymObject("MY");
             var MY_48 = _world.GetSynonymObject("MY");
             var temp_49 = MY_48.GetFloat("ANGLE");
-            MY_41.SetFloat("ANGLE", PI_45_val - temp_49);
+            var PI_50 = _world.GetObject(ObjectType.Skill, "PI");
+            var PI_50_val = PI_50.GetFloat("VAL");
+            var MY_53 = _world.GetSynonymObject("MY");
+            var temp_54 = MY_53.GetFloat("ANGLE");
+            MY_46.SetFloat("ANGLE", PI_50_val - temp_54);
             yield break;
         }
         public IEnumerator FREEFALL()
@@ -3656,35 +3662,38 @@ namespace Tests
             var EXPLOSION_CENTER_44 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_45 = EXPLOSION_CENTER_44.GetFloat("Y");
             DISTX_6.SetFloat("VAL", (temp_11 - temp_15) * (temp_21 - temp_25) + (temp_31 - temp_35) * (temp_41 - temp_45));
-            //Unknown keyword: DISTX
+            var DISTX_47 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_47_val = DISTX_47.GetFloat("VAL");
             var DISTX_48 = _world.GetObject(ObjectType.Skill, "DISTX");
-            var DISTX_48_val = DISTX_48.GetFloat("VAL");
-            if (DISTX_48_val > 25f)
+            DISTX_48.SetFloat("VAL", Mathf.Sqrt(DISTX_47_val));
+            var DISTX_50 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_50_val = DISTX_50.GetFloat("VAL");
+            if (DISTX_50_val > 25f)
             {
                 yield break;
             }
             HIT:
-            var SHOOT_FAC_50 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
-            var SHOOT_FAC_50_val = SHOOT_FAC_50.GetFloat("VAL");
-            if (SHOOT_FAC_50_val < 9f)
+            var SHOOT_FAC_52 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
+            var SHOOT_FAC_52_val = SHOOT_FAC_52.GetFloat("VAL");
+            if (SHOOT_FAC_52_val < 9f)
             {
                 yield break;
             }
-            var MY_53 = _world.GetSynonymObject("MY");
-            MY_53.SetAcknexObject("IF_ARRIVED", null);
-            var MOVE_54 = _world.AcknexObject.GetAcknexObject("MOVE");
-            var MY_56 = _world.GetSynonymObject("MY");
-            MY_56.SetAcknexObject("TARGET", MOVE_54);
-            var MY_59 = _world.GetSynonymObject("MY");
-            MY_59.SetFloat("VSPEED", 0.5f);
-            var MY_62 = _world.GetSynonymObject("MY");
-            MY_62.SetAcknexObject("IF_HIT", null);
+            var MY_55 = _world.GetSynonymObject("MY");
+            MY_55.SetAcknexObject("IF_ARRIVED", null);
+            var MOVE_56 = _world.AcknexObject.GetAcknexObject("MOVE");
+            var MY_58 = _world.GetSynonymObject("MY");
+            MY_58.SetAcknexObject("TARGET", MOVE_56);
+            var MY_61 = _world.GetSynonymObject("MY");
+            MY_61.SetFloat("VSPEED", 0.5f);
+            var MY_64 = _world.GetSynonymObject("MY");
+            MY_64.SetAcknexObject("IF_HIT", null);
             _world.PlaySound("HUMM04SND", 0.5f, "MY");
-            var MY_66 = _world.GetSynonymObject("MY");
-            MY_66.SetFloat("GROUND", 1f);
-            var ACTORJUMPSTOP_67 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ACTORJUMPSTOP");
-            var MY_69 = _world.GetSynonymObject("MY");
-            MY_69.SetAcknexObject("EACH_TICK", ACTORJUMPSTOP_67);
+            var MY_68 = _world.GetSynonymObject("MY");
+            MY_68.SetFloat("GROUND", 1f);
+            var ACTORJUMPSTOP_69 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ACTORJUMPSTOP");
+            var MY_71 = _world.GetSynonymObject("MY");
+            MY_71.SetAcknexObject("EACH_TICK", ACTORJUMPSTOP_69);
             yield break;
         }
         public IEnumerator IMPLODELIGHT()
@@ -4705,50 +4714,53 @@ namespace Tests
             var EXPLOSION_CENTER_53 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_54 = EXPLOSION_CENTER_53.GetFloat("Y");
             DISTX_15.SetFloat("VAL", (temp_20 - temp_24) * (temp_30 - temp_34) + (temp_40 - temp_44) * (temp_50 - temp_54));
-            //Unknown keyword: DISTX
-            var DISTZ_56 = _world.GetObject(ObjectType.Skill, "DISTZ");
-            var DISTZ_57 = _world.GetObject(ObjectType.Skill, "DISTZ");
-            var DISTZ_57_val = DISTZ_57.GetFloat("VAL");
-            var HIT_59 = _world.GetSynonymObject("HIT");
-            var temp_60 = HIT_59.GetFloat("FLOOR_HGT");
-            var MY_63 = _world.GetSynonymObject("MY");
-            var temp_64 = MY_63.GetFloat("FLOOR_HGT");
-            DISTZ_56.SetFloat("VAL", temp_60 - temp_64);
-            var DISTX_66 = _world.GetObject(ObjectType.Skill, "DISTX");
-            var DISTX_66_val = DISTX_66.GetFloat("VAL");
-            if (DISTX_66_val != 0f)
+            var DISTX_56 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_56_val = DISTX_56.GetFloat("VAL");
+            var DISTX_57 = _world.GetObject(ObjectType.Skill, "DISTX");
+            DISTX_57.SetFloat("VAL", Mathf.Sqrt(DISTX_56_val));
+            var DISTZ_58 = _world.GetObject(ObjectType.Skill, "DISTZ");
+            var DISTZ_59 = _world.GetObject(ObjectType.Skill, "DISTZ");
+            var DISTZ_59_val = DISTZ_59.GetFloat("VAL");
+            var HIT_61 = _world.GetSynonymObject("HIT");
+            var temp_62 = HIT_61.GetFloat("FLOOR_HGT");
+            var MY_65 = _world.GetSynonymObject("MY");
+            var temp_66 = MY_65.GetFloat("FLOOR_HGT");
+            DISTZ_58.SetFloat("VAL", temp_62 - temp_66);
+            var DISTX_68 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_68_val = DISTX_68.GetFloat("VAL");
+            if (DISTX_68_val != 0f)
             {
-                var MY_68 = _world.GetSynonymObject("MY");
                 var MY_70 = _world.GetSynonymObject("MY");
-                var temp_71 = MY_70.GetFloat("VSPEED");
-                var DISTZ_72 = _world.GetObject(ObjectType.Skill, "DISTZ");
-                var DISTZ_72_val = DISTZ_72.GetFloat("VAL");
-                var DISTX_74 = _world.GetObject(ObjectType.Skill, "DISTX");
-                var DISTX_74_val = DISTX_74.GetFloat("VAL");
-                MY_68.SetFloat("VSPEED", DISTZ_72_val / DISTX_74_val);
+                var MY_72 = _world.GetSynonymObject("MY");
+                var temp_73 = MY_72.GetFloat("VSPEED");
+                var DISTZ_74 = _world.GetObject(ObjectType.Skill, "DISTZ");
+                var DISTZ_74_val = DISTZ_74.GetFloat("VAL");
+                var DISTX_76 = _world.GetObject(ObjectType.Skill, "DISTX");
+                var DISTX_76_val = DISTX_76.GetFloat("VAL");
+                MY_70.SetFloat("VSPEED", DISTZ_74_val / DISTX_76_val);
             }
-            var MY_77 = _world.GetSynonymObject("MY");
-            var temp_78 = MY_77.GetFloat("VSPEED");
-            if (temp_78 < 0f)
+            var MY_79 = _world.GetSynonymObject("MY");
+            var temp_80 = MY_79.GetFloat("VSPEED");
+            if (temp_80 < 0f)
             {
-                var MY_80 = _world.GetSynonymObject("MY");
                 var MY_82 = _world.GetSynonymObject("MY");
-                var temp_83 = MY_82.GetFloat("VSPEED");
-                var MY_86 = _world.GetSynonymObject("MY");
-                var temp_87 = MY_86.GetFloat("VSPEED");
-                MY_80.SetFloat("VSPEED", -temp_87);
+                var MY_84 = _world.GetSynonymObject("MY");
+                var temp_85 = MY_84.GetFloat("VSPEED");
+                var MY_88 = _world.GetSynonymObject("MY");
+                var temp_89 = MY_88.GetFloat("VSPEED");
+                MY_82.SetFloat("VSPEED", -temp_89);
             }
             yield break;
             VANISH:
-            var MY_90 = _world.GetSynonymObject("MY");
-            var temp_91 = MY_90.GetFloat("GROUND");
-            if (temp_91 == 0f)
+            var MY_92 = _world.GetSynonymObject("MY");
+            var temp_93 = MY_92.GetFloat("GROUND");
+            if (temp_93 == 0f)
             {
                 //Unknown keyword: LOCATE
             }
-            var MY_94 = _world.GetSynonymObject("MY");
-            var temp_95 = MY_94.GetFloat("VISIBLE");
-            if (temp_95 == 0f)
+            var MY_96 = _world.GetSynonymObject("MY");
+            var temp_97 = MY_96.GetFloat("VISIBLE");
+            if (temp_97 == 0f)
             {
                 {
                     var enumerator = VANISHSTOP();
@@ -6520,98 +6532,104 @@ namespace Tests
             var ANGLEOUT_35 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
             ANGLEOUT_35.SetFloat("VAL", temp_34);
             PROBEAGAIN:
-            //Unknown keyword: ANGLEOUT
-            var DISTX_36 = _world.GetObject(ObjectType.Skill, "DISTX");
-            var DISTX_37 = _world.GetObject(ObjectType.Skill, "DISTX");
-            var DISTX_37_val = DISTX_37.GetFloat("VAL");
-            var ANGLEOUT_38 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
-            var ANGLEOUT_38_val = ANGLEOUT_38.GetFloat("VAL");
-            var HALF_PI_40 = _world.GetObject(ObjectType.Skill, "HALF_PI");
-            var HALF_PI_40_val = HALF_PI_40.GetFloat("VAL");
-            DISTX_36.SetFloat("VAL", ANGLEOUT_38_val + HALF_PI_40_val);
-            //Unknown keyword: DISTX
-            var PROBETNG_42 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
-            var PROBETNG_44 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
-            var temp_45 = PROBETNG_44.GetFloat("X");
-            var MY_47 = _world.GetSynonymObject("MY");
-            var temp_48 = MY_47.GetFloat("X");
-            var DISTX_50 = _world.GetObject(ObjectType.Skill, "DISTX");
-            var DISTX_50_val = DISTX_50.GetFloat("VAL");
-            PROBETNG_42.SetFloat("X", temp_48 + DISTX_50_val * 12f);
-            var PROBETNG_54 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
-            var PROBETNG_56 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
-            var temp_57 = PROBETNG_56.GetFloat("Y");
-            var MY_59 = _world.GetSynonymObject("MY");
-            var temp_60 = MY_59.GetFloat("Y");
-            var DISTY_62 = _world.GetObject(ObjectType.Skill, "DISTY");
-            var DISTY_62_val = DISTY_62.GetFloat("VAL");
-            PROBETNG_54.SetFloat("Y", temp_60 + DISTY_62_val * 12f);
-            var PROBETNG_67 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
-            PROBETNG_67.SetFloat("GROUND", 1f);
-            var WATER_REGION_69 = _world.GetSynonymObject("WATER_REGION");
-            var temp_70 = WATER_REGION_69.GetFloat("FLOOR_HGT");
-            var PROBETNG_72 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
-            PROBETNG_72.SetFloat("HEIGHT", temp_70);
+            var ANGLEOUT_36 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
+            var ANGLEOUT_36_val = ANGLEOUT_36.GetFloat("VAL");
+            var DISTY_37 = _world.GetObject(ObjectType.Skill, "DISTY");
+            DISTY_37.SetFloat("VAL", Mathf.Sin(ANGLEOUT_36_val));
+            var DISTX_38 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_39 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_39_val = DISTX_39.GetFloat("VAL");
+            var ANGLEOUT_40 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
+            var ANGLEOUT_40_val = ANGLEOUT_40.GetFloat("VAL");
+            var HALF_PI_42 = _world.GetObject(ObjectType.Skill, "HALF_PI");
+            var HALF_PI_42_val = HALF_PI_42.GetFloat("VAL");
+            DISTX_38.SetFloat("VAL", ANGLEOUT_40_val + HALF_PI_42_val);
+            var DISTX_43 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_43_val = DISTX_43.GetFloat("VAL");
+            var DISTX_44 = _world.GetObject(ObjectType.Skill, "DISTX");
+            DISTX_44.SetFloat("VAL", Mathf.Sin(DISTX_43_val));
+            var PROBETNG_46 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
+            var PROBETNG_48 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
+            var temp_49 = PROBETNG_48.GetFloat("X");
+            var MY_51 = _world.GetSynonymObject("MY");
+            var temp_52 = MY_51.GetFloat("X");
+            var DISTX_54 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_54_val = DISTX_54.GetFloat("VAL");
+            PROBETNG_46.SetFloat("X", temp_52 + DISTX_54_val * 12f);
+            var PROBETNG_58 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
+            var PROBETNG_60 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
+            var temp_61 = PROBETNG_60.GetFloat("Y");
+            var MY_63 = _world.GetSynonymObject("MY");
+            var temp_64 = MY_63.GetFloat("Y");
+            var DISTY_66 = _world.GetObject(ObjectType.Skill, "DISTY");
+            var DISTY_66_val = DISTY_66.GetFloat("VAL");
+            PROBETNG_58.SetFloat("Y", temp_64 + DISTY_66_val * 12f);
+            var PROBETNG_71 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
+            PROBETNG_71.SetFloat("GROUND", 1f);
+            var WATER_REGION_73 = _world.GetSynonymObject("WATER_REGION");
+            var temp_74 = WATER_REGION_73.GetFloat("FLOOR_HGT");
+            var PROBETNG_76 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
+            PROBETNG_76.SetFloat("HEIGHT", temp_74);
             //Unknown keyword: LOCATE
-            var PROBETNG_75 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
-            PROBETNG_75.SetFloat("GROUND", 0f);
-            var PROBETNG_77 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
-            var temp_78 = PROBETNG_77?.GetAcknexObject("REGION");
-            _world.SetSynonymObject("P_REGION", temp_78);
-            var DISTZ_80 = _world.GetObject(ObjectType.Skill, "DISTZ");
-            var DISTZ_81 = _world.GetObject(ObjectType.Skill, "DISTZ");
-            var DISTZ_81_val = DISTZ_81.GetFloat("VAL");
-            var P_REGION_83 = _world.GetSynonymObject("P_REGION");
-            var temp_84 = P_REGION_83.GetFloat("FLOOR_HGT");
-            var WATER_REGION_87 = _world.GetSynonymObject("WATER_REGION");
-            var temp_88 = WATER_REGION_87.GetFloat("FLOOR_HGT");
-            DISTZ_80.SetFloat("VAL", temp_84 - temp_88);
-            var DISTZ_90 = _world.GetObject(ObjectType.Skill, "DISTZ");
-            var DISTZ_90_val = DISTZ_90.GetFloat("VAL");
-            if (DISTZ_90_val > -1f)
+            var PROBETNG_79 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
+            PROBETNG_79.SetFloat("GROUND", 0f);
+            var PROBETNG_81 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
+            var temp_82 = PROBETNG_81?.GetAcknexObject("REGION");
+            _world.SetSynonymObject("P_REGION", temp_82);
+            var DISTZ_84 = _world.GetObject(ObjectType.Skill, "DISTZ");
+            var DISTZ_85 = _world.GetObject(ObjectType.Skill, "DISTZ");
+            var DISTZ_85_val = DISTZ_85.GetFloat("VAL");
+            var P_REGION_87 = _world.GetSynonymObject("P_REGION");
+            var temp_88 = P_REGION_87.GetFloat("FLOOR_HGT");
+            var WATER_REGION_91 = _world.GetSynonymObject("WATER_REGION");
+            var temp_92 = WATER_REGION_91.GetFloat("FLOOR_HGT");
+            DISTZ_84.SetFloat("VAL", temp_88 - temp_92);
+            var DISTZ_94 = _world.GetObject(ObjectType.Skill, "DISTZ");
+            var DISTZ_94_val = DISTZ_94.GetFloat("VAL");
+            if (DISTZ_94_val > -1f)
             {
                 goto END;
             }
-            var STEPCOUNTER_92 = _world.GetObject(ObjectType.Skill, "STEPCOUNTER");
-            var STEPCOUNTER_92_val = STEPCOUNTER_92.GetFloat("VAL");
-            if (STEPCOUNTER_92_val > 11f)
+            var STEPCOUNTER_96 = _world.GetObject(ObjectType.Skill, "STEPCOUNTER");
+            var STEPCOUNTER_96_val = STEPCOUNTER_96.GetFloat("VAL");
+            if (STEPCOUNTER_96_val > 11f)
             {
                 goto END;
             }
-            var ANGLESTEP_93 = _world.GetObject(ObjectType.Skill, "ANGLESTEP");
-            var ANGLESTEP_94 = _world.GetObject(ObjectType.Skill, "ANGLESTEP");
-            var ANGLESTEP_94_val = ANGLESTEP_94.GetFloat("VAL");
-            var ANGLESTEP_96 = _world.GetObject(ObjectType.Skill, "ANGLESTEP");
-            var ANGLESTEP_96_val = ANGLESTEP_96.GetFloat("VAL");
-            ANGLESTEP_93.SetFloat("VAL", -ANGLESTEP_96_val);
+            var ANGLESTEP_97 = _world.GetObject(ObjectType.Skill, "ANGLESTEP");
             var ANGLESTEP_98 = _world.GetObject(ObjectType.Skill, "ANGLESTEP");
             var ANGLESTEP_98_val = ANGLESTEP_98.GetFloat("VAL");
-            if (ANGLESTEP_98_val < 0f)
+            var ANGLESTEP_100 = _world.GetObject(ObjectType.Skill, "ANGLESTEP");
+            var ANGLESTEP_100_val = ANGLESTEP_100.GetFloat("VAL");
+            ANGLESTEP_97.SetFloat("VAL", -ANGLESTEP_100_val);
+            var ANGLESTEP_102 = _world.GetObject(ObjectType.Skill, "ANGLESTEP");
+            var ANGLESTEP_102_val = ANGLESTEP_102.GetFloat("VAL");
+            if (ANGLESTEP_102_val < 0f)
             {
-                var STEPCOUNTER_100 = _world.GetObject(ObjectType.Skill, "STEPCOUNTER");
-                var STEPCOUNTER_100_val = STEPCOUNTER_100.GetFloat("VAL");
-                var STEPCOUNTER_101 = _world.GetObject(ObjectType.Skill, "STEPCOUNTER");
-                STEPCOUNTER_101.SetFloat("VAL", STEPCOUNTER_100_val + 1f);
+                var STEPCOUNTER_104 = _world.GetObject(ObjectType.Skill, "STEPCOUNTER");
+                var STEPCOUNTER_104_val = STEPCOUNTER_104.GetFloat("VAL");
+                var STEPCOUNTER_105 = _world.GetObject(ObjectType.Skill, "STEPCOUNTER");
+                STEPCOUNTER_105.SetFloat("VAL", STEPCOUNTER_104_val + 1f);
             }
-            var ANGLEOUT_102 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
-            var ANGLEOUT_103 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
-            var ANGLEOUT_103_val = ANGLEOUT_103.GetFloat("VAL");
-            var MY_105 = _world.GetSynonymObject("MY");
-            var temp_106 = MY_105.GetFloat("ANGLE");
-            var STEPCOUNTER_108 = _world.GetObject(ObjectType.Skill, "STEPCOUNTER");
-            var STEPCOUNTER_108_val = STEPCOUNTER_108.GetFloat("VAL");
-            var ANGLESTEP_110 = _world.GetObject(ObjectType.Skill, "ANGLESTEP");
-            var ANGLESTEP_110_val = ANGLESTEP_110.GetFloat("VAL");
-            ANGLEOUT_102.SetFloat("VAL", temp_106 + STEPCOUNTER_108_val * ANGLESTEP_110_val);
+            var ANGLEOUT_106 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
+            var ANGLEOUT_107 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
+            var ANGLEOUT_107_val = ANGLEOUT_107.GetFloat("VAL");
+            var MY_109 = _world.GetSynonymObject("MY");
+            var temp_110 = MY_109.GetFloat("ANGLE");
+            var STEPCOUNTER_112 = _world.GetObject(ObjectType.Skill, "STEPCOUNTER");
+            var STEPCOUNTER_112_val = STEPCOUNTER_112.GetFloat("VAL");
+            var ANGLESTEP_114 = _world.GetObject(ObjectType.Skill, "ANGLESTEP");
+            var ANGLESTEP_114_val = ANGLESTEP_114.GetFloat("VAL");
+            ANGLEOUT_106.SetFloat("VAL", temp_110 + STEPCOUNTER_112_val * ANGLESTEP_114_val);
             goto PROBEAGAIN;
             END:
-            var BULLET_111 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_113 = _world.GetSynonymObject("MY");
-            MY_113.SetAcknexObject("TARGET", BULLET_111);
-            var ANGLEOUT_114 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
-            var ANGLEOUT_114_val = ANGLEOUT_114.GetFloat("VAL");
-            var MY_116 = _world.GetSynonymObject("MY");
-            MY_116.SetFloat("ANGLE", ANGLEOUT_114_val);
+            var BULLET_115 = _world.AcknexObject.GetAcknexObject("BULLET");
+            var MY_117 = _world.GetSynonymObject("MY");
+            MY_117.SetAcknexObject("TARGET", BULLET_115);
+            var ANGLEOUT_118 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
+            var ANGLEOUT_118_val = ANGLEOUT_118.GetFloat("VAL");
+            var MY_120 = _world.GetSynonymObject("MY");
+            MY_120.SetFloat("ANGLE", ANGLEOUT_118_val);
             yield break;
         }
         public IEnumerator RAISE()
@@ -7432,18 +7450,21 @@ namespace Tests
             var EXPLOSION_CENTER_38 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_39 = EXPLOSION_CENTER_38.GetFloat("Y");
             DISTX_0.SetFloat("VAL", (temp_5 - temp_9) * (temp_15 - temp_19) + (temp_25 - temp_29) * (temp_35 - temp_39));
-            //Unknown keyword: DISTX
-            var DISTZ_41 = _world.GetObject(ObjectType.Skill, "DISTZ");
-            var DISTZ_42 = _world.GetObject(ObjectType.Skill, "DISTZ");
-            var DISTZ_42_val = DISTZ_42.GetFloat("VAL");
-            var MY_44 = _world.GetSynonymObject("MY");
-            var temp_45 = MY_44.GetFloat("HEIGHT");
-            var EXPLOSION_CENTER_48 = _world.GetSynonymObject("EXPLOSION_CENTER");
-            var temp_49 = EXPLOSION_CENTER_48.GetFloat("HEIGHT");
-            DISTZ_41.SetFloat("VAL", temp_45 - temp_49);
-            var DISTX_51 = _world.GetObject(ObjectType.Skill, "DISTX");
-            var DISTX_51_val = DISTX_51.GetFloat("VAL");
-            if (DISTX_51_val > 10f)
+            var DISTX_41 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_41_val = DISTX_41.GetFloat("VAL");
+            var DISTX_42 = _world.GetObject(ObjectType.Skill, "DISTX");
+            DISTX_42.SetFloat("VAL", Mathf.Sqrt(DISTX_41_val));
+            var DISTZ_43 = _world.GetObject(ObjectType.Skill, "DISTZ");
+            var DISTZ_44 = _world.GetObject(ObjectType.Skill, "DISTZ");
+            var DISTZ_44_val = DISTZ_44.GetFloat("VAL");
+            var MY_46 = _world.GetSynonymObject("MY");
+            var temp_47 = MY_46.GetFloat("HEIGHT");
+            var EXPLOSION_CENTER_50 = _world.GetSynonymObject("EXPLOSION_CENTER");
+            var temp_51 = EXPLOSION_CENTER_50.GetFloat("HEIGHT");
+            DISTZ_43.SetFloat("VAL", temp_47 - temp_51);
+            var DISTX_53 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_53_val = DISTX_53.GetFloat("VAL");
+            if (DISTX_53_val > 10f)
             {
                 {
                     var enumerator = BEAMREACT();
@@ -7458,28 +7479,28 @@ namespace Tests
                 }
                 yield break;
             }
-            var MY_54 = _world.GetSynonymObject("MY");
-            MY_54.SetFloat("PASSABLE", 1f);
-            var MY_57 = _world.GetSynonymObject("MY");
-            MY_57.SetFloat("CAREFULLY", 0f);
-            var MY_60 = _world.GetSynonymObject("MY");
-            MY_60.SetAcknexObject("IF_NEAR", null);
-            var MY_63 = _world.GetSynonymObject("MY");
-            MY_63.SetAcknexObject("IF_FAR", null);
-            var MY_66 = _world.GetSynonymObject("MY");
-            MY_66.SetAcknexObject("IF_HIT", null);
-            var VANISHFORGOOD_67 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"VANISHFORGOOD");
-            var MY_69 = _world.GetSynonymObject("MY");
-            MY_69.SetAcknexObject("EACH_CYCLE", VANISHFORGOOD_67);
-            var MY_72 = _world.GetSynonymObject("MY");
-            MY_72.SetFloat("SKILL4", 9f);
-            var REPT0ATEX_73 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT0ATEX");
-            var MY_75 = _world.GetSynonymObject("MY");
-            MY_75.SetAcknexObject("TEXTURE", REPT0ATEX_73);
-            var MY_78 = _world.GetSynonymObject("MY");
-            MY_78.SetFloat("SPEED", 0f);
-            var MY_81 = _world.GetSynonymObject("MY");
-            MY_81.SetAcknexObject("TARGET", null);
+            var MY_56 = _world.GetSynonymObject("MY");
+            MY_56.SetFloat("PASSABLE", 1f);
+            var MY_59 = _world.GetSynonymObject("MY");
+            MY_59.SetFloat("CAREFULLY", 0f);
+            var MY_62 = _world.GetSynonymObject("MY");
+            MY_62.SetAcknexObject("IF_NEAR", null);
+            var MY_65 = _world.GetSynonymObject("MY");
+            MY_65.SetAcknexObject("IF_FAR", null);
+            var MY_68 = _world.GetSynonymObject("MY");
+            MY_68.SetAcknexObject("IF_HIT", null);
+            var VANISHFORGOOD_69 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"VANISHFORGOOD");
+            var MY_71 = _world.GetSynonymObject("MY");
+            MY_71.SetAcknexObject("EACH_CYCLE", VANISHFORGOOD_69);
+            var MY_74 = _world.GetSynonymObject("MY");
+            MY_74.SetFloat("SKILL4", 9f);
+            var REPT0ATEX_75 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT0ATEX");
+            var MY_77 = _world.GetSynonymObject("MY");
+            MY_77.SetAcknexObject("TEXTURE", REPT0ATEX_75);
+            var MY_80 = _world.GetSynonymObject("MY");
+            MY_80.SetFloat("SPEED", 0f);
+            var MY_83 = _world.GetSynonymObject("MY");
+            MY_83.SetAcknexObject("TARGET", null);
             yield break;
         }
         public IEnumerator REPTJUMP()
@@ -7846,7 +7867,7 @@ namespace Tests
         public IEnumerator RESETANSWER()
         {
             _world.PlaySound("BIP02SND", 0.5f);
-            //Unknown Property Type: World.IF_TAST
+            _world.AcknexObject.SetAcknexObject("IF_TAST", null);
             _world.AcknexObject.SetAcknexObject("IF_S", null);
             {
                 var enumerator = HIDEMENU();
@@ -11019,23 +11040,26 @@ namespace Tests
             var EXPLOSION_CENTER_44 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_45 = EXPLOSION_CENTER_44.GetFloat("Y");
             DISTX_6.SetFloat("VAL", (temp_11 - temp_15) * (temp_21 - temp_25) + (temp_31 - temp_35) * (temp_41 - temp_45));
-            //Unknown keyword: DISTX
+            var DISTX_47 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_47_val = DISTX_47.GetFloat("VAL");
             var DISTX_48 = _world.GetObject(ObjectType.Skill, "DISTX");
-            var DISTX_48_val = DISTX_48.GetFloat("VAL");
-            if (DISTX_48_val > 25f)
+            DISTX_48.SetFloat("VAL", Mathf.Sqrt(DISTX_47_val));
+            var DISTX_50 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_50_val = DISTX_50.GetFloat("VAL");
+            if (DISTX_50_val > 25f)
             {
                 goto OBSTACLE;
             }
             HIT:
-            var EXPLOSION_ON_50 = _world.GetObject(ObjectType.Skill, "EXPLOSION_ON");
-            var EXPLOSION_ON_50_val = EXPLOSION_ON_50.GetFloat("VAL");
-            if (EXPLOSION_ON_50_val != 2f)
+            var EXPLOSION_ON_52 = _world.GetObject(ObjectType.Skill, "EXPLOSION_ON");
+            var EXPLOSION_ON_52_val = EXPLOSION_ON_52.GetFloat("VAL");
+            if (EXPLOSION_ON_52_val != 2f)
             {
                 goto GRANADE;
             }
-            var MY_53 = _world.GetSynonymObject("MY");
-            var temp_54 = MY_53.GetFloat("VISIBLE");
-            if (temp_54 == 1f)
+            var MY_55 = _world.GetSynonymObject("MY");
+            var temp_56 = MY_55.GetFloat("VISIBLE");
+            if (temp_56 == 1f)
             {
                 {
                     var enumerator = TROPIMPLODE();
@@ -11052,30 +11076,30 @@ namespace Tests
             }
             yield break;
             GRANADE:
-            var MY_56 = _world.GetSynonymObject("MY");
             var MY_58 = _world.GetSynonymObject("MY");
-            var temp_59 = MY_58.GetFloat("SKILL1");
-            var MY_61 = _world.GetSynonymObject("MY");
-            var temp_62 = MY_61.GetFloat("SKILL1");
-            var SHOOT_FAC_64 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
-            var SHOOT_FAC_64_val = SHOOT_FAC_64.GetFloat("VAL");
-            var DISTX_69 = _world.GetObject(ObjectType.Skill, "DISTX");
-            var DISTX_69_val = DISTX_69.GetFloat("VAL");
-            MY_56.SetFloat("SKILL1", temp_62 + SHOOT_FAC_64_val * (20f - DISTX_69_val) / 20f);
+            var MY_60 = _world.GetSynonymObject("MY");
+            var temp_61 = MY_60.GetFloat("SKILL1");
+            var MY_63 = _world.GetSynonymObject("MY");
+            var temp_64 = MY_63.GetFloat("SKILL1");
+            var SHOOT_FAC_66 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
+            var SHOOT_FAC_66_val = SHOOT_FAC_66.GetFloat("VAL");
+            var DISTX_71 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_71_val = DISTX_71.GetFloat("VAL");
+            MY_58.SetFloat("SKILL1", temp_64 + SHOOT_FAC_66_val * (20f - DISTX_71_val) / 20f);
             goto EXPLODED;
             CONT:
-            var MY_74 = _world.GetSynonymObject("MY");
             var MY_76 = _world.GetSynonymObject("MY");
-            var temp_77 = MY_76.GetFloat("SKILL1");
-            var MY_79 = _world.GetSynonymObject("MY");
-            var temp_80 = MY_79.GetFloat("SKILL1");
-            var SHOOT_FAC_82 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
-            var SHOOT_FAC_82_val = SHOOT_FAC_82.GetFloat("VAL");
-            MY_74.SetFloat("SKILL1", temp_80 + SHOOT_FAC_82_val * (UnityEngine.Random.value + 2f) / 3f);
+            var MY_78 = _world.GetSynonymObject("MY");
+            var temp_79 = MY_78.GetFloat("SKILL1");
+            var MY_81 = _world.GetSynonymObject("MY");
+            var temp_82 = MY_81.GetFloat("SKILL1");
+            var SHOOT_FAC_84 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
+            var SHOOT_FAC_84_val = SHOOT_FAC_84.GetFloat("VAL");
+            MY_76.SetFloat("SKILL1", temp_82 + SHOOT_FAC_84_val * (UnityEngine.Random.value + 2f) / 3f);
             EXPLODED:
-            var MY_93 = _world.GetSynonymObject("MY");
-            var temp_94 = MY_93.GetFloat("SKILL1");
-            if (temp_94 > 5f)
+            var MY_95 = _world.GetSynonymObject("MY");
+            var temp_96 = MY_95.GetFloat("SKILL1");
+            if (temp_96 > 5f)
             {
                 goto DIE;
             }
@@ -11083,46 +11107,46 @@ namespace Tests
             {
                 goto DIE;
             }
-            var MY_98 = _world.GetSynonymObject("MY");
-            var temp_99 = MY_98?.GetAcknexObject("TEXTURE");
-            _world.SetSynonymObject("TROP_TEX", temp_99);
-            var MY_103 = _world.GetSynonymObject("MY");
-            MY_103.SetAcknexObject("IF_NEAR", null);
-            var MY_106 = _world.GetSynonymObject("MY");
-            MY_106.SetAcknexObject("IF_FAR", null);
-            var MY_109 = _world.GetSynonymObject("MY");
-            MY_109.SetAcknexObject("IF_HIT", null);
+            var MY_100 = _world.GetSynonymObject("MY");
+            var temp_101 = MY_100?.GetAcknexObject("TEXTURE");
+            _world.SetSynonymObject("TROP_TEX", temp_101);
+            var MY_105 = _world.GetSynonymObject("MY");
+            MY_105.SetAcknexObject("IF_NEAR", null);
+            var MY_108 = _world.GetSynonymObject("MY");
+            MY_108.SetAcknexObject("IF_FAR", null);
+            var MY_111 = _world.GetSynonymObject("MY");
+            MY_111.SetAcknexObject("IF_HIT", null);
             if (UnityEngine.Random.value > 0.7f)
             {
                 goto SONOFA;
             }
-            var TROP5TEX_112 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP5TEX");
-            var MY_114 = _world.GetSynonymObject("MY");
-            MY_114.SetAcknexObject("TEXTURE", TROP5TEX_112);
+            var TROP5TEX_114 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP5TEX");
+            var MY_116 = _world.GetSynonymObject("MY");
+            MY_116.SetAcknexObject("TEXTURE", TROP5TEX_114);
             _world.PlaySound("TROP05SND", 0.2f, "MY");
             goto WAIT;
             SONOFA:
-            var TROP5ATEX_116 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP5ATEX");
-            var MY_118 = _world.GetSynonymObject("MY");
-            MY_118.SetAcknexObject("TEXTURE", TROP5ATEX_116);
+            var TROP5ATEX_118 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP5ATEX");
+            var MY_120 = _world.GetSynonymObject("MY");
+            MY_120.SetAcknexObject("TEXTURE", TROP5ATEX_118);
             _world.PlaySound("TROP11SND", 0.2f, "MY");
             WAIT:
             yield return new WaitForTicks(4f);
-            var TROPESCAPE_121 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPESCAPE");
-            var MY_123 = _world.GetSynonymObject("MY");
-            MY_123.SetAcknexObject("IF_NEAR", TROPESCAPE_121);
-            var TROPHIDE_124 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIDE");
-            var MY_126 = _world.GetSynonymObject("MY");
-            MY_126.SetAcknexObject("IF_FAR", TROPHIDE_124);
-            var TROPHIT_127 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_129 = _world.GetSynonymObject("MY");
-            MY_129.SetAcknexObject("IF_HIT", TROPHIT_127);
-            var TROP_TEX_130 = _world.GetSynonymObject("TROP_TEX");
-            var MY_132 = _world.GetSynonymObject("MY");
-            MY_132.SetAcknexObject("TEXTURE", TROP_TEX_130);
-            var MY_135 = _world.GetSynonymObject("MY");
-            var temp_136 = MY_135.GetFloat("SKILL1");
-            if (temp_136 > 4f)
+            var TROPESCAPE_123 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPESCAPE");
+            var MY_125 = _world.GetSynonymObject("MY");
+            MY_125.SetAcknexObject("IF_NEAR", TROPESCAPE_123);
+            var TROPHIDE_126 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIDE");
+            var MY_128 = _world.GetSynonymObject("MY");
+            MY_128.SetAcknexObject("IF_FAR", TROPHIDE_126);
+            var TROPHIT_129 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
+            var MY_131 = _world.GetSynonymObject("MY");
+            MY_131.SetAcknexObject("IF_HIT", TROPHIT_129);
+            var TROP_TEX_132 = _world.GetSynonymObject("TROP_TEX");
+            var MY_134 = _world.GetSynonymObject("MY");
+            MY_134.SetAcknexObject("TEXTURE", TROP_TEX_132);
+            var MY_137 = _world.GetSynonymObject("MY");
+            var temp_138 = MY_137.GetFloat("SKILL1");
+            if (temp_138 > 4f)
             {
                 {
                     var enumerator = TROPHIDE();
@@ -11137,9 +11161,9 @@ namespace Tests
                 }
                 yield break;
             }
-            var MY_139 = _world.GetSynonymObject("MY");
-            var temp_140 = MY_139.GetFloat("SKILL4");
-            if (temp_140 != 4f)
+            var MY_141 = _world.GetSynonymObject("MY");
+            var temp_142 = MY_141.GetFloat("SKILL4");
+            if (temp_142 != 4f)
             {
                 {
                     var enumerator = TROPFOLLOWATTACK();
@@ -11156,8 +11180,8 @@ namespace Tests
             }
             yield break;
             DIE:
-            var MY_143 = _world.GetSynonymObject("MY");
-            MY_143.SetFloat("SKILL1", 10f);
+            var MY_145 = _world.GetSynonymObject("MY");
+            MY_145.SetFloat("SKILL1", 10f);
             {
                 var enumerator = TROPDIE();
                 while (enumerator.MoveNext())
@@ -11208,18 +11232,21 @@ namespace Tests
             var EXPLOSION_CENTER_38 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_39 = EXPLOSION_CENTER_38.GetFloat("Y");
             DISTX_0.SetFloat("VAL", (temp_5 - temp_9) * (temp_15 - temp_19) + (temp_25 - temp_29) * (temp_35 - temp_39));
-            //Unknown keyword: DISTX
-            var DISTZ_41 = _world.GetObject(ObjectType.Skill, "DISTZ");
-            var DISTZ_42 = _world.GetObject(ObjectType.Skill, "DISTZ");
-            var DISTZ_42_val = DISTZ_42.GetFloat("VAL");
-            var MY_44 = _world.GetSynonymObject("MY");
-            var temp_45 = MY_44.GetFloat("HEIGHT");
-            var EXPLOSION_CENTER_48 = _world.GetSynonymObject("EXPLOSION_CENTER");
-            var temp_49 = EXPLOSION_CENTER_48.GetFloat("HEIGHT");
-            DISTZ_41.SetFloat("VAL", temp_45 - temp_49);
-            var DISTX_51 = _world.GetObject(ObjectType.Skill, "DISTX");
-            var DISTX_51_val = DISTX_51.GetFloat("VAL");
-            if (DISTX_51_val > 10f)
+            var DISTX_41 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_41_val = DISTX_41.GetFloat("VAL");
+            var DISTX_42 = _world.GetObject(ObjectType.Skill, "DISTX");
+            DISTX_42.SetFloat("VAL", Mathf.Sqrt(DISTX_41_val));
+            var DISTZ_43 = _world.GetObject(ObjectType.Skill, "DISTZ");
+            var DISTZ_44 = _world.GetObject(ObjectType.Skill, "DISTZ");
+            var DISTZ_44_val = DISTZ_44.GetFloat("VAL");
+            var MY_46 = _world.GetSynonymObject("MY");
+            var temp_47 = MY_46.GetFloat("HEIGHT");
+            var EXPLOSION_CENTER_50 = _world.GetSynonymObject("EXPLOSION_CENTER");
+            var temp_51 = EXPLOSION_CENTER_50.GetFloat("HEIGHT");
+            DISTZ_43.SetFloat("VAL", temp_47 - temp_51);
+            var DISTX_53 = _world.GetObject(ObjectType.Skill, "DISTX");
+            var DISTX_53_val = DISTX_53.GetFloat("VAL");
+            if (DISTX_53_val > 10f)
             {
                 {
                     var enumerator = BEAMREACT();
@@ -11234,31 +11261,31 @@ namespace Tests
                 }
                 yield break;
             }
-            var MY_54 = _world.GetSynonymObject("MY");
-            MY_54.SetFloat("PASSABLE", 1f);
-            var MY_57 = _world.GetSynonymObject("MY");
-            MY_57.SetFloat("CAREFULLY", 0f);
-            var MY_60 = _world.GetSynonymObject("MY");
-            MY_60.SetAcknexObject("IF_NEAR", null);
-            var MY_63 = _world.GetSynonymObject("MY");
-            MY_63.SetAcknexObject("IF_FAR", null);
-            var MY_66 = _world.GetSynonymObject("MY");
-            MY_66.SetAcknexObject("IF_HIT", null);
-            var VANISHFORGOOD_67 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"VANISHFORGOOD");
-            var MY_69 = _world.GetSynonymObject("MY");
-            MY_69.SetAcknexObject("EACH_CYCLE", VANISHFORGOOD_67);
-            var MY_72 = _world.GetSynonymObject("MY");
-            MY_72.SetFloat("SKILL4", 8f);
-            var TROP0ATEX_73 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP0ATEX");
-            var MY_75 = _world.GetSynonymObject("MY");
-            MY_75.SetAcknexObject("TEXTURE", TROP0ATEX_73);
-            var MY_78 = _world.GetSynonymObject("MY");
-            MY_78.SetFloat("SPEED", 0f);
-            var MY_81 = _world.GetSynonymObject("MY");
-            MY_81.SetAcknexObject("TARGET", null);
-            var MY_84 = _world.GetSynonymObject("MY");
-            var temp_85 = MY_84.GetFloat("FLAG4");
-            if (temp_85 != 0f)
+            var MY_56 = _world.GetSynonymObject("MY");
+            MY_56.SetFloat("PASSABLE", 1f);
+            var MY_59 = _world.GetSynonymObject("MY");
+            MY_59.SetFloat("CAREFULLY", 0f);
+            var MY_62 = _world.GetSynonymObject("MY");
+            MY_62.SetAcknexObject("IF_NEAR", null);
+            var MY_65 = _world.GetSynonymObject("MY");
+            MY_65.SetAcknexObject("IF_FAR", null);
+            var MY_68 = _world.GetSynonymObject("MY");
+            MY_68.SetAcknexObject("IF_HIT", null);
+            var VANISHFORGOOD_69 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"VANISHFORGOOD");
+            var MY_71 = _world.GetSynonymObject("MY");
+            MY_71.SetAcknexObject("EACH_CYCLE", VANISHFORGOOD_69);
+            var MY_74 = _world.GetSynonymObject("MY");
+            MY_74.SetFloat("SKILL4", 8f);
+            var TROP0ATEX_75 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP0ATEX");
+            var MY_77 = _world.GetSynonymObject("MY");
+            MY_77.SetAcknexObject("TEXTURE", TROP0ATEX_75);
+            var MY_80 = _world.GetSynonymObject("MY");
+            MY_80.SetFloat("SPEED", 0f);
+            var MY_83 = _world.GetSynonymObject("MY");
+            MY_83.SetAcknexObject("TARGET", null);
+            var MY_86 = _world.GetSynonymObject("MY");
+            var temp_87 = MY_86.GetFloat("FLAG4");
+            if (temp_87 != 0f)
             {
                 {
                     var enumerator = TROPDROPKEY();

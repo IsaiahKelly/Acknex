@@ -102,9 +102,14 @@ namespace Acknex
                         case "EXP":
                         case "RANDOM":
                             {
-                                //todo
-                                //var input = labelOrStatement;
-                                //var output = textParser.GetNextToken(tokens);
+                                var identifier = labelOrStatement;
+                                var value = GetValue(tokens, textParser);
+                                var rhs = GetValueAndType(value, "rhs");
+                                var lhs = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
+                                rhs.property = $"{HandleFunction(keyword)}({rhs.property})";
+                                HandleAssignment(lhs, rhs);
+                                HandleIfStack();
+                                ReadUntilSemiColon(tokens);
                                 break;
                             }
                         case "RULE":
