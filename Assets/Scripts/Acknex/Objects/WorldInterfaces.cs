@@ -550,17 +550,21 @@ namespace Acknex
             var shootRange = GetSkillValue("SHOOT_RANGE");
             void HandleHit(RaycastHit raycastResult, IAcknexObject hitAcknexObject)
             {
+                if (acknexObject != null && hitAcknexObject != acknexObject)
+                {
+                    return;
+                }
                 UpdateSkillValue("HIT_DIST", raycastResult.distance);
                 UpdateSkillValue("RESULT", shootFac * (1.0f - raycastResult.distance / shootRange));
                 UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(raycastResult.point), AngleUtils.To2D(ray.origin))));
                 TriggerEvent("IF_HIT", AcknexObject, MY, THERE);
+                Debug.DrawLine(ray.origin, raycastResult.point, Color.white, 1f);
             }
             UpdateSkillValue("HIT_DIST", 0f);
             UpdateSkillValue("RESULT", 0f);
-            DebugExtension.DebugArrow(ray.origin, ray.direction, Color.black);
-            Physics.RaycastNonAlloc(ray, _raycastResults, shootRange, AllLayers);
+            var hitCount = Physics.RaycastNonAlloc(ray, _raycastResults, shootRange, AllLayers);
             Array.Sort(_raycastResults, (a, b) => a.distance.CompareTo(b.distance));
-            for (var i = 0; i < _raycastResults.Length; i++)
+            for (var i = 0; i < hitCount; i++)
             {
                 var raycastResult = _raycastResults[i];
                 if (raycastResult.collider == null)
@@ -598,6 +602,7 @@ namespace Acknex
                     }
                 }
             }
+            Debug.DrawRay(ray.origin, ray.direction * shootRange, Color.black, 1f);
         }
 
         public void Explode(IAcknexObject acknexObject, IAcknexObject MY, IAcknexObject THERE)
@@ -622,8 +627,8 @@ namespace Acknex
             UpdateSkillValue("HIT_DIST", 0f);
             UpdateSkillValue("RESULT", 0f);
             DebugExtension.DebugWireSphere(origin, Color.black, shootRange);
-            Physics.OverlapSphereNonAlloc(origin, shootRange, _overlapResults, AllLayers);
-            for (var i = 0; i < _overlapResults.Length; i++)
+            var hitCount = Physics.OverlapSphereNonAlloc(origin, shootRange, _overlapResults, AllLayers);
+            for (var i = 0; i < hitCount; i++)
             {
                 var overlapResult = _overlapResults[i];
                 if (overlapResult == null)

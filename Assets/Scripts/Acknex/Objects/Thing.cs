@@ -260,10 +260,10 @@ namespace Acknex
                                 //Debug.Log(AcknexObject + "moving in direction of way " + way.AcknexObject + " with speed " + AcknexObject.GetFloat("SPEED"));
                                 _movingCoroutine = StartCoroutine(MoveToWay(way));
                             }
-                            else
-                            {
-                                Debug.Log(AcknexObject + "moving to nothing");
-                            }
+                            //else
+                            //{
+                            //    Debug.Log(AcknexObject + "moving to nothing");
+                            //}
                             break;
                         }
                     }
@@ -443,7 +443,7 @@ namespace Acknex
             //todo: why angle inverted?
             var angle = AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Atan2(toTarget) * Mathf.Rad2Deg);
             var newPos = Vector2.MoveTowards(pos, nextPoint, speed * World.Instance.GetSkillValue("TIME_CORR"));
-            DebugExtension.DebugArrow(new Vector3(pos.x, 0f, pos.y), new Vector3(toTarget.x, 0f, toTarget.y), Color.magenta, 1f);
+            Debug.DrawLine(new Vector3(pos.x, 0f, pos.y), new Vector3(nextPoint.x, 0f, nextPoint.y), Color.magenta, 1f);
             AcknexObject.SetFloat("X", newPos.x);
             AcknexObject.SetFloat("Y", newPos.y);
             AcknexObject.SetFloat("ANGLE", angle);
