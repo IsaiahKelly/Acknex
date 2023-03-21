@@ -61,20 +61,6 @@ namespace Acknex
         {
             if (SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
-                //var objectName = synonym.AcknexObject.GetString("VAL");
-                //var objectType = GetSynonymType(synonymName);
-                //var result = GetObject(objectType, objectName);
-                //if (result == null)
-                //{
-                //    UnityEngine.Debug.Log("Trying to get the null synonym:" + synonymName);
-                //}
-                //else
-                //{
-                //    if (synonymName == "MY" && !result.IsInstance)
-                //    {
-                //        UnityEngine.Debug.Log("Trying to get the MY synonym using a non-template object:" + result.ToString());
-                //    }
-                //}
                 return synonym.AcknexObject.GetAcknexObject("VAL");
             }
             return null;

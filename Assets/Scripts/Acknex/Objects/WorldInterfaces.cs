@@ -365,42 +365,7 @@ namespace Acknex
             }
         }
 
-        private void ConvertActionsToCS()
-        {
-            var sourceStringBuilder = new StringBuilder();
-            sourceStringBuilder.AppendLine("using Acknex.Interfaces;");
-            sourceStringBuilder.AppendLine("using System.Collections;");
-            sourceStringBuilder.AppendLine("using UnityEngine;");
-            sourceStringBuilder.AppendLine("namespace Tests {");
-            sourceStringBuilder.AppendLine("    public class Game : IAcknexRuntime {");
-            sourceStringBuilder.AppendLine("        private IAcknexWorld _world;");
-            sourceStringBuilder.AppendLine("        public void SetWorld(IAcknexWorld world) {");
-            sourceStringBuilder.AppendLine("            _world = world;");
-            sourceStringBuilder.AppendLine("        }");
-            sourceStringBuilder.AppendLine("        public IEnumerator CallAction(string name)");
-            sourceStringBuilder.AppendLine("        {");
-            sourceStringBuilder.AppendLine("            if (name == null) {");
-            sourceStringBuilder.AppendLine("                yield break;");
-            sourceStringBuilder.AppendLine("            }");
-            sourceStringBuilder.AppendLine("            var method = this.GetType().GetMethod(name);");
-            sourceStringBuilder.AppendLine("            if (method != null)");
-            sourceStringBuilder.AppendLine("            {");
-            sourceStringBuilder.AppendLine("                var result = method.Invoke(this, null);");
-            sourceStringBuilder.AppendLine("                yield return (IEnumerator)result;");
-            sourceStringBuilder.AppendLine("            }");
-            sourceStringBuilder.AppendLine("            yield break;");
-            sourceStringBuilder.AppendLine("        }");
-            foreach (var action in ActionsByName)
-            {
-                action.Value.WriteHeader();
-                action.Value.ParseAllStatements(_textParser);
-                action.Value.WriteFooter();
-                sourceStringBuilder.Append(action.Value.CodeStringBuilder);
-            }
-            sourceStringBuilder.AppendLine("    }");
-            sourceStringBuilder.AppendLine("}");
-            File.WriteAllText(SourceGenerationPath, sourceStringBuilder.ToString());
-        }
+        //todo: move out from here
 
         public void AddVertex(float x, float y, float z)
         {
@@ -562,7 +527,7 @@ namespace Acknex
             _runtime = runtime;
         }
 
-        public void Shoot(IAcknexObject acknexObject = null)
+        public void Shoot(IAcknexObject acknexObject, IAcknexObject MY, IAcknexObject THERE)
         {
             if (View.Instance == null)
             {
@@ -588,7 +553,7 @@ namespace Acknex
                 UpdateSkillValue("HIT_DIST", raycastResult.distance);
                 UpdateSkillValue("RESULT", shootFac * (1.0f - raycastResult.distance / shootRange));
                 UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(raycastResult.point), AngleUtils.To2D(ray.origin))));
-                TriggerEvent(AcknexObject, GetSynonymObject("MY"), null, "IF_HIT");
+                TriggerEvent("IF_HIT", AcknexObject, MY, THERE);
             }
             UpdateSkillValue("HIT_DIST", 0f);
             UpdateSkillValue("RESULT", 0f);
@@ -635,7 +600,7 @@ namespace Acknex
             }
         }
 
-        public void Explode(IAcknexObject acknexObject)
+        public void Explode(IAcknexObject acknexObject, IAcknexObject MY, IAcknexObject THERE)
         {
             //var shootX = GetSkillValue("SHOOT_X");
             //var shootY = GetSkillValue("SHOOT_Y");
@@ -651,7 +616,7 @@ namespace Acknex
                 UpdateSkillValue("HIT_DIST", distance);
                 UpdateSkillValue("RESULT", shootFac * (1.0f - distance / shootRange));
                 UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(hitPoint), AngleUtils.To2D(origin))));
-                TriggerEvent(AcknexObject, GetSynonymObject("MY"), null, "IF_HIT");
+                TriggerEvent("IF_HIT", AcknexObject, MY, THERE);
                 minDist = Mathf.Min(minDist, distance);
             }
             UpdateSkillValue("HIT_DIST", 0f);

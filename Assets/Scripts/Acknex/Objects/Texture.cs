@@ -88,7 +88,7 @@ namespace Acknex
                 UpdateAngleFrameScale(scaleTexture, cycles, sides, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, sourceAcknexObject, sourceTransform);
                 yield return currentDelay;
                 cycle = (int)Mathf.Repeat(cycle + 1, cycles);
-                World.Instance.TriggerEvent(sourceAcknexObject, sourceAcknexObject, regionAcknexObject, "EACH_CYCLE");
+                World.Instance.TriggerEvent("EACH_CYCLE", sourceAcknexObject, sourceAcknexObject, regionAcknexObject);
             }
         }
 

@@ -50,7 +50,7 @@ namespace Acknex
         {
             while (true)
             {
-                World.Instance.TriggerEvent(AcknexObject, AcknexObject, GetRegion(), "EACH_SEC");
+                World.Instance.TriggerEvent("EACH_SEC", AcknexObject, AcknexObject, GetRegion());
                 yield return World.Instance.WaitForSecond;
             }
         }
@@ -59,7 +59,7 @@ namespace Acknex
         {
             while (true)
             {
-                World.Instance.TriggerEvent(AcknexObject, AcknexObject, GetRegion(), "EACH_TICK");
+                World.Instance.TriggerEvent("EACH_TICK", AcknexObject, AcknexObject, GetRegion());
                 yield return null;
             }
         }
@@ -68,7 +68,7 @@ namespace Acknex
         {
             if (obj.TryGetComponent<Player>(out var player))
             {
-                World.Instance.TriggerEvent(AcknexObject, AcknexObject, player.GetRegion(), "IF_FAR");
+                World.Instance.TriggerEvent("IF_FAR", AcknexObject, AcknexObject, player.GetRegion());
             }
         }
 
@@ -76,7 +76,7 @@ namespace Acknex
         {
             if (obj.TryGetComponent<Player>(out var player))
             {
-                World.Instance.TriggerEvent(AcknexObject, AcknexObject, player.GetRegion(), "IF_NEAR");
+                World.Instance.TriggerEvent("IF_NEAR", AcknexObject, AcknexObject, player.GetRegion());
             }
         }
 
@@ -311,7 +311,7 @@ namespace Acknex
             AcknexObject.SetInteger("WAYPOINT", waypoint);
             if (points.Count == 0)
             {
-                World.Instance.TriggerEvent(AcknexObject, way.AcknexObject, GetRegion(), "IF_ARRIVED");
+                World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, way.AcknexObject, GetRegion());
                 yield break;
             }
             var nextPoint = points[waypoint - 1];
@@ -325,7 +325,7 @@ namespace Acknex
                         yield break;
                     }
                     AcknexObject.SetInteger("WAYPOINT", waypoint);
-                    World.Instance.TriggerEvent(AcknexObject, way.AcknexObject, GetRegion(), "IF_ARRIVED");
+                    World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, way.AcknexObject, GetRegion());
                     nextPoint = points[waypoint - 1];
                 }
                 yield return null;
@@ -339,7 +339,7 @@ namespace Acknex
             {
                 if (MoveToPoint(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
-                    World.Instance.TriggerEvent(AcknexObject, AcknexObject, GetRegion(), "IF_ARRIVED");
+                    World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
                     yield break;
                 }
                 yield return null;
@@ -411,16 +411,16 @@ namespace Acknex
             {
                 if (_movingToTarget && AcknexObject.ContainsFlag("CAREFULLY"))
                 {
-                    World.Instance.TriggerEvent(AcknexObject, Player.Instance.AcknexObject, AcknexObject, "IF_ARRIVED");
+                    World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, Player.Instance.AcknexObject, AcknexObject);
                 }
-                World.Instance.TriggerEvent(AcknexObject, AcknexObject, AcknexObject, "IF_LEAVE");
-                World.Instance.TriggerEvent(AcknexObject, AcknexObject, AcknexObject, "IF_ARISE");
+                World.Instance.TriggerEvent("IF_LEAVE", AcknexObject, AcknexObject, AcknexObject);
+                World.Instance.TriggerEvent("IF_ARISE", AcknexObject, AcknexObject, AcknexObject);
                 region = newRegionContainer.AcknexObject;
                 regionContainer = newRegionContainer;
-                World.Instance.TriggerEvent(AcknexObject, AcknexObject, AcknexObject, "IF_ENTER");
+                World.Instance.TriggerEvent("IF_ENTER", AcknexObject, AcknexObject, AcknexObject);
                 if (regionContainer.Above != null)
                 {
-                    World.Instance.TriggerEvent(regionContainer.Above.AcknexObject, AcknexObject, regionContainer.Above.AcknexObject, "IF_DIVE");
+                    World.Instance.TriggerEvent("IF_DIVE", regionContainer.Above.AcknexObject, AcknexObject, regionContainer.Above.AcknexObject);
                 }
             }
             else

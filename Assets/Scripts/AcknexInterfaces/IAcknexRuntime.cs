@@ -13,6 +13,6 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Calls the action with the given name.
         /// </summary>
-        IEnumerator CallAction(string name);
+        IEnumerator CallAction(string name, IAcknexObject MY, IAcknexObject THERE);
     }
 }

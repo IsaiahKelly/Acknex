@@ -116,12 +116,12 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Shoots the given object.
         /// </summary>
-        void Shoot(IAcknexObject acknexObject = null);
+        void Shoot(IAcknexObject acknexObject, IAcknexObject MY, IAcknexObject THERE);
 
         /// <summary>
         /// Explodes the given object.
         /// </summary>
-        void Explode(IAcknexObject acknexObject);
+        void Explode(IAcknexObject acknexObject, IAcknexObject MY, IAcknexObject THERE);
 
         /// <summary>
         /// Stores the keyboard input into the given string object.
@@ -131,7 +131,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Calls the IEnumerator from the given action.
         /// </summary>
-        IEnumerator CallSynonymAction(string actionName);
+        IEnumerator CallSynonymAction(string actionName, IAcknexObject MY, IAcknexObject THERE);
 
         /// <summary>
         /// Accelerates a value by the given amount.

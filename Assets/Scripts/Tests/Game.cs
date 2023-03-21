@@ -10,7 +10,7 @@ namespace Tests
         {
             _world = world;
         }
-        public IEnumerator CallAction(string name)
+        public IEnumerator CallAction(string name, IAcknexObject MY, IAcknexObject THERE)
         {
             if (name == null)
             {
@@ -19,81 +19,81 @@ namespace Tests
             var method = this.GetType().GetMethod(name);
             if (method != null)
             {
-                var result = method.Invoke(this, null);
+                var result = method.Invoke(this, new[] { MY, THERE });
                 yield return (IEnumerator)result;
             }
             yield break;
         }
-        public IEnumerator ACTORJUMP()
+        public IEnumerator ACTORJUMP(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("VSPEED");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("VSPEED", temp_3 + (-0.1f * TimeUtils.TicksToTime(1)));
-            var MY_7 = _world.GetSynonymObject("MY");
+            var MY_7 = MY;
             var temp_8 = MY_7.GetFloat("FLOOR_HGT");
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             var temp_11 = MY_10.GetFloat("HEIGHT");
             if (temp_11 > temp_8)
             {
                 yield break;
             }
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("GROUND", 0f);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("HEIGHT", -0.05f);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("VSPEED", 0f);
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetAcknexObject("EACH_TICK", null);
             yield break;
             yield break;
         }
-        public IEnumerator ACTORJUMPSTOP()
+        public IEnumerator ACTORJUMPSTOP(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("VSPEED");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("VSPEED", temp_3 + -0.1f);
-            var MY_7 = _world.GetSynonymObject("MY");
+            var MY_7 = MY;
             var temp_8 = MY_7.GetFloat("FLOOR_HGT");
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             var temp_11 = MY_10.GetFloat("HEIGHT");
             if (temp_11 > temp_8)
             {
                 yield break;
             }
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("GROUND", 0f);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("HEIGHT", -0.05f);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("VSPEED", 0f);
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             var temp_24 = MY_23.GetFloat("SPEED");
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("SPEED", temp_24 + -0.1f);
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             var temp_30 = MY_29.GetFloat("ANGLE");
-            var MY_32 = _world.GetSynonymObject("MY");
+            var MY_32 = MY;
             MY_32.SetFloat("ANGLE", temp_30 + 0.05f);
-            var MY_35 = _world.GetSynonymObject("MY");
+            var MY_35 = MY;
             var temp_36 = MY_35.GetFloat("SPEED");
             if (temp_36 > 0.1f)
             {
                 yield break;
             }
-            var MY_39 = _world.GetSynonymObject("MY");
+            var MY_39 = MY;
             MY_39.SetAcknexObject("EACH_TICK", null);
-            var MY_42 = _world.GetSynonymObject("MY");
+            var MY_42 = MY;
             MY_42.SetFloat("SPEED", 0f);
-            var MY_45 = _world.GetSynonymObject("MY");
+            var MY_45 = MY;
             MY_45.SetFloat("CAREFULLY", 0f);
-            var MY_48 = _world.GetSynonymObject("MY");
+            var MY_48 = MY;
             MY_48.SetAcknexObject("TARGET", null);
             yield break;
         }
-        public IEnumerator AIMMISSILE()
+        public IEnumerator AIMMISSILE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MISSILECOUNTER_1 = _world.GetObject(ObjectType.Skill, "MISSILECOUNTER");
             var MISSILECOUNTER_1_val = MISSILECOUNTER_1.GetFloat("VAL");
@@ -103,7 +103,7 @@ namespace Tests
             var MISSILECOUNTER_4_val = MISSILECOUNTER_4.GetFloat("VAL");
             if (MISSILECOUNTER_4_val == 16f)
             {
-                var MY_7 = _world.GetSynonymObject("MY");
+                var MY_7 = MY;
                 MY_7.SetFloat("PASSABLE", 0f);
             }
             var MISSILECOUNTER_9 = _world.GetObject(ObjectType.Skill, "MISSILECOUNTER");
@@ -113,7 +113,7 @@ namespace Tests
                 yield break;
             }
             var BULLET_10 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_12 = _world.GetSynonymObject("MY");
+            var MY_12 = MY;
             MY_12.SetAcknexObject("TARGET", BULLET_10);
             var MISSILECOUNTER_14 = _world.GetObject(ObjectType.Skill, "MISSILECOUNTER");
             var MISSILECOUNTER_14_val = MISSILECOUNTER_14.GetFloat("VAL");
@@ -123,14 +123,14 @@ namespace Tests
             }
             var MISSILECOUNTER_16 = _world.GetObject(ObjectType.Skill, "MISSILECOUNTER");
             MISSILECOUNTER_16.SetFloat("VAL", 0f);
-            var MY_19 = _world.GetSynonymObject("MY");
+            var MY_19 = MY;
             var temp_20 = MY_19.GetFloat("VISIBLE");
             if (temp_20 == 1f)
             {
                 yield break;
             }
             {
-                var enumerator = VANISHSTOP();
+                var enumerator = VANISHSTOP(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -143,7 +143,7 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator ASKFOREXIT()
+        public IEnumerator ASKFOREXIT(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.PlaySound("BIP03SND", 0.5f);
             var ASKFOREXITTEXT_1 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"ASKFOREXITTEXT");
@@ -161,7 +161,7 @@ namespace Tests
             var HLP02STR_18 = _world.AcknexObject.GetAcknexObject("HLP02STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP02STR_18);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -173,10 +173,10 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator BEAM()
+        public IEnumerator BEAM(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = CHOOSEPARTICLE();
+                var enumerator = CHOOSEPARTICLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -210,7 +210,7 @@ namespace Tests
             var AMMO_16 = _world.GetObject(ObjectType.Skill, "AMMO");
             AMMO_16.SetFloat("VAL", AMMO_15_val + -1f);
             {
-                var enumerator = DECAMMO();
+                var enumerator = DECAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -315,7 +315,7 @@ namespace Tests
             SHOOT_X_118.SetFloat("VAL", 0f);
             var SHOOT_Y_120 = _world.GetObject(ObjectType.Skill, "SHOOT_Y");
             SHOOT_Y_120.SetFloat("VAL", 0f);
-            _world.Shoot();
+            _world.Shoot(null, MY, THERE);
             var HIT_DIST_122 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_122_val = HIT_DIST_122.GetFloat("VAL");
             if (HIT_DIST_122_val == 0f)
@@ -405,10 +405,10 @@ namespace Tests
             GUNFIRING_204.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator BEAMREACT()
+        public IEnumerator BEAMREACT(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = CHOOSEPARTICLE();
+                var enumerator = CHOOSEPARTICLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -447,11 +447,11 @@ namespace Tests
                 var temp_24 = PARTICLE_23.GetFloat("VSPEED");
                 PARTICLE_17.SetFloat("VSPEED", -temp_24);
             }
-            var MY_27 = _world.GetSynonymObject("MY");
+            var MY_27 = MY;
             MY_27.SetFloat("IMMATERIAL", 1f);
             var PARTICLE_30 = _world.GetSynonymObject("PARTICLE");
             PARTICLE_30.SetFloat("SPEED", 2f);
-            var MY_31 = _world.GetSynonymObject("MY");
+            var MY_31 = MY;
             var PARTICLE_33 = _world.GetSynonymObject("PARTICLE");
             PARTICLE_33.SetAcknexObject("TARGET", MY_31);
             var EXPLOSION_CENTER_35 = _world.GetSynonymObject("EXPLOSION_CENTER");
@@ -480,56 +480,56 @@ namespace Tests
             PARTICLE_61.SetFloat("INVISIBLE", 0f);
             yield break;
         }
-        public IEnumerator BOUNCE()
+        public IEnumerator BOUNCE(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("SKILL2");
             if (temp_3 < -15f)
             {
-                var MY_5 = _world.GetSynonymObject("MY");
+                var MY_5 = MY;
                 var temp_6 = MY_5.GetFloat("ANGLE");
-                var MY_8 = _world.GetSynonymObject("MY");
+                var MY_8 = MY;
                 MY_8.SetFloat("SKILL2", temp_6);
             }
             _world.PlaySound("GRAN02SND", 0.7f, "MY");
-            var MY_12 = _world.GetSynonymObject("MY");
+            var MY_12 = MY;
             var temp_13 = MY_12.GetFloat("SKILL1");
             if (temp_13 == 0f)
             {
                 goto YWALL;
             }
-            var MY_15 = _world.GetSynonymObject("MY");
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_15 = MY;
+            var MY_17 = MY;
             var temp_18 = MY_17.GetFloat("ANGLE");
             var TWO_PI_19 = _world.GetObject(ObjectType.Skill, "TWO_PI");
             var TWO_PI_19_val = TWO_PI_19.GetFloat("VAL");
-            var MY_22 = _world.GetSynonymObject("MY");
+            var MY_22 = MY;
             var temp_23 = MY_22.GetFloat("SKILL2");
             MY_15.SetFloat("ANGLE", TWO_PI_19_val - temp_23);
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("SKILL1", 0f);
             yield break;
             YWALL:
-            var MY_28 = _world.GetSynonymObject("MY");
-            var MY_30 = _world.GetSynonymObject("MY");
+            var MY_28 = MY;
+            var MY_30 = MY;
             var temp_31 = MY_30.GetFloat("ANGLE");
             var PI_32 = _world.GetObject(ObjectType.Skill, "PI");
             var PI_32_val = PI_32.GetFloat("VAL");
-            var MY_35 = _world.GetSynonymObject("MY");
+            var MY_35 = MY;
             var temp_36 = MY_35.GetFloat("SKILL2");
             MY_28.SetFloat("ANGLE", PI_32_val - temp_36);
-            var MY_39 = _world.GetSynonymObject("MY");
+            var MY_39 = MY;
             MY_39.SetFloat("SKILL1", 1f);
             yield break;
         }
-        public IEnumerator BURST()
+        public IEnumerator BURST(IAcknexObject MY, IAcknexObject THERE)
         {
             var AMMO_1 = _world.GetObject(ObjectType.Skill, "AMMO");
             var AMMO_1_val = AMMO_1.GetFloat("VAL");
             if (AMMO_1_val < 3f)
             {
                 {
-                    var enumerator = FIRE();
+                    var enumerator = FIRE(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -571,7 +571,7 @@ namespace Tests
                 AMMO_24.SetFloat("VAL", 0f);
             }
             {
-                var enumerator = DECAMMO();
+                var enumerator = DECAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -627,7 +627,7 @@ namespace Tests
             SHOOT_X_61.SetFloat("VAL", DSHOOTXPLUS_60_val);
             var SHOOT_Y_63 = _world.GetObject(ObjectType.Skill, "SHOOT_Y");
             SHOOT_Y_63.SetFloat("VAL", 0f);
-            _world.Shoot();
+            _world.Shoot(null, MY, THERE);
             var HIT_DIST_65 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_65_val = HIT_DIST_65.GetFloat("VAL");
             if (HIT_DIST_65_val == 0f)
@@ -643,7 +643,7 @@ namespace Tests
             if (temp_74 == 1f)
             {
                 {
-                    var enumerator = CASTBLOOD();
+                    var enumerator = CASTBLOOD(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -657,7 +657,7 @@ namespace Tests
             SHOOT2:
             var SHOOT_X_76 = _world.GetObject(ObjectType.Skill, "SHOOT_X");
             SHOOT_X_76.SetFloat("VAL", 0f);
-            _world.Shoot();
+            _world.Shoot(null, MY, THERE);
             var HIT_DIST_78 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_78_val = HIT_DIST_78.GetFloat("VAL");
             if (HIT_DIST_78_val == 0f)
@@ -673,7 +673,7 @@ namespace Tests
             if (temp_87 == 1f)
             {
                 {
-                    var enumerator = CASTBLOOD();
+                    var enumerator = CASTBLOOD(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -689,7 +689,7 @@ namespace Tests
             var DSHOOTXMINUS_88_val = DSHOOTXMINUS_88.GetFloat("VAL");
             var SHOOT_X_89 = _world.GetObject(ObjectType.Skill, "SHOOT_X");
             SHOOT_X_89.SetFloat("VAL", DSHOOTXMINUS_88_val);
-            _world.Shoot();
+            _world.Shoot(null, MY, THERE);
             var HIT_DIST_91 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_91_val = HIT_DIST_91.GetFloat("VAL");
             if (HIT_DIST_91_val == 0f)
@@ -705,7 +705,7 @@ namespace Tests
             if (temp_100 == 1f)
             {
                 {
-                    var enumerator = CASTBLOOD();
+                    var enumerator = CASTBLOOD(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -772,7 +772,7 @@ namespace Tests
             GUNFIRING_142.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator CASTBLOOD()
+        public IEnumerator CASTBLOOD(IAcknexObject MY, IAcknexObject THERE)
         {
             var BLOOD1ACT_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"BLOOD1ACT");
             var temp_3 = BLOOD1ACT_2.GetFloat("INVISIBLE");
@@ -831,12 +831,11 @@ namespace Tests
             var PLAYER_TILT_40 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
             var PLAYER_TILT_40_val = PLAYER_TILT_40.GetFloat("VAL");
             BLOOD_30.SetFloat("HEIGHT", PLAYER_Z_34_val - 0.728f * HIT_DIST_38_val * PLAYER_TILT_40_val - 0.5f);
-            _world.Drop("BLOOD");
             var BLOOD_45 = _world.GetSynonymObject("BLOOD");
             BLOOD_45.SetFloat("INVISIBLE", 0f);
             yield break;
         }
-        public IEnumerator CHOOSEGAME()
+        public IEnumerator CHOOSEGAME(IAcknexObject MY, IAcknexObject THERE)
         {
             var SUBMENUITEM_1 = _world.GetObject(ObjectType.Skill, "SUBMENUITEM");
             var SUBMENUITEM_1_val = SUBMENUITEM_1.GetFloat("VAL");
@@ -853,7 +852,7 @@ namespace Tests
             _world.PlaySound("BIP02SND", 0.5f);
             _world.AcknexObject.SetAcknexObject("IF_ENTER", null);
             {
-                var enumerator = HIDEMENU();
+                var enumerator = HIDEMENU(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -870,7 +869,7 @@ namespace Tests
             //Unknown keyword: LOAD
             yield break;
         }
-        public IEnumerator CHOOSEGRANADE()
+        public IEnumerator CHOOSEGRANADE(IAcknexObject MY, IAcknexObject THERE)
         {
             var GRAN1ACT_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"GRAN1ACT");
             var temp_3 = GRAN1ACT_2.GetFloat("INVISIBLE");
@@ -925,7 +924,7 @@ namespace Tests
             _world.SetSynonymObject("GRANADE", null);
             yield break;
         }
-        public IEnumerator CHOOSEMISSILE()
+        public IEnumerator CHOOSEMISSILE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MISS1ACT_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"MISS1ACT");
             var temp_3 = MISS1ACT_2.GetFloat("INVISIBLE");
@@ -980,7 +979,7 @@ namespace Tests
             _world.SetSynonymObject("MISSILE", null);
             yield break;
         }
-        public IEnumerator CHOOSEPARTICLE()
+        public IEnumerator CHOOSEPARTICLE(IAcknexObject MY, IAcknexObject THERE)
         {
             var PARTICLEACT_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"PARTICLEACT");
             var temp_3 = PARTICLEACT_2.GetFloat("INVISIBLE");
@@ -1035,7 +1034,7 @@ namespace Tests
             _world.SetSynonymObject("PARTICLE", null);
             yield break;
         }
-        public IEnumerator CHOOSESUBMENU()
+        public IEnumerator CHOOSESUBMENU(IAcknexObject MY, IAcknexObject THERE)
         {
             var MENUITEM_1 = _world.GetObject(ObjectType.Skill, "MENUITEM");
             var MENUITEM_1_val = MENUITEM_1.GetFloat("VAL");
@@ -1055,7 +1054,7 @@ namespace Tests
             if (MENUITEM_7_val == 1f)
             {
                 {
-                    var enumerator = SHOWSOUNDVOLUMEMENU();
+                    var enumerator = SHOWSOUNDVOLUMEMENU(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -1072,7 +1071,7 @@ namespace Tests
             if (MENUITEM_9_val == 2f)
             {
                 {
-                    var enumerator = SHOWSAVEMENU();
+                    var enumerator = SHOWSAVEMENU(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -1089,7 +1088,7 @@ namespace Tests
             if (MENUITEM_11_val == 3f)
             {
                 {
-                    var enumerator = SHOWLOADMENU();
+                    var enumerator = SHOWLOADMENU(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -1106,7 +1105,7 @@ namespace Tests
             if (MENUITEM_13_val == 4f)
             {
                 {
-                    var enumerator = ASKFOREXIT();
+                    var enumerator = ASKFOREXIT(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -1120,7 +1119,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator CONTROLMESSAGEDISPLAY()
+        public IEnumerator CONTROLMESSAGEDISPLAY(IAcknexObject MY, IAcknexObject THERE)
         {
             //Unknown keyword: LOCATE
             var GODCOUNTER_1 = _world.GetObject(ObjectType.Skill, "GODCOUNTER");
@@ -1158,7 +1157,7 @@ namespace Tests
                 goto CONT;
             }
             {
-                var enumerator = REGIO_ARISE();
+                var enumerator = REGIO_ARISE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1235,7 +1234,7 @@ namespace Tests
             MSGSECCOUNT_57.SetFloat("VAL", -1f);
             yield break;
         }
-        public IEnumerator CONTROLUNDERWATERTIME()
+        public IEnumerator CONTROLUNDERWATERTIME(IAcknexObject MY, IAcknexObject THERE)
         {
             var UNDERWATER_1 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
             var UNDERWATER_1_val = UNDERWATER_1.GetFloat("VAL");
@@ -1260,7 +1259,7 @@ namespace Tests
             var PLAYER_RESULT_10 = _world.GetObject(ObjectType.Skill, "PLAYER_RESULT");
             PLAYER_RESULT_10.SetFloat("VAL", 2f);
             {
-                var enumerator = HITPLAYER();
+                var enumerator = HITPLAYER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1272,10 +1271,10 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator CYCLEREPTATTACK()
+        public IEnumerator CYCLEREPTATTACK(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = LOCATEACTOR();
+                var enumerator = LOCATEACTOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1285,16 +1284,16 @@ namespace Tests
                     }
                 }
             }
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetFloat("GROUND", 0f);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("HEIGHT", -0.05f);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetFloat("VSPEED", 0f);
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("EACH_TICK", null);
             {
-                var enumerator = REPTTALK();
+                var enumerator = REPTTALK(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1311,7 +1310,7 @@ namespace Tests
                 goto CONT;
             }
             {
-                var enumerator = REPTLOOKFOR();
+                var enumerator = REPTLOOKFOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1323,7 +1322,7 @@ namespace Tests
             }
             CONT:
             {
-                var enumerator = LOOKPLAYER();
+                var enumerator = LOOKPLAYER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1333,24 +1332,24 @@ namespace Tests
                     }
                 }
             }
-            var MY_16 = _world.GetSynonymObject("MY");
+            var MY_16 = MY;
             var temp_17 = MY_16.GetFloat("FLAG1");
             if (temp_17 == 0f)
             {
                 yield break;
             }
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             var temp_21 = MY_20.GetFloat("FLAG2");
             if (temp_21 == 1f)
             {
                 goto CONT1;
             }
-            var MY_24 = _world.GetSynonymObject("MY");
+            var MY_24 = MY;
             MY_24.SetFloat("FLAG2", 1f);
             _world.PlaySound("REPT02SND", 0.7f, "MY");
             CONT1:
             {
-                var enumerator = REPTFOLLOWATTACK();
+                var enumerator = REPTFOLLOWATTACK(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1363,10 +1362,10 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator CYCLEREPTHIDE()
+        public IEnumerator CYCLEREPTHIDE(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = LOCATEACTOR();
+                var enumerator = LOCATEACTOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1376,37 +1375,37 @@ namespace Tests
                     }
                 }
             }
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetFloat("GROUND", 0f);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("HEIGHT", -0.05f);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetFloat("VSPEED", 0f);
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("EACH_TICK", null);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             var temp_15 = MY_14.GetFloat("VISIBLE");
             if (temp_15 == 0f)
             {
                 goto STOP;
             }
-            var MY_18 = _world.GetSynonymObject("MY");
+            var MY_18 = MY;
             MY_18.SetFloat("SPEED", 0.6f);
             var BULLET_19 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_21 = _world.GetSynonymObject("MY");
+            var MY_21 = MY;
             MY_21.SetAcknexObject("TARGET", BULLET_19);
             yield break;
             STOP:
-            var MY_24 = _world.GetSynonymObject("MY");
+            var MY_24 = MY;
             MY_24.SetFloat("SPEED", 0f);
-            var MY_27 = _world.GetSynonymObject("MY");
+            var MY_27 = MY;
             MY_27.SetAcknexObject("TARGET", null);
             yield break;
         }
-        public IEnumerator CYCLEREPTSHOOT()
+        public IEnumerator CYCLEREPTSHOOT(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = LOCATEACTOR();
+                var enumerator = LOCATEACTOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1416,12 +1415,12 @@ namespace Tests
                     }
                 }
             }
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("SKILL1");
             if (temp_3 > 9f)
             {
                 {
-                    var enumerator = REPTDIE();
+                    var enumerator = REPTDIE(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -1433,16 +1432,16 @@ namespace Tests
                 }
                 yield break;
             }
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             MY_6.SetFloat("GROUND", 0f);
-            var MY_9 = _world.GetSynonymObject("MY");
+            var MY_9 = MY;
             MY_9.SetFloat("HEIGHT", -0.05f);
-            var MY_12 = _world.GetSynonymObject("MY");
+            var MY_12 = MY;
             MY_12.SetFloat("VSPEED", 0f);
-            var MY_15 = _world.GetSynonymObject("MY");
+            var MY_15 = MY;
             MY_15.SetAcknexObject("EACH_TICK", null);
             {
-                var enumerator = LOOKPLAYER();
+                var enumerator = LOOKPLAYER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1452,7 +1451,7 @@ namespace Tests
                     }
                 }
             }
-            var MY_18 = _world.GetSynonymObject("MY");
+            var MY_18 = MY;
             var temp_19 = MY_18.GetFloat("FLAG1");
             if (temp_19 == 0f)
             {
@@ -1460,14 +1459,14 @@ namespace Tests
             }
             goto PLAYERSEEN;
             CONTFLAG2:
-            var MY_22 = _world.GetSynonymObject("MY");
+            var MY_22 = MY;
             var temp_23 = MY_22.GetFloat("FLAG2");
             if (temp_23 == 1f)
             {
                 goto ATTACK;
             }
             {
-                var enumerator = REPTWAIT();
+                var enumerator = REPTWAIT(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1479,17 +1478,17 @@ namespace Tests
             }
             yield break;
             PLAYERSEEN:
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("FLAG2", 1f);
             CONT:
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             var temp_30 = MY_29.GetFloat("DISTANCE");
             if (temp_30 > 10f)
             {
                 goto ATTACK;
             }
             {
-                var enumerator = REPTSHOOT();
+                var enumerator = REPTSHOOT(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1502,7 +1501,7 @@ namespace Tests
             yield break;
             ATTACK:
             {
-                var enumerator = REPTFOLLOWATTACK();
+                var enumerator = REPTFOLLOWATTACK(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1515,10 +1514,10 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator CYCLETROPATTACK()
+        public IEnumerator CYCLETROPATTACK(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1528,7 +1527,7 @@ namespace Tests
                     }
                 }
             }
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("FLAG2");
             if (temp_3 != 0f)
             {
@@ -1541,7 +1540,7 @@ namespace Tests
                 goto CONT;
             }
             {
-                var enumerator = TROPLOOKFOR();
+                var enumerator = TROPLOOKFOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1553,7 +1552,7 @@ namespace Tests
             }
             CONT:
             {
-                var enumerator = LOOKPLAYER();
+                var enumerator = LOOKPLAYER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1563,7 +1562,7 @@ namespace Tests
                     }
                 }
             }
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             var temp_9 = MY_8.GetFloat("FLAG1");
             if (temp_9 == 0f)
             {
@@ -1575,12 +1574,12 @@ namespace Tests
             {
                 goto ATTACK;
             }
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             var temp_15 = MY_14.GetFloat("DISTANCE");
             if (temp_15 < 20f)
             {
                 {
-                    var enumerator = TROPFOLLOWWARNING();
+                    var enumerator = TROPFOLLOWWARNING(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -1594,10 +1593,10 @@ namespace Tests
             }
             yield break;
             ATTACK:
-            var MY_18 = _world.GetSynonymObject("MY");
+            var MY_18 = MY;
             MY_18.SetFloat("FLAG2", 1f);
             {
-                var enumerator = TROPTALK();
+                var enumerator = TROPTALK(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1607,12 +1606,12 @@ namespace Tests
                     }
                 }
             }
-            var MY_21 = _world.GetSynonymObject("MY");
+            var MY_21 = MY;
             var temp_22 = MY_21.GetFloat("DISTANCE");
             if (temp_22 < 200f)
             {
                 {
-                    var enumerator = TROPFOLLOWATTACK();
+                    var enumerator = TROPFOLLOWATTACK(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -1626,10 +1625,10 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator CYCLETROPBACK()
+        public IEnumerator CYCLETROPBACK(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1641,10 +1640,10 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator CYCLETROPHIDE()
+        public IEnumerator CYCLETROPHIDE(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = REPELANGLE();
+                var enumerator = REPELANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1654,14 +1653,14 @@ namespace Tests
                     }
                 }
             }
-            var MY_1 = _world.GetSynonymObject("MY");
-            var MY_3 = _world.GetSynonymObject("MY");
+            var MY_1 = MY;
+            var MY_3 = MY;
             var temp_4 = MY_3.GetFloat("ANGLE");
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             var temp_7 = MY_6.GetFloat("ANGLE");
             MY_1.SetFloat("ANGLE", temp_7 + (UnityEngine.Random.value - 0.5f) * 2f);
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1671,14 +1670,14 @@ namespace Tests
                     }
                 }
             }
-            var MY_18 = _world.GetSynonymObject("MY");
+            var MY_18 = MY;
             var temp_19 = MY_18.GetFloat("VISIBLE");
             if (temp_19 == 1f)
             {
                 yield break;
             }
             {
-                var enumerator = LOOKPLAYER();
+                var enumerator = LOOKPLAYER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1688,29 +1687,29 @@ namespace Tests
                     }
                 }
             }
-            var MY_22 = _world.GetSynonymObject("MY");
+            var MY_22 = MY;
             var temp_23 = MY_22.GetFloat("FLAG1");
             if (temp_23 == 0f)
             {
                 goto STOP;
             }
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("SPEED", 0.6f);
             var BULLET_27 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             MY_29.SetAcknexObject("TARGET", BULLET_27);
             yield break;
             STOP:
-            var MY_32 = _world.GetSynonymObject("MY");
+            var MY_32 = MY;
             MY_32.SetFloat("SPEED", 0f);
-            var MY_35 = _world.GetSynonymObject("MY");
+            var MY_35 = MY;
             MY_35.SetAcknexObject("TARGET", null);
             yield break;
         }
-        public IEnumerator CYCLETROPSHOOT()
+        public IEnumerator CYCLETROPSHOOT(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1720,12 +1719,12 @@ namespace Tests
                     }
                 }
             }
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("SKILL1");
             if (temp_3 > 9f)
             {
                 {
-                    var enumerator = TROPDIE();
+                    var enumerator = TROPDIE(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -1737,12 +1736,12 @@ namespace Tests
                 }
                 yield break;
             }
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             var temp_7 = MY_6.GetFloat("DISTANCE");
             if (temp_7 > 300f)
             {
                 {
-                    var enumerator = TROPWAIT();
+                    var enumerator = TROPWAIT(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -1754,14 +1753,14 @@ namespace Tests
                 }
                 yield break;
             }
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             var temp_11 = MY_10.GetFloat("DISTANCE");
             if (temp_11 > 100f)
             {
                 goto ATTACK;
             }
             {
-                var enumerator = FOLLOWANGLE();
+                var enumerator = FOLLOWANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1772,7 +1771,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = LOOKPLAYER();
+                var enumerator = LOOKPLAYER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1782,7 +1781,7 @@ namespace Tests
                     }
                 }
             }
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             var temp_15 = MY_14.GetFloat("FLAG1");
             if (temp_15 == 0f)
             {
@@ -1796,7 +1795,7 @@ namespace Tests
             if (UnityEngine.Random.value > 0.8f)
             {
                 {
-                    var enumerator = TROPAIM();
+                    var enumerator = TROPAIM(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -1809,7 +1808,7 @@ namespace Tests
                 yield break;
             }
             {
-                var enumerator = TROPSHOOT();
+                var enumerator = TROPSHOOT(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1822,7 +1821,7 @@ namespace Tests
             yield break;
             ATTACK:
             {
-                var enumerator = TROPFOLLOWATTACK();
+                var enumerator = TROPFOLLOWATTACK(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1835,10 +1834,10 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator CYCLETROPWARNING()
+        public IEnumerator CYCLETROPWARNING(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1853,7 +1852,7 @@ namespace Tests
             if (GUN_ON_1_val != 0f)
             {
                 {
-                    var enumerator = TROPFOLLOWATTACK();
+                    var enumerator = TROPFOLLOWATTACK(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -1865,16 +1864,16 @@ namespace Tests
                 }
                 yield break;
             }
-            var MY_4 = _world.GetSynonymObject("MY");
+            var MY_4 = MY;
             var temp_5 = MY_4.GetFloat("DISTANCE");
             if (temp_5 > 10f)
             {
                 goto CONT;
             }
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", null);
             {
-                var enumerator = TROPWARNING();
+                var enumerator = TROPWARNING(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1886,12 +1885,12 @@ namespace Tests
             }
             yield break;
             CONT:
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             var temp_12 = MY_11.GetFloat("DISTANCE");
             if (temp_12 > 40f)
             {
                 {
-                    var enumerator = TROPWAIT();
+                    var enumerator = TROPWAIT(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -1904,7 +1903,7 @@ namespace Tests
                 yield break;
             }
             {
-                var enumerator = FOLLOWANGLE();
+                var enumerator = FOLLOWANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1916,7 +1915,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator DECAMMO()
+        public IEnumerator DECAMMO(IAcknexObject MY, IAcknexObject THERE)
         {
             var WEAPONSEL_1 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
             var WEAPONSEL_1_val = WEAPONSEL_1.GetFloat("VAL");
@@ -1963,7 +1962,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator DISPLAYMESSAGE()
+        public IEnumerator DISPLAYMESSAGE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MESSAGE_TEXT_0 = _world.GetSynonymObject("MESSAGE_TEXT");
             var PANELTEXT_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"PANELTEXT");
@@ -1974,11 +1973,11 @@ namespace Tests
             MSGSECCOUNT_7.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator DIVE_UP()
+        public IEnumerator DIVE_UP(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.PlaySound("PLAYERINSPSND", 0.8f);
             {
-                var enumerator = RESET_BLUE();
+                var enumerator = RESET_BLUE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -1990,17 +1989,17 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator DRILLHOLE()
+        public IEnumerator DRILLHOLE(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("SKILL3");
             if (temp_3 == 0f)
             {
                 yield break;
             }
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             MY_6.SetFloat("SKILL3", 0f);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             var temp_9 = MY_8?.GetAcknexObject("TEXTURE");
             _world.SetSynonymObject("MY_TEX", temp_9);
             var HOLEX_11 = _world.GetObject(ObjectType.Skill, "HOLEX");
@@ -2023,16 +2022,16 @@ namespace Tests
             var temp_39 = MY_TEX_38.GetFloat("SCALE_Y");
             var DISTY_40 = _world.GetObject(ObjectType.Skill, "DISTY");
             DISTY_40.SetFloat("VAL", temp_39);
-            var MY_43 = _world.GetSynonymObject("MY");
+            var MY_43 = MY;
             var temp_44 = MY_43?.GetAcknexObject("ATTACH");
             if (temp_44 != null)
             {
                 goto SECOND;
             }
             var MHL01TEX_45 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"MHL01TEX");
-            var MY_47 = _world.GetSynonymObject("MY");
+            var MY_47 = MY;
             MY_47.SetAcknexObject("ATTACH", MHL01TEX_45);
-            var MY_49 = _world.GetSynonymObject("MY");
+            var MY_49 = MY;
             var temp_50 = MY_49?.GetAcknexObject("ATTACH");
             _world.SetSynonymObject("MY_TEX", temp_50);
             var MY_TEX_54 = _world.GetSynonymObject("MY_TEX");
@@ -2052,7 +2051,7 @@ namespace Tests
             MY_TEX_62.SetFloat("POS_Y", HOLEY_66_val);
             yield break;
             SECOND:
-            var MY_68 = _world.GetSynonymObject("MY");
+            var MY_68 = MY;
             var temp_69 = MY_68?.GetAcknexObject("ATTACH");
             _world.SetSynonymObject("MY_TEX", temp_69);
             var MY_TEX_73 = _world.GetSynonymObject("MY_TEX");
@@ -2332,7 +2331,7 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator DROPTROOPS2()
+        public IEnumerator DROPTROOPS2(IAcknexObject MY, IAcknexObject THERE)
         {
             var DROPPED_1 = _world.GetObject(ObjectType.Skill, "DROPPED");
             var DROPPED_1_val = DROPPED_1.GetFloat("VAL");
@@ -2340,7 +2339,7 @@ namespace Tests
             {
                 yield break;
             }
-            var MY_4 = _world.GetSynonymObject("MY");
+            var MY_4 = MY;
             var temp_5 = MY_4.GetFloat("WAYPOINT");
             if (temp_5 != 13f)
             {
@@ -2348,7 +2347,7 @@ namespace Tests
             }
             var DROPPED_7 = _world.GetObject(ObjectType.Skill, "DROPPED");
             DROPPED_7.SetFloat("VAL", 1f);
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             MY_10.SetFloat("SPEED", 0f);
             yield return new WaitForTicks(4f);
             var TROPASSAULT2ACT_14 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT2ACT");
@@ -2359,24 +2358,24 @@ namespace Tests
             var TROPASSAULT2ACT_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT2ACT");
             TROPASSAULT2ACT_20.SetFloatAll("DIST", 40f);
             yield return new WaitForTicks(160f);
-            var MY_24 = _world.GetSynonymObject("MY");
+            var MY_24 = MY;
             MY_24.SetFloat("SPEED", 2f);
             yield break;
         }
-        public IEnumerator DROPTROOPS3()
+        public IEnumerator DROPTROOPS3(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("WAYPOINT");
             if (temp_3 != 1f)
             {
                 yield break;
             }
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             MY_6.SetFloat("SPEED", 0f);
             var HUMM1ATEX_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"HUMM1ATEX");
-            var MY_9 = _world.GetSynonymObject("MY");
+            var MY_9 = MY;
             MY_9.SetAcknexObject("TEXTURE", HUMM1ATEX_7);
-            var MY_12 = _world.GetSynonymObject("MY");
+            var MY_12 = MY;
             MY_12.SetAcknexObject("IF_ARRIVED", null);
             yield return new WaitForTicks(4f);
             var TROPASSAULT3ACT_16 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT3ACT");
@@ -2386,11 +2385,11 @@ namespace Tests
             TROPASSAULT3ACT_19.SetAcknexObjectAll("TARGET", ASSAULT3WAY_17);
             var TROPASSAULT3ACT_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Actor,*/"TROPASSAULT3ACT");
             TROPASSAULT3ACT_22.SetFloatAll("DIST", 40f);
-            var MY_25 = _world.GetSynonymObject("MY");
+            var MY_25 = MY;
             MY_25.SetAcknexObject("TARGET", null);
             yield break;
         }
-        public IEnumerator ENDOFLEVEL()
+        public IEnumerator ENDOFLEVEL(IAcknexObject MY, IAcknexObject THERE)
         {
             var MOVE_MODE_1 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
             MOVE_MODE_1.SetFloat("VAL", 1f);
@@ -2418,7 +2417,7 @@ namespace Tests
             var LOAD08STR_25 = _world.AcknexObject.GetAcknexObject("LOAD08STR");
             _world.SetSynonymObject("MESSAGE_TEXT", LOAD08STR_25);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -2441,7 +2440,7 @@ namespace Tests
             var LOAD_STRING_36 = _world.GetSynonymObject("LOAD_STRING");
             _world.SetSynonymObject("MESSAGE_TEXT", LOAD_STRING_36);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -2455,11 +2454,11 @@ namespace Tests
             Application.Quit();
             yield break;
         }
-        public IEnumerator ENTER_WATER()
+        public IEnumerator ENTER_WATER(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.PlaySound("FWT01SND", 0.8f);
             {
-                var enumerator = SET_SWIMMING();
+                var enumerator = SET_SWIMMING(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -2471,7 +2470,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator EXITGAME()
+        public IEnumerator EXITGAME(IAcknexObject MY, IAcknexObject THERE)
         {
             var MOVE_MODE_1 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
             MOVE_MODE_1.SetFloat("VAL", 1f);
@@ -2480,10 +2479,10 @@ namespace Tests
             Application.Quit();
             yield break;
         }
-        public IEnumerator EXPLODEMISSILE()
+        public IEnumerator EXPLODEMISSILE(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = LOCATEACTOR();
+                var enumerator = LOCATEACTOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -2494,19 +2493,19 @@ namespace Tests
                 }
             }
             var EXPLOSIONSTART_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXPLOSIONSTART");
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_TICK", EXPLOSIONSTART_0);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("EACH_CYCLE", null);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_ARRIVED", null);
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", null);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("IF_NEAR", null);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("PASSABLE", 1f);
-            var MY_18 = _world.GetSynonymObject("MY");
+            var MY_18 = MY;
             _world.SetSynonymObject("EXPLOSION_CENTER", MY_18);
             var EXPLOSION_ON_21 = _world.GetObject(ObjectType.Skill, "EXPLOSION_ON");
             EXPLOSION_ON_21.SetFloat("VAL", 1f);
@@ -2516,8 +2515,8 @@ namespace Tests
             SHOOT_RANGE_25.SetFloat("VAL", 20f);
             var SHOOT_FAC_27 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
             SHOOT_FAC_27.SetFloat("VAL", 10f);
-            var MY_28 = _world.GetSynonymObject("MY");
-            _world.Explode(MY_28);
+            var MY_28 = MY;
+            _world.Explode(MY_28, MY, THERE);
             var HIT_DIST_30 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_30_val = HIT_DIST_30.GetFloat("VAL");
             if (HIT_DIST_30_val == 0f)
@@ -2532,8 +2531,8 @@ namespace Tests
             SHOOT_FAC_34.SetFloat("VAL", 0f);
             var SHOOT_RANGE_36 = _world.GetObject(ObjectType.Skill, "SHOOT_RANGE");
             SHOOT_RANGE_36.SetFloat("VAL", 40f);
-            var MY_37 = _world.GetSynonymObject("MY");
-            _world.Shoot(MY_37);
+            var MY_37 = MY;
+            _world.Shoot(MY_37, MY, THERE);
             var HIT_DIST_39 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_39_val = HIT_DIST_39.GetFloat("VAL");
             if (HIT_DIST_39_val == 0f)
@@ -2541,7 +2540,7 @@ namespace Tests
                 goto CONT;
             }
             {
-                var enumerator = HITPLAYERDELAY();
+                var enumerator = HITPLAYERDELAY(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -2552,27 +2551,27 @@ namespace Tests
                 }
             }
             CONT:
-            var MY_42 = _world.GetSynonymObject("MY");
+            var MY_42 = MY;
             MY_42.SetFloat("SPEED", 0f);
-            var MY_45 = _world.GetSynonymObject("MY");
+            var MY_45 = MY;
             MY_45.SetFloat("CAREFULLY", 0f);
-            var MY_48 = _world.GetSynonymObject("MY");
+            var MY_48 = MY;
             MY_48.SetFloat("GROUND", 0f);
-            var MY_51 = _world.GetSynonymObject("MY");
+            var MY_51 = MY;
             MY_51.SetFloat("HEIGHT", -0.05f);
             var EXP01TEX_52 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"EXP01TEX");
-            var MY_54 = _world.GetSynonymObject("MY");
+            var MY_54 = MY;
             MY_54.SetAcknexObject("TEXTURE", EXP01TEX_52);
-            var MY_57 = _world.GetSynonymObject("MY");
+            var MY_57 = MY;
             //Unknown Property Type: Thing.PLAY
             yield return new WaitForTicks(4f);
             var EXPLOSION_ON_60 = _world.GetObject(ObjectType.Skill, "EXPLOSION_ON");
             EXPLOSION_ON_60.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator EXPLODETARGET()
+        public IEnumerator EXPLODETARGET(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2?.GetAcknexObject("TARGET");
             if (temp_3 == null)
             {
@@ -2581,21 +2580,21 @@ namespace Tests
             var SQRTARGETDIST_4 = _world.GetObject(ObjectType.Skill, "SQRTARGETDIST");
             var SQRTARGETDIST_5 = _world.GetObject(ObjectType.Skill, "SQRTARGETDIST");
             var SQRTARGETDIST_5_val = SQRTARGETDIST_5.GetFloat("VAL");
-            var MY_9 = _world.GetSynonymObject("MY");
+            var MY_9 = MY;
             var temp_10 = MY_9.GetFloat("TARGET_X");
-            var MY_13 = _world.GetSynonymObject("MY");
+            var MY_13 = MY;
             var temp_14 = MY_13.GetFloat("X");
-            var MY_19 = _world.GetSynonymObject("MY");
+            var MY_19 = MY;
             var temp_20 = MY_19.GetFloat("TARGET_X");
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             var temp_24 = MY_23.GetFloat("X");
-            var MY_31 = _world.GetSynonymObject("MY");
+            var MY_31 = MY;
             var temp_32 = MY_31.GetFloat("TARGET_Y");
-            var MY_35 = _world.GetSynonymObject("MY");
+            var MY_35 = MY;
             var temp_36 = MY_35.GetFloat("Y");
-            var MY_41 = _world.GetSynonymObject("MY");
+            var MY_41 = MY;
             var temp_42 = MY_41.GetFloat("TARGET_Y");
-            var MY_45 = _world.GetSynonymObject("MY");
+            var MY_45 = MY;
             var temp_46 = MY_45.GetFloat("Y");
             SQRTARGETDIST_4.SetFloat("VAL", ((temp_10 - temp_14) * (temp_20 - temp_24)) + ((temp_32 - temp_36) * (temp_42 - temp_46)));
             var SQRTARGETDIST_50 = _world.GetObject(ObjectType.Skill, "SQRTARGETDIST");
@@ -2605,7 +2604,7 @@ namespace Tests
                 yield break;
             }
             {
-                var enumerator = EXPLODEMISSILE();
+                var enumerator = EXPLODEMISSILE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -2618,33 +2617,33 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator EXPLOSIONEND()
+        public IEnumerator EXPLOSIONEND(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_CYCLE", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("INVISIBLE", 1f);
             yield break;
         }
-        public IEnumerator EXPLOSIONSMOKE()
+        public IEnumerator EXPLOSIONSMOKE(IAcknexObject MY, IAcknexObject THERE)
         {
             var EXP01ATEX_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"EXP01ATEX");
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("TEXTURE", EXP01ATEX_0);
             var EXPLOSIONEND_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXPLOSIONEND");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("EACH_CYCLE", EXPLOSIONEND_3);
             yield break;
         }
-        public IEnumerator EXPLOSIONSTART()
+        public IEnumerator EXPLOSIONSTART(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_TICK", null);
             var EXPLOSIONSMOKE_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXPLOSIONSMOKE");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("EACH_CYCLE", EXPLOSIONSMOKE_3);
             {
-                var enumerator = FLASHREGION();
+                var enumerator = FLASHREGION(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -2657,26 +2656,26 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator EXPLOSIONTIMER()
+        public IEnumerator EXPLOSIONTIMER(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("SKILL5");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("SKILL5", temp_3 + (-1f * TimeUtils.TicksToTime(1)));
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             var temp_9 = MY_8.GetFloat("SKILL5");
             if (temp_9 > 0f)
             {
                 yield break;
             }
-            var MY_12 = _world.GetSynonymObject("MY");
+            var MY_12 = MY;
             MY_12.SetAcknexObject("EACH_TICK", null);
             var EXPLODEMISSILE_13 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXPLODEMISSILE");
-            var MY_15 = _world.GetSynonymObject("MY");
+            var MY_15 = MY;
             MY_15.SetAcknexObject("EACH_CYCLE", EXPLODEMISSILE_13);
             yield break;
         }
-        public IEnumerator FADEIN()
+        public IEnumerator FADEIN(IAcknexObject MY, IAcknexObject THERE)
         {
             //Unknown keyword: FADE_PAL
             yield return new WaitForTicks(8f);
@@ -2723,16 +2722,16 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_SEC.1", REPEATMUSIC_20);
             yield break;
         }
-        public IEnumerator FINISHPLAYER()
+        public IEnumerator FINISHPLAYER(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
             var KILLPLAYER_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"KILLPLAYER");
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", KILLPLAYER_3);
             _world.PlaySound("EXP01SND", 0.7f);
             yield break;
         }
-        public IEnumerator FIRE()
+        public IEnumerator FIRE(IAcknexObject MY, IAcknexObject THERE)
         {
             var GUNFIRING_1 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
             GUNFIRING_1.SetFloat("VAL", 1f);
@@ -2757,7 +2756,7 @@ namespace Tests
             var TOUGHNESS_16_val = TOUGHNESS_16.GetFloat("VAL");
             AMMO_12.SetFloat("VAL", AMMO_14_val - TOUGHNESS_16_val);
             {
-                var enumerator = DECAMMO();
+                var enumerator = DECAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -2815,7 +2814,7 @@ namespace Tests
             var SVANGLE_54_val = SVANGLE_54.GetFloat("VAL");
             var SHOOT_Y_55 = _world.GetObject(ObjectType.Skill, "SHOOT_Y");
             SHOOT_Y_55.SetFloat("VAL", SVANGLE_54_val);
-            _world.Shoot();
+            _world.Shoot(null, MY, THERE);
             var HIT_DIST_57 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_57_val = HIT_DIST_57.GetFloat("VAL");
             if (HIT_DIST_57_val == 0f)
@@ -2831,7 +2830,7 @@ namespace Tests
             SHOOT2:
             var SHOOT_X_63 = _world.GetObject(ObjectType.Skill, "SHOOT_X");
             SHOOT_X_63.SetFloat("VAL", 0f);
-            _world.Shoot();
+            _world.Shoot(null, MY, THERE);
             var HIT_DIST_65 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_65_val = HIT_DIST_65.GetFloat("VAL");
             if (HIT_DIST_65_val == 0f)
@@ -2853,7 +2852,7 @@ namespace Tests
             var DSHOOTXMINUS_75_val = DSHOOTXMINUS_75.GetFloat("VAL");
             var SHOOT_X_76 = _world.GetObject(ObjectType.Skill, "SHOOT_X");
             SHOOT_X_76.SetFloat("VAL", DSHOOTXMINUS_75_val);
-            _world.Shoot();
+            _world.Shoot(null, MY, THERE);
             var HIT_DIST_78 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_78_val = HIT_DIST_78.GetFloat("VAL");
             if (HIT_DIST_78_val == 0f)
@@ -2873,7 +2872,7 @@ namespace Tests
             var DSHOOTYPLUS_85_val = DSHOOTYPLUS_85.GetFloat("VAL");
             var SHOOT_Y_86 = _world.GetObject(ObjectType.Skill, "SHOOT_Y");
             SHOOT_Y_86.SetFloat("VAL", DSHOOTYPLUS_85_val);
-            _world.Shoot();
+            _world.Shoot(null, MY, THERE);
             var HIT_DIST_88 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_88_val = HIT_DIST_88.GetFloat("VAL");
             if (HIT_DIST_88_val == 0f)
@@ -2891,7 +2890,7 @@ namespace Tests
             var DSHOOTYMINUS_93_val = DSHOOTYMINUS_93.GetFloat("VAL");
             var SHOOT_Y_94 = _world.GetObject(ObjectType.Skill, "SHOOT_Y");
             SHOOT_Y_94.SetFloat("VAL", DSHOOTYMINUS_93_val);
-            _world.Shoot();
+            _world.Shoot(null, MY, THERE);
             var HIT_DIST_96 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_96_val = HIT_DIST_96.GetFloat("VAL");
             if (HIT_DIST_96_val == 0f)
@@ -2906,7 +2905,7 @@ namespace Tests
             }
             CONTHIT:
             {
-                var enumerator = CASTBLOOD();
+                var enumerator = CASTBLOOD(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -2974,7 +2973,7 @@ namespace Tests
             GUNFIRING_145.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator FLASHIN()
+        public IEnumerator FLASHIN(IAcknexObject MY, IAcknexObject THERE)
         {
             var REDVALUE_1 = _world.GetObject(ObjectType.Skill, "REDVALUE");
             var REDVALUE_1_val = REDVALUE_1.GetFloat("VAL");
@@ -2999,7 +2998,7 @@ namespace Tests
             if (UNDERWATER_10_val != 0f)
             {
                 {
-                    var enumerator = SET_BLUE();
+                    var enumerator = SET_BLUE(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -3015,7 +3014,7 @@ namespace Tests
             PLAYER_HIT_15.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator FLASHOUT()
+        public IEnumerator FLASHOUT(IAcknexObject MY, IAcknexObject THERE)
         {
             var REDVALUE_1 = _world.GetObject(ObjectType.Skill, "REDVALUE");
             var REDVALUE_1_val = REDVALUE_1.GetFloat("VAL");
@@ -3044,7 +3043,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", KILLPLAYER_10);
             yield break;
         }
-        public IEnumerator FLASHPLAYER()
+        public IEnumerator FLASHPLAYER(IAcknexObject MY, IAcknexObject THERE)
         {
             var GOD_MODE_1 = _world.GetObject(ObjectType.Skill, "GOD_MODE");
             var GOD_MODE_1_val = GOD_MODE_1.GetFloat("VAL");
@@ -3111,7 +3110,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", FLASHOUT_52);
             yield break;
         }
-        public IEnumerator FLASHREGION()
+        public IEnumerator FLASHREGION(IAcknexObject MY, IAcknexObject THERE)
         {
             var LUP_1 = _world.GetObject(ObjectType.Skill, "LUP");
             var LUP_1_val = LUP_1.GetFloat("VAL");
@@ -3119,7 +3118,7 @@ namespace Tests
             {
                 goto IMPL1;
             }
-            var MY_3 = _world.GetSynonymObject("MY");
+            var MY_3 = MY;
             var temp_4 = MY_3?.GetAcknexObject("REGION");
             _world.SetSynonymObject("IMPL_REGION", temp_4);
             var IMPL_REGION_7 = _world.GetSynonymObject("IMPL_REGION");
@@ -3142,7 +3141,7 @@ namespace Tests
             {
                 goto IMPL2;
             }
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             var temp_21 = MY_20?.GetAcknexObject("REGION");
             _world.SetSynonymObject("IMPL_REGION1", temp_21);
             var IMPL_REGION1_24 = _world.GetSynonymObject("IMPL_REGION1");
@@ -3165,7 +3164,7 @@ namespace Tests
             {
                 goto IMPL3;
             }
-            var MY_37 = _world.GetSynonymObject("MY");
+            var MY_37 = MY;
             var temp_38 = MY_37?.GetAcknexObject("REGION");
             _world.SetSynonymObject("IMPL_REGION2", temp_38);
             var IMPL_REGION2_41 = _world.GetSynonymObject("IMPL_REGION2");
@@ -3188,7 +3187,7 @@ namespace Tests
             {
                 goto IMPL4;
             }
-            var MY_54 = _world.GetSynonymObject("MY");
+            var MY_54 = MY;
             var temp_55 = MY_54?.GetAcknexObject("REGION");
             _world.SetSynonymObject("IMPL_REGION3", temp_55);
             var IMPL_REGION3_58 = _world.GetSynonymObject("IMPL_REGION3");
@@ -3211,7 +3210,7 @@ namespace Tests
             {
                 yield break;
             }
-            var MY_71 = _world.GetSynonymObject("MY");
+            var MY_71 = MY;
             var temp_72 = MY_71?.GetAcknexObject("REGION");
             _world.SetSynonymObject("IMPL_REGION4", temp_72);
             var IMPL_REGION4_75 = _world.GetSynonymObject("IMPL_REGION4");
@@ -3235,14 +3234,14 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator FOLLOWANGLE()
+        public IEnumerator FOLLOWANGLE(IAcknexObject MY, IAcknexObject THERE)
         {
             var DISTZ_0 = _world.GetObject(ObjectType.Skill, "DISTZ");
             var DISTZ_1 = _world.GetObject(ObjectType.Skill, "DISTZ");
             var DISTZ_1_val = DISTZ_1.GetFloat("VAL");
             var PLAYER_X_3 = _world.GetObject(ObjectType.Skill, "PLAYER_X");
             var PLAYER_X_3_val = PLAYER_X_3.GetFloat("VAL");
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             var temp_7 = MY_6.GetFloat("X");
             DISTZ_0.SetFloat("VAL", (PLAYER_X_3_val - temp_7));
             var DISTY_9 = _world.GetObject(ObjectType.Skill, "DISTY");
@@ -3250,7 +3249,7 @@ namespace Tests
             var DISTY_10_val = DISTY_10.GetFloat("VAL");
             var PLAYER_Y_12 = _world.GetObject(ObjectType.Skill, "PLAYER_Y");
             var PLAYER_Y_12_val = PLAYER_Y_12.GetFloat("VAL");
-            var MY_15 = _world.GetSynonymObject("MY");
+            var MY_15 = MY;
             var temp_16 = MY_15.GetFloat("Y");
             DISTY_9.SetFloat("VAL", (PLAYER_Y_12_val - temp_16));
             var DISTX_18 = _world.GetObject(ObjectType.Skill, "DISTX");
@@ -3285,7 +3284,7 @@ namespace Tests
             DISTY_35.SetFloat("VAL", DISTY_37_val / DISTX_39_val);
             var DISTY_40 = _world.GetObject(ObjectType.Skill, "DISTY");
             var DISTY_40_val = DISTY_40.GetFloat("VAL");
-            var MY_42 = _world.GetSynonymObject("MY");
+            var MY_42 = MY;
             MY_42.SetFloat("ANGLE", Mathf.Asin(DISTY_40_val));
             var DISTZ_44 = _world.GetObject(ObjectType.Skill, "DISTZ");
             var DISTZ_44_val = DISTZ_44.GetFloat("VAL");
@@ -3293,52 +3292,52 @@ namespace Tests
             {
                 yield break;
             }
-            var MY_46 = _world.GetSynonymObject("MY");
-            var MY_48 = _world.GetSynonymObject("MY");
+            var MY_46 = MY;
+            var MY_48 = MY;
             var temp_49 = MY_48.GetFloat("ANGLE");
             var PI_50 = _world.GetObject(ObjectType.Skill, "PI");
             var PI_50_val = PI_50.GetFloat("VAL");
-            var MY_53 = _world.GetSynonymObject("MY");
+            var MY_53 = MY;
             var temp_54 = MY_53.GetFloat("ANGLE");
             MY_46.SetFloat("ANGLE", PI_50_val - temp_54);
             yield break;
         }
-        public IEnumerator FREEFALL()
+        public IEnumerator FREEFALL(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("SKILL2");
             if (temp_3 < -15f)
             {
                 goto BOUNCED;
             }
-            var MY_5 = _world.GetSynonymObject("MY");
-            var MY_7 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
+            var MY_7 = MY;
             var temp_8 = MY_7.GetFloat("SKILL2");
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             var temp_11 = MY_10.GetFloat("SKILL2");
             var TWO_PI_13 = _world.GetObject(ObjectType.Skill, "TWO_PI");
             var TWO_PI_13_val = TWO_PI_13.GetFloat("VAL");
             MY_5.SetFloat("SKILL2", temp_11 - TWO_PI_13_val);
             BOUNCED:
-            var MY_16 = _world.GetSynonymObject("MY");
+            var MY_16 = MY;
             var temp_17 = MY_16.GetFloat("GROUND");
             if (temp_17 == 0f)
             {
                 goto COAST;
             }
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             var temp_21 = MY_20.GetFloat("VSPEED");
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetFloat("VSPEED", temp_21 + (-0.15f * TimeUtils.TicksToTime(1)));
-            var MY_25 = _world.GetSynonymObject("MY");
+            var MY_25 = MY;
             var temp_26 = MY_25.GetFloat("FLOOR_HGT");
-            var MY_28 = _world.GetSynonymObject("MY");
+            var MY_28 = MY;
             var temp_29 = MY_28.GetFloat("HEIGHT");
             if (temp_29 > temp_26)
             {
                 yield break;
             }
-            var MY_31 = _world.GetSynonymObject("MY");
+            var MY_31 = MY;
             var temp_32 = MY_31?.GetAcknexObject("REGION");
             _world.SetSynonymObject("WATER_REGION", temp_32);
             var WATER_REGION_36 = _world.GetSynonymObject("WATER_REGION");
@@ -3349,39 +3348,39 @@ namespace Tests
             }
             var WATER_REGION_39 = _world.GetSynonymObject("WATER_REGION");
             var temp_40 = WATER_REGION_39?.GetAcknexObject("BELOW");
-            var MY_42 = _world.GetSynonymObject("MY");
+            var MY_42 = MY;
             MY_42.SetAcknexObject("REGION", temp_40);
             yield break;
             CONT:
-            var MY_45 = _world.GetSynonymObject("MY");
+            var MY_45 = MY;
             var temp_46 = MY_45.GetFloat("VSPEED");
             if (temp_46 > -0.5f)
             {
                 goto STOP;
             }
             _world.PlaySound("GRAN02SND", 0.7f, "MY");
-            var MY_49 = _world.GetSynonymObject("MY");
-            var MY_51 = _world.GetSynonymObject("MY");
+            var MY_49 = MY;
+            var MY_51 = MY;
             var temp_52 = MY_51.GetFloat("VSPEED");
-            var MY_54 = _world.GetSynonymObject("MY");
+            var MY_54 = MY;
             var temp_55 = MY_54.GetFloat("VSPEED");
             MY_49.SetFloat("VSPEED", temp_55 * -0.2f);
             yield break;
             STOP:
-            var MY_61 = _world.GetSynonymObject("MY");
+            var MY_61 = MY;
             MY_61.SetFloat("GROUND", 0f);
-            var MY_64 = _world.GetSynonymObject("MY");
+            var MY_64 = MY;
             MY_64.SetFloat("HEIGHT", -0.05f);
-            var MY_67 = _world.GetSynonymObject("MY");
+            var MY_67 = MY;
             MY_67.SetFloat("VSPEED", 0f);
             COAST:
-            var MY_69 = _world.GetSynonymObject("MY");
-            var MY_71 = _world.GetSynonymObject("MY");
+            var MY_69 = MY;
+            var MY_71 = MY;
             var temp_72 = MY_71.GetFloat("SPEED");
-            var MY_74 = _world.GetSynonymObject("MY");
+            var MY_74 = MY;
             var temp_75 = MY_74.GetFloat("SPEED");
             MY_69.SetFloat("SPEED", temp_75 * 0.7f);
-            var MY_80 = _world.GetSynonymObject("MY");
+            var MY_80 = MY;
             var temp_81 = MY_80.GetFloat("SPEED");
             if (temp_81 < 0.1f)
             {
@@ -3390,20 +3389,20 @@ namespace Tests
             yield break;
             FULLSTOP:
             var GRAN0TEX_82 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"GRAN0TEX");
-            var MY_84 = _world.GetSynonymObject("MY");
+            var MY_84 = MY;
             MY_84.SetAcknexObject("TEXTURE", GRAN0TEX_82);
-            var MY_87 = _world.GetSynonymObject("MY");
+            var MY_87 = MY;
             MY_87.SetFloat("SPEED", 0f);
-            var MY_90 = _world.GetSynonymObject("MY");
+            var MY_90 = MY;
             MY_90.SetAcknexObject("IF_HIT", null);
-            var MY_93 = _world.GetSynonymObject("MY");
+            var MY_93 = MY;
             MY_93.SetFloat("SKILL5", 32f);
             var EXPLOSIONTIMER_94 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"EXPLOSIONTIMER");
-            var MY_96 = _world.GetSynonymObject("MY");
+            var MY_96 = MY;
             MY_96.SetAcknexObject("EACH_TICK", EXPLOSIONTIMER_94);
             yield break;
         }
-        public IEnumerator HIDEMENU()
+        public IEnumerator HIDEMENU(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.AcknexObject.SetAcknexObject("PANELS.16", null);
             _world.AcknexObject.SetAcknexObject("MESSAGES.16", null);
@@ -3420,7 +3419,7 @@ namespace Tests
                 goto NOWATER;
             }
             {
-                var enumerator = SET_BLUE();
+                var enumerator = SET_BLUE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -3435,7 +3434,7 @@ namespace Tests
             //Unknown keyword: FADE_PAL
             CONT:
             {
-                var enumerator = SHOWWEAPON();
+                var enumerator = SHOWWEAPON(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -3449,7 +3448,7 @@ namespace Tests
             MOVE_MODE_19.SetFloat("VAL", 1f);
             yield break;
         }
-        public IEnumerator HIDEWEAPON()
+        public IEnumerator HIDEWEAPON(IAcknexObject MY, IAcknexObject THERE)
         {
             var temp_1 = _world.AcknexObject?.GetAcknexObject("IF_LEFT");
             _world.SetSynonymObject("FIRE_GUN", temp_1);
@@ -3494,9 +3493,8 @@ namespace Tests
             MAP_MODE_68.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator HITPLAYER()
+        public IEnumerator HITPLAYER(IAcknexObject MY, IAcknexObject THERE)
         {
-            yield break;
             var MODE_DEATH_0 = _world.GetObject(ObjectType.Skill, "MODE_DEATH");
             var MODE_DEATH_0_val = MODE_DEATH_0.GetFloat("VAL");
             var MOVING_1 = _world.GetObject(ObjectType.Skill, "MOVING");
@@ -3616,11 +3614,11 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator HITPLAYERDELAY()
+        public IEnumerator HITPLAYERDELAY(IAcknexObject MY, IAcknexObject THERE)
         {
             yield return new WaitForTicks(8f);
             {
-                var enumerator = HITPLAYER();
+                var enumerator = HITPLAYER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -3633,7 +3631,7 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator HUMMERHIT()
+        public IEnumerator HUMMERHIT(IAcknexObject MY, IAcknexObject THERE)
         {
             var SHOOT_FAC_1 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
             var SHOOT_FAC_1_val = SHOOT_FAC_1.GetFloat("VAL");
@@ -3641,7 +3639,7 @@ namespace Tests
             {
                 yield break;
             }
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var HIT_3 = _world.GetSynonymObject("HIT");
             if (HIT_3 == MY_2)
             {
@@ -3656,19 +3654,19 @@ namespace Tests
             var DISTX_6 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_7 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_7_val = DISTX_7.GetFloat("VAL");
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             var temp_11 = MY_10.GetFloat("X");
             var EXPLOSION_CENTER_14 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_15 = EXPLOSION_CENTER_14.GetFloat("X");
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             var temp_21 = MY_20.GetFloat("X");
             var EXPLOSION_CENTER_24 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_25 = EXPLOSION_CENTER_24.GetFloat("X");
-            var MY_30 = _world.GetSynonymObject("MY");
+            var MY_30 = MY;
             var temp_31 = MY_30.GetFloat("Y");
             var EXPLOSION_CENTER_34 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_35 = EXPLOSION_CENTER_34.GetFloat("Y");
-            var MY_40 = _world.GetSynonymObject("MY");
+            var MY_40 = MY;
             var temp_41 = MY_40.GetFloat("Y");
             var EXPLOSION_CENTER_44 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_45 = EXPLOSION_CENTER_44.GetFloat("Y");
@@ -3690,24 +3688,24 @@ namespace Tests
             {
                 yield break;
             }
-            var MY_55 = _world.GetSynonymObject("MY");
+            var MY_55 = MY;
             MY_55.SetAcknexObject("IF_ARRIVED", null);
             var MOVE_56 = _world.AcknexObject.GetAcknexObject("MOVE");
-            var MY_58 = _world.GetSynonymObject("MY");
+            var MY_58 = MY;
             MY_58.SetAcknexObject("TARGET", MOVE_56);
-            var MY_61 = _world.GetSynonymObject("MY");
+            var MY_61 = MY;
             MY_61.SetFloat("VSPEED", 0.5f);
-            var MY_64 = _world.GetSynonymObject("MY");
+            var MY_64 = MY;
             MY_64.SetAcknexObject("IF_HIT", null);
             _world.PlaySound("HUMM04SND", 0.5f, "MY");
-            var MY_68 = _world.GetSynonymObject("MY");
+            var MY_68 = MY;
             MY_68.SetFloat("GROUND", 1f);
             var ACTORJUMPSTOP_69 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ACTORJUMPSTOP");
-            var MY_71 = _world.GetSynonymObject("MY");
+            var MY_71 = MY;
             MY_71.SetAcknexObject("EACH_TICK", ACTORJUMPSTOP_69);
             yield break;
         }
-        public IEnumerator IMPLODELIGHT()
+        public IEnumerator IMPLODELIGHT(IAcknexObject MY, IAcknexObject THERE)
         {
             var LUP_1 = _world.GetObject(ObjectType.Skill, "LUP");
             var LUP_1_val = LUP_1.GetFloat("VAL");
@@ -3969,16 +3967,16 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator IMPLODEPARTICLE()
+        public IEnumerator IMPLODEPARTICLE(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_ARRIVED", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_HIT", null);
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             _world.SetSynonymObject("EXPLOSION_CENTER", MY_6);
             var FOLLOW_8 = _world.AcknexObject.GetAcknexObject("FOLLOW");
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             var temp_11 = MY_10?.GetAcknexObject("TARGET");
             if (temp_11 != FOLLOW_8)
             {
@@ -3989,53 +3987,53 @@ namespace Tests
             SHOOT_RANGE_15.SetFloat("VAL", 10f);
             var SHOOT_FAC_17 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
             SHOOT_FAC_17.SetFloat("VAL", 0.05f);
-            var MY_18 = _world.GetSynonymObject("MY");
-            _world.Explode(MY_18);
-            var MY_21 = _world.GetSynonymObject("MY");
+            var MY_18 = MY;
+            _world.Explode(MY_18, MY, THERE);
+            var MY_21 = MY;
             MY_21.SetFloat("CAREFULLY", 0f);
-            var MY_24 = _world.GetSynonymObject("MY");
+            var MY_24 = MY;
             MY_24.SetFloat("PASSABLE", 1f);
-            var MY_27 = _world.GetSynonymObject("MY");
+            var MY_27 = MY;
             MY_27.SetFloat("SPEED", 0f);
-            var MY_30 = _world.GetSynonymObject("MY");
+            var MY_30 = MY;
             var temp_31 = MY_30.GetFloat("HEIGHT");
-            var MY_33 = _world.GetSynonymObject("MY");
+            var MY_33 = MY;
             MY_33.SetFloat("HEIGHT", temp_31 + -2.5f);
             var IMPL01TEX_34 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"IMPL01TEX");
-            var MY_36 = _world.GetSynonymObject("MY");
+            var MY_36 = MY;
             MY_36.SetAcknexObject("TEXTURE", IMPL01TEX_34);
             var IMPLOSIONSTART_37 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"IMPLOSIONSTART");
-            var MY_39 = _world.GetSynonymObject("MY");
+            var MY_39 = MY;
             MY_39.SetAcknexObject("EACH_TICK", IMPLOSIONSTART_37);
-            var MY_42 = _world.GetSynonymObject("MY");
+            var MY_42 = MY;
             //Unknown Property Type: Thing.PLAY
             yield return new WaitForTicks(4f);
             var EXPLOSION_ON_45 = _world.GetObject(ObjectType.Skill, "EXPLOSION_ON");
             EXPLOSION_ON_45.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator IMPLOSIONCRUSH()
+        public IEnumerator IMPLOSIONCRUSH(IAcknexObject MY, IAcknexObject THERE)
         {
             var IMPL01ATEX_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"IMPL01ATEX");
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("TEXTURE", IMPL01ATEX_0);
             var IMPLODELIGHT_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"IMPLODELIGHT");
             _world.AcknexObject.SetAcknexObject("EACH_TICK.9", IMPLODELIGHT_3);
             var IMPLOSIONFLARE_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"IMPLOSIONFLARE");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", IMPLOSIONFLARE_6);
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             //Unknown Property Type: Thing.PLAY
             yield break;
         }
-        public IEnumerator IMPLOSIONEND()
+        public IEnumerator IMPLOSIONEND(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_CYCLE", null);
-            var MY_3 = _world.GetSynonymObject("MY");
+            var MY_3 = MY;
             _world.SetSynonymObject("EXPLOSION_CENTER", MY_3);
             var FOLLOW_5 = _world.AcknexObject.GetAcknexObject("FOLLOW");
-            var MY_7 = _world.GetSynonymObject("MY");
+            var MY_7 = MY;
             var temp_8 = MY_7?.GetAcknexObject("TARGET");
             if (temp_8 != FOLLOW_5)
             {
@@ -4046,11 +4044,11 @@ namespace Tests
             SHOOT_RANGE_12.SetFloat("VAL", 80f);
             var SHOOT_FAC_14 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
             SHOOT_FAC_14.SetFloat("VAL", 0.05f);
-            var MY_15 = _world.GetSynonymObject("MY");
-            _world.Explode(MY_15);
-            var MY_18 = _world.GetSynonymObject("MY");
+            var MY_15 = MY;
+            _world.Explode(MY_15, MY, THERE);
+            var MY_18 = MY;
             MY_18.SetFloat("INVISIBLE", 1f);
-            var MY_21 = _world.GetSynonymObject("MY");
+            var MY_21 = MY;
             var temp_22 = MY_21.GetFloat("VISIBLE");
             if (temp_22 == 1f)
             {
@@ -4062,34 +4060,34 @@ namespace Tests
             EXPLOSION_ON_27.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator IMPLOSIONFLARE()
+        public IEnumerator IMPLOSIONFLARE(IAcknexObject MY, IAcknexObject THERE)
         {
             var IMPL01BTEX_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"IMPL01BTEX");
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("TEXTURE", IMPL01BTEX_0);
             var IMPLOSIONEND_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"IMPLOSIONEND");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("EACH_CYCLE", IMPLOSIONEND_3);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             //Unknown Property Type: Thing.PLAY
             yield break;
         }
-        public IEnumerator IMPLOSIONSTART()
+        public IEnumerator IMPLOSIONSTART(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_TICK", null);
             var IMPLOSIONCRUSH_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"IMPLOSIONCRUSH");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("EACH_CYCLE", IMPLOSIONCRUSH_3);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetFloat("INVISIBLE", 0f);
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             //Unknown Property Type: Thing.PLAY
             //Unknown keyword: LOCATE
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("GROUND", 0f);
             {
-                var enumerator = FLASHREGION();
+                var enumerator = FLASHREGION(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -4102,14 +4100,14 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator INIT_MOVE()
+        public IEnumerator INIT_MOVE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MODE_GEHEN_0 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
             var MODE_GEHEN_0_val = MODE_GEHEN_0.GetFloat("VAL");
             var MOVING_1 = _world.GetObject(ObjectType.Skill, "MOVING");
             MOVING_1.SetFloat("VAL", MODE_GEHEN_0_val);
             {
-                var enumerator = SET_MOVING();
+                var enumerator = SET_MOVING(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -4121,7 +4119,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator INNOCENTKILLED()
+        public IEnumerator INNOCENTKILLED(IAcknexObject MY, IAcknexObject THERE)
         {
             var INNOCENTS_1 = _world.GetObject(ObjectType.Skill, "INNOCENTS");
             var INNOCENTS_1_val = INNOCENTS_1.GetFloat("VAL");
@@ -4153,7 +4151,7 @@ namespace Tests
             var END01STR_12 = _world.AcknexObject.GetAcknexObject("END01STR");
             _world.SetSynonymObject("GAMEOVER_TEXT", END01STR_12);
             {
-                var enumerator = SHOWPDAGAMEOVER();
+                var enumerator = SHOWPDAGAMEOVER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -4165,7 +4163,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator KILLPLAYER()
+        public IEnumerator KILLPLAYER(IAcknexObject MY, IAcknexObject THERE)
         {
             var MODE_DEATH_0 = _world.GetObject(ObjectType.Skill, "MODE_DEATH");
             var MODE_DEATH_0_val = MODE_DEATH_0.GetFloat("VAL");
@@ -4181,7 +4179,7 @@ namespace Tests
             //Unknown keyword: FADE_PAL
             _world.PlaySound("DEATH00SND", 1f);
             {
-                var enumerator = SET_DEATH();
+                var enumerator = SET_DEATH(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -4225,10 +4223,10 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", null);
             yield break;
         }
-        public IEnumerator LAUNCH()
+        public IEnumerator LAUNCH(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = CHOOSEMISSILE();
+                var enumerator = CHOOSEMISSILE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -4262,7 +4260,7 @@ namespace Tests
             var AMMO_16 = _world.GetObject(ObjectType.Skill, "AMMO");
             AMMO_16.SetFloat("VAL", AMMO_15_val + -1f);
             {
-                var enumerator = DECAMMO();
+                var enumerator = DECAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -4379,7 +4377,7 @@ namespace Tests
             var SVANGLE_130_val = SVANGLE_130.GetFloat("VAL");
             var SHOOT_Y_131 = _world.GetObject(ObjectType.Skill, "SHOOT_Y");
             SHOOT_Y_131.SetFloat("VAL", SVANGLE_130_val);
-            _world.Shoot();
+            _world.Shoot(null, MY, THERE);
             var HIT_DIST_133 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_133_val = HIT_DIST_133.GetFloat("VAL");
             if (HIT_DIST_133_val == 0f)
@@ -4481,7 +4479,7 @@ namespace Tests
             GUNFIRING_223.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator LAUNCHMISSILES()
+        public IEnumerator LAUNCHMISSILES(IAcknexObject MY, IAcknexObject THERE)
         {
             var MISSILE_2 = _world.GetSynonymObject("MISSILE");
             MISSILE_2.SetFloat("GROUND", 1f);
@@ -4616,7 +4614,7 @@ namespace Tests
             var WRN17STR_157 = _world.AcknexObject.GetAcknexObject("WRN17STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN17STR_157);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -4636,10 +4634,10 @@ namespace Tests
             SHOT_SOUND_ON_166.SetFloat("VAL", 1f);
             yield break;
         }
-        public IEnumerator LEAVE_WATER()
+        public IEnumerator LEAVE_WATER(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = SET_WALKING();
+                var enumerator = SET_WALKING(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -4651,9 +4649,9 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator LOCATEACTOR()
+        public IEnumerator LOCATEACTOR(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("GROUND");
             if (temp_3 == 0f)
             {
@@ -4662,17 +4660,17 @@ namespace Tests
             //Unknown keyword: LOCATE
             yield break;
             CONT:
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             MY_6.SetFloat("HEIGHT", 0f);
-            var MY_9 = _world.GetSynonymObject("MY");
+            var MY_9 = MY;
             MY_9.SetFloat("GROUND", 1f);
             //Unknown keyword: LOCATE
-            var MY_12 = _world.GetSynonymObject("MY");
+            var MY_12 = MY;
             MY_12.SetFloat("GROUND", 0f);
-            var MY_15 = _world.GetSynonymObject("MY");
+            var MY_15 = MY;
             MY_15.SetFloat("HEIGHT", -0.05f);
             WATER:
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             var temp_18 = MY_17?.GetAcknexObject("REGION");
             _world.SetSynonymObject("WATER_REGION", temp_18);
             var WATER_REGION_22 = _world.GetSynonymObject("WATER_REGION");
@@ -4681,18 +4679,18 @@ namespace Tests
             {
                 yield break;
             }
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("HEIGHT", -2.5f);
             yield break;
         }
-        public IEnumerator LOCATEPARTICLE()
+        public IEnumerator LOCATEPARTICLE(IAcknexObject MY, IAcknexObject THERE)
         {
             var SHOOT_RANGE_1 = _world.GetObject(ObjectType.Skill, "SHOOT_RANGE");
             SHOOT_RANGE_1.SetFloat("VAL", 100f);
             var SHOOT_FAC_3 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
             SHOOT_FAC_3.SetFloat("VAL", 0f);
-            var MY_4 = _world.GetSynonymObject("MY");
-            _world.Explode(MY_4);
+            var MY_4 = MY;
+            _world.Explode(MY_4, MY, THERE);
             var HIT_MINDIST_6 = _world.GetObject(ObjectType.Skill, "HIT_MINDIST");
             var HIT_MINDIST_6_val = HIT_MINDIST_6.GetFloat("VAL");
             if (HIT_MINDIST_6_val == 0f)
@@ -4711,7 +4709,7 @@ namespace Tests
                 yield break;
             }
             var HIT_13 = _world.GetSynonymObject("HIT");
-            var MY_15 = _world.GetSynonymObject("MY");
+            var MY_15 = MY;
             MY_15.SetAcknexObject("TARGET", HIT_13);
             var DISTX_16 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_17 = _world.GetObject(ObjectType.Skill, "DISTX");
@@ -4742,15 +4740,15 @@ namespace Tests
             var DISTZ_60_val = DISTZ_60.GetFloat("VAL");
             var HIT_62 = _world.GetSynonymObject("HIT");
             var temp_63 = HIT_62.GetFloat("FLOOR_HGT");
-            var MY_66 = _world.GetSynonymObject("MY");
+            var MY_66 = MY;
             var temp_67 = MY_66.GetFloat("FLOOR_HGT");
             DISTZ_59.SetFloat("VAL", temp_63 - temp_67);
             var DISTX_69 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_69_val = DISTX_69.GetFloat("VAL");
             if (DISTX_69_val != 0f)
             {
-                var MY_71 = _world.GetSynonymObject("MY");
-                var MY_73 = _world.GetSynonymObject("MY");
+                var MY_71 = MY;
+                var MY_73 = MY;
                 var temp_74 = MY_73.GetFloat("VSPEED");
                 var DISTZ_75 = _world.GetObject(ObjectType.Skill, "DISTZ");
                 var DISTZ_75_val = DISTZ_75.GetFloat("VAL");
@@ -4758,31 +4756,31 @@ namespace Tests
                 var DISTX_77_val = DISTX_77.GetFloat("VAL");
                 MY_71.SetFloat("VSPEED", DISTZ_75_val / DISTX_77_val);
             }
-            var MY_80 = _world.GetSynonymObject("MY");
+            var MY_80 = MY;
             var temp_81 = MY_80.GetFloat("VSPEED");
             if (temp_81 < 0f)
             {
-                var MY_83 = _world.GetSynonymObject("MY");
-                var MY_85 = _world.GetSynonymObject("MY");
+                var MY_83 = MY;
+                var MY_85 = MY;
                 var temp_86 = MY_85.GetFloat("VSPEED");
-                var MY_89 = _world.GetSynonymObject("MY");
+                var MY_89 = MY;
                 var temp_90 = MY_89.GetFloat("VSPEED");
                 MY_83.SetFloat("VSPEED", -temp_90);
             }
             yield break;
             VANISH:
-            var MY_93 = _world.GetSynonymObject("MY");
+            var MY_93 = MY;
             var temp_94 = MY_93.GetFloat("GROUND");
             if (temp_94 == 0f)
             {
                 //Unknown keyword: LOCATE
             }
-            var MY_97 = _world.GetSynonymObject("MY");
+            var MY_97 = MY;
             var temp_98 = MY_97.GetFloat("VISIBLE");
             if (temp_98 == 0f)
             {
                 {
-                    var enumerator = VANISHSTOP();
+                    var enumerator = VANISHSTOP(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -4795,9 +4793,9 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator LOCATEPLAYERPARTICLE()
+        public IEnumerator LOCATEPLAYERPARTICLE(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("DISTANCE");
             if (temp_3 > 8f)
             {
@@ -4814,7 +4812,7 @@ namespace Tests
             var PLAYER_RESULT_10_val = PLAYER_RESULT_10.GetFloat("VAL");
             PLAYER_RESULT_9.SetFloat("VAL", 10f * (UnityEngine.Random.value + 0.5f));
             {
-                var enumerator = FLASHPLAYER();
+                var enumerator = FLASHPLAYER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -4826,7 +4824,7 @@ namespace Tests
             }
             _world.PlaySound("QGUN04SND", 0.7f);
             {
-                var enumerator = VANISHSTOP();
+                var enumerator = VANISHSTOP(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -4839,10 +4837,10 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator LOCATEREPT()
+        public IEnumerator LOCATEREPT(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = LOCATEACTOR();
+                var enumerator = LOCATEACTOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -4852,7 +4850,7 @@ namespace Tests
                     }
                 }
             }
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("WAYPOINT");
             if (temp_3 < 11f)
             {
@@ -4863,7 +4861,7 @@ namespace Tests
             var WALLTIMER_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"WALLTIMER");
             _world.AcknexObject.SetAcknexObject("EACH_SEC.4", WALLTIMER_6);
             {
-                var enumerator = VANISHSTOP();
+                var enumerator = VANISHSTOP(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -4876,9 +4874,9 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator LOOKPLAYER()
+        public IEnumerator LOOKPLAYER(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("DISTANCE");
             if (temp_3 > 200f)
             {
@@ -4889,7 +4887,7 @@ namespace Tests
             var DISTZ_5_val = DISTZ_5.GetFloat("VAL");
             var FLOOR_HGT_6 = _world.GetObject(ObjectType.Skill, "FLOOR_HGT");
             var FLOOR_HGT_6_val = FLOOR_HGT_6.GetFloat("VAL");
-            var MY_9 = _world.GetSynonymObject("MY");
+            var MY_9 = MY;
             var temp_10 = MY_9.GetFloat("FLOOR_HGT");
             DISTZ_4.SetFloat("VAL", FLOOR_HGT_6_val - temp_10);
             var DISTZ_12 = _world.GetObject(ObjectType.Skill, "DISTZ");
@@ -4906,7 +4904,7 @@ namespace Tests
             }
             var SHOOT_SECTOR_16 = _world.GetObject(ObjectType.Skill, "SHOOT_SECTOR");
             SHOOT_SECTOR_16.SetFloat("VAL", 4f);
-            var MY_19 = _world.GetSynonymObject("MY");
+            var MY_19 = MY;
             var temp_20 = MY_19.GetFloat("DISTANCE");
             if (temp_20 < 20f)
             {
@@ -4917,8 +4915,8 @@ namespace Tests
             SHOOT_RANGE_24.SetFloat("VAL", 200f);
             var SHOOT_Y_26 = _world.GetObject(ObjectType.Skill, "SHOOT_Y");
             SHOOT_Y_26.SetFloat("VAL", 0f);
-            var MY_27 = _world.GetSynonymObject("MY");
-            _world.Shoot(MY_27);
+            var MY_27 = MY;
+            _world.Shoot(MY_27, MY, THERE);
             var HIT_DIST_29 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_29_val = HIT_DIST_29.GetFloat("VAL");
             if (HIT_DIST_29_val == 0f)
@@ -4926,22 +4924,22 @@ namespace Tests
                 goto NOTVISIBLE;
             }
             ISVISIBLE:
-            var MY_32 = _world.GetSynonymObject("MY");
+            var MY_32 = MY;
             MY_32.SetFloat("FLAG1", 1f);
             yield break;
             MAYBEVISIBLE:
-            var MY_35 = _world.GetSynonymObject("MY");
+            var MY_35 = MY;
             var temp_36 = MY_35.GetFloat("VISIBLE");
             if (temp_36 == 1f)
             {
                 goto ISVISIBLE;
             }
             NOTVISIBLE:
-            var MY_39 = _world.GetSynonymObject("MY");
+            var MY_39 = MY;
             MY_39.SetFloat("FLAG1", 0f);
             yield break;
         }
-        public IEnumerator LOWER()
+        public IEnumerator LOWER(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_GUN_1 = _world.GetSynonymObject("MY_GUN");
             var MY_GUN_3 = _world.GetSynonymObject("MY_GUN");
@@ -5082,7 +5080,7 @@ namespace Tests
             yield return new WaitForTicks(1f);
             yield break;
         }
-        public IEnumerator MENUDOWN()
+        public IEnumerator MENUDOWN(IAcknexObject MY, IAcknexObject THERE)
         {
             var MENUITEM_1 = _world.GetObject(ObjectType.Skill, "MENUITEM");
             var MENUITEM_1_val = MENUITEM_1.GetFloat("VAL");
@@ -5100,7 +5098,7 @@ namespace Tests
             _world.PlaySound("BIP01SND", 0.5f);
             yield break;
         }
-        public IEnumerator MENUUP()
+        public IEnumerator MENUUP(IAcknexObject MY, IAcknexObject THERE)
         {
             var MENUITEM_1 = _world.GetObject(ObjectType.Skill, "MENUITEM");
             var MENUITEM_1_val = MENUITEM_1.GetFloat("VAL");
@@ -5118,7 +5116,7 @@ namespace Tests
             _world.PlaySound("BIP01SND", 0.5f);
             yield break;
         }
-        public IEnumerator MOVE_ME()
+        public IEnumerator MOVE_ME(IAcknexObject MY, IAcknexObject THERE)
         {
             START:
             var MODE_GEHEN_0 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
@@ -5204,7 +5202,7 @@ namespace Tests
                 goto NO_WATER;
             }
             {
-                var enumerator = SET_WALKING();
+                var enumerator = SET_WALKING(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -5231,7 +5229,7 @@ namespace Tests
                 goto NO_WATER;
             }
             {
-                var enumerator = SET_SWIMMING();
+                var enumerator = SET_SWIMMING(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -5504,7 +5502,7 @@ namespace Tests
             if (PLAYER_RESULT_251_val > 0f)
             {
                 {
-                    var enumerator = HITPLAYER();
+                    var enumerator = HITPLAYER(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -5910,7 +5908,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator PDAMESSAGEOFF()
+        public IEnumerator PDAMESSAGEOFF(IAcknexObject MY, IAcknexObject THERE)
         {
             var PDATEXT_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Text,*/"PDATEXT");
             PDATEXT_2.SetFloat("VISIBLE", 0f);
@@ -5934,7 +5932,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_19);
             _world.AcknexObject.SetAcknexObject("PANELS.16", null);
             {
-                var enumerator = SELECTNONE();
+                var enumerator = SELECTNONE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -5947,7 +5945,7 @@ namespace Tests
             var BLANKSTR_24 = _world.AcknexObject.GetAcknexObject("BLANKSTR");
             _world.SetSynonymObject("MESSAGE_TEXT", BLANKSTR_24);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -5958,7 +5956,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = SHOWWEAPON();
+                var enumerator = SHOWWEAPON(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -5969,7 +5967,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = SELECTNONE();
+                var enumerator = SELECTNONE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -5980,7 +5978,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = ENDOFLEVEL();
+                var enumerator = ENDOFLEVEL(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -5992,14 +5990,14 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator PICKAMMO()
+        public IEnumerator PICKAMMO(IAcknexObject MY, IAcknexObject THERE)
         {
             var AMMO_MP5_1 = _world.GetObject(ObjectType.Skill, "AMMO_MP5");
             var AMMO_MP5_1_val = AMMO_MP5_1.GetFloat("VAL");
             var AMMO_MP5_2 = _world.GetObject(ObjectType.Skill, "AMMO_MP5");
             AMMO_MP5_2.SetFloat("VAL", AMMO_MP5_1_val + 30f);
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6009,13 +6007,13 @@ namespace Tests
                     }
                 }
             }
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("INVISIBLE", 1f);
             _world.PlaySound("AMMO01SND", 0.3f);
             var GET01STR_7 = _world.AcknexObject.GetAcknexObject("GET01STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET01STR_7);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6028,7 +6026,7 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator PICKGRANADE()
+        public IEnumerator PICKGRANADE(IAcknexObject MY, IAcknexObject THERE)
         {
             var HAS_GRANADE_1 = _world.GetObject(ObjectType.Skill, "HAS_GRANADE");
             HAS_GRANADE_1.SetFloat("VAL", 1f);
@@ -6037,7 +6035,7 @@ namespace Tests
             var AMMO_GRANADE_4 = _world.GetObject(ObjectType.Skill, "AMMO_GRANADE");
             AMMO_GRANADE_4.SetFloat("VAL", AMMO_GRANADE_3_val + 1f);
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6047,13 +6045,13 @@ namespace Tests
                     }
                 }
             }
-            var MY_7 = _world.GetSynonymObject("MY");
+            var MY_7 = MY;
             MY_7.SetFloat("INVISIBLE", 1f);
             _world.PlaySound("GRAN01SND", 0.5f);
             var GET05STR_9 = _world.AcknexObject.GetAcknexObject("GET05STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET05STR_9);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6066,9 +6064,9 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator PICKKEY1()
+        public IEnumerator PICKKEY1(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetFloat("INVISIBLE", 1f);
             _world.PlaySound("TICKETSND", 0.5f);
             var KEY1_5 = _world.GetObject(ObjectType.Skill, "KEY1");
@@ -6076,7 +6074,7 @@ namespace Tests
             var GET03STR_6 = _world.AcknexObject.GetAcknexObject("GET03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET03STR_6);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6089,9 +6087,9 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator PICKKEY2()
+        public IEnumerator PICKKEY2(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetFloat("INVISIBLE", 1f);
             _world.PlaySound("KEYSND", 0.5f);
             var KEY2_5 = _world.GetObject(ObjectType.Skill, "KEY2");
@@ -6099,7 +6097,7 @@ namespace Tests
             var GET04STR_6 = _world.AcknexObject.GetAcknexObject("GET04STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET04STR_6);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6112,14 +6110,14 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator PICKQUANTUMAMMO()
+        public IEnumerator PICKQUANTUMAMMO(IAcknexObject MY, IAcknexObject THERE)
         {
             var AMMO_QUANTUM_1 = _world.GetObject(ObjectType.Skill, "AMMO_QUANTUM");
             var AMMO_QUANTUM_1_val = AMMO_QUANTUM_1.GetFloat("VAL");
             var AMMO_QUANTUM_2 = _world.GetObject(ObjectType.Skill, "AMMO_QUANTUM");
             AMMO_QUANTUM_2.SetFloat("VAL", AMMO_QUANTUM_1_val + 1f);
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6129,13 +6127,13 @@ namespace Tests
                     }
                 }
             }
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("INVISIBLE", 1f);
             _world.PlaySound("QGUN01SND", 0.2f);
             var GET07STR_7 = _world.AcknexObject.GetAcknexObject("GET07STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET07STR_7);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6148,14 +6146,14 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator PICKSTINGERAMMO()
+        public IEnumerator PICKSTINGERAMMO(IAcknexObject MY, IAcknexObject THERE)
         {
             var AMMO_STINGER_1 = _world.GetObject(ObjectType.Skill, "AMMO_STINGER");
             var AMMO_STINGER_1_val = AMMO_STINGER_1.GetFloat("VAL");
             var AMMO_STINGER_2 = _world.GetObject(ObjectType.Skill, "AMMO_STINGER");
             AMMO_STINGER_2.SetFloat("VAL", AMMO_STINGER_1_val + 10f);
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6165,13 +6163,13 @@ namespace Tests
                     }
                 }
             }
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("INVISIBLE", 1f);
             _world.PlaySound("AMMO01SND", 0.5f);
             var GET06STR_7 = _world.AcknexObject.GetAcknexObject("GET06STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET06STR_7);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6184,14 +6182,14 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator PICKTROPAMMO()
+        public IEnumerator PICKTROPAMMO(IAcknexObject MY, IAcknexObject THERE)
         {
             var AMMO_MP5_1 = _world.GetObject(ObjectType.Skill, "AMMO_MP5");
             var AMMO_MP5_1_val = AMMO_MP5_1.GetFloat("VAL");
             var AMMO_MP5_2 = _world.GetObject(ObjectType.Skill, "AMMO_MP5");
             AMMO_MP5_2.SetFloat("VAL", AMMO_MP5_1_val + 30f);
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6201,13 +6199,13 @@ namespace Tests
                     }
                 }
             }
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_NEAR", null);
             _world.PlaySound("AMMO01SND", 0.3f);
             var GET01STR_7 = _world.AcknexObject.GetAcknexObject("GET01STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET01STR_7);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6220,7 +6218,7 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator PICKTROPARMOUR()
+        public IEnumerator PICKTROPARMOUR(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_ARMOUR_1 = _world.GetObject(ObjectType.Skill, "PLAYER_ARMOUR");
             var PLAYER_ARMOUR_1_val = PLAYER_ARMOUR_1.GetFloat("VAL");
@@ -6232,13 +6230,13 @@ namespace Tests
             var PLAYER_ARMOUR_3_val = PLAYER_ARMOUR_3.GetFloat("VAL");
             var PLAYER_ARMOUR_4 = _world.GetObject(ObjectType.Skill, "PLAYER_ARMOUR");
             PLAYER_ARMOUR_4.SetFloat("VAL", PLAYER_ARMOUR_3_val + 20f);
-            var MY_7 = _world.GetSynonymObject("MY");
+            var MY_7 = MY;
             MY_7.SetAcknexObject("IF_NEAR", null);
             _world.PlaySound("ARMO01SND", 0.5f);
             var GET10STR_9 = _world.AcknexObject.GetAcknexObject("GET10STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET10STR_9);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6250,7 +6248,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator PICKUPARMOUR()
+        public IEnumerator PICKUPARMOUR(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_ARMOUR_1 = _world.GetObject(ObjectType.Skill, "PLAYER_ARMOUR");
             var PLAYER_ARMOUR_1_val = PLAYER_ARMOUR_1.GetFloat("VAL");
@@ -6262,13 +6260,13 @@ namespace Tests
             var PLAYER_ARMOUR_3_val = PLAYER_ARMOUR_3.GetFloat("VAL");
             var PLAYER_ARMOUR_4 = _world.GetObject(ObjectType.Skill, "PLAYER_ARMOUR");
             PLAYER_ARMOUR_4.SetFloat("VAL", PLAYER_ARMOUR_3_val + 50f);
-            var MY_7 = _world.GetSynonymObject("MY");
+            var MY_7 = MY;
             MY_7.SetFloat("INVISIBLE", 1f);
             _world.PlaySound("ARMO01SND", 0.5f);
             var GET10STR_9 = _world.AcknexObject.GetAcknexObject("GET10STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET10STR_9);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6280,10 +6278,10 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator PICKUPLOCALMP5()
+        public IEnumerator PICKUPLOCALMP5(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = PICKUPMP5();
+                var enumerator = PICKUPMP5(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6298,7 +6296,7 @@ namespace Tests
             Application.Quit();
             yield break;
         }
-        public IEnumerator PICKUPMEDKIT()
+        public IEnumerator PICKUPMEDKIT(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
             var PLAYER_HEALTH_1_val = PLAYER_HEALTH_1.GetFloat("VAL");
@@ -6310,13 +6308,13 @@ namespace Tests
             var PLAYER_HEALTH_3_val = PLAYER_HEALTH_3.GetFloat("VAL");
             var PLAYER_HEALTH_4 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
             PLAYER_HEALTH_4.SetFloat("VAL", PLAYER_HEALTH_3_val + 25f);
-            var MY_7 = _world.GetSynonymObject("MY");
+            var MY_7 = MY;
             MY_7.SetFloat("INVISIBLE", 1f);
             _world.PlaySound("MP_501SND", 0.5f);
             var GET11STR_9 = _world.AcknexObject.GetAcknexObject("GET11STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET11STR_9);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6328,7 +6326,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator PICKUPMP5()
+        public IEnumerator PICKUPMP5(IAcknexObject MY, IAcknexObject THERE)
         {
             var HAS_MP5_1 = _world.GetObject(ObjectType.Skill, "HAS_MP5");
             HAS_MP5_1.SetFloat("VAL", 1f);
@@ -6341,7 +6339,7 @@ namespace Tests
             if (WEAPONSEL_6_val < 2f)
             {
                 {
-                    var enumerator = SELECTMP5();
+                    var enumerator = SELECTMP5(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -6359,7 +6357,7 @@ namespace Tests
                 _world.PlaySound("AMMO01SND", 0.3f);
             }
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6369,12 +6367,12 @@ namespace Tests
                     }
                 }
             }
-            var MY_12 = _world.GetSynonymObject("MY");
+            var MY_12 = MY;
             MY_12.SetFloat("INVISIBLE", 1f);
             var GET02STR_13 = _world.AcknexObject.GetAcknexObject("GET02STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET02STR_13);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6386,7 +6384,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator PICKUPQUANTUM()
+        public IEnumerator PICKUPQUANTUM(IAcknexObject MY, IAcknexObject THERE)
         {
             var HAS_QUANTUM_1 = _world.GetObject(ObjectType.Skill, "HAS_QUANTUM");
             HAS_QUANTUM_1.SetFloat("VAL", 1f);
@@ -6399,7 +6397,7 @@ namespace Tests
             if (WEAPONSEL_6_val < 5f)
             {
                 {
-                    var enumerator = SELECTQUANTUM();
+                    var enumerator = SELECTQUANTUM(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -6411,7 +6409,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6421,12 +6419,12 @@ namespace Tests
                     }
                 }
             }
-            var MY_9 = _world.GetSynonymObject("MY");
+            var MY_9 = MY;
             MY_9.SetFloat("INVISIBLE", 1f);
             var GET09STR_10 = _world.AcknexObject.GetAcknexObject("GET09STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET09STR_10);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6438,7 +6436,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator PICKUPSTINGER()
+        public IEnumerator PICKUPSTINGER(IAcknexObject MY, IAcknexObject THERE)
         {
             var HAS_STINGER_1 = _world.GetObject(ObjectType.Skill, "HAS_STINGER");
             HAS_STINGER_1.SetFloat("VAL", 1f);
@@ -6451,7 +6449,7 @@ namespace Tests
             if (WEAPONSEL_6_val < 4f)
             {
                 {
-                    var enumerator = SELECTSTINGER();
+                    var enumerator = SELECTSTINGER(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -6463,7 +6461,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6473,12 +6471,12 @@ namespace Tests
                     }
                 }
             }
-            var MY_9 = _world.GetSynonymObject("MY");
+            var MY_9 = MY;
             MY_9.SetFloat("INVISIBLE", 1f);
             var GET08STR_10 = _world.AcknexObject.GetAcknexObject("GET08STR");
             _world.SetSynonymObject("MESSAGE_TEXT", GET08STR_10);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6490,15 +6488,15 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator PROBE()
+        public IEnumerator PROBE(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("SPEED");
             if (temp_3 < 0.05f)
             {
                 yield break;
             }
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             var temp_7 = MY_6.GetFloat("GROUND");
             if (temp_7 == 0f)
             {
@@ -6507,10 +6505,10 @@ namespace Tests
             //Unknown keyword: LOCATE
             yield break;
             CONT:
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             MY_10.SetFloat("HEIGHT", -0.05f);
             WATER:
-            var MY_12 = _world.GetSynonymObject("MY");
+            var MY_12 = MY;
             var temp_13 = MY_12?.GetAcknexObject("REGION");
             _world.SetSynonymObject("WATER_REGION", temp_13);
             var WATER_REGION_17 = _world.GetSynonymObject("WATER_REGION");
@@ -6519,7 +6517,7 @@ namespace Tests
             {
                 goto PROBELOOP;
             }
-            var MY_21 = _world.GetSynonymObject("MY");
+            var MY_21 = MY;
             MY_21.SetFloat("HEIGHT", -2.5f);
             PROBELOOP:
             var WATER_REGION_24 = _world.GetSynonymObject("WATER_REGION");
@@ -6527,7 +6525,7 @@ namespace Tests
             if (temp_25 == 1f)
             {
                 {
-                    var enumerator = VANISHFORGOOD();
+                    var enumerator = VANISHFORGOOD(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -6547,7 +6545,7 @@ namespace Tests
             }
             var STEPCOUNTER_31 = _world.GetObject(ObjectType.Skill, "STEPCOUNTER");
             STEPCOUNTER_31.SetFloat("VAL", 0f);
-            var MY_33 = _world.GetSynonymObject("MY");
+            var MY_33 = MY;
             var temp_34 = MY_33.GetFloat("ANGLE");
             var ANGLEOUT_35 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
             ANGLEOUT_35.SetFloat("VAL", temp_34);
@@ -6571,7 +6569,7 @@ namespace Tests
             var PROBETNG_46 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
             var PROBETNG_48 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
             var temp_49 = PROBETNG_48.GetFloat("X");
-            var MY_51 = _world.GetSynonymObject("MY");
+            var MY_51 = MY;
             var temp_52 = MY_51.GetFloat("X");
             var DISTX_54 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_54_val = DISTX_54.GetFloat("VAL");
@@ -6579,7 +6577,7 @@ namespace Tests
             var PROBETNG_58 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
             var PROBETNG_60 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"PROBETNG");
             var temp_61 = PROBETNG_60.GetFloat("Y");
-            var MY_63 = _world.GetSynonymObject("MY");
+            var MY_63 = MY;
             var temp_64 = MY_63.GetFloat("Y");
             var DISTY_66 = _world.GetObject(ObjectType.Skill, "DISTY");
             var DISTY_66_val = DISTY_66.GetFloat("VAL");
@@ -6634,7 +6632,7 @@ namespace Tests
             var ANGLEOUT_106 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
             var ANGLEOUT_107 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
             var ANGLEOUT_107_val = ANGLEOUT_107.GetFloat("VAL");
-            var MY_109 = _world.GetSynonymObject("MY");
+            var MY_109 = MY;
             var temp_110 = MY_109.GetFloat("ANGLE");
             var STEPCOUNTER_112 = _world.GetObject(ObjectType.Skill, "STEPCOUNTER");
             var STEPCOUNTER_112_val = STEPCOUNTER_112.GetFloat("VAL");
@@ -6644,15 +6642,15 @@ namespace Tests
             goto PROBEAGAIN;
             END:
             var BULLET_115 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_117 = _world.GetSynonymObject("MY");
+            var MY_117 = MY;
             MY_117.SetAcknexObject("TARGET", BULLET_115);
             var ANGLEOUT_118 = _world.GetObject(ObjectType.Skill, "ANGLEOUT");
             var ANGLEOUT_118_val = ANGLEOUT_118.GetFloat("VAL");
-            var MY_120 = _world.GetSynonymObject("MY");
+            var MY_120 = MY;
             MY_120.SetFloat("ANGLE", ANGLEOUT_118_val);
             yield break;
         }
-        public IEnumerator RAISE()
+        public IEnumerator RAISE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_GUN_1 = _world.GetSynonymObject("MY_GUN");
             var MY_GUN_3 = _world.GetSynonymObject("MY_GUN");
@@ -6793,7 +6791,7 @@ namespace Tests
             yield return new WaitForTicks(1f);
             yield break;
         }
-        public IEnumerator REDIN()
+        public IEnumerator REDIN(IAcknexObject MY, IAcknexObject THERE)
         {
             var REDVALUE_1 = _world.GetObject(ObjectType.Skill, "REDVALUE");
             var REDVALUE_1_val = REDVALUE_1.GetFloat("VAL");
@@ -6824,7 +6822,7 @@ namespace Tests
                 goto NOWATER;
             }
             {
-                var enumerator = SET_BLUE();
+                var enumerator = SET_BLUE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6846,7 +6844,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", null);
             yield break;
         }
-        public IEnumerator REDOUT()
+        public IEnumerator REDOUT(IAcknexObject MY, IAcknexObject THERE)
         {
             var REDVALUE_1 = _world.GetObject(ObjectType.Skill, "REDVALUE");
             var REDVALUE_1_val = REDVALUE_1.GetFloat("VAL");
@@ -6879,7 +6877,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", KILLPLAYER_13);
             yield break;
         }
-        public IEnumerator REGIO_ARISE()
+        public IEnumerator REGIO_ARISE(IAcknexObject MY, IAcknexObject THERE)
         {
             var UNDERWATER_1 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
             var UNDERWATER_1_val = UNDERWATER_1.GetFloat("VAL");
@@ -6918,7 +6916,7 @@ namespace Tests
             var PLAYER_LIGHT_26 = _world.GetObject(ObjectType.Skill, "PLAYER_LIGHT");
             PLAYER_LIGHT_26.SetFloat("VAL", PLAYER_LIGHT_25_val + -0.2f);
             {
-                var enumerator = _world.CallSynonymAction("SET_OVERWATER");
+                var enumerator = _world.CallSynonymAction("SET_OVERWATER", MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6929,7 +6927,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = SET_SWIMMING();
+                var enumerator = SET_SWIMMING(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6940,7 +6938,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = DIVE_UP();
+                var enumerator = DIVE_UP(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -6952,7 +6950,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator REGIO_DIVE()
+        public IEnumerator REGIO_DIVE(IAcknexObject MY, IAcknexObject THERE)
         {
             var UNDERWATER_1 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
             var UNDERWATER_1_val = UNDERWATER_1.GetFloat("VAL");
@@ -6992,7 +6990,7 @@ namespace Tests
             var PLAYER_LIGHT_27 = _world.GetObject(ObjectType.Skill, "PLAYER_LIGHT");
             PLAYER_LIGHT_27.SetFloat("VAL", PLAYER_LIGHT_26_val + 0.2f);
             {
-                var enumerator = _world.CallSynonymAction("SET_UNDERWATER");
+                var enumerator = _world.CallSynonymAction("SET_UNDERWATER", MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7003,7 +7001,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = SET_DIVING();
+                var enumerator = SET_DIVING(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7015,7 +7013,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator REPEATMUSIC()
+        public IEnumerator REPEATMUSIC(IAcknexObject MY, IAcknexObject THERE)
         {
             var SECCOUNTER_1 = _world.GetObject(ObjectType.Skill, "SECCOUNTER");
             var SECCOUNTER_1_val = SECCOUNTER_1.GetFloat("VAL");
@@ -7038,10 +7036,10 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator REPELANGLE()
+        public IEnumerator REPELANGLE(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = FOLLOWANGLE();
+                var enumerator = FOLLOWANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7053,216 +7051,216 @@ namespace Tests
             }
             var PI_0 = _world.GetObject(ObjectType.Skill, "PI");
             var PI_0_val = PI_0.GetFloat("VAL");
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("ANGLE");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("ANGLE", temp_3 + PI_0_val);
             yield break;
         }
-        public IEnumerator REPTDEAD()
+        public IEnumerator REPTDEAD(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", null);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_HIT", null);
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("EACH_CYCLE", null);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("SKILL4", 9f);
             var REPT9TEX_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT9TEX");
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetAcknexObject("TEXTURE", REPT9TEX_15);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("SPEED", 0f);
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetAcknexObject("TARGET", null);
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("PASSABLE", 1f);
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             MY_29.SetFloat("CAREFULLY", 0f);
             yield break;
         }
-        public IEnumerator REPTDIE()
+        public IEnumerator REPTDIE(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetFloat("SKILL1", 10f);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_NEAR", null);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_FAR", null);
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", null);
             var REPTDEAD_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTDEAD");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("EACH_CYCLE", REPTDEAD_12);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("SKILL4", 8f);
             var REPT8TEX_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT8TEX");
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetAcknexObject("TEXTURE", REPT8TEX_18);
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetFloat("SPEED", 0f);
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("GROUND", 0f);
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             MY_29.SetFloat("HEIGHT", -0.05f);
-            var MY_32 = _world.GetSynonymObject("MY");
+            var MY_32 = MY;
             MY_32.SetAcknexObject("TARGET", null);
             yield break;
         }
-        public IEnumerator REPTDOWN()
+        public IEnumerator REPTDOWN(IAcknexObject MY, IAcknexObject THERE)
         {
             var REPTJUMP_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTJUMP");
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", REPTJUMP_0);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", null);
             var REPTSEARCH_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTSEARCH");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", REPTSEARCH_6);
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetFloat("SKILL4", 0f);
             var REPTAUPTEX_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPTAUPTEX");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("TEXTURE", REPTAUPTEX_12);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("SPEED", 0f);
             var BULLET_18 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetAcknexObject("TARGET", BULLET_18);
             yield break;
         }
-        public IEnumerator REPTESCAPE()
+        public IEnumerator REPTESCAPE(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
             var REPTHIDE_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHIDE");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", REPTHIDE_3);
             var CYCLEREPTHIDE_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLEREPTHIDE");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", CYCLEREPTHIDE_6);
             var REPTHIT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHIT");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", REPTHIT_9);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("SKILL4", 4f);
             var REPT1TEX_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT1TEX");
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetAcknexObject("TEXTURE", REPT1TEX_15);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("DIST", 30f);
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetFloat("SPEED", 0.4f);
             var REPEL_24 = _world.AcknexObject.GetAcknexObject("REPEL");
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetAcknexObject("TARGET", REPEL_24);
             yield break;
         }
-        public IEnumerator REPTFLEE()
+        public IEnumerator REPTFLEE(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_TICK", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             var temp_6 = MY_5.GetFloat("SKILL4");
             if (temp_6 > 7f)
             {
                 yield break;
             }
             var REPT1TEX_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT1TEX");
-            var MY_9 = _world.GetSynonymObject("MY");
+            var MY_9 = MY;
             MY_9.SetAcknexObject("TEXTURE", REPT1TEX_7);
-            var MY_12 = _world.GetSynonymObject("MY");
+            var MY_12 = MY;
             MY_12.SetFloat("SPEED", 0.9f);
             var ESCAPEWAY_13 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Way,*/"ESCAPEWAY");
-            var MY_15 = _world.GetSynonymObject("MY");
+            var MY_15 = MY;
             MY_15.SetAcknexObject("TARGET", ESCAPEWAY_13);
-            var MY_18 = _world.GetSynonymObject("MY");
+            var MY_18 = MY;
             MY_18.SetFloat("CAREFULLY", 0f);
-            var MY_21 = _world.GetSynonymObject("MY");
+            var MY_21 = MY;
             MY_21.SetAcknexObject("IF_NEAR", null);
-            var MY_24 = _world.GetSynonymObject("MY");
+            var MY_24 = MY;
             MY_24.SetAcknexObject("IF_FAR", null);
             var LOCATEREPT_25 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"LOCATEREPT");
-            var MY_27 = _world.GetSynonymObject("MY");
+            var MY_27 = MY;
             MY_27.SetAcknexObject("EACH_CYCLE", LOCATEREPT_25);
-            var MY_30 = _world.GetSynonymObject("MY");
+            var MY_30 = MY;
             MY_30.SetAcknexObject("IF_HIT", null);
-            var MY_33 = _world.GetSynonymObject("MY");
+            var MY_33 = MY;
             MY_33.SetAcknexObject("IF_ARRIVED", null);
             _world.PlaySound("REPT02SND", 0.5f, "MY");
             yield break;
         }
-        public IEnumerator REPTFOLLOWATTACK()
+        public IEnumerator REPTFOLLOWATTACK(IAcknexObject MY, IAcknexObject THERE)
         {
             var REPTJUMP_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTJUMP");
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", REPTJUMP_0);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", null);
             var CYCLEREPTSHOOT_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLEREPTSHOOT");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", CYCLEREPTSHOOT_6);
             var REPTHIT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHIT");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", REPTHIT_9);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("SKILL4", 2f);
             var REPT1TEX_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT1TEX");
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetAcknexObject("TEXTURE", REPT1TEX_15);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("SPEED", 0.4f);
             var FOLLOW_21 = _world.AcknexObject.GetAcknexObject("FOLLOW");
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetAcknexObject("TARGET", FOLLOW_21);
             yield break;
         }
-        public IEnumerator REPTHEAR()
+        public IEnumerator REPTHEAR(IAcknexObject MY, IAcknexObject THERE)
         {
             var REPTJUMP_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTJUMP");
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", REPTJUMP_0);
             var REPTFOLLOWATTACK_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTFOLLOWATTACK");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", REPTFOLLOWATTACK_3);
             var REPTDOWN_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTDOWN");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", REPTDOWN_6);
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetFloat("SKILL4", 0f);
             var REPT0TEX_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT0TEX");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("TEXTURE", REPT0TEX_12);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("SPEED", 0f);
             var FOLLOW_18 = _world.AcknexObject.GetAcknexObject("FOLLOW");
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetAcknexObject("TARGET", FOLLOW_18);
             yield break;
         }
-        public IEnumerator REPTHIDE()
+        public IEnumerator REPTHIDE(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetFloat("CAREFULLY", 1f);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("EACH_TICK", null);
             var REPTESCAPE_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTESCAPE");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_NEAR", REPTESCAPE_6);
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_FAR", null);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("EACH_CYCLE", null);
             var REPTHIT_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHIT");
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetAcknexObject("IF_HIT", REPTHIT_15);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("SKILL4", 4f);
             {
-                var enumerator = REPELANGLE();
+                var enumerator = REPELANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7272,35 +7270,35 @@ namespace Tests
                     }
                 }
             }
-            var MY_22 = _world.GetSynonymObject("MY");
-            var MY_24 = _world.GetSynonymObject("MY");
+            var MY_22 = MY;
+            var MY_24 = MY;
             var temp_25 = MY_24.GetFloat("ANGLE");
-            var MY_27 = _world.GetSynonymObject("MY");
+            var MY_27 = MY;
             var temp_28 = MY_27.GetFloat("ANGLE");
             MY_22.SetFloat("ANGLE", temp_28 + (UnityEngine.Random.value - 0.5f) * 2.4f);
             var REPT1TEX_37 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT1TEX");
-            var MY_39 = _world.GetSynonymObject("MY");
+            var MY_39 = MY;
             MY_39.SetAcknexObject("TEXTURE", REPT1TEX_37);
-            var MY_42 = _world.GetSynonymObject("MY");
+            var MY_42 = MY;
             MY_42.SetFloat("DIST", 20f);
-            var MY_45 = _world.GetSynonymObject("MY");
+            var MY_45 = MY;
             MY_45.SetFloat("SPEED", 0.5f);
             var BULLET_46 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_48 = _world.GetSynonymObject("MY");
+            var MY_48 = MY;
             MY_48.SetAcknexObject("TARGET", BULLET_46);
             yield return new WaitForTicks(384f);
-            var MY_52 = _world.GetSynonymObject("MY");
+            var MY_52 = MY;
             var temp_53 = MY_52.GetFloat("SKILL1");
             if (temp_53 > 5f)
             {
                 yield break;
             }
-            var MY_56 = _world.GetSynonymObject("MY");
+            var MY_56 = MY;
             var temp_57 = MY_56.GetFloat("SKILL1");
-            var MY_59 = _world.GetSynonymObject("MY");
+            var MY_59 = MY;
             MY_59.SetFloat("SKILL1", temp_57 + -2f);
             {
-                var enumerator = REPTWANDER();
+                var enumerator = REPTWANDER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7313,7 +7311,7 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator REPTHIT()
+        public IEnumerator REPTHIT(IAcknexObject MY, IAcknexObject THERE)
         {
             var SHOOT_FAC_1 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
             var SHOOT_FAC_1_val = SHOOT_FAC_1.GetFloat("VAL");
@@ -7321,7 +7319,7 @@ namespace Tests
             {
                 goto OBSTACLE;
             }
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var HIT_3 = _world.GetSynonymObject("HIT");
             if (HIT_3 == MY_2)
             {
@@ -7340,12 +7338,12 @@ namespace Tests
             {
                 goto CONT;
             }
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             var temp_11 = MY_10.GetFloat("VISIBLE");
             if (temp_11 == 1f)
             {
                 {
-                    var enumerator = REPTIMPLODE();
+                    var enumerator = REPTIMPLODE(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -7360,11 +7358,11 @@ namespace Tests
             CONT:
             var SHOOT_FAC_12 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
             var SHOOT_FAC_12_val = SHOOT_FAC_12.GetFloat("VAL");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             var temp_15 = MY_14.GetFloat("SKILL1");
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("SKILL1", temp_15 + SHOOT_FAC_12_val);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             var temp_21 = MY_20.GetFloat("SKILL1");
             if (temp_21 > 5f)
             {
@@ -7374,28 +7372,28 @@ namespace Tests
             {
                 goto DIE;
             }
-            var MY_25 = _world.GetSynonymObject("MY");
+            var MY_25 = MY;
             var temp_26 = MY_25?.GetAcknexObject("TEXTURE");
             _world.SetSynonymObject("REPT_TEX", temp_26);
             var REPT5TEX_28 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT5TEX");
-            var MY_30 = _world.GetSynonymObject("MY");
+            var MY_30 = MY;
             MY_30.SetAcknexObject("TEXTURE", REPT5TEX_28);
-            var MY_33 = _world.GetSynonymObject("MY");
+            var MY_33 = MY;
             MY_33.SetAcknexObject("IF_NEAR", null);
-            var MY_36 = _world.GetSynonymObject("MY");
+            var MY_36 = MY;
             MY_36.SetAcknexObject("IF_FAR", null);
-            var MY_39 = _world.GetSynonymObject("MY");
+            var MY_39 = MY;
             MY_39.SetAcknexObject("IF_HIT", null);
             yield return new WaitForTicks(6f);
             var REPTHIT_41 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHIT");
-            var MY_43 = _world.GetSynonymObject("MY");
+            var MY_43 = MY;
             MY_43.SetAcknexObject("IF_HIT", REPTHIT_41);
             var REPT_TEX_44 = _world.GetSynonymObject("REPT_TEX");
-            var MY_46 = _world.GetSynonymObject("MY");
+            var MY_46 = MY;
             MY_46.SetAcknexObject("TEXTURE", REPT_TEX_44);
             _world.PlaySound("REPT02SND", 0.7f, "MY");
             {
-                var enumerator = REPTHIDE();
+                var enumerator = REPTHIDE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7407,10 +7405,10 @@ namespace Tests
             }
             yield break;
             DIE:
-            var MY_50 = _world.GetSynonymObject("MY");
+            var MY_50 = MY;
             MY_50.SetFloat("SKILL1", 10f);
             {
-                var enumerator = REPTDIE();
+                var enumerator = REPTDIE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7424,7 +7422,7 @@ namespace Tests
             yield break;
             OBSTACLE:
             {
-                var enumerator = REPTTALK();
+                var enumerator = REPTTALK(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7435,7 +7433,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = REPTTURN();
+                var enumerator = REPTTURN(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7448,24 +7446,24 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator REPTIMPLODE()
+        public IEnumerator REPTIMPLODE(IAcknexObject MY, IAcknexObject THERE)
         {
             var DISTX_0 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_1 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_1_val = DISTX_1.GetFloat("VAL");
-            var MY_4 = _world.GetSynonymObject("MY");
+            var MY_4 = MY;
             var temp_5 = MY_4.GetFloat("X");
             var EXPLOSION_CENTER_8 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_9 = EXPLOSION_CENTER_8.GetFloat("X");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             var temp_15 = MY_14.GetFloat("X");
             var EXPLOSION_CENTER_18 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_19 = EXPLOSION_CENTER_18.GetFloat("X");
-            var MY_24 = _world.GetSynonymObject("MY");
+            var MY_24 = MY;
             var temp_25 = MY_24.GetFloat("Y");
             var EXPLOSION_CENTER_28 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_29 = EXPLOSION_CENTER_28.GetFloat("Y");
-            var MY_34 = _world.GetSynonymObject("MY");
+            var MY_34 = MY;
             var temp_35 = MY_34.GetFloat("Y");
             var EXPLOSION_CENTER_38 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_39 = EXPLOSION_CENTER_38.GetFloat("Y");
@@ -7477,7 +7475,7 @@ namespace Tests
             var DISTZ_43 = _world.GetObject(ObjectType.Skill, "DISTZ");
             var DISTZ_44 = _world.GetObject(ObjectType.Skill, "DISTZ");
             var DISTZ_44_val = DISTZ_44.GetFloat("VAL");
-            var MY_46 = _world.GetSynonymObject("MY");
+            var MY_46 = MY;
             var temp_47 = MY_46.GetFloat("HEIGHT");
             var EXPLOSION_CENTER_50 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_51 = EXPLOSION_CENTER_50.GetFloat("HEIGHT");
@@ -7487,7 +7485,7 @@ namespace Tests
             if (DISTX_53_val > 10f)
             {
                 {
-                    var enumerator = BEAMREACT();
+                    var enumerator = BEAMREACT(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -7499,40 +7497,40 @@ namespace Tests
                 }
                 yield break;
             }
-            var MY_56 = _world.GetSynonymObject("MY");
+            var MY_56 = MY;
             MY_56.SetFloat("PASSABLE", 1f);
-            var MY_59 = _world.GetSynonymObject("MY");
+            var MY_59 = MY;
             MY_59.SetFloat("CAREFULLY", 0f);
-            var MY_62 = _world.GetSynonymObject("MY");
+            var MY_62 = MY;
             MY_62.SetAcknexObject("IF_NEAR", null);
-            var MY_65 = _world.GetSynonymObject("MY");
+            var MY_65 = MY;
             MY_65.SetAcknexObject("IF_FAR", null);
-            var MY_68 = _world.GetSynonymObject("MY");
+            var MY_68 = MY;
             MY_68.SetAcknexObject("IF_HIT", null);
             var VANISHFORGOOD_69 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"VANISHFORGOOD");
-            var MY_71 = _world.GetSynonymObject("MY");
+            var MY_71 = MY;
             MY_71.SetAcknexObject("EACH_CYCLE", VANISHFORGOOD_69);
-            var MY_74 = _world.GetSynonymObject("MY");
+            var MY_74 = MY;
             MY_74.SetFloat("SKILL4", 9f);
             var REPT0ATEX_75 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT0ATEX");
-            var MY_77 = _world.GetSynonymObject("MY");
+            var MY_77 = MY;
             MY_77.SetAcknexObject("TEXTURE", REPT0ATEX_75);
-            var MY_80 = _world.GetSynonymObject("MY");
+            var MY_80 = MY;
             MY_80.SetFloat("SPEED", 0f);
-            var MY_83 = _world.GetSynonymObject("MY");
+            var MY_83 = MY;
             MY_83.SetAcknexObject("TARGET", null);
             yield break;
         }
-        public IEnumerator REPTJUMP()
+        public IEnumerator REPTJUMP(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("FLAG2");
             if (temp_3 == 1f)
             {
                 goto BLOODSMELL;
             }
             {
-                var enumerator = LOOKPLAYER();
+                var enumerator = LOOKPLAYER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7542,7 +7540,7 @@ namespace Tests
                     }
                 }
             }
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             var temp_7 = MY_6.GetFloat("FLAG1");
             if (temp_7 == 0f)
             {
@@ -7550,7 +7548,7 @@ namespace Tests
             }
             BLOODSMELL:
             {
-                var enumerator = REPTTALK();
+                var enumerator = REPTTALK(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7563,34 +7561,34 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator REPTLISTEN()
+        public IEnumerator REPTLISTEN(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", null);
             var CYCLEREPTATTACK_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLEREPTATTACK");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", CYCLEREPTATTACK_6);
             var REPTHIT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHIT");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", REPTHIT_9);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("SKILL4", 0f);
             var REPT0TEX_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT0TEX");
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetAcknexObject("TEXTURE", REPT0TEX_15);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("SPEED", 0f);
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetAcknexObject("TARGET", null);
             yield return new WaitForTicks(120f);
-            var MY_27 = _world.GetSynonymObject("MY");
+            var MY_27 = MY;
             var temp_28 = MY_27.GetFloat("SKILL1");
             if (temp_28 < 9f)
             {
                 {
-                    var enumerator = REPTWANDER();
+                    var enumerator = REPTWANDER(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -7604,82 +7602,82 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator REPTLOOKFOR()
+        public IEnumerator REPTLOOKFOR(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("SKILL4");
             if (temp_3 == 0f)
             {
                 yield break;
             }
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             var temp_7 = MY_6.GetFloat("SKILL4");
             if (temp_7 == 4f)
             {
                 yield break;
             }
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             var temp_11 = MY_10.GetFloat("DISTANCE");
             if (temp_11 > 100f)
             {
                 yield break;
             }
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             var temp_15 = MY_14.GetFloat("SKILL4");
             if (temp_15 == 10f)
             {
                 yield break;
             }
             var FOLLOW_16 = _world.AcknexObject.GetAcknexObject("FOLLOW");
-            var MY_18 = _world.GetSynonymObject("MY");
+            var MY_18 = MY;
             var temp_19 = MY_18?.GetAcknexObject("TARGET");
             if (temp_19 == FOLLOW_16)
             {
                 yield break;
             }
-            var MY_22 = _world.GetSynonymObject("MY");
+            var MY_22 = MY;
             var temp_23 = MY_22.GetFloat("SKILL1");
             if (temp_23 > 5f)
             {
                 yield break;
             }
             var REPTJUMP_24 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTJUMP");
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetAcknexObject("IF_NEAR", REPTJUMP_24);
             var REPTFOLLOWATTACK_27 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTFOLLOWATTACK");
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             MY_29.SetAcknexObject("IF_FAR", REPTFOLLOWATTACK_27);
             var REPTHEAR_30 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHEAR");
-            var MY_32 = _world.GetSynonymObject("MY");
+            var MY_32 = MY;
             MY_32.SetAcknexObject("EACH_CYCLE", REPTHEAR_30);
             var REPTHIT_33 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHIT");
-            var MY_35 = _world.GetSynonymObject("MY");
+            var MY_35 = MY;
             MY_35.SetAcknexObject("IF_HIT", REPTHIT_33);
-            var MY_38 = _world.GetSynonymObject("MY");
+            var MY_38 = MY;
             MY_38.SetFloat("SKILL4", 0f);
             var REPTADNTEX_39 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPTADNTEX");
-            var MY_41 = _world.GetSynonymObject("MY");
+            var MY_41 = MY;
             MY_41.SetAcknexObject("TEXTURE", REPTADNTEX_39);
-            var MY_44 = _world.GetSynonymObject("MY");
+            var MY_44 = MY;
             MY_44.SetFloat("SPEED", 0f);
             var BULLET_45 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_47 = _world.GetSynonymObject("MY");
+            var MY_47 = MY;
             MY_47.SetAcknexObject("TARGET", BULLET_45);
             yield break;
         }
-        public IEnumerator REPTSEARCH()
+        public IEnumerator REPTSEARCH(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_TICK", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_NEAR", null);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_FAR", null);
             var REPTHIT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHIT");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", REPTHIT_9);
             {
-                var enumerator = LOOKPLAYER();
+                var enumerator = LOOKPLAYER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7689,12 +7687,12 @@ namespace Tests
                     }
                 }
             }
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             var temp_15 = MY_14.GetFloat("FLAG1");
             if (temp_15 == 0f)
             {
                 {
-                    var enumerator = REPTWAIT();
+                    var enumerator = REPTWAIT(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -7707,7 +7705,7 @@ namespace Tests
                 yield break;
             }
             {
-                var enumerator = REPTFOLLOWATTACK();
+                var enumerator = REPTFOLLOWATTACK(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7720,32 +7718,32 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator REPTSHOOT()
+        public IEnumerator REPTSHOOT(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
             var REPTFOLLOWATTACK_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTFOLLOWATTACK");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", REPTFOLLOWATTACK_3);
             var REPTHIDE_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHIDE");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", REPTHIDE_6);
             var REPTHIT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHIT");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", REPTHIT_9);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("SKILL4", 3f);
             var REPT0TEX_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT0TEX");
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetAcknexObject("TEXTURE", REPT0TEX_15);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("SPEED", 0f);
             var FOLLOW_21 = _world.AcknexObject.GetAcknexObject("FOLLOW");
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetAcknexObject("TARGET", FOLLOW_21);
             yield break;
         }
-        public IEnumerator REPTTALK()
+        public IEnumerator REPTTALK(IAcknexObject MY, IAcknexObject THERE)
         {
             if (UnityEngine.Random.value > 0.9f)
             {
@@ -7757,7 +7755,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator REPTTURN()
+        public IEnumerator REPTTURN(IAcknexObject MY, IAcknexObject THERE)
         {
             var WAITTIME_0 = _world.GetObject(ObjectType.Skill, "WAITTIME");
             var WAITTIME_1 = _world.GetObject(ObjectType.Skill, "WAITTIME");
@@ -7766,7 +7764,7 @@ namespace Tests
             if (UnityEngine.Random.value < 0.07f)
             {
                 {
-                    var enumerator = REPTLISTEN();
+                    var enumerator = REPTLISTEN(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -7794,7 +7792,7 @@ namespace Tests
             if (RIGHTTURNREPT_24_val > RIGHTTURNREPT_24.GetFloat("MAX"))
             {
                 {
-                    var enumerator = TURNRIGHT();
+                    var enumerator = TURNRIGHT(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -7807,7 +7805,7 @@ namespace Tests
                 yield break;
             }
             {
-                var enumerator = TURNLEFT();
+                var enumerator = TURNLEFT(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7820,77 +7818,77 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator REPTWAIT()
+        public IEnumerator REPTWAIT(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_TICK", null);
             var REPTJUMP_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTJUMP");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_NEAR", REPTJUMP_3);
             var REPTFOLLOWATTACK_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTFOLLOWATTACK");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_FAR", REPTFOLLOWATTACK_6);
             var CYCLEREPTATTACK_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLEREPTATTACK");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("EACH_CYCLE", CYCLEREPTATTACK_9);
             var REPTHIT_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHIT");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("IF_HIT", REPTHIT_12);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("GROUND", 0f);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("HEIGHT", -0.05f);
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetFloat("SKILL4", 0f);
             var REPT0TEX_24 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT0TEX");
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetAcknexObject("TEXTURE", REPT0TEX_24);
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             MY_29.SetFloat("SPEED", 0f);
-            var MY_32 = _world.GetSynonymObject("MY");
+            var MY_32 = MY;
             MY_32.SetAcknexObject("TARGET", null);
             yield break;
         }
-        public IEnumerator REPTWANDER()
+        public IEnumerator REPTWANDER(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_TICK", null);
             var REPTJUMP_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTJUMP");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_NEAR", REPTJUMP_3);
             var REPTFOLLOWATTACK_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTFOLLOWATTACK");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_FAR", REPTFOLLOWATTACK_6);
             var CYCLEREPTATTACK_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLEREPTATTACK");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("EACH_CYCLE", CYCLEREPTATTACK_9);
             var REPTHIT_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"REPTHIT");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("IF_HIT", REPTHIT_12);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("SKILL4", 1f);
             var REPT1TEX_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"REPT1TEX");
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetAcknexObject("TEXTURE", REPT1TEX_18);
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetFloat("SPEED", 0.3f);
             var BULLET_24 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetAcknexObject("TARGET", BULLET_24);
             yield break;
         }
-        public IEnumerator RESET_BLUE()
+        public IEnumerator RESET_BLUE(IAcknexObject MY, IAcknexObject THERE)
         {
             //Unknown keyword: FADE_PAL
             yield break;
         }
-        public IEnumerator RESETANSWER()
+        public IEnumerator RESETANSWER(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.PlaySound("BIP02SND", 0.5f);
             _world.AcknexObject.SetAcknexObject("IF_TAST", null);
             _world.AcknexObject.SetAcknexObject("IF_S", null);
             {
-                var enumerator = HIDEMENU();
+                var enumerator = HIDEMENU(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7902,18 +7900,18 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator RESETWARN()
+        public IEnumerator RESETWARN(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetFloat("DIST", 5f);
             yield break;
         }
-        public IEnumerator SAVEERRORMESSAGE()
+        public IEnumerator SAVEERRORMESSAGE(IAcknexObject MY, IAcknexObject THERE)
         {
             yield return new WaitForTicks(2f);
             yield break;
         }
-        public IEnumerator SELECTGRANADE()
+        public IEnumerator SELECTGRANADE(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
             var PLAYER_HEALTH_1_val = PLAYER_HEALTH_1.GetFloat("VAL");
@@ -7936,7 +7934,7 @@ namespace Tests
             var WRN03STR_6 = _world.AcknexObject.GetAcknexObject("WRN03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN03STR_6);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7987,7 +7985,7 @@ namespace Tests
             }
             NOGUN:
             {
-                var enumerator = TARGETOFF();
+                var enumerator = TARGETOFF(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -7998,7 +7996,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8019,7 +8017,7 @@ namespace Tests
             var MY_GUN_50 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_50.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = LOWER();
+                var enumerator = LOWER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8043,7 +8041,7 @@ namespace Tests
             var MY_GUN_60 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_60.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = RAISE();
+                var enumerator = RAISE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8091,7 +8089,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_92);
             yield break;
         }
-        public IEnumerator SELECTMP5()
+        public IEnumerator SELECTMP5(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
             var PLAYER_HEALTH_1_val = PLAYER_HEALTH_1.GetFloat("VAL");
@@ -8114,7 +8112,7 @@ namespace Tests
             var WRN03STR_6 = _world.AcknexObject.GetAcknexObject("WRN03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN03STR_6);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8157,7 +8155,7 @@ namespace Tests
             }
             NOGUN:
             {
-                var enumerator = TARGETON();
+                var enumerator = TARGETON(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8168,7 +8166,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8189,7 +8187,7 @@ namespace Tests
             var MY_GUN_44 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_44.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = LOWER();
+                var enumerator = LOWER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8213,7 +8211,7 @@ namespace Tests
             var MY_GUN_54 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_54.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = RAISE();
+                var enumerator = RAISE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8260,7 +8258,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_86);
             yield break;
         }
-        public IEnumerator SELECTMP5BURST()
+        public IEnumerator SELECTMP5BURST(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
             var PLAYER_HEALTH_1_val = PLAYER_HEALTH_1.GetFloat("VAL");
@@ -8283,7 +8281,7 @@ namespace Tests
             var WRN03STR_6 = _world.AcknexObject.GetAcknexObject("WRN03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN03STR_6);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8328,7 +8326,7 @@ namespace Tests
             }
             NOGUN:
             {
-                var enumerator = TARGETON();
+                var enumerator = TARGETON(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8339,7 +8337,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8360,7 +8358,7 @@ namespace Tests
             var MY_GUN_48 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_48.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = LOWER();
+                var enumerator = LOWER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8384,7 +8382,7 @@ namespace Tests
             var MY_GUN_58 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_58.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = RAISE();
+                var enumerator = RAISE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8431,7 +8429,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_90);
             yield break;
         }
-        public IEnumerator SELECTNONE()
+        public IEnumerator SELECTNONE(IAcknexObject MY, IAcknexObject THERE)
         {
             var WEAPONSEL_1 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
             WEAPONSEL_1.SetFloat("VAL", 1f);
@@ -8466,7 +8464,7 @@ namespace Tests
             }
             NOGUN:
             {
-                var enumerator = TARGETOFF();
+                var enumerator = TARGETOFF(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8477,7 +8475,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8500,7 +8498,7 @@ namespace Tests
             var MY_GUN_43 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_43.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = LOWER();
+                var enumerator = LOWER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8544,7 +8542,7 @@ namespace Tests
             PLAYER_RESULT_72.SetFloat("VAL", -1f);
             yield break;
         }
-        public IEnumerator SELECTQUANTUM()
+        public IEnumerator SELECTQUANTUM(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
             var PLAYER_HEALTH_1_val = PLAYER_HEALTH_1.GetFloat("VAL");
@@ -8567,7 +8565,7 @@ namespace Tests
             var WRN03STR_6 = _world.AcknexObject.GetAcknexObject("WRN03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN03STR_6);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8612,7 +8610,7 @@ namespace Tests
             }
             NOGUN:
             {
-                var enumerator = TARGETON();
+                var enumerator = TARGETON(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8625,7 +8623,7 @@ namespace Tests
             var WEAPONSEL_40 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
             WEAPONSEL_40.SetFloat("VAL", 5f);
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8646,7 +8644,7 @@ namespace Tests
             var MY_GUN_50 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_50.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = LOWER();
+                var enumerator = LOWER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8670,7 +8668,7 @@ namespace Tests
             var MY_GUN_60 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_60.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = RAISE();
+                var enumerator = RAISE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8717,7 +8715,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_92);
             yield break;
         }
-        public IEnumerator SELECTSTINGER()
+        public IEnumerator SELECTSTINGER(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
             var PLAYER_HEALTH_1_val = PLAYER_HEALTH_1.GetFloat("VAL");
@@ -8740,7 +8738,7 @@ namespace Tests
             var WRN03STR_6 = _world.AcknexObject.GetAcknexObject("WRN03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN03STR_6);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8785,7 +8783,7 @@ namespace Tests
             }
             NOGUN:
             {
-                var enumerator = TARGETON();
+                var enumerator = TARGETON(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8798,7 +8796,7 @@ namespace Tests
             var WEAPONSEL_40 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
             WEAPONSEL_40.SetFloat("VAL", 4f);
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8819,7 +8817,7 @@ namespace Tests
             var MY_GUN_50 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_50.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = LOWER();
+                var enumerator = LOWER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8843,7 +8841,7 @@ namespace Tests
             var MY_GUN_60 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_60.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = RAISE();
+                var enumerator = RAISE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8890,7 +8888,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_92);
             yield break;
         }
-        public IEnumerator SELECTTRICORDER()
+        public IEnumerator SELECTTRICORDER(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
             var PLAYER_HEALTH_1_val = PLAYER_HEALTH_1.GetFloat("VAL");
@@ -8903,7 +8901,7 @@ namespace Tests
             if (MAP_MODE_3_val > 0f)
             {
                 {
-                    var enumerator = SELECTNONE();
+                    var enumerator = SELECTNONE(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -8924,7 +8922,7 @@ namespace Tests
             var WRN04STR_6 = _world.AcknexObject.GetAcknexObject("WRN04STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN04STR_6);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8969,7 +8967,7 @@ namespace Tests
             }
             NOGUN:
             {
-                var enumerator = TARGETOFF();
+                var enumerator = TARGETOFF(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -8980,7 +8978,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9003,7 +9001,7 @@ namespace Tests
             var MY_GUN_52 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_52.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = LOWER();
+                var enumerator = LOWER(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9027,7 +9025,7 @@ namespace Tests
             var MY_GUN_62 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_62.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = RAISE();
+                var enumerator = RAISE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9082,12 +9080,12 @@ namespace Tests
             GUN_ON_103.SetFloat("VAL", 1f);
             yield break;
         }
-        public IEnumerator SET_BLUE()
+        public IEnumerator SET_BLUE(IAcknexObject MY, IAcknexObject THERE)
         {
             //Unknown keyword: FADE_PAL
             yield break;
         }
-        public IEnumerator SET_DEATH()
+        public IEnumerator SET_DEATH(IAcknexObject MY, IAcknexObject THERE)
         {
             var FRIC_1 = _world.GetObject(ObjectType.Skill, "FRIC");
             FRIC_1.SetFloat("VAL", 0.01f);
@@ -9111,7 +9109,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.16", MOVE_ME_16);
             yield break;
         }
-        public IEnumerator SET_DIVING()
+        public IEnumerator SET_DIVING(IAcknexObject MY, IAcknexObject THERE)
         {
             var FRIC_1 = _world.GetObject(ObjectType.Skill, "FRIC");
             FRIC_1.SetFloat("VAL", 0.3f);
@@ -9135,7 +9133,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.16", MOVE_ME_16);
             yield break;
         }
-        public IEnumerator SET_MOVING()
+        public IEnumerator SET_MOVING(IAcknexObject MY, IAcknexObject THERE)
         {
             var MOVING_1 = _world.GetObject(ObjectType.Skill, "MOVING");
             var MOVING_1_val = MOVING_1.GetFloat("VAL");
@@ -9150,7 +9148,7 @@ namespace Tests
             if (MOVING_3_val == MODE_GEHEN_2_val)
             {
                 {
-                    var enumerator = SET_WALKING();
+                    var enumerator = SET_WALKING(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -9169,7 +9167,7 @@ namespace Tests
             if (MOVING_5_val == MODE_SCHWIMMEN_4_val)
             {
                 {
-                    var enumerator = SET_SWIMMING();
+                    var enumerator = SET_SWIMMING(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -9188,7 +9186,7 @@ namespace Tests
             if (MOVING_7_val == MODE_TAUCHEN_6_val)
             {
                 {
-                    var enumerator = SET_DIVING();
+                    var enumerator = SET_DIVING(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -9202,7 +9200,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator SET_SWIMMING()
+        public IEnumerator SET_SWIMMING(IAcknexObject MY, IAcknexObject THERE)
         {
             var FRIC_1 = _world.GetObject(ObjectType.Skill, "FRIC");
             FRIC_1.SetFloat("VAL", 0.3f);
@@ -9226,7 +9224,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.16", MOVE_ME_16);
             yield break;
         }
-        public IEnumerator SET_WALKING()
+        public IEnumerator SET_WALKING(IAcknexObject MY, IAcknexObject THERE)
         {
             var MODE_GEHEN_0 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
             var MODE_GEHEN_0_val = MODE_GEHEN_0.GetFloat("VAL");
@@ -9250,7 +9248,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.16", MOVE_ME_16);
             yield break;
         }
-        public IEnumerator SETCKEY()
+        public IEnumerator SETCKEY(IAcknexObject MY, IAcknexObject THERE)
         {
             var SETGKEY_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SETGKEY");
             _world.AcknexObject.SetAcknexObject("IF_C", SETGKEY_0);
@@ -9258,7 +9256,7 @@ namespace Tests
             GODCOUNTER_3.SetFloat("VAL", 3f);
             yield break;
         }
-        public IEnumerator SETDKEY()
+        public IEnumerator SETDKEY(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.AcknexObject.SetAcknexObject("IF_O", null);
             var TOGGLEGODMODE_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TOGGLEGODMODE");
@@ -9267,7 +9265,7 @@ namespace Tests
             GODCOUNTER_5.SetFloat("VAL", 3f);
             yield break;
         }
-        public IEnumerator SETGKEY()
+        public IEnumerator SETGKEY(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.AcknexObject.SetAcknexObject("IF_C", null);
             var SETOKEY_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SETOKEY");
@@ -9276,7 +9274,7 @@ namespace Tests
             GODCOUNTER_5.SetFloat("VAL", 3f);
             yield break;
         }
-        public IEnumerator SETOKEY()
+        public IEnumerator SETOKEY(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.AcknexObject.SetAcknexObject("IF_G", null);
             var SETDKEY_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"SETDKEY");
@@ -9285,7 +9283,7 @@ namespace Tests
             GODCOUNTER_5.SetFloat("VAL", 3f);
             yield break;
         }
-        public IEnumerator SETSOUNDVOL()
+        public IEnumerator SETSOUNDVOL(IAcknexObject MY, IAcknexObject THERE)
         {
             var SOUND_VOL_BUFFER_0 = _world.GetObject(ObjectType.Skill, "SOUND_VOL_BUFFER");
             var SOUND_VOL_BUFFER_0_val = SOUND_VOL_BUFFER_0.GetFloat("VAL");
@@ -9297,7 +9295,7 @@ namespace Tests
             CDAUDIO_VOL_3.SetFloat("VAL", CDAUDIO_VOL_BUFFER_2_val);
             yield break;
         }
-        public IEnumerator SHOWAMMO()
+        public IEnumerator SHOWAMMO(IAcknexObject MY, IAcknexObject THERE)
         {
             var WEAPONSEL_1 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
             var WEAPONSEL_1_val = WEAPONSEL_1.GetFloat("VAL");
@@ -9344,7 +9342,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator SHOWLOADMENU()
+        public IEnumerator SHOWLOADMENU(IAcknexObject MY, IAcknexObject THERE)
         {
             var HIDEMENU_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"HIDEMENU");
             _world.AcknexObject.SetAcknexObject("IF_ESC", HIDEMENU_0);
@@ -9401,7 +9399,7 @@ namespace Tests
             var HLP01STR_47 = _world.AcknexObject.GetAcknexObject("HLP01STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP01STR_47);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9413,7 +9411,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator SHOWMAINMENU()
+        public IEnumerator SHOWMAINMENU(IAcknexObject MY, IAcknexObject THERE)
         {
             WAITING:
             yield return new WaitForTicks(1f);
@@ -9445,7 +9443,7 @@ namespace Tests
             var MENUDOWN_19 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"MENUDOWN");
             _world.AcknexObject.SetAcknexObject("IF_CUL", MENUDOWN_19);
             {
-                var enumerator = HIDEWEAPON();
+                var enumerator = HIDEWEAPON(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9464,7 +9462,7 @@ namespace Tests
             var HLP01STR_29 = _world.AcknexObject.GetAcknexObject("HLP01STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP01STR_29);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9476,10 +9474,10 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator SHOWPDABRIEFING()
+        public IEnumerator SHOWPDABRIEFING(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = SELECTNONE();
+                var enumerator = SELECTNONE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9503,7 +9501,7 @@ namespace Tests
                 goto WAITING0;
             }
             {
-                var enumerator = HIDEWEAPON();
+                var enumerator = HIDEWEAPON(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9516,7 +9514,7 @@ namespace Tests
             var WEAPONSEL_7 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
             WEAPONSEL_7.SetFloat("VAL", 1f);
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9539,7 +9537,7 @@ namespace Tests
             var MY_GUN_26 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_26.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = RAISE();
+                var enumerator = RAISE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9573,7 +9571,7 @@ namespace Tests
             _world.SetSynonymObject("MESSAGE_TEXT", HLP03STR_46);
             //Unknown keyword: FADE_PAL
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9590,11 +9588,11 @@ namespace Tests
             MOVE_MODE_52.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator SHOWPDAGAMEOVER()
+        public IEnumerator SHOWPDAGAMEOVER(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.PlaySound("ALARM03SND", 0.7f);
             {
-                var enumerator = SELECTNONE();
+                var enumerator = SELECTNONE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9618,7 +9616,7 @@ namespace Tests
                 goto WAITING0;
             }
             {
-                var enumerator = HIDEWEAPON();
+                var enumerator = HIDEWEAPON(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9631,7 +9629,7 @@ namespace Tests
             var WEAPONSEL_8 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
             WEAPONSEL_8.SetFloat("VAL", 1f);
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9653,7 +9651,7 @@ namespace Tests
             var MY_GUN_25 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_25.SetFloat("INVISIBLE", 0f);
             {
-                var enumerator = RAISE();
+                var enumerator = RAISE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9688,7 +9686,7 @@ namespace Tests
             _world.SetSynonymObject("MESSAGE_TEXT", HLP04STR_47);
             //Unknown keyword: FADE_PAL
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9705,7 +9703,7 @@ namespace Tests
             MOVE_MODE_53.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator SHOWSAVEMENU()
+        public IEnumerator SHOWSAVEMENU(IAcknexObject MY, IAcknexObject THERE)
         {
             var HIDEMENU_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"HIDEMENU");
             _world.AcknexObject.SetAcknexObject("IF_ESC", HIDEMENU_0);
@@ -9762,7 +9760,7 @@ namespace Tests
             var HLP01STR_47 = _world.AcknexObject.GetAcknexObject("HLP01STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP01STR_47);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9774,7 +9772,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator SHOWSOUNDVOLUMEMENU()
+        public IEnumerator SHOWSOUNDVOLUMEMENU(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.PlaySound("BIP02SND", 0.5f);
             var HIDEMENU_1 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"HIDEMENU");
@@ -9800,7 +9798,7 @@ namespace Tests
             var HLP01STR_23 = _world.AcknexObject.GetAcknexObject("HLP01STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP01STR_23);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9812,7 +9810,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator SHOWWEAPON()
+        public IEnumerator SHOWWEAPON(IAcknexObject MY, IAcknexObject THERE)
         {
             var FIRE_GUN_0 = _world.GetSynonymObject("FIRE_GUN");
             _world.AcknexObject.SetAcknexObject("IF_LEFT", FIRE_GUN_0);
@@ -9846,7 +9844,7 @@ namespace Tests
             MAP_MODE_30.SetFloat("VAL", MAPMODE_29_val);
             yield break;
         }
-        public IEnumerator STARTASSAULT()
+        public IEnumerator STARTASSAULT(IAcknexObject MY, IAcknexObject THERE)
         {
             var ASSAULTSTARTED_1 = _world.GetObject(ObjectType.Skill, "ASSAULTSTARTED");
             var ASSAULTSTARTED_1_val = ASSAULTSTARTED_1.GetFloat("VAL");
@@ -9857,7 +9855,7 @@ namespace Tests
             var ASSAULTSTARTED_3 = _world.GetObject(ObjectType.Skill, "ASSAULTSTARTED");
             ASSAULTSTARTED_3.SetFloat("VAL", 1f);
             {
-                var enumerator = LAUNCHMISSILES();
+                var enumerator = LAUNCHMISSILES(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9878,7 +9876,7 @@ namespace Tests
             TROPASSAULT1ACT_16.SetFloatAll("DIST", 40f);
             yield break;
         }
-        public IEnumerator STARTLEVEL()
+        public IEnumerator STARTLEVEL(IAcknexObject MY, IAcknexObject THERE)
         {
             var SCREEN_HGT_1 = _world.GetObject(ObjectType.Skill, "SCREEN_HGT");
             SCREEN_HGT_1.SetFloat("VAL", 358f);
@@ -9923,7 +9921,7 @@ namespace Tests
             var PNLMSKOVL_39 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Overlay,*/"PNLMSKOVL");
             _world.AcknexObject.SetAcknexObject("LAYERS.15", PNLMSKOVL_39);
             {
-                var enumerator = SET_WALKING();
+                var enumerator = SET_WALKING(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9980,7 +9978,7 @@ namespace Tests
             var GOLCOUNTER_87 = _world.GetObject(ObjectType.Skill, "GOLCOUNTER");
             GOLCOUNTER_87.SetFloat("VAL", 0f);
             {
-                var enumerator = FADEIN();
+                var enumerator = FADEIN(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -9993,7 +9991,7 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator STOP_MOVING()
+        public IEnumerator STOP_MOVING(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_VX_1 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
             PLAYER_VX_1.SetFloat("VAL", 0f);
@@ -10005,7 +10003,7 @@ namespace Tests
             PLAYER_VROT_7.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator SUBMENUDOWN()
+        public IEnumerator SUBMENUDOWN(IAcknexObject MY, IAcknexObject THERE)
         {
             var SUBMENUITEM_1 = _world.GetObject(ObjectType.Skill, "SUBMENUITEM");
             var SUBMENUITEM_1_val = SUBMENUITEM_1.GetFloat("VAL");
@@ -10023,7 +10021,7 @@ namespace Tests
             _world.PlaySound("BIP01SND", 0.5f);
             yield break;
         }
-        public IEnumerator SUBMENUUP()
+        public IEnumerator SUBMENUUP(IAcknexObject MY, IAcknexObject THERE)
         {
             var SUBMENUITEM_1 = _world.GetObject(ObjectType.Skill, "SUBMENUITEM");
             var SUBMENUITEM_1_val = SUBMENUITEM_1.GetFloat("VAL");
@@ -10041,25 +10039,25 @@ namespace Tests
             _world.PlaySound("BIP01SND", 0.5f);
             yield break;
         }
-        public IEnumerator TARGETOFF()
+        public IEnumerator TARGETOFF(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.AcknexObject.SetAcknexObject("LAYERS.16", null);
             yield break;
         }
-        public IEnumerator TARGETON()
+        public IEnumerator TARGETON(IAcknexObject MY, IAcknexObject THERE)
         {
             var TARGETOVL_0 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Overlay,*/"TARGETOVL");
             _world.AcknexObject.SetAcknexObject("LAYERS.16", TARGETOVL_0);
             yield break;
         }
-        public IEnumerator THROW()
+        public IEnumerator THROW(IAcknexObject MY, IAcknexObject THERE)
         {
             var AMMO_1 = _world.GetObject(ObjectType.Skill, "AMMO");
             var AMMO_1_val = AMMO_1.GetFloat("VAL");
             if (AMMO_1_val == 0f)
             {
                 {
-                    var enumerator = SELECTNONE();
+                    var enumerator = SELECTNONE(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -10072,7 +10070,7 @@ namespace Tests
                 yield break;
             }
             {
-                var enumerator = CHOOSEGRANADE();
+                var enumerator = CHOOSEGRANADE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10186,7 +10184,7 @@ namespace Tests
             var AMMO_127 = _world.GetObject(ObjectType.Skill, "AMMO");
             AMMO_127.SetFloat("VAL", AMMO_126_val + -1f);
             {
-                var enumerator = DECAMMO();
+                var enumerator = DECAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10219,7 +10217,7 @@ namespace Tests
             var GUNFIRING_146 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
             GUNFIRING_146.SetFloat("VAL", 0f);
             {
-                var enumerator = SELECTNONE();
+                var enumerator = SELECTNONE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10249,22 +10247,22 @@ namespace Tests
             GUNFIRING_158.SetFloat("VAL", 0f);
             yield break;
         }
-        public IEnumerator TIMEOUTPARTICLE()
+        public IEnumerator TIMEOUTPARTICLE(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("SKILL1");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("SKILL1", temp_3 + 1f);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             var temp_9 = MY_8.GetFloat("SKILL1");
             if (temp_9 < 8f)
             {
                 yield break;
             }
-            var MY_12 = _world.GetSynonymObject("MY");
+            var MY_12 = MY;
             MY_12.SetFloat("SKILL1", 0f);
             {
-                var enumerator = IMPLODEPARTICLE();
+                var enumerator = IMPLODEPARTICLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10277,7 +10275,7 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TOGGLEGODMODE()
+        public IEnumerator TOGGLEGODMODE(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.AcknexObject.SetAcknexObject("IF_D", null);
             _world.PlaySound("ALARM03SND", 0.7f);
@@ -10290,7 +10288,7 @@ namespace Tests
             var HLP06STR_5 = _world.AcknexObject.GetAcknexObject("HLP06STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP06STR_5);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10307,7 +10305,7 @@ namespace Tests
             var HLP05STR_9 = _world.AcknexObject.GetAcknexObject("HLP05STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP05STR_9);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10346,7 +10344,7 @@ namespace Tests
             var KEY4_38 = _world.GetObject(ObjectType.Skill, "KEY4");
             KEY4_38.SetFloat("VAL", 1f);
             {
-                var enumerator = SHOWAMMO();
+                var enumerator = SHOWAMMO(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10358,31 +10356,31 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator TROPAIM()
+        public IEnumerator TROPAIM(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", null);
             var TROPSHOOT_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPSHOOT");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", TROPSHOOT_6);
             var TROPHIT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", TROPHIT_9);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("CAREFULLY", 0f);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("BERKELEY", 0f);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("SKILL4", 3f);
             var TROP3ATEX_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP3ATEX");
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetAcknexObject("TEXTURE", TROP3ATEX_21);
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("SPEED", 0f);
             {
-                var enumerator = FOLLOWANGLE();
+                var enumerator = FOLLOWANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10393,7 +10391,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = TROPSHOUT();
+                var enumerator = TROPSHOUT(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10406,52 +10404,52 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TROPASSAULT()
+        public IEnumerator TROPASSAULT(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_TICK", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_NEAR", null);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_FAR", null);
             var CYCLETROPATTACK_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLETROPATTACK");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("EACH_CYCLE", CYCLETROPATTACK_9);
             var TROPATEX_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROPATEX");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("TEXTURE", TROPATEX_12);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("SPEED", 0.7f);
             yield break;
         }
-        public IEnumerator TROPBACKOFF()
+        public IEnumerator TROPBACKOFF(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_TICK", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_NEAR", null);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_FAR", null);
             var CYCLETROPBACK_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLETROPBACK");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("EACH_CYCLE", CYCLETROPBACK_9);
             var TROPHIT_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("IF_HIT", TROPHIT_12);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("CAREFULLY", 1f);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("SKILL4", 1f);
             var TROP1TEX_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP1TEX");
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetAcknexObject("TEXTURE", TROP1TEX_21);
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("SPEED", 0.3f);
             var BULLET_27 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             MY_29.SetAcknexObject("TARGET", BULLET_27);
             {
-                var enumerator = REPELANGLE();
+                var enumerator = REPELANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10461,14 +10459,14 @@ namespace Tests
                     }
                 }
             }
-            var MY_31 = _world.GetSynonymObject("MY");
-            var MY_33 = _world.GetSynonymObject("MY");
+            var MY_31 = MY;
+            var MY_33 = MY;
             var temp_34 = MY_33.GetFloat("ANGLE");
-            var MY_36 = _world.GetSynonymObject("MY");
+            var MY_36 = MY;
             var temp_37 = MY_36.GetFloat("ANGLE");
             MY_31.SetFloat("ANGLE", temp_37 + UnityEngine.Random.value - 0.5f);
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10480,7 +10478,7 @@ namespace Tests
             }
             yield return new WaitForTicks(64f);
             {
-                var enumerator = FOLLOWANGLE();
+                var enumerator = FOLLOWANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10490,14 +10488,14 @@ namespace Tests
                     }
                 }
             }
-            var MY_45 = _world.GetSynonymObject("MY");
+            var MY_45 = MY;
             var temp_46 = MY_45.GetFloat("SKILL1");
             if (temp_46 > 5f)
             {
                 yield break;
             }
             {
-                var enumerator = TROPWAIT();
+                var enumerator = TROPWAIT(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10510,32 +10508,32 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TROPDEAD()
+        public IEnumerator TROPDEAD(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", null);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_HIT", null);
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("EACH_CYCLE", null);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("DIST", 0f);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("SKILL4", 9f);
             var TROP9TEX_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP9TEX");
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetAcknexObject("TEXTURE", TROP9TEX_18);
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetFloat("SPEED", 0f);
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetAcknexObject("TARGET", null);
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             MY_29.SetFloat("PASSABLE", 1f);
-            var MY_32 = _world.GetSynonymObject("MY");
+            var MY_32 = MY;
             MY_32.SetFloat("CAREFULLY", 0f);
-            var MY_35 = _world.GetSynonymObject("MY");
+            var MY_35 = MY;
             MY_35.SetFloat("BERKELEY", 1f);
             if (UnityEngine.Random.value > 0.4f)
             {
@@ -10546,38 +10544,38 @@ namespace Tests
                 goto ARMOUR;
             }
             var PICKTROPAMMO_40 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"PICKTROPAMMO");
-            var MY_42 = _world.GetSynonymObject("MY");
+            var MY_42 = MY;
             MY_42.SetAcknexObject("IF_NEAR", PICKTROPAMMO_40);
-            var MY_45 = _world.GetSynonymObject("MY");
+            var MY_45 = MY;
             MY_45.SetFloat("DIST", 4f);
             yield break;
             ARMOUR:
             var PICKTROPARMOUR_46 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"PICKTROPARMOUR");
-            var MY_48 = _world.GetSynonymObject("MY");
+            var MY_48 = MY;
             MY_48.SetAcknexObject("IF_NEAR", PICKTROPARMOUR_46);
-            var MY_51 = _world.GetSynonymObject("MY");
+            var MY_51 = MY;
             MY_51.SetFloat("DIST", 4f);
             yield break;
         }
-        public IEnumerator TROPDIE()
+        public IEnumerator TROPDIE(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetFloat("SKILL1", 10f);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_NEAR", null);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_FAR", null);
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", null);
             var TROPDEAD_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPDEAD");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("EACH_CYCLE", TROPDEAD_12);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             var temp_18 = MY_17.GetFloat("FLAG4");
             if (temp_18 != 0f)
             {
                 {
-                    var enumerator = TROPDROPKEY();
+                    var enumerator = TROPDROPKEY(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -10588,29 +10586,29 @@ namespace Tests
                     }
                 }
             }
-            var MY_21 = _world.GetSynonymObject("MY");
+            var MY_21 = MY;
             MY_21.SetFloat("SKILL4", 8f);
             var TROP8TEX_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP8TEX");
-            var MY_24 = _world.GetSynonymObject("MY");
+            var MY_24 = MY;
             MY_24.SetAcknexObject("TEXTURE", TROP8TEX_22);
-            var MY_27 = _world.GetSynonymObject("MY");
+            var MY_27 = MY;
             MY_27.SetFloat("SPEED", 0f);
-            var MY_30 = _world.GetSynonymObject("MY");
+            var MY_30 = MY;
             MY_30.SetAcknexObject("TARGET", null);
             yield break;
         }
-        public IEnumerator TROPDROPKEY()
+        public IEnumerator TROPDROPKEY(IAcknexObject MY, IAcknexObject THERE)
         {
             var KEY2TNG_1 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"KEY2TNG");
             var KEY2TNG_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"KEY2TNG");
             var temp_4 = KEY2TNG_3.GetFloat("X");
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             var temp_7 = MY_6.GetFloat("X");
             KEY2TNG_1.SetFloat("X", temp_7);
             var KEY2TNG_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"KEY2TNG");
             var KEY2TNG_11 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"KEY2TNG");
             var temp_12 = KEY2TNG_11.GetFloat("Y");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             var temp_15 = MY_14.GetFloat("Y");
             KEY2TNG_9.SetFloat("Y", temp_15);
             var KEY2TNG_18 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"KEY2TNG");
@@ -10618,7 +10616,7 @@ namespace Tests
             var KEY2TNG_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"KEY2TNG");
             var KEY2TNG_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"KEY2TNG");
             var temp_23 = KEY2TNG_22.GetFloat("HEIGHT");
-            var MY_25 = _world.GetSynonymObject("MY");
+            var MY_25 = MY;
             var temp_26 = MY_25.GetFloat("FLOOR_HGT");
             KEY2TNG_20.SetFloat("HEIGHT", temp_26 - 0.01f);
             var KEY2TNG_31 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Thing,*/"KEY2TNG");
@@ -10628,34 +10626,34 @@ namespace Tests
             KEY2TNG_34.SetFloat("GROUND", 0f);
             yield break;
         }
-        public IEnumerator TROPESCAPE()
+        public IEnumerator TROPESCAPE(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
             var TROPHIDE_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIDE");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", TROPHIDE_3);
             var CYCLETROPHIDE_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLETROPHIDE");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", CYCLETROPHIDE_6);
             var TROPHIT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", TROPHIT_9);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("CAREFULLY", 1f);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("BERKELEY", 0f);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("SKILL4", 4f);
             var TROP1TEX_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP1TEX");
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetAcknexObject("TEXTURE", TROP1TEX_21);
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("DIST", 30f);
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             MY_29.SetFloat("SPEED", 0.4f);
             {
-                var enumerator = REPELANGLE();
+                var enumerator = REPELANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10665,17 +10663,17 @@ namespace Tests
                     }
                 }
             }
-            var MY_31 = _world.GetSynonymObject("MY");
-            var MY_33 = _world.GetSynonymObject("MY");
+            var MY_31 = MY;
+            var MY_33 = MY;
             var temp_34 = MY_33.GetFloat("ANGLE");
-            var MY_36 = _world.GetSynonymObject("MY");
+            var MY_36 = MY;
             var temp_37 = MY_36.GetFloat("ANGLE");
             MY_31.SetFloat("ANGLE", temp_37 + (UnityEngine.Random.value - 0.5f) * 2f);
             var BULLET_46 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_48 = _world.GetSynonymObject("MY");
+            var MY_48 = MY;
             MY_48.SetAcknexObject("TARGET", BULLET_46);
             {
-                var enumerator = LOCATEACTOR();
+                var enumerator = LOCATEACTOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10686,7 +10684,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10699,31 +10697,31 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TROPFOLLOW()
+        public IEnumerator TROPFOLLOW(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", null);
             var CYCLETROPATTACK_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLETROPATTACK");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", CYCLETROPATTACK_6);
             var TROPHIT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", TROPHIT_9);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("CAREFULLY", 1f);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("BERKELEY", 0f);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("SKILL4", 1f);
             var TROP1TEX_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP1TEX");
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetAcknexObject("TEXTURE", TROP1TEX_21);
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("SPEED", 0.4f);
             {
-                var enumerator = FOLLOWANGLE();
+                var enumerator = FOLLOWANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10734,7 +10732,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = LOCATEACTOR();
+                var enumerator = LOCATEACTOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10745,7 +10743,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10758,34 +10756,34 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TROPFOLLOWATTACK()
+        public IEnumerator TROPFOLLOWATTACK(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", null);
             var CYCLETROPSHOOT_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLETROPSHOOT");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", CYCLETROPSHOOT_6);
             var TROPHIT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", TROPHIT_9);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("CAREFULLY", 1f);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("BERKELEY", 0f);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("SKILL4", 2f);
             var TROPATEX_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROPATEX");
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetAcknexObject("TEXTURE", TROPATEX_21);
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("SPEED", 0.4f);
             var BULLET_27 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             MY_29.SetAcknexObject("TARGET", BULLET_27);
             {
-                var enumerator = FOLLOWANGLE();
+                var enumerator = FOLLOWANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10796,7 +10794,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = LOCATEACTOR();
+                var enumerator = LOCATEACTOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10807,7 +10805,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10820,34 +10818,34 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TROPFOLLOWWARNING()
+        public IEnumerator TROPFOLLOWWARNING(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", null);
             var CYCLETROPWARNING_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLETROPWARNING");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", CYCLETROPWARNING_6);
             var TROPHIT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", TROPHIT_9);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("CAREFULLY", 1f);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("BERKELEY", 0f);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("SKILL4", 1f);
             var TROP1TEX_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP1TEX");
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetAcknexObject("TEXTURE", TROP1TEX_21);
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("SPEED", 0.4f);
             var BULLET_27 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             MY_29.SetAcknexObject("TARGET", BULLET_27);
             {
-                var enumerator = FOLLOWANGLE();
+                var enumerator = FOLLOWANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10858,7 +10856,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = LOCATEACTOR();
+                var enumerator = LOCATEACTOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10869,7 +10867,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10882,35 +10880,35 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TROPHIDE()
+        public IEnumerator TROPHIDE(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_TICK", null);
             var TROPESCAPE_3 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPESCAPE");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_NEAR", TROPESCAPE_3);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_FAR", null);
             var TROPHIDE_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIDE");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("EACH_CYCLE", TROPHIDE_9);
             var TROPHIT_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("IF_HIT", TROPHIT_12);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("CAREFULLY", 1f);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("BERKELEY", 0f);
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             var temp_24 = MY_23.GetFloat("SKILL4");
             if (temp_24 == 4f)
             {
                 goto HIDDING;
             }
-            var MY_27 = _world.GetSynonymObject("MY");
+            var MY_27 = MY;
             MY_27.SetFloat("SKILL4", 4f);
             {
-                var enumerator = REPELANGLE();
+                var enumerator = REPELANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10920,24 +10918,24 @@ namespace Tests
                     }
                 }
             }
-            var MY_29 = _world.GetSynonymObject("MY");
-            var MY_31 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
+            var MY_31 = MY;
             var temp_32 = MY_31.GetFloat("ANGLE");
-            var MY_34 = _world.GetSynonymObject("MY");
+            var MY_34 = MY;
             var temp_35 = MY_34.GetFloat("ANGLE");
             MY_29.SetFloat("ANGLE", temp_35 + (UnityEngine.Random.value - 0.5f) * 2.4f);
             var TROP1TEX_44 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP1TEX");
-            var MY_46 = _world.GetSynonymObject("MY");
+            var MY_46 = MY;
             MY_46.SetAcknexObject("TEXTURE", TROP1TEX_44);
-            var MY_49 = _world.GetSynonymObject("MY");
+            var MY_49 = MY;
             MY_49.SetFloat("DIST", 20f);
-            var MY_52 = _world.GetSynonymObject("MY");
+            var MY_52 = MY;
             MY_52.SetFloat("SPEED", 0.6f);
             var BULLET_53 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_55 = _world.GetSynonymObject("MY");
+            var MY_55 = MY;
             MY_55.SetAcknexObject("TARGET", BULLET_53);
             {
-                var enumerator = LOCATEACTOR();
+                var enumerator = LOCATEACTOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10948,7 +10946,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10959,18 +10957,18 @@ namespace Tests
                 }
             }
             yield return new WaitForTicks(384f);
-            var MY_59 = _world.GetSynonymObject("MY");
+            var MY_59 = MY;
             var temp_60 = MY_59.GetFloat("SKILL1");
             if (temp_60 > 5f)
             {
                 yield break;
             }
-            var MY_63 = _world.GetSynonymObject("MY");
+            var MY_63 = MY;
             var temp_64 = MY_63.GetFloat("SKILL1");
-            var MY_66 = _world.GetSynonymObject("MY");
+            var MY_66 = MY;
             MY_66.SetFloat("SKILL1", temp_64 + -2f);
             {
-                var enumerator = TROPFOLLOWATTACK();
+                var enumerator = TROPFOLLOWATTACK(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10983,7 +10981,7 @@ namespace Tests
             yield break;
             HIDDING:
             {
-                var enumerator = REPELANGLE();
+                var enumerator = REPELANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -10993,24 +10991,24 @@ namespace Tests
                     }
                 }
             }
-            var MY_68 = _world.GetSynonymObject("MY");
-            var MY_70 = _world.GetSynonymObject("MY");
+            var MY_68 = MY;
+            var MY_70 = MY;
             var temp_71 = MY_70.GetFloat("ANGLE");
-            var MY_73 = _world.GetSynonymObject("MY");
+            var MY_73 = MY;
             var temp_74 = MY_73.GetFloat("ANGLE");
             MY_68.SetFloat("ANGLE", temp_74 + (UnityEngine.Random.value - 0.5f) * 2.4f);
             var TROP1TEX_83 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP1TEX");
-            var MY_85 = _world.GetSynonymObject("MY");
+            var MY_85 = MY;
             MY_85.SetAcknexObject("TEXTURE", TROP1TEX_83);
-            var MY_88 = _world.GetSynonymObject("MY");
+            var MY_88 = MY;
             MY_88.SetFloat("DIST", 20f);
-            var MY_91 = _world.GetSynonymObject("MY");
+            var MY_91 = MY;
             MY_91.SetFloat("SPEED", 0.6f);
             var BULLET_92 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_94 = _world.GetSynonymObject("MY");
+            var MY_94 = MY;
             MY_94.SetAcknexObject("TARGET", BULLET_92);
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11022,7 +11020,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator TROPHIT()
+        public IEnumerator TROPHIT(IAcknexObject MY, IAcknexObject THERE)
         {
             var SHOOT_FAC_1 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
             var SHOOT_FAC_1_val = SHOOT_FAC_1.GetFloat("VAL");
@@ -11030,7 +11028,7 @@ namespace Tests
             {
                 goto OBSTACLE;
             }
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var HIT_3 = _world.GetSynonymObject("HIT");
             if (HIT_3 == MY_2)
             {
@@ -11045,19 +11043,19 @@ namespace Tests
             var DISTX_6 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_7 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_7_val = DISTX_7.GetFloat("VAL");
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             var temp_11 = MY_10.GetFloat("X");
             var EXPLOSION_CENTER_14 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_15 = EXPLOSION_CENTER_14.GetFloat("X");
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             var temp_21 = MY_20.GetFloat("X");
             var EXPLOSION_CENTER_24 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_25 = EXPLOSION_CENTER_24.GetFloat("X");
-            var MY_30 = _world.GetSynonymObject("MY");
+            var MY_30 = MY;
             var temp_31 = MY_30.GetFloat("Y");
             var EXPLOSION_CENTER_34 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_35 = EXPLOSION_CENTER_34.GetFloat("Y");
-            var MY_40 = _world.GetSynonymObject("MY");
+            var MY_40 = MY;
             var temp_41 = MY_40.GetFloat("Y");
             var EXPLOSION_CENTER_44 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_45 = EXPLOSION_CENTER_44.GetFloat("Y");
@@ -11079,12 +11077,12 @@ namespace Tests
             {
                 goto GRANADE;
             }
-            var MY_55 = _world.GetSynonymObject("MY");
+            var MY_55 = MY;
             var temp_56 = MY_55.GetFloat("VISIBLE");
             if (temp_56 == 1f)
             {
                 {
-                    var enumerator = TROPIMPLODE();
+                    var enumerator = TROPIMPLODE(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -11098,10 +11096,10 @@ namespace Tests
             }
             yield break;
             GRANADE:
-            var MY_58 = _world.GetSynonymObject("MY");
-            var MY_60 = _world.GetSynonymObject("MY");
+            var MY_58 = MY;
+            var MY_60 = MY;
             var temp_61 = MY_60.GetFloat("SKILL1");
-            var MY_63 = _world.GetSynonymObject("MY");
+            var MY_63 = MY;
             var temp_64 = MY_63.GetFloat("SKILL1");
             var SHOOT_FAC_66 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
             var SHOOT_FAC_66_val = SHOOT_FAC_66.GetFloat("VAL");
@@ -11110,16 +11108,16 @@ namespace Tests
             MY_58.SetFloat("SKILL1", temp_64 + SHOOT_FAC_66_val * (20f - DISTX_71_val) / 20f);
             goto EXPLODED;
             CONT:
-            var MY_76 = _world.GetSynonymObject("MY");
-            var MY_78 = _world.GetSynonymObject("MY");
+            var MY_76 = MY;
+            var MY_78 = MY;
             var temp_79 = MY_78.GetFloat("SKILL1");
-            var MY_81 = _world.GetSynonymObject("MY");
+            var MY_81 = MY;
             var temp_82 = MY_81.GetFloat("SKILL1");
             var SHOOT_FAC_84 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
             var SHOOT_FAC_84_val = SHOOT_FAC_84.GetFloat("VAL");
             MY_76.SetFloat("SKILL1", temp_82 + SHOOT_FAC_84_val * (UnityEngine.Random.value + 2f) / 3f);
             EXPLODED:
-            var MY_95 = _world.GetSynonymObject("MY");
+            var MY_95 = MY;
             var temp_96 = MY_95.GetFloat("SKILL1");
             if (temp_96 > 5f)
             {
@@ -11129,49 +11127,49 @@ namespace Tests
             {
                 goto DIE;
             }
-            var MY_100 = _world.GetSynonymObject("MY");
+            var MY_100 = MY;
             var temp_101 = MY_100?.GetAcknexObject("TEXTURE");
             _world.SetSynonymObject("TROP_TEX", temp_101);
-            var MY_105 = _world.GetSynonymObject("MY");
+            var MY_105 = MY;
             MY_105.SetAcknexObject("IF_NEAR", null);
-            var MY_108 = _world.GetSynonymObject("MY");
+            var MY_108 = MY;
             MY_108.SetAcknexObject("IF_FAR", null);
-            var MY_111 = _world.GetSynonymObject("MY");
+            var MY_111 = MY;
             MY_111.SetAcknexObject("IF_HIT", null);
             if (UnityEngine.Random.value > 0.7f)
             {
                 goto SONOFA;
             }
             var TROP5TEX_114 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP5TEX");
-            var MY_116 = _world.GetSynonymObject("MY");
+            var MY_116 = MY;
             MY_116.SetAcknexObject("TEXTURE", TROP5TEX_114);
             _world.PlaySound("TROP05SND", 0.2f, "MY");
             goto WAIT;
             SONOFA:
             var TROP5ATEX_118 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP5ATEX");
-            var MY_120 = _world.GetSynonymObject("MY");
+            var MY_120 = MY;
             MY_120.SetAcknexObject("TEXTURE", TROP5ATEX_118);
             _world.PlaySound("TROP11SND", 0.2f, "MY");
             WAIT:
             yield return new WaitForTicks(4f);
             var TROPESCAPE_123 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPESCAPE");
-            var MY_125 = _world.GetSynonymObject("MY");
+            var MY_125 = MY;
             MY_125.SetAcknexObject("IF_NEAR", TROPESCAPE_123);
             var TROPHIDE_126 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIDE");
-            var MY_128 = _world.GetSynonymObject("MY");
+            var MY_128 = MY;
             MY_128.SetAcknexObject("IF_FAR", TROPHIDE_126);
             var TROPHIT_129 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_131 = _world.GetSynonymObject("MY");
+            var MY_131 = MY;
             MY_131.SetAcknexObject("IF_HIT", TROPHIT_129);
             var TROP_TEX_132 = _world.GetSynonymObject("TROP_TEX");
-            var MY_134 = _world.GetSynonymObject("MY");
+            var MY_134 = MY;
             MY_134.SetAcknexObject("TEXTURE", TROP_TEX_132);
-            var MY_137 = _world.GetSynonymObject("MY");
+            var MY_137 = MY;
             var temp_138 = MY_137.GetFloat("SKILL1");
             if (temp_138 > 4f)
             {
                 {
-                    var enumerator = TROPHIDE();
+                    var enumerator = TROPHIDE(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -11183,12 +11181,12 @@ namespace Tests
                 }
                 yield break;
             }
-            var MY_141 = _world.GetSynonymObject("MY");
+            var MY_141 = MY;
             var temp_142 = MY_141.GetFloat("SKILL4");
             if (temp_142 != 4f)
             {
                 {
-                    var enumerator = TROPFOLLOWATTACK();
+                    var enumerator = TROPFOLLOWATTACK(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -11202,10 +11200,10 @@ namespace Tests
             }
             yield break;
             DIE:
-            var MY_145 = _world.GetSynonymObject("MY");
+            var MY_145 = MY;
             MY_145.SetFloat("SKILL1", 10f);
             {
-                var enumerator = TROPDIE();
+                var enumerator = TROPDIE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11219,7 +11217,7 @@ namespace Tests
             yield break;
             OBSTACLE:
             {
-                var enumerator = TROPTURN();
+                var enumerator = TROPTURN(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11232,24 +11230,24 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TROPIMPLODE()
+        public IEnumerator TROPIMPLODE(IAcknexObject MY, IAcknexObject THERE)
         {
             var DISTX_0 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_1 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_1_val = DISTX_1.GetFloat("VAL");
-            var MY_4 = _world.GetSynonymObject("MY");
+            var MY_4 = MY;
             var temp_5 = MY_4.GetFloat("X");
             var EXPLOSION_CENTER_8 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_9 = EXPLOSION_CENTER_8.GetFloat("X");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             var temp_15 = MY_14.GetFloat("X");
             var EXPLOSION_CENTER_18 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_19 = EXPLOSION_CENTER_18.GetFloat("X");
-            var MY_24 = _world.GetSynonymObject("MY");
+            var MY_24 = MY;
             var temp_25 = MY_24.GetFloat("Y");
             var EXPLOSION_CENTER_28 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_29 = EXPLOSION_CENTER_28.GetFloat("Y");
-            var MY_34 = _world.GetSynonymObject("MY");
+            var MY_34 = MY;
             var temp_35 = MY_34.GetFloat("Y");
             var EXPLOSION_CENTER_38 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_39 = EXPLOSION_CENTER_38.GetFloat("Y");
@@ -11261,7 +11259,7 @@ namespace Tests
             var DISTZ_43 = _world.GetObject(ObjectType.Skill, "DISTZ");
             var DISTZ_44 = _world.GetObject(ObjectType.Skill, "DISTZ");
             var DISTZ_44_val = DISTZ_44.GetFloat("VAL");
-            var MY_46 = _world.GetSynonymObject("MY");
+            var MY_46 = MY;
             var temp_47 = MY_46.GetFloat("HEIGHT");
             var EXPLOSION_CENTER_50 = _world.GetSynonymObject("EXPLOSION_CENTER");
             var temp_51 = EXPLOSION_CENTER_50.GetFloat("HEIGHT");
@@ -11271,7 +11269,7 @@ namespace Tests
             if (DISTX_53_val > 10f)
             {
                 {
-                    var enumerator = BEAMREACT();
+                    var enumerator = BEAMREACT(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -11283,34 +11281,34 @@ namespace Tests
                 }
                 yield break;
             }
-            var MY_56 = _world.GetSynonymObject("MY");
+            var MY_56 = MY;
             MY_56.SetFloat("PASSABLE", 1f);
-            var MY_59 = _world.GetSynonymObject("MY");
+            var MY_59 = MY;
             MY_59.SetFloat("CAREFULLY", 0f);
-            var MY_62 = _world.GetSynonymObject("MY");
+            var MY_62 = MY;
             MY_62.SetAcknexObject("IF_NEAR", null);
-            var MY_65 = _world.GetSynonymObject("MY");
+            var MY_65 = MY;
             MY_65.SetAcknexObject("IF_FAR", null);
-            var MY_68 = _world.GetSynonymObject("MY");
+            var MY_68 = MY;
             MY_68.SetAcknexObject("IF_HIT", null);
             var VANISHFORGOOD_69 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"VANISHFORGOOD");
-            var MY_71 = _world.GetSynonymObject("MY");
+            var MY_71 = MY;
             MY_71.SetAcknexObject("EACH_CYCLE", VANISHFORGOOD_69);
-            var MY_74 = _world.GetSynonymObject("MY");
+            var MY_74 = MY;
             MY_74.SetFloat("SKILL4", 8f);
             var TROP0ATEX_75 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP0ATEX");
-            var MY_77 = _world.GetSynonymObject("MY");
+            var MY_77 = MY;
             MY_77.SetAcknexObject("TEXTURE", TROP0ATEX_75);
-            var MY_80 = _world.GetSynonymObject("MY");
+            var MY_80 = MY;
             MY_80.SetFloat("SPEED", 0f);
-            var MY_83 = _world.GetSynonymObject("MY");
+            var MY_83 = MY;
             MY_83.SetAcknexObject("TARGET", null);
-            var MY_86 = _world.GetSynonymObject("MY");
+            var MY_86 = MY;
             var temp_87 = MY_86.GetFloat("FLAG4");
             if (temp_87 != 0f)
             {
                 {
-                    var enumerator = TROPDROPKEY();
+                    var enumerator = TROPDROPKEY(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -11323,15 +11321,15 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator TROPLISTEN()
+        public IEnumerator TROPLISTEN(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("SKILL4");
             if (temp_3 != 4f)
             {
                 goto CONT;
             }
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             var temp_7 = MY_6.GetFloat("VISIBLE");
             if (temp_7 != 1f)
             {
@@ -11339,13 +11337,13 @@ namespace Tests
             }
             yield break;
             CONT:
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             var temp_11 = MY_10.GetFloat("DISTANCE");
             if (temp_11 > 100f)
             {
                 goto CONT1;
             }
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             var temp_15 = MY_14.GetFloat("FLAG2");
             if (temp_15 == 0f)
             {
@@ -11353,36 +11351,36 @@ namespace Tests
             }
             yield break;
             CONT1:
-            var MY_18 = _world.GetSynonymObject("MY");
+            var MY_18 = MY;
             MY_18.SetAcknexObject("IF_NEAR", null);
-            var MY_21 = _world.GetSynonymObject("MY");
+            var MY_21 = MY;
             MY_21.SetAcknexObject("IF_FAR", null);
             var CYCLETROPATTACK_22 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLETROPATTACK");
-            var MY_24 = _world.GetSynonymObject("MY");
+            var MY_24 = MY;
             MY_24.SetAcknexObject("EACH_CYCLE", CYCLETROPATTACK_22);
             var TROPHIT_25 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_27 = _world.GetSynonymObject("MY");
+            var MY_27 = MY;
             MY_27.SetAcknexObject("IF_HIT", TROPHIT_25);
-            var MY_30 = _world.GetSynonymObject("MY");
+            var MY_30 = MY;
             MY_30.SetFloat("CAREFULLY", 0f);
-            var MY_33 = _world.GetSynonymObject("MY");
+            var MY_33 = MY;
             MY_33.SetFloat("BERKELEY", 0f);
-            var MY_36 = _world.GetSynonymObject("MY");
+            var MY_36 = MY;
             MY_36.SetFloat("SKILL4", 0f);
             var TROP0TEX_37 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP0TEX");
-            var MY_39 = _world.GetSynonymObject("MY");
+            var MY_39 = MY;
             MY_39.SetAcknexObject("TEXTURE", TROP0TEX_37);
-            var MY_42 = _world.GetSynonymObject("MY");
+            var MY_42 = MY;
             MY_42.SetFloat("SPEED", 0f);
-            var MY_45 = _world.GetSynonymObject("MY");
+            var MY_45 = MY;
             MY_45.SetAcknexObject("TARGET", null);
             yield return new WaitForTicks(120f);
-            var MY_49 = _world.GetSynonymObject("MY");
+            var MY_49 = MY;
             var temp_50 = MY_49.GetFloat("SKILL1");
             if (temp_50 < 9f)
             {
                 {
-                    var enumerator = TROPWANDER();
+                    var enumerator = TROPWANDER(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -11396,26 +11394,26 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator TROPLOOKFOR()
+        public IEnumerator TROPLOOKFOR(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("SKILL4");
             if (temp_3 == 10f)
             {
                 yield break;
             }
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             var temp_7 = MY_6.GetFloat("DISTANCE");
             if (temp_7 > 100f)
             {
                 yield break;
             }
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             var temp_11 = MY_10.GetFloat("FLAG2");
             if (temp_11 == 1f)
             {
                 {
-                    var enumerator = TROPFOLLOWATTACK();
+                    var enumerator = TROPFOLLOWATTACK(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -11428,82 +11426,82 @@ namespace Tests
                 yield break;
             }
             var FOLLOW_12 = _world.AcknexObject.GetAcknexObject("FOLLOW");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             var temp_15 = MY_14?.GetAcknexObject("TARGET");
             if (temp_15 == FOLLOW_12)
             {
                 yield break;
             }
-            var MY_18 = _world.GetSynonymObject("MY");
+            var MY_18 = MY;
             var temp_19 = MY_18.GetFloat("SKILL1");
             if (temp_19 > 5f)
             {
                 yield break;
             }
-            var MY_22 = _world.GetSynonymObject("MY");
+            var MY_22 = MY;
             MY_22.SetAcknexObject("IF_NEAR", null);
-            var MY_25 = _world.GetSynonymObject("MY");
+            var MY_25 = MY;
             MY_25.SetAcknexObject("IF_FAR", null);
             var TROPSEARCH_26 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPSEARCH");
-            var MY_28 = _world.GetSynonymObject("MY");
+            var MY_28 = MY;
             MY_28.SetAcknexObject("EACH_CYCLE", TROPSEARCH_26);
             var TROPHIT_29 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_31 = _world.GetSynonymObject("MY");
+            var MY_31 = MY;
             MY_31.SetAcknexObject("IF_HIT", TROPHIT_29);
-            var MY_34 = _world.GetSynonymObject("MY");
+            var MY_34 = MY;
             MY_34.SetFloat("CAREFULLY", 0f);
-            var MY_37 = _world.GetSynonymObject("MY");
+            var MY_37 = MY;
             MY_37.SetFloat("BERKELEY", 0f);
-            var MY_40 = _world.GetSynonymObject("MY");
+            var MY_40 = MY;
             MY_40.SetFloat("SKILL4", 10f);
             var TROPATEX_41 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROPATEX");
-            var MY_43 = _world.GetSynonymObject("MY");
+            var MY_43 = MY;
             MY_43.SetAcknexObject("TEXTURE", TROPATEX_41);
-            var MY_46 = _world.GetSynonymObject("MY");
+            var MY_46 = MY;
             MY_46.SetFloat("SPEED", 0f);
             var BULLET_47 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_49 = _world.GetSynonymObject("MY");
+            var MY_49 = MY;
             MY_49.SetAcknexObject("TARGET", BULLET_47);
-            var MY_52 = _world.GetSynonymObject("MY");
+            var MY_52 = MY;
             var temp_53 = MY_52.GetFloat("DISTANCE");
             if (temp_53 < 100f)
             {
                 var TROPFOLLOWATTACK_54 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPFOLLOWATTACK");
-                var MY_56 = _world.GetSynonymObject("MY");
+                var MY_56 = MY;
                 MY_56.SetAcknexObject("EACH_CYCLE", TROPFOLLOWATTACK_54);
             }
             yield break;
         }
-        public IEnumerator TROPSEARCH()
+        public IEnumerator TROPSEARCH(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_TICK", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_NEAR", null);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_FAR", null);
             var CYCLETROPATTACK_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLETROPATTACK");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("EACH_CYCLE", CYCLETROPATTACK_9);
             var TROPHIT_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("IF_HIT", TROPHIT_12);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("CAREFULLY", 1f);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("BERKELEY", 0f);
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetFloat("SKILL4", 11f);
             var TROPATEX_24 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROPATEX");
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetAcknexObject("TEXTURE", TROPATEX_24);
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             MY_29.SetFloat("SPEED", 0.3f);
             var BULLET_30 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_32 = _world.GetSynonymObject("MY");
+            var MY_32 = MY;
             MY_32.SetAcknexObject("TARGET", BULLET_30);
             {
-                var enumerator = LOCATEACTOR();
+                var enumerator = LOCATEACTOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11514,7 +11512,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11527,31 +11525,31 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TROPSHOOT()
+        public IEnumerator TROPSHOOT(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", null);
             var CYCLETROPSHOOT_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLETROPSHOOT");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", CYCLETROPSHOOT_6);
             var TROPHIT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", TROPHIT_9);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("CAREFULLY", 0f);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("BERKELEY", 0f);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("SKILL4", 3f);
             var TROP3TEX_21 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP3TEX");
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetAcknexObject("TEXTURE", TROP3TEX_21);
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("SPEED", 0f);
             {
-                var enumerator = FOLLOWANGLE();
+                var enumerator = FOLLOWANGLE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11571,8 +11569,8 @@ namespace Tests
             SHOOT_RANGE_32.SetFloat("VAL", 100f);
             var SHOOT_Y_34 = _world.GetObject(ObjectType.Skill, "SHOOT_Y");
             SHOOT_Y_34.SetFloat("VAL", 0f);
-            var MY_35 = _world.GetSynonymObject("MY");
-            _world.Shoot(MY_35);
+            var MY_35 = MY;
+            _world.Shoot(MY_35, MY, THERE);
             var HIT_DIST_37 = _world.GetObject(ObjectType.Skill, "HIT_DIST");
             var HIT_DIST_37_val = HIT_DIST_37.GetFloat("VAL");
             if (HIT_DIST_37_val == 0f)
@@ -11584,7 +11582,7 @@ namespace Tests
             var PLAYER_RESULT_39 = _world.GetObject(ObjectType.Skill, "PLAYER_RESULT");
             PLAYER_RESULT_39.SetFloat("VAL", RESULT_38_val);
             {
-                var enumerator = HITPLAYERDELAY();
+                var enumerator = HITPLAYERDELAY(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11597,7 +11595,7 @@ namespace Tests
             yield break;
             MISS:
             {
-                var enumerator = TROPFOLLOWATTACK();
+                var enumerator = TROPFOLLOWATTACK(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11610,7 +11608,7 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TROPSHOUT()
+        public IEnumerator TROPSHOUT(IAcknexObject MY, IAcknexObject THERE)
         {
             //Unknown keyword: RANDOMIZE
             var RANDOMTROP_1 = _world.GetObject(ObjectType.Skill, "RANDOMTROP");
@@ -11643,7 +11641,7 @@ namespace Tests
             _world.PlaySound("TROP03SND", 0.3f, "MY");
             yield break;
         }
-        public IEnumerator TROPTALK()
+        public IEnumerator TROPTALK(IAcknexObject MY, IAcknexObject THERE)
         {
             //Unknown keyword: RANDOMIZE
             var RANDOMTROP_1 = _world.GetObject(ObjectType.Skill, "RANDOMTROP");
@@ -11666,7 +11664,7 @@ namespace Tests
             _world.PlaySound("TROP01SND", 0.3f, "MY");
             yield break;
         }
-        public IEnumerator TROPTURN()
+        public IEnumerator TROPTURN(IAcknexObject MY, IAcknexObject THERE)
         {
             var WAITTIME_0 = _world.GetObject(ObjectType.Skill, "WAITTIME");
             var WAITTIME_1 = _world.GetObject(ObjectType.Skill, "WAITTIME");
@@ -11675,7 +11673,7 @@ namespace Tests
             if (UnityEngine.Random.value < 0.07f)
             {
                 {
-                    var enumerator = TROPLISTEN();
+                    var enumerator = TROPLISTEN(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -11703,7 +11701,7 @@ namespace Tests
             if (RIGHTTURNTROP_24_val > RIGHTTURNTROP_24.GetFloat("MAX"))
             {
                 {
-                    var enumerator = TURNRIGHT();
+                    var enumerator = TURNRIGHT(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -11716,7 +11714,7 @@ namespace Tests
                 yield break;
             }
             {
-                var enumerator = TURNLEFT();
+                var enumerator = TURNLEFT(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11729,15 +11727,15 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TROPWAIT()
+        public IEnumerator TROPWAIT(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("SKILL4");
             if (temp_3 != 4f)
             {
                 goto CONT;
             }
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             var temp_7 = MY_6.GetFloat("VISIBLE");
             if (temp_7 != 1f)
             {
@@ -11745,67 +11743,67 @@ namespace Tests
             }
             yield break;
             CONT:
-            var MY_10 = _world.GetSynonymObject("MY");
+            var MY_10 = MY;
             MY_10.SetAcknexObject("EACH_TICK", null);
-            var MY_13 = _world.GetSynonymObject("MY");
+            var MY_13 = MY;
             MY_13.SetAcknexObject("IF_NEAR", null);
-            var MY_16 = _world.GetSynonymObject("MY");
+            var MY_16 = MY;
             MY_16.SetAcknexObject("IF_FAR", null);
             var CYCLETROPATTACK_17 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLETROPATTACK");
-            var MY_19 = _world.GetSynonymObject("MY");
+            var MY_19 = MY;
             MY_19.SetAcknexObject("EACH_CYCLE", CYCLETROPATTACK_17);
             var TROPHIT_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_22 = _world.GetSynonymObject("MY");
+            var MY_22 = MY;
             MY_22.SetAcknexObject("IF_HIT", TROPHIT_20);
-            var MY_25 = _world.GetSynonymObject("MY");
+            var MY_25 = MY;
             MY_25.SetFloat("CAREFULLY", 0f);
-            var MY_28 = _world.GetSynonymObject("MY");
+            var MY_28 = MY;
             MY_28.SetFloat("GROUND", 0f);
-            var MY_31 = _world.GetSynonymObject("MY");
+            var MY_31 = MY;
             MY_31.SetFloat("HEIGHT", -0.05f);
-            var MY_34 = _world.GetSynonymObject("MY");
+            var MY_34 = MY;
             MY_34.SetFloat("SKILL4", 1f);
             var TROP0TEX_35 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP0TEX");
-            var MY_37 = _world.GetSynonymObject("MY");
+            var MY_37 = MY;
             MY_37.SetAcknexObject("TEXTURE", TROP0TEX_35);
-            var MY_40 = _world.GetSynonymObject("MY");
+            var MY_40 = MY;
             MY_40.SetFloat("SPEED", 0f);
-            var MY_43 = _world.GetSynonymObject("MY");
+            var MY_43 = MY;
             MY_43.SetAcknexObject("TARGET", null);
             yield break;
         }
-        public IEnumerator TROPWANDER()
+        public IEnumerator TROPWANDER(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("EACH_TICK", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_NEAR", null);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("IF_FAR", null);
             var CYCLETROPATTACK_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"CYCLETROPATTACK");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("EACH_CYCLE", CYCLETROPATTACK_9);
             var TROPHIT_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("IF_HIT", TROPHIT_12);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("CAREFULLY", 1f);
-            var MY_20 = _world.GetSynonymObject("MY");
+            var MY_20 = MY;
             MY_20.SetFloat("GROUND", 0f);
-            var MY_23 = _world.GetSynonymObject("MY");
+            var MY_23 = MY;
             MY_23.SetFloat("BERKELEY", 0f);
-            var MY_26 = _world.GetSynonymObject("MY");
+            var MY_26 = MY;
             MY_26.SetFloat("SKILL4", 1f);
             var TROP1TEX_27 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP1TEX");
-            var MY_29 = _world.GetSynonymObject("MY");
+            var MY_29 = MY;
             MY_29.SetAcknexObject("TEXTURE", TROP1TEX_27);
-            var MY_32 = _world.GetSynonymObject("MY");
+            var MY_32 = MY;
             MY_32.SetFloat("SPEED", 0.3f);
             var BULLET_33 = _world.AcknexObject.GetAcknexObject("BULLET");
-            var MY_35 = _world.GetSynonymObject("MY");
+            var MY_35 = MY;
             MY_35.SetAcknexObject("TARGET", BULLET_33);
             {
-                var enumerator = LOCATEACTOR();
+                var enumerator = LOCATEACTOR(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11816,7 +11814,7 @@ namespace Tests
                 }
             }
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11829,30 +11827,30 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TROPWARNING()
+        public IEnumerator TROPWARNING(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetAcknexObject("IF_FAR", null);
             var TROPBACKOFF_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPBACKOFF");
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", TROPBACKOFF_6);
             var TROPHIT_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"TROPHIT");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("IF_HIT", TROPHIT_9);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("SKILL4", 7f);
             var TROP7TEX_15 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP7TEX");
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetAcknexObject("TEXTURE", TROP7TEX_15);
             if (UnityEngine.Random.value < 0.5f)
             {
                 var TROP7ATEX_20 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP7ATEX");
-                var MY_22 = _world.GetSynonymObject("MY");
+                var MY_22 = MY;
                 MY_22.SetAcknexObject("TEXTURE", TROP7ATEX_20);
             }
-            var MY_24 = _world.GetSynonymObject("MY");
+            var MY_24 = MY;
             var temp_25 = MY_24?.GetAcknexObject("TEXTURE");
             _world.SetSynonymObject("TROP_TEX", temp_25);
             //Unknown keyword: RANDOMIZE
@@ -11883,32 +11881,32 @@ namespace Tests
             TROP_TEX_39.SetAcknexObject("SOUND", TROP02SND_37);
             goto CONT;
             CONT:
-            var MY_42 = _world.GetSynonymObject("MY");
+            var MY_42 = MY;
             MY_42.SetFloat("SPEED", 0f);
             yield return new WaitForTicks(32f);
-            var MY_46 = _world.GetSynonymObject("MY");
+            var MY_46 = MY;
             var temp_47 = MY_46.GetFloat("SKILL1");
             if (temp_47 > 5f)
             {
                 yield break;
             }
-            var MY_49 = _world.GetSynonymObject("MY");
-            var MY_51 = _world.GetSynonymObject("MY");
+            var MY_49 = MY;
+            var MY_51 = MY;
             var temp_52 = MY_51.GetFloat("ANGLE");
-            var MY_54 = _world.GetSynonymObject("MY");
+            var MY_54 = MY;
             var temp_55 = MY_54.GetFloat("ANGLE");
             MY_49.SetFloat("ANGLE", temp_55 + 2f);
             if (UnityEngine.Random.value < 0.5f)
             {
-                var MY_61 = _world.GetSynonymObject("MY");
-                var MY_63 = _world.GetSynonymObject("MY");
+                var MY_61 = MY;
+                var MY_63 = MY;
                 var temp_64 = MY_63.GetFloat("ANGLE");
-                var MY_66 = _world.GetSynonymObject("MY");
+                var MY_66 = MY;
                 var temp_67 = MY_66.GetFloat("ANGLE");
                 MY_61.SetFloat("ANGLE", temp_67 - 2f);
             }
             {
-                var enumerator = TROPBACKOFF();
+                var enumerator = TROPBACKOFF(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11921,14 +11919,14 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TURNLEFT()
+        public IEnumerator TURNLEFT(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("ANGLE");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("ANGLE", temp_3 + 0.524f);
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11941,14 +11939,14 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TURNRIGHT()
+        public IEnumerator TURNRIGHT(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("ANGLE");
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("ANGLE", temp_3 + -0.524f);
             {
-                var enumerator = PROBE();
+                var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -11961,7 +11959,7 @@ namespace Tests
             yield break;
             yield break;
         }
-        public IEnumerator TYPEGAME()
+        public IEnumerator TYPEGAME(IAcknexObject MY, IAcknexObject THERE)
         {
             var SUBMENUITEM_1 = _world.GetObject(ObjectType.Skill, "SUBMENUITEM");
             var SUBMENUITEM_1_val = SUBMENUITEM_1.GetFloat("VAL");
@@ -12018,7 +12016,7 @@ namespace Tests
             if (RESULT_32_val < 0f)
             {
                 {
-                    var enumerator = SAVEERRORMESSAGE();
+                    var enumerator = SAVEERRORMESSAGE(MY, THERE);
                     while (enumerator.MoveNext())
                     {
                         var current = enumerator.Current;
@@ -12077,39 +12075,39 @@ namespace Tests
             //Unknown keyword: SAVE
             yield break;
         }
-        public IEnumerator VANISHFORGOOD()
+        public IEnumerator VANISHFORGOOD(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetFloat("SPEED", 0f);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("CAREFULLY", 0f);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetFloat("SKILL1", 10f);
             var VANISHSTOP_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"VANISHSTOP");
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("EACH_TICK", VANISHSTOP_9);
             var NULLTEXTURE_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"NULLTEXTURE");
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetAcknexObject("TEXTURE", NULLTEXTURE_12);
-            var MY_17 = _world.GetSynonymObject("MY");
+            var MY_17 = MY;
             MY_17.SetFloat("INVISIBLE", 1f);
             yield break;
         }
-        public IEnumerator VANISHSTOP()
+        public IEnumerator VANISHSTOP(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetFloat("SPEED", 0f);
-            var MY_5 = _world.GetSynonymObject("MY");
+            var MY_5 = MY;
             MY_5.SetFloat("CAREFULLY", 0f);
-            var MY_8 = _world.GetSynonymObject("MY");
+            var MY_8 = MY;
             MY_8.SetFloat("SKILL1", 10f);
-            var MY_11 = _world.GetSynonymObject("MY");
+            var MY_11 = MY;
             MY_11.SetAcknexObject("EACH_TICK", null);
-            var MY_14 = _world.GetSynonymObject("MY");
+            var MY_14 = MY;
             MY_14.SetFloat("INVISIBLE", 1f);
             yield break;
         }
-        public IEnumerator VOLUMEDOWN()
+        public IEnumerator VOLUMEDOWN(IAcknexObject MY, IAcknexObject THERE)
         {
             var SUBMENUITEM_1 = _world.GetObject(ObjectType.Skill, "SUBMENUITEM");
             var SUBMENUITEM_1_val = SUBMENUITEM_1.GetFloat("VAL");
@@ -12162,7 +12160,7 @@ namespace Tests
             _world.PlaySound("BIP01SND", 0.5f);
             yield break;
         }
-        public IEnumerator VOLUMEUP()
+        public IEnumerator VOLUMEUP(IAcknexObject MY, IAcknexObject THERE)
         {
             var SUBMENUITEM_1 = _world.GetObject(ObjectType.Skill, "SUBMENUITEM");
             var SUBMENUITEM_1_val = SUBMENUITEM_1.GetFloat("VAL");
@@ -12215,7 +12213,7 @@ namespace Tests
             _world.PlaySound("BIP01SND", 0.5f);
             yield break;
         }
-        public IEnumerator WALLTIMER()
+        public IEnumerator WALLTIMER(IAcknexObject MY, IAcknexObject THERE)
         {
             var GOLCOUNTER_1 = _world.GetObject(ObjectType.Skill, "GOLCOUNTER");
             var GOLCOUNTER_1_val = GOLCOUNTER_1.GetFloat("VAL");
@@ -12232,14 +12230,14 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_SEC.4", null);
             yield break;
         }
-        public IEnumerator WARNPLAYER()
+        public IEnumerator WARNPLAYER(IAcknexObject MY, IAcknexObject THERE)
         {
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             MY_2.SetFloat("DIST", 20f);
             var WRN22STR_3 = _world.AcknexObject.GetAcknexObject("WRN22STR");
             _world.SetSynonymObject("MESSAGE_TEXT", WRN22STR_3);
             {
-                var enumerator = DISPLAYMESSAGE();
+                var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -12251,10 +12249,10 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator WAYGUARD1()
+        public IEnumerator WAYGUARD1(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = TROPTALK();
+                var enumerator = TROPTALK(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -12264,28 +12262,28 @@ namespace Tests
                     }
                 }
             }
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("WAYPOINT");
             if (temp_3 != 15f)
             {
                 yield break;
             }
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             MY_6.SetAcknexObject("IF_ARRIVED", null);
             var TROP1TEX_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP1TEX");
-            var MY_9 = _world.GetSynonymObject("MY");
+            var MY_9 = MY;
             MY_9.SetAcknexObject("TEXTURE", TROP1TEX_7);
             var GUARD1WAY_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Way,*/"GUARD1WAY");
-            var MY_12 = _world.GetSynonymObject("MY");
+            var MY_12 = MY;
             MY_12.SetAcknexObject("TARGET", GUARD1WAY_10);
-            var MY_15 = _world.GetSynonymObject("MY");
+            var MY_15 = MY;
             MY_15.SetFloat("SPEED", 0.5f);
             yield break;
         }
-        public IEnumerator WAYGUARD2()
+        public IEnumerator WAYGUARD2(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = TROPTALK();
+                var enumerator = TROPTALK(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -12295,28 +12293,28 @@ namespace Tests
                     }
                 }
             }
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("WAYPOINT");
             if (temp_3 != 11f)
             {
                 yield break;
             }
-            var MY_6 = _world.GetSynonymObject("MY");
+            var MY_6 = MY;
             MY_6.SetAcknexObject("IF_ARRIVED", null);
             var TROPATEX_7 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROPATEX");
-            var MY_9 = _world.GetSynonymObject("MY");
+            var MY_9 = MY;
             MY_9.SetAcknexObject("TEXTURE", TROPATEX_7);
             var GUARD2WAY_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Way,*/"GUARD2WAY");
-            var MY_12 = _world.GetSynonymObject("MY");
+            var MY_12 = MY;
             MY_12.SetAcknexObject("TARGET", GUARD2WAY_10);
-            var MY_15 = _world.GetSynonymObject("MY");
+            var MY_15 = MY;
             MY_15.SetFloat("SPEED", 0.5f);
             yield break;
         }
-        public IEnumerator WAYGUARD3()
+        public IEnumerator WAYGUARD3(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var enumerator = TROPTALK();
+                var enumerator = TROPTALK(MY, THERE);
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current;
@@ -12326,7 +12324,7 @@ namespace Tests
                     }
                 }
             }
-            var MY_2 = _world.GetSynonymObject("MY");
+            var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("WAYPOINT");
             if (temp_3 != 8f)
             {
@@ -12350,7 +12348,7 @@ namespace Tests
             TROPASSAULT3ACT_21.SetFloatAll("SPEED", 0.7f);
             yield break;
         }
-        public IEnumerator ZOOMMAPIN()
+        public IEnumerator ZOOMMAPIN(IAcknexObject MY, IAcknexObject THERE)
         {
             var MAP_MODE_1 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             var MAP_MODE_1_val = MAP_MODE_1.GetFloat("VAL");
@@ -12379,7 +12377,7 @@ namespace Tests
             }
             yield break;
         }
-        public IEnumerator ZOOMMAPOUT()
+        public IEnumerator ZOOMMAPOUT(IAcknexObject MY, IAcknexObject THERE)
         {
             var MAP_MODE_1 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             var MAP_MODE_1_val = MAP_MODE_1.GetFloat("VAL");

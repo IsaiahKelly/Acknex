@@ -78,7 +78,7 @@ namespace Acknex
         {
             if (collider.TryGetComponent<Player>(out var player))
             {
-                World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, player.GetRegion(), "IF_FAR");
+                World.Instance.TriggerEvent("IF_FAR", AcknexObject, player.AcknexObject, player.GetRegion());
             }
         }
 
@@ -86,7 +86,7 @@ namespace Acknex
         {
             if (collider.TryGetComponent<Player>(out var player))
             {
-                World.Instance.TriggerEvent(AcknexObject, player.AcknexObject, player.GetRegion(), "IF_NEAR");
+                World.Instance.TriggerEvent("IF_NEAR", AcknexObject, player.AcknexObject, player.GetRegion());
             }
         }
 

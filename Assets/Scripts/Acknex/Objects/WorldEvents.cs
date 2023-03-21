@@ -60,33 +60,28 @@ namespace Acknex
 
         private Queue<Event> _events = new Queue<Event>();
 
-        public IEnumerator CallSynonymAction(string synonymName)
+        public IEnumerator CallSynonymAction(string synonymName, IAcknexObject MY, IAcknexObject THERE)
         {
             if (SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
                 var value = synonym.AcknexObject.GetAcknexObject("VAL") ?? synonym.AcknexObject.GetAcknexObject("DEFAULT");
-                //var objectName = synonym.AcknexObject.GetString("VAL") ?? synonym.AcknexObject.GetString("DEFAULT") ?? synonym.AcknexObject.GetString("NAME");
                 if (value != null)
                 {
-                    yield return CallAction(GetSynonymObject("MY"), value.GetString("NAME"));
+                    yield return CallAction(MY, value.GetString("NAME"), MY, THERE);
                 }
             }
         }
 
-        public IEnumerator CallAction(IAcknexObject source, string name)
+        public IEnumerator CallAction(IAcknexObject source, string name, IAcknexObject MY, IAcknexObject THERE)
         {
             if (_runtime == null)
             {
                 yield break;
             }
-            if (source != null)
-            {
-                SetSynonymObject("MY", source);
-            }
-            yield return (IEnumerator)_runtime.CallAction(name);
+            yield return (IEnumerator)_runtime.CallAction(name, MY, THERE);
         }
 
-        public void TriggerEvent(IAcknexObject source, IAcknexObject my, IAcknexObject there, string name)
+        public void TriggerEvent(string name, IAcknexObject source, IAcknexObject MY, IAcknexObject THERE)
         {
             if (_runtime == null)
             {
@@ -96,9 +91,7 @@ namespace Acknex
             {
                 if (acknexObject.TryGetString("NAME", out var value) && value != null)
                 {
-                    SetSynonymObject("MY", my);
-                    SetSynonymObject("THERE", there);
-                    StartCoroutine(_runtime.CallAction(value));
+                    StartCoroutine(_runtime.CallAction(value, MY, THERE));
                 }
             }
         }
@@ -107,7 +100,7 @@ namespace Acknex
         {
             if (condition)
             {
-                TriggerEvent(acknexObject, acknexObject, null, eventName);
+                TriggerEvent(eventName, acknexObject, acknexObject, null);
             }
         }
 
@@ -117,7 +110,7 @@ namespace Acknex
             {
                 foreach (var tickEvent in TickEvents)
                 {
-                    TriggerEvent(acknexObject, acknexObject, null, tickEvent);
+                    TriggerEvent(tickEvent, acknexObject, acknexObject, null);
                 }
                 yield return null;
             }
@@ -129,7 +122,7 @@ namespace Acknex
             {
                 foreach (var secEvent in SecEvents)
                 {
-                    TriggerEvent(acknexObject, acknexObject, null, secEvent);
+                    TriggerEvent(secEvent, acknexObject, acknexObject, null);
                 }
                 yield return WaitForSecond;
             }
@@ -137,7 +130,7 @@ namespace Acknex
 
         private void IfStart()
         {
-            TriggerEvent(AcknexObject, AcknexObject, null, "IF_START");
+            TriggerEvent("IF_START", AcknexObject, AcknexObject, null);
             StartCoroutine(TriggerTickEvents(AcknexObject));
             StartCoroutine(TriggerSecEvents(AcknexObject));
             StartCoroutine(UpdateEvents());
@@ -231,21 +224,6 @@ namespace Acknex
                 TriggerEventConditional(AcknexObject, "IF_APO", Input.GetKeyDown(KeyCode.Quote));
                 TriggerEventConditional(AcknexObject, "IF_MINUS", Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.KeypadMinus));
                 TriggerEventConditional(AcknexObject, "IF_PLUS", Input.GetKeyDown(KeyCode.Plus) || Input.GetKeyDown(KeyCode.KeypadPlus));
-                //while (_events.Count > 0)
-                //{
-                //    var currentEvent = _events.Dequeue();
-                //    SetSynonymObject("MY", currentEvent.My);
-                //    SetSynonymObject("THERE", currentEvent.There);
-                //    var enumerator = _runtime.CallAction(currentEvent.ActionName);
-                //    while (enumerator.MoveNext())
-                //    {
-                //        var current = enumerator.Current;
-                //        if (current != null)
-                //        {
-                //            yield return current;
-                //        }
-                //    }
-                //}
                 yield return null;
             }
         }

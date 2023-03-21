@@ -45,7 +45,7 @@ namespace Acknex
         {
             var name = AcknexObject.GetString("NAME");
             var sanitizedName = Sanitize(name);
-            CodeStringBuilder.Append("public IEnumerator ").Append(sanitizedName).AppendLine("(){");
+            CodeStringBuilder.Append("public IEnumerator ").Append(sanitizedName).AppendLine("(IAcknexObject MY, IAcknexObject THERE){");
             //CodeStringBuilder.Append("  Debug.Log(\"<color=00FF00>Calling:").Append(sanitizedName).AppendLine("</color>\");");
         }
 
@@ -306,11 +306,11 @@ namespace Acknex
                                 if (next != ";")
                                 {
                                     var rhs = GetValueAndType(next, "rhs");
-                                    CodeStringBuilder.Append($"_world.{method}(").Append(rhs.property).AppendLine(");");
+                                    CodeStringBuilder.Append($"_world.{method}(").Append(rhs.property).AppendLine(", MY, THERE);");
                                 }
                                 else
                                 {
-                                    CodeStringBuilder.AppendLine($"_world.{method}();");
+                                    CodeStringBuilder.AppendLine($"_world.{method}(null, MY, THERE);");
                                 }
                                 HandleIfStack();
                                 ReadUntilSemiColon(tokens);
@@ -318,8 +318,8 @@ namespace Acknex
                             }
                         case "DROP":
                             {
-                                var next = labelOrStatement;
-                                CodeStringBuilder.Append("_world.Drop(").Append("\"").Append(next).AppendLine("\");");
+                                //var next = labelOrStatement;
+                                //CodeStringBuilder.Append("_world.Drop(").Append("\"").Append(next).AppendLine("\");");
                                 HandleIfStack();
                                 ReadUntilSemiColon(tokens);
                                 break;
@@ -396,14 +396,12 @@ namespace Acknex
             var action = labelOrStatement;
             if (!World.Instance.SynonymsByName.ContainsKey(action))
             {
-                CodeStringBuilder.AppendFormat(CallEnumeratorTemplate, $"{Sanitize(action)}()");
-                //CodeStringBuilder.Append("CallEnumerator(").Append(Sanitize(action)).AppendLine("());");
+                CodeStringBuilder.AppendFormat(CallEnumeratorTemplate, $"{Sanitize(action)}(MY, THERE)");
             }
             else
             {
-                var actionGetter = $"_world.CallSynonymAction(\"{Sanitize(action)}\")";
+                var actionGetter = $"_world.CallSynonymAction(\"{Sanitize(action)}\", MY, THERE)";
                 CodeStringBuilder.AppendFormat(CallEnumeratorTemplate, actionGetter);
-                //CodeStringBuilder.Append("CallEnumerator(_world.CallSynonymAction(\"").Append(Sanitize(action)).AppendLine("\"));");
             }
         }
 
@@ -482,7 +480,14 @@ namespace Acknex
             switch (lhs.objectType)
             {
                 case ObjectType.Synonym:
-                    CodeStringBuilder.AppendLine($"_world.SetSynonymObject({lhs.property},{rhs.property});");
+                    if (lhs.property == "MY" || lhs.property == "THERE")
+                    {
+                        CodeStringBuilder.Append(lhs.property).Append(" = ").Append(rhs.property).AppendLine(";");
+                    }
+                    else
+                    {
+                        CodeStringBuilder.AppendLine($"_world.SetSynonymObject({lhs.property},{rhs.property});");
+                    }
                     break;
                 default:
                     switch (lhs.propertyType)
@@ -710,7 +715,14 @@ namespace Acknex
             {
                 if (outputGetter)
                 {
-                    CodeStringBuilder.Append($"var {assignmentVariable} = _world.GetSynonymObject(\"").Append(objectName).AppendLine("\");");
+                    if (objectName == "MY" || objectName == "THERE")
+                    {
+                        CodeStringBuilder.Append($"var {assignmentVariable} = ").Append(objectName).AppendLine(";");
+                    }
+                    else
+                    {
+                        CodeStringBuilder.Append($"var {assignmentVariable} = _world.GetSynonymObject(\"").Append(objectName).AppendLine("\");");
+                    }
                 }
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Synonym, "_world.AcknexObject");
                 return true;
