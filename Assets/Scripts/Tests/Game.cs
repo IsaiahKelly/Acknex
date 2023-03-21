@@ -11527,6 +11527,7 @@ namespace Tests
         }
         public IEnumerator TROPSHOOT(IAcknexObject MY, IAcknexObject THERE)
         {
+            yield break;
             var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
             var MY_5 = MY;
