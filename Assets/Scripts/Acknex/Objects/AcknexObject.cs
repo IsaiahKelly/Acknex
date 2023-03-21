@@ -382,10 +382,22 @@ namespace Acknex
         public IAcknexObject GetAcknexObject(string propertyName, bool fromTemplate = true)
         {
             var obj = GetObject<IAcknexObject>(propertyName, fromTemplate);
+            if (obj != null && !obj.IsInstance)
+            {
+                switch (obj.Type)
+                {
+                    case ObjectType.Wall:
+                    case ObjectType.Region:
+                    case ObjectType.Thing:
+                    case ObjectType.Actor:
+                    case ObjectType.Way:
+                        obj.Container.SetupInstance();
+                        break;
+                }
+            }
             return obj;
         }
-
-
+        
         public bool TryGetFloat(string propertyName, out float result, bool fromTemplate = true)
         {
             if (NumberProperties.TryGetValue(propertyName, out var number))

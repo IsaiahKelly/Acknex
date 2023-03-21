@@ -31,7 +31,7 @@ namespace Acknex.Interfaces
         public WaitForTicks(float ticks)
         {
             _startTime = Time.time;
-            _totalTime = TimeUtils.TimeToTicks(ticks);
+            _totalTime = TimeUtils.TicksToTime((int)ticks);
         }
 
         public override bool keepWaiting

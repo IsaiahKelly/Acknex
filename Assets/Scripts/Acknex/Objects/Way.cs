@@ -88,6 +88,7 @@ namespace Acknex
         public void SetupInstance()
         {
             StartCoroutine(UpdateInstance());
+            AcknexObject.IsInstance = true;
         }
 
         public Vector3 GetCenter()

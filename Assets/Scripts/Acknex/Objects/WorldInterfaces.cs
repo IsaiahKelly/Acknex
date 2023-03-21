@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Acknex.Interfaces;
 using AudioSynthesis.Bank;
@@ -18,8 +19,11 @@ namespace Acknex
 {
     public partial class World
     {
+        private const int MaxHits = 255;
         private readonly List<(IAcknexObject acknexObject, string keyword, string objectName)> _postResolve = new List<(IAcknexObject acknexObject, string keyword, string objectName)>();
-        private RaycastHit[] _raycastResults = new RaycastHit[255];
+        private readonly RaycastHit[] _raycastResults = new RaycastHit[MaxHits];
+        private readonly Collider[] _overlapResults = new Collider[MaxHits];
+
 
         private Resolution _resolution = Resolution.Res320x200;
         private IAcknexRuntime _runtime;
@@ -257,9 +261,18 @@ namespace Acknex
 
         public IAcknexObject GetObject(ObjectType type, string name)
         {
-            if (type == ObjectType.Player)
+            switch (type)
             {
-                return Player.Instance.AcknexObject;
+                case ObjectType.Player:
+                    return Player.Instance.AcknexObject;
+                //case ObjectType.Wall when name != null:
+                //    return AllWallsByName[name].First().AcknexObject;
+                //case ObjectType.Region when name != null:
+                //    return AllRegionsByName[name].First().AcknexObject;
+                //case ObjectType.Thing when name != null:
+                //    return AllThingsByName[name].First().AcknexObject;
+                //case ObjectType.Way when name != null:
+                //    return AllWaysByName[name].First().AcknexObject;
             }
             if (name != null && AcknexObject.TryGetAcknexObject(name, out var acknexObject))
             {
@@ -412,8 +425,13 @@ namespace Acknex
                             AllWallsByName.Add(name, list);
                         }
                         list.Add(wall);
+                        if (list.Count == 1)
+                        {
+                            AcknexObject.SetAcknexObject(name, wall.AcknexObject);
+                        }
                         _regionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION1")).Add(wall);
                         _regionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION2")).Add(wall);
+           
                         break;
                     }
                 case Region region:
@@ -425,6 +443,10 @@ namespace Acknex
                             AllRegionsByName.Add(name, list);
                         }
                         list.Add(region);
+                        if (list.Count == 1)
+                        {
+                            AcknexObject.SetAcknexObject(name, region.AcknexObject);
+                        }
                         break;
                     }
                 case Actor actor:
@@ -435,7 +457,11 @@ namespace Acknex
                             list = new HashSet<Actor>();
                             AllActorsByName.Add(name, list);
                         }
-                        list.Add(actor);
+                        list.Add(actor); 
+                        if (list.Count == 1)
+                        {
+                            AcknexObject.SetAcknexObject(name, actor.AcknexObject);
+                        }
                         break;
                     }
                 case Thing thing:
@@ -447,6 +473,10 @@ namespace Acknex
                             AllThingsByName.Add(name, list);
                         }
                         list.Add(thing);
+                        if (list.Count == 1)
+                        {
+                            AcknexObject.SetAcknexObject(name, thing.AcknexObject);
+                        }
                         break;
                     }
                 case Way way:
@@ -458,10 +488,13 @@ namespace Acknex
                             AllWaysByName.Add(name, list);
                         }
                         list.Add(way);
+                        if (list.Count == 1)
+                        {
+                            AcknexObject.SetAcknexObject(name, way.AcknexObject);
+                        }
                         break;
                     }
             }
-            acknexObject.IsInstance = true;
         }
 
         public void PostSetupObjectTemplate(IAcknexObject acknexObject)
@@ -602,6 +635,70 @@ namespace Acknex
             }
         }
 
+        public void Explode(IAcknexObject acknexObject)
+        {
+            //var shootX = GetSkillValue("SHOOT_X");
+            //var shootY = GetSkillValue("SHOOT_Y");
+            var origin = acknexObject.Container.GetCenter();
+            //todo: shootSector
+            var shootFac = GetSkillValue("SHOOT_FAC");
+            var shootRange = GetSkillValue("SHOOT_RANGE");
+            var minDist = Mathf.Infinity;
+            void HandleHit(Collider raycastResult, IAcknexObject hitAcknexObject)
+            {
+                var hitPoint = hitAcknexObject.Container.GetCenter();
+                var distance = Vector3.Distance(hitPoint, origin);
+                UpdateSkillValue("HIT_DIST", distance);
+                UpdateSkillValue("RESULT", shootFac * (1.0f - distance / shootRange));
+                UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(hitPoint), AngleUtils.To2D(origin))));
+                TriggerEvent(AcknexObject, GetSynonymObject("MY"), null, "IF_HIT");
+                minDist = Mathf.Min(minDist, distance);
+            }
+            UpdateSkillValue("HIT_DIST", 0f);
+            UpdateSkillValue("RESULT", 0f);
+            DebugExtension.DebugWireSphere(origin, Color.black, shootRange);
+            Physics.OverlapSphereNonAlloc(origin, shootRange, _overlapResults, AllLayers);
+            for (var i = 0; i < _overlapResults.Length; i++)
+            {
+                var overlapResult = _overlapResults[i];
+                if (overlapResult == null)
+                {
+                    continue;
+                }
+                if (overlapResult.transform.TryGetComponent<Player>(out var player))
+                {
+                    HandleHit(overlapResult, player.AcknexObject);
+                }
+                else if (overlapResult.transform.parent != null)
+                {
+                    if (overlapResult.transform.parent.TryGetComponent<Wall>(out var wall))
+                    {
+                        if (!wall.AcknexObject.ContainsFlag("FRAGILE"))
+                        {
+                            continue;
+                        }
+                        HandleHit(overlapResult, wall.AcknexObject);
+                    }
+                    else if (overlapResult.transform.parent.TryGetComponent<Region>(out var region))
+                    {
+                        if (!region.AcknexObject.ContainsFlag("FRAGILE"))
+                        {
+                            continue;
+                        }
+                        HandleHit(overlapResult, region.AcknexObject);
+                    }
+                    else if (overlapResult.transform.parent.TryGetComponent<Thing>(out var thing))
+                    {
+                        if (!thing.AcknexObject.ContainsFlag("FRAGILE"))
+                        {
+                            continue;
+                        }
+                        HandleHit(overlapResult, thing.AcknexObject);
+                    }
+                }
+            }
+            UpdateSkillValue("HIT_MINDIST", minDist < Mathf.Infinity ? minDist : 0);
+        }
         public void ReadInkey(string stringName)
         {
 

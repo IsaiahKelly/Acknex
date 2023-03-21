@@ -119,6 +119,11 @@ namespace Acknex.Interfaces
         void Shoot(IAcknexObject acknexObject = null);
 
         /// <summary>
+        /// Explodes the given object.
+        /// </summary>
+        void Explode(IAcknexObject acknexObject);
+
+        /// <summary>
         /// Stores the keyboard input into the given string object.
         /// </summary>
         void ReadInkey(string stringName);

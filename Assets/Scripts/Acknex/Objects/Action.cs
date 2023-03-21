@@ -44,7 +44,9 @@ namespace Acknex
         public void WriteHeader()
         {
             var name = AcknexObject.GetString("NAME");
-            CodeStringBuilder.Append("public IEnumerator ").Append(Sanitize(name)).AppendLine("(){");
+            var sanitizedName = Sanitize(name);
+            CodeStringBuilder.Append("public IEnumerator ").Append(sanitizedName).AppendLine("(){");
+            //CodeStringBuilder.Append("  Debug.Log(\"<color=00FF00>Calling:").Append(sanitizedName).AppendLine("</color>\");");
         }
 
         public void WriteFooter()
@@ -297,16 +299,18 @@ namespace Acknex
                                 break;
                             }
                         case "SHOOT":
+                        case "EXPLODE":
                             {
+                                var method = keyword == "SHOOT" ? "Shoot" : "Explode";
                                 var next = labelOrStatement;
                                 if (next != ";")
                                 {
                                     var rhs = GetValueAndType(next, "rhs");
-                                    CodeStringBuilder.Append("_world.Shoot(").Append(rhs.property).AppendLine(");");
+                                    CodeStringBuilder.Append($"_world.{method}(").Append(rhs.property).AppendLine(");");
                                 }
                                 else
                                 {
-                                    CodeStringBuilder.AppendLine("_world.Shoot();");
+                                    CodeStringBuilder.AppendLine($"_world.{method}();");
                                 }
                                 HandleIfStack();
                                 ReadUntilSemiColon(tokens);

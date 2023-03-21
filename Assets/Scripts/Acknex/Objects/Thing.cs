@@ -98,13 +98,19 @@ namespace Acknex
 
         private IEnumerator Animate()
         {
+            reload:
             while (TextureObject == null)
             {
                 yield return null;
             }
-            var enumerator = TextureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), _innerGameObject.transform);
+            var textureObject = TextureObject;
+            var enumerator = textureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), _innerGameObject.transform);
             while (enumerator.MoveNext())
             {
+                if (textureObject != TextureObject)
+                {
+                    goto reload;
+                }
                 yield return enumerator.Current;
             }
         }
@@ -170,6 +176,14 @@ namespace Acknex
             StartCoroutine(Animate());
             StartCoroutine(TriggerTickEvents());
             StartCoroutine(TriggerSecEvents());
+
+            AcknexObject.IsInstance = true;
+
+            if (GetRegion() == null)
+            {
+                var thingZ = AcknexObject.GetFloat("Z");
+                Locate(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"), ref thingZ);
+            }
         }
 
         public Vector3 GetCenter()
@@ -223,24 +237,35 @@ namespace Acknex
                 }
                 if (target != null)
                 {
-                    if (target.GetString("NAME") == "FOLLOW")
+                    var targetName = target.GetString("NAME");
+                    switch (targetName)
                     {
-                        Debug.Log(AcknexObject + "moving in direction of player with speed " + AcknexObject.GetFloat("SPEED"));
-                        _movingCoroutine = StartCoroutine(MoveToPlayer());
-                    }
-                    else if (target.GetString("NAME") == "MOVE" || target.GetString("NAME") == "BULLET")
-                    {
-                        Debug.Log(AcknexObject + "moving in direction of its angle with speed " + AcknexObject.GetFloat("SPEED"));
-                        _movingCoroutine = StartCoroutine(MoveToAngle());
-                    }
-                    else if (target.Container is Way way)
-                    {
-                        Debug.Log(AcknexObject + "moving in direction of way " + way.AcknexObject + " with speed " + AcknexObject.GetFloat("SPEED"));
-                        _movingCoroutine = StartCoroutine(MoveToWay(way));
-                    }
-                    else
-                    {
-                        Debug.Log(AcknexObject + "moving to nothing");
+                        case "FOLLOW":
+                            //Debug.Log(AcknexObject + "moving in direction of player with speed " + AcknexObject.GetFloat("SPEED"));
+                            _movingCoroutine = StartCoroutine(MoveToPlayer());
+                            break;
+                        case "VERTEX":
+                            //Debug.Log(AcknexObject + "moving in direction of vertex with speed " + AcknexObject.GetFloat("SPEED"));
+                            _movingCoroutine = StartCoroutine(MoveToVertex());
+                            break;
+                        case "MOVE":
+                        case "BULLET":
+                            //Debug.Log(AcknexObject + "moving in direction of its angle with speed " + AcknexObject.GetFloat("SPEED"));
+                            _movingCoroutine = StartCoroutine(MoveToAngle());
+                            break;
+                        default:
+                        {
+                            if (target.Container is Way way)
+                            {
+                                //Debug.Log(AcknexObject + "moving in direction of way " + way.AcknexObject + " with speed " + AcknexObject.GetFloat("SPEED"));
+                                _movingCoroutine = StartCoroutine(MoveToWay(way));
+                            }
+                            else
+                            {
+                                Debug.Log(AcknexObject + "moving to nothing");
+                            }
+                            break;
+                        }
                     }
                 }
                 _lastTarget = target;
@@ -307,13 +332,27 @@ namespace Acknex
             }
         }
 
+        private IEnumerator MoveToVertex()
+        {
+            var targetPos = new Vector2(AcknexObject.GetFloat("TARGET_X"), AcknexObject.GetFloat("TARGET_Y"));
+            for (; ; )
+            {
+                if (MoveToPoint(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
+                {
+                    World.Instance.TriggerEvent(AcknexObject, AcknexObject, GetRegion(), "IF_ARRIVED");
+                    yield break;
+                }
+                yield return null;
+            }
+        }
+
         private IEnumerator MoveToPlayer()
         {
             _movingToTarget = true;
             for (; ; )
             {
                 var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
-                if (MoveToPoint(playerPos))
+                if (MoveToPoint(playerPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
                     _movingToTarget = false;
                     yield break;
@@ -355,42 +394,46 @@ namespace Acknex
 
         public void StickToTheCeiling(float thingX, float thingY, ref float thingZ)
         {
-            var region = AcknexObject.GetAcknexObject("REGION")?.Container as Region;
-            region = Region.Locate(AcknexObject, region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"), true);
-            thingZ = thingZ - transform.localScale.y;
+            var region = GetRegion();
+            var newRegionContainer = Region.Locate(AcknexObject, region.Container as Region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"), true);
+            thingZ = thingZ - _innerGameObject.transform.localScale.y;
             AcknexObject.SetFloat("Z", thingZ);
-            AcknexObject.SetAcknexObject("REGION", region.AcknexObject);
         }
 
         //todo: IF_ARISE only happens when leaving upwards
         public void Locate(float thingX, float thingY, ref float thingZ)
         {
-            var region = (Region)AcknexObject.GetAcknexObject("REGION").Container;
-            var newRegion = Region.Locate(AcknexObject, region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"));
+            var region = GetRegion();
+            var regionContainer = region?.Container as Region;
+            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"));
             AcknexObject.SetFloat("Z", thingZ);
-            if (AcknexObject.ContainsFlag("MASTER") && newRegion != region)
+            if (AcknexObject.ContainsFlag("MASTER") && newRegionContainer != regionContainer)
             {
                 if (_movingToTarget && AcknexObject.ContainsFlag("CAREFULLY"))
                 {
-                    World.Instance.TriggerEvent(AcknexObject, Player.Instance.AcknexObject, region.AcknexObject, "IF_ARRIVED");
+                    World.Instance.TriggerEvent(AcknexObject, Player.Instance.AcknexObject, AcknexObject, "IF_ARRIVED");
                 }
-                World.Instance.TriggerEvent(region.AcknexObject, AcknexObject, region.AcknexObject, "IF_LEAVE");
-                World.Instance.TriggerEvent(region.AcknexObject, AcknexObject, region.AcknexObject, "IF_ARISE");
-                region = newRegion;
-                World.Instance.TriggerEvent(region.AcknexObject, AcknexObject, region.AcknexObject, "IF_ENTER");
-                if (region.Above != null)
+                World.Instance.TriggerEvent(AcknexObject, AcknexObject, AcknexObject, "IF_LEAVE");
+                World.Instance.TriggerEvent(AcknexObject, AcknexObject, AcknexObject, "IF_ARISE");
+                region = newRegionContainer.AcknexObject;
+                regionContainer = newRegionContainer;
+                World.Instance.TriggerEvent(AcknexObject, AcknexObject, AcknexObject, "IF_ENTER");
+                if (regionContainer.Above != null)
                 {
-                    World.Instance.TriggerEvent(region.Above.AcknexObject, AcknexObject, region.Above.AcknexObject, "IF_DIVE");
+                    World.Instance.TriggerEvent(regionContainer.Above.AcknexObject, AcknexObject, regionContainer.Above.AcknexObject, "IF_DIVE");
                 }
             }
             else
             {
-                region = newRegion;
+                if (newRegionContainer != null)
+                {
+                    region = newRegionContainer.AcknexObject;
+                }
             }
-            AcknexObject.SetAcknexObject("REGION", region.AcknexObject);
+            AcknexObject.SetAcknexObject("REGION", region);
         }
 
-        public bool MoveToPoint(Vector2 nextPoint)
+        public bool MoveToPoint(Vector2 nextPoint, float? minDistance = null)
         {
             var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"));
             var speed = AcknexObject.GetFloat("SPEED");
@@ -405,7 +448,7 @@ namespace Acknex
             AcknexObject.SetFloat("Y", newPos.y);
             AcknexObject.SetFloat("ANGLE", angle);
             AcknexObject.IsDirty = true;
-            return toTarget.magnitude <= speed;
+            return toTarget.magnitude <= (minDistance ?? speed);
         }
     }
 }

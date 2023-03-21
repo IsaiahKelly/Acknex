@@ -2422,26 +2422,27 @@ var SHOOT_RANGE_25 = _world.GetObject(ObjectType.Skill,"SHOOT_RANGE");
 SHOOT_RANGE_25.SetFloat("VAL",20f);
 var SHOOT_FAC_27 = _world.GetObject(ObjectType.Skill,"SHOOT_FAC");
 SHOOT_FAC_27.SetFloat("VAL",10f);
-//Unknown keyword: EXPLODE
-var HIT_DIST_29 = _world.GetObject(ObjectType.Skill,"HIT_DIST");
-var HIT_DIST_29_val = HIT_DIST_29.GetFloat("VAL");
-if (HIT_DIST_29_val == 0f)
+var MY_28 = _world.GetSynonymObject("MY");
+_world.Explode(MY_28);
+var HIT_DIST_30 = _world.GetObject(ObjectType.Skill,"HIT_DIST");
+var HIT_DIST_30_val = HIT_DIST_30.GetFloat("VAL");
+if (HIT_DIST_30_val == 0f)
 {
 goto CONT;
 }
-var RESULT_30 = _world.GetObject(ObjectType.Skill,"RESULT");
-var RESULT_30_val = RESULT_30.GetFloat("VAL");
-var PLAYER_RESULT_31 = _world.GetObject(ObjectType.Skill,"PLAYER_RESULT");
-PLAYER_RESULT_31.SetFloat("VAL",RESULT_30_val);
-var SHOOT_FAC_33 = _world.GetObject(ObjectType.Skill,"SHOOT_FAC");
-SHOOT_FAC_33.SetFloat("VAL",0f);
-var SHOOT_RANGE_35 = _world.GetObject(ObjectType.Skill,"SHOOT_RANGE");
-SHOOT_RANGE_35.SetFloat("VAL",40f);
-var MY_36 = _world.GetSynonymObject("MY");
-_world.Shoot(MY_36);
-var HIT_DIST_38 = _world.GetObject(ObjectType.Skill,"HIT_DIST");
-var HIT_DIST_38_val = HIT_DIST_38.GetFloat("VAL");
-if (HIT_DIST_38_val == 0f)
+var RESULT_31 = _world.GetObject(ObjectType.Skill,"RESULT");
+var RESULT_31_val = RESULT_31.GetFloat("VAL");
+var PLAYER_RESULT_32 = _world.GetObject(ObjectType.Skill,"PLAYER_RESULT");
+PLAYER_RESULT_32.SetFloat("VAL",RESULT_31_val);
+var SHOOT_FAC_34 = _world.GetObject(ObjectType.Skill,"SHOOT_FAC");
+SHOOT_FAC_34.SetFloat("VAL",0f);
+var SHOOT_RANGE_36 = _world.GetObject(ObjectType.Skill,"SHOOT_RANGE");
+SHOOT_RANGE_36.SetFloat("VAL",40f);
+var MY_37 = _world.GetSynonymObject("MY");
+_world.Shoot(MY_37);
+var HIT_DIST_39 = _world.GetObject(ObjectType.Skill,"HIT_DIST");
+var HIT_DIST_39_val = HIT_DIST_39.GetFloat("VAL");
+if (HIT_DIST_39_val == 0f)
 {
 goto CONT;
 }
@@ -2456,22 +2457,22 @@ goto CONT;
         }
     }
 }CONT:
-var MY_41 = _world.GetSynonymObject("MY");
-MY_41.SetFloat("SPEED",0f);
-var MY_44 = _world.GetSynonymObject("MY");
-MY_44.SetFloat("CAREFULLY",0f);
-var MY_47 = _world.GetSynonymObject("MY");
-MY_47.SetFloat("GROUND",0f);
-var MY_50 = _world.GetSynonymObject("MY");
-MY_50.SetFloat("HEIGHT",-0.05f);
-var EXP01TEX_51 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"EXP01TEX");
-var MY_53 = _world.GetSynonymObject("MY");
-MY_53.SetAcknexObject("TEXTURE",EXP01TEX_51);
-var MY_56 = _world.GetSynonymObject("MY");
+var MY_42 = _world.GetSynonymObject("MY");
+MY_42.SetFloat("SPEED",0f);
+var MY_45 = _world.GetSynonymObject("MY");
+MY_45.SetFloat("CAREFULLY",0f);
+var MY_48 = _world.GetSynonymObject("MY");
+MY_48.SetFloat("GROUND",0f);
+var MY_51 = _world.GetSynonymObject("MY");
+MY_51.SetFloat("HEIGHT",-0.05f);
+var EXP01TEX_52 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"EXP01TEX");
+var MY_54 = _world.GetSynonymObject("MY");
+MY_54.SetAcknexObject("TEXTURE",EXP01TEX_52);
+var MY_57 = _world.GetSynonymObject("MY");
 //Unknown Property Type: Thing.PLAY
 yield return new WaitForTicks(4f);
-var EXPLOSION_ON_59 = _world.GetObject(ObjectType.Skill,"EXPLOSION_ON");
-EXPLOSION_ON_59.SetFloat("VAL",0f);
+var EXPLOSION_ON_60 = _world.GetObject(ObjectType.Skill,"EXPLOSION_ON");
+EXPLOSION_ON_60.SetFloat("VAL",0f);
 yield break;
 }
 public IEnumerator EXPLODETARGET(){
@@ -3863,28 +3864,29 @@ var SHOOT_RANGE_15 = _world.GetObject(ObjectType.Skill,"SHOOT_RANGE");
 SHOOT_RANGE_15.SetFloat("VAL",10f);
 var SHOOT_FAC_17 = _world.GetObject(ObjectType.Skill,"SHOOT_FAC");
 SHOOT_FAC_17.SetFloat("VAL",0.05f);
-//Unknown keyword: EXPLODE
-var MY_20 = _world.GetSynonymObject("MY");
-MY_20.SetFloat("CAREFULLY",0f);
-var MY_23 = _world.GetSynonymObject("MY");
-MY_23.SetFloat("PASSABLE",1f);
-var MY_26 = _world.GetSynonymObject("MY");
-MY_26.SetFloat("SPEED",0f);
-var MY_29 = _world.GetSynonymObject("MY");
-var temp_30 =MY_29.GetFloat("HEIGHT");
-var MY_32 = _world.GetSynonymObject("MY");
-MY_32.SetFloat("HEIGHT",temp_30 + -2.5f);
-var IMPL01TEX_33 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"IMPL01TEX");
-var MY_35 = _world.GetSynonymObject("MY");
-MY_35.SetAcknexObject("TEXTURE",IMPL01TEX_33);
-var IMPLOSIONSTART_36 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"IMPLOSIONSTART");
-var MY_38 = _world.GetSynonymObject("MY");
-MY_38.SetAcknexObject("EACH_TICK",IMPLOSIONSTART_36);
-var MY_41 = _world.GetSynonymObject("MY");
+var MY_18 = _world.GetSynonymObject("MY");
+_world.Explode(MY_18);
+var MY_21 = _world.GetSynonymObject("MY");
+MY_21.SetFloat("CAREFULLY",0f);
+var MY_24 = _world.GetSynonymObject("MY");
+MY_24.SetFloat("PASSABLE",1f);
+var MY_27 = _world.GetSynonymObject("MY");
+MY_27.SetFloat("SPEED",0f);
+var MY_30 = _world.GetSynonymObject("MY");
+var temp_31 =MY_30.GetFloat("HEIGHT");
+var MY_33 = _world.GetSynonymObject("MY");
+MY_33.SetFloat("HEIGHT",temp_31 + -2.5f);
+var IMPL01TEX_34 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"IMPL01TEX");
+var MY_36 = _world.GetSynonymObject("MY");
+MY_36.SetAcknexObject("TEXTURE",IMPL01TEX_34);
+var IMPLOSIONSTART_37 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"IMPLOSIONSTART");
+var MY_39 = _world.GetSynonymObject("MY");
+MY_39.SetAcknexObject("EACH_TICK",IMPLOSIONSTART_37);
+var MY_42 = _world.GetSynonymObject("MY");
 //Unknown Property Type: Thing.PLAY
 yield return new WaitForTicks(4f);
-var EXPLOSION_ON_44 = _world.GetObject(ObjectType.Skill,"EXPLOSION_ON");
-EXPLOSION_ON_44.SetFloat("VAL",0f);
+var EXPLOSION_ON_45 = _world.GetObject(ObjectType.Skill,"EXPLOSION_ON");
+EXPLOSION_ON_45.SetFloat("VAL",0f);
 yield break;
 }
 public IEnumerator IMPLOSIONCRUSH(){
@@ -3917,19 +3919,20 @@ var SHOOT_RANGE_12 = _world.GetObject(ObjectType.Skill,"SHOOT_RANGE");
 SHOOT_RANGE_12.SetFloat("VAL",80f);
 var SHOOT_FAC_14 = _world.GetObject(ObjectType.Skill,"SHOOT_FAC");
 SHOOT_FAC_14.SetFloat("VAL",0.05f);
-//Unknown keyword: EXPLODE
-var MY_17 = _world.GetSynonymObject("MY");
-MY_17.SetFloat("INVISIBLE",1f);
-var MY_20 = _world.GetSynonymObject("MY");
-var temp_21 =MY_20.GetFloat("VISIBLE");
-if (temp_21 == 1f)
+var MY_15 = _world.GetSynonymObject("MY");
+_world.Explode(MY_15);
+var MY_18 = _world.GetSynonymObject("MY");
+MY_18.SetFloat("INVISIBLE",1f);
+var MY_21 = _world.GetSynonymObject("MY");
+var temp_22 =MY_21.GetFloat("VISIBLE");
+if (temp_22 == 1f)
 {
-var RENDER_MODE_23 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
-RENDER_MODE_23.SetFloat("VAL",1f);
+var RENDER_MODE_24 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
+RENDER_MODE_24.SetFloat("VAL",1f);
 }
 yield return new WaitForTicks(4f);
-var EXPLOSION_ON_26 = _world.GetObject(ObjectType.Skill,"EXPLOSION_ON");
-EXPLOSION_ON_26.SetFloat("VAL",0f);
+var EXPLOSION_ON_27 = _world.GetObject(ObjectType.Skill,"EXPLOSION_ON");
+EXPLOSION_ON_27.SetFloat("VAL",0f);
 yield break;
 }
 public IEnumerator IMPLOSIONFLARE(){
@@ -4543,94 +4546,95 @@ var SHOOT_RANGE_1 = _world.GetObject(ObjectType.Skill,"SHOOT_RANGE");
 SHOOT_RANGE_1.SetFloat("VAL",100f);
 var SHOOT_FAC_3 = _world.GetObject(ObjectType.Skill,"SHOOT_FAC");
 SHOOT_FAC_3.SetFloat("VAL",0f);
-//Unknown keyword: EXPLODE
-var HIT_MINDIST_5 = _world.GetObject(ObjectType.Skill,"HIT_MINDIST");
-var HIT_MINDIST_5_val = HIT_MINDIST_5.GetFloat("VAL");
-if (HIT_MINDIST_5_val == 0f)
+var MY_4 = _world.GetSynonymObject("MY");
+_world.Explode(MY_4);
+var HIT_MINDIST_6 = _world.GetObject(ObjectType.Skill,"HIT_MINDIST");
+var HIT_MINDIST_6_val = HIT_MINDIST_6.GetFloat("VAL");
+if (HIT_MINDIST_6_val == 0f)
 {
 goto VANISH;
 }
-var HIT_8 = _world.GetSynonymObject("HIT");
-var temp_9 =HIT_8.GetFloat("VISIBLE");
-if (temp_9 == 0f)
-{
-yield break;
-}
-var HIT_11 = _world.GetSynonymObject("HIT");
-if (HIT_11 == null)
+var HIT_9 = _world.GetSynonymObject("HIT");
+var temp_10 =HIT_9.GetFloat("VISIBLE");
+if (temp_10 == 0f)
 {
 yield break;
 }
 var HIT_12 = _world.GetSynonymObject("HIT");
-var MY_14 = _world.GetSynonymObject("MY");
-MY_14.SetAcknexObject("TARGET",HIT_12);
-var DISTX_15 = _world.GetObject(ObjectType.Skill,"DISTX");
-var DISTX_16 = _world.GetObject(ObjectType.Skill,"DISTX");
-var DISTX_16_val = DISTX_16.GetFloat("VAL");
-var HIT_19 = _world.GetSynonymObject("HIT");
-var temp_20 =HIT_19.GetFloat("X");
-var EXPLOSION_CENTER_23 = _world.GetSynonymObject("EXPLOSION_CENTER");
-var temp_24 =EXPLOSION_CENTER_23.GetFloat("X");
-var HIT_29 = _world.GetSynonymObject("HIT");
-var temp_30 =HIT_29.GetFloat("X");
-var EXPLOSION_CENTER_33 = _world.GetSynonymObject("EXPLOSION_CENTER");
-var temp_34 =EXPLOSION_CENTER_33.GetFloat("X");
-var HIT_39 = _world.GetSynonymObject("HIT");
-var temp_40 =HIT_39.GetFloat("Y");
-var EXPLOSION_CENTER_43 = _world.GetSynonymObject("EXPLOSION_CENTER");
-var temp_44 =EXPLOSION_CENTER_43.GetFloat("Y");
-var HIT_49 = _world.GetSynonymObject("HIT");
-var temp_50 =HIT_49.GetFloat("Y");
-var EXPLOSION_CENTER_53 = _world.GetSynonymObject("EXPLOSION_CENTER");
-var temp_54 =EXPLOSION_CENTER_53.GetFloat("Y");
-DISTX_15.SetFloat("VAL",(temp_20-temp_24)*(temp_30-temp_34)+(temp_40-temp_44)*(temp_50-temp_54));
-var DISTX_56 = _world.GetObject(ObjectType.Skill,"DISTX");
-var DISTX_56_val = DISTX_56.GetFloat("VAL");
-var DISTX_57 = _world.GetObject(ObjectType.Skill,"DISTX");
-DISTX_57.SetFloat("VAL",Mathf.Sqrt(DISTX_56_val));
-var DISTZ_58 = _world.GetObject(ObjectType.Skill,"DISTZ");
-var DISTZ_59 = _world.GetObject(ObjectType.Skill,"DISTZ");
-var DISTZ_59_val = DISTZ_59.GetFloat("VAL");
-var HIT_61 = _world.GetSynonymObject("HIT");
-var temp_62 =HIT_61.GetFloat("FLOOR_HGT");
-var MY_65 = _world.GetSynonymObject("MY");
-var temp_66 =MY_65.GetFloat("FLOOR_HGT");
-DISTZ_58.SetFloat("VAL",temp_62-temp_66);
-var DISTX_68 = _world.GetObject(ObjectType.Skill,"DISTX");
-var DISTX_68_val = DISTX_68.GetFloat("VAL");
-if (DISTX_68_val != 0f)
+if (HIT_12 == null)
 {
-var MY_70 = _world.GetSynonymObject("MY");
-var MY_72 = _world.GetSynonymObject("MY");
-var temp_73 =MY_72.GetFloat("VSPEED");
-var DISTZ_74 = _world.GetObject(ObjectType.Skill,"DISTZ");
-var DISTZ_74_val = DISTZ_74.GetFloat("VAL");
-var DISTX_76 = _world.GetObject(ObjectType.Skill,"DISTX");
-var DISTX_76_val = DISTX_76.GetFloat("VAL");
-MY_70.SetFloat("VSPEED",DISTZ_74_val/DISTX_76_val);
+yield break;
 }
-var MY_79 = _world.GetSynonymObject("MY");
-var temp_80 =MY_79.GetFloat("VSPEED");
-if (temp_80 < 0f)
+var HIT_13 = _world.GetSynonymObject("HIT");
+var MY_15 = _world.GetSynonymObject("MY");
+MY_15.SetAcknexObject("TARGET",HIT_13);
+var DISTX_16 = _world.GetObject(ObjectType.Skill,"DISTX");
+var DISTX_17 = _world.GetObject(ObjectType.Skill,"DISTX");
+var DISTX_17_val = DISTX_17.GetFloat("VAL");
+var HIT_20 = _world.GetSynonymObject("HIT");
+var temp_21 =HIT_20.GetFloat("X");
+var EXPLOSION_CENTER_24 = _world.GetSynonymObject("EXPLOSION_CENTER");
+var temp_25 =EXPLOSION_CENTER_24.GetFloat("X");
+var HIT_30 = _world.GetSynonymObject("HIT");
+var temp_31 =HIT_30.GetFloat("X");
+var EXPLOSION_CENTER_34 = _world.GetSynonymObject("EXPLOSION_CENTER");
+var temp_35 =EXPLOSION_CENTER_34.GetFloat("X");
+var HIT_40 = _world.GetSynonymObject("HIT");
+var temp_41 =HIT_40.GetFloat("Y");
+var EXPLOSION_CENTER_44 = _world.GetSynonymObject("EXPLOSION_CENTER");
+var temp_45 =EXPLOSION_CENTER_44.GetFloat("Y");
+var HIT_50 = _world.GetSynonymObject("HIT");
+var temp_51 =HIT_50.GetFloat("Y");
+var EXPLOSION_CENTER_54 = _world.GetSynonymObject("EXPLOSION_CENTER");
+var temp_55 =EXPLOSION_CENTER_54.GetFloat("Y");
+DISTX_16.SetFloat("VAL",(temp_21-temp_25)*(temp_31-temp_35)+(temp_41-temp_45)*(temp_51-temp_55));
+var DISTX_57 = _world.GetObject(ObjectType.Skill,"DISTX");
+var DISTX_57_val = DISTX_57.GetFloat("VAL");
+var DISTX_58 = _world.GetObject(ObjectType.Skill,"DISTX");
+DISTX_58.SetFloat("VAL",Mathf.Sqrt(DISTX_57_val));
+var DISTZ_59 = _world.GetObject(ObjectType.Skill,"DISTZ");
+var DISTZ_60 = _world.GetObject(ObjectType.Skill,"DISTZ");
+var DISTZ_60_val = DISTZ_60.GetFloat("VAL");
+var HIT_62 = _world.GetSynonymObject("HIT");
+var temp_63 =HIT_62.GetFloat("FLOOR_HGT");
+var MY_66 = _world.GetSynonymObject("MY");
+var temp_67 =MY_66.GetFloat("FLOOR_HGT");
+DISTZ_59.SetFloat("VAL",temp_63-temp_67);
+var DISTX_69 = _world.GetObject(ObjectType.Skill,"DISTX");
+var DISTX_69_val = DISTX_69.GetFloat("VAL");
+if (DISTX_69_val != 0f)
 {
-var MY_82 = _world.GetSynonymObject("MY");
-var MY_84 = _world.GetSynonymObject("MY");
-var temp_85 =MY_84.GetFloat("VSPEED");
-var MY_88 = _world.GetSynonymObject("MY");
-var temp_89 =MY_88.GetFloat("VSPEED");
-MY_82.SetFloat("VSPEED",-temp_89);
+var MY_71 = _world.GetSynonymObject("MY");
+var MY_73 = _world.GetSynonymObject("MY");
+var temp_74 =MY_73.GetFloat("VSPEED");
+var DISTZ_75 = _world.GetObject(ObjectType.Skill,"DISTZ");
+var DISTZ_75_val = DISTZ_75.GetFloat("VAL");
+var DISTX_77 = _world.GetObject(ObjectType.Skill,"DISTX");
+var DISTX_77_val = DISTX_77.GetFloat("VAL");
+MY_71.SetFloat("VSPEED",DISTZ_75_val/DISTX_77_val);
+}
+var MY_80 = _world.GetSynonymObject("MY");
+var temp_81 =MY_80.GetFloat("VSPEED");
+if (temp_81 < 0f)
+{
+var MY_83 = _world.GetSynonymObject("MY");
+var MY_85 = _world.GetSynonymObject("MY");
+var temp_86 =MY_85.GetFloat("VSPEED");
+var MY_89 = _world.GetSynonymObject("MY");
+var temp_90 =MY_89.GetFloat("VSPEED");
+MY_83.SetFloat("VSPEED",-temp_90);
 }
 yield break;
 VANISH:
-var MY_92 = _world.GetSynonymObject("MY");
-var temp_93 =MY_92.GetFloat("GROUND");
-if (temp_93 == 0f)
+var MY_93 = _world.GetSynonymObject("MY");
+var temp_94 =MY_93.GetFloat("GROUND");
+if (temp_94 == 0f)
 {
 //Unknown keyword: LOCATE
 }
-var MY_96 = _world.GetSynonymObject("MY");
-var temp_97 =MY_96.GetFloat("VISIBLE");
-if (temp_97 == 0f)
+var MY_97 = _world.GetSynonymObject("MY");
+var temp_98 =MY_97.GetFloat("VISIBLE");
+if (temp_98 == 0f)
 {
 {
     var enumerator = VANISHSTOP();

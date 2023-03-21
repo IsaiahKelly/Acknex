@@ -135,13 +135,18 @@ namespace Acknex
             }
         }
 
-        private void SetupEvents()
+        private void IfStart()
         {
             TriggerEvent(AcknexObject, AcknexObject, null, "IF_START");
-            WaitForSecond = new WaitForSeconds(1f);
             StartCoroutine(TriggerTickEvents(AcknexObject));
             StartCoroutine(TriggerSecEvents(AcknexObject));
             StartCoroutine(UpdateEvents());
+        }
+
+        private void SetupEvents()
+        {
+            Invoke("IfStart", 1f/60f);
+            WaitForSecond = new WaitForSeconds(1f);
         }
 
         private IEnumerator UpdateEvents()

@@ -27,6 +27,8 @@ namespace Acknex
             return null;
         }
 
+        private const float MaxHeight = 10000f;
+
         private MeshFilter _floorMeshFilter;
         private MeshCollider _floorCollider;
         private MeshRenderer _floorMeshRenderer;
@@ -79,26 +81,38 @@ namespace Acknex
 
         private IEnumerator AnimateCeil()
         {
+            reload:
             while (CeilTexture == null)
             {
                 yield return null;
             }
-            var enumerator = CeilTexture.AnimateTexture(true, _ceilMeshRenderer, _ceilMeshFilter, null, AcknexObject, AcknexObject, null);
+            var textureObject = CeilTexture;
+            var enumerator = textureObject.AnimateTexture(true, _ceilMeshRenderer, _ceilMeshFilter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
+                if (textureObject != CeilTexture)
+                {
+                    goto reload;
+                }
                 yield return enumerator.Current;
             }
         }
 
         private IEnumerator AnimateFloor()
         {
+            reload:
             while (FloorTexture == null)
             {
                 yield return null;
             }
-            var enumerator = FloorTexture.AnimateTexture(true, _floorMeshRenderer, _floorMeshFilter, null, AcknexObject, AcknexObject, null);
+            var textureObject = FloorTexture;
+            var enumerator = textureObject.AnimateTexture(true, _floorMeshRenderer, _floorMeshFilter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
+                if (textureObject != FloorTexture)
+                {
+                    goto reload;
+                }
                 yield return enumerator.Current;
             }
         }
@@ -233,6 +247,7 @@ namespace Acknex
             StartCoroutine(UpdateInstance());
             StartCoroutine(AnimateCeil());
             StartCoroutine(AnimateFloor());
+            AcknexObject.IsInstance = true;
         }
 
         public Vector3 GetCenter()
@@ -437,7 +452,7 @@ namespace Acknex
             }
             if (onCeil)
             {
-                var zCheck = initial ? currentRegion.AcknexObject.GetFloat("FLOOR_HGT") : thingZ + 1.0f;
+                var zCheck = currentRegion == null ? -MaxHeight : initial ? currentRegion.AcknexObject.GetFloat("FLOOR_HGT") : thingZ + 1.0f;
                 var point = new Vector3(thingX, zCheck + radius, thingY);
                 if (Physics.SphereCast(new Ray(point, Vector3.up), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
@@ -450,7 +465,7 @@ namespace Acknex
             }
             else
             {
-                var zCheck = initial ? currentRegion.AcknexObject.GetFloat("CEIL_HGT") : thingZ + 1.0f;
+                var zCheck = currentRegion == null ? MaxHeight : initial ? currentRegion.AcknexObject.GetFloat("CEIL_HGT") : thingZ + 1.0f;
                 var point = new Vector3(thingX, zCheck + radius, thingY);
                 if (Physics.SphereCast(new Ray(point, Vector3.down), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {

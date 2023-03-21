@@ -89,6 +89,7 @@ namespace Acknex
             GUILayout.Label($"PLAYER_SIN:{World.Instance.GetSkillValue("PLAYER_SIN")}");
             GUILayout.Label($"PLAYER_COS:{World.Instance.GetSkillValue("PLAYER_COS")}");
             GUILayout.Label($"PLAYER_HGT:{World.Instance.GetSkillValue("PLAYER_HGT")}");
+            GUILayout.Label($"PLAYER_HEALTH:{World.Instance.GetSkillValue("PLAYER_HEALTH")}");
             var region = Player.Instance.AcknexObject.GetAcknexObject("REGION");
             GUILayout.Label($"RGN:{region?.GetString("NAME")}");
             GUILayout.EndVertical();

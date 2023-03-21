@@ -57,13 +57,19 @@ namespace Acknex
 
         private IEnumerator Animate()
         {
+            reload:
             while (TextureObject == null)
             {
                 yield return null;
             }
-            var enumerator = TextureObject.AnimateTexture(true, _meshRenderer, _meshFilter, null, AcknexObject, AcknexObject, null);
+            var textureObject = TextureObject;
+            var enumerator = textureObject.AnimateTexture(true, _meshRenderer, _meshFilter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
+                if (textureObject != TextureObject)
+                {
+                    goto reload;
+                }
                 yield return enumerator.Current;
             }
         }
@@ -191,6 +197,7 @@ namespace Acknex
 
             StartCoroutine(UpdateInstance());
             StartCoroutine(Animate());
+            AcknexObject.IsInstance = true;
         }
 
         //todo
