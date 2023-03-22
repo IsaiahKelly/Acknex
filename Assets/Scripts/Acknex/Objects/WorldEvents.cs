@@ -100,7 +100,7 @@ namespace Acknex
         {
             if (condition)
             {
-                TriggerEvent(eventName, acknexObject, acknexObject, null);
+                TriggerEvent(eventName, acknexObject, null, null);
             }
         }
 
@@ -110,7 +110,7 @@ namespace Acknex
             {
                 foreach (var tickEvent in TickEvents)
                 {
-                    TriggerEvent(tickEvent, acknexObject, acknexObject, null);
+                    TriggerEvent(tickEvent, acknexObject, null, null);
                 }
                 yield return null;
             }
@@ -122,7 +122,7 @@ namespace Acknex
             {
                 foreach (var secEvent in SecEvents)
                 {
-                    TriggerEvent(secEvent, acknexObject, acknexObject, null);
+                    TriggerEvent(secEvent, acknexObject, null, null);
                 }
                 yield return WaitForSecond;
             }
@@ -130,7 +130,7 @@ namespace Acknex
 
         private void IfStart()
         {
-            TriggerEvent("IF_START", AcknexObject, AcknexObject, null);
+            TriggerEvent("IF_START", AcknexObject, null, null);
             StartCoroutine(TriggerTickEvents(AcknexObject));
             StartCoroutine(TriggerSecEvents(AcknexObject));
             StartCoroutine(UpdateEvents());

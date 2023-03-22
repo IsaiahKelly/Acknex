@@ -101,6 +101,11 @@ namespace Acknex
             return transform.position;
         }
 
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
         private void Update()
         {
             UpdateObject();

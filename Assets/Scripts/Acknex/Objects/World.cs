@@ -23,6 +23,11 @@ namespace Acknex
             return default;
         }
 
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
         private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;

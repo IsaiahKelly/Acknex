@@ -25,7 +25,17 @@ public class AcknexObjectEditor : Editor
                 }
                 else
                 {
-                    EditorGUILayout.LabelField(property.Value?.ToString());
+                    if (property.Value is IAcknexObject acknexObject && acknexObject.Container is MonoBehaviour mono)
+                    {
+                        if (GUILayout.Button(property.Value?.ToString()))
+                        {
+                            Selection.activeTransform = mono.transform;
+                        }
+                    }
+                    else
+                    {
+                        EditorGUILayout.LabelField(property.Value?.ToString());
+                    }
                 }
                 EditorGUILayout.EndHorizontal();
             }
@@ -47,13 +57,23 @@ public class AcknexObjectEditor : Editor
                     {
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField(property.Key);
-                        if (property.Value is System.Collections.Generic.HashSet<string> list)
+                        if (property.Value is HashSet<string> list)
                         {
                             EditorGUILayout.LabelField(string.Join(",", list));
                         }
                         else
                         {
-                            EditorGUILayout.LabelField(property.Value?.ToString());
+                            if (property.Value is IAcknexObject acknexObject && acknexObject.Container is MonoBehaviour mono)
+                            {
+                                if (GUILayout.Button(property.Value?.ToString()))
+                                {
+                                    Selection.activeTransform = mono.transform;
+                                }
+                            }
+                            else
+                            {
+                                EditorGUILayout.LabelField(property.Value?.ToString());
+                            }
                         }
                         EditorGUILayout.EndHorizontal();
                     }

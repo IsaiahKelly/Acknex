@@ -76,11 +76,12 @@ namespace Acknex
             var sides = Mathf.Max(1, this.AcknexObject.GetInteger("SIDES"));
             var cycles = Mathf.Max(1, this.AcknexObject.GetInteger("CYCLES"));
             var mirror = AcknexObject.GetObject<List<float>>("MIRROR");
-            if (cycles == 1)
-            {
-                UpdateAngleFrameScale(scaleTexture, cycles, sides, 0, mirror, null, meshRenderer, meshFilter, thingGameObject, sourceAcknexObject, sourceTransform);
-                yield break;
-            }
+            //if (cycles == 1)
+            //{
+            //    UpdateAngleFrameScale(scaleTexture, cycles, sides, 0, mirror, null, meshRenderer, meshFilter, thingGameObject, sourceAcknexObject, sourceTransform);
+            //    World.Instance.TriggerEvent("EACH_CYCLE", sourceAcknexObject, sourceAcknexObject, regionAcknexObject);
+            //    yield break;
+            //}
             var cycle = 0;
             while (true)
             {
@@ -89,6 +90,10 @@ namespace Acknex
                 yield return currentDelay;
                 cycle = (int)Mathf.Repeat(cycle + 1, cycles);
                 World.Instance.TriggerEvent("EACH_CYCLE", sourceAcknexObject, sourceAcknexObject, regionAcknexObject);
+                if (cycles == 1 || AcknexObject.ContainsFlag("ONESHOT"))
+                {
+                    yield break;
+                }
             }
         }
 
@@ -186,6 +191,11 @@ namespace Acknex
         public Vector3 GetCenter()
         {
             return default;
+        }
+
+        public IAcknexObject GetRegion()
+        {
+            return null;
         }
     }
 }

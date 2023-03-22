@@ -51,6 +51,11 @@ namespace Acknex
             return default;
         }
 
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
         public Music()
         {
             AcknexObject.Container = this;

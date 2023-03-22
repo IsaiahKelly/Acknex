@@ -81,6 +81,11 @@ namespace Acknex
             return ViewCamera.transform.position;
         }
 
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
         private void Awake()
         {
             Instance = this;

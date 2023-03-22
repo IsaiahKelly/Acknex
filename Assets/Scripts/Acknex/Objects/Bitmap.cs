@@ -50,6 +50,11 @@ namespace Acknex
             return default;
         }
 
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
         public static void CreateBitmapTexture(string filename, int x, int y, int width, int height, out Texture2D texture2D, ref Texture2D bitmapTexture2D)
         {
             if (!World.Instance.TextureCache.TryGetValue(filename, out texture2D))

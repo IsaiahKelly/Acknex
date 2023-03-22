@@ -42,6 +42,11 @@ namespace Acknex
             return default;
         }
 
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
         public Synonym()
         {
             AcknexObject.Container = this;

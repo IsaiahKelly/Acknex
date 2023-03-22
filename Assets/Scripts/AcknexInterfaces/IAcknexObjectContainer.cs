@@ -39,5 +39,10 @@ namespace Acknex.Interfaces
         /// Gets the container position in Unity scene.
         /// </summary>
         Vector3 GetCenter();
+
+        /// <summary>
+        /// Gets the container region.
+        /// </summary>
+        IAcknexObject GetRegion();
     }
 }

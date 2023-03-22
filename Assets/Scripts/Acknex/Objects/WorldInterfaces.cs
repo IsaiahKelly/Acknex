@@ -558,7 +558,7 @@ namespace Acknex
                 UpdateSkillValue("HIT_DIST", distance);
                 UpdateSkillValue("RESULT", shootFac * (1.0f - distance / shootRange));
                 UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(raycastResult.point), AngleUtils.To2D(ray.origin))));
-                TriggerEvent("IF_HIT", AcknexObject, MY, THERE);
+                TriggerEvent("IF_HIT", AcknexObject, AcknexObject, AcknexObject.Container.GetRegion());
                 Debug.DrawLine(ray.origin, raycastResult.point, Color.white, 1f);
                 if (acknexObject != null)
                 {
@@ -626,7 +626,7 @@ namespace Acknex
                 UpdateSkillValue("HIT_DIST", distance);
                 UpdateSkillValue("RESULT", shootFac * (1.0f - distance / shootRange));
                 UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(hitPoint), AngleUtils.To2D(origin))));
-                TriggerEvent("IF_HIT", AcknexObject, MY, THERE);
+                TriggerEvent("IF_HIT", AcknexObject, AcknexObject, AcknexObject.Container.GetRegion());
                 minDist = Mathf.Min(minDist, distance);
             }
             UpdateSkillValue("HIT_DIST", 0f);

@@ -206,6 +206,11 @@ namespace Acknex
             return default;
         }
 
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
         public void ProcessWall(
             List<ContourVertex> allContourVertices,
             List<ContourVertex> contourVertices,

@@ -96,6 +96,11 @@ namespace Acknex
             return transform.position;
         }
 
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
         private void Awake()
         {
             AcknexObject.Container = this;

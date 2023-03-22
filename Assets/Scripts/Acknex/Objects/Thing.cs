@@ -68,7 +68,7 @@ namespace Acknex
         {
             if (obj.TryGetComponent<Player>(out var player))
             {
-                World.Instance.TriggerEvent("IF_FAR", AcknexObject, AcknexObject, player.GetRegion());
+                World.Instance.TriggerEvent("IF_FAR", AcknexObject, player.AcknexObject, player.GetRegion());
             }
         }
 
@@ -76,7 +76,7 @@ namespace Acknex
         {
             if (obj.TryGetComponent<Player>(out var player))
             {
-                World.Instance.TriggerEvent("IF_NEAR", AcknexObject, AcknexObject, player.GetRegion());
+                World.Instance.TriggerEvent("IF_NEAR", AcknexObject, player.AcknexObject, player.GetRegion());
             }
         }
 
@@ -311,7 +311,7 @@ namespace Acknex
             AcknexObject.SetInteger("WAYPOINT", waypoint);
             if (points.Count == 0)
             {
-                World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, way.AcknexObject, GetRegion());
+                World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
                 yield break;
             }
             var nextPoint = points[waypoint - 1];
@@ -325,7 +325,7 @@ namespace Acknex
                         yield break;
                     }
                     AcknexObject.SetInteger("WAYPOINT", waypoint);
-                    World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, way.AcknexObject, GetRegion());
+                    World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
                     nextPoint = points[waypoint - 1];
                 }
                 yield return null;
@@ -411,13 +411,13 @@ namespace Acknex
             {
                 if (_movingToTarget && AcknexObject.ContainsFlag("CAREFULLY"))
                 {
-                    World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, Player.Instance.AcknexObject, AcknexObject);
+                    World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, region);
                 }
-                World.Instance.TriggerEvent("IF_LEAVE", AcknexObject, AcknexObject, AcknexObject);
-                World.Instance.TriggerEvent("IF_ARISE", AcknexObject, AcknexObject, AcknexObject);
+                World.Instance.TriggerEvent("IF_LEAVE", AcknexObject, AcknexObject, region);
+                World.Instance.TriggerEvent("IF_ARISE", AcknexObject, AcknexObject, region);
                 region = newRegionContainer.AcknexObject;
                 regionContainer = newRegionContainer;
-                World.Instance.TriggerEvent("IF_ENTER", AcknexObject, AcknexObject, AcknexObject);
+                World.Instance.TriggerEvent("IF_ENTER", AcknexObject, AcknexObject, region);
                 if (regionContainer.Above != null)
                 {
                     World.Instance.TriggerEvent("IF_DIVE", regionContainer.Above.AcknexObject, AcknexObject, regionContainer.Above.AcknexObject);

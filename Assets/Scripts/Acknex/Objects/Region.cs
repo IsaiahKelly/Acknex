@@ -255,6 +255,11 @@ namespace Acknex
             return default;
         }
 
+        public IAcknexObject GetRegion()
+        {
+            return AcknexObject;
+        }
+
         public static void BuildFloorMesh(List<Vector3> allVertices, List<Vector2> allUVS, Dictionary<int, List<int>> allTriangles, Region region, IAcknexObject ceilTexture, IAcknexObject floorTexture)
         {
             {

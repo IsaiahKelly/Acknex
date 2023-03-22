@@ -203,6 +203,11 @@ namespace Acknex
             return default;
         }
 
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
         private mdl_vertex_t ReadQuakeVertex(BinaryReader binaryReader)
         {
             var vertex = new mdl_vertex_t();

@@ -62,6 +62,11 @@ namespace Acknex
             return default;
         }
 
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
         private void Awake()
         {
             AcknexObject.Container = this;
