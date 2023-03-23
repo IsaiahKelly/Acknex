@@ -1,22 +1,46 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Acknex.Interfaces;
-using AudioSynthesis.Synthesis;
 using UnityEngine;
 
 namespace Acknex
 {
     //TODO: missing keywords
-    //TODO: categorize actions in IEnumerators and not IEnumeratros (depending on actions that uses WAIT or WAITT)
     public class Action : IAcknexObjectContainer
     {
-        private const string CallEnumeratorTemplate = "{{\r\n    var enumerator = {0};\r\n    while (enumerator.MoveNext())\r\n    {{\r\n        var current = enumerator.Current;\r\n        if (current != null)\r\n        {{\r\n            yield return current;\r\n        }}\r\n    }}\r\n}}";
+        private const string CallEnumeratorTemplate = @"{{
+            var enumerator = {0};
+            while (enumerator.MoveNext())
+            {{
+                var current = enumerator.Current;
+                if (current != null)
+                {{
+                    yield return current;
+                }}
+            }}
+        }}";
+
+        private const string WaitTicks = @"{{
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.TicksToTime((int){0});
+            while (Time.time  < endTime)
+            {{
+                yield return _waitForEndOfFrame;
+            }}
+        }}";
+
+        private const string WaitCycles = @"{{
+            var startFrame = Time.frameCount;
+            var endFrame = startFrame + (int){0};
+            while (Time.frameCount  < endFrame)
+            {{
+                yield return _waitForEndOfFrame;
+            }}
+        }}";
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Action);
         public StringBuilder CodeStringBuilder = new StringBuilder();
@@ -210,11 +234,13 @@ namespace Acknex
                                 }
                                 if (keyword == "WAIT")
                                 {
-                                    CodeStringBuilder.Append("yield return new WaitForCycles(").Append(rhs.property).AppendLine(");");
+                                    CodeStringBuilder.AppendFormat(WaitTicks, rhs.property).AppendLine();
+                                    //CodeStringBuilder.Append("yield return new WaitForCycles(").Append(rhs.property).AppendLine(");");
                                 }
                                 else
                                 {
-                                    CodeStringBuilder.Append("yield return new WaitForTicks(").Append(rhs.property).AppendLine(");");
+                                    CodeStringBuilder.AppendFormat(WaitCycles, rhs.property).AppendLine();
+                                    //CodeStringBuilder.Append("yield return new WaitForTicks(").Append(rhs.property).AppendLine(");");
                                 }
                                 HandleIfStack();
                                 ReadUntilSemiColon(tokens);

@@ -199,7 +199,7 @@ namespace Acknex
             _innerCollider.radius = 0.5f;
             _innerCollider.isTrigger = AcknexObject.HasFlag("PASSABLE");
             _triggerCollider.radius = AcknexObject.GetFloat("DIST") * 0.5f;
-            AcknexObject.SetFloat("DISTANCE", Vector3.Distance(transform.position, Player.Instance.transform.position) * 0.2f);
+            AcknexObject.SetFloat("DISTANCE", Vector3.Distance(transform.position, Player.Instance.transform.position));// * 0.2f);
             //Approximate distance(+/ -20 %) of the player
             //    from the center of the object; only valid for
             //    objects within the player's CLIP_DIST.
@@ -306,11 +306,11 @@ namespace Acknex
             var points = way.InstancePoints;
             var waypoint = 1;
             AcknexObject.SetInteger("WAYPOINT", waypoint);
-            if (points.Count == 0)
-            {
-                //World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
-                yield break;
-            }
+            //if (points.Count == 0)
+            //{
+            //    //World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
+            //    yield break;
+            //}
             var nextPoint = points[waypoint - 1];
             for (; ; )
             {
@@ -319,6 +319,7 @@ namespace Acknex
                     waypoint++;
                     if (waypoint > points.Count)
                     {
+                        AcknexObject.SetAcknexObject("TARGET", null);
                         _movingToTarget = false;
                         yield break;
                     }
@@ -339,6 +340,7 @@ namespace Acknex
                 if (MoveToPoint(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
                     _movingToTarget = false;
+                    AcknexObject.SetAcknexObject("TARGET", null);
                     World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
                     yield break;
                 }
@@ -354,6 +356,7 @@ namespace Acknex
                 var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
                 if (MoveToPoint(playerPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
+                    AcknexObject.SetAcknexObject("TARGET", null);
                     _movingToTarget = false;
                     yield break;
                 }
@@ -375,6 +378,7 @@ namespace Acknex
                 if (MoveToPoint(targetPos))
                 {
                     _movingToTarget = false;
+                    AcknexObject.SetAcknexObject("TARGET", null);
                     yield break;
                 }
                 yield return null;
@@ -388,8 +392,8 @@ namespace Acknex
         public void StickToTheCeiling(float thingX, float thingY, ref float thingZ)
         {
             var region = GetRegion();
-            var newRegionContainer = Region.Locate(AcknexObject, region.Container as Region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.HasFlag("GROUND"), true);
-            thingZ = thingZ - _innerGameObject.transform.localScale.y;
+            var newRegionContainer = Region.Locate(AcknexObject, region.Container as Region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, true);
+            thingZ = thingZ - _innerGameObject.transform.localScale.y; //todo: right?
             AcknexObject.SetFloat("Z", thingZ);
         }
 
@@ -398,7 +402,7 @@ namespace Acknex
         {
             var region = GetRegion();
             var regionContainer = region?.Container as Region;
-            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.HasFlag("GROUND"));
+            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ);
             AcknexObject.SetFloat("Z", thingZ);
             if (AcknexObject.HasFlag("MASTER") && newRegionContainer != regionContainer)
             {

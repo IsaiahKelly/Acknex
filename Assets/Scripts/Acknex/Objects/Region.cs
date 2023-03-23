@@ -363,8 +363,9 @@ namespace Acknex
             meshIndex++;
         }
 
-        public static Region Locate(IAcknexObject source, Region currentRegion, float radius, float thingX, float thingY, ref float thingZ, bool onGround = false, bool onCeil = false, bool initial = true)
+        public static Region Locate(IAcknexObject acknexObject, Region currentRegion, float radius, float thingX, float thingY, ref float thingZ, bool onCeil = false, bool initial = true)
         {
+            var onGround = acknexObject.HasFlag("GROUND");
             bool GetValue(RaycastHit raycastHit, ref float outThingZ, out Region outRegion)
             {
                 if (raycastHit.transform.parent != null && raycastHit.transform.parent.TryGetComponent(out outRegion))
@@ -375,16 +376,15 @@ namespace Acknex
                 outRegion = currentRegion;
                 return false;
             }
-
             if (onCeil)
             {
                 var zCheck = currentRegion == null ? -MaxHeight : initial ? currentRegion.AcknexObject.GetFloat("FLOOR_HGT") : thingZ + 1.0f;
                 var point = new Vector3(thingX, zCheck + radius, thingY);
-                if (Physics.SphereCast(new Ray(point, Vector3.up), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
+                if (Physics.Raycast(new Ray(point, Vector3.up), /*radius, */ out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, ref thingZ, out var outRegion))
                     {
-                        Debug.DrawLine(point, raycastHit.point, Color.red);
+                        Debug.DrawLine(point, raycastHit.point, Color.red, 1f);
                         return outRegion;
                     }
                 }
@@ -393,11 +393,11 @@ namespace Acknex
             {
                 var zCheck = currentRegion == null ? MaxHeight : initial ? currentRegion.AcknexObject.GetFloat("CEIL_HGT") : thingZ + 1.0f;
                 var point = new Vector3(thingX, zCheck + radius, thingY);
-                if (Physics.SphereCast(new Ray(point, Vector3.down), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
+                if (Physics.Raycast(new Ray(point, Vector3.down), /*radius,*/ out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, ref thingZ, out var outRegion))
                     {
-                        Debug.DrawLine(point, raycastHit.point, Color.red);
+                        Debug.DrawLine(point, raycastHit.point, Color.red, 1f);
                         return outRegion;
                     }
                 }

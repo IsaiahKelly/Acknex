@@ -99,7 +99,7 @@ namespace Acknex
         private void Locate(float playerX, float playerY, ref float playerZ, bool initial = true)
         {
             var region = (Region)AcknexObject.GetAcknexObject("REGION").Container;
-            var newRegion = Region.Locate(AcknexObject, region, World.Instance.GetSkillValue("PLAYER_WIDTH"), playerX, playerY, ref playerZ, false, false, initial);
+            var newRegion = Region.Locate(AcknexObject, region, World.Instance.GetSkillValue("PLAYER_WIDTH"), playerX, playerY, ref playerZ, false, initial);
             if (newRegion != region)
             {
                 World.Instance.TriggerEvent("IF_LEAVE", region.AcknexObject, null, region.AcknexObject);
