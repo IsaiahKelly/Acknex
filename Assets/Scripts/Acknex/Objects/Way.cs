@@ -1,15 +1,66 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Acknex.Interfaces;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 
 namespace Acknex
 {
     public class Way : MonoBehaviour, IAcknexObjectContainer
     {
+        public List<Vector2> Points = new List<Vector2>();
+
+        public List<Vector2> InstancePoints
+        {
+            get
+            {
+                var firstInstance = World.Instance.AllWaysByName[AcknexObject.GetString("NAME")].First();
+                return firstInstance.Points;
+            }
+        }
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Way);
+
+        public void Disable()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void Enable()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public Vector3 GetCenter()
+        {
+            return transform.position;
+        }
+
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
+        public void SetupInstance()
+        {
+            if (AcknexObject.IsInstance)
+            {
+                return;
+            }
+            AcknexObject.IsInstance = true;
+        }
+
+        public void SetupTemplate()
+        {
+        }
+
+        public void UpdateObject()
+        {
+            if (!AcknexObject.IsDirty)
+            {
+                return;
+            }
+            AcknexObject.IsDirty = false;
+        }
 
         private static IAcknexObject GetTemplateCallback(string name)
         {
@@ -18,18 +69,6 @@ namespace Acknex
                 return definition.AcknexObject;
             }
             return null;
-        }
-
-        public List<Vector2> Points = new List<Vector2>();
-
-        public List<Vector2> InstancePoints
-        {
-            get
-            {
-
-                var firstInstance = World.Instance.AllWaysByName[AcknexObject.GetString("NAME")].First();
-                return firstInstance.Points;
-            }
         }
 
         public void OnDrawGizmos()
@@ -42,63 +81,18 @@ namespace Acknex
             }
         }
 
-        private IEnumerator UpdateInstance()
+        private void UpdateInstance()
         {
-            while (!AcknexObject.IsInstance)
-            {
-                yield return null;
-            }
-            while (true)
-            {
-                UpdateObject();
-                UpdateEvents();
-                yield return null;
-            }
-        }
-
-        public void UpdateObject()
-        {
-            if (!AcknexObject.IsDirty)
+            if (!AcknexObject.IsInstance)
             {
                 return;
             }
-            AcknexObject.IsDirty = false;
+            UpdateObject();
+            UpdateEvents();
         }
 
         private void UpdateEvents()
         {
-          
-        }
-
-        public void Enable()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public void Disable()
-        {
-            gameObject.SetActive(false);
-        }
-
-        public void SetupTemplate()
-        {
-
-        }
-
-        public void SetupInstance()
-        {
-            StartCoroutine(UpdateInstance());
-            AcknexObject.IsInstance = true;
-        }
-
-        public Vector3 GetCenter()
-        {
-            return transform.position;
-        }
-
-        public IAcknexObject GetRegion()
-        {
-            return null;
         }
 
         private void Awake()

@@ -2563,7 +2563,7 @@ namespace Tests
             var MY_54 = MY;
             MY_54.SetAcknexObject("TEXTURE", EXP01TEX_52);
             var MY_57 = MY;
-            //Unknown Property Type: Thing.PLAY
+            MY.SetFloat("PLAY", 1f);
             yield return new WaitForTicks(4f);
             var EXPLOSION_ON_60 = _world.GetObject(ObjectType.Skill, "EXPLOSION_ON");
             EXPLOSION_ON_60.SetFloat("VAL", 0f);

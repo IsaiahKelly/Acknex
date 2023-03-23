@@ -34,8 +34,6 @@ namespace Acknex
         public float ScaleX => AcknexObject.TryGetFloat("SCALE_X", out var val) ? val : 16f;
         public float ScaleY => AcknexObject.TryGetFloat("SCALE_Y", out var val) ? val : 16f;
 
-        private static float[] DefaultNoMirror = new float[] { 0f };
-
         public void UpdateObject()
         {
 
@@ -68,32 +66,34 @@ namespace Acknex
             MeshRenderer meshRenderer,
             MeshFilter meshFilter,
             GameObject thingGameObject,
-            IAcknexObject sourceAcknexObject,
-            IAcknexObject regionAcknexObject,
+            IAcknexObject MY,
+            IAcknexObject THERE,
             Transform sourceTransform
         )
         {
             var sides = Mathf.Max(1, this.AcknexObject.GetInteger("SIDES"));
             var cycles = Mathf.Max(1, this.AcknexObject.GetInteger("CYCLES"));
             var mirror = AcknexObject.GetObject<List<float>>("MIRROR");
-            //if (cycles == 1)
-            //{
-            //    UpdateAngleFrameScale(scaleTexture, cycles, sides, 0, mirror, null, meshRenderer, meshFilter, thingGameObject, sourceAcknexObject, sourceTransform);
-            //    World.Instance.TriggerEvent("EACH_CYCLE", sourceAcknexObject, sourceAcknexObject, regionAcknexObject);
-            //    yield break;
-            //}
+            if (cycles == 1)
+            {
+                UpdateAngleFrameScale(scaleTexture, cycles, sides, 0, mirror, null, meshRenderer, meshFilter, thingGameObject, MY, sourceTransform);
+                World.Instance.TriggerEvent("EACH_CYCLE", MY, MY, THERE);
+                AcknexObject.RemoveFlag("PLAY");
+                yield break;
+            }
             var cycle = 0;
             while (true)
             {
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : null;
-                UpdateAngleFrameScale(scaleTexture, cycles, sides, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, sourceAcknexObject, sourceTransform);
+                UpdateAngleFrameScale(scaleTexture, cycles, sides, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, MY, sourceTransform);
                 yield return currentDelay;
-                cycle = (int)Mathf.Repeat(cycle + 1, cycles);
-                World.Instance.TriggerEvent("EACH_CYCLE", sourceAcknexObject, sourceAcknexObject, regionAcknexObject);
-                if (cycles == 1 || AcknexObject.ContainsFlag("ONESHOT"))
+                World.Instance.TriggerEvent("EACH_CYCLE", MY, MY, THERE);
+                if (MY.HasFlag("ONESHOT"))
                 {
+                    MY.RemoveFlag("PLAY");
                     yield break;
                 }
+                cycle = (int)Mathf.Repeat(cycle + 1, cycles);
             }
         }
 
@@ -131,7 +131,7 @@ namespace Acknex
                 {
                     angleFrame = side * cycles;
                     var frame = angleFrame + animFrame;
-                    bitmap = this.GetBitmapAt(frame);
+                    bitmap = GetBitmapAt(frame);
                     if (meshRenderer?.material != null && bitmap != null)
                     {
                         UpdateFrame(bitmap, meshRenderer.material, scaleTexture, true, frame, sourceAcknexObject);
@@ -141,7 +141,7 @@ namespace Acknex
                 {
                     angleFrame = side * cycles;
                     var frame = angleFrame + animFrame;
-                    bitmap = this.GetBitmapAt(frame);
+                    bitmap = GetBitmapAt(frame);
                     if (meshRenderer?.material != null && bitmap != null)
                     {
                         UpdateFrame(bitmap, meshRenderer.material, scaleTexture, false, frame, sourceAcknexObject);

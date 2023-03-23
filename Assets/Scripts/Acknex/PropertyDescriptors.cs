@@ -355,7 +355,9 @@ namespace Acknex
             AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "IF_ARISE");
             AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "GENIUS");
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "CLIP_DIST");
-
+            AddObjectProperty(ObjectType.Region, PropertyType.Float, "CEIL_LIFTED");
+            AddObjectProperty(ObjectType.Region, PropertyType.Float, "FLOOR_LIFTED");
+            AddObjectProperty(ObjectType.Region, PropertyType.Float, "PLAY");
 
             AddObjectProperty(ObjectType.Wall, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "AMBIENT");
@@ -390,6 +392,8 @@ namespace Acknex
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "Y1");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "X2");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "Y2");
+            AddObjectProperty(ObjectType.Wall, PropertyType.Float, "IMPASSABLE");
+            AddObjectProperty(ObjectType.Wall, PropertyType.Float, "PLAY");
 
 
             AddObjectProperty(ObjectType.Texture, PropertyType.String, "NAME");

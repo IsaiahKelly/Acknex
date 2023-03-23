@@ -19,7 +19,7 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            _overlayGraphic.enabled = AcknexObject.ContainsFlag("VISIBLE", false);
+            _overlayGraphic.enabled = AcknexObject.HasFlag("VISIBLE", false);
             _overlayGraphic.rectTransform.anchorMin = new Vector3(0f, 1f);
             _overlayGraphic.rectTransform.anchorMax = new Vector3(0f, 1f);
             _overlayGraphic.rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat("POS_X") * World.Instance.CanvasWidthRatio, -AcknexObject.GetFloat("POS_Y"), 0f);

@@ -1,50 +1,217 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Acknex.Interfaces;
-using CodiceApp.EventTracking.Plastic;
-using UnityEditor;
 using UnityEngine;
 using Utils;
 
 namespace Acknex
 {
     //todo: CYCLE PROP
-    //todo: UPDATE BITMAP
-    //todo: remove debug fields
     //todo: skill ACTOR_WIDTH & THING_WIDTH
     public class Thing : MonoBehaviour, IAcknexObjectContainer
     {
-        public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Thing);
-
-        private static IAcknexObject GetTemplateCallback(string name)
-        {
-            if (World.Instance.ThingsByName.TryGetValue(name, out var definition))
-            {
-                return definition.AcknexObject;
-            }
-            return null;
-        }
-
+        private GameObject _attached;
         private AudioSource _audioSource;
+        private CapsuleCollider _innerCollider;
+        private GameObject _innerGameObject;
+        private IAcknexObject _lastTarget;
+        private Texture _lastTextureObject;
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
-        private GameObject _innerGameObject;
-        private CapsuleCollider _innerCollider;
+        private Coroutine _movingCoroutine;
+        private bool _movingToTarget;
+        private Texture _textureObject;
         private CollisionCallback _thingCollisionCallback;
-
-        //Deltas for comparison
-        private GameObject _attached;
-        private Texture _lastTextureObject;
-        private IAcknexObject _lastTarget;
-        private GameObject _triggerGameObject;
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;
-        private bool _movingToTarget;
-        private Coroutine _movingCoroutine;
+        private GameObject _triggerGameObject;
+        private bool _animating;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
+        public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Thing);
+
+        public void Disable()
+        {
+            AcknexObject.AddFlag("INVISIBLE");
+            //AcknexObject.RemoveFlag("VISIBLE");
+        }
+
+        public void Enable()
+        {
+            AcknexObject.RemoveFlag("INVISIBLE");
+            //AcknexObject.AddFlag("VISIBLE");
+        }
+
+        public Vector3 GetCenter()
+        {
+            return transform.position + new Vector3(0f, _innerGameObject.transform.localScale.y * 0.5f, 0f);
+        }
+
+        public IAcknexObject GetRegion()
+        {
+            var regionObject = AcknexObject.GetAcknexObject("REGION");
+            return regionObject;
+        }
+
+        public void SetupInstance()
+        {
+            if (AcknexObject.IsInstance)
+            {
+                return;
+            }
+            AcknexObject.IsInstance = true;
+            _innerGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
+            _innerGameObject.layer = World.Instance.ThingsAndActorsLayer.LayerIndex;
+            _innerCollider = _innerGameObject.AddComponent<CapsuleCollider>();
+            _innerCollider.height = 1f;
+            _thingCollisionCallback = _innerGameObject.AddComponent<CollisionCallback>();
+            _thingCollisionCallback.OnCollisionEnterCallback += OnCollisionEnterCallback;
+            _thingCollisionCallback.OnCollisionExitCallback += OnCollisionExitCallback;
+            _triggerGameObject = new GameObject("Trigger");
+            _triggerGameObject.layer = World.Instance.TriggersLayer.LayerIndex;
+            _triggerGameObject.transform.SetParent(transform, false);
+            _triggerCollider = _triggerGameObject.AddComponent<SphereCollider>();
+            _triggerCollider.isTrigger = true;
+            _triggerCollisionCallback = _triggerGameObject.AddComponent<CollisionCallback>();
+            _triggerCollisionCallback.OnTriggerEnterCallback += OnTriggerEnterCallback;
+            _triggerCollisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
+            _audioSource = gameObject.AddComponent<AudioSource>();
+            StartCoroutine(Animate());
+            StartCoroutine(TriggerTickEvents());
+            StartCoroutine(TriggerSecEvents());
+            if (GetRegion() == null)
+            {
+                var thingZ = AcknexObject.GetFloat("Z");
+                Locate(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"), ref thingZ);
+            }
+        }
+
+        public void SetupTemplate()
+        {
+        }
+
+        public virtual void UpdateObject()
+        {
+            //if (TextureObject == null || !TextureObject.HasModel(out _))
+            //{
+            var camera = CameraExtensions.GetLastActiveCamera();
+            if (camera == null)
+            {
+                return;
+            }
+            var eulerAngles = transform.eulerAngles;
+            eulerAngles.y = camera.transform.eulerAngles.y;
+            transform.eulerAngles = eulerAngles;
+            //}
+            //else
+            //{
+            //    var angle = AcknexObject.GetFloat("ANGLE");
+            //    var eulerAngles = transform.eulerAngles;
+            //    eulerAngles.y = AngleUtils.ConvertAcknexToUnityAngle(angle);
+            //    transform.eulerAngles = eulerAngles;
+            //}
+            if (AcknexObject.HasFlag("INVISIBLE"))
+            {
+                return;
+            }
+            if (!AcknexObject.IsDirty && !_movingToTarget)
+            {
+                DebugExtension.DebugWireSphere(transform.position, Color.red);
+                return;
+            }
+            AcknexObject.IsDirty = false;
+            //todo: ok, this is hacky
+            if ((TextureObject != _textureObject && !_animating) || (AcknexObject.HasFlag("PLAY") && !_animating))
+            {
+                StartCoroutine(Animate());
+            }
+            _textureObject = TextureObject;
+            DebugExtension.DebugWireSphere(transform.position, Color.green);
+            if (AcknexObject.HasFlag("INVISIBLE"))
+            {
+                _meshRenderer.enabled = false;
+                _innerCollider.enabled = false;
+            }
+            else
+            {
+                _meshRenderer.enabled = true;
+                _innerCollider.enabled = true;
+            }
+            if (AcknexObject.TryGetAcknexObject("TARGET", out var target) && target != _lastTarget)
+            {
+                if (_movingCoroutine != null)
+                {
+                    StopCoroutine(_movingCoroutine);
+                }
+                if (target != null)
+                {
+                    var targetName = target.GetString("NAME");
+                    switch (targetName)
+                    {
+                        case "FOLLOW":
+                            //Debug.Log(AcknexObject + "moving in direction of player with speed " + AcknexObject.GetFloat("SPEED"));
+                            _movingCoroutine = StartCoroutine(MoveToPlayer());
+                            break;
+                        case "VERTEX":
+                            //Debug.Log(AcknexObject + "moving in direction of vertex with speed " + AcknexObject.GetFloat("SPEED"));
+                            _movingCoroutine = StartCoroutine(MoveToVertex());
+                            break;
+                        case "MOVE":
+                        case "BULLET":
+                            //Debug.Log(AcknexObject + "moving in direction of its angle with speed " + AcknexObject.GetFloat("SPEED"));
+                            _movingCoroutine = StartCoroutine(MoveToAngle());
+                            break;
+                        default:
+                            {
+                                if (target.Container is Way way)
+                                //Debug.Log(AcknexObject + "moving in direction of way " + way.AcknexObject + " with speed " + AcknexObject.GetFloat("SPEED"));
+                                {
+                                    _movingCoroutine = StartCoroutine(MoveToWay(way));
+                                }
+
+                                //else
+                                //{
+                                //    Debug.Log(AcknexObject + "moving to nothing");
+                                //}
+                                break;
+                            }
+                    }
+                }
+                _lastTarget = target;
+            }
+            var thingX = AcknexObject.GetFloat("X");
+            var thingY = AcknexObject.GetFloat("Y");
+            var thingZ = AcknexObject.GetFloat("Z");
+
+            //todo: this block should only run on carefully flagged
+            if (AcknexObject.HasFlag("CANDELABER"))
+            {
+                StickToTheCeiling(thingX, thingY, ref thingZ);
+            }
+            else
+            {
+                Locate(thingX, thingY, ref thingZ);
+            }
+            transform.position = new Vector3(thingX, thingZ, thingY);
+            var thingPosition = _innerGameObject.transform.position;
+            thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
+            _innerGameObject.transform.position = thingPosition;
+            _innerCollider.radius = 0.5f;
+            _innerCollider.isTrigger = AcknexObject.HasFlag("PASSABLE");
+            _triggerCollider.radius = AcknexObject.GetFloat("DIST") * 0.5f;
+            AcknexObject.SetFloat("DISTANCE", Vector3.Distance(transform.position, Player.Instance.transform.position) * 0.2f);
+            //Approximate distance(+/ -20 %) of the player
+            //    from the center of the object; only valid for
+            //    objects within the player's CLIP_DIST.
+
+            //todo: reimplement
+            //Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, transform.right);
+        }
+
+        private static IAcknexObject GetTemplateCallback(string name)
+        {
+            return World.Instance.ThingsByName.TryGetValue(name, out var definition) ? definition.AcknexObject : null;
+        }
 
         private IEnumerator TriggerSecEvents()
         {
@@ -82,37 +249,39 @@ namespace Acknex
 
         private void OnCollisionExitCallback(Collision obj)
         {
-
         }
 
         private void OnCollisionEnterCallback(Collision obj)
         {
-
         }
 
-        private void OnDrawGizmos()
-        {
-            var quaternion = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE")), 0f);
-            DebugExtension.DrawArrow(transform.position, quaternion * Vector3.forward, Color.cyan);
-        }
+        //private void OnDrawGizmos()
+        //{
+        //    Gizmos.color = AcknexObject.IsDirty ? Color.red : Color.green;
+        //    Gizmos.DrawSphere(transform.position, 1f);
+        //    var quaternion = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE")), 0f);
+        //    DebugExtension.DrawArrow(transform.position, quaternion * Vector3.forward, Color.cyan);
+        //}
 
         private IEnumerator Animate()
         {
+            _animating = true;
             reload:
             while (TextureObject == null)
             {
                 yield return null;
             }
-            var textureObject = TextureObject;
-            var enumerator = textureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), _innerGameObject.transform);
+            _textureObject = TextureObject;
+            var enumerator = _textureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), _innerGameObject.transform);
             while (enumerator.MoveNext())
             {
-                if (textureObject != TextureObject)
+                if (TextureObject != _textureObject)
                 {
                     goto reload;
                 }
                 yield return enumerator.Current;
             }
+            _animating = false;
         }
 
         protected virtual void Awake()
@@ -121,197 +290,25 @@ namespace Acknex
         }
 
 
-        private IEnumerator UpdateInstance()
+        private void Update()
         {
-            while (!AcknexObject.IsInstance)
+            if (!AcknexObject.IsInstance)
             {
-                yield return null;
+                return;
             }
-            while (true)
-            {
-                UpdateObject();
-                UpdateEvents();
-                yield return null;
-            }
-        }
-
-        public void Enable()
-        {
-            AcknexObject.RemoveFlag("INVISIBLE");
-            //AcknexObject.AddFlag("VISIBLE");
-        }
-
-        public void Disable()
-        {
-            AcknexObject.AddFlag("INVISIBLE");
-            //AcknexObject.RemoveFlag("VISIBLE");
-        }
-
-        public void SetupTemplate()
-        {
-
-        }
-
-        public void SetupInstance()
-        {
-            _innerGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
-            _innerGameObject.layer = World.Instance.ThingsAndActorsLayer.LayerIndex;
-            _innerCollider = _innerGameObject.AddComponent<CapsuleCollider>();
-            _innerCollider.height = 1f;
-            _thingCollisionCallback = _innerGameObject.AddComponent<CollisionCallback>();
-            _thingCollisionCallback.OnCollisionEnterCallback += OnCollisionEnterCallback;
-            _thingCollisionCallback.OnCollisionExitCallback += OnCollisionExitCallback;
-
-            _triggerGameObject = new GameObject("Trigger");
-            _triggerGameObject.layer = World.Instance.TriggersLayer.LayerIndex;
-            _triggerGameObject.transform.SetParent(transform, false);
-            _triggerCollider = _triggerGameObject.AddComponent<SphereCollider>();
-            _triggerCollider.isTrigger = true;
-            _triggerCollisionCallback = _triggerGameObject.AddComponent<CollisionCallback>();
-            _triggerCollisionCallback.OnTriggerEnterCallback += OnTriggerEnterCallback;
-            _triggerCollisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
-
-            _audioSource = gameObject.AddComponent<AudioSource>();
-            StartCoroutine(UpdateInstance());
-            StartCoroutine(Animate());
-            StartCoroutine(TriggerTickEvents());
-            StartCoroutine(TriggerSecEvents());
-
-            AcknexObject.IsInstance = true;
-
-            if (GetRegion() == null)
-            {
-                var thingZ = AcknexObject.GetFloat("Z");
-                Locate(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"), ref thingZ);
-            }
-        }
-
-        public Vector3 GetCenter()
-        {
-            return transform.position + new Vector3(0f, AcknexObject.GetFloat("HEIGHT") * 0.5f, 0f);
-        }
-
-        public virtual void UpdateObject()
-        {
-            //if (TextureObject == null || !TextureObject.HasModel(out _))
-            //{
-                var camera = CameraExtensions.GetLastActiveCamera();
-                if (camera == null)
-                {
-                    return;
-                }
-                var eulerAngles = transform.eulerAngles;
-                eulerAngles.y = camera.transform.eulerAngles.y;
-                transform.eulerAngles = eulerAngles;
-            //}
-            //else
-            //{
-            //    var angle = AcknexObject.GetFloat("ANGLE");
-            //    var eulerAngles = transform.eulerAngles;
-            //    eulerAngles.y = AngleUtils.ConvertAcknexToUnityAngle(angle);
-            //    transform.eulerAngles = eulerAngles;
-            //}
-
-            //if (!AcknexObject.IsDirty)
-            //{
-            //    return;
-            //}
-            //AcknexObject.IsDirty = false;
-
-            if (AcknexObject.ContainsFlag("INVISIBLE", false))
-            {
-                _meshRenderer.enabled = false;
-                _innerCollider.enabled = false;
-            }
-            else
-            {
-                _meshRenderer.enabled = true;
-                _innerCollider.enabled = true;
-            }
-
-            if (AcknexObject.TryGetAcknexObject("TARGET", out var target) && target != _lastTarget)
-            {
-                if (_movingCoroutine != null)
-                {
-                    StopCoroutine(_movingCoroutine);
-                }
-                if (target != null)
-                {
-                    var targetName = target.GetString("NAME");
-                    switch (targetName)
-                    {
-                        case "FOLLOW":
-                            //Debug.Log(AcknexObject + "moving in direction of player with speed " + AcknexObject.GetFloat("SPEED"));
-                            _movingCoroutine = StartCoroutine(MoveToPlayer());
-                            break;
-                        case "VERTEX":
-                            //Debug.Log(AcknexObject + "moving in direction of vertex with speed " + AcknexObject.GetFloat("SPEED"));
-                            _movingCoroutine = StartCoroutine(MoveToVertex());
-                            break;
-                        case "MOVE":
-                        case "BULLET":
-                            //Debug.Log(AcknexObject + "moving in direction of its angle with speed " + AcknexObject.GetFloat("SPEED"));
-                            _movingCoroutine = StartCoroutine(MoveToAngle());
-                            break;
-                        default:
-                        {
-                            if (target.Container is Way way)
-                            {
-                                //Debug.Log(AcknexObject + "moving in direction of way " + way.AcknexObject + " with speed " + AcknexObject.GetFloat("SPEED"));
-                                _movingCoroutine = StartCoroutine(MoveToWay(way));
-                            }
-                            //else
-                            //{
-                            //    Debug.Log(AcknexObject + "moving to nothing");
-                            //}
-                            break;
-                        }
-                    }
-                }
-                _lastTarget = target;
-            }
-
-            var thingX = AcknexObject.GetFloat("X");
-            var thingY = AcknexObject.GetFloat("Y");
-            var thingZ = AcknexObject.GetFloat("Z");
-
-            //todo: this block should only run on carefully flagged
-            if (AcknexObject.ContainsFlag("CANDELABER"))
-            {
-                StickToTheCeiling(thingX, thingY, ref thingZ);
-            }
-            else
-            {
-                Locate(thingX, thingY, ref thingZ);
-            }
-            transform.position = new Vector3(thingX, thingZ, thingY);
-
-            var thingPosition = _innerGameObject.transform.position;
-            thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
-            _innerGameObject.transform.position = thingPosition;
-
-            _innerCollider.radius = 0.5f;
-            _innerCollider.isTrigger = AcknexObject.ContainsFlag("PASSABLE");
-
-            _triggerCollider.radius = AcknexObject.GetFloat("DIST") * 0.5f;
-
-            AcknexObject.SetFloat("DISTANCE", Vector3.Distance(transform.position, Player.Instance.transform.position) * 0.2f);
-            //Approximate distance(+/ -20 %) of the player
-            //    from the center of the object; only valid for
-            //    objects within the player's CLIP_DIST.
-
-            //todo: reimplement
-            //Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, transform.right);
+            UpdateObject();
+            UpdateEvents();
         }
 
         private IEnumerator MoveToWay(Way way)
         {
+            _movingToTarget = true;
             var points = way.InstancePoints;
             var waypoint = 1;
             AcknexObject.SetInteger("WAYPOINT", waypoint);
             if (points.Count == 0)
             {
-                World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
+                //World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
                 yield break;
             }
             var nextPoint = points[waypoint - 1];
@@ -322,6 +319,7 @@ namespace Acknex
                     waypoint++;
                     if (waypoint > points.Count)
                     {
+                        _movingToTarget = false;
                         yield break;
                     }
                     AcknexObject.SetInteger("WAYPOINT", waypoint);
@@ -334,11 +332,13 @@ namespace Acknex
 
         private IEnumerator MoveToVertex()
         {
+            _movingToTarget = true;
             var targetPos = new Vector2(AcknexObject.GetFloat("TARGET_X"), AcknexObject.GetFloat("TARGET_Y"));
             for (; ; )
             {
                 if (MoveToPoint(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
+                    _movingToTarget = false;
                     World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
                     yield break;
                 }
@@ -383,19 +383,12 @@ namespace Acknex
 
         public virtual void UpdateEvents()
         {
-
-        }
-
-        public IAcknexObject GetRegion()
-        {
-            var regionObject = AcknexObject.GetAcknexObject("REGION");
-            return regionObject;
         }
 
         public void StickToTheCeiling(float thingX, float thingY, ref float thingZ)
         {
             var region = GetRegion();
-            var newRegionContainer = Region.Locate(AcknexObject, region.Container as Region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"), true);
+            var newRegionContainer = Region.Locate(AcknexObject, region.Container as Region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.HasFlag("GROUND"), true);
             thingZ = thingZ - _innerGameObject.transform.localScale.y;
             AcknexObject.SetFloat("Z", thingZ);
         }
@@ -405,22 +398,27 @@ namespace Acknex
         {
             var region = GetRegion();
             var regionContainer = region?.Container as Region;
-            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.ContainsFlag("GROUND"));
+            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, AcknexObject.HasFlag("GROUND"));
             AcknexObject.SetFloat("Z", thingZ);
-            if (AcknexObject.ContainsFlag("MASTER") && newRegionContainer != regionContainer)
+            if (AcknexObject.HasFlag("MASTER") && newRegionContainer != regionContainer)
             {
-                if (_movingToTarget && AcknexObject.ContainsFlag("CAREFULLY"))
+                var targetName = AcknexObject.GetAcknexObject("TARGET")?.GetString("NAME");
+                switch (targetName)
                 {
-                    World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, region);
+                    case "MOVE":
+                    case "FOLLOW":
+                    case "BULLET" when AcknexObject.HasFlag("CAREFULLY"):
+                        World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, region);
+                        break;
                 }
-                World.Instance.TriggerEvent("IF_LEAVE", AcknexObject, AcknexObject, region);
-                World.Instance.TriggerEvent("IF_ARISE", AcknexObject, AcknexObject, region);
+                World.Instance.TriggerEvent("IF_LEAVE", AcknexObject, null, region);
+                World.Instance.TriggerEvent("IF_ARISE", AcknexObject, null, region);
                 region = newRegionContainer.AcknexObject;
                 regionContainer = newRegionContainer;
-                World.Instance.TriggerEvent("IF_ENTER", AcknexObject, AcknexObject, region);
+                World.Instance.TriggerEvent("IF_ENTER", AcknexObject, null, region);
                 if (regionContainer.Above != null)
                 {
-                    World.Instance.TriggerEvent("IF_DIVE", regionContainer.Above.AcknexObject, AcknexObject, regionContainer.Above.AcknexObject);
+                    World.Instance.TriggerEvent("IF_DIVE", regionContainer.Above.AcknexObject, null, regionContainer.Above.AcknexObject);
                 }
             }
             else
@@ -447,7 +445,6 @@ namespace Acknex
             AcknexObject.SetFloat("X", newPos.x);
             AcknexObject.SetFloat("Y", newPos.y);
             AcknexObject.SetFloat("ANGLE", angle);
-            AcknexObject.IsDirty = true;
             return toTarget.magnitude <= (minDistance ?? speed);
         }
     }

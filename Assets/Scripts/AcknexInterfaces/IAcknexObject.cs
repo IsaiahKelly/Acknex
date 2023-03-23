@@ -126,7 +126,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Returns whether the object contains the given flag.
         /// </summary>
-        bool ContainsFlag(string flag, bool fromTemplate = true);
+        bool HasFlag(string flag, bool fromTemplate = true);
 
         /// <summary>
         /// Enables the given instance flag.

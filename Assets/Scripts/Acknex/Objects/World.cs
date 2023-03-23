@@ -65,27 +65,27 @@ namespace Acknex
         public readonly Dictionary<string, HashSet<Actor>> AllActorsByName = new Dictionary<string, HashSet<Actor>>();
         public readonly Dictionary<string, HashSet<Thing>> AllThingsByName = new Dictionary<string, HashSet<Thing>>();
 
-        public readonly SortedDictionary<string, Synonym> SynonymsByName = new SortedDictionary<string, Synonym>();
-        public readonly SortedDictionary<string, Action> ActionsByName = new SortedDictionary<string, Action>();
-        public readonly SortedDictionary<string, Skill> SkillsByName = new SortedDictionary<string, Skill>();
-        public readonly SortedDictionary<string, Region> RegionsByName = new SortedDictionary<string, Region>();
-        public readonly SortedDictionary<string, Wall> WallsByName = new SortedDictionary<string, Wall>();
-        public readonly SortedDictionary<string, Bitmap> BitmapsByName = new SortedDictionary<string, Bitmap>();
-        public readonly SortedDictionary<string, Texture> TexturesByName = new SortedDictionary<string, Texture>();
-        public readonly SortedDictionary<string, Way> WaysByName = new SortedDictionary<string, Way>();
-        public readonly SortedDictionary<string, Actor> ActorsByName = new SortedDictionary<string, Actor>();
-        public readonly SortedDictionary<string, Overlay> OverlaysByName = new SortedDictionary<string, Overlay>();
-        public readonly SortedDictionary<string, Thing> ThingsByName = new SortedDictionary<string, Thing>();
-        public readonly SortedDictionary<string, Flic> FlicsByName = new SortedDictionary<string, Flic>();
-        public readonly SortedDictionary<string, Texture2D> TextureCache = new SortedDictionary<string, Texture2D>();
-        public readonly SortedDictionary<string, AcknexString> StringsByName = new SortedDictionary<string, AcknexString>();
-        public readonly SortedDictionary<string, Text> TextsByName = new SortedDictionary<string, Text>();
-        public readonly SortedDictionary<string, Panel> PanelsByName = new SortedDictionary<string, Panel>();
-        public readonly SortedDictionary<string, Font> FontsByName = new SortedDictionary<string, Font>();
-        public readonly SortedDictionary<string, Palette> PalettesByName = new SortedDictionary<string, Palette>();
-        public readonly SortedDictionary<string, Sound> SoundsByName = new SortedDictionary<string, Sound>();
-        public readonly SortedDictionary<string, Music> MusicsByName = new SortedDictionary<string, Music>();
-        public readonly SortedDictionary<string, Model> ModelsByName = new SortedDictionary<string, Model>();
+        public readonly Dictionary<string, Synonym> SynonymsByName = new Dictionary<string, Synonym>();
+        public readonly Dictionary<string, Action> ActionsByName = new Dictionary<string, Action>();
+        public readonly Dictionary<string, Skill> SkillsByName = new Dictionary<string, Skill>();
+        public readonly Dictionary<string, Region> RegionsByName = new Dictionary<string, Region>();
+        public readonly Dictionary<string, Wall> WallsByName = new Dictionary<string, Wall>();
+        public readonly Dictionary<string, Bitmap> BitmapsByName = new Dictionary<string, Bitmap>();
+        public readonly Dictionary<string, Texture> TexturesByName = new Dictionary<string, Texture>();
+        public readonly Dictionary<string, Way> WaysByName = new Dictionary<string, Way>();
+        public readonly Dictionary<string, Actor> ActorsByName = new Dictionary<string, Actor>();
+        public readonly Dictionary<string, Overlay> OverlaysByName = new Dictionary<string, Overlay>();
+        public readonly Dictionary<string, Thing> ThingsByName = new Dictionary<string, Thing>();
+        public readonly Dictionary<string, Flic> FlicsByName = new Dictionary<string, Flic>();
+        public readonly Dictionary<string, Texture2D> TextureCache = new Dictionary<string, Texture2D>();
+        public readonly Dictionary<string, AcknexString> StringsByName = new Dictionary<string, AcknexString>();
+        public readonly Dictionary<string, Text> TextsByName = new Dictionary<string, Text>();
+        public readonly Dictionary<string, Panel> PanelsByName = new Dictionary<string, Panel>();
+        public readonly Dictionary<string, Font> FontsByName = new Dictionary<string, Font>();
+        public readonly Dictionary<string, Palette> PalettesByName = new Dictionary<string, Palette>();
+        public readonly Dictionary<string, Sound> SoundsByName = new Dictionary<string, Sound>();
+        public readonly Dictionary<string, Music> MusicsByName = new Dictionary<string, Music>();
+        public readonly Dictionary<string, Model> ModelsByName = new Dictionary<string, Model>();
 
         public readonly List<string> Paths = new List<string>();
 
@@ -189,7 +189,7 @@ namespace Acknex
             Material material;
             if (acknexObject != null && acknexObject.Container is Texture textureObject)
             {
-                material = new Material(textureObject.AcknexObject.ContainsFlag("SKY")
+                material = new Material(textureObject.AcknexObject.HasFlag("SKY")
                     ? Shader.Find("Acknex/Sky")
                     : Shader.Find("Acknex/Surfaces"));
                 material.mainTexture = textureObject.GetBitmapAt()?.Texture2D;

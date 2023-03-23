@@ -102,15 +102,15 @@ namespace Acknex
             var newRegion = Region.Locate(AcknexObject, region, World.Instance.GetSkillValue("PLAYER_WIDTH"), playerX, playerY, ref playerZ, false, false, initial);
             if (newRegion != region)
             {
-                World.Instance.TriggerEvent("IF_LEAVE", region.AcknexObject, AcknexObject, region.AcknexObject);
-                World.Instance.TriggerEvent("IF_ARISE", region.AcknexObject, AcknexObject, region.AcknexObject);
+                World.Instance.TriggerEvent("IF_LEAVE", region.AcknexObject, null, region.AcknexObject);
+                World.Instance.TriggerEvent("IF_ARISE", region.AcknexObject, null, region.AcknexObject);
                 region = newRegion;
                 World.Instance.UpdateSkillValue("FLOOR_HGT", region.AcknexObject.GetFloat("FLOOR_HGT"));
                 World.Instance.UpdateSkillValue("CEIL_HGT", region.AcknexObject.GetFloat("CEIL_HGT"));
-                World.Instance.TriggerEvent("IF_ENTER", region.AcknexObject, AcknexObject, region.AcknexObject);
+                World.Instance.TriggerEvent("IF_ENTER", region.AcknexObject, null, region.AcknexObject);
                 if (region.Above != null)
                 {
-                    World.Instance.TriggerEvent("IF_DIVE", region.Above.AcknexObject, AcknexObject, region.Above.AcknexObject);
+                    World.Instance.TriggerEvent("IF_DIVE", region.Above.AcknexObject, null, region.Above.AcknexObject);
                 }
             }
             World.Instance.SetSynonymObject("HERE", region.AcknexObject);

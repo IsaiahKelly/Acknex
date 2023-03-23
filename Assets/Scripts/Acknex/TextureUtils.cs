@@ -21,19 +21,18 @@ namespace Acknex
             return value;
         }
 
-        public static GameObject BuildTextureGameObject(Transform parent, string name, Bitmap bitmap,
-            out MeshFilter meshFilter, out MeshRenderer meshRenderer, bool pivotAtLeft = false)
+        public static GameObject BuildTextureGameObject(Transform parent, string name, Bitmap bitmap, out MeshFilter meshFilter, out MeshRenderer meshRenderer, bool pivotAtLeft = false)
         {
             var innerGameObject = new GameObject(name);
             innerGameObject.transform.SetParent(parent, false);
             meshFilter = innerGameObject.AddComponent<MeshFilter>();
             meshRenderer = innerGameObject.AddComponent<MeshRenderer>();
-            if (bitmap != null)
-            {
+            //if (bitmap != null)
+            //{
                 var mesh = MeshUtils.CreateQuadMesh(pivotAtLeft);
                 meshFilter.mesh = mesh;
                 meshRenderer.material = new Material(Shader.Find("Acknex/Sprite"));
-            }
+            //}
             return innerGameObject;
         }
 
