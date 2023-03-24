@@ -407,5 +407,17 @@ namespace Acknex
             }
             return currentRegion;
         }
+
+        //todo: sum below regions
+        public float GetRealCeilHeight()
+        {
+            return AcknexObject.GetFloat("CEIL_HGT");
+        }
+
+        //todo: sum below regions
+        public double GetRealFloorHeight()
+        {
+            return AcknexObject.GetFloat("FLOOR_HGT");
+        }
     }
 }

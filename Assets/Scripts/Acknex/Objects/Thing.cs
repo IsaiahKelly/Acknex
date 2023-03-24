@@ -453,14 +453,14 @@ namespace Acknex
                         break;
                 }
                 World.Instance.TriggerEvent("IF_LEAVE", AcknexObject, null, region);
-                World.Instance.TriggerEvent("IF_ARISE", AcknexObject, null, region);
+                //World.Instance.TriggerEvent("IF_ARISE", AcknexObject, null, region);
                 region = newRegionContainer.AcknexObject;
                 regionContainer = newRegionContainer;
                 World.Instance.TriggerEvent("IF_ENTER", AcknexObject, null, region);
-                if (regionContainer.Above != null)
-                {
-                    World.Instance.TriggerEvent("IF_DIVE", regionContainer.Above.AcknexObject, null, regionContainer.Above.AcknexObject);
-                }
+                //if (regionContainer.Above != null)
+                //{
+                //    World.Instance.TriggerEvent("IF_DIVE", regionContainer.Above.AcknexObject, null, regionContainer.Above.AcknexObject);
+                //}
             }
             else
             {

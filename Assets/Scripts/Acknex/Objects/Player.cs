@@ -123,7 +123,6 @@ namespace Acknex
             GUILayout.EndVertical();
         }
 
-        //todo: IF_ARISE only happens when leaving upwards
         private void Locate(float playerX, float playerY, ref float playerZ, bool initial = true)
         {
             var region = (Region)AcknexObject.GetAcknexObject("REGION").Container;
@@ -131,12 +130,15 @@ namespace Acknex
             if (newRegion != region)
             {
                 World.Instance.TriggerEvent("IF_LEAVE", region.AcknexObject, null, region.AcknexObject);
-                World.Instance.TriggerEvent("IF_ARISE", region.AcknexObject, null, region.AcknexObject);
+                if (playerZ > region.GetRealCeilHeight())
+                {
+                    World.Instance.TriggerEvent("IF_ARISE", region.AcknexObject, null, region.AcknexObject);
+                }
                 region = newRegion;
                 World.Instance.UpdateSkillValue("FLOOR_HGT", region.AcknexObject.GetFloat("FLOOR_HGT"));
                 World.Instance.UpdateSkillValue("CEIL_HGT", region.AcknexObject.GetFloat("CEIL_HGT"));
                 World.Instance.TriggerEvent("IF_ENTER", region.AcknexObject, null, region.AcknexObject);
-                if (region.Above != null)
+                if (region.Above != null && playerZ < region.Above.GetRealFloorHeight())
                 {
                     World.Instance.TriggerEvent("IF_DIVE", region.Above.AcknexObject, null, region.Above.AcknexObject);
                 }

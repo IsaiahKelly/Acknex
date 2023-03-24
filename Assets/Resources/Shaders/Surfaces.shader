@@ -32,7 +32,7 @@ Shader "Acknex/Surfaces"
 
 			CGPROGRAM
 			// Physically based Standard lighting model, and enable shadows on all light types
-			#pragma surface surf Standard addshadow vertex:vert 
+			#pragma surface surf SimpleLambert addshadow vertex:vert 
 
 			// Use shader model 3.0 target, to get nicer looking lighting
 			#pragma target 3.0
@@ -81,16 +81,16 @@ Shader "Acknex/Surfaces"
 				//v.vertex.xyz += v.normal * _Amount;
 			}
 
-			//half4 LightingSimpleLambert(SurfaceOutput s, half3 lightDir, half atten) {
-			//	half NdotL = dot(s.Normal, lightDir);
-			//	half4 c;
-			//	float ambient = 1.0;// (1.0 - _AMBIENT);
-			//	c.rgb = s.Albedo * _LightColor0.rgb * (NdotL * atten) * ambient;
-			//	c.a = s.Alpha;
-			//	return c;
-			//}
+			half4 LightingSimpleLambert(SurfaceOutput s, half3 lightDir, half atten) {
+				half NdotL = dot(s.Normal, lightDir);
+				half4 c;
+				float ambient = 0.5;// (1.0 - _AMBIENT);
+				c.rgb = s.Albedo * _LightColor0.rgb * (NdotL * atten) * ambient;
+				c.a = s.Alpha;
+				return c;
+			}
 
-			void surf(Input IN, inout SurfaceOutputStandard o)
+			void surf(Input IN, inout SurfaceOutput o)
 			{
 				//todo: lerp between V0H V1H
 				if (_FENCE) {
