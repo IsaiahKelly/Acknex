@@ -400,9 +400,16 @@ namespace Acknex
             MidiPlayer.Play();
         }
 
-        public void PlaySound(IAcknexObject sound, float volume, string balance = null)
+        public void PlaySound(IAcknexObject sound, float volume, IAcknexObject balance = null)
         {
-            AudioSource.PlayClipAtPoint(((Sound)sound.Container).AudioClip, View.Instance.transform.position, volume);
+            if (balance?.Container != null)
+            {
+                AudioSource.PlayClipAtPoint(((Sound)sound.Container).AudioClip, balance.Container.GetCenter(), volume);
+            }
+            else
+            {
+                AudioSource.PlayClipAtPoint(((Sound)sound.Container).AudioClip, View.Instance.transform.position, volume);
+            }
         }
 
         public void PostSetupObjectInstance(IAcknexObject acknexObject)
@@ -536,7 +543,7 @@ namespace Acknex
             Ray ray;
             if (acknexObject == null)
             {
-                ray = View.Instance.ViewCamera.ViewportPointToRay(new Vector3(0.5f , 0.5f, 0f));
+                ray = View.Instance.ViewCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
                 DebugExtension.DebugArrow(ray.origin, ray.direction, Color.black, 10f);
             }
             else
@@ -569,7 +576,7 @@ namespace Acknex
             UpdateSkillValue("RESULT", 0f);
             UpdateSkillValue("SHOOT_ANGLE", 0f);
             SetSynonymObject("HIT", null);
-            Physics.RaycastNonAlloc(ray, _raycastResults, shootRange, AllLayers);
+            Physics.RaycastNonAlloc(ray, _raycastResults, shootRange, AllLayers, QueryTriggerInteraction.Collide);
             Array.Sort(_raycastResults, (a, b) => a.distance.CompareTo(b.distance));
             for (var i = 0; i < MaxHits; i++)
             {

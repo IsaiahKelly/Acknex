@@ -3779,7 +3779,7 @@ namespace Tests
                 MY_8.SetFloat("SKILL2", temp_6);
             }
             var GRAN02SND_9 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"GRAN02SND");
-            _world.PlaySound(GRAN02SND_9, 0.7f, "MY");
+            _world.PlaySound(GRAN02SND_9, 0.7f, MY);
             var MY_13 = MY;
             var temp_14 = MY_13.GetFloat("SKILL1");
             if (temp_14 == 0f)
@@ -3867,7 +3867,7 @@ namespace Tests
                 goto STOP;
             }
             var GRAN02SND_47 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"GRAN02SND");
-            _world.PlaySound(GRAN02SND_47, 0.7f, "MY");
+            _world.PlaySound(GRAN02SND_47, 0.7f, MY);
             var MY_50 = MY;
             var MY_52 = MY;
             var temp_53 = MY_52.GetFloat("VSPEED");
@@ -10047,7 +10047,7 @@ namespace Tests
             var MY_46 = MY;
             MY_46.SetAcknexObject("TEXTURE", REPT_TEX_44);
             var REPT02SND_47 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"REPT02SND");
-            _world.PlaySound(REPT02SND_47, 0.7f, "MY");
+            _world.PlaySound(REPT02SND_47, 0.7f, MY);
             {
                 var enumerator = REPTHIDE(MY, THERE);
                 while (enumerator.MoveNext())
@@ -10178,7 +10178,7 @@ namespace Tests
             var MY_24 = MY;
             MY_24.SetFloat("FLAG2", 1f);
             var REPT02SND_25 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"REPT02SND");
-            _world.PlaySound(REPT02SND_25, 0.7f, "MY");
+            _world.PlaySound(REPT02SND_25, 0.7f, MY);
             CONT1:
             {
                 var enumerator = REPTFOLLOWATTACK(MY, THERE);
@@ -10351,12 +10351,12 @@ namespace Tests
             if (UnityEngine.Random.value > 0.9f)
             {
                 var REPT01SND_2 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"REPT01SND");
-                _world.PlaySound(REPT01SND_2, 0.5f, "MY");
+                _world.PlaySound(REPT01SND_2, 0.5f, MY);
             }
             if (UnityEngine.Random.value < 0.1f)
             {
                 var REPT02SND_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"REPT02SND");
-                _world.PlaySound(REPT02SND_6, 0.5f, "MY");
+                _world.PlaySound(REPT02SND_6, 0.5f, MY);
             }
             yield break;
         }
@@ -11762,14 +11762,14 @@ namespace Tests
             var MY_116 = MY;
             MY_116.SetAcknexObject("TEXTURE", TROP5TEX_114);
             var TROP05SND_117 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"TROP05SND");
-            _world.PlaySound(TROP05SND_117, 0.2f, "MY");
+            _world.PlaySound(TROP05SND_117, 0.2f, MY);
             goto WAIT;
             SONOFA:
             var TROP5ATEX_119 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Texture,*/"TROP5ATEX");
             var MY_121 = MY;
             MY_121.SetAcknexObject("TEXTURE", TROP5ATEX_119);
             var TROP11SND_122 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"TROP11SND");
-            _world.PlaySound(TROP11SND_122, 0.2f, "MY");
+            _world.PlaySound(TROP11SND_122, 0.2f, MY);
             WAIT:
             {
                 var startFrame = Time.frameCount;
@@ -12305,11 +12305,11 @@ namespace Tests
             yield break;
             SND1:
             var TROP09SND_4 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"TROP09SND");
-            _world.PlaySound(TROP09SND_4, 0.3f, "MY");
+            _world.PlaySound(TROP09SND_4, 0.3f, MY);
             yield break;
             SND2:
             var TROP01SND_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"TROP01SND");
-            _world.PlaySound(TROP01SND_6, 0.3f, "MY");
+            _world.PlaySound(TROP01SND_6, 0.3f, MY);
             yield break;
         }
         public IEnumerator TROPSHOUT(IAcknexObject MY, IAcknexObject THERE)
@@ -12334,19 +12334,19 @@ namespace Tests
                 goto SND3;
             }
             var TROP06SND_6 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"TROP06SND");
-            _world.PlaySound(TROP06SND_6, 0.3f, "MY");
+            _world.PlaySound(TROP06SND_6, 0.3f, MY);
             yield break;
             SND1:
             var TROP12SND_8 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"TROP12SND");
-            _world.PlaySound(TROP12SND_8, 0.4f, "MY");
+            _world.PlaySound(TROP12SND_8, 0.4f, MY);
             yield break;
             SND2:
             var TROP10SND_10 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"TROP10SND");
-            _world.PlaySound(TROP10SND_10, 0.3f, "MY");
+            _world.PlaySound(TROP10SND_10, 0.3f, MY);
             yield break;
             SND3:
             var TROP03SND_12 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"TROP03SND");
-            _world.PlaySound(TROP03SND_12, 0.3f, "MY");
+            _world.PlaySound(TROP03SND_12, 0.3f, MY);
             yield break;
         }
         public IEnumerator PICKTROPAMMO(IAcknexObject MY, IAcknexObject THERE)
@@ -12484,7 +12484,7 @@ namespace Tests
             var MY_64 = MY;
             MY_64.SetAcknexObject("IF_HIT", null);
             var HUMM04SND_65 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"HUMM04SND");
-            _world.PlaySound(HUMM04SND_65, 0.5f, "MY");
+            _world.PlaySound(HUMM04SND_65, 0.5f, MY);
             var MY_69 = MY;
             MY_69.SetFloat("GROUND", 1f);
             var ACTORJUMPSTOP_70 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Action,*/"ACTORJUMPSTOP");
@@ -12720,7 +12720,7 @@ namespace Tests
             var MY_33 = MY;
             MY_33.SetAcknexObject("IF_ARRIVED", null);
             var REPT02SND_34 = _world.AcknexObject.GetAcknexObject(/*ObjectType.Sound,*/"REPT02SND");
-            _world.PlaySound(REPT02SND_34, 0.5f, "MY");
+            _world.PlaySound(REPT02SND_34, 0.5f, MY);
             yield break;
         }
         public IEnumerator LOCATEREPT(IAcknexObject MY, IAcknexObject THERE)

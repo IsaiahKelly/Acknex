@@ -21,7 +21,7 @@ namespace Acknex
         private Coroutine _movingCoroutine;
         //private bool _movingToTarget;
         private Texture _textureObject;
-        private CollisionCallback _thingCollisionCallback;
+        //private CollisionCallback _thingCollisionCallback;
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;
         private GameObject _triggerGameObject;
@@ -66,9 +66,9 @@ namespace Acknex
             _characterController = gameObject.AddComponent<CharacterController>();
             _characterController.detectCollisions = false;
             _collider = gameObject.AddComponent<CapsuleCollider>();
-            _thingCollisionCallback = _innerGameObject.AddComponent<CollisionCallback>();
-            _thingCollisionCallback.OnCollisionEnterCallback += OnCollisionEnterCallback;
-            _thingCollisionCallback.OnCollisionExitCallback += OnCollisionExitCallback;
+            //_thingCollisionCallback = _innerGameObject.AddComponent<CollisionCallback>();
+            //_thingCollisionCallback.OnCollisionEnterCallback += OnCollisionEnterCallback;
+            //_thingCollisionCallback.OnCollisionExitCallback += OnCollisionExitCallback;
             _triggerGameObject = new GameObject("Trigger");
             _triggerGameObject.layer = World.Instance.TriggersLayer.LayerIndex;
             _triggerGameObject.transform.SetParent(transform, false);
@@ -174,11 +174,20 @@ namespace Acknex
             thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
             _innerGameObject.transform.position = thingPosition;
 
-            _collider.center = _characterController.center = new Vector3(0f, _innerGameObject.transform.localScale.y * 0.5f, 0f);
+            _collider.center = _characterController.center = new Vector3(0f, _innerGameObject.transform.localPosition.y + _innerGameObject.transform.localScale.y * 0.5f, 0f);
             _collider.height = _characterController.height = _innerGameObject.transform.localScale.y;
             _collider.radius = _characterController.radius = _innerGameObject.transform.localScale.x * 0.5f;
-            //_characterController.isTrigger = AcknexObject.HasFlag("PASSABLE");
 
+            if (AcknexObject.HasFlag("PASSABLE"))
+            {
+                _collider.enabled = _characterController.enabled = false;
+            }
+            else
+            {
+                _collider.enabled = _characterController.enabled = true;
+            }
+
+            _triggerCollider.center = _collider.center;
             _triggerCollider.radius = AcknexObject.GetFloat("DIST") * 0.5f;
 
             if (AcknexObject.TryGetAcknexObject("TARGET", out var target) && target != _lastTarget)
@@ -279,11 +288,11 @@ namespace Acknex
             }
         }
 
-        private void OnCollisionExitCallback(Collision obj)
+        private void OnCollisionExit(Collision obj)
         {
         }
 
-        private void OnCollisionEnterCallback(Collision obj)
+        private void OnCollisionEnter(Collision obj)
         {
         }
 
@@ -380,8 +389,10 @@ namespace Acknex
             for (; ; )
             {
                 AcknexObject.IsDirty = true;
-                var playerPos = new Vector2(-World.Instance.GetSkillValue("PLAYER_X"), -World.Instance.GetSkillValue("PLAYER_Y"));
-                if (MoveToPoint(playerPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
+                var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("y"));
+                var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
+                var targetPos = pos + (pos - playerPos).normalized * 1000f;
+                if (MoveToPoint(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
                     AcknexObject.SetAcknexObject("TARGET", null);
                     yield break;
@@ -474,12 +485,10 @@ namespace Acknex
             var delta = new Vector3(newPos.x - pos.x, 0f, newPos.y - pos.y);
             if (AcknexObject.HasFlag("PASSABLE") || AcknexObject.GetAcknexObject("TARGET").Type == ObjectType.Way)
             {
-                _collider.enabled = _characterController.enabled = false;
                 transform.Translate(delta, Space.World);
             }
             else
             {
-                _collider.enabled = _characterController.enabled = true;
                 _characterController.Move(delta);
             }
             Debug.DrawLine(new Vector3(pos.x, 0f, pos.y), new Vector3(nextPoint.x, 0f, nextPoint.y), Color.magenta, 1f);

@@ -315,7 +315,7 @@ namespace Acknex
                                 var next = textParser.GetNextToken(tokens);
                                 if (next != ";")
                                 {
-                                    CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).Append(",\"").Append(next).AppendLine("\");");
+                                    CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).Append("").Append(next).AppendLine(");");
                                 }
                                 else
                                 {

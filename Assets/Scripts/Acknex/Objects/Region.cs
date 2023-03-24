@@ -6,7 +6,6 @@ using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Utils;
 
 namespace Acknex
 {
@@ -330,7 +329,7 @@ namespace Acknex
             tess.Tessellate();
             var floorVertices = new Vector3[tess.VertexCount];
             var height = ceil ? region.AcknexObject.GetFloat("CEIL_HGT") : region.AcknexObject.GetFloat("FLOOR_HGT");
-            var lifted = ceil && region.AcknexObject.HasFlag("CEIL_LIFTED") || !ceil && region.AcknexObject.HasFlag("FLOOR_LIFTED");
+            var lifted = (ceil && region.AcknexObject.HasFlag("CEIL_LIFTED")) || (!ceil && region.AcknexObject.HasFlag("FLOOR_LIFTED"));
             for (var i = 0; i < tess.VertexCount; i++)
             {
                 var vertex = tess.Vertices[i];
