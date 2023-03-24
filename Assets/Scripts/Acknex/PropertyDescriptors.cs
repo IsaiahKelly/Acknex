@@ -2,6 +2,7 @@
 using Acknex.Interfaces;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using static UnityEditor.UIElements.CurveField;
 
 namespace Acknex
 {
@@ -306,8 +307,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Overlay, PropertyType.Float, "VISIBLE");
             AddObjectProperty(ObjectType.Overlay, PropertyType.Flags, "FLAGS");
             AddObjectProperty(ObjectType.Overlay, PropertyType.ObjectReference, "OVLYS");
-            AddObjectProperty(ObjectType.Overlay, PropertyType.ObjectReference, "MSPRITE");
-
+            AddObjectProperty(ObjectType.Overlay, PropertyType.ObjectReference, "MSPRITE"); 
 
             AddObjectProperty(ObjectType.Synonym, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Synonym, PropertyType.String, "TYPE");

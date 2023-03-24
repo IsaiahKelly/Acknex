@@ -28,14 +28,13 @@
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
 
-        sampler2D _MainTex;
-        float4 _MainTex_TexelSize;
-
         struct Input
         {
             float2 uv_MainTex;
         };
 
+        sampler2D _MainTex;
+        float4 _MainTex_TexelSize;
 
         fixed4 _Color;
         float _LightMultiplier;
