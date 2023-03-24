@@ -300,8 +300,9 @@ namespace Acknex
                         case "PLAY_SONG":
                             {
                                 var volume = GetValue(tokens, textParser);
+                                var lhs = GetValueAndType(labelOrStatement, "rhs");
                                 var rhs = GetValueAndType(volume, "rhs");
-                                CodeStringBuilder.Append("_world.PlaySong(\"").Append(labelOrStatement).Append("\",").Append(rhs.property).AppendLine(");");
+                                CodeStringBuilder.Append("_world.PlaySong(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                                 HandleIfStack();
                                 ReadUntilSemiColon(tokens);
                                 break;
@@ -309,16 +310,17 @@ namespace Acknex
                         case "PLAY_SOUND":
                             {
                                 var volume = GetValue(tokens, textParser);
+                                var lhs = GetValueAndType(labelOrStatement, "rhs");
                                 var rhs = GetValueAndType(volume, "rhs");
                                 var next = textParser.GetNextToken(tokens);
                                 if (next != ";")
                                 {
-                                    CodeStringBuilder.Append("_world.PlaySound(\"").Append(labelOrStatement).Append("\",").Append(rhs.property).Append(",\"").Append(next).AppendLine("\");");
+                                    CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).Append(",\"").Append(next).AppendLine("\");");
                                 }
                                 else
                                 {
 
-                                    CodeStringBuilder.Append("_world.PlaySound(\"").Append(labelOrStatement).Append("\",").Append(rhs.property).AppendLine(");");
+                                    CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                                 }
                                 HandleIfStack();
                                 ReadUntilSemiColon(tokens);

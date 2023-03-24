@@ -25,7 +25,6 @@
         Flic,
         Text,
         Internal,
-        //Rule,
         Palette,
         Font,
         Model,

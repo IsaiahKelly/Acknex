@@ -15,22 +15,22 @@ namespace Acknex
         }
 
         private Graphic _overlayGraphic;
-        private string _overlaySprite;
+        private Bitmap _overlaySprite;
 
         public void UpdateObject()
         {
-            _overlayGraphic.enabled = AcknexObject.HasFlag("VISIBLE", false);
+            _overlayGraphic.enabled = AcknexObject.HasFlag("VISIBLE");
             _overlayGraphic.rectTransform.anchorMin = new Vector3(0f, 1f);
             _overlayGraphic.rectTransform.anchorMax = new Vector3(0f, 1f);
             _overlayGraphic.rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat("POS_X") * World.Instance.CanvasWidthRatio, -AcknexObject.GetFloat("POS_Y"), 0f);
-            var overlaySprite = AcknexObject.GetString("OVLYS");
-            if (!string.IsNullOrEmpty(overlaySprite) && _overlaySprite != overlaySprite)
+            var overlaySprite = AcknexObject.GetAcknexObject("OVLYS")?.Container as Bitmap;
+            if (_overlaySprite != overlaySprite && overlaySprite != null)
             {
-                if (World.Instance.BitmapsByName.TryGetValue(overlaySprite, out var bitmap))
+                //if (World.Instance.BitmapsByName.TryGetValue(overlaySprite, out var bitmap))
                 {
-                    _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (AcknexObject.TryGetFloat("SIZE_X", out var width) ? width : bitmap.Width) * World.Instance.CanvasWidthRatio);
-                    _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, AcknexObject.TryGetFloat("SIZE_Y", out var height) ? height : bitmap.Height);
-                    bitmap.UpdateMaterial(_overlayGraphic.material, null, 0, false, null);
+                    _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (AcknexObject.TryGetFloat("SIZE_X", out var width) ? width : overlaySprite.Width) * World.Instance.CanvasWidthRatio);
+                    _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, AcknexObject.TryGetFloat("SIZE_Y", out var height) ? height : overlaySprite.Height);
+                    overlaySprite.UpdateMaterial(_overlayGraphic.material, null, 0, false, null);
                 }
                 _overlaySprite = overlaySprite;
             }

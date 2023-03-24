@@ -303,6 +303,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Overlay, PropertyType.Float, "POS_Y");
             AddObjectProperty(ObjectType.Overlay, PropertyType.Float, "SIZE_X");
             AddObjectProperty(ObjectType.Overlay, PropertyType.Float, "SIZE_Y");
+            AddObjectProperty(ObjectType.Overlay, PropertyType.Float, "VISIBLE");
             AddObjectProperty(ObjectType.Overlay, PropertyType.Flags, "FLAGS");
             AddObjectProperty(ObjectType.Overlay, PropertyType.ObjectReference, "OVLYS");
             AddObjectProperty(ObjectType.Overlay, PropertyType.ObjectReference, "MSPRITE");
@@ -384,6 +385,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "OFFSET_Y");
             AddObjectProperty(ObjectType.Wall, PropertyType.ActionReference, "EACH_TICK");
             AddObjectProperty(ObjectType.Wall, PropertyType.ActionReference, "IF_NEAR");
+            AddObjectProperty(ObjectType.Wall, PropertyType.ActionReference, "IF_FAR");
             AddObjectProperty(ObjectType.Wall, PropertyType.ObjectReference, "GENIUS");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "POSITION");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "FENCE");
@@ -394,7 +396,6 @@ namespace Acknex
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "Y2");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "IMPASSABLE");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "PLAY");
-
 
             AddObjectProperty(ObjectType.Texture, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Texture, PropertyType.ScaleXY, "SCALE_XY");

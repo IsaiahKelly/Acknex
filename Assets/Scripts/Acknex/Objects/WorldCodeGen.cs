@@ -12,7 +12,7 @@ namespace Acknex
         namespace Tests {
             public class Game : IAcknexRuntime {
                 private IAcknexWorld _world;
-                private WaitForEndOfFrame _waitForEndOfFrame = nmew WaitForEndOfFrame();
+                private WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
                 public void SetWorld(IAcknexWorld world) {
                     _world = world;
                 }

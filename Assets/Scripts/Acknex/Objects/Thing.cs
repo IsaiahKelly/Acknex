@@ -115,6 +115,8 @@ namespace Acknex
             //    eulerAngles.y = AngleUtils.ConvertAcknexToUnityAngle(angle);
             //    transform.eulerAngles = eulerAngles;
             //}
+            AcknexObject.SetFloat("VISIBLE", AcknexObject.GetFloat("INVISIBLE") > 0f ? 0f : 1f);
+
             if (AcknexObject.HasFlag("INVISIBLE"))
             {
                 _meshRenderer.enabled = false;

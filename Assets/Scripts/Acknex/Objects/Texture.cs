@@ -74,6 +74,7 @@ namespace Acknex
             var sides = Mathf.Max(1, this.AcknexObject.GetInteger("SIDES"));
             var cycles = Mathf.Max(1, this.AcknexObject.GetInteger("CYCLES"));
             var mirror = AcknexObject.GetObject<List<float>>("MIRROR");
+            var scycles = AcknexObject.GetObject<List<float>>("SCYCLES");
             //if (cycles == 1)
             //{
             //    UpdateAngleFrameScale(scaleTexture, cycles, sides, 0, mirror, null, meshRenderer, meshFilter, thingGameObject, MY, sourceTransform);
@@ -84,6 +85,10 @@ namespace Acknex
             var cycle = 0;
             while (true)
             {
+                if (scycles != null && scycles.Count > cycles && scycles[cycle] > 0f)
+                {
+                    World.Instance.PlaySound(AcknexObject.GetAcknexObject("SOUND"), AcknexObject.GetFloat("SVOL"));
+                }
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : null;
                 UpdateAngleFrameScale(scaleTexture, cycles, sides, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, MY, sourceTransform);
                 yield return currentDelay;

@@ -138,16 +138,19 @@ namespace Acknex.Interfaces
         /// </summary>
         float Accelerate(float value, float amount);
 
+
         /// <summary>
         /// Plays the given song.
         /// </summary>
-        void PlaySong(string songName, float volume);
+        void PlaySong(IAcknexObject song, float volume);
+
 
         /// <summary>
         /// Plays the given sound.
         /// </summary>
-        void PlaySound(string songName, float volume, string balance = null);
+        void PlaySound(IAcknexObject sound, float volume, string balance = null);
 
+        //todo: change this to an IAcknexObject
         /// <summary>
         /// Drops the given thing or actor in front of player.
         /// </summary>

@@ -290,7 +290,7 @@ namespace Acknex
                             case "OVLY":
                                 {
                                     var name = GetNextToken(tokens);
-                                    _openObject = _world.CreateObjectTemplate(keyword == "BMAP" ? ObjectType.Bitmap : ObjectType.Overlay, name);
+                                    _openObject = _world.CreateObjectTemplate(ObjectType.Bitmap, name);
                                     _openObject.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
                                     var token = GetNextToken(tokens);
                                     if (token != ";")

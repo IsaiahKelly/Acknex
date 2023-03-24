@@ -390,24 +390,19 @@ namespace Acknex
             return AcknexObject;
         }
 
-        public void PlaySong(string songName, float volume)
+        public void PlaySong(IAcknexObject song, float volume)
         {
-            if (MusicsByName.TryGetValue(songName, out var song))
-            {
-                //todo: volume
-                MidiPlayer.midiSource = song.Resource;
-                MidiPlayer.LoadBank(new PatchBank(MidiPlayer.bankSource));
-                MidiPlayer.LoadMidi(new MidiFile(MidiPlayer.midiSource));
-                MidiPlayer.Play();
-            }
+
+            //todo: volume
+            MidiPlayer.midiSource = ((Music)song.Container).Resource;
+            MidiPlayer.LoadBank(new PatchBank(MidiPlayer.bankSource));
+            MidiPlayer.LoadMidi(new MidiFile(MidiPlayer.midiSource));
+            MidiPlayer.Play();
         }
 
-        public void PlaySound(string songName, float volume, string balance = null)
+        public void PlaySound(IAcknexObject sound, float volume, string balance = null)
         {
-            if (SoundsByName.TryGetValue(songName, out var sound))
-            {
-                AudioSource.PlayClipAtPoint(sound.AudioClip, View.Instance.transform.position, volume);
-            }
+            AudioSource.PlayClipAtPoint(((Sound)sound.Container).AudioClip, View.Instance.transform.position, volume);
         }
 
         public void PostSetupObjectInstance(IAcknexObject acknexObject)
@@ -532,14 +527,15 @@ namespace Acknex
             }
             var shootX = GetSkillValue("SHOOT_X");
             var shootY = GetSkillValue("SHOOT_Y");
+            //todo: deviation
             Ray ray;
             if (acknexObject == null)
             {
-                ray = View.Instance.ViewCamera.ViewportPointToRay(new Vector3(0.5f + Mathf.Lerp(-1f, 1f, shootX), 0.5f + Mathf.Lerp(-1f, 1f, shootY), 0f));
+                ray = View.Instance.ViewCamera.ViewportPointToRay(new Vector3(0.5f , 0.5f, 0f));
+                DebugExtension.DebugArrow(ray.origin, ray.direction, Color.black, 10f);
             }
             else
             {
-                //todo: deviation
                 ray = new Ray(View.Instance.ViewCamera.transform.position, (acknexObject.Container.GetCenter() - View.Instance.ViewCamera.transform.position).normalized);
             }
             //todo: shootSector
@@ -556,16 +552,18 @@ namespace Acknex
                 UpdateSkillValue("HIT_DIST", distance);
                 UpdateSkillValue("RESULT", shootFac * (1.0f - distance / shootRange));
                 UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(raycastResult.point), AngleUtils.To2D(ray.origin))));
+                SetSynonymObject("HIT", hitAcknexObject);
                 TriggerEvent("IF_HIT", AcknexObject, AcknexObject, AcknexObject.Container.GetRegion());
-                Debug.DrawLine(ray.origin, raycastResult.point, Color.white, 1f);
-                if (acknexObject != null)
-                {
-                    Debug.Log(acknexObject.GetString("NAME") + " sees player");
-                }
+                Debug.DrawLine(ray.origin, raycastResult.point, Color.white, 10f);
+                //if (acknexObject != null)
+                //{
+                //    Debug.Log(acknexObject.GetString("NAME") + " sees player");
+                //}
             }
-
             UpdateSkillValue("HIT_DIST", 0f);
             UpdateSkillValue("RESULT", 0f);
+            UpdateSkillValue("SHOOT_ANGLE", 0f);
+            SetSynonymObject("HIT", null);
             Physics.RaycastNonAlloc(ray, _raycastResults, shootRange, AllLayers);
             Array.Sort(_raycastResults, (a, b) => a.distance.CompareTo(b.distance));
             for (var i = 0; i < MaxHits; i++)
