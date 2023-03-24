@@ -11,7 +11,7 @@ namespace Acknex
     {
         private GameObject _attached;
         private AudioSource _audioSource;
-        private CapsuleCollider _innerCollider;
+        private CharacterController _characterController;
         private GameObject _innerGameObject;
         private IAcknexObject _lastTarget;
         private Texture _lastTextureObject;
@@ -62,8 +62,8 @@ namespace Acknex
             AcknexObject.IsInstance = true;
             _innerGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
             _innerGameObject.layer = World.Instance.ThingsAndActorsLayer.LayerIndex;
-            _innerCollider = _innerGameObject.AddComponent<CapsuleCollider>();
-            _innerCollider.height = 1f;
+            _characterController = gameObject.AddComponent<CharacterController>();
+            _characterController.detectCollisions = false;
             _thingCollisionCallback = _innerGameObject.AddComponent<CollisionCallback>();
             _thingCollisionCallback.OnCollisionEnterCallback += OnCollisionEnterCallback;
             _thingCollisionCallback.OnCollisionExitCallback += OnCollisionExitCallback;
@@ -79,11 +79,14 @@ namespace Acknex
             StartCoroutine(Animate());
             StartCoroutine(TriggerTickEvents());
             StartCoroutine(TriggerSecEvents());
-            if (GetRegion() == null)
-            {
-                var thingZ = AcknexObject.GetFloat("Z");
-                Locate(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"), ref thingZ);
-            }
+        }
+
+        private void Start()
+        {
+            var thingX = AcknexObject.GetFloat("X");
+            var thingY = AcknexObject.GetFloat("Y");
+            var thingZ = AcknexObject.GetFloat("Z");
+            Locate(thingX, thingY, ref thingZ, true);
         }
 
         public void SetupTemplate()
@@ -112,6 +115,8 @@ namespace Acknex
             //}
             if (AcknexObject.HasFlag("INVISIBLE"))
             {
+                _meshRenderer.enabled = false;
+                _characterController.enabled = false;
                 return;
             }
             if (!AcknexObject.IsDirty && !_movingToTarget)
@@ -119,24 +124,45 @@ namespace Acknex
                 DebugExtension.DebugWireSphere(transform.position, Color.red);
                 return;
             }
+            _meshRenderer.enabled = true;
+            _characterController.enabled = true;
             AcknexObject.IsDirty = false;
+
             //todo: ok, this is hacky
             if ((TextureObject != _textureObject && !_animating) || (AcknexObject.HasFlag("PLAY") && !_animating))
             {
+                AcknexObject.AddFlag("ONESHOT");
                 StartCoroutine(Animate());
             }
             _textureObject = TextureObject;
             DebugExtension.DebugWireSphere(transform.position, Color.green);
-            if (AcknexObject.HasFlag("INVISIBLE"))
+  
+            var thingX = AcknexObject.GetFloat("X");
+            var thingY = AcknexObject.GetFloat("Y");
+            var thingZ = AcknexObject.GetFloat("Z");
+
+            //todo: this block should only run on carefully flagged
+            if (AcknexObject.HasFlag("CANDELABER"))
             {
-                _meshRenderer.enabled = false;
-                _innerCollider.enabled = false;
+                StickToTheCeiling(thingX, thingY, ref thingZ);
             }
             else
             {
-                _meshRenderer.enabled = true;
-                _innerCollider.enabled = true;
+                Locate(thingX, thingY, ref thingZ);
             }
+            transform.position = new Vector3(thingX, thingZ, thingY);
+            
+            var thingPosition = _innerGameObject.transform.position;
+            thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
+            _innerGameObject.transform.position = thingPosition;
+
+            _characterController.center = new Vector3(0f,_innerGameObject.transform.localScale.y * 0.5f, 0f);
+            _characterController.height = _innerGameObject.transform.localScale.y;
+            _characterController.radius = _innerGameObject.transform.localScale.x * 0.5f;
+            //_characterController.isTrigger = AcknexObject.HasFlag("PASSABLE");
+
+            _triggerCollider.radius = AcknexObject.GetFloat("DIST") * 0.5f;
+
             if (AcknexObject.TryGetAcknexObject("TARGET", out var target) && target != _lastTarget)
             {
                 if (_movingCoroutine != null)
@@ -179,26 +205,7 @@ namespace Acknex
                 }
                 _lastTarget = target;
             }
-            var thingX = AcknexObject.GetFloat("X");
-            var thingY = AcknexObject.GetFloat("Y");
-            var thingZ = AcknexObject.GetFloat("Z");
 
-            //todo: this block should only run on carefully flagged
-            if (AcknexObject.HasFlag("CANDELABER"))
-            {
-                StickToTheCeiling(thingX, thingY, ref thingZ);
-            }
-            else
-            {
-                Locate(thingX, thingY, ref thingZ);
-            }
-            transform.position = new Vector3(thingX, thingZ, thingY);
-            var thingPosition = _innerGameObject.transform.position;
-            thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
-            _innerGameObject.transform.position = thingPosition;
-            _innerCollider.radius = 0.5f;
-            _innerCollider.isTrigger = AcknexObject.HasFlag("PASSABLE");
-            _triggerCollider.radius = AcknexObject.GetFloat("DIST") * 0.5f;
             AcknexObject.SetFloat("DISTANCE", Vector3.Distance(transform.position, Player.Instance.transform.position));// * 0.2f);
             //Approximate distance(+/ -20 %) of the player
             //    from the center of the object; only valid for
@@ -275,6 +282,11 @@ namespace Acknex
             var enumerator = _textureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), _innerGameObject.transform);
             while (enumerator.MoveNext())
             {
+                if (AcknexObject.HasFlag("INVISIBLE"))
+                {
+                    _animating = false;
+                    yield break;
+                }
                 if (TextureObject != _textureObject)
                 {
                     goto reload;
@@ -389,20 +401,21 @@ namespace Acknex
         {
         }
 
-        public void StickToTheCeiling(float thingX, float thingY, ref float thingZ)
+        public void StickToTheCeiling(float thingX, float thingY, ref float thingZ, bool initial = false)
         {
             var region = GetRegion();
-            var newRegionContainer = Region.Locate(AcknexObject, region.Container as Region, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, true);
+            var regionContainer = region?.Container as Region;
+            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, true, region == null || initial ? Region.MaxHeight : _innerGameObject.transform.localScale.y * 0.5f);
             thingZ = thingZ - _innerGameObject.transform.localScale.y; //todo: right?
             AcknexObject.SetFloat("Z", thingZ);
         }
 
         //todo: IF_ARISE only happens when leaving upwards
-        public void Locate(float thingX, float thingY, ref float thingZ)
+        public void Locate(float thingX, float thingY, ref float thingZ, bool initial = false)
         {
             var region = GetRegion();
             var regionContainer = region?.Container as Region;
-            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ);
+            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, false, region == null || initial ? Region.MaxHeight : _innerGameObject.transform.localScale.y * 0.5f);
             AcknexObject.SetFloat("Z", thingZ);
             if (AcknexObject.HasFlag("MASTER") && newRegionContainer != regionContainer)
             {
@@ -445,9 +458,20 @@ namespace Acknex
             //todo: why angle inverted?
             var angle = AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Atan2(toTarget) * Mathf.Rad2Deg);
             var newPos = Vector2.MoveTowards(pos, nextPoint, speed * World.Instance.GetSkillValue("TIME_CORR"));
+            var delta = new Vector3(newPos.x - pos.x, 0f, newPos.y - pos.y);
+            if (AcknexObject.HasFlag("PASSABLE") || AcknexObject.GetAcknexObject("TARGET").Type == ObjectType.Way)
+            {
+                _characterController.enabled = false;
+                transform.Translate(delta, Space.World);
+            }
+            else
+            {
+                _characterController.enabled = true;
+                _characterController.Move(delta);
+            }
             Debug.DrawLine(new Vector3(pos.x, 0f, pos.y), new Vector3(nextPoint.x, 0f, nextPoint.y), Color.magenta, 1f);
-            AcknexObject.SetFloat("X", newPos.x);
-            AcknexObject.SetFloat("Y", newPos.y);
+            AcknexObject.SetFloat("X", transform.position.x);
+            AcknexObject.SetFloat("Y", transform.position.z);
             AcknexObject.SetFloat("ANGLE", angle);
             return toTarget.magnitude <= (minDistance ?? speed);
         }

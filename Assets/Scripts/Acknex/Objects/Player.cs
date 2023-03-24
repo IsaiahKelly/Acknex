@@ -1,30 +1,42 @@
-﻿using System;
-using Acknex.Interfaces;
+﻿using Acknex.Interfaces;
 using UnityEngine;
 
 namespace Acknex
 {
     public class Player : MonoBehaviour, IAcknexObjectContainer
     {
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Player);
-        private static IAcknexObject GetTemplateCallback(string name)
-        {
-            return null;
-        }
-
         private CharacterController _characterController;
 
-        private void Start()
+        public static Player Instance { get; private set; }
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Player);
+
+        public void Disable()
         {
-            var playerX = World.Instance.GetSkillValue("PLAYER_X");
-            var playerY = World.Instance.GetSkillValue("PLAYER_Y");
-            var playerZ = World.Instance.GetSkillValue("PLAYER_Z");
-            //todo: this block should only run on carefully flagged
-            Locate(playerX, playerY, ref playerZ);
-            World.Instance.UpdateSkillValue("PLAYER_X", playerX);
-            World.Instance.UpdateSkillValue("PLAYER_Y", playerY);
-            World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
         }
+
+        public void Enable()
+        {
+        }
+
+        public Vector3 GetCenter()
+        {
+            return transform.position + new Vector3(0f, World.Instance.GetSkillValue("PLAYER_SIZE") * 0.5f, 0f);
+        }
+
+        public IAcknexObject GetRegion()
+        {
+            var regionObject = AcknexObject.GetAcknexObject("REGION");
+            return regionObject;
+        }
+
+        public void SetupInstance()
+        {
+        }
+
+        public void SetupTemplate()
+        {
+        }
+
         public void UpdateObject()
         {
             var playerX = World.Instance.GetSkillValue("PLAYER_X");
@@ -66,7 +78,6 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_SIN", AngleUtils.Sin(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_COS", AngleUtils.Cos(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_ANGLE", playerAngle);
-
             var groundZ = playerZ;
             Locate(playerX, playerY, ref groundZ, false);
             var playerHgt = playerZ - groundZ;
@@ -75,6 +86,23 @@ namespace Acknex
                 playerHgt = 0f;
             }
             World.Instance.UpdateSkillValue("PLAYER_HGT", playerHgt);
+        }
+
+        private static IAcknexObject GetTemplateCallback(string name)
+        {
+            return null;
+        }
+
+        private void Start()
+        {
+            var playerX = World.Instance.GetSkillValue("PLAYER_X");
+            var playerY = World.Instance.GetSkillValue("PLAYER_Y");
+            var playerZ = World.Instance.GetSkillValue("PLAYER_Z");
+            //todo: this block should only run on carefully flagged
+            Locate(playerX, playerY, ref playerZ);
+            World.Instance.UpdateSkillValue("PLAYER_X", playerX);
+            World.Instance.UpdateSkillValue("PLAYER_Y", playerY);
+            World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
         }
 
         private void OnGUI()
@@ -90,7 +118,7 @@ namespace Acknex
             GUILayout.Label($"PLAYER_COS:{World.Instance.GetSkillValue("PLAYER_COS")}");
             GUILayout.Label($"PLAYER_HGT:{World.Instance.GetSkillValue("PLAYER_HGT")}");
             GUILayout.Label($"PLAYER_HEALTH:{World.Instance.GetSkillValue("PLAYER_HEALTH")}");
-            var region = Player.Instance.AcknexObject.GetAcknexObject("REGION");
+            var region = AcknexObject.GetAcknexObject("REGION");
             GUILayout.Label($"RGN:{region?.GetString("NAME")}");
             GUILayout.EndVertical();
         }
@@ -99,7 +127,7 @@ namespace Acknex
         private void Locate(float playerX, float playerY, ref float playerZ, bool initial = true)
         {
             var region = (Region)AcknexObject.GetAcknexObject("REGION").Container;
-            var newRegion = Region.Locate(AcknexObject, region, World.Instance.GetSkillValue("PLAYER_WIDTH"), playerX, playerY, ref playerZ, false, initial);
+            var newRegion = Region.Locate(AcknexObject, region, World.Instance.GetSkillValue("PLAYER_WIDTH"), playerX, playerY, ref playerZ, false, initial ? Region.MaxHeight : World.Instance.GetSkillValue("PLAYER_CLIMB"));
             if (newRegion != region)
             {
                 World.Instance.TriggerEvent("IF_LEAVE", region.AcknexObject, null, region.AcknexObject);
@@ -116,39 +144,6 @@ namespace Acknex
             World.Instance.SetSynonymObject("HERE", region.AcknexObject);
             AcknexObject.SetAcknexObject("REGION", region.AcknexObject);
         }
-
-        public IAcknexObject GetRegion()
-        {
-            var regionObject = AcknexObject.GetAcknexObject("REGION");
-            return regionObject;
-        }
-
-        public void Enable()
-        {
-
-        }
-
-        public void Disable()
-        {
-
-        }
-
-        public void SetupTemplate()
-        {
-
-        }
-
-        public void SetupInstance()
-        {
-
-        }
-
-        public Vector3 GetCenter()
-        {
-            return transform.position + new Vector3(0f, World.Instance.GetSkillValue("PLAYER_SIZE") * 0.5f, 0f);
-        }
-
-        public static Player Instance { get; private set; }
 
         private void Awake()
         {

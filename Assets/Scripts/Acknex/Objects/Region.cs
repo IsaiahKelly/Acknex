@@ -13,7 +13,7 @@ namespace Acknex
     //todo: tesselation needs to implement the method to create new vertices
     public class Region : MonoBehaviour, IAcknexObjectContainer
     {
-        private const float MaxHeight = 10000f;
+        public const float MaxHeight = 10000f;
 
         //private GameObject _triggerGameObject;
         //private MeshCollider _triggerCollider;
@@ -363,7 +363,7 @@ namespace Acknex
             meshIndex++;
         }
 
-        public static Region Locate(IAcknexObject acknexObject, Region currentRegion, float radius, float thingX, float thingY, ref float thingZ, bool onCeil = false, bool initial = true)
+        public static Region Locate(IAcknexObject acknexObject, Region currentRegion, float radius, float thingX, float thingY, ref float thingZ, bool onCeil = false, float? height = null)
         {
             var onGround = acknexObject.HasFlag("GROUND");
             bool GetValue(RaycastHit raycastHit, ref float outThingZ, out Region outRegion)
@@ -378,8 +378,8 @@ namespace Acknex
             }
             if (onCeil)
             {
-                var zCheck = currentRegion == null ? -MaxHeight : initial ? currentRegion.AcknexObject.GetFloat("FLOOR_HGT") : thingZ + 1.0f;
-                var point = new Vector3(thingX, zCheck + radius, thingY);
+                var zCheck = height == null ? currentRegion.AcknexObject.GetFloat("FLOOR_HGT") : thingZ + height.Value;
+                var point = new Vector3(thingX, zCheck, thingY);
                 if (Physics.Raycast(new Ray(point, Vector3.up), /*radius, */ out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, ref thingZ, out var outRegion))
@@ -391,8 +391,8 @@ namespace Acknex
             }
             else
             {
-                var zCheck = currentRegion == null ? MaxHeight : initial ? currentRegion.AcknexObject.GetFloat("CEIL_HGT") : thingZ + 1.0f;
-                var point = new Vector3(thingX, zCheck + radius, thingY);
+                var zCheck = height == null ? currentRegion.AcknexObject.GetFloat("CEIL_HGT") : thingZ + height.Value;
+                var point = new Vector3(thingX, zCheck, thingY);
                 if (Physics.Raycast(new Ray(point, Vector3.down), /*radius,*/ out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, ref thingZ, out var outRegion))

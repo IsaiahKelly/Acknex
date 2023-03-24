@@ -74,26 +74,31 @@ namespace Acknex
             var sides = Mathf.Max(1, this.AcknexObject.GetInteger("SIDES"));
             var cycles = Mathf.Max(1, this.AcknexObject.GetInteger("CYCLES"));
             var mirror = AcknexObject.GetObject<List<float>>("MIRROR");
-            if (cycles == 1)
-            {
-                UpdateAngleFrameScale(scaleTexture, cycles, sides, 0, mirror, null, meshRenderer, meshFilter, thingGameObject, MY, sourceTransform);
-                World.Instance.TriggerEvent("EACH_CYCLE", MY, MY, THERE);
-                AcknexObject.RemoveFlag("PLAY");
-                yield break;
-            }
+            //if (cycles == 1)
+            //{
+            //    UpdateAngleFrameScale(scaleTexture, cycles, sides, 0, mirror, null, meshRenderer, meshFilter, thingGameObject, MY, sourceTransform);
+            //    World.Instance.TriggerEvent("EACH_CYCLE", MY, MY, THERE);
+            //    AcknexObject.RemoveFlag("PLAY");
+            //    yield break;
+            //}
             var cycle = 0;
             while (true)
             {
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : null;
                 UpdateAngleFrameScale(scaleTexture, cycles, sides, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, MY, sourceTransform);
                 yield return currentDelay;
-                World.Instance.TriggerEvent("EACH_CYCLE", MY, MY, THERE);
-                if (MY.HasFlag("ONESHOT"))
+                cycle++;
+                if (cycle >= cycles)
                 {
-                    MY.RemoveFlag("PLAY");
-                    yield break;
+                    World.Instance.TriggerEvent("EACH_CYCLE", MY, MY, THERE);
+                    if (MY.HasFlag("ONESHOT"))
+                    {
+                        MY.RemoveFlag("ONESHOT");
+                        MY.RemoveFlag("PLAY");
+                        yield break;
+                    }
                 }
-                cycle = (int)Mathf.Repeat(cycle + 1, cycles);
+                cycle = (int)Mathf.Repeat(cycle, cycles);
             }
         }
 
@@ -185,7 +190,7 @@ namespace Acknex
 
         public void SetupInstance()
         {
-            
+
         }
 
         public Vector3 GetCenter()
