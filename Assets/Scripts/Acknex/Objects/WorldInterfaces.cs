@@ -565,7 +565,7 @@ namespace Acknex
                 UpdateSkillValue("RESULT", shootFac * (1.0f - distance / shootRange));
                 UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(raycastResult.point), AngleUtils.To2D(ray.origin))));
                 SetSynonymObject("HIT", hitAcknexObject);
-                TriggerEvent("IF_HIT", AcknexObject, AcknexObject, AcknexObject.Container.GetRegion());
+                TriggerEvent("IF_HIT", hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
                 Debug.DrawLine(ray.origin, raycastResult.point, Color.white, 10f);
                 //if (acknexObject != null)
                 //{

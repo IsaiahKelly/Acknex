@@ -185,7 +185,8 @@ public class WorldEditor : Editor
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
         EditorGUILayout.BeginFoldoutHeaderGroup(true, "Skills");
-        foreach (var kvp in world.SkillsByName)
+        var skillsByName = world.SkillsByName.OrderBy(x => x.Key);
+        foreach (var kvp in skillsByName)
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(kvp.Key);

@@ -1,5 +1,6 @@
 ﻿using Acknex.Interfaces;
 using UnityEngine;
+using Utils;
 
 namespace Acknex
 {
@@ -47,9 +48,9 @@ namespace Acknex
             _characterController.transform.rotation = Quaternion.Euler(0f, unityPlayerAngle, 0f);
             _characterController.transform.position = new Vector3(playerX, playerZ, playerY);
             _characterController.radius = World.Instance.GetSkillValue("PLAYER_WIDTH");
-            _characterController.stepOffset = World.Instance.GetSkillValue("PLAYER_CLIMB");
             var playerSize = World.Instance.GetSkillValue("PLAYER_SIZE");
             _characterController.height = playerSize;
+            _characterController.stepOffset = Mathf.Min(playerSize, World.Instance.GetSkillValue("PLAYER_CLIMB"));
             var characterControllerCenter = _characterController.center;
             characterControllerCenter.y = _characterController.height * 0.5f;
             _characterController.center = characterControllerCenter;
@@ -88,6 +89,13 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_HGT", playerHgt);
         }
 
+        private void OnDrawGizmos()
+        {
+            var size = new Vector3(_characterController.radius * 2f, _characterController.stepOffset, _characterController.radius * 2f);
+            var center = new Vector3(0f, _characterController.stepOffset * 0.5f, 0f);
+            DebugExtension.DebugLocalCube(transform, size, Color.magenta, center);
+        }
+
         private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
@@ -118,6 +126,7 @@ namespace Acknex
             GUILayout.Label($"PLAYER_COS:{World.Instance.GetSkillValue("PLAYER_COS")}");
             GUILayout.Label($"PLAYER_HGT:{World.Instance.GetSkillValue("PLAYER_HGT")}");
             GUILayout.Label($"PLAYER_HEALTH:{World.Instance.GetSkillValue("PLAYER_HEALTH")}");
+            GUILayout.Label($"AMMO:{World.Instance.GetSkillValue("AMMO")}");
             var region = AcknexObject.GetAcknexObject("REGION");
             GUILayout.Label($"RGN:{region?.GetString("NAME")}");
             GUILayout.EndVertical();
