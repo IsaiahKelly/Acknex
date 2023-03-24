@@ -120,7 +120,7 @@ namespace Acknex
             if (AcknexObject.HasFlag("INVISIBLE"))
             {
                 _meshRenderer.enabled = false;
-                _collider.enabled = _characterController.enabled = false;
+                _triggerCollider.enabled = _collider.enabled = _characterController.enabled = false;
                 return;
             }
             //if (!AcknexObject.IsDirty )
@@ -340,12 +340,12 @@ namespace Acknex
                 AcknexObject.IsDirty = true;
                 if (MoveToPoint(nextPoint))
                 {
-                    AcknexObject.SetInteger("WAYPOINT", waypoint);
                     if (waypoint++ >= points.Count)
                     {
                         AcknexObject.SetAcknexObject("TARGET", null);
                         yield break;
                     }
+                    AcknexObject.SetInteger("WAYPOINT", waypoint);
                     World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
                     nextPoint = points[waypoint - 1];
                 }
