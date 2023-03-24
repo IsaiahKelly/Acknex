@@ -36,7 +36,7 @@ namespace Acknex
             return innerGameObject;
         }
 
-        public static void CopyTextureCPU(Texture2D from, Texture2D to, bool updateMipMaps, bool makeNoLongerReadable, int x, int y, int width, int height)
+        public static void CopyTextureCPU(UnityEngine.Texture from, Texture2D to, bool updateMipMaps, bool makeNoLongerReadable, int x, int y, int width, int height)
         {
             var renderTexture = RenderTexture.GetTemporary(from.width, from.height, 0, from.graphicsFormat);
             Graphics.CopyTexture(from, 0,0, renderTexture,0,0);
@@ -47,24 +47,28 @@ namespace Acknex
             RenderTexture.ReleaseTemporary(renderTexture);
         }
 
-        //public static void Dilate(Texture2D texture2D)
-        //{
-        //    if (_dilateShader == null)
-        //    {
-        //        _dilateShader = new Material(Shader.Find("Acknex/Dilate"));
-        //    }
-        //    var renderTextureA = RenderTexture.GetTemporary(texture2D.width, texture2D.height, 0, texture2D.graphicsFormat);
-        //    var renderTextureB = RenderTexture.GetTemporary(texture2D.width, texture2D.height, 0, texture2D.graphicsFormat);
-        //    Graphics.Blit(texture2D, renderTextureA);
-        //    for (var i = 0; i < Mathf.Max(texture2D.width, texture2D.height); i++)
-        //    {
-        //        Graphics.Blit(renderTextureA, renderTextureB, _dilateShader);
-        //        Graphics.CopyTexture(renderTextureB, renderTextureA);
-        //    }
-        //    Graphics.CopyTexture(renderTextureA, 0, 0, texture2D, 0, 0);
-        //    CopyTextureCPU(renderTextureA, texture2D, true, false);
-        //    RenderTexture.ReleaseTemporary(renderTextureA);
-        //    RenderTexture.ReleaseTemporary(renderTextureB);
-        //}
+        public static void Dilate(Texture2D texture2D)
+        {
+            if (texture2D.width == 0 || texture2D.height == 0)
+            {
+                return;
+            }
+            if (_dilateShader == null)
+            {
+                _dilateShader = new Material(Shader.Find("Acknex/Dilate"));
+            }
+            var renderTextureA = RenderTexture.GetTemporary(texture2D.width, texture2D.height, 0, texture2D.graphicsFormat);
+            var renderTextureB = RenderTexture.GetTemporary(texture2D.width, texture2D.height, 0, texture2D.graphicsFormat);
+            Graphics.Blit(texture2D, renderTextureA);
+            for (var i = 0; i < Mathf.Max(texture2D.width, texture2D.height); i++)
+            {
+                Graphics.Blit(renderTextureA, renderTextureB, _dilateShader);
+                Graphics.CopyTexture(renderTextureB, renderTextureA);
+            }
+            Graphics.CopyTexture(renderTextureA, 0, 0, texture2D, 0, 0);
+            CopyTextureCPU(renderTextureA, texture2D, true, false, 0, 0, texture2D.width, texture2D.height);
+            RenderTexture.ReleaseTemporary(renderTextureA);
+            RenderTexture.ReleaseTemporary(renderTextureB);
+        }
     }
 }

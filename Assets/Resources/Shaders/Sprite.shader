@@ -17,13 +17,15 @@
     }
     SubShader
     {
-        Tags { "RenderType" = "Opaque" }
-        Cull Off
-        LOD 200
+         Tags {"Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent"}
+         LOD 100
+
+         ZWrite Off
+         Blend SrcAlpha OneMinusSrcAlpha
 
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf Standard addshadow
+        #pragma surface surf Sprite addshadow alpha
 
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
@@ -57,15 +59,15 @@
         UNITY_INSTANCING_BUFFER_END(Props)
 
 
-        //half4 LightingSprite(SurfaceOutput s, half3 lightDir, half atten) {
-        //    half4 c;
-        //    float ambient = 1.0;// (1.0 - _AMBIENT);
-        //    c.rgb = s.Albedo * lerp(1.0, _LightColor0.rgb * atten, _LightMultiplier) * ambient;
-        //    c.a = s.Alpha;
-        //    return c;
-        //}
+        half4 LightingSprite(SurfaceOutput s, half3 lightDir, half atten) {
+            half4 c;
+            float ambient = 1.0;// (1.0 - _AMBIENT);
+            c.rgb = s.Albedo * lerp(1.0, _LightColor0.rgb * atten, _LightMultiplier) * ambient;
+            c.a = s.Alpha;
+            return c;
+        }
 
-        void surf (Input IN, inout SurfaceOutputStandard o)
+        void surf (Input IN, inout SurfaceOutput o)
         {
             _Y0 = _MainTex_TexelSize.w - _Y0;
             _Y1 = _MainTex_TexelSize.w - _Y1;
@@ -76,8 +78,8 @@
             fixed4 c = tex2D(_MainTex, uv) * _Color;
             o.Albedo = c.rgb;
             /* Sharpen texture alpha to the width of a pixel */
-            o.Alpha = (c.a - 0.5) / max(fwidth(c.a), 0.0001) + 0.5;
-            clip(o.Alpha - 0.5);
+            o.Alpha = c.a;// (c.a - 0.5) / max(fwidth(c.a), 0.0001) + 0.5;
+            //clip(o.Alpha - 0.5);
         }
         ENDCG
     }

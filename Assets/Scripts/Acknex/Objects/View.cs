@@ -91,6 +91,7 @@ namespace Acknex
             Instance = this;
             AcknexObject.Container = this;
             ViewCamera = GetComponent<Camera>();
+            ViewCamera.transparencySortMode = TransparencySortMode.Perspective;
         }
 
         private void Update()

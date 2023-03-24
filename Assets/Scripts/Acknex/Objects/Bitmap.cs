@@ -96,6 +96,7 @@ namespace Acknex
             {
                 bitmapTexture2D = new Texture2D(width, height, texture2D.graphicsFormat, TextureCreationFlags.MipChain);
                 TextureUtils.CopyTextureCPU(texture2D, bitmapTexture2D, true, false, x, y, width, height);
+                TextureUtils.Dilate(bitmapTexture2D);
             }
         }
 
