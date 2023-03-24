@@ -595,7 +595,7 @@ namespace Acknex
                         HandleHit(raycastResult, region.AcknexObject);
                         return;
                     }
-                    if (raycastResult.transform.parent.TryGetComponent<Thing>(out var thing))
+                    if (raycastResult.transform.TryGetComponent<Thing>(out var thing))
                     {
                         if (thing.AcknexObject.HasFlag("IMMATERIAL"))
                         {

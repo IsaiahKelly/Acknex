@@ -12,6 +12,7 @@ namespace Acknex
         private GameObject _attached;
         private AudioSource _audioSource;
         private CharacterController _characterController;
+        private CapsuleCollider _collider;
         private GameObject _innerGameObject;
         private IAcknexObject _lastTarget;
         private Texture _lastTextureObject;
@@ -64,6 +65,7 @@ namespace Acknex
             _innerGameObject.layer = World.Instance.ThingsAndActorsLayer.LayerIndex;
             _characterController = gameObject.AddComponent<CharacterController>();
             _characterController.detectCollisions = false;
+            _collider = gameObject.AddComponent<CapsuleCollider>();
             _thingCollisionCallback = _innerGameObject.AddComponent<CollisionCallback>();
             _thingCollisionCallback.OnCollisionEnterCallback += OnCollisionEnterCallback;
             _thingCollisionCallback.OnCollisionExitCallback += OnCollisionExitCallback;
@@ -116,7 +118,7 @@ namespace Acknex
             if (AcknexObject.HasFlag("INVISIBLE"))
             {
                 _meshRenderer.enabled = false;
-                _characterController.enabled = false;
+                _collider.enabled = _characterController.enabled = false;
                 return;
             }
             if (!AcknexObject.IsDirty && !_movingToTarget)
@@ -125,7 +127,7 @@ namespace Acknex
                 return;
             }
             _meshRenderer.enabled = true;
-            _characterController.enabled = true;
+            _collider.enabled = _characterController.enabled = true;
             AcknexObject.IsDirty = false;
 
             //todo: ok, this is hacky
@@ -156,9 +158,9 @@ namespace Acknex
             thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
             _innerGameObject.transform.position = thingPosition;
 
-            _characterController.center = new Vector3(0f,_innerGameObject.transform.localScale.y * 0.5f, 0f);
-            _characterController.height = _innerGameObject.transform.localScale.y;
-            _characterController.radius = _innerGameObject.transform.localScale.x * 0.5f;
+            _collider.center = _characterController.center = new Vector3(0f,_innerGameObject.transform.localScale.y * 0.5f, 0f);
+            _collider.height = _characterController.height = _innerGameObject.transform.localScale.y;
+            _collider.radius = _characterController.radius = _innerGameObject.transform.localScale.x * 0.5f;
             //_characterController.isTrigger = AcknexObject.HasFlag("PASSABLE");
 
             _triggerCollider.radius = AcknexObject.GetFloat("DIST") * 0.5f;
@@ -461,12 +463,12 @@ namespace Acknex
             var delta = new Vector3(newPos.x - pos.x, 0f, newPos.y - pos.y);
             if (AcknexObject.HasFlag("PASSABLE") || AcknexObject.GetAcknexObject("TARGET").Type == ObjectType.Way)
             {
-                _characterController.enabled = false;
+                _collider.enabled = _characterController.enabled = false;
                 transform.Translate(delta, Space.World);
             }
             else
             {
-                _characterController.enabled = true;
+                _collider.enabled = _characterController.enabled = true;
                 _characterController.Move(delta);
             }
             Debug.DrawLine(new Vector3(pos.x, 0f, pos.y), new Vector3(nextPoint.x, 0f, nextPoint.y), Color.magenta, 1f);
