@@ -24,23 +24,6 @@ namespace Acknex
 
         public IAcknexObjectContainer Container { get; set; }
 
-        public bool HasFlag(string flag, bool fromTemplate = true)
-        {
-            if (NumberProperties.TryGetValue(flag, out var value))
-            {
-                return value > 0f;
-            }
-            if (fromTemplate)
-            {
-                var template = GetTemplateCallback(GetString("NAME", false));
-                if (template != null)
-                {
-                    return template.HasFlag(flag, false);
-                }
-            }
-            return false;
-        }
-
         public IAcknexObject GetAcknexObject(string propertyName, bool fromTemplate = true)
         {
             var obj = GetObject<IAcknexObject>(propertyName, fromTemplate);
@@ -130,6 +113,25 @@ namespace Acknex
 
         public Func<string, IAcknexObject> GetTemplateCallback { get; }
 
+        public bool HasFlag(string flag, bool fromTemplate = true)
+        {
+            if (NumberProperties.TryGetValue(flag, out var value))
+            {
+                return value > 0f;
+            }
+            if (fromTemplate)
+            {
+                var template = GetTemplateCallback(GetString("NAME", false));
+                if (template != null)
+                {
+                    return template.HasFlag(flag, false);
+                }
+            }
+            return false;
+        }
+
+        public int InstanceIndex { get; set; }
+
         public bool IsDirty { get; set; } = true;
         public bool IsInstance { get; set; }
 
@@ -150,41 +152,41 @@ namespace Acknex
             switch (Type)
             {
                 case ObjectType.Wall:
+                {
+                    var all = World.Instance.AllWallsByName[GetString("NAME")];
+                    foreach (var item in all)
                     {
-                        var all = World.Instance.AllWallsByName[GetString("NAME")];
-                        foreach (var item in all)
-                        {
-                            item.AcknexObject.SetAcknexObject(propertyName, value);
-                        }
-                        break;
+                        item.AcknexObject.SetAcknexObject(propertyName, value);
                     }
+                    break;
+                }
                 case ObjectType.Region:
+                {
+                    var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                    foreach (var item in all)
                     {
-                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
-                        foreach (var item in all)
-                        {
-                            item.AcknexObject.SetAcknexObject(propertyName, value);
-                        }
-                        break;
+                        item.AcknexObject.SetAcknexObject(propertyName, value);
                     }
+                    break;
+                }
                 case ObjectType.Thing:
+                {
+                    var all = World.Instance.AllThingsByName[GetString("NAME")];
+                    foreach (var item in all)
                     {
-                        var all = World.Instance.AllThingsByName[GetString("NAME")];
-                        foreach (var item in all)
-                        {
-                            item.AcknexObject.SetAcknexObject(propertyName, value);
-                        }
-                        break;
+                        item.AcknexObject.SetAcknexObject(propertyName, value);
                     }
+                    break;
+                }
                 case ObjectType.Actor:
+                {
+                    var all = World.Instance.AllActorsByName[GetString("NAME")];
+                    foreach (var item in all)
                     {
-                        var all = World.Instance.AllActorsByName[GetString("NAME")];
-                        foreach (var item in all)
-                        {
-                            item.AcknexObject.SetAcknexObject(propertyName, value);
-                        }
-                        break;
+                        item.AcknexObject.SetAcknexObject(propertyName, value);
                     }
+                    break;
+                }
             }
         }
 
@@ -205,7 +207,7 @@ namespace Acknex
             {
                 unsafe
                 {
-                    IsDirty = *((int*)&existingValue) != *((int*)&value);
+                    IsDirty = *(int*)&existingValue != *(int*)&value;
                 }
             }
             else
@@ -220,41 +222,41 @@ namespace Acknex
             switch (Type)
             {
                 case ObjectType.Wall:
+                {
+                    var all = World.Instance.AllWallsByName[GetString("NAME")];
+                    foreach (var item in all)
                     {
-                        var all = World.Instance.AllWallsByName[GetString("NAME")];
-                        foreach (var item in all)
-                        {
-                            item.AcknexObject.SetFloat(propertyName, value);
-                        }
-                        break;
+                        item.AcknexObject.SetFloat(propertyName, value);
                     }
+                    break;
+                }
                 case ObjectType.Region:
+                {
+                    var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                    foreach (var item in all)
                     {
-                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
-                        foreach (var item in all)
-                        {
-                            item.AcknexObject.SetFloat(propertyName, value);
-                        }
-                        break;
+                        item.AcknexObject.SetFloat(propertyName, value);
                     }
+                    break;
+                }
                 case ObjectType.Thing:
+                {
+                    var all = World.Instance.AllThingsByName[GetString("NAME")];
+                    foreach (var item in all)
                     {
-                        var all = World.Instance.AllThingsByName[GetString("NAME")];
-                        foreach (var item in all)
-                        {
-                            item.AcknexObject.SetFloat(propertyName, value);
-                        }
-                        break;
+                        item.AcknexObject.SetFloat(propertyName, value);
                     }
+                    break;
+                }
                 case ObjectType.Actor:
+                {
+                    var all = World.Instance.AllActorsByName[GetString("NAME")];
+                    foreach (var item in all)
                     {
-                        var all = World.Instance.AllActorsByName[GetString("NAME")];
-                        foreach (var item in all)
-                        {
-                            item.AcknexObject.SetFloat(propertyName, value);
-                        }
-                        break;
+                        item.AcknexObject.SetFloat(propertyName, value);
                     }
+                    break;
+                }
             }
         }
 
@@ -286,41 +288,41 @@ namespace Acknex
             switch (Type)
             {
                 case ObjectType.Wall:
+                {
+                    var all = World.Instance.AllWallsByName[GetString("NAME")];
+                    foreach (var item in all)
                     {
-                        var all = World.Instance.AllWallsByName[GetString("NAME")];
-                        foreach (var item in all)
-                        {
-                            item.AcknexObject.SetObject(propertyName, value);
-                        }
-                        break;
+                        item.AcknexObject.SetObject(propertyName, value);
                     }
+                    break;
+                }
                 case ObjectType.Region:
+                {
+                    var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                    foreach (var item in all)
                     {
-                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
-                        foreach (var item in all)
-                        {
-                            item.AcknexObject.SetObject(propertyName, value);
-                        }
-                        break;
+                        item.AcknexObject.SetObject(propertyName, value);
                     }
+                    break;
+                }
                 case ObjectType.Thing:
+                {
+                    var all = World.Instance.AllThingsByName[GetString("NAME")];
+                    foreach (var item in all)
                     {
-                        var all = World.Instance.AllThingsByName[GetString("NAME")];
-                        foreach (var item in all)
-                        {
-                            item.AcknexObject.SetObject(propertyName, value);
-                        }
-                        break;
+                        item.AcknexObject.SetObject(propertyName, value);
                     }
+                    break;
+                }
                 case ObjectType.Actor:
+                {
+                    var all = World.Instance.AllActorsByName[GetString("NAME")];
+                    foreach (var item in all)
                     {
-                        var all = World.Instance.AllActorsByName[GetString("NAME")];
-                        foreach (var item in all)
-                        {
-                            item.AcknexObject.SetObject(propertyName, value);
-                        }
-                        break;
+                        item.AcknexObject.SetObject(propertyName, value);
                     }
+                    break;
+                }
             }
         }
 
@@ -431,7 +433,7 @@ namespace Acknex
         {
             if (TryGetString("NAME", out var name))
             {
-                return name;
+                return $"{name}({InstanceIndex})";
             }
             return base.ToString();
         }

@@ -417,6 +417,7 @@ namespace Acknex
                             list = new HashSet<Wall>();
                             AllWallsByName.Add(name, list);
                         }
+                        wall.AcknexObject.InstanceIndex = list.Count;
                         list.Add(wall);
                         if (list.Count == 1)
                         {
@@ -434,6 +435,7 @@ namespace Acknex
                             list = new HashSet<Region>();
                             AllRegionsByName.Add(name, list);
                         }
+                        region.AcknexObject.InstanceIndex = list.Count;
                         list.Add(region);
                         if (list.Count == 1)
                         {
@@ -449,6 +451,7 @@ namespace Acknex
                             list = new HashSet<Actor>();
                             AllActorsByName.Add(name, list);
                         }
+                        actor.AcknexObject.InstanceIndex = list.Count;
                         list.Add(actor);
                         if (list.Count == 1)
                         {
@@ -464,6 +467,7 @@ namespace Acknex
                             list = new HashSet<Thing>();
                             AllThingsByName.Add(name, list);
                         }
+                        thing.AcknexObject.InstanceIndex = list.Count;
                         list.Add(thing);
                         if (list.Count == 1)
                         {
@@ -479,6 +483,7 @@ namespace Acknex
                             list = new HashSet<Way>();
                             AllWaysByName.Add(name, list);
                         }
+                        way.AcknexObject.InstanceIndex = list.Count;
                         list.Add(way);
                         if (list.Count == 1)
                         {

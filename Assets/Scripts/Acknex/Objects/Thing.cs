@@ -19,13 +19,13 @@ namespace Acknex
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
         private Coroutine _movingCoroutine;
-        private bool _movingToTarget;
+        //private bool _movingToTarget;
         private Texture _textureObject;
         private CollisionCallback _thingCollisionCallback;
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;
         private GameObject _triggerGameObject;
-        private bool _animating;
+        private Coroutine _animating;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -78,7 +78,7 @@ namespace Acknex
             _triggerCollisionCallback.OnTriggerEnterCallback += OnTriggerEnterCallback;
             _triggerCollisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
             _audioSource = gameObject.AddComponent<AudioSource>();
-            StartCoroutine(Animate());
+            //_animating = StartCoroutine(Animate());
             StartCoroutine(TriggerTickEvents());
             StartCoroutine(TriggerSecEvents());
         }
@@ -123,24 +123,38 @@ namespace Acknex
                 _collider.enabled = _characterController.enabled = false;
                 return;
             }
-            if (!AcknexObject.IsDirty && !_movingToTarget)
-            {
-                DebugExtension.DebugWireSphere(transform.position, Color.red);
-                return;
-            }
-            _meshRenderer.enabled = true;
+            //if (!AcknexObject.IsDirty )
+            //{
+            //    DebugExtension.DebugWireSphere(transform.position, Color.red);
+            //    return;
+            //}
+
+            DebugExtension.DebugWireSphere(transform.position, Color.green);
+
             _collider.enabled = _characterController.enabled = true;
-            AcknexObject.IsDirty = false;
+            _meshRenderer.enabled = true;
 
             //todo: ok, this is hacky
-            if ((TextureObject != _textureObject && !_animating) || (AcknexObject.HasFlag("PLAY") && !_animating))
+            //if (!_animating)
+            //{
+            if (TextureObject != _textureObject || AcknexObject.HasFlag("PLAY"))
             {
-                AcknexObject.AddFlag("ONESHOT");
-                StartCoroutine(Animate());
+                if (_animating != null)
+                {
+                    StopCoroutine(_animating);
+                }
+                if (TextureObject != null)
+                {
+                    if (AcknexObject.HasFlag("PLAY"))
+                    {
+                        AcknexObject.AddFlag("ONESHOT");
+                    }
+                    _animating = StartCoroutine(Animate());
+                }
+                _textureObject = TextureObject;
             }
-            _textureObject = TextureObject;
-            DebugExtension.DebugWireSphere(transform.position, Color.green);
-  
+            //}
+
             var thingX = AcknexObject.GetFloat("X");
             var thingY = AcknexObject.GetFloat("Y");
             var thingZ = AcknexObject.GetFloat("Z");
@@ -155,12 +169,12 @@ namespace Acknex
                 Locate(thingX, thingY, ref thingZ);
             }
             transform.position = new Vector3(thingX, thingZ, thingY);
-            
+
             var thingPosition = _innerGameObject.transform.position;
             thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
             _innerGameObject.transform.position = thingPosition;
 
-            _collider.center = _characterController.center = new Vector3(0f,_innerGameObject.transform.localScale.y * 0.5f, 0f);
+            _collider.center = _characterController.center = new Vector3(0f, _innerGameObject.transform.localScale.y * 0.5f, 0f);
             _collider.height = _characterController.height = _innerGameObject.transform.localScale.y;
             _collider.radius = _characterController.radius = _innerGameObject.transform.localScale.x * 0.5f;
             //_characterController.isTrigger = AcknexObject.HasFlag("PASSABLE");
@@ -215,12 +229,15 @@ namespace Acknex
             }
 
             AcknexObject.SetFloat("DISTANCE", Vector3.Distance(transform.position, Player.Instance.transform.position));// * 0.2f);
-            //Approximate distance(+/ -20 %) of the player
-            //    from the center of the object; only valid for
-            //    objects within the player's CLIP_DIST.
+                                                                                                                        //Approximate distance(+/ -20 %) of the player
+                                                                                                                        //    from the center of the object; only valid for
+                                                                                                                        //    objects within the player's CLIP_DIST.
 
             //todo: reimplement
             //Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, transform.right);
+
+
+            AcknexObject.IsDirty = false;
         }
 
         private static IAcknexObject GetTemplateCallback(string name)
@@ -280,28 +297,11 @@ namespace Acknex
 
         private IEnumerator Animate()
         {
-            _animating = true;
-            reload:
-            while (TextureObject == null)
-            {
-                yield return null;
-            }
-            _textureObject = TextureObject;
-            var enumerator = _textureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), _innerGameObject.transform);
+            var enumerator = TextureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), _innerGameObject.transform);
             while (enumerator.MoveNext())
             {
-                if (AcknexObject.HasFlag("INVISIBLE"))
-                {
-                    _animating = false;
-                    yield break;
-                }
-                if (TextureObject != _textureObject)
-                {
-                    goto reload;
-                }
                 yield return enumerator.Current;
             }
-            _animating = false;
         }
 
         protected virtual void Awake()
@@ -322,28 +322,21 @@ namespace Acknex
 
         private IEnumerator MoveToWay(Way way)
         {
-            _movingToTarget = true;
             var points = way.InstancePoints;
             var waypoint = 1;
             AcknexObject.SetInteger("WAYPOINT", waypoint);
-            //if (points.Count == 0)
-            //{
-            //    //World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
-            //    yield break;
-            //}
             var nextPoint = points[waypoint - 1];
             for (; ; )
             {
+                AcknexObject.IsDirty = true;
                 if (MoveToPoint(nextPoint))
                 {
-                    waypoint++;
-                    if (waypoint > points.Count)
+                    AcknexObject.SetInteger("WAYPOINT", waypoint);
+                    if (waypoint++ >= points.Count)
                     {
                         AcknexObject.SetAcknexObject("TARGET", null);
-                        _movingToTarget = false;
                         yield break;
                     }
-                    AcknexObject.SetInteger("WAYPOINT", waypoint);
                     World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
                     nextPoint = points[waypoint - 1];
                 }
@@ -353,13 +346,12 @@ namespace Acknex
 
         private IEnumerator MoveToVertex()
         {
-            _movingToTarget = true;
             var targetPos = new Vector2(AcknexObject.GetFloat("TARGET_X"), AcknexObject.GetFloat("TARGET_Y"));
             for (; ; )
             {
+                AcknexObject.IsDirty = true;
                 if (MoveToPoint(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
-                    _movingToTarget = false;
                     AcknexObject.SetAcknexObject("TARGET", null);
                     World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
                     yield break;
@@ -370,14 +362,13 @@ namespace Acknex
 
         private IEnumerator MoveToPlayer()
         {
-            _movingToTarget = true;
             for (; ; )
             {
+                AcknexObject.IsDirty = true;
                 var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
                 if (MoveToPoint(playerPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
                     AcknexObject.SetAcknexObject("TARGET", null);
-                    _movingToTarget = false;
                     yield break;
                 }
                 yield return null;
@@ -386,14 +377,13 @@ namespace Acknex
 
         private IEnumerator MoveAwayFromPlayer()
         {
-            _movingToTarget = true;
             for (; ; )
             {
+                AcknexObject.IsDirty = true;
                 var playerPos = new Vector2(-World.Instance.GetSkillValue("PLAYER_X"), -World.Instance.GetSkillValue("PLAYER_Y"));
                 if (MoveToPoint(playerPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
                     AcknexObject.SetAcknexObject("TARGET", null);
-                    _movingToTarget = false;
                     yield break;
                 }
                 yield return null;
@@ -402,7 +392,6 @@ namespace Acknex
 
         private IEnumerator MoveToAngle()
         {
-            _movingToTarget = true;
             var angle = AcknexObject.GetFloat("ANGLE");
             var speed = AcknexObject.GetFloat("SPEED");
             var timeCorr = World.Instance.GetSkillValue("TIME_CORR");
@@ -411,9 +400,9 @@ namespace Acknex
             var targetPos = new Vector2(AcknexObject.GetFloat("X") + sin, AcknexObject.GetFloat("Y") + cos);
             for (; ; )
             {
+                AcknexObject.IsDirty = true;
                 if (MoveToPoint(targetPos))
                 {
-                    _movingToTarget = false;
                     AcknexObject.SetAcknexObject("TARGET", null);
                     yield break;
                 }

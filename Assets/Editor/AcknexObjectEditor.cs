@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Acknex;
 using Acknex.Interfaces;
 using UnityEditor;
@@ -14,8 +15,11 @@ public class AcknexObjectEditor : Editor
         if (target is IAcknexObjectContainer container)
         {
             EditorGUILayout.Toggle("Is Instance", container.AcknexObject.IsInstance);
+            EditorGUILayout.Toggle("Is Dirty", container.AcknexObject.IsDirty);
+            EditorGUILayout.IntField("Index", container.AcknexObject.InstanceIndex);
             EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Instance");
-            foreach (var property in ((AcknexObject)container.AcknexObject).ObjectProperties)
+            var objectProperties = ((AcknexObject)container.AcknexObject).ObjectProperties.OrderBy(x => x.Key);
+            foreach (var property in objectProperties)
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(property.Key);
@@ -39,7 +43,8 @@ public class AcknexObjectEditor : Editor
                 }
                 EditorGUILayout.EndHorizontal();
             }
-            foreach (var property in ((AcknexObject)container.AcknexObject).NumberProperties)
+            var numberProperties = ((AcknexObject)container.AcknexObject).NumberProperties.OrderBy(x => x.Key);
+            foreach (var property in numberProperties)
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(property.Key);
@@ -53,7 +58,8 @@ public class AcknexObjectEditor : Editor
                 if (template != null)
                 {
                     EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Template");
-                    foreach (var property in ((AcknexObject)template).ObjectProperties)
+                    var templateObjectProperties = ((AcknexObject)template).ObjectProperties.OrderBy(x => x.Key);
+                    foreach (var property in templateObjectProperties)
                     {
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField(property.Key);
@@ -77,7 +83,8 @@ public class AcknexObjectEditor : Editor
                         }
                         EditorGUILayout.EndHorizontal();
                     }
-                    foreach (var property in ((AcknexObject)template).NumberProperties)
+                    var templateNumberProperties = ((AcknexObject)template).NumberProperties.OrderBy(x => x.Key);
+                    foreach (var property in templateNumberProperties)
                     {
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField(property.Key);

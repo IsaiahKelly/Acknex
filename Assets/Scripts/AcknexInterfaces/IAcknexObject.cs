@@ -21,6 +21,11 @@ namespace Acknex.Interfaces
         bool IsInstance { get; set; }
 
         /// <summary>
+        /// The instance index.
+        /// </summary>
+        int InstanceIndex { get; set; }
+
+        /// <summary>
         /// Gets/Sets the object container (Unity representation).
         /// <remarks>
         /// The container is set automatically by the IAcknexWorld implementation.
