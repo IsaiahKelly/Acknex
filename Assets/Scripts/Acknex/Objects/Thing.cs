@@ -180,6 +180,10 @@ namespace Acknex
                             //Debug.Log(AcknexObject + "moving in direction of player with speed " + AcknexObject.GetFloat("SPEED"));
                             _movingCoroutine = StartCoroutine(MoveToPlayer());
                             break;
+                        case "REPEL":
+                            //Debug.Log(AcknexObject + "moving away from player with speed " + AcknexObject.GetFloat("SPEED"));
+                            _movingCoroutine = StartCoroutine(MoveAwayFromPlayer());
+                            break;
                         case "VERTEX":
                             //Debug.Log(AcknexObject + "moving in direction of vertex with speed " + AcknexObject.GetFloat("SPEED"));
                             _movingCoroutine = StartCoroutine(MoveToVertex());
@@ -244,7 +248,7 @@ namespace Acknex
         {
             if (obj.TryGetComponent<Player>(out var player))
             {
-                World.Instance.TriggerEvent("IF_FAR", AcknexObject, player.AcknexObject, player.GetRegion());
+                World.Instance.TriggerEvent("IF_FAR", AcknexObject, AcknexObject, GetRegion());
             }
         }
 
@@ -252,7 +256,7 @@ namespace Acknex
         {
             if (obj.TryGetComponent<Player>(out var player))
             {
-                World.Instance.TriggerEvent("IF_NEAR", AcknexObject, player.AcknexObject, player.GetRegion());
+                World.Instance.TriggerEvent("IF_NEAR", AcknexObject, AcknexObject, GetRegion());
             }
         }
 
@@ -368,6 +372,22 @@ namespace Acknex
             for (; ; )
             {
                 var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
+                if (MoveToPoint(playerPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
+                {
+                    AcknexObject.SetAcknexObject("TARGET", null);
+                    _movingToTarget = false;
+                    yield break;
+                }
+                yield return null;
+            }
+        }
+
+        private IEnumerator MoveAwayFromPlayer()
+        {
+            _movingToTarget = true;
+            for (; ; )
+            {
+                var playerPos = new Vector2(-World.Instance.GetSkillValue("PLAYER_X"), -World.Instance.GetSkillValue("PLAYER_Y"));
                 if (MoveToPoint(playerPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
                     AcknexObject.SetAcknexObject("TARGET", null);
