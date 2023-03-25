@@ -115,6 +115,15 @@ namespace Acknex
             //    eulerAngles.y = AngleUtils.ConvertAcknexToUnityAngle(angle);
             //    transform.eulerAngles = eulerAngles;
             //}
+
+            if (!AcknexObject.IsDirty)
+            {
+                DebugExtension.DebugWireSphere(transform.position, Color.red);
+                return;
+            }
+            DebugExtension.DebugWireSphere(transform.position, Color.green);
+            AcknexObject.IsDirty = false;
+
             AcknexObject.SetFloat("VISIBLE", AcknexObject.GetFloat("INVISIBLE") > 0f ? 0f : 1f);
 
             if (AcknexObject.HasFlag("INVISIBLE"))
@@ -123,13 +132,7 @@ namespace Acknex
                 _triggerCollider.enabled = _collider.enabled = _characterController.enabled = false;
                 return;
             }
-            //if (!AcknexObject.IsDirty )
-            //{
-            //    DebugExtension.DebugWireSphere(transform.position, Color.red);
-            //    return;
-            //}
 
-            DebugExtension.DebugWireSphere(transform.position, Color.green);
 
             _collider.enabled = _characterController.enabled = true;
             _meshRenderer.enabled = true;
@@ -139,6 +142,7 @@ namespace Acknex
             //{
             if (TextureObject != _textureObject || AcknexObject.HasFlag("PLAY"))
             {
+                _textureObject = TextureObject;
                 if (_animating != null)
                 {
                     StopCoroutine(_animating);
@@ -148,10 +152,10 @@ namespace Acknex
                     if (AcknexObject.HasFlag("PLAY"))
                     {
                         AcknexObject.AddFlag("ONESHOT");
+                        AcknexObject.RemoveFlag("PLAY");
                     }
                     _animating = StartCoroutine(Animate());
                 }
-                _textureObject = TextureObject;
             }
             //}
 
@@ -244,9 +248,6 @@ namespace Acknex
 
             //todo: reimplement
             //Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, transform.right);
-
-
-            AcknexObject.IsDirty = false;
         }
 
         private static IAcknexObject GetTemplateCallback(string name)
@@ -296,9 +297,10 @@ namespace Acknex
         {
         }
 
+
         //private void OnDrawGizmos()
         //{
-        //    Gizmos.color = AcknexObject.IsDirty ? Color.red : Color.green;
+        //    Gizmos.color = AcknexObject.IsDirty ? Color.green : Color.red;
         //    Gizmos.DrawSphere(transform.position, 1f);
         //    var quaternion = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE")), 0f);
         //    DebugExtension.DrawArrow(transform.position, quaternion * Vector3.forward, Color.cyan);

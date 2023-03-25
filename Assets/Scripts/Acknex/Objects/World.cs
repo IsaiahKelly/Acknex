@@ -91,6 +91,8 @@ namespace Acknex
 
         public readonly List<Wall> Walls = new List<Wall>();
 
+        public GameObject DebugContainer;
+
 
         //Text parser variables
         private TextParser _textParser;
@@ -106,6 +108,8 @@ namespace Acknex
         private void Start()
         {
             Instance = this;
+
+            Cursor.lockState = CursorLockMode.Locked;
 
             AudioListener.volume = 10f;
 

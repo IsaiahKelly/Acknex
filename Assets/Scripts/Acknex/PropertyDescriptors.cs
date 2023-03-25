@@ -176,67 +176,6 @@ namespace Acknex
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.16");
             AddObjectProperty(ObjectType.World, PropertyType.Float, "CLIP_DIST");
 
-            AddObjectProperty(ObjectType.Actor, PropertyType.String, "NAME");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "AMBIENT");
-            AddObjectProperty(ObjectType.Actor, PropertyType.ObjectReference, "TEXTURE");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "HEIGHT");
-            AddObjectProperty(ObjectType.Actor, PropertyType.ObjectReference, "ATTACH");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Flags, "FLAGS");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SPEED");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "VSPEED");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "ASPEED");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "WAYPOINT");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "DIST");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SKILL1");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SKILL2");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SKILL3");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SKILL4");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SKILL5");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SKILL6");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SKILL7");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SKILL8");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FLAG1");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FLAG2");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FLAG3");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FLAG4");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FLAG5");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FLAG6");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FLAG7");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FLAG8");
-            AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "EACH_TICK");
-            AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "EACH_CYCLE");
-            AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "IF_ARRIVED");
-            AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "IF_NEAR");
-            AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "IF_FAR");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "ANGLE");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "X");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "Y");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "Z");
-            AddObjectProperty(ObjectType.Actor, PropertyType.ObjectReference, "REGION");
-            AddObjectProperty(ObjectType.Actor, PropertyType.ObjectReference, "TARGET");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FLOOR_HGT");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "CEIL_HGT");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "DISTANCE");
-            AddObjectProperty(ObjectType.Actor, PropertyType.ObjectReference, "GENIUS");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "INVISIBLE");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "VISIBLE");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "PASSABLE");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "CAREFULLY");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "FRAGILE");
-            AddObjectProperty(ObjectType.Actor, PropertyType.ActionReference, "IF_HIT");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "OFFSET_X");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "OFFSET_Y");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "TRANSPARENT");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "GROUND");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SENSITIVE");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SIZE_X");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "SIZE_Y");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "TARGET_X");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "TARGET_Y");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "BERKELEY");
-            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "IMMATERIAL");
-
-
             AddObjectProperty(ObjectType.Thing, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "AMBIENT");
             AddObjectProperty(ObjectType.Thing, PropertyType.ObjectReference, "TEXTURE");
@@ -296,6 +235,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "TARGET_Y");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "BERKELEY");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "IMMATERIAL");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "PLAY");
 
 
             AddObjectProperty(ObjectType.Overlay, PropertyType.String, "NAME");
@@ -452,6 +392,11 @@ namespace Acknex
             AddObjectProperty(ObjectType.Palette, PropertyType.Flags, "FLAGS");
             AddObjectProperty(ObjectType.Palette, PropertyType.String, "PALFILE");
             //todo: range
+
+            foreach (var properties in PropertyDescriptors[ObjectType.Thing])
+            {
+                AddObjectProperty(ObjectType.Actor, properties.Value, properties.Key);
+            }
         }
 
         public void AddObjectProperty(ObjectType objectType, PropertyType propertyType, string property)

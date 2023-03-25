@@ -15,6 +15,8 @@ namespace Acknex.Interfaces
         /// </summary>
         ObjectType Type { get; set; }
 
+        string DebugMessage { get; set; }
+
         /// <summary>
         /// Defines whether the object is an instance.
         /// </summary>

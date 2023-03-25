@@ -96,10 +96,9 @@ namespace Acknex
                 if (cycle >= cycles)
                 {
                     World.Instance.TriggerEvent("EACH_CYCLE", MY, MY, THERE);
-                    if (MY.HasFlag("ONESHOT"))
+                    if (MY.HasFlag("ONESHOT") || cycles == 1)
                     {
                         MY.RemoveFlag("ONESHOT");
-                        MY.RemoveFlag("PLAY");
                         yield break;
                     }
                 }

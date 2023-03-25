@@ -138,14 +138,20 @@ namespace Acknex
 
         private void SetupEvents()
         {
-            Invoke("IfStart", 1f/60f);
+            //Invoke("IfStart", 1f/60f);
             WaitForSecond = new WaitForSeconds(1f);
+            IfStart();
         }
 
         private IEnumerator UpdateEvents()
         {
             while (true)
             {
+                //todo
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
+                }
                 TriggerEventConditional(AcknexObject, "IF_ANYKEY", Input.anyKeyDown);
                 TriggerEventConditional(AcknexObject, "IF_TAST", Input.anyKeyDown);
                 TriggerEventConditional(AcknexObject, "IF_0", Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0));

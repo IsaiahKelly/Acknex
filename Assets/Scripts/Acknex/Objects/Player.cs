@@ -89,12 +89,12 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_HGT", playerHgt);
         }
 
-        private void OnDrawGizmos()
-        {
-            var size = new Vector3(_characterController.radius * 2f, _characterController.stepOffset, _characterController.radius * 2f);
-            var center = new Vector3(0f, _characterController.stepOffset * 0.5f, 0f);
-            DebugExtension.DebugLocalCube(transform, size, Color.magenta, center);
-        }
+        //private void OnDrawGizmos()
+        //{
+        //    var size = new Vector3(_characterController.radius * 2f, _characterController.stepOffset, _characterController.radius * 2f);
+        //    var center = new Vector3(0f, _characterController.stepOffset * 0.5f, 0f);
+        //    DebugExtension.DebugLocalCube(transform, size, Color.magenta, center);
+        //}
 
         private static IAcknexObject GetTemplateCallback(string name)
         {

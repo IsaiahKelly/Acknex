@@ -2310,7 +2310,7 @@ namespace Tests
             var MY_54 = MY;
             MY_54.SetAcknexObject("TEXTURE", EXP01TEX_52);
             var MY_57 = MY;
-            //Unknown Property Type: Thing.PLAY
+            MY_57.SetFloat("PLAY", 1f);
             {
                 var startFrame = Time.frameCount;
                 var endFrame = startFrame + (int)4f;
@@ -2383,7 +2383,7 @@ namespace Tests
             var MY_8 = MY;
             MY_8.SetFloat("INVISIBLE", 0f);
             var MY_11 = MY;
-            //Unknown Property Type: Thing.PLAY
+            MY_11.SetFloat("PLAY", 1f);
             //Unknown keyword: LOCATE
             var MY_14 = MY;
             MY_14.SetFloat("GROUND", 0f);
@@ -2412,7 +2412,7 @@ namespace Tests
             var MY_8 = MY;
             MY_8.SetAcknexObject("EACH_CYCLE", IMPLOSIONFLARE_6);
             var MY_11 = MY;
-            //Unknown Property Type: Thing.PLAY
+            MY_11.SetFloat("PLAY", 1f);
             yield break;
         }
         public IEnumerator IMPLOSIONFLARE(IAcknexObject MY, IAcknexObject THERE)
@@ -2424,7 +2424,7 @@ namespace Tests
             var MY_5 = MY;
             MY_5.SetAcknexObject("EACH_CYCLE", IMPLOSIONEND_3);
             var MY_8 = MY;
-            //Unknown Property Type: Thing.PLAY
+            MY_8.SetFloat("PLAY", 1f);
             yield break;
         }
         public IEnumerator IMPLOSIONEND(IAcknexObject MY, IAcknexObject THERE)
@@ -2507,7 +2507,7 @@ namespace Tests
             var MY_39 = MY;
             MY_39.SetAcknexObject("EACH_TICK", IMPLOSIONSTART_37);
             var MY_42 = MY;
-            //Unknown Property Type: Thing.PLAY
+            MY_42.SetFloat("PLAY", 1f);
             {
                 var startFrame = Time.frameCount;
                 var endFrame = startFrame + (int)4f;

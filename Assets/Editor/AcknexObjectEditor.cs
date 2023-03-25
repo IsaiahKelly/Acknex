@@ -14,6 +14,7 @@ public class AcknexObjectEditor : Editor
         base.OnInspectorGUI();
         if (target is IAcknexObjectContainer container)
         {
+            EditorGUILayout.TextField("Debug", container.AcknexObject.DebugMessage);
             EditorGUILayout.Toggle("Is Instance", container.AcknexObject.IsInstance);
             EditorGUILayout.Toggle("Is Dirty", container.AcknexObject.IsDirty);
             EditorGUILayout.IntField("Index", container.AcknexObject.InstanceIndex);

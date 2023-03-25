@@ -22,6 +22,8 @@ namespace Acknex
             IsDirty = true;
         }
 
+        public string DebugMessage { get; set; }
+
         public IAcknexObjectContainer Container { get; set; }
 
         public IAcknexObject GetAcknexObject(string propertyName, bool fromTemplate = true)
@@ -207,12 +209,20 @@ namespace Acknex
             {
                 unsafe
                 {
-                    IsDirty = *(int*)&existingValue != *(int*)&value;
+                    if (*(int*)&existingValue != *(int*)&value)
+                    {
+                        IsDirty = true;
+                        //DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
+                    }
                 }
             }
             else
             {
                 IsDirty = true;
+                //if (IsDirty)
+                //{
+                //    DebugMessage = "Got dirty because new property " + propertyName + " is " + value;
+                //}
             }
             NumberProperties[propertyName] = value;
         }
@@ -275,11 +285,19 @@ namespace Acknex
             ObjectProperties[propertyName] = value;
             if (ObjectProperties.TryGetValue(propertyName, out var existingValue))
             {
-                IsDirty = existingValue != (object)value;
+                if (existingValue != (object)value)
+                {
+                    IsDirty = true;
+                    //DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
+                }
             }
             else
             {
                 IsDirty = true;
+                //if (IsDirty)
+                //{
+                //    DebugMessage = "Got dirty because new property " + propertyName + " is " + value;
+                //}
             }
         }
 

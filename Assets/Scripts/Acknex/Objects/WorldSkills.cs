@@ -254,10 +254,32 @@ namespace Acknex
 
         private void UpdateSkills()
         {
+            UpdateSkillValue("SECS", (int)Time.time);
+
+            //todo: how to calc timecorr?
+            var timeCorr = Time.deltaTime / TimeUtils.OneTick;
+            UpdateSkillValue("TIME_CORR", timeCorr);
+            UpdateSkillValue("TIME_FAC", 1f - timeCorr);
+
+            UpdateSkillValue("RANDOM", Random.value);
+
+            var mouseX = Input.GetAxis("Mouse X");
+            var mouseY = Input.GetAxis("Mouse Y");
+
             var mousePosition = Input.mousePosition;
             mousePosition.x = Input.mousePosition.x / Screen.width * GetSkillValue("SCREEN_WIDTH");
             mousePosition.y = (1f - (Input.mousePosition.y / Screen.height)) * GetSkillValue("SCREEN_HGT");
             var deltaMousePosition = mousePosition - _lastMousePosition;
+            _lastMousePosition = mousePosition;
+
+            if (Cursor.lockState == CursorLockMode.None)
+            {
+                mouseX = 0f;
+                mouseY = 0f;
+                mousePosition = Vector2.zero;
+                deltaMousePosition = Vector2.zero;
+            }
+
             UpdateSkillValue("MICKEY_X", deltaMousePosition.x);
             UpdateSkillValue("MICKEY_Y", deltaMousePosition.y);
             UpdateSkillValue("MOUSE_X", mousePosition.x);
@@ -269,27 +291,19 @@ namespace Acknex
             UpdateSkillValue("JOYSTICK_X", Input.GetAxis("Horizontal") * 255f);
             UpdateSkillValue("JOYSTICK_Y", Input.GetAxis("Vertical") * 255f);
             UpdateSkillValue("TICKS", TimeUtils.TimeToTicks(Time.time));
-            UpdateSkillValue("SECS", (int)Time.time);
-            //todo: how to calc timecorr?
-            var timeCorr = Time.deltaTime / TimeUtils.OneTick;
-            UpdateSkillValue("TIME_CORR", timeCorr);
-            UpdateSkillValue("TIME_FAC", 1f - timeCorr);
 
             var keySense = GetSkillValue("KEY_SENSE");
             UpdateSkillValue("FORCE_AHEAD", Input.GetAxis("Vertical") * keySense);
             //todo: is it inverted in the original?
             UpdateSkillValue("FORCE_STRAFE", -Input.GetAxis("Horizontal") * keySense);
-            UpdateSkillValue("FORCE_ROT", Input.GetAxis("Mouse X") * keySense);
-            UpdateSkillValue("FORCE_TILT", (GetSkillValue("FORCE_TILT") - (Input.GetAxis("Mouse Y") * MouseMultiplier * keySense)));
+            UpdateSkillValue("FORCE_ROT", mouseX * keySense);
+            UpdateSkillValue("FORCE_TILT", (GetSkillValue("FORCE_TILT") - (mouseY * MouseMultiplier * keySense)));
             UpdateSkillValue("FORCE_UP", (Input.GetButton("Jump") ? 1 : Input.GetButton("Crouch") ? -1 : 0) * keySense);
 
             //todo: WALK_PERIOD, WALK_TIME, WAVE_PERIOD, WALK, WAVE
             //var oneStepTime = TimeUtils.TicksToTime((int)(GetSkillValue("WALK_TIME")));
             //var walkFactor = Mathf.Sin(-1f + ((Time.time % oneStepTime) * 2f));
             //UpdateSkillValue("WALK", walkFactor);
-
-            UpdateSkillValue("RANDOM", Random.value);
-            _lastMousePosition = mousePosition;
 
             UpdateSkillValue("KEY_ANY", Input.anyKeyDown);
             UpdateSkillValue("KEY_0", Input.GetKey(KeyCode.Keypad0) || Input.GetKey(KeyCode.Alpha0));
