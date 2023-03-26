@@ -397,6 +397,9 @@ namespace Acknex
             {
                 AddObjectProperty(ObjectType.Actor, properties.Value, properties.Key);
             }
+
+            AddObjectProperty(ObjectType.Actor, PropertyType.Float, "ACTOR");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "THING");
         }
 
         public void AddObjectProperty(ObjectType objectType, PropertyType propertyType, string property)

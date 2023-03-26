@@ -154,7 +154,8 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Drops the given thing or actor in front of player.
         /// </summary>
-        void Drop(string name);
+        /// <returns>The dropped IAcknexObject.</returns>
+        IAcknexObject Drop(IAcknexObject acknexObject, IAcknexObject MY, IAcknexObject THERE);
 
         /// <summary>
         /// Register an object to be post-processed.

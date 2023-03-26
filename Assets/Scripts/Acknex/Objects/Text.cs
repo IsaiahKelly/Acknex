@@ -5,6 +5,8 @@ namespace Acknex
 {
     public class Text : IAcknexObjectContainer
     {
+        public GameObject GameObject => null;
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Text);
         public void UpdateObject()
         {

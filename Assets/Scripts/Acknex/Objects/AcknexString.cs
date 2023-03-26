@@ -5,6 +5,8 @@ namespace Acknex
 {
     public class AcknexString : IAcknexObjectContainer
     {
+        public GameObject GameObject => null;
+        
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallbackActor, ObjectType.String);
 
         private static IAcknexObject GetDefinitionCallbackActor(string name)

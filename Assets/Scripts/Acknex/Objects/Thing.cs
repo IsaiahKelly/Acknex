@@ -9,6 +9,8 @@ namespace Acknex
     //todo: skill ACTOR_WIDTH & THING_WIDTH
     public class Thing : MonoBehaviour, IAcknexObjectContainer
     {
+        public GameObject GameObject => gameObject;
+
         private GameObject _attached;
         private AudioSource _audioSource;
         private CharacterController _characterController;
@@ -298,13 +300,15 @@ namespace Acknex
         }
 
 
-        //private void OnDrawGizmos()
-        //{
-        //    Gizmos.color = AcknexObject.IsDirty ? Color.green : Color.red;
-        //    Gizmos.DrawSphere(transform.position, 1f);
-        //    var quaternion = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE")), 0f);
-        //    DebugExtension.DrawArrow(transform.position, quaternion * Vector3.forward, Color.cyan);
-        //}
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawLine(transform.position, new Vector3(AcknexObject.GetFloat("TARGET_X"), 0f, AcknexObject.GetFloat("TARGET_Y")));
+            //Gizmos.color = AcknexObject.IsDirty ? Color.green : Color.red;
+            //Gizmos.DrawSphere(transform.position, 1f);
+            var quaternion = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE")), 0f);
+            DebugExtension.DrawArrow(transform.position, quaternion * Vector3.forward, Color.cyan);
+        }
 
         private IEnumerator Animate()
         {
@@ -394,6 +398,7 @@ namespace Acknex
                 var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("y"));
                 var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
                 var targetPos = pos + (pos - playerPos).normalized * 1000f;
+                Debug.DrawLine(pos, targetPos, Color.cyan, 10f);
                 if (MoveToPoint(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
                     AcknexObject.SetAcknexObject("TARGET", null);

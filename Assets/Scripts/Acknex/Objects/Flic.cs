@@ -5,6 +5,8 @@ namespace Acknex
 {
     public class Flic : IAcknexObjectContainer
     {
+        public GameObject GameObject => null;
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Flic);
         public void UpdateObject()
         {

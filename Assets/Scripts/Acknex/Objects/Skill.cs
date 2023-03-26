@@ -5,6 +5,9 @@ namespace Acknex
 {
     public class Skill : IAcknexObjectContainer
     {
+
+        public GameObject GameObject => null;
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Skill);
 
         private static IAcknexObject GetTemplateCallback(string name)

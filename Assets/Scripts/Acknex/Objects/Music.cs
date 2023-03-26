@@ -8,6 +8,8 @@ namespace Acknex
 {
     public class Music : IAcknexObjectContainer
     {
+        public GameObject GameObject => null;
+
         public FileResource Resource;
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Music);

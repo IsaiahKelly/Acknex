@@ -11,7 +11,12 @@ namespace Acknex.Interfaces
         /// Gets/Sets the AcknexObject this container holds.
         /// </summary>
         IAcknexObject AcknexObject { get; set; }
-        
+
+        /// <summary>
+        /// Gets the GameObject where the container is.
+        /// </summary>
+        GameObject GameObject { get; }
+
         /// <summary>
         /// Updates the Unity object representation when any property changes.
         /// </summary>

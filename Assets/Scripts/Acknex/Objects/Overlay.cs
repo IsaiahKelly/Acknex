@@ -6,6 +6,8 @@ namespace Acknex
 {
     public class Overlay : MonoBehaviour, IAcknexObjectContainer
     {
+        public GameObject GameObject => gameObject;
+
         private Graphic _overlayGraphic;
         private Bitmap _overlaySprite;
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Overlay);

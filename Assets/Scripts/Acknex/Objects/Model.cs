@@ -11,6 +11,8 @@ namespace Acknex
 
     public class Model : IAcknexObjectContainer
     {
+        public GameObject GameObject => null;
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Model);
         private static IAcknexObject GetTemplateCallback(string name)
         {

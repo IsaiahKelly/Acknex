@@ -7,6 +7,7 @@ namespace Acknex
 {
     public class Attachment : MonoBehaviour, IAcknexObjectContainer
     {
+        public GameObject GameObject => gameObject;
         public IAcknexObject AcknexObject { get; set; }
 
         public Bitmap BitmapImage;

@@ -12,6 +12,8 @@ namespace Acknex
 {
     public partial class World : MonoBehaviour, IAcknexWorld
     {
+        public GameObject GameObject => gameObject;
+
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.World);
         public void SetupInstance()
         {

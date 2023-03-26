@@ -5,6 +5,8 @@ namespace Acknex
 {
     public class Font :  IAcknexObjectContainer
     {
+        public GameObject GameObject => null;
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Font);
 
         public Texture2D Texture2D;

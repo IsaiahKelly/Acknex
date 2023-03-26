@@ -7,6 +7,8 @@ namespace Acknex
 {
     public class Texture : IAcknexObjectContainer
     {
+        public GameObject GameObject => null;
+
         private List<WaitForSeconds> _textureObjectDelay;
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Texture);
 

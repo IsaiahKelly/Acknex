@@ -5,6 +5,8 @@ namespace Acknex
 {
     public class Synonym : IAcknexObjectContainer
     {
+        public GameObject GameObject => null;
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Synonym);
 
         private static IAcknexObject GetTemplateCallback(string name)

@@ -232,8 +232,32 @@ namespace Acknex
         {
         }
 
-        public void Drop(string name)
+        public IAcknexObject Drop(IAcknexObject acknexObject, IAcknexObject MY, IAcknexObject THERE)
         {
+            var containerGameObject = acknexObject.Container?.GameObject;
+            if (containerGameObject != null)
+            {
+                var newGameObject = new GameObject(acknexObject.GetString("NAME"));
+                newGameObject.transform.SetParent(transform, false);
+                var newPosition =
+                    new Vector3(GetSkillValue("PLAYER_X"), 0f, GetSkillValue("PLAYER_Y")) +
+                    Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(GetSkillValue("PLAYER_ANGLE")), 0f) *
+                    new Vector3(0f, 0f, acknexObject.GetFloat("DIST"));
+                var newThing = acknexObject.Type == ObjectType.Actor ? newGameObject.AddComponent<Actor>() : newGameObject.AddComponent<Thing>();
+                var existingAcknexObject = (AcknexObject)acknexObject;
+                var newAcknexObject = new AcknexObject(existingAcknexObject.GetTemplateCallback, existingAcknexObject.Type);
+                newAcknexObject.NumberProperties = new Dictionary<string, float>(existingAcknexObject.NumberProperties);
+                newAcknexObject.ObjectProperties = new Dictionary<string, object>(existingAcknexObject.ObjectProperties);
+                newAcknexObject.SetFloat("X", newPosition.x);
+                newAcknexObject.SetFloat("Y", newPosition.z);
+                //newAcknexObject.AddFlag("PLAY");
+                //newAcknexObject.IsDirty = true;
+                newThing.AcknexObject = newAcknexObject;
+                PostSetupObjectInstance(newThing.AcknexObject);
+                newThing.SetupInstance();
+                return newThing.AcknexObject;
+            }
+            return null;
         }
 
         public void Enable()
@@ -565,7 +589,10 @@ namespace Acknex
                 UpdateSkillValue("RESULT", shootFac * (1.0f - distance / shootRange));
                 UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(raycastResult.point), AngleUtils.To2D(ray.origin))));
                 SetSynonymObject("HIT", hitAcknexObject);
-                TriggerEvent("IF_HIT", hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
+                if (acknexObject == null)
+                {
+                    TriggerEvent("IF_HIT", hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
+                }
                 Debug.DrawLine(ray.origin, raycastResult.point, Color.white, 10f);
                 //if (acknexObject != null)
                 //{

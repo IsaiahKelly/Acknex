@@ -6,6 +6,9 @@ namespace Acknex
 {
     public class Player : MonoBehaviour, IAcknexObjectContainer
     {
+
+        public GameObject GameObject => gameObject;
+
         private CharacterController _characterController;
 
         public static Player Instance { get; private set; }

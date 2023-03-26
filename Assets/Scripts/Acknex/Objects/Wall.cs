@@ -11,6 +11,8 @@ namespace Acknex
 {
     public class Wall : MonoBehaviour, IAcknexObjectContainer
     {
+        public GameObject GameObject => gameObject;
+
         private GameObject _attached;
         private AudioSource _audioSource;
         private MeshCollider _collider;

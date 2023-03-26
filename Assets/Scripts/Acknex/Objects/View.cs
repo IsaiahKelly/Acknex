@@ -6,6 +6,7 @@ namespace Acknex
 {
     public class View : MonoBehaviour, IAcknexObjectContainer
     {
+        public GameObject GameObject => gameObject;
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.View);
         private static IAcknexObject GetTemplateCallback(string name)
         {

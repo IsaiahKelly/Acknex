@@ -7,6 +7,8 @@ namespace Acknex
 
     public class Sound : IAcknexObjectContainer
     {
+        public GameObject GameObject => null;
+
         public AudioClip AudioClip;
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Sound);

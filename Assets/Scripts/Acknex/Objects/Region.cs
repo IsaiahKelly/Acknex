@@ -12,6 +12,8 @@ namespace Acknex
     //todo: tesselation needs to implement the method to create new vertices
     public class Region : MonoBehaviour, IAcknexObjectContainer
     {
+        public GameObject GameObject => gameObject;
+
         public const float MaxHeight = 10000f;
 
         //private GameObject _triggerGameObject;

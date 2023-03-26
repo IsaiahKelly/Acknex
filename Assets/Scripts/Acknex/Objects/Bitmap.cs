@@ -8,6 +8,9 @@ namespace Acknex
 {
     public class Bitmap : IAcknexObjectContainer
     {
+
+        public GameObject GameObject => null;
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Bitmap);
         private static IAcknexObject GetTemplateCallback(string name)
         {

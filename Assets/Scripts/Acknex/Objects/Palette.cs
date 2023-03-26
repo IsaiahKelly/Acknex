@@ -5,6 +5,9 @@ namespace Acknex
 {
     public class Palette : IAcknexObjectContainer
     {
+
+        public GameObject GameObject => null;
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Palette);
         public void UpdateObject()
         {

@@ -53,6 +53,8 @@ namespace Acknex
         {
         }
 
+        public GameObject GameObject => gameObject;
+
         public void UpdateObject()
         {
             if (!AcknexObject.IsDirty)
