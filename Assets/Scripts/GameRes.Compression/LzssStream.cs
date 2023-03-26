@@ -134,14 +134,14 @@ namespace GameRes.Compression
         public byte FrameFill { get; set; }
         public int FrameInitPos { get; set; }
 
-        public LzssReader(Stream input, int input_length, int output_length)
+        public LzssReader(Stream input, int input_length, int output_length, byte frameFill = 0)
         {
             m_input = new BinaryReader(input, System.Text.Encoding.ASCII, true);
             m_output = new byte[output_length];
             m_size = input_length;
 
             FrameSize = 0x1000;
-            FrameFill = 0;
+            FrameFill = frameFill;
             FrameInitPos = 0xfee;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Acknex.Interfaces;
+using UnityEditor;
 using UnityEngine;
 using Utils;
 
@@ -344,7 +345,7 @@ namespace Acknex
             for (; ; )
             {
                 AcknexObject.IsDirty = true;
-                if (MoveToPoint(nextPoint))
+                if (MoveToPointStep(nextPoint))
                 {
                     if (waypoint++ >= points.Count)
                     {
@@ -365,7 +366,7 @@ namespace Acknex
             for (; ; )
             {
                 AcknexObject.IsDirty = true;
-                if (MoveToPoint(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
+                if (MoveToPointStep(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
                     AcknexObject.SetAcknexObject("TARGET", null);
                     World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
@@ -377,11 +378,13 @@ namespace Acknex
 
         private IEnumerator MoveToPlayer()
         {
+            var currentRegion = GetRegion();
             for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
-                if (MoveToPoint(playerPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
+                MoveToPointStep(playerPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f);
+                if (CrossedRegion(ref currentRegion))
                 {
                     AcknexObject.SetAcknexObject("TARGET", null);
                     yield break;
@@ -392,14 +395,39 @@ namespace Acknex
 
         private IEnumerator MoveAwayFromPlayer()
         {
+            //todo: implement
+            yield break;
+            //for (; ; )
+            //{
+            //    AcknexObject.IsDirty = true;
+            //    var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("y"));
+            //    var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
+            //    var targetPos = pos + (pos - playerPos).normalized * 1000f;
+            //    Debug.DrawLine(pos, targetPos, Color.yellow, 10f);
+            //    if (MoveToPointStep(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
+            //    {
+            //        AcknexObject.SetAcknexObject("TARGET", null);
+            //        yield break;
+            //    }
+            //    yield return null;
+            //}
+        }
+
+        private IEnumerator MoveToAngle()
+        {
+            //var angle = AcknexObject.GetFloat("ANGLE");
+            //var speed = AcknexObject.GetFloat("SPEED");
+            //var timeCorr = World.Instance.GetSkillValue("TIME_CORR");
+            //var sin = AngleUtils.Sin(angle) * speed * timeCorr;
+            //var cos = AngleUtils.Cos(angle) * speed * timeCorr;
+            //var targetPos = new Vector2(AcknexObject.GetFloat("X") + sin, AcknexObject.GetFloat("Y") + cos);
+            //DebugExtension.DebugArrow(new Vector3(transform.position.x, 0f, transform.position.z), new Vector3(targetPos.x, 0f, targetPos.y), Color.yellow, 10f);
+            var currentRegion = GetRegion();
             for (; ; )
             {
                 AcknexObject.IsDirty = true;
-                var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("y"));
-                var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
-                var targetPos = pos + (pos - playerPos).normalized * 1000f;
-                Debug.DrawLine(pos, targetPos, Color.cyan, 10f);
-                if (MoveToPoint(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
+                MoveToAngleStep();
+                if (CrossedRegion(ref currentRegion))
                 {
                     AcknexObject.SetAcknexObject("TARGET", null);
                     yield break;
@@ -408,24 +436,15 @@ namespace Acknex
             }
         }
 
-        private IEnumerator MoveToAngle()
+        private bool CrossedRegion(ref IAcknexObject currentRegion)
         {
-            var angle = AcknexObject.GetFloat("ANGLE");
-            var speed = AcknexObject.GetFloat("SPEED");
-            var timeCorr = World.Instance.GetSkillValue("TIME_CORR");
-            var sin = AngleUtils.Sin(angle) * speed * timeCorr;
-            var cos = AngleUtils.Cos(angle) * speed * timeCorr;
-            var targetPos = new Vector2(AcknexObject.GetFloat("X") + sin, AcknexObject.GetFloat("Y") + cos);
-            for (; ; )
+            var checkRegion = GetRegion();
+            if (checkRegion != currentRegion)
             {
-                AcknexObject.IsDirty = true;
-                if (MoveToPoint(targetPos))
-                {
-                    AcknexObject.SetAcknexObject("TARGET", null);
-                    yield break;
-                }
-                yield return null;
+                return true;
             }
+            currentRegion = checkRegion;
+            return false;
         }
 
         public virtual void UpdateEvents()
@@ -450,15 +469,6 @@ namespace Acknex
             AcknexObject.SetFloat("Z", thingZ);
             if (AcknexObject.HasFlag("MASTER") && newRegionContainer != regionContainer)
             {
-                var targetName = AcknexObject.GetAcknexObject("TARGET")?.GetString("NAME");
-                switch (targetName)
-                {
-                    case "MOVE":
-                    case "FOLLOW":
-                    case "BULLET" when AcknexObject.HasFlag("CAREFULLY"):
-                        World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, region);
-                        break;
-                }
                 World.Instance.TriggerEvent("IF_LEAVE", AcknexObject, null, region);
                 //World.Instance.TriggerEvent("IF_ARISE", AcknexObject, null, region);
                 region = newRegionContainer.AcknexObject;
@@ -479,7 +489,26 @@ namespace Acknex
             AcknexObject.SetAcknexObject("REGION", region);
         }
 
-        public bool MoveToPoint(Vector2 nextPoint, float? minDistance = null)
+
+        public void MoveToAngleStep()
+        {
+            //todo: why angle inverted?
+            var angle = AcknexObject.GetFloat("ANGLE");
+            var delta = new Vector3(MathExtension.Cos(angle), 0f, MathExtension.Sin(angle)) * World.Instance.GetSkillValue("TIME_CORR");
+            if (AcknexObject.HasFlag("PASSABLE"))
+            {
+                transform.Translate(delta, Space.World);
+            }
+            else
+            {
+                _characterController.Move(delta);
+            }
+            DebugExtension.DebugArrow(new Vector3(AcknexObject.GetFloat("X"), 0f, AcknexObject.GetFloat("Y")), delta, Color.magenta, 10f);
+            AcknexObject.SetFloat("X", transform.position.x);
+            AcknexObject.SetFloat("Y", transform.position.z);
+        }
+
+        public bool MoveToPointStep(Vector2 nextPoint, float? minDistance = null)
         {
             var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"));
             var speed = AcknexObject.GetFloat("SPEED");
@@ -487,7 +516,7 @@ namespace Acknex
             AcknexObject.SetFloat("TARGET_Y", nextPoint.y);
             var toTarget = nextPoint - pos;
             //todo: why angle inverted?
-            var angle = AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Atan2(toTarget) * Mathf.Rad2Deg);
+            var angle = AngleUtils.ConvertUnityToAcknexAngle(MathExtension.Atan2(toTarget) * Mathf.Rad2Deg);
             var newPos = Vector2.MoveTowards(pos, nextPoint, speed * World.Instance.GetSkillValue("TIME_CORR"));
             var delta = new Vector3(newPos.x - pos.x, 0f, newPos.y - pos.y);
             if (AcknexObject.HasFlag("PASSABLE") || AcknexObject.GetAcknexObject("TARGET").Type == ObjectType.Way)

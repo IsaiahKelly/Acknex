@@ -100,7 +100,7 @@ namespace Acknex
             CreateSkill("FRICTION", 0.5f, 0.0f, 1.0f); //todo <- move friction IMPORTANT
             CreateSkill("INERTIA", 1f, 0.0f, 0); //todo <- move inertia IMPORTANT
             CreateSkill("SHOOT_RANGE", 500f, 0.0f, 0); //todo <- shoot distance IMPORTANT
-            CreateSkill("SHOOT_SECTOR", 0, 0.0f, 0); //todo
+            CreateSkill("SHOOT_SECTOR", Mathf.PI * 2f, 0.0f, 0); //todo
             CreateSkill("SHOOT_FAC", 1, 0, 1); //todo <- shoot strength
             CreateSkill("SHOOT_X", 0, 0, 1); //todo <- shoot deviation
             CreateSkill("SHOOT_Y", 0, 0, 1); //todo <- shoot deviation

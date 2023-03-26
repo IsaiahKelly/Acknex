@@ -369,7 +369,7 @@ PROBEAGAIN:
 var ANGLEOUT_36 = _world.GetObject(ObjectType.Skill,"ANGLEOUT");
 var ANGLEOUT_36_val = ANGLEOUT_36.GetFloat("VAL");
 var DISTY_37 = _world.GetObject(ObjectType.Skill,"DISTY");
-DISTY_37.SetFloat("VAL",Mathf.Sin(ANGLEOUT_36_val));
+DISTY_37.SetFloat("VAL",MathExtension.Sin(ANGLEOUT_36_val));
 var DISTX_38 = _world.GetObject(ObjectType.Skill,"DISTX");
 var DISTX_39 = _world.GetObject(ObjectType.Skill,"DISTX");
 var DISTX_39_val = DISTX_39.GetFloat("VAL");
@@ -381,7 +381,7 @@ DISTX_38.SetFloat("VAL",ANGLEOUT_40_val+HALF_PI_42_val);
 var DISTX_43 = _world.GetObject(ObjectType.Skill,"DISTX");
 var DISTX_43_val = DISTX_43.GetFloat("VAL");
 var DISTX_44 = _world.GetObject(ObjectType.Skill,"DISTX");
-DISTX_44.SetFloat("VAL",Mathf.Sin(DISTX_43_val));
+DISTX_44.SetFloat("VAL",MathExtension.Sin(DISTX_43_val));
 var PROBETNG_46 = _world.AcknexObject.GetAcknexObject("PROBETNG");
 var PROBETNG_48 = _world.AcknexObject.GetAcknexObject("PROBETNG");
 var temp_49 =PROBETNG_48.GetFloat("X");
@@ -498,7 +498,7 @@ DISTX_18.SetFloat("VAL",(DISTZ_21_val*DISTZ_23_val)+(DISTY_27_val*DISTY_29_val))
 var DISTX_31 = _world.GetObject(ObjectType.Skill,"DISTX");
 var DISTX_31_val = DISTX_31.GetFloat("VAL");
 var DISTX_32 = _world.GetObject(ObjectType.Skill,"DISTX");
-DISTX_32.SetFloat("VAL",Mathf.Sqrt(DISTX_31_val));
+DISTX_32.SetFloat("VAL",MathExtension.Sqrt(DISTX_31_val));
 var DISTX_34 = _world.GetObject(ObjectType.Skill,"DISTX");
 var DISTX_34_val = DISTX_34.GetFloat("VAL");
 if (DISTX_34_val < 0.1f)
@@ -516,7 +516,7 @@ DISTY_35.SetFloat("VAL",DISTY_37_val/DISTX_39_val);
 var DISTY_40 = _world.GetObject(ObjectType.Skill,"DISTY");
 var DISTY_40_val = DISTY_40.GetFloat("VAL");
 var MY_42 = MY;
-MY_42.SetFloat("ANGLE",Mathf.Asin(DISTY_40_val));
+MY_42.SetFloat("ANGLE",MathExtension.Asin(DISTY_40_val));
 var DISTZ_44 = _world.GetObject(ObjectType.Skill,"DISTZ");
 var DISTZ_44_val = DISTZ_44.GetFloat("VAL");
 if (DISTZ_44_val > 0f)
@@ -2559,7 +2559,7 @@ DISTX_16.SetFloat("VAL",(temp_21-temp_25)*(temp_31-temp_35)+(temp_41-temp_45)*(t
 var DISTX_57 = _world.GetObject(ObjectType.Skill,"DISTX");
 var DISTX_57_val = DISTX_57.GetFloat("VAL");
 var DISTX_58 = _world.GetObject(ObjectType.Skill,"DISTX");
-DISTX_58.SetFloat("VAL",Mathf.Sqrt(DISTX_57_val));
+DISTX_58.SetFloat("VAL",MathExtension.Sqrt(DISTX_57_val));
 var DISTZ_59 = _world.GetObject(ObjectType.Skill,"DISTZ");
 var DISTZ_60 = _world.GetObject(ObjectType.Skill,"DISTZ");
 var DISTZ_60_val = DISTZ_60.GetFloat("VAL");
@@ -9611,7 +9611,7 @@ DISTX_0.SetFloat("VAL",(temp_5-temp_9)*(temp_15-temp_19)+(temp_25-temp_29)*(temp
 var DISTX_41 = _world.GetObject(ObjectType.Skill,"DISTX");
 var DISTX_41_val = DISTX_41.GetFloat("VAL");
 var DISTX_42 = _world.GetObject(ObjectType.Skill,"DISTX");
-DISTX_42.SetFloat("VAL",Mathf.Sqrt(DISTX_41_val));
+DISTX_42.SetFloat("VAL",MathExtension.Sqrt(DISTX_41_val));
 var DISTZ_43 = _world.GetObject(ObjectType.Skill,"DISTZ");
 var DISTZ_44 = _world.GetObject(ObjectType.Skill,"DISTZ");
 var DISTZ_44_val = DISTZ_44.GetFloat("VAL");
@@ -11195,7 +11195,7 @@ DISTX_0.SetFloat("VAL",(temp_5-temp_9)*(temp_15-temp_19)+(temp_25-temp_29)*(temp
 var DISTX_41 = _world.GetObject(ObjectType.Skill,"DISTX");
 var DISTX_41_val = DISTX_41.GetFloat("VAL");
 var DISTX_42 = _world.GetObject(ObjectType.Skill,"DISTX");
-DISTX_42.SetFloat("VAL",Mathf.Sqrt(DISTX_41_val));
+DISTX_42.SetFloat("VAL",MathExtension.Sqrt(DISTX_41_val));
 var DISTZ_43 = _world.GetObject(ObjectType.Skill,"DISTZ");
 var DISTZ_44 = _world.GetObject(ObjectType.Skill,"DISTZ");
 var DISTZ_44_val = DISTZ_44.GetFloat("VAL");
@@ -11301,7 +11301,7 @@ DISTX_6.SetFloat("VAL",(temp_11-temp_15)*(temp_21-temp_25)+(temp_31-temp_35)*(te
 var DISTX_47 = _world.GetObject(ObjectType.Skill,"DISTX");
 var DISTX_47_val = DISTX_47.GetFloat("VAL");
 var DISTX_48 = _world.GetObject(ObjectType.Skill,"DISTX");
-DISTX_48.SetFloat("VAL",Mathf.Sqrt(DISTX_47_val));
+DISTX_48.SetFloat("VAL",MathExtension.Sqrt(DISTX_47_val));
 var DISTX_50 = _world.GetObject(ObjectType.Skill,"DISTX");
 var DISTX_50_val = DISTX_50.GetFloat("VAL");
 if (DISTX_50_val > 25f)
@@ -12038,7 +12038,7 @@ DISTX_6.SetFloat("VAL",(temp_11-temp_15)*(temp_21-temp_25)+(temp_31-temp_35)*(te
 var DISTX_47 = _world.GetObject(ObjectType.Skill,"DISTX");
 var DISTX_47_val = DISTX_47.GetFloat("VAL");
 var DISTX_48 = _world.GetObject(ObjectType.Skill,"DISTX");
-DISTX_48.SetFloat("VAL",Mathf.Sqrt(DISTX_47_val));
+DISTX_48.SetFloat("VAL",MathExtension.Sqrt(DISTX_47_val));
 var DISTX_50 = _world.GetObject(ObjectType.Skill,"DISTX");
 var DISTX_50_val = DISTX_50.GetFloat("VAL");
 if (DISTX_50_val > 25f)

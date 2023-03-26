@@ -35,7 +35,7 @@ namespace Acknex
 
         private static void ExtractFile(Stream input, string filename, long offset, int zsize, int size)
         {
-            using (var reader = new LzssReader(input, zsize, size))
+            using (var reader = new LzssReader(input, zsize, size, (byte)' '))
             {
                 reader.Unpack();
                 File.WriteAllBytes(filename, reader.Data);

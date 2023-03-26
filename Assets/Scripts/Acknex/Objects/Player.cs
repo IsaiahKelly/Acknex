@@ -79,8 +79,8 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_X", playerX);
             World.Instance.UpdateSkillValue("PLAYER_Y", playerY);
             World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
-            World.Instance.UpdateSkillValue("PLAYER_SIN", AngleUtils.Sin(playerAngle));
-            World.Instance.UpdateSkillValue("PLAYER_COS", AngleUtils.Cos(playerAngle));
+            World.Instance.UpdateSkillValue("PLAYER_SIN", MathExtension.Sin(playerAngle));
+            World.Instance.UpdateSkillValue("PLAYER_COS", MathExtension.Cos(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_ANGLE", playerAngle);
             var groundZ = playerZ;
             Locate(playerX, playerY, ref groundZ, false);
@@ -119,7 +119,7 @@ namespace Acknex
         private void OnGUI()
         {
             GUILayout.BeginVertical();
-            GUILayout.Label($"PLAYER_ANGLE:{World.Instance.GetSkillValue("PLAYER_ANGLE")}");
+            GUILayout.Label($"PLAYER_ANGLE:{World.Instance.GetSkillValue("PLAYER_ANGLE") * Mathf.Rad2Deg}");
             GUILayout.Label($"PLAYER_TILT:{World.Instance.GetSkillValue("PLAYER_TILT")}");
             GUILayout.Label($"PLAYER_VX:{World.Instance.GetSkillValue("PLAYER_VX")}");
             GUILayout.Label($"PLAYER_VY:{World.Instance.GetSkillValue("PLAYER_VY")}");

@@ -5,16 +5,17 @@ namespace Acknex.Interfaces
 {
     public static class AngleUtils
     {
-        public static float Sin(float radians)
-        {
-            return -Mathf.Cos(radians);
-            //return -Mathf.Sin(radians);
-        }
 
-        public static float Cos(float radians)
+        public static float ConvertUnityToAcknexAngle(float degrees)
         {
-            return -Mathf.Sin(radians);
-            //return Mathf.Cos(radians);
+            //return Mathf.Repeat(Mathf.Rad2Deg * degrees - 90f, 360f); VRDEMO, SKAPH
+            return Mathf.Repeat(Mathf.Deg2Rad * (degrees + 180f), 360f); //VARGINHA
+        }
+        
+        public static float ConvertAcknexToUnityAngle(float radians)
+        {
+            //return Mathf.Repeat(Mathf.Rad2Deg * radians + 90f, 360f); VRDEMO, SKAPH
+            return Mathf.Repeat(Mathf.Rad2Deg * radians - 180f, 360f); //VARGINHA
         }
 
         public static float Angle(Vector3 from, Vector3 to)
@@ -27,18 +28,6 @@ namespace Acknex.Interfaces
             return angle;
         }
 
-        public static float ConvertUnityToAcknexAngle(float degrees)
-        {
-            //return Mathf.Repeat(Mathf.Rad2Deg * degrees - 90f, 360f);
-            return Mathf.Repeat(Mathf.Deg2Rad * (degrees + 180f), 360f);
-        }
-        
-        public static float ConvertAcknexToUnityAngle(float radians)
-        {
-            //return Mathf.Repeat(Mathf.Rad2Deg * radians + 90f, 360f);
-            return Mathf.Repeat(Mathf.Rad2Deg * radians - 180f, 360f);
-        }
-
         public static Vector3 To2D(Vector3 position)
         {
             return new Vector3(position.x, 0f, position.z);
@@ -47,16 +36,6 @@ namespace Acknex.Interfaces
         public static Vector3 To3D(float x, float y)
         {
             return new Vector3(x, 0f, y);
-        }
-
-
-        //public static Vector3 ConvertVector(Vector3 vector)
-        //{
-        //    return new Vector3(vector.x, vector.z, vector.y);
-        //}
-        public static float Atan2(Vector2 dir)
-        {
-            return Mathf.Atan2(dir.x, dir.y);
         }
     }
 }
