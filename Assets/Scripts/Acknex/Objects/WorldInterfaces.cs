@@ -288,7 +288,7 @@ namespace Acknex
             UpdateSkillValue("HIT_DIST", 0f);
             UpdateSkillValue("RESULT", 0f);
             DebugExtension.DebugWireSphere(origin, Color.black, shootRange);
-            var hitCount = Physics.OverlapSphereNonAlloc(origin, shootRange, _overlapResults, AllLayers);
+            var hitCount = Physics.OverlapSphereNonAlloc(origin, shootRange, _overlapResults, WallsWaterRegionsAndSprites);
             for (var i = 0; i < hitCount; i++)
             {
                 var overlapResult = _overlapResults[i];
@@ -603,7 +603,7 @@ namespace Acknex
             UpdateSkillValue("RESULT", 0f);
             UpdateSkillValue("SHOOT_ANGLE", 0f);
             SetSynonymObject("HIT", null);
-            Physics.RaycastNonAlloc(ray, _raycastResults, shootRange, AllLayers, QueryTriggerInteraction.Collide);
+            Physics.RaycastNonAlloc(ray, _raycastResults, shootRange, WallsWaterRegionsAndSprites, QueryTriggerInteraction.Collide);
             Array.Sort(_raycastResults, (a, b) => a.distance.CompareTo(b.distance));
             for (var i = 0; i < MaxHits; i++)
             {
@@ -632,9 +632,13 @@ namespace Acknex
                         HandleHit(raycastResult, region.AcknexObject);
                         return;
                     }
-                    if (raycastResult.transform.TryGetComponent<Thing>(out var thing))
+                    if (raycastResult.transform.parent.TryGetComponent<Thing>(out var thing))
                     {
                         if (thing.AcknexObject.HasFlag("IMMATERIAL"))
+                        {
+                            continue;
+                        }
+                        if (acknexObject == null && !thing.HitPixel(raycastResult.textureCoord))
                         {
                             continue;
                         }

@@ -16,6 +16,7 @@ namespace Acknex
         private AudioSource _audioSource;
         private CharacterController _characterController;
         private CapsuleCollider _collider;
+        private MeshCollider _spriteCollider;
         private GameObject _innerGameObject;
         private IAcknexObject _lastTarget;
         private Texture _lastTextureObject;
@@ -65,10 +66,12 @@ namespace Acknex
             }
             AcknexObject.IsInstance = true;
             _innerGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
-            _innerGameObject.layer = World.Instance.ThingsAndActorsLayer.LayerIndex;
+            _innerGameObject.layer = World.Instance.Sprites.LayerIndex;
             _characterController = gameObject.AddComponent<CharacterController>();
             _characterController.detectCollisions = false;
             _collider = gameObject.AddComponent<CapsuleCollider>();
+            _spriteCollider = _innerGameObject.AddComponent<MeshCollider>();
+            _spriteCollider.sharedMesh = _meshFilter.mesh;
             //_thingCollisionCallback = _innerGameObject.AddComponent<CollisionCallback>();
             //_thingCollisionCallback.OnCollisionEnterCallback += OnCollisionEnterCallback;
             //_thingCollisionCallback.OnCollisionExitCallback += OnCollisionExitCallback;
@@ -137,7 +140,7 @@ namespace Acknex
             }
 
 
-            _collider.enabled = _characterController.enabled = true;
+            _spriteCollider.enabled = _collider.enabled = _characterController.enabled = true;
             _meshRenderer.enabled = true;
 
             //todo: ok, this is hacky
@@ -187,11 +190,11 @@ namespace Acknex
 
             if (AcknexObject.HasFlag("PASSABLE"))
             {
-                _collider.enabled = _characterController.enabled = false;
+                _spriteCollider.enabled = _collider.enabled = _characterController.enabled = false;
             }
             else
             {
-                _collider.enabled = _characterController.enabled = true;
+                _spriteCollider.enabled = _collider.enabled = _characterController.enabled = true;
             }
 
             _triggerCollider.center = _collider.center;
@@ -532,6 +535,29 @@ namespace Acknex
             AcknexObject.SetFloat("Y", transform.position.z);
             AcknexObject.SetFloat("ANGLE", angle);
             return toTarget.magnitude <= (minDistance ?? speed);
+        }
+
+        public bool HitPixel(Vector2 textureCoord)
+        {
+            var acknexObject = (AcknexObject)AcknexObject;
+            if (acknexObject.CurrentBitmap?.BitmapTexture2D != null)
+            {
+                var texelSize = new Vector4(1f / acknexObject.CurrentBitmap.Width, 1f / acknexObject.CurrentBitmap.Height, acknexObject.CurrentBitmap.Width, acknexObject.CurrentBitmap.Height);
+                var y0 = texelSize.w - acknexObject.BitmapCoords[1];
+                var y1 = texelSize.w - acknexObject.BitmapCoords[3];
+                var coord0 = new Vector2(acknexObject.BitmapCoords[0], y0);
+                var coord1 = new Vector2(acknexObject.BitmapCoords[2], y1);
+                var coord2 = new Vector2(textureCoord.x, 1.0f - textureCoord.y);
+                var uv = new Vector2();
+                uv.x = Mathf.Lerp(coord0.x, coord1.x, coord2.x);
+                uv.y = Mathf.Lerp(coord0.y, coord1.y, coord2.y);
+                uv.x *= texelSize.x;
+                uv.y *= texelSize.y;
+                var color = acknexObject.CurrentBitmap.BitmapTexture2D.GetPixelBilinear(textureCoord.x, textureCoord.y);
+                World.Instance.DebugColor = color;
+                return color.a > 0.5f;
+            }
+            return false;
         }
     }
 }

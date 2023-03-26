@@ -46,13 +46,16 @@ namespace Acknex
         public float CanvasWidthRatio = 2f;
         public bool WMPContainsRegionsByName;
         public bool UseWDLEngine;
+        public bool BilinearFilter = true;
 
         public SingleUnityLayer WallsAndRegionsLayer;
         public SingleUnityLayer ThingsAndActorsLayer;
         public SingleUnityLayer WaterLayer;
         public SingleUnityLayer TriggersLayer;
+        public SingleUnityLayer Sprites;
         public LayerMask WallsWaterAndRegions;
-        public LayerMask AllLayers;
+        public LayerMask WallsWaterRegionsAndThings;
+        public LayerMask WallsWaterRegionsAndSprites;
 
         public Canvas Canvas;
         public Light AmbientLight;
@@ -100,6 +103,7 @@ namespace Acknex
         private TextParser _textParser;
         private List<ContourVertex> _contourVertices;
         private RegionWalls _regionWalls;
+        public Color DebugColor;
 
 
         private void Awake()
@@ -133,6 +137,21 @@ namespace Acknex
                 var baseDir = PathUtils.GetFileDirectory(WDLPath);
                 _textParser = new TextParser(this, baseDir, WMPContainsRegionsByName);
                 _textParser.ParseInitialWDL(WDLPath);
+            }
+
+            if (!BilinearFilter)
+            {
+                foreach (var texture in TextureCache.Values)
+                {
+                    texture.filterMode = FilterMode.Point;
+                }
+                foreach (var bitmap in BitmapsByName.Values)
+                {
+                    if (bitmap.BitmapTexture2D != null)
+                    {
+                        bitmap.BitmapTexture2D.filterMode = FilterMode.Point;
+                    }
+                }
             }
 
             SetupEvents();

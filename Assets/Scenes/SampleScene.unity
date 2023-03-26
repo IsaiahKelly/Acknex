@@ -403,7 +403,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
-  antialiasingMode: 3
+  antialiasingMode: 1
   temporalAntialiasing:
     jitterSpread: 0.75
     sharpness: 0.25
@@ -664,6 +664,7 @@ MonoBehaviour:
   CanvasWidthRatio: 1.6
   WMPContainsRegionsByName: 0
   UseWDLEngine: 0
+  BilinearFilter: 0
   WallsAndRegionsLayer:
     m_LayerIndex: 8
   ThingsAndActorsLayer:
@@ -672,12 +673,17 @@ MonoBehaviour:
     m_LayerIndex: 4
   TriggersLayer:
     m_LayerIndex: 10
+  Sprites:
+    m_LayerIndex: 11
   WallsWaterAndRegions:
     serializedVersion: 2
     m_Bits: 272
-  AllLayers:
+  WallsWaterRegionsAndThings:
     serializedVersion: 2
     m_Bits: 784
+  WallsWaterRegionsAndSprites:
+    serializedVersion: 2
+    m_Bits: 2320
   Canvas: {fileID: 1116186326}
   AmbientLight: {fileID: 705507994}
   MidiPlayer: {fileID: 1246573634}

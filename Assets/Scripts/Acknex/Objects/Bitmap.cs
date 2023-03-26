@@ -178,6 +178,7 @@ namespace Acknex
                 }
                 scaleX = texture.ScaleX;
                 scaleY = texture.ScaleY;
+                //todo: is there a better place to build that?
                 if (texture.AcknexObject.HasFlag("SKY"))
                 {
                     var sides = texture.AcknexObject.GetInteger("SIDES");
@@ -213,6 +214,12 @@ namespace Acknex
             material.SetInt("_CullMode", (int)cullMode);
             material.SetFloat("_AMBIENT", ambient);
             material.mainTexture = BitmapTexture2D;
+            if (sourceAcknexObject is AcknexObject acknexObject)
+            {
+                acknexObject.CurrentBitmap = this;
+                acknexObject.BitmapCoords = new Vector4(x0, y0, x1, y1);
+                acknexObject.OffsetScale = new Vector4(offsetX, offsetY, scaleX, scaleY);
+            }
         }
     }
 }

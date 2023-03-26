@@ -16,15 +16,19 @@ namespace Acknex
             Type = type;
         }
 
+        public Bitmap CurrentBitmap { get; set; }
+        public Vector4 BitmapCoords { get; set; }
+        public Vector4 OffsetScale { get; set; }
+
         public void AddFlag(string flag)
         {
             NumberProperties[flag] = 1f;
             IsDirty = true;
         }
 
-        public string DebugMessage { get; set; }
-
         public IAcknexObjectContainer Container { get; set; }
+
+        public string DebugMessage { get; set; }
 
         public IAcknexObject GetAcknexObject(string propertyName, bool fromTemplate = true)
         {
