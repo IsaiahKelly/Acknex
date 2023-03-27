@@ -21,7 +21,9 @@ namespace Acknex
                 do
                 {
                     binaryReader.Read(nameBuffer, 0, 13);
-                    var name = Encoding.UTF8.GetString(nameBuffer);
+                    var name = Encoding.ASCII.GetString(nameBuffer);
+                    int i = name.IndexOf('\0');
+                    name = i < 0 ? name : name.Substring(0, i);
                     var zsize = binaryReader.ReadInt32();
                     var size = binaryReader.ReadInt32();
                     offset = binaryReader.BaseStream.Position;
