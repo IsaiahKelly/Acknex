@@ -17,10 +17,11 @@ namespace Acknex
     public partial class World
     {
         private const int MaxHits = 255;
-        private readonly Collider[] _overlapResults = new Collider[MaxHits];
-        private readonly List<(IAcknexObject acknexObject, string keyword, string objectName)> _postResolve = new List<(IAcknexObject acknexObject, string keyword, string objectName)>();
-        private readonly RaycastHit[] _raycastResults = new RaycastHit[MaxHits];
 
+        private readonly List<(IAcknexObject acknexObject, string keyword, string objectName)> _postResolve = new List<(IAcknexObject acknexObject, string keyword, string objectName)>();
+
+        private readonly Collider[] _overlapResults = new Collider[MaxHits];
+        private readonly RaycastHit[] _raycastResults = new RaycastHit[MaxHits];
 
         private Resolution _resolution = Resolution.Res320x200;
         private IAcknexRuntime _runtime;
@@ -237,25 +238,26 @@ namespace Acknex
             var containerGameObject = acknexObject.Container?.GameObject;
             if (containerGameObject != null)
             {
-                var newGameObject = new GameObject(acknexObject.GetString("NAME"));
-                newGameObject.transform.SetParent(transform, false);
-                var newPosition =
-                    new Vector3(GetSkillValue("PLAYER_X"), 0f, GetSkillValue("PLAYER_Y")) +
-                    Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(GetSkillValue("PLAYER_ANGLE")), 0f) *
-                    new Vector3(0f, 0f, acknexObject.GetFloat("DIST"));
-                var newThing = acknexObject.Type == ObjectType.Actor ? newGameObject.AddComponent<Actor>() : newGameObject.AddComponent<Thing>();
-                var existingAcknexObject = (AcknexObject)acknexObject;
-                var newAcknexObject = new AcknexObject(existingAcknexObject.GetTemplateCallback, existingAcknexObject.Type);
-                newAcknexObject.NumberProperties = new Dictionary<string, float>(existingAcknexObject.NumberProperties);
-                newAcknexObject.ObjectProperties = new Dictionary<string, object>(existingAcknexObject.ObjectProperties);
-                newAcknexObject.SetFloat("X", newPosition.x);
-                newAcknexObject.SetFloat("Y", newPosition.z);
-                //newAcknexObject.AddFlag("PLAY");
-                //newAcknexObject.IsDirty = true;
-                newThing.AcknexObject = newAcknexObject;
-                PostSetupObjectInstance(newThing.AcknexObject);
-                newThing.SetupInstance();
-                return newThing.AcknexObject;
+                //var newGameObject = new GameObject(acknexObject.GetString("NAME"));
+                //newGameObject.transform.SetParent(transform, false);
+                //var newPosition =
+                //    new Vector3(GetSkillValue("PLAYER_X"), 0f, GetSkillValue("PLAYER_Y")) +
+                //    Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(GetSkillValue("PLAYER_ANGLE")), 0f) *
+                //    new Vector3(0f, 0f, acknexObject.GetFloat("DIST"));
+                //var newThing = acknexObject.Type == ObjectType.Actor ? newGameObject.AddComponent<Actor>() : newGameObject.AddComponent<Thing>();
+                //var existingAcknexObject = (AcknexObject)acknexObject;
+                //var newAcknexObject = new AcknexObject(existingAcknexObject.GetTemplateCallback, existingAcknexObject.Type);
+                //newAcknexObject.NumberProperties = new Dictionary<string, float>(existingAcknexObject.NumberProperties);
+                //newAcknexObject.ObjectProperties = new Dictionary<string, object>(existingAcknexObject.ObjectProperties);
+                //newAcknexObject.SetFloat("X", newPosition.x);
+                //newAcknexObject.SetFloat("Y", newPosition.z);
+                //newThing.AcknexObject = newAcknexObject;
+                //PostSetupObjectInstance(newThing.AcknexObject);
+                //newThing.SetupInstance();
+                //return newThing.AcknexObject;
+                PostSetupObjectInstance(acknexObject);
+                acknexObject.Container.SetupInstance();
+                return acknexObject;
             }
             return null;
         }
@@ -288,6 +290,7 @@ namespace Acknex
             UpdateSkillValue("HIT_DIST", 0f);
             UpdateSkillValue("RESULT", 0f);
             DebugExtension.DebugWireSphere(origin, Color.black, shootRange);
+            Array.Clear(_overlapResults, 0, MaxHits);
             var hitCount = Physics.OverlapSphereNonAlloc(origin, shootRange, _overlapResults, WallsWaterRegionsAndSprites);
             for (var i = 0; i < hitCount; i++)
             {
@@ -594,15 +597,12 @@ namespace Acknex
                     TriggerEvent("IF_HIT", hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
                 }
                 Debug.DrawLine(ray.origin, raycastResult.point, Color.white, 10f);
-                //if (acknexObject != null)
-                //{
-                //    Debug.Log(acknexObject.GetString("NAME") + " sees player");
-                //}
             }
             UpdateSkillValue("HIT_DIST", 0f);
             UpdateSkillValue("RESULT", 0f);
             UpdateSkillValue("SHOOT_ANGLE", 0f);
             SetSynonymObject("HIT", null);
+            Array.Clear(_raycastResults, 0, MaxHits);
             Physics.RaycastNonAlloc(ray, _raycastResults, shootRange, WallsWaterRegionsAndSprites, QueryTriggerInteraction.Collide);
             Array.Sort(_raycastResults, (a, b) => a.distance.CompareTo(b.distance));
             for (var i = 0; i < MaxHits; i++)

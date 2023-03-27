@@ -381,7 +381,7 @@ namespace Acknex
             {
                 var zCheck = height == null ? currentRegion.AcknexObject.GetFloat("FLOOR_HGT") : thingZ + height.Value;
                 var point = new Vector3(thingX, zCheck, thingY);
-                if (Physics.Raycast(new Ray(point, Vector3.up), /*radius, */ out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
+                if (Physics.SphereCast(new Ray(point, Vector3.up), radius,  out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, ref thingZ, out var outRegion))
                     {
@@ -394,7 +394,7 @@ namespace Acknex
             {
                 var zCheck = height == null ? currentRegion.AcknexObject.GetFloat("CEIL_HGT") : thingZ + height.Value;
                 var point = new Vector3(thingX, zCheck, thingY);
-                if (Physics.Raycast(new Ray(point, Vector3.down), /*radius,*/ out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
+                if (Physics.SphereCast(new Ray(point, Vector3.down), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, ref thingZ, out var outRegion))
                     {

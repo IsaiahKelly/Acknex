@@ -104,6 +104,7 @@ namespace Acknex
         private List<ContourVertex> _contourVertices;
         private RegionWalls _regionWalls;
         public Color DebugColor;
+        public Texture2D DebugTexture;
 
 
         private void Awake()

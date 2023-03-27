@@ -62,7 +62,11 @@ namespace Acknex
             //var deltaAngle = moveAngle - World.Instance.GetSkillValue("MOVE_ANGLE");
             //World.Instance.UpdateSkillValue("MOVE_ANGLE", moveAngle);
             //World.Instance.UpdateSkillValue("DELTA_ANGLE", deltaAngle);
+            var desiredPosition = _characterController.transform.position + playerMove;
             _characterController.Move(playerMove);
+            var delta = playerMove - desiredPosition;
+            World.Instance.UpdateSkillValue("IMPACT_VX", delta.x);
+            World.Instance.UpdateSkillValue("IMPACT_VY", delta.z);
             if (World.Instance.GetSkillValue("FORCE_UP") < 0f && World.Instance.GetSkillValue("PLAYER_HGT") < 0.1f && GetRegion().TryGetAcknexObject("IF_DIVE", out _))
             {
                 transform.Translate(0f, -playerSize, 0f);

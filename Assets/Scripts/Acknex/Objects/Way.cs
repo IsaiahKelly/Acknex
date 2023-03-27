@@ -83,6 +83,16 @@ namespace Acknex
             }
         }
 
+        public void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.green;
+            for (var i = 1; i < Points.Count; i++)
+            {
+                Gizmos.DrawLine(MeshUtils.ToXZ(Points[i - 1]), MeshUtils.ToXZ(Points[i]));
+                Gizmos.DrawSphere(MeshUtils.ToXZ(Points[i]), 1f);
+            }
+        }
+
         private void UpdateInstance()
         {
             if (!AcknexObject.IsInstance)

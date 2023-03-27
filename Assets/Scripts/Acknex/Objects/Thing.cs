@@ -3,6 +3,7 @@ using Acknex.Interfaces;
 using UnityEditor;
 using UnityEngine;
 using Utils;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Acknex
 {
@@ -10,6 +11,8 @@ namespace Acknex
     //todo: skill ACTOR_WIDTH & THING_WIDTH
     public class Thing : MonoBehaviour, IAcknexObjectContainer
     {
+        public bool DebugMarked;
+
         public GameObject GameObject => gameObject;
 
         private GameObject _attached;
@@ -81,6 +84,12 @@ namespace Acknex
             _triggerCollider = _triggerGameObject.AddComponent<SphereCollider>();
             _triggerCollider.isTrigger = true;
             _triggerCollisionCallback = _triggerGameObject.AddComponent<CollisionCallback>();
+
+            var thingX = AcknexObject.GetFloat("X");
+            var thingY = AcknexObject.GetFloat("Y");
+            var thingZ = AcknexObject.GetFloat("Z");
+            Locate(thingX, thingY, ref thingZ, true);
+
             _triggerCollisionCallback.OnTriggerEnterCallback += OnTriggerEnterCallback;
             _triggerCollisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
             _audioSource = gameObject.AddComponent<AudioSource>();
@@ -91,10 +100,7 @@ namespace Acknex
 
         private void Start()
         {
-            var thingX = AcknexObject.GetFloat("X");
-            var thingY = AcknexObject.GetFloat("Y");
-            var thingZ = AcknexObject.GetFloat("Z");
-            Locate(thingX, thingY, ref thingZ, true);
+      
         }
 
         public void SetupTemplate()
@@ -198,7 +204,7 @@ namespace Acknex
             }
 
             _triggerCollider.center = _collider.center;
-            _triggerCollider.radius = AcknexObject.GetFloat("DIST") * 0.5f;
+            _triggerCollider.radius = AcknexObject.GetFloat("DIST");
 
             if (AcknexObject.TryGetAcknexObject("TARGET", out var target) && target != _lastTarget)
             {
@@ -301,6 +307,39 @@ namespace Acknex
 
         private void OnCollisionEnter(Collision obj)
         {
+            var hasToTrigger = AcknexObject.HasFlag("SENSITIVE");
+            if (AcknexObject.HasFlag("CAREFULLY") && !hasToTrigger)
+            {
+                var target = AcknexObject.GetAcknexObject("TARGET");
+                if (target != null)
+                {
+                    var targetName = target.GetString("NAME");
+                    if (targetName == "BULLET")
+                    {
+                        hasToTrigger = true;
+                    }
+                }
+            }
+            if (hasToTrigger)
+            {
+                World.Instance.TriggerEvent("IF_HIT", AcknexObject, AcknexObject, GetRegion());
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (DebugMarked)
+            {
+                var position = transform.position + new Vector3(0f, 1f, 0f);
+                position.y += 0.2f; GizmosUtils.DrawString("SKILL1:" + AcknexObject.GetFloat("SKILL1"), position);
+                position.y += 0.2f; GizmosUtils.DrawString("SKILL2:" + AcknexObject.GetFloat("SKILL2"), position);
+                position.y += 0.2f; GizmosUtils.DrawString("SKILL3:" + AcknexObject.GetFloat("SKILL3"), position);
+                position.y += 0.2f; GizmosUtils.DrawString("SKILL4:" + AcknexObject.GetFloat("SKILL4"), position);
+                position.y += 0.2f; GizmosUtils.DrawString("SKILL5:" + AcknexObject.GetFloat("SKILL5"), position);
+                position.y += 0.2f; GizmosUtils.DrawString("SKILL6:" + AcknexObject.GetFloat("SKILL6"), position);
+                position.y += 0.2f; GizmosUtils.DrawString("SKILL7:" + AcknexObject.GetFloat("SKILL7"), position);
+                position.y += 0.2f; GizmosUtils.DrawString("SKILL8:" + AcknexObject.GetFloat("SKILL8"), position);
+            }
         }
 
 
@@ -458,7 +497,7 @@ namespace Acknex
         {
             var region = GetRegion();
             var regionContainer = region?.Container as Region;
-            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, true, region == null || initial ? Region.MaxHeight : _innerGameObject.transform.localScale.y * 0.5f);
+            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, _innerGameObject.transform.localScale.x * 0.5f, thingX, thingY, ref thingZ, true, region == null || initial ? Region.MaxHeight : _innerGameObject.transform.localScale.y * 0.5f);
             thingZ = thingZ - _innerGameObject.transform.localScale.y; //todo: right?
             AcknexObject.SetFloat("Z", thingZ);
         }
@@ -468,7 +507,7 @@ namespace Acknex
         {
             var region = GetRegion();
             var regionContainer = region?.Container as Region;
-            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, AcknexObject.GetFloat("DIST") * 0.5f, thingX, thingY, ref thingZ, false, region == null || initial ? Region.MaxHeight : _innerGameObject.transform.localScale.y * 0.5f);
+            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, _innerGameObject.transform.localScale.x * 0.5f, thingX, thingY, ref thingZ, false, region == null || initial ? Region.MaxHeight : _innerGameObject.transform.localScale.y * 0.5f);
             AcknexObject.SetFloat("Z", thingZ);
             if (AcknexObject.HasFlag("MASTER") && newRegionContainer != regionContainer)
             {
@@ -555,6 +594,7 @@ namespace Acknex
                 uv.y *= texelSize.y;
                 var color = acknexObject.CurrentBitmap.BitmapTexture2D.GetPixelBilinear(textureCoord.x, textureCoord.y);
                 World.Instance.DebugColor = color;
+                World.Instance.DebugTexture = acknexObject.CurrentBitmap.BitmapTexture2D;
                 return color.a > 0.5f;
             }
             return false;
