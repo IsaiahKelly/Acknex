@@ -70,20 +70,13 @@ namespace Acknex
             GameObject thingGameObject,
             IAcknexObject MY,
             IAcknexObject THERE,
-            Transform sourceTransform
+            Transform sourceTransform,
+            int side = 0
         )
         {
-            var sides = Mathf.Max(1, this.AcknexObject.GetInteger("SIDES"));
-            var cycles = Mathf.Max(1, this.AcknexObject.GetInteger("CYCLES"));
+            var cycles = Mathf.Max(1, AcknexObject.GetInteger("CYCLES"));
             var mirror = AcknexObject.GetObject<List<float>>("MIRROR");
             var scycles = AcknexObject.GetObject<List<float>>("SCYCLES");
-            //if (cycles == 1)
-            //{
-            //    UpdateAngleFrameScale(scaleTexture, cycles, sides, 0, mirror, null, meshRenderer, meshFilter, thingGameObject, MY, sourceTransform);
-            //    World.Instance.TriggerEvent("EACH_CYCLE", MY, MY, THERE);
-            //    AcknexObject.RemoveFlag("PLAY");
-            //    yield break;
-            //}
             var cycle = 0;
             while (true)
             {
@@ -92,7 +85,7 @@ namespace Acknex
                     World.Instance.PlaySound(AcknexObject.GetAcknexObject("SOUND"), AcknexObject.GetFloat("SVOL"));
                 }
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : null;
-                UpdateAngleFrameScale(scaleTexture, cycles, sides, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, MY, sourceTransform);
+                UpdateAngleFrameScale(scaleTexture, cycles, side, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, MY, sourceTransform);
                 yield return currentDelay;
                 cycle++;
                 if (cycle >= cycles)
@@ -108,7 +101,7 @@ namespace Acknex
             }
         }
 
-        public void UpdateAngleFrameScale(bool scaleTexture, int cycles, int sides, int animFrame, IList<float> mirror, WaitForSeconds delay, MeshRenderer meshRenderer, MeshFilter meshFilter, GameObject sourceGameObject, IAcknexObject sourceAcknexObject, Transform sourceTransform)
+        public void UpdateAngleFrameScale(bool scaleTexture, int cycles, int side, int animFrame, IList<float> mirror, WaitForSeconds delay, MeshRenderer meshRenderer, MeshFilter meshFilter, GameObject sourceGameObject, IAcknexObject sourceAcknexObject, Transform sourceTransform)
         {
             //if (HasModel(out var modelObject))
             //{
@@ -120,22 +113,6 @@ namespace Acknex
             //}
             //else
             {
-                var camera = CameraExtensions.GetLastActiveCamera();
-                int side;
-                if (camera != null && sourceGameObject != null)
-                {
-                    var halfStep = 180f / sides;
-                    var cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(camera.transform.position - sourceGameObject.transform.position).normalized, Vector3.up) * Vector3.forward;
-                    var thingAngle = AngleUtils.ConvertAcknexToUnityAngle(sourceAcknexObject.GetFloat("ANGLE"));
-                    var thingDirection = Quaternion.Euler(0f, thingAngle, 0f) * Vector3.forward;
-                    var angle = Mathf.Repeat(AngleUtils.Angle(thingDirection, cameraToThingDirection) + halfStep, 360f);
-                    var normalizedAngle = angle / 360f;
-                    side = Mathf.RoundToInt(Mathf.Lerp(0, sides - 1, normalizedAngle));
-                }
-                else
-                {
-                    side = 0;
-                }
                 Bitmap bitmap;
                 int angleFrame;
                 if (mirror != null && mirror[side] > 0) //mirrored

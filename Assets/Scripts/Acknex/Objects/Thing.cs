@@ -15,24 +15,23 @@ namespace Acknex
 
         public GameObject GameObject => gameObject;
 
-        private GameObject _attached;
         private AudioSource _audioSource;
         private CharacterController _characterController;
         private CapsuleCollider _collider;
         private MeshCollider _spriteCollider;
         private GameObject _innerGameObject;
-        private IAcknexObject _lastTarget;
-        private Texture _lastTextureObject;
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
-        private Coroutine _movingCoroutine;
-        //private bool _movingToTarget;
-        private Texture _textureObject;
-        //private CollisionCallback _thingCollisionCallback;
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;
         private GameObject _triggerGameObject;
-        private Coroutine _animating;
+        private Coroutine _animatingCoroutine;
+        private Coroutine _movingCoroutine;
+
+        private GameObject _attached;
+        private IAcknexObject _lastTarget;
+        private Texture _lastTextureObject;
+        private int _lastSide;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -128,6 +127,44 @@ namespace Acknex
             //    transform.eulerAngles = eulerAngles;
             //}
 
+            var sides = Mathf.Max(1, TextureObject.AcknexObject.GetInteger("SIDES"));
+            var activeCamera = CameraExtensions.GetLastActiveCamera();
+            int side;
+            if (sides > 1 && activeCamera != null)
+            {
+                var halfStep = 180f / sides;
+                var cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(activeCamera.transform.position - GetCenter()).normalized, Vector3.up) * Vector3.forward;
+                var thingAngle = AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE"));
+                var thingDirection = Quaternion.Euler(0f, thingAngle, 0f) * Vector3.forward;
+                var angle = Mathf.Repeat(AngleUtils.Angle(thingDirection, cameraToThingDirection) + halfStep, 360f);
+                var normalizedAngle = angle / 360f;
+                side = Mathf.RoundToInt(Mathf.Lerp(0, sides - 1, normalizedAngle));
+            }
+            else
+            {
+                side = 0;
+            }
+
+            if (side != _lastSide || TextureObject != _lastTextureObject || AcknexObject.HasFlag("PLAY"))
+            {
+                if (_animatingCoroutine != null)
+                {
+                    StopCoroutine(_animatingCoroutine);
+                }
+                if (TextureObject != null)
+                {
+                    if (AcknexObject.HasFlag("PLAY"))
+                    {
+                        AcknexObject.AddFlag("ONESHOT");
+                        AcknexObject.RemoveFlag("PLAY");
+                    }
+                    _animatingCoroutine = StartCoroutine(Animate(side));
+                }
+            }
+
+            _lastTextureObject = TextureObject;
+            _lastSide = side;
+
             if (!AcknexObject.IsDirty)
             {
                 DebugExtension.DebugWireSphere(transform.position, Color.red);
@@ -145,32 +182,9 @@ namespace Acknex
                 return;
             }
 
-
             _spriteCollider.enabled = _collider.enabled = _characterController.enabled = true;
             _meshRenderer.enabled = true;
-
-            //todo: ok, this is hacky
-            //if (!_animating)
-            //{
-            if (TextureObject != _textureObject || AcknexObject.HasFlag("PLAY"))
-            {
-                _textureObject = TextureObject;
-                if (_animating != null)
-                {
-                    StopCoroutine(_animating);
-                }
-                if (TextureObject != null)
-                {
-                    if (AcknexObject.HasFlag("PLAY"))
-                    {
-                        AcknexObject.AddFlag("ONESHOT");
-                        AcknexObject.RemoveFlag("PLAY");
-                    }
-                    _animating = StartCoroutine(Animate());
-                }
-            }
-            //}
-
+            
             var thingX = AcknexObject.GetFloat("X");
             var thingY = AcknexObject.GetFloat("Y");
             var thingZ = AcknexObject.GetFloat("Z");
@@ -353,9 +367,9 @@ namespace Acknex
             DebugExtension.DrawArrow(transform.position, quaternion * Vector3.forward, Color.cyan);
         }
 
-        private IEnumerator Animate()
+        private IEnumerator Animate(int side = 0)
         {
-            var enumerator = TextureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), _innerGameObject.transform);
+            var enumerator = TextureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), _innerGameObject.transform, side);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
@@ -576,7 +590,7 @@ namespace Acknex
             return toTarget.magnitude <= (minDistance ?? speed);
         }
 
-        public bool HitPixel(Vector2 textureCoord)
+        public bool HitPixel(Vector2 textureCoord, Vector3 hitPoint)
         {
             var acknexObject = (AcknexObject)AcknexObject;
             if (acknexObject.CurrentBitmap?.BitmapTexture2D != null)
@@ -595,6 +609,7 @@ namespace Acknex
                 var color = acknexObject.CurrentBitmap.BitmapTexture2D.GetPixelBilinear(textureCoord.x, textureCoord.y);
                 World.Instance.DebugColor = color;
                 World.Instance.DebugTexture = acknexObject.CurrentBitmap.BitmapTexture2D;
+                DebugExtension.DebugWireSphere(hitPoint, color, 0.1f, 60f);
                 return color.a > 0.5f;
             }
             return false;

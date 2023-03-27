@@ -638,7 +638,7 @@ namespace Acknex
                         {
                             continue;
                         }
-                        if (acknexObject == null && !thing.HitPixel(raycastResult.textureCoord))
+                        if (acknexObject == null && !thing.HitPixel(raycastResult.textureCoord, raycastResult.point))
                         {
                             continue;
                         }

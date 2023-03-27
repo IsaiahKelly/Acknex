@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Acknex
@@ -87,5 +88,23 @@ namespace Acknex
             mesh.uv = uv;
             return mesh;
         }
+
+        //public static MeshCollider BuildDoubleSidedMeshCollider(GameObject gameObject, Mesh mesh)
+        //{
+        //    var combineInstances = new CombineInstance[2];
+        //    combineInstances[0] = new CombineInstance() {  mesh = mesh };
+        //    var flippedMesh = new Mesh { vertices = mesh.vertices, normals = mesh.normals, uv = mesh.uv };
+        //    var triangles = mesh.GetTriangles(0);
+        //    Array.Reverse(triangles);
+        //    flippedMesh.triangles = triangles;
+        //    flippedMesh.UploadMeshData(false);
+        //    combineInstances[1] = new CombineInstance() { mesh = flippedMesh };
+        //    var combinedMesh = new Mesh();
+        //    combinedMesh.CombineMeshes(combineInstances, true, false);
+        //    combinedMesh.UploadMeshData(true);
+        //    var meshCollider = gameObject.AddComponent<MeshCollider>();
+        //    meshCollider.sharedMesh = combinedMesh;
+        //    return meshCollider;
+        //}
     }
 }
