@@ -84,18 +84,18 @@ namespace Acknex
             var scycles = AcknexObject.GetObject<List<float>>("SCYCLES");
             bool CanBreakAnimation(IAcknexObject sound)
             {
-                return cycles == 1 && sound == null;
+                return MY.HasFlag("ONESHOT") || cycles == 1 && sound == null && !MY.TryGetAcknexObject("EACH_CYCLE", out _);
             }
             var cycle = 0;
             while (true)
             {
-                var sound = AcknexObject.GetAcknexObject("SOUND");
                 if (MY.HasFlag("INVISIBLE"))
                 {
                     yield break;
                 }
                 MY.SetFloat("CYCLE", cycle);
-                if (sound != null && (scycles == null && cycle == 0 || scycles != null && scycles.Count > cycles && scycles[cycle] > 0f))
+                var sound = AcknexObject.GetAcknexObject("SOUND");
+                if (sound != null && (scycles == null && cycle == 0 || scycles != null && /*scycles.Count > cycles && */scycles[cycle] > 0f))
                 {
                     World.Instance.PlaySound(sound, AcknexObject.GetFloat("SVOL"), MY, AcknexObject.GetFloat("DIST"), AcknexObject.GetFloat("SVDIST"));
                 }
@@ -106,7 +106,7 @@ namespace Acknex
                 if (cycle >= cycles)
                 {
                     World.Instance.TriggerEvent("EACH_CYCLE", MY, MY, THERE);
-                    if (MY.HasFlag("ONESHOT") || CanBreakAnimation(sound))
+                    if (CanBreakAnimation(sound))
                     {
                         MY.RemoveFlag("ONESHOT");
                         yield break;

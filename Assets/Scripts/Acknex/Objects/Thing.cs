@@ -109,6 +109,7 @@ namespace Acknex
             _triggerCollisionCallback.OnTriggerEnterCallback += OnTriggerEnterCallback;
             _triggerCollisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
             _audioSource = gameObject.AddComponent<AudioSource>();
+            _audioSource.spatialBlend = 1f;
             //_animating = StartCoroutine(Animate());
             StartCoroutine(TriggerTickEvents());
             StartCoroutine(TriggerSecEvents());

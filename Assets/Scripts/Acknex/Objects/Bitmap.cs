@@ -99,7 +99,7 @@ namespace Acknex
                     }
                 }
             }
-            if (texture2D != null)
+            if (texture2D != null && width > 0f && height > 0f)
             {
                 bitmapTexture2D = new Texture2D(width, height, texture2D.graphicsFormat, TextureCreationFlags.MipChain);
                 TextureUtils.CopyTextureCPU(texture2D, bitmapTexture2D, true, false, x, y, width, height);
