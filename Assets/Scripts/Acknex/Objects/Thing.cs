@@ -74,6 +74,7 @@ namespace Acknex
             _audioSource.Stop();
             _audioSource.clip = soundContainer.AudioClip;
             _audioSource.maxDistance = Mathf.Max(sDist, svDist);
+            _audioSource.rolloffMode = AudioRolloffMode.Linear;
             _audioSource.Play();
         }
 

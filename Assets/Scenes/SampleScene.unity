@@ -777,7 +777,7 @@ MonoBehaviour:
   TriggersLayer:
     m_LayerIndex: 10
   UseWDLEngine: 0
-  Volume: 2
+  Volume: 1
   WallsAndRegionsLayer:
     m_LayerIndex: 8
   WallsWaterAndRegions:
