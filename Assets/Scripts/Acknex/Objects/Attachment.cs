@@ -7,6 +7,7 @@ namespace Acknex
 {
     public class Attachment : MonoBehaviour, IAcknexObjectContainer
     {
+        public bool DebugMarked { get; set; }
         public GameObject GameObject => gameObject;
         public IAcknexObject AcknexObject { get; set; }
 
@@ -105,6 +106,11 @@ namespace Acknex
         public IAcknexObject GetRegion()
         {
             return null;
+        }
+
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+            
         }
 
         private void Update()

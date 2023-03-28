@@ -9,6 +9,7 @@ namespace Acknex
     public partial class World
     {
         public WaitForSeconds WaitForSecond;
+        public WaitForSeconds WaitForTick;
 
         private struct Event
         {
@@ -140,6 +141,7 @@ namespace Acknex
         {
             //Invoke("IfStart", 1f/60f);
             WaitForSecond = new WaitForSeconds(1f);
+            WaitForTick = new WaitForSeconds(TimeUtils.TicksToTime(1));
             IfStart();
         }
 

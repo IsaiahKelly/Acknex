@@ -7,6 +7,8 @@ namespace Acknex.Interfaces
     /// </summary>
     public interface IAcknexObjectContainer
     {
+        bool DebugMarked { get; set; }
+
         /// <summary>
         /// Gets/Sets the AcknexObject this container holds.
         /// </summary>
@@ -49,5 +51,10 @@ namespace Acknex.Interfaces
         /// Gets the container region.
         /// </summary>
         IAcknexObject GetRegion();
+
+        /// <summary>
+        /// Plays the given sound on this object position.
+        /// </summary>
+        void PlaySoundLocated(IAcknexObject sound, float volume = 0.5f, float sDist = 100f, float svDist = 100f);
     }
 }

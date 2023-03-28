@@ -148,7 +148,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Plays the given sound.
         /// </summary>
-        void PlaySound(IAcknexObject sound, float volume, IAcknexObject balance = null);
+        void PlaySound(IAcknexObject sound, float volume, IAcknexObject balance = null, float sDist = 100f, float svDist = 100f);
 
         //todo: change this to an IAcknexObject
         /// <summary>

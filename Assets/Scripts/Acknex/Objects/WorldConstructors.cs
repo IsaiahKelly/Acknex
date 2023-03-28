@@ -208,12 +208,12 @@ namespace Acknex
             return model;
         }
 
-        private Music CreateMusic(string name)
+        private Song CreateMusic(string name)
         {
-            var music = new Music();
+            var music = new Song();
             music.AcknexObject.SetString("NAME", name);
-            music.AcknexObject.Type = ObjectType.Music;
-            MusicsByName.Add(name, music);
+            music.AcknexObject.Type = ObjectType.Song;
+            SongsByName.Add(name, music);
             AcknexObject.SetAcknexObject(name, music.AcknexObject);
             return music;
         }

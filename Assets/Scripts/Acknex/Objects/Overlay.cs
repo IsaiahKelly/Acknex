@@ -6,6 +6,12 @@ namespace Acknex
 {
     public class Overlay : MonoBehaviour, IAcknexObjectContainer
     {
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+
+        }
+        [field: SerializeField]
+        public bool DebugMarked { get; set; }
         public GameObject GameObject => gameObject;
 
         private Graphic _overlayGraphic;

@@ -11,6 +11,12 @@ namespace Acknex
 {
     public class Wall : MonoBehaviour, IAcknexObjectContainer
     {
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+
+        }
+        [field: SerializeField]
+        public bool DebugMarked { get; set; }
         private GameObject _attached;
         private AudioSource _audioSource;
         private MeshCollider _collider;
@@ -30,9 +36,7 @@ namespace Acknex
         //todo: can remove, debug info
         public Matrix4x4 BottomQuad;
         public Matrix4x4 BottomUV;
-
-        public bool DebugMarked;
-
+        
         //public Region LeftRegion;
         public bool Processed;
         //public Region RightRegion;

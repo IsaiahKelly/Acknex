@@ -1,18 +1,16 @@
 ﻿using Acknex.Interfaces;
 using UnityEngine;
-using Utils;
 
 namespace Acknex
 {
     public class Player : MonoBehaviour, IAcknexObjectContainer
     {
-
-        public GameObject GameObject => gameObject;
-
         private CharacterController _characterController;
 
         public static Player Instance { get; private set; }
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Player);
+
+        [field: SerializeField] public bool DebugMarked { get; set; }
 
         public void Disable()
         {
@@ -21,6 +19,8 @@ namespace Acknex
         public void Enable()
         {
         }
+
+        public GameObject GameObject => gameObject;
 
         public Vector3 GetCenter()
         {
@@ -31,6 +31,11 @@ namespace Acknex
         {
             var regionObject = AcknexObject.GetAcknexObject("REGION");
             return regionObject;
+        }
+
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+
         }
 
         public void SetupInstance()

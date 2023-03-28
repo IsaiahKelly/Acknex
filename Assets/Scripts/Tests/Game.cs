@@ -1,33 +1,31 @@
-﻿using System.Collections;
+﻿
 using Acknex.Interfaces;
+using System.Collections;
 using UnityEngine;
-
 namespace Tests
 {
     public class Game : IAcknexRuntime
     {
-        private readonly WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
         private IAcknexWorld _world;
-
+        private WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
+        public void SetWorld(IAcknexWorld world)
+        {
+            _world = world;
+        }
         public IEnumerator CallAction(string name, IAcknexObject MY, IAcknexObject THERE)
         {
             if (name == null)
             {
                 yield break;
             }
-            var method = GetType().GetMethod(name);
+            var method = this.GetType().GetMethod(name);
             if (method != null)
             {
                 var result = method.Invoke(this, new[] { MY, THERE });
                 yield return (IEnumerator)result;
             }
+            yield break;
         }
-
-        public void SetWorld(IAcknexWorld world)
-        {
-            _world = world;
-        }
-
         public IEnumerator DISPLAYMESSAGE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MESSAGE_TEXT_0 = _world.GetSynonymObject("MESSAGE_TEXT");
@@ -39,7 +37,6 @@ namespace Tests
             MSGSECCOUNT_7.SetFloat("VAL", 0f);
             yield break;
         }
-
         public IEnumerator CONTROLMESSAGEDISPLAY(IAcknexObject MY, IAcknexObject THERE)
         {
             //Unknown keyword: LOCATE
@@ -153,8 +150,8 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("MESSAGES.14", null);
             var MSGSECCOUNT_57 = _world.GetObject(ObjectType.Skill, "MSGSECCOUNT");
             MSGSECCOUNT_57.SetFloat("VAL", -1f);
+            yield break;
         }
-
         public IEnumerator CONTROLUNDERWATERTIME(IAcknexObject MY, IAcknexObject THERE)
         {
             var UNDERWATER_1 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
@@ -190,8 +187,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator VANISHSTOP(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -206,7 +203,6 @@ namespace Tests
             MY_14.SetFloat("INVISIBLE", 1f);
             yield break;
         }
-
         public IEnumerator VANISHFORGOOD(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -225,7 +221,6 @@ namespace Tests
             MY_17.SetFloat("INVISIBLE", 1f);
             yield break;
         }
-
         public IEnumerator LOCATEACTOR(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -246,6 +241,7 @@ namespace Tests
             MY_12.SetFloat("GROUND", 0f);
             var MY_15 = MY;
             MY_15.SetFloat("HEIGHT", -0.05f);
+            WATER:
             var MY_17 = MY;
             var temp_18 = MY_17?.GetAcknexObject("REGION");
             _world.SetSynonymObject("WATER_REGION", temp_18);
@@ -257,8 +253,8 @@ namespace Tests
             }
             var MY_26 = MY;
             MY_26.SetFloat("HEIGHT", -2.5f);
+            yield break;
         }
-
         public IEnumerator LOOKPLAYER(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -322,8 +318,8 @@ namespace Tests
             NOTVISIBLE:
             var MY_39 = MY;
             MY_39.SetFloat("FLAG1", 0f);
+            yield break;
         }
-
         public IEnumerator PROBE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -343,6 +339,7 @@ namespace Tests
             CONT:
             var MY_10 = MY;
             MY_10.SetFloat("HEIGHT", -0.05f);
+            WATER:
             var MY_12 = MY;
             var temp_13 = MY_12?.GetAcknexObject("REGION");
             _world.SetSynonymObject("WATER_REGION", temp_13);
@@ -483,8 +480,8 @@ namespace Tests
             var ANGLEOUT_118_val = ANGLEOUT_118.GetFloat("VAL");
             var MY_120 = MY;
             MY_120.SetFloat("ANGLE", ANGLEOUT_118_val);
+            yield break;
         }
-
         public IEnumerator FOLLOWANGLE(IAcknexObject MY, IAcknexObject THERE)
         {
             var DISTZ_0 = _world.GetObject(ObjectType.Skill, "DISTZ");
@@ -494,7 +491,7 @@ namespace Tests
             var PLAYER_X_3_val = PLAYER_X_3.GetFloat("VAL");
             var MY_6 = MY;
             var temp_7 = MY_6.GetFloat("X");
-            DISTZ_0.SetFloat("VAL", PLAYER_X_3_val - temp_7);
+            DISTZ_0.SetFloat("VAL", (PLAYER_X_3_val - temp_7));
             var DISTY_9 = _world.GetObject(ObjectType.Skill, "DISTY");
             var DISTY_10 = _world.GetObject(ObjectType.Skill, "DISTY");
             var DISTY_10_val = DISTY_10.GetFloat("VAL");
@@ -502,7 +499,7 @@ namespace Tests
             var PLAYER_Y_12_val = PLAYER_Y_12.GetFloat("VAL");
             var MY_15 = MY;
             var temp_16 = MY_15.GetFloat("Y");
-            DISTY_9.SetFloat("VAL", PLAYER_Y_12_val - temp_16);
+            DISTY_9.SetFloat("VAL", (PLAYER_Y_12_val - temp_16));
             var DISTX_18 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_19 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_19_val = DISTX_19.GetFloat("VAL");
@@ -514,7 +511,7 @@ namespace Tests
             var DISTY_27_val = DISTY_27.GetFloat("VAL");
             var DISTY_29 = _world.GetObject(ObjectType.Skill, "DISTY");
             var DISTY_29_val = DISTY_29.GetFloat("VAL");
-            DISTX_18.SetFloat("VAL", DISTZ_21_val * DISTZ_23_val + DISTY_27_val * DISTY_29_val);
+            DISTX_18.SetFloat("VAL", (DISTZ_21_val * DISTZ_23_val) + (DISTY_27_val * DISTY_29_val));
             var DISTX_31 = _world.GetObject(ObjectType.Skill, "DISTX");
             var DISTX_31_val = DISTX_31.GetFloat("VAL");
             var DISTX_32 = _world.GetObject(ObjectType.Skill, "DISTX");
@@ -551,8 +548,8 @@ namespace Tests
             var MY_53 = MY;
             var temp_54 = MY_53.GetFloat("ANGLE");
             MY_46.SetFloat("ANGLE", PI_50_val - temp_54);
+            yield break;
         }
-
         public IEnumerator REPELANGLE(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -572,14 +569,14 @@ namespace Tests
             var temp_3 = MY_2.GetFloat("ANGLE");
             var MY_5 = MY;
             MY_5.SetFloat("ANGLE", temp_3 + PI_0_val);
+            yield break;
         }
-
         public IEnumerator ACTORJUMP(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("VSPEED");
             var MY_5 = MY;
-            MY_5.SetFloat("VSPEED", temp_3 + -0.1f * TimeUtils.TicksToTime(1));
+            MY_5.SetFloat("VSPEED", temp_3 + (-0.1f * TimeUtils.TicksToTime(1)));
             var MY_7 = MY;
             var temp_8 = MY_7.GetFloat("FLOOR_HGT");
             var MY_10 = MY;
@@ -599,7 +596,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator ACTORJUMPSTOP(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -642,8 +638,8 @@ namespace Tests
             MY_45.SetFloat("CAREFULLY", 0f);
             var MY_48 = MY;
             MY_48.SetAcknexObject("TARGET", null);
+            yield break;
         }
-
         public IEnumerator TURNLEFT(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -664,7 +660,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TURNRIGHT(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -685,7 +680,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator SHOWAMMO(IAcknexObject MY, IAcknexObject THERE)
         {
             var WEAPONSEL_1 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
@@ -733,7 +727,6 @@ namespace Tests
             }
             yield break;
         }
-
         public IEnumerator DECAMMO(IAcknexObject MY, IAcknexObject THERE)
         {
             var WEAPONSEL_1 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
@@ -781,7 +774,6 @@ namespace Tests
             }
             yield break;
         }
-
         public IEnumerator INNOCENTKILLED(IAcknexObject MY, IAcknexObject THERE)
         {
             var INNOCENTS_1 = _world.GetObject(ObjectType.Skill, "INNOCENTS");
@@ -831,8 +823,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator DRILLHOLE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -853,7 +845,7 @@ namespace Tests
             var HIT_X_13_val = HIT_X_13.GetFloat("VAL");
             var MY_TEX_19 = _world.GetSynonymObject("MY_TEX");
             var temp_20 = MY_TEX_19.GetFloat("SCALE_X");
-            HOLEX_11.SetFloat("VAL", HIT_X_13_val - 5f * temp_20 / 48f);
+            HOLEX_11.SetFloat("VAL", HIT_X_13_val - (5f * temp_20 / 48f));
             var HOLEY_24 = _world.GetObject(ObjectType.Skill, "HOLEY");
             var HOLEY_25 = _world.GetObject(ObjectType.Skill, "HOLEY");
             var HOLEY_25_val = HOLEY_25.GetFloat("VAL");
@@ -861,7 +853,7 @@ namespace Tests
             var HIT_Y_26_val = HIT_Y_26.GetFloat("VAL");
             var MY_TEX_32 = _world.GetSynonymObject("MY_TEX");
             var temp_33 = MY_TEX_32.GetFloat("SCALE_Y");
-            HOLEY_24.SetFloat("VAL", HIT_Y_26_val - 5f * temp_33 / 48f);
+            HOLEY_24.SetFloat("VAL", HIT_Y_26_val - (5f * temp_33 / 48f));
             var MY_TEX_38 = _world.GetSynonymObject("MY_TEX");
             var temp_39 = MY_TEX_38.GetFloat("SCALE_Y");
             var DISTY_40 = _world.GetObject(ObjectType.Skill, "DISTY");
@@ -1175,7 +1167,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator SHOWMAINMENU(IAcknexObject MY, IAcknexObject THERE)
         {
             WAITING:
@@ -1245,8 +1236,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator SHOWSAVEMENU(IAcknexObject MY, IAcknexObject THERE)
         {
             var HIDEMENU_0 = _world.AcknexObject.GetAcknexObject("HIDEMENU");
@@ -1315,8 +1306,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator SHOWLOADMENU(IAcknexObject MY, IAcknexObject THERE)
         {
             var HIDEMENU_0 = _world.AcknexObject.GetAcknexObject("HIDEMENU");
@@ -1385,8 +1376,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator SHOWSOUNDVOLUMEMENU(IAcknexObject MY, IAcknexObject THERE)
         {
             var BIP02SND_0 = _world.AcknexObject.GetAcknexObject("BIP02SND");
@@ -1424,8 +1415,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator HIDEMENU(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.AcknexObject.SetAcknexObject("PANELS.16", null);
@@ -1470,8 +1461,8 @@ namespace Tests
             }
             var MOVE_MODE_19 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
             MOVE_MODE_19.SetFloat("VAL", 1f);
+            yield break;
         }
-
         public IEnumerator MENUUP(IAcknexObject MY, IAcknexObject THERE)
         {
             var MENUITEM_1 = _world.GetObject(ObjectType.Skill, "MENUITEM");
@@ -1491,7 +1482,6 @@ namespace Tests
             _world.PlaySound(BIP01SND_7, 0.5f);
             yield break;
         }
-
         public IEnumerator MENUDOWN(IAcknexObject MY, IAcknexObject THERE)
         {
             var MENUITEM_1 = _world.GetObject(ObjectType.Skill, "MENUITEM");
@@ -1511,7 +1501,6 @@ namespace Tests
             _world.PlaySound(BIP01SND_7, 0.5f);
             yield break;
         }
-
         public IEnumerator SUBMENUUP(IAcknexObject MY, IAcknexObject THERE)
         {
             var SUBMENUITEM_1 = _world.GetObject(ObjectType.Skill, "SUBMENUITEM");
@@ -1531,7 +1520,6 @@ namespace Tests
             _world.PlaySound(BIP01SND_7, 0.5f);
             yield break;
         }
-
         public IEnumerator SUBMENUDOWN(IAcknexObject MY, IAcknexObject THERE)
         {
             var SUBMENUITEM_1 = _world.GetObject(ObjectType.Skill, "SUBMENUITEM");
@@ -1551,7 +1539,6 @@ namespace Tests
             _world.PlaySound(BIP01SND_7, 0.5f);
             yield break;
         }
-
         public IEnumerator VOLUMEUP(IAcknexObject MY, IAcknexObject THERE)
         {
             var SUBMENUITEM_1 = _world.GetObject(ObjectType.Skill, "SUBMENUITEM");
@@ -1606,8 +1593,8 @@ namespace Tests
             TOUGHNESS_24.SetFloat("VAL", TOUGHNESS_23_val + 0.1f);
             var BIP01SND_25 = _world.AcknexObject.GetAcknexObject("BIP01SND");
             _world.PlaySound(BIP01SND_25, 0.5f);
+            yield break;
         }
-
         public IEnumerator VOLUMEDOWN(IAcknexObject MY, IAcknexObject THERE)
         {
             var SUBMENUITEM_1 = _world.GetObject(ObjectType.Skill, "SUBMENUITEM");
@@ -1662,8 +1649,8 @@ namespace Tests
             TOUGHNESS_24.SetFloat("VAL", TOUGHNESS_23_val + -0.1f);
             var BIP01SND_25 = _world.AcknexObject.GetAcknexObject("BIP01SND");
             _world.PlaySound(BIP01SND_25, 0.5f);
+            yield break;
         }
-
         public IEnumerator HIDEWEAPON(IAcknexObject MY, IAcknexObject THERE)
         {
             var temp_1 = _world.AcknexObject?.GetAcknexObject("IF_LEFT");
@@ -1709,7 +1696,6 @@ namespace Tests
             MAP_MODE_68.SetFloat("VAL", 0f);
             yield break;
         }
-
         public IEnumerator SHOWWEAPON(IAcknexObject MY, IAcknexObject THERE)
         {
             var FIRE_GUN_0 = _world.GetSynonymObject("FIRE_GUN");
@@ -1744,7 +1730,6 @@ namespace Tests
             MAP_MODE_30.SetFloat("VAL", MAPMODE_29_val);
             yield break;
         }
-
         public IEnumerator TYPEGAME(IAcknexObject MY, IAcknexObject THERE)
         {
             var SUBMENUITEM_1 = _world.GetObject(ObjectType.Skill, "SUBMENUITEM");
@@ -1867,8 +1852,8 @@ namespace Tests
             MOVE_MODE_83.SetFloat("VAL", 1f);
             //Unknown keyword: FADE_PAL
             //Unknown keyword: SAVE
+            yield break;
         }
-
         public IEnumerator CHOOSEGAME(IAcknexObject MY, IAcknexObject THERE)
         {
             var SUBMENUITEM_1 = _world.GetObject(ObjectType.Skill, "SUBMENUITEM");
@@ -1909,8 +1894,8 @@ namespace Tests
                 }
             }
             //Unknown keyword: LOAD
+            yield break;
         }
-
         public IEnumerator CHOOSESUBMENU(IAcknexObject MY, IAcknexObject THERE)
         {
             var MENUITEM_1 = _world.GetObject(ObjectType.Skill, "MENUITEM");
@@ -1992,9 +1977,10 @@ namespace Tests
                         }
                     }
                 }
+                yield break;
             }
+            yield break;
         }
-
         public IEnumerator SAVEERRORMESSAGE(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -2005,8 +1991,8 @@ namespace Tests
                     yield return _waitForEndOfFrame;
                 }
             }
+            yield break;
         }
-
         public IEnumerator EXITGAME(IAcknexObject MY, IAcknexObject THERE)
         {
             var MOVE_MODE_1 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
@@ -2021,8 +2007,8 @@ namespace Tests
                 }
             }
             Application.Quit();
+            yield break;
         }
-
         public IEnumerator RESETANSWER(IAcknexObject MY, IAcknexObject THERE)
         {
             var BIP02SND_0 = _world.AcknexObject.GetAcknexObject("BIP02SND");
@@ -2040,8 +2026,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator ASKFOREXIT(IAcknexObject MY, IAcknexObject THERE)
         {
             var BIP03SND_0 = _world.AcknexObject.GetAcknexObject("BIP03SND");
@@ -2071,8 +2057,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator ENDOFLEVEL(IAcknexObject MY, IAcknexObject THERE)
         {
             var MOVE_MODE_1 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
@@ -2141,7 +2127,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            } //Unknown keyword: PLAY_CD
+            }//Unknown keyword: PLAY_CD
             {
                 var startTime = Time.time;
                 var endTime = startTime + TimeUtils.TicksToTime((int)16f);
@@ -2151,8 +2137,8 @@ namespace Tests
                 }
             }
             Application.Quit();
+            yield break;
         }
-
         public IEnumerator EXPLOSIONSTART(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -2174,7 +2160,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator EXPLOSIONSMOKE(IAcknexObject MY, IAcknexObject THERE)
         {
             var EXP01ATEX_0 = _world.AcknexObject.GetAcknexObject("EXP01ATEX");
@@ -2185,7 +2170,6 @@ namespace Tests
             MY_5.SetAcknexObject("EACH_CYCLE", EXPLOSIONEND_3);
             yield break;
         }
-
         public IEnumerator EXPLOSIONEND(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -2194,7 +2178,6 @@ namespace Tests
             MY_5.SetFloat("INVISIBLE", 1f);
             yield break;
         }
-
         public IEnumerator EXPLODETARGET(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -2222,7 +2205,7 @@ namespace Tests
             var temp_42 = MY_41.GetFloat("TARGET_Y");
             var MY_45 = MY;
             var temp_46 = MY_45.GetFloat("Y");
-            SQRTARGETDIST_4.SetFloat("VAL", (temp_10 - temp_14) * (temp_20 - temp_24) + (temp_32 - temp_36) * (temp_42 - temp_46));
+            SQRTARGETDIST_4.SetFloat("VAL", ((temp_10 - temp_14) * (temp_20 - temp_24)) + ((temp_32 - temp_36) * (temp_42 - temp_46)));
             var SQRTARGETDIST_50 = _world.GetObject(ObjectType.Skill, "SQRTARGETDIST");
             var SQRTARGETDIST_50_val = SQRTARGETDIST_50.GetFloat("VAL");
             if (SQRTARGETDIST_50_val > 64f)
@@ -2243,7 +2226,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator EXPLODEMISSILE(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -2339,8 +2321,8 @@ namespace Tests
             }
             var EXPLOSION_ON_60 = _world.GetObject(ObjectType.Skill, "EXPLOSION_ON");
             EXPLOSION_ON_60.SetFloat("VAL", 0f);
+            yield break;
         }
-
         public IEnumerator AIMMISSILE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MISSILECOUNTER_1 = _world.GetObject(ObjectType.Skill, "MISSILECOUNTER");
@@ -2391,7 +2373,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator IMPLOSIONSTART(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -2420,7 +2401,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator IMPLOSIONCRUSH(IAcknexObject MY, IAcknexObject THERE)
         {
             var IMPL01ATEX_0 = _world.AcknexObject.GetAcknexObject("IMPL01ATEX");
@@ -2435,7 +2415,6 @@ namespace Tests
             MY_11.SetFloat("PLAY", 1f);
             yield break;
         }
-
         public IEnumerator IMPLOSIONFLARE(IAcknexObject MY, IAcknexObject THERE)
         {
             var IMPL01BTEX_0 = _world.AcknexObject.GetAcknexObject("IMPL01BTEX");
@@ -2448,7 +2427,6 @@ namespace Tests
             MY_8.SetFloat("PLAY", 1f);
             yield break;
         }
-
         public IEnumerator IMPLOSIONEND(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -2488,8 +2466,8 @@ namespace Tests
             }
             var EXPLOSION_ON_27 = _world.GetObject(ObjectType.Skill, "EXPLOSION_ON");
             EXPLOSION_ON_27.SetFloat("VAL", 0f);
+            yield break;
         }
-
         public IEnumerator IMPLODEPARTICLE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -2540,8 +2518,8 @@ namespace Tests
             }
             var EXPLOSION_ON_45 = _world.GetObject(ObjectType.Skill, "EXPLOSION_ON");
             EXPLOSION_ON_45.SetFloat("VAL", 0f);
+            yield break;
         }
-
         public IEnumerator BEAMREACT(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -2615,8 +2593,8 @@ namespace Tests
             PARTICLE_58.SetAcknexObject("EACH_CYCLE", LOCATEPARTICLE_56);
             var PARTICLE_61 = _world.GetSynonymObject("PARTICLE");
             PARTICLE_61.SetFloat("INVISIBLE", 0f);
+            yield break;
         }
-
         public IEnumerator LOCATEPARTICLE(IAcknexObject MY, IAcknexObject THERE)
         {
             var SHOOT_RANGE_1 = _world.GetObject(ObjectType.Skill, "SHOOT_RANGE");
@@ -2725,8 +2703,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator LOCATEPLAYERPARTICLE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -2744,7 +2722,7 @@ namespace Tests
             var PLAYER_RESULT_9 = _world.GetObject(ObjectType.Skill, "PLAYER_RESULT");
             var PLAYER_RESULT_10 = _world.GetObject(ObjectType.Skill, "PLAYER_RESULT");
             var PLAYER_RESULT_10_val = PLAYER_RESULT_10.GetFloat("VAL");
-            PLAYER_RESULT_9.SetFloat("VAL", 10f * (Random.value + 0.5f));
+            PLAYER_RESULT_9.SetFloat("VAL", 10f * (UnityEngine.Random.value + 0.5f));
             {
                 var enumerator = FLASHPLAYER(MY, THERE);
                 while (enumerator.MoveNext())
@@ -2772,7 +2750,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TIMEOUTPARTICLE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -2801,7 +2778,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator CHOOSEGRANADE(IAcknexObject MY, IAcknexObject THERE)
         {
             var GRAN1ACT_2 = _world.AcknexObject.GetAcknexObject("GRAN1ACT");
@@ -2855,8 +2831,8 @@ namespace Tests
             yield break;
             REFUSE:
             _world.SetSynonymObject("GRANADE", null);
+            yield break;
         }
-
         public IEnumerator CHOOSEMISSILE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MISS1ACT_2 = _world.AcknexObject.GetAcknexObject("MISS1ACT");
@@ -2910,8 +2886,8 @@ namespace Tests
             yield break;
             REFUSE:
             _world.SetSynonymObject("MISSILE", null);
+            yield break;
         }
-
         public IEnumerator CHOOSEPARTICLE(IAcknexObject MY, IAcknexObject THERE)
         {
             var PARTICLEACT_2 = _world.AcknexObject.GetAcknexObject("PARTICLEACT");
@@ -2965,8 +2941,8 @@ namespace Tests
             yield break;
             REFUSE:
             _world.SetSynonymObject("PARTICLE", null);
+            yield break;
         }
-
         public IEnumerator CASTBLOOD(IAcknexObject MY, IAcknexObject THERE)
         {
             var BLOOD1ACT_2 = _world.AcknexObject.GetAcknexObject("BLOOD1ACT");
@@ -3030,8 +3006,8 @@ namespace Tests
             var dropped_44 = _world.Drop(BLOOD_43, MY, THERE);
             var BLOOD_47 = dropped_44;
             BLOOD_47.SetFloat("INVISIBLE", 0f);
+            yield break;
         }
-
         public IEnumerator PICKUPMEDKIT(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
@@ -3061,8 +3037,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator PICKUPARMOUR(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_ARMOUR_1 = _world.GetObject(ObjectType.Skill, "PLAYER_ARMOUR");
@@ -3092,8 +3068,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator PICKUPMP5(IAcknexObject MY, IAcknexObject THERE)
         {
             var HAS_MP5_1 = _world.GetObject(ObjectType.Skill, "HAS_MP5");
@@ -3151,8 +3127,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator PICKUPSTINGER(IAcknexObject MY, IAcknexObject THERE)
         {
             var HAS_STINGER_1 = _world.GetObject(ObjectType.Skill, "HAS_STINGER");
@@ -3203,8 +3179,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator PICKUPQUANTUM(IAcknexObject MY, IAcknexObject THERE)
         {
             var HAS_QUANTUM_1 = _world.GetObject(ObjectType.Skill, "HAS_QUANTUM");
@@ -3255,8 +3231,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator PICKAMMO(IAcknexObject MY, IAcknexObject THERE)
         {
             var AMMO_MP5_1 = _world.GetObject(ObjectType.Skill, "AMMO_MP5");
@@ -3294,7 +3270,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator PICKGRANADE(IAcknexObject MY, IAcknexObject THERE)
         {
             var HAS_GRANADE_1 = _world.GetObject(ObjectType.Skill, "HAS_GRANADE");
@@ -3334,7 +3309,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator PICKSTINGERAMMO(IAcknexObject MY, IAcknexObject THERE)
         {
             var AMMO_STINGER_1 = _world.GetObject(ObjectType.Skill, "AMMO_STINGER");
@@ -3372,7 +3346,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator PICKQUANTUMAMMO(IAcknexObject MY, IAcknexObject THERE)
         {
             var AMMO_QUANTUM_1 = _world.GetObject(ObjectType.Skill, "AMMO_QUANTUM");
@@ -3410,7 +3383,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator FLASHREGION(IAcknexObject MY, IAcknexObject THERE)
         {
             var LUP_1 = _world.GetObject(ObjectType.Skill, "LUP");
@@ -3533,8 +3505,8 @@ namespace Tests
                 var IMPLODELIGHT_89 = _world.AcknexObject.GetAcknexObject("IMPLODELIGHT");
                 _world.AcknexObject.SetAcknexObject("EACH_TICK.9", IMPLODELIGHT_89);
             }
+            yield break;
         }
-
         public IEnumerator IMPLODELIGHT(IAcknexObject MY, IAcknexObject THERE)
         {
             var LUP_1 = _world.GetObject(ObjectType.Skill, "LUP");
@@ -3797,7 +3769,6 @@ namespace Tests
             }
             yield break;
         }
-
         public IEnumerator BOUNCE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -3839,8 +3810,8 @@ namespace Tests
             MY_29.SetFloat("ANGLE", PI_33_val - temp_37);
             var MY_40 = MY;
             MY_40.SetFloat("SKILL1", 1f);
+            yield break;
         }
-
         public IEnumerator FREEFALL(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -3867,7 +3838,7 @@ namespace Tests
             var MY_20 = MY;
             var temp_21 = MY_20.GetFloat("VSPEED");
             var MY_23 = MY;
-            MY_23.SetFloat("VSPEED", temp_21 + -0.15f * TimeUtils.TicksToTime(1));
+            MY_23.SetFloat("VSPEED", temp_21 + (-0.15f * TimeUtils.TicksToTime(1)));
             var MY_25 = MY;
             var temp_26 = MY_25.GetFloat("FLOOR_HGT");
             var MY_28 = MY;
@@ -3940,14 +3911,14 @@ namespace Tests
             var EXPLOSIONTIMER_95 = _world.AcknexObject.GetAcknexObject("EXPLOSIONTIMER");
             var MY_97 = MY;
             MY_97.SetAcknexObject("EACH_TICK", EXPLOSIONTIMER_95);
+            yield break;
         }
-
         public IEnumerator EXPLOSIONTIMER(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
             var temp_3 = MY_2.GetFloat("SKILL5");
             var MY_5 = MY;
-            MY_5.SetFloat("SKILL5", temp_3 + -1f * TimeUtils.TicksToTime(1));
+            MY_5.SetFloat("SKILL5", temp_3 + (-1f * TimeUtils.TicksToTime(1)));
             var MY_8 = MY;
             var temp_9 = MY_8.GetFloat("SKILL5");
             if (temp_9 > 0f)
@@ -3959,8 +3930,8 @@ namespace Tests
             var EXPLODEMISSILE_13 = _world.AcknexObject.GetAcknexObject("EXPLODEMISSILE");
             var MY_15 = MY;
             MY_15.SetAcknexObject("EACH_CYCLE", EXPLODEMISSILE_13);
+            yield break;
         }
-
         public IEnumerator INIT_MOVE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MODE_GEHEN_0 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
@@ -3978,8 +3949,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator MOVE_ME(IAcknexObject MY, IAcknexObject THERE)
         {
             START:
@@ -4050,6 +4021,7 @@ namespace Tests
                 var PLAYER_DEPTH_36_val = PLAYER_DEPTH_36.GetFloat("VAL");
                 PLAYER_SIZE_32.SetFloat("VAL", PLAYER_SIZE_34_val - PLAYER_DEPTH_36_val);
             }
+            NO_WATEN:
             var MODE_SCHWIMMEN_37 = _world.GetObject(ObjectType.Skill, "MODE_SCHWIMMEN");
             var MODE_SCHWIMMEN_37_val = MODE_SCHWIMMEN_37.GetFloat("VAL");
             var MOVING_38 = _world.GetObject(ObjectType.Skill, "MOVING");
@@ -4702,7 +4674,7 @@ namespace Tests
             var PLAYER_X_423_val = PLAYER_X_423.GetFloat("VAL");
             var RICHTER_425 = _world.GetObject(ObjectType.Skill, "RICHTER");
             var RICHTER_425_val = RICHTER_425.GetFloat("VAL");
-            PLAYER_X_421.SetFloat("VAL", PLAYER_X_423_val + RICHTER_425_val * (Random.value - 0.5f));
+            PLAYER_X_421.SetFloat("VAL", PLAYER_X_423_val + RICHTER_425_val * (UnityEngine.Random.value - 0.5f));
             var PLAYER_Y_432 = _world.GetObject(ObjectType.Skill, "PLAYER_Y");
             var PLAYER_Y_433 = _world.GetObject(ObjectType.Skill, "PLAYER_Y");
             var PLAYER_Y_433_val = PLAYER_Y_433.GetFloat("VAL");
@@ -4720,7 +4692,7 @@ namespace Tests
             var PLAYER_VX_445_val = PLAYER_VX_445.GetFloat("VAL");
             var RICHTER_449 = _world.GetObject(ObjectType.Skill, "RICHTER");
             var RICHTER_449_val = RICHTER_449.GetFloat("VAL");
-            PLAYER_VX_443.SetFloat("VAL", PLAYER_VX_445_val + 0.2f * RICHTER_449_val * (Random.value - 0.5f));
+            PLAYER_VX_443.SetFloat("VAL", PLAYER_VX_445_val + 0.2f * RICHTER_449_val * (UnityEngine.Random.value - 0.5f));
             var PLAYER_VY_456 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
             var PLAYER_VY_457 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
             var PLAYER_VY_457_val = PLAYER_VY_457.GetFloat("VAL");
@@ -4746,7 +4718,7 @@ namespace Tests
             var RANDOM_2_481 = _world.GetObject(ObjectType.Skill, "RANDOM_2");
             RANDOM_2_481.SetFloat("VAL", RANDOM_1_480_val);
             var RANDOM_1_483 = _world.GetObject(ObjectType.Skill, "RANDOM_1");
-            RANDOM_1_483.SetFloat("VAL", Random.value);
+            RANDOM_1_483.SetFloat("VAL", UnityEngine.Random.value);
             NO_QUAKE:
             yield break;
             var KEY_INS_485 = _world.GetObject(ObjectType.Skill, "KEY_INS");
@@ -4773,7 +4745,6 @@ namespace Tests
             }
             yield break;
         }
-
         public IEnumerator SET_WALKING(IAcknexObject MY, IAcknexObject THERE)
         {
             var MODE_GEHEN_0 = _world.GetObject(ObjectType.Skill, "MODE_GEHEN");
@@ -4798,7 +4769,6 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.16", MOVE_ME_16);
             yield break;
         }
-
         public IEnumerator SET_SWIMMING(IAcknexObject MY, IAcknexObject THERE)
         {
             var FRIC_1 = _world.GetObject(ObjectType.Skill, "FRIC");
@@ -4823,7 +4793,6 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.16", MOVE_ME_16);
             yield break;
         }
-
         public IEnumerator SET_DIVING(IAcknexObject MY, IAcknexObject THERE)
         {
             var FRIC_1 = _world.GetObject(ObjectType.Skill, "FRIC");
@@ -4848,7 +4817,6 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.16", MOVE_ME_16);
             yield break;
         }
-
         public IEnumerator SET_DEATH(IAcknexObject MY, IAcknexObject THERE)
         {
             var FRIC_1 = _world.GetObject(ObjectType.Skill, "FRIC");
@@ -4873,7 +4841,6 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.16", MOVE_ME_16);
             yield break;
         }
-
         public IEnumerator SET_MOVING(IAcknexObject MY, IAcknexObject THERE)
         {
             var MOVING_1 = _world.GetObject(ObjectType.Skill, "MOVING");
@@ -4937,9 +4904,10 @@ namespace Tests
                         }
                     }
                 }
+                yield break;
             }
+            yield break;
         }
-
         public IEnumerator STOP_MOVING(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_VX_1 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
@@ -4952,19 +4920,16 @@ namespace Tests
             PLAYER_VROT_7.SetFloat("VAL", 0f);
             yield break;
         }
-
         public IEnumerator SET_BLUE(IAcknexObject MY, IAcknexObject THERE)
         {
             //Unknown keyword: FADE_PAL
             yield break;
         }
-
         public IEnumerator RESET_BLUE(IAcknexObject MY, IAcknexObject THERE)
         {
             //Unknown keyword: FADE_PAL
             yield break;
         }
-
         public IEnumerator ENTER_WATER(IAcknexObject MY, IAcknexObject THERE)
         {
             var FWT01SND_0 = _world.AcknexObject.GetAcknexObject("FWT01SND");
@@ -4980,8 +4945,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator LEAVE_WATER(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -4995,8 +4960,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator DIVE_UP(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYERINSPSND_0 = _world.AcknexObject.GetAcknexObject("PLAYERINSPSND");
@@ -5012,8 +4977,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator REGIO_DIVE(IAcknexObject MY, IAcknexObject THERE)
         {
             var UNDERWATER_1 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
@@ -5076,8 +5041,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator REGIO_ARISE(IAcknexObject MY, IAcknexObject THERE)
         {
             var UNDERWATER_1 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
@@ -5149,8 +5114,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator HITPLAYER(IAcknexObject MY, IAcknexObject THERE)
         {
             var MODE_DEATH_0 = _world.GetObject(ObjectType.Skill, "MODE_DEATH");
@@ -5201,7 +5166,7 @@ namespace Tests
             var PLAYER_ANGLE_24_val = PLAYER_ANGLE_24.GetFloat("VAL");
             var TOUGHNESS_34 = _world.GetObject(ObjectType.Skill, "TOUGHNESS");
             var TOUGHNESS_34_val = TOUGHNESS_34.GetFloat("VAL");
-            PLAYER_ANGLE_22.SetFloat("VAL", PLAYER_ANGLE_24_val + (Random.value * 0.2f - 0.1f) * TOUGHNESS_34_val);
+            PLAYER_ANGLE_22.SetFloat("VAL", PLAYER_ANGLE_24_val + (UnityEngine.Random.value * 0.2f - 0.1f) * TOUGHNESS_34_val);
             var PLAYER_TILT_35 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
             var PLAYER_TILT_36 = _world.GetObject(ObjectType.Skill, "PLAYER_TILT");
             var PLAYER_TILT_36_val = PLAYER_TILT_36.GetFloat("VAL");
@@ -5209,7 +5174,7 @@ namespace Tests
             var PLAYER_TILT_37_val = PLAYER_TILT_37.GetFloat("VAL");
             var TOUGHNESS_47 = _world.GetObject(ObjectType.Skill, "TOUGHNESS");
             var TOUGHNESS_47_val = TOUGHNESS_47.GetFloat("VAL");
-            PLAYER_TILT_35.SetFloat("VAL", PLAYER_TILT_37_val + (Random.value * 0.2f - 0.1f) * TOUGHNESS_47_val);
+            PLAYER_TILT_35.SetFloat("VAL", PLAYER_TILT_37_val + (UnityEngine.Random.value * 0.2f - 0.1f) * TOUGHNESS_47_val);
             var HITSERIOUSNESS_48 = _world.GetObject(ObjectType.Skill, "HITSERIOUSNESS");
             var HITSERIOUSNESS_48_val = HITSERIOUSNESS_48.GetFloat("VAL");
             var PLAYER_HEALTH_49 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
@@ -5244,11 +5209,11 @@ namespace Tests
             {
                 goto CONT2;
             }
-            if (Random.value < 0.3f)
+            if (UnityEngine.Random.value < 0.3f)
             {
                 goto HIT01;
             }
-            if (Random.value < 0.6f)
+            if (UnityEngine.Random.value < 0.6f)
             {
                 goto HIT02;
             }
@@ -5274,8 +5239,8 @@ namespace Tests
                 var REDOUT_91 = _world.AcknexObject.GetAcknexObject("REDOUT");
                 _world.AcknexObject.SetAcknexObject("EACH_TICK.8", REDOUT_91);
             }
+            yield break;
         }
-
         public IEnumerator REDOUT(IAcknexObject MY, IAcknexObject THERE)
         {
             var REDVALUE_1 = _world.GetObject(ObjectType.Skill, "REDVALUE");
@@ -5307,8 +5272,8 @@ namespace Tests
             KILL:
             var KILLPLAYER_13 = _world.AcknexObject.GetAcknexObject("KILLPLAYER");
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", KILLPLAYER_13);
+            yield break;
         }
-
         public IEnumerator REDIN(IAcknexObject MY, IAcknexObject THERE)
         {
             var REDVALUE_1 = _world.GetObject(ObjectType.Skill, "REDVALUE");
@@ -5360,8 +5325,8 @@ namespace Tests
             var PLAYER_HIT_19 = _world.GetObject(ObjectType.Skill, "PLAYER_HIT");
             PLAYER_HIT_19.SetFloat("VAL", 0f);
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", null);
+            yield break;
         }
-
         public IEnumerator FLASHPLAYER(IAcknexObject MY, IAcknexObject THERE)
         {
             var GOD_MODE_1 = _world.GetObject(ObjectType.Skill, "GOD_MODE");
@@ -5428,8 +5393,8 @@ namespace Tests
             }
             var FLASHOUT_53 = _world.AcknexObject.GetAcknexObject("FLASHOUT");
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", FLASHOUT_53);
+            yield break;
         }
-
         public IEnumerator FLASHOUT(IAcknexObject MY, IAcknexObject THERE)
         {
             var REDVALUE_1 = _world.GetObject(ObjectType.Skill, "REDVALUE");
@@ -5457,8 +5422,8 @@ namespace Tests
             KILL:
             var KILLPLAYER_10 = _world.AcknexObject.GetAcknexObject("KILLPLAYER");
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", KILLPLAYER_10);
+            yield break;
         }
-
         public IEnumerator FLASHIN(IAcknexObject MY, IAcknexObject THERE)
         {
             var REDVALUE_1 = _world.GetObject(ObjectType.Skill, "REDVALUE");
@@ -5498,8 +5463,8 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", null);
             var PLAYER_HIT_15 = _world.GetObject(ObjectType.Skill, "PLAYER_HIT");
             PLAYER_HIT_15.SetFloat("VAL", 0f);
+            yield break;
         }
-
         public IEnumerator HITPLAYERDELAY(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -5524,7 +5489,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator KILLPLAYER(IAcknexObject MY, IAcknexObject THERE)
         {
             var MODE_DEATH_0 = _world.GetObject(ObjectType.Skill, "MODE_DEATH");
@@ -5584,8 +5548,8 @@ namespace Tests
             var ENDOFLEVEL_30 = _world.AcknexObject.GetAcknexObject("ENDOFLEVEL");
             _world.AcknexObject.SetAcknexObject("EACH_SEC.1", ENDOFLEVEL_30);
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", null);
+            yield break;
         }
-
         public IEnumerator FINISHPLAYER(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -5596,7 +5560,6 @@ namespace Tests
             _world.PlaySound(EXP01SND_6, 0.7f);
             yield break;
         }
-
         public IEnumerator TOGGLEGODMODE(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.AcknexObject.SetAcknexObject("IF_D", null);
@@ -5677,8 +5640,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator SETCKEY(IAcknexObject MY, IAcknexObject THERE)
         {
             var SETGKEY_0 = _world.AcknexObject.GetAcknexObject("SETGKEY");
@@ -5687,7 +5650,6 @@ namespace Tests
             GODCOUNTER_3.SetFloat("VAL", 3f);
             yield break;
         }
-
         public IEnumerator SETGKEY(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.AcknexObject.SetAcknexObject("IF_C", null);
@@ -5697,7 +5659,6 @@ namespace Tests
             GODCOUNTER_5.SetFloat("VAL", 3f);
             yield break;
         }
-
         public IEnumerator SETOKEY(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.AcknexObject.SetAcknexObject("IF_G", null);
@@ -5707,7 +5668,6 @@ namespace Tests
             GODCOUNTER_5.SetFloat("VAL", 3f);
             yield break;
         }
-
         public IEnumerator SETDKEY(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.AcknexObject.SetAcknexObject("IF_O", null);
@@ -5717,7 +5677,6 @@ namespace Tests
             GODCOUNTER_5.SetFloat("VAL", 3f);
             yield break;
         }
-
         public IEnumerator FIRE(IAcknexObject MY, IAcknexObject THERE)
         {
             var GUNFIRING_1 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
@@ -6002,8 +5961,8 @@ namespace Tests
             FINISH:
             var GUNFIRING_147 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
             GUNFIRING_147.SetFloat("VAL", 0f);
+            yield break;
         }
-
         public IEnumerator BURST(IAcknexObject MY, IAcknexObject THERE)
         {
             var AMMO_1 = _world.GetObject(ObjectType.Skill, "AMMO");
@@ -6296,8 +6255,8 @@ namespace Tests
             FINISH:
             var GUNFIRING_144 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
             GUNFIRING_144.SetFloat("VAL", 0f);
+            yield break;
         }
-
         public IEnumerator THROW(IAcknexObject MY, IAcknexObject THERE)
         {
             var AMMO_1 = _world.GetObject(ObjectType.Skill, "AMMO");
@@ -6449,7 +6408,7 @@ namespace Tests
             var PLAYER_HGT_91_val = PLAYER_HGT_91.GetFloat("VAL");
             var FLOOR_HGT_93 = _world.GetObject(ObjectType.Skill, "FLOOR_HGT");
             var FLOOR_HGT_93_val = FLOOR_HGT_93.GetFloat("VAL");
-            GRANADE_77.SetFloat("HEIGHT", PLAYER_SIZE_81_val - PLAYER_TILT_84_val * 0.65f - 0.05f + PLAYER_HGT_91_val + FLOOR_HGT_93_val);
+            GRANADE_77.SetFloat("HEIGHT", PLAYER_SIZE_81_val - (PLAYER_TILT_84_val * 0.65f) - 0.05f + PLAYER_HGT_91_val + FLOOR_HGT_93_val);
             var FREEFALL_94 = _world.AcknexObject.GetAcknexObject("FREEFALL");
             var GRANADE_96 = _world.GetSynonymObject("GRANADE");
             GRANADE_96.SetAcknexObject("EACH_TICK", FREEFALL_94);
@@ -6557,8 +6516,8 @@ namespace Tests
             FINISH:
             var GUNFIRING_159 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
             GUNFIRING_159.SetFloat("VAL", 0f);
+            yield break;
         }
-
         public IEnumerator LAUNCH(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -6589,6 +6548,7 @@ namespace Tests
                     yield return _waitForEndOfFrame;
                 }
             }
+            FIRE:
             var STNG01OVL_9 = _world.AcknexObject.GetAcknexObject("STNG01OVL");
             _world.AcknexObject.SetAcknexObject("LAYERS.13", STNG01OVL_9);
             var AMMO_13 = _world.GetObject(ObjectType.Skill, "AMMO");
@@ -6685,7 +6645,7 @@ namespace Tests
             var PLAYER_HGT_89_val = PLAYER_HGT_89.GetFloat("VAL");
             var FLOOR_HGT_91 = _world.GetObject(ObjectType.Skill, "FLOOR_HGT");
             var FLOOR_HGT_91_val = FLOOR_HGT_91.GetFloat("VAL");
-            MISSILE_75.SetFloat("HEIGHT", PLAYER_SIZE_79_val - PLAYER_TILT_82_val * 0.65f - 0.05f + PLAYER_HGT_89_val + FLOOR_HGT_91_val);
+            MISSILE_75.SetFloat("HEIGHT", PLAYER_SIZE_79_val - (PLAYER_TILT_82_val * 0.65f) - 0.05f + PLAYER_HGT_89_val + FLOOR_HGT_91_val);
             var EXPLODEMISSILE_92 = _world.AcknexObject.GetAcknexObject("EXPLODEMISSILE");
             var MISSILE_94 = _world.GetSynonymObject("MISSILE");
             MISSILE_94.SetAcknexObject("IF_HIT", EXPLODEMISSILE_92);
@@ -6856,8 +6816,8 @@ namespace Tests
             FINISH:
             var GUNFIRING_225 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
             GUNFIRING_225.SetFloat("VAL", 0f);
+            yield break;
         }
-
         public IEnumerator BEAM(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -6888,6 +6848,7 @@ namespace Tests
                     yield return _waitForEndOfFrame;
                 }
             }
+            FIRE:
             var QGUN01OVL_9 = _world.AcknexObject.GetAcknexObject("QGUN01OVL");
             _world.AcknexObject.SetAcknexObject("LAYERS.13", QGUN01OVL_9);
             var AMMO_13 = _world.GetObject(ObjectType.Skill, "AMMO");
@@ -6976,7 +6937,7 @@ namespace Tests
             var PLAYER_HGT_88_val = PLAYER_HGT_88.GetFloat("VAL");
             var FLOOR_HGT_90 = _world.GetObject(ObjectType.Skill, "FLOOR_HGT");
             var FLOOR_HGT_90_val = FLOOR_HGT_90.GetFloat("VAL");
-            PARTICLE_74.SetFloat("HEIGHT", PLAYER_SIZE_78_val - PLAYER_TILT_81_val * 1.3f - 0.3f + PLAYER_HGT_88_val + FLOOR_HGT_90_val);
+            PARTICLE_74.SetFloat("HEIGHT", PLAYER_SIZE_78_val - (PLAYER_TILT_81_val * 1.3f) - 0.3f + PLAYER_HGT_88_val + FLOOR_HGT_90_val);
             var PRTCTEX_91 = _world.AcknexObject.GetAcknexObject("PRTCTEX");
             var PARTICLE_93 = _world.GetSynonymObject("PARTICLE");
             PARTICLE_93.SetAcknexObject("TEXTURE", PRTCTEX_91);
@@ -7117,8 +7078,8 @@ namespace Tests
             FINISH:
             var GUNFIRING_206 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
             GUNFIRING_206.SetFloat("VAL", 0f);
+            yield break;
         }
-
         public IEnumerator RAISE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_GUN_1 = _world.GetSynonymObject("MY_GUN");
@@ -7293,8 +7254,8 @@ namespace Tests
                     yield return _waitForEndOfFrame;
                 }
             }
+            yield break;
         }
-
         public IEnumerator LOWER(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_GUN_1 = _world.GetSynonymObject("MY_GUN");
@@ -7469,21 +7430,19 @@ namespace Tests
                     yield return _waitForEndOfFrame;
                 }
             }
+            yield break;
         }
-
         public IEnumerator TARGETON(IAcknexObject MY, IAcknexObject THERE)
         {
             var TARGETOVL_0 = _world.AcknexObject.GetAcknexObject("TARGETOVL");
             _world.AcknexObject.SetAcknexObject("LAYERS.16", TARGETOVL_0);
             yield break;
         }
-
         public IEnumerator TARGETOFF(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.AcknexObject.SetAcknexObject("LAYERS.16", null);
             yield break;
         }
-
         public IEnumerator SELECTNONE(IAcknexObject MY, IAcknexObject THERE)
         {
             var WEAPONSEL_1 = _world.GetObject(ObjectType.Skill, "WEAPONSEL");
@@ -7609,8 +7568,8 @@ namespace Tests
             GUN_ON_70.SetFloat("VAL", 0f);
             var PLAYER_RESULT_72 = _world.GetObject(ObjectType.Skill, "PLAYER_RESULT");
             PLAYER_RESULT_72.SetFloat("VAL", -1f);
+            yield break;
         }
-
         public IEnumerator SELECTTRICORDER(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
@@ -7823,8 +7782,8 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_101);
             var GUN_ON_104 = _world.GetObject(ObjectType.Skill, "GUN_ON");
             GUN_ON_104.SetFloat("VAL", 1f);
+            yield break;
         }
-
         public IEnumerator SELECTMP5(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
@@ -8014,8 +7973,8 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_5", SELECTSTINGER_85);
             var SELECTQUANTUM_87 = _world.AcknexObject.GetAcknexObject("SELECTQUANTUM");
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_87);
+            yield break;
         }
-
         public IEnumerator SELECTMP5BURST(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
@@ -8207,8 +8166,8 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_5", SELECTSTINGER_89);
             var SELECTQUANTUM_91 = _world.AcknexObject.GetAcknexObject("SELECTQUANTUM");
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_91);
+            yield break;
         }
-
         public IEnumerator SELECTGRANADE(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
@@ -8407,8 +8366,8 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_5", SELECTSTINGER_91);
             var SELECTQUANTUM_93 = _world.AcknexObject.GetAcknexObject("SELECTQUANTUM");
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_93);
+            yield break;
         }
-
         public IEnumerator SELECTSTINGER(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
@@ -8602,8 +8561,8 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_5", SELECTSTINGER_91);
             var SELECTQUANTUM_93 = _world.AcknexObject.GetAcknexObject("SELECTQUANTUM");
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_93);
+            yield break;
         }
-
         public IEnumerator SELECTQUANTUM(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_HEALTH_1 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
@@ -8797,8 +8756,8 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_5", SELECTSTINGER_91);
             var SELECTQUANTUM_93 = _world.AcknexObject.GetAcknexObject("SELECTQUANTUM");
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_93);
+            yield break;
         }
-
         public IEnumerator ZOOMMAPIN(IAcknexObject MY, IAcknexObject THERE)
         {
             var MAP_MODE_1 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
@@ -8833,8 +8792,8 @@ namespace Tests
             {
                 goto ZOOM;
             }
+            yield break;
         }
-
         public IEnumerator ZOOMMAPOUT(IAcknexObject MY, IAcknexObject THERE)
         {
             var MAP_MODE_1 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
@@ -8869,8 +8828,8 @@ namespace Tests
             {
                 goto ZOOM;
             }
+            yield break;
         }
-
         public IEnumerator SHOWPDABRIEFING(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -9012,8 +8971,8 @@ namespace Tests
             }
             var MOVE_MODE_53 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
             MOVE_MODE_53.SetFloat("VAL", 0f);
+            yield break;
         }
-
         public IEnumerator SHOWPDAGAMEOVER(IAcknexObject MY, IAcknexObject THERE)
         {
             var ALARM03SND_0 = _world.AcknexObject.GetAcknexObject("ALARM03SND");
@@ -9157,8 +9116,8 @@ namespace Tests
             }
             var MOVE_MODE_55 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
             MOVE_MODE_55.SetFloat("VAL", 0f);
+            yield break;
         }
-
         public IEnumerator PDAMESSAGEOFF(IAcknexObject MY, IAcknexObject THERE)
         {
             var PDATEXT_2 = _world.AcknexObject.GetAcknexObject("PDATEXT");
@@ -9239,8 +9198,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator REPEATMUSIC(IAcknexObject MY, IAcknexObject THERE)
         {
             var SECCOUNTER_1 = _world.GetObject(ObjectType.Skill, "SECCOUNTER");
@@ -9264,7 +9223,6 @@ namespace Tests
             }
             yield break;
         }
-
         public IEnumerator SETSOUNDVOL(IAcknexObject MY, IAcknexObject THERE)
         {
             var SOUND_VOL_BUFFER_0 = _world.GetObject(ObjectType.Skill, "SOUND_VOL_BUFFER");
@@ -9277,7 +9235,6 @@ namespace Tests
             CDAUDIO_VOL_3.SetFloat("VAL", CDAUDIO_VOL_BUFFER_2_val);
             yield break;
         }
-
         public IEnumerator PICKKEY1(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -9302,7 +9259,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator PICKKEY2(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -9327,7 +9283,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator PICKUPLOCALMP5(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -9340,8 +9295,8 @@ namespace Tests
                         yield return current;
                     }
                 }
-            } //Unknown keyword: SAVE_INFO
-            //Unknown keyword: SAVE_INFO
+            }//Unknown keyword: SAVE_INFO
+             //Unknown keyword: SAVE_INFO
             {
                 var startFrame = Time.frameCount;
                 var endFrame = startFrame + (int)32f;
@@ -9351,15 +9306,15 @@ namespace Tests
                 }
             }
             Application.Quit();
+            yield break;
         }
-
         public IEnumerator REPTTURN(IAcknexObject MY, IAcknexObject THERE)
         {
             var WAITTIME_0 = _world.GetObject(ObjectType.Skill, "WAITTIME");
             var WAITTIME_1 = _world.GetObject(ObjectType.Skill, "WAITTIME");
             var WAITTIME_1_val = WAITTIME_1.GetFloat("VAL");
-            WAITTIME_0.SetFloat("VAL", 64f * Random.value + 16f);
-            if (Random.value < 0.07f)
+            WAITTIME_0.SetFloat("VAL", 64f * UnityEngine.Random.value + 16f);
+            if (UnityEngine.Random.value < 0.07f)
             {
                 {
                     var enumerator = REPTLISTEN(MY, THERE);
@@ -9374,7 +9329,7 @@ namespace Tests
                 }
                 yield break;
             }
-            if (Random.value > 0.95f)
+            if (UnityEngine.Random.value > 0.95f)
             {
                 var RIGHTTURNREPT_11 = _world.GetObject(ObjectType.Skill, "RIGHTTURNREPT");
                 var RIGHTTURNREPT_12 = _world.GetObject(ObjectType.Skill, "RIGHTTURNREPT");
@@ -9416,7 +9371,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator REPTWAIT(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -9448,7 +9402,6 @@ namespace Tests
             MY_32.SetAcknexObject("TARGET", null);
             yield break;
         }
-
         public IEnumerator REPTWANDER(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -9477,7 +9430,6 @@ namespace Tests
             MY_26.SetAcknexObject("TARGET", BULLET_24);
             yield break;
         }
-
         public IEnumerator REPTSEARCH(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -9531,7 +9483,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator REPTHIDE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -9566,7 +9517,7 @@ namespace Tests
             var temp_25 = MY_24.GetFloat("ANGLE");
             var MY_27 = MY;
             var temp_28 = MY_27.GetFloat("ANGLE");
-            MY_22.SetFloat("ANGLE", temp_28 + (Random.value - 0.5f) * 2.4f);
+            MY_22.SetFloat("ANGLE", temp_28 + (UnityEngine.Random.value - 0.5f) * 2.4f);
             var REPT1TEX_37 = _world.AcknexObject.GetAcknexObject("REPT1TEX");
             var MY_39 = MY;
             MY_39.SetAcknexObject("TEXTURE", REPT1TEX_37);
@@ -9609,7 +9560,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator REPTLISTEN(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -9654,9 +9604,10 @@ namespace Tests
                         }
                     }
                 }
+                yield break;
             }
+            yield break;
         }
-
         public IEnumerator REPTJUMP(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -9697,7 +9648,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator REPTLOOKFOR(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -9759,8 +9709,8 @@ namespace Tests
             var BULLET_45 = _world.AcknexObject.GetAcknexObject("BULLET");
             var MY_47 = MY;
             MY_47.SetAcknexObject("TARGET", BULLET_45);
+            yield break;
         }
-
         public IEnumerator REPTHEAR(IAcknexObject MY, IAcknexObject THERE)
         {
             var REPTJUMP_0 = _world.AcknexObject.GetAcknexObject("REPTJUMP");
@@ -9784,7 +9734,6 @@ namespace Tests
             MY_20.SetAcknexObject("TARGET", FOLLOW_18);
             yield break;
         }
-
         public IEnumerator REPTDOWN(IAcknexObject MY, IAcknexObject THERE)
         {
             var REPTJUMP_0 = _world.AcknexObject.GetAcknexObject("REPTJUMP");
@@ -9807,7 +9756,6 @@ namespace Tests
             MY_20.SetAcknexObject("TARGET", BULLET_18);
             yield break;
         }
-
         public IEnumerator REPTFOLLOWATTACK(IAcknexObject MY, IAcknexObject THERE)
         {
             var REPTJUMP_0 = _world.AcknexObject.GetAcknexObject("REPTJUMP");
@@ -9833,7 +9781,6 @@ namespace Tests
             MY_23.SetAcknexObject("TARGET", FOLLOW_21);
             yield break;
         }
-
         public IEnumerator REPTSHOOT(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -9859,7 +9806,6 @@ namespace Tests
             MY_23.SetAcknexObject("TARGET", FOLLOW_21);
             yield break;
         }
-
         public IEnumerator REPTESCAPE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -9887,7 +9833,6 @@ namespace Tests
             MY_26.SetAcknexObject("TARGET", REPEL_24);
             yield break;
         }
-
         public IEnumerator REPTDEAD(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -9913,7 +9858,6 @@ namespace Tests
             MY_29.SetFloat("CAREFULLY", 0f);
             yield break;
         }
-
         public IEnumerator REPTDIE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -9942,7 +9886,6 @@ namespace Tests
             MY_32.SetAcknexObject("TARGET", null);
             yield break;
         }
-
         public IEnumerator REPTIMPLODE(IAcknexObject MY, IAcknexObject THERE)
         {
             var DISTX_0 = _world.GetObject(ObjectType.Skill, "DISTX");
@@ -10016,8 +9959,8 @@ namespace Tests
             MY_80.SetFloat("SPEED", 0f);
             var MY_83 = MY;
             MY_83.SetAcknexObject("TARGET", null);
+            yield break;
         }
-
         public IEnumerator REPTHIT(IAcknexObject MY, IAcknexObject THERE)
         {
             var SHOOT_FAC_1 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
@@ -10075,7 +10018,7 @@ namespace Tests
             {
                 goto DIE;
             }
-            if (Random.value < 0.05f)
+            if (UnityEngine.Random.value < 0.05f)
             {
                 goto DIE;
             }
@@ -10161,7 +10104,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator CYCLEREPTATTACK(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -10254,7 +10196,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator CYCLEREPTHIDE(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -10293,8 +10234,8 @@ namespace Tests
             MY_24.SetFloat("SPEED", 0f);
             var MY_27 = MY;
             MY_27.SetAcknexObject("TARGET", null);
+            yield break;
         }
-
         public IEnumerator CYCLEREPTSHOOT(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -10373,6 +10314,7 @@ namespace Tests
             PLAYERSEEN:
             var MY_26 = MY;
             MY_26.SetFloat("FLAG2", 1f);
+            CONT:
             var MY_29 = MY;
             var temp_30 = MY_29.GetFloat("DISTANCE");
             if (temp_30 > 10f)
@@ -10406,29 +10348,27 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator REPTTALK(IAcknexObject MY, IAcknexObject THERE)
         {
-            if (Random.value > 0.9f)
+            if (UnityEngine.Random.value > 0.9f)
             {
                 var REPT01SND_2 = _world.AcknexObject.GetAcknexObject("REPT01SND");
                 _world.PlaySound(REPT01SND_2, 0.5f, MY);
             }
-            if (Random.value < 0.1f)
+            if (UnityEngine.Random.value < 0.1f)
             {
                 var REPT02SND_6 = _world.AcknexObject.GetAcknexObject("REPT02SND");
                 _world.PlaySound(REPT02SND_6, 0.5f, MY);
             }
             yield break;
         }
-
         public IEnumerator TROPTURN(IAcknexObject MY, IAcknexObject THERE)
         {
             var WAITTIME_0 = _world.GetObject(ObjectType.Skill, "WAITTIME");
             var WAITTIME_1 = _world.GetObject(ObjectType.Skill, "WAITTIME");
             var WAITTIME_1_val = WAITTIME_1.GetFloat("VAL");
-            WAITTIME_0.SetFloat("VAL", 64f * Random.value + 16f);
-            if (Random.value < 0.07f)
+            WAITTIME_0.SetFloat("VAL", 64f * UnityEngine.Random.value + 16f);
+            if (UnityEngine.Random.value < 0.07f)
             {
                 {
                     var enumerator = TROPLISTEN(MY, THERE);
@@ -10443,7 +10383,7 @@ namespace Tests
                 }
                 yield break;
             }
-            if (Random.value > 0.95f)
+            if (UnityEngine.Random.value > 0.95f)
             {
                 var RIGHTTURNTROP_11 = _world.GetObject(ObjectType.Skill, "RIGHTTURNTROP");
                 var RIGHTTURNTROP_12 = _world.GetObject(ObjectType.Skill, "RIGHTTURNTROP");
@@ -10485,7 +10425,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TROPBACKOFF(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -10528,7 +10467,7 @@ namespace Tests
             var temp_34 = MY_33.GetFloat("ANGLE");
             var MY_36 = MY;
             var temp_37 = MY_36.GetFloat("ANGLE");
-            MY_31.SetFloat("ANGLE", temp_37 + Random.value - 0.5f);
+            MY_31.SetFloat("ANGLE", temp_37 + UnityEngine.Random.value - 0.5f);
             {
                 var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
@@ -10579,7 +10518,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TROPWAIT(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -10623,8 +10561,8 @@ namespace Tests
             MY_40.SetFloat("SPEED", 0f);
             var MY_43 = MY;
             MY_43.SetAcknexObject("TARGET", null);
+            yield break;
         }
-
         public IEnumerator TROPWANDER(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -10680,7 +10618,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TROPSEARCH(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -10734,7 +10671,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TROPHIDE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -10778,7 +10714,7 @@ namespace Tests
             var temp_32 = MY_31.GetFloat("ANGLE");
             var MY_34 = MY;
             var temp_35 = MY_34.GetFloat("ANGLE");
-            MY_29.SetFloat("ANGLE", temp_35 + (Random.value - 0.5f) * 2.4f);
+            MY_29.SetFloat("ANGLE", temp_35 + (UnityEngine.Random.value - 0.5f) * 2.4f);
             var TROP1TEX_44 = _world.AcknexObject.GetAcknexObject("TROP1TEX");
             var MY_46 = MY;
             MY_46.SetAcknexObject("TEXTURE", TROP1TEX_44);
@@ -10858,7 +10794,7 @@ namespace Tests
             var temp_71 = MY_70.GetFloat("ANGLE");
             var MY_73 = MY;
             var temp_74 = MY_73.GetFloat("ANGLE");
-            MY_68.SetFloat("ANGLE", temp_74 + (Random.value - 0.5f) * 2.4f);
+            MY_68.SetFloat("ANGLE", temp_74 + (UnityEngine.Random.value - 0.5f) * 2.4f);
             var TROP1TEX_83 = _world.AcknexObject.GetAcknexObject("TROP1TEX");
             var MY_85 = MY;
             MY_85.SetAcknexObject("TEXTURE", TROP1TEX_83);
@@ -10880,8 +10816,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator TROPLISTEN(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -10958,9 +10894,10 @@ namespace Tests
                         }
                     }
                 }
+                yield break;
             }
+            yield break;
         }
-
         public IEnumerator TROPWARNING(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -10978,7 +10915,7 @@ namespace Tests
             var TROP7TEX_15 = _world.AcknexObject.GetAcknexObject("TROP7TEX");
             var MY_17 = MY;
             MY_17.SetAcknexObject("TEXTURE", TROP7TEX_15);
-            if (Random.value < 0.5f)
+            if (UnityEngine.Random.value < 0.5f)
             {
                 var TROP7ATEX_20 = _world.AcknexObject.GetAcknexObject("TROP7ATEX");
                 var MY_22 = MY;
@@ -11013,6 +10950,7 @@ namespace Tests
             var TROP02SND_37 = _world.AcknexObject.GetAcknexObject("TROP02SND");
             var TROP_TEX_39 = _world.GetSynonymObject("TROP_TEX");
             TROP_TEX_39.SetAcknexObject("SOUND", TROP02SND_37);
+            goto CONT;
             CONT:
             var MY_42 = MY;
             MY_42.SetFloat("SPEED", 0f);
@@ -11036,7 +10974,7 @@ namespace Tests
             var MY_54 = MY;
             var temp_55 = MY_54.GetFloat("ANGLE");
             MY_49.SetFloat("ANGLE", temp_55 + 2f);
-            if (Random.value < 0.5f)
+            if (UnityEngine.Random.value < 0.5f)
             {
                 var MY_61 = MY;
                 var MY_63 = MY;
@@ -11059,7 +10997,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TROPLOOKFOR(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -11136,8 +11073,8 @@ namespace Tests
                 var MY_56 = MY;
                 MY_56.SetAcknexObject("EACH_CYCLE", TROPFOLLOWATTACK_54);
             }
+            yield break;
         }
-
         public IEnumerator TROPFOLLOW(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -11197,7 +11134,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TROPFOLLOWATTACK(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -11260,7 +11196,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TROPFOLLOWWARNING(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -11323,7 +11258,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TROPAIM(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -11372,10 +11306,8 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TROPSHOOT(IAcknexObject MY, IAcknexObject THERE)
         {
-            //yield break;
             var MY_2 = MY;
             MY_2.SetAcknexObject("IF_NEAR", null);
             var MY_5 = MY;
@@ -11457,7 +11389,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TROPESCAPE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -11500,7 +11431,7 @@ namespace Tests
             var temp_34 = MY_33.GetFloat("ANGLE");
             var MY_36 = MY;
             var temp_37 = MY_36.GetFloat("ANGLE");
-            MY_31.SetFloat("ANGLE", temp_37 + (Random.value - 0.5f) * 2f);
+            MY_31.SetFloat("ANGLE", temp_37 + (UnityEngine.Random.value - 0.5f) * 2f);
             var BULLET_46 = _world.AcknexObject.GetAcknexObject("BULLET");
             var MY_48 = MY;
             MY_48.SetAcknexObject("TARGET", BULLET_46);
@@ -11529,7 +11460,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TROPDEAD(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -11557,11 +11487,11 @@ namespace Tests
             MY_32.SetFloat("CAREFULLY", 0f);
             var MY_35 = MY;
             MY_35.SetFloat("BERKELEY", 1f);
-            if (Random.value > 0.4f)
+            if (UnityEngine.Random.value > 0.4f)
             {
                 yield break;
             }
-            if (Random.value > 0.2f)
+            if (UnityEngine.Random.value > 0.2f)
             {
                 goto ARMOUR;
             }
@@ -11577,8 +11507,8 @@ namespace Tests
             MY_48.SetAcknexObject("IF_NEAR", PICKTROPARMOUR_46);
             var MY_51 = MY;
             MY_51.SetFloat("DIST", 4f);
+            yield break;
         }
-
         public IEnumerator TROPDIE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -11617,8 +11547,8 @@ namespace Tests
             MY_27.SetFloat("SPEED", 0f);
             var MY_30 = MY;
             MY_30.SetAcknexObject("TARGET", null);
+            yield break;
         }
-
         public IEnumerator TROPIMPLODE(IAcknexObject MY, IAcknexObject THERE)
         {
             var DISTX_0 = _world.GetObject(ObjectType.Skill, "DISTX");
@@ -11708,8 +11638,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator TROPHIT(IAcknexObject MY, IAcknexObject THERE)
         {
             var SHOOT_FAC_1 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
@@ -11760,6 +11690,7 @@ namespace Tests
             {
                 goto OBSTACLE;
             }
+            HIT:
             var EXPLOSION_ON_52 = _world.GetObject(ObjectType.Skill, "EXPLOSION_ON");
             var EXPLOSION_ON_52_val = EXPLOSION_ON_52.GetFloat("VAL");
             if (EXPLOSION_ON_52_val != 2f)
@@ -11804,7 +11735,7 @@ namespace Tests
             var temp_82 = MY_81.GetFloat("SKILL1");
             var SHOOT_FAC_84 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
             var SHOOT_FAC_84_val = SHOOT_FAC_84.GetFloat("VAL");
-            MY_76.SetFloat("SKILL1", temp_82 + SHOOT_FAC_84_val * (Random.value + 2f) / 3f);
+            MY_76.SetFloat("SKILL1", temp_82 + SHOOT_FAC_84_val * (UnityEngine.Random.value + 2f) / 3f);
             EXPLODED:
             var MY_95 = MY;
             var temp_96 = MY_95.GetFloat("SKILL1");
@@ -11812,7 +11743,7 @@ namespace Tests
             {
                 goto DIE;
             }
-            if (Random.value < 0.05f)
+            if (UnityEngine.Random.value < 0.05f)
             {
                 goto DIE;
             }
@@ -11825,7 +11756,7 @@ namespace Tests
             MY_108.SetAcknexObject("IF_FAR", null);
             var MY_111 = MY;
             MY_111.SetAcknexObject("IF_HIT", null);
-            if (Random.value > 0.7f)
+            if (UnityEngine.Random.value > 0.7f)
             {
                 goto SONOFA;
             }
@@ -11928,7 +11859,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator TROPDROPKEY(IAcknexObject MY, IAcknexObject THERE)
         {
             var KEY2TNG_1 = _world.AcknexObject.GetAcknexObject("KEY2TNG");
@@ -11958,7 +11888,6 @@ namespace Tests
             KEY2TNG_34.SetFloat("GROUND", 0f);
             yield break;
         }
-
         public IEnumerator CYCLETROPATTACK(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -12066,9 +11995,10 @@ namespace Tests
                         }
                     }
                 }
+                yield break;
             }
+            yield break;
         }
-
         public IEnumerator CYCLETROPHIDE(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -12087,7 +12017,7 @@ namespace Tests
             var temp_4 = MY_3.GetFloat("ANGLE");
             var MY_6 = MY;
             var temp_7 = MY_6.GetFloat("ANGLE");
-            MY_1.SetFloat("ANGLE", temp_7 + (Random.value - 0.5f) * 2f);
+            MY_1.SetFloat("ANGLE", temp_7 + (UnityEngine.Random.value - 0.5f) * 2f);
             {
                 var enumerator = PROBE(MY, THERE);
                 while (enumerator.MoveNext())
@@ -12133,8 +12063,8 @@ namespace Tests
             MY_32.SetFloat("SPEED", 0f);
             var MY_35 = MY;
             MY_35.SetAcknexObject("TARGET", null);
+            yield break;
         }
-
         public IEnumerator CYCLETROPBACK(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -12148,8 +12078,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator CYCLETROPSHOOT(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -12231,11 +12161,12 @@ namespace Tests
             {
                 goto ATTACK;
             }
+            SHOOT:
             var SHOT_SOUND_ON_17 = _world.GetObject(ObjectType.Skill, "SHOT_SOUND_ON");
             SHOT_SOUND_ON_17.SetFloat("VAL", 1f);
             var SHOTSECCOUNT_19 = _world.GetObject(ObjectType.Skill, "SHOTSECCOUNT");
             SHOTSECCOUNT_19.SetFloat("VAL", 0f);
-            if (Random.value > 0.8f)
+            if (UnityEngine.Random.value > 0.8f)
             {
                 {
                     var enumerator = TROPAIM(MY, THERE);
@@ -12277,7 +12208,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator CYCLETROPWARNING(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -12357,8 +12287,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator TROPTALK(IAcknexObject MY, IAcknexObject THERE)
         {
             //Unknown keyword: RANDOMIZE
@@ -12382,8 +12312,8 @@ namespace Tests
             SND2:
             var TROP01SND_6 = _world.AcknexObject.GetAcknexObject("TROP01SND");
             _world.PlaySound(TROP01SND_6, 0.3f, MY);
+            yield break;
         }
-
         public IEnumerator TROPSHOUT(IAcknexObject MY, IAcknexObject THERE)
         {
             //Unknown keyword: RANDOMIZE
@@ -12419,8 +12349,8 @@ namespace Tests
             SND3:
             var TROP03SND_12 = _world.AcknexObject.GetAcknexObject("TROP03SND");
             _world.PlaySound(TROP03SND_12, 0.3f, MY);
+            yield break;
         }
-
         public IEnumerator PICKTROPAMMO(IAcknexObject MY, IAcknexObject THERE)
         {
             var AMMO_MP5_1 = _world.GetObject(ObjectType.Skill, "AMMO_MP5");
@@ -12458,7 +12388,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator PICKTROPARMOUR(IAcknexObject MY, IAcknexObject THERE)
         {
             var PLAYER_ARMOUR_1 = _world.GetObject(ObjectType.Skill, "PLAYER_ARMOUR");
@@ -12488,8 +12417,8 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator HUMMERHIT(IAcknexObject MY, IAcknexObject THERE)
         {
             var SHOOT_FAC_1 = _world.GetObject(ObjectType.Skill, "SHOOT_FAC");
@@ -12563,8 +12492,8 @@ namespace Tests
             var ACTORJUMPSTOP_70 = _world.AcknexObject.GetAcknexObject("ACTORJUMPSTOP");
             var MY_72 = MY;
             MY_72.SetAcknexObject("EACH_TICK", ACTORJUMPSTOP_70);
+            yield break;
         }
-
         public IEnumerator TROPASSAULT(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -12583,7 +12512,6 @@ namespace Tests
             MY_17.SetFloat("SPEED", 0.7f);
             yield break;
         }
-
         public IEnumerator WAYGUARD1(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -12613,8 +12541,8 @@ namespace Tests
             MY_12.SetAcknexObject("TARGET", GUARD1WAY_10);
             var MY_15 = MY;
             MY_15.SetFloat("SPEED", 0.5f);
+            yield break;
         }
-
         public IEnumerator WAYGUARD2(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -12644,8 +12572,8 @@ namespace Tests
             MY_12.SetAcknexObject("TARGET", GUARD2WAY_10);
             var MY_15 = MY;
             MY_15.SetFloat("SPEED", 0.5f);
+            yield break;
         }
-
         public IEnumerator WAYGUARD3(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -12681,8 +12609,8 @@ namespace Tests
             TROPASSAULT3ACT_18.SetAcknexObjectAll("TARGET", REPT1WAY_16);
             var TROPASSAULT3ACT_21 = _world.AcknexObject.GetAcknexObject("TROPASSAULT3ACT");
             TROPASSAULT3ACT_21.SetFloatAll("SPEED", 0.7f);
+            yield break;
         }
-
         public IEnumerator DROPTROOPS2(IAcknexObject MY, IAcknexObject THERE)
         {
             var DROPPED_1 = _world.GetObject(ObjectType.Skill, "DROPPED");
@@ -12726,8 +12654,8 @@ namespace Tests
             }
             var MY_24 = MY;
             MY_24.SetFloat("SPEED", 2f);
+            yield break;
         }
-
         public IEnumerator DROPTROOPS3(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -12760,8 +12688,8 @@ namespace Tests
             TROPASSAULT3ACT_22.SetFloatAll("DIST", 40f);
             var MY_25 = MY;
             MY_25.SetAcknexObject("TARGET", null);
+            yield break;
         }
-
         public IEnumerator REPTFLEE(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -12795,8 +12723,8 @@ namespace Tests
             MY_33.SetAcknexObject("IF_ARRIVED", null);
             var REPT02SND_34 = _world.AcknexObject.GetAcknexObject("REPT02SND");
             _world.PlaySound(REPT02SND_34, 0.5f, MY);
+            yield break;
         }
-
         public IEnumerator LOCATEREPT(IAcknexObject MY, IAcknexObject THERE)
         {
             {
@@ -12834,7 +12762,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator WALLTIMER(IAcknexObject MY, IAcknexObject THERE)
         {
             var GOLCOUNTER_1 = _world.GetObject(ObjectType.Skill, "GOLCOUNTER");
@@ -12850,8 +12777,8 @@ namespace Tests
             var WBR01REPTWALL_7 = _world.AcknexObject.GetAcknexObject("WBR01REPTWALL");
             WBR01REPTWALL_7.SetFloatAll("IMPASSABLE", 0f);
             _world.AcknexObject.SetAcknexObject("EACH_SEC.4", null);
+            yield break;
         }
-
         public IEnumerator WARNPLAYER(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
@@ -12869,15 +12796,14 @@ namespace Tests
                     }
                 }
             }
+            yield break;
         }
-
         public IEnumerator RESETWARN(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
             MY_2.SetFloat("DIST", 5f);
             yield break;
         }
-
         public IEnumerator STARTLEVEL(IAcknexObject MY, IAcknexObject THERE)
         {
             var SCREEN_HGT_1 = _world.GetObject(ObjectType.Skill, "SCREEN_HGT");
@@ -12993,7 +12919,6 @@ namespace Tests
             yield break;
             yield break;
         }
-
         public IEnumerator LAUNCHMISSILES(IAcknexObject MY, IAcknexObject THERE)
         {
             var MISSILE_2 = _world.GetSynonymObject("MISSILE");
@@ -13161,8 +13086,8 @@ namespace Tests
             REPT1ACT_164.SetAcknexObjectAll("EACH_TICK", REPTFLEE_162);
             var SHOT_SOUND_ON_166 = _world.GetObject(ObjectType.Skill, "SHOT_SOUND_ON");
             SHOT_SOUND_ON_166.SetFloat("VAL", 1f);
+            yield break;
         }
-
         public IEnumerator STARTASSAULT(IAcknexObject MY, IAcknexObject THERE)
         {
             var ASSAULTSTARTED_1 = _world.GetObject(ObjectType.Skill, "ASSAULTSTARTED");
@@ -13200,8 +13125,8 @@ namespace Tests
             TROPASSAULT1ACT_13.SetFloatAll("INVISIBLE", 0f);
             var TROPASSAULT1ACT_16 = _world.AcknexObject.GetAcknexObject("TROPASSAULT1ACT");
             TROPASSAULT1ACT_16.SetFloatAll("DIST", 40f);
+            yield break;
         }
-
         public IEnumerator FADEIN(IAcknexObject MY, IAcknexObject THERE)
         {
             //Unknown keyword: FADE_PAL
@@ -13387,6 +13312,7 @@ namespace Tests
             //Unknown keyword: FADE_PAL
             var REPEATMUSIC_20 = _world.AcknexObject.GetAcknexObject("REPEATMUSIC");
             _world.AcknexObject.SetAcknexObject("EACH_SEC.1", REPEATMUSIC_20);
+            yield break;
         }
     }
 }

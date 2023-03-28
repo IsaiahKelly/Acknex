@@ -11,6 +11,12 @@ namespace Acknex.Interfaces
             return ticks * OneTick;
         }
 
+        public static float FramesToTime(int frames)
+        {
+            var oneFrame = 1.0f / Mathf.Max(16f, Application.targetFrameRate);
+            return frames * oneFrame;
+        }
+
         public static int TimeToTicks(float time)
         {
             return (int)Mathf.Max(1, (time / OneTick));

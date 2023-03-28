@@ -28,6 +28,6 @@
         Palette,
         Font,
         Model,
-        Music
+        Song
     }
 }

@@ -6,13 +6,18 @@ using UnityMidi;
 
 namespace Acknex
 {
-    public class Music : IAcknexObjectContainer
+    public class Song : IAcknexObjectContainer
     {
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+
+        }
+        public bool DebugMarked { get; set; }
         public GameObject GameObject => null;
 
         public FileResource Resource;
 
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Music);
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Song);
         public void UpdateObject()
         {
 
@@ -58,7 +63,7 @@ namespace Acknex
             return null;
         }
 
-        public Music()
+        public Song()
         {
             AcknexObject.Container = this;
         }

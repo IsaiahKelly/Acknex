@@ -387,7 +387,7 @@ namespace Acknex
                                 }
                             case "MUSIC":
                                 {
-                                    var music = _world.CreateObjectTemplate(ObjectType.Music, GetNextToken(tokens));
+                                    var music = _world.CreateObjectTemplate(ObjectType.Song, GetNextToken(tokens));
                                     music.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
                                     //_world.PostSetupObjectTemplate(music);
                                     CheckSemiColon(tokens);

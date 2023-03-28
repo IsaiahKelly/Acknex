@@ -11,7 +11,8 @@ namespace Acknex
     //todo: skill ACTOR_WIDTH & THING_WIDTH
     public class Thing : MonoBehaviour, IAcknexObjectContainer
     {
-        public bool DebugMarked;
+        [field: SerializeField]
+        public bool DebugMarked { get; set; }
 
         public GameObject GameObject => gameObject;
 
@@ -58,6 +59,22 @@ namespace Acknex
         {
             var regionObject = AcknexObject.GetAcknexObject("REGION");
             return regionObject;
+        }
+
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+            if (!(sound?.Container is Sound soundContainer))
+            {
+                return;
+            }
+            if (_audioSource.clip == soundContainer.AudioClip && _audioSource.isPlaying)
+            {
+                return;
+            }
+            _audioSource.Stop();
+            _audioSource.clip = soundContainer.AudioClip;
+            _audioSource.maxDistance = Mathf.Max(sDist, svDist);
+            _audioSource.Play();
         }
 
         public void SetupInstance()
@@ -396,7 +413,7 @@ namespace Acknex
         {
             var points = way.InstancePoints;
             var waypoint = 1;
-            AcknexObject.SetInteger("WAYPOINT", waypoint);
+            AcknexObject.SetFloat("WAYPOINT", waypoint);
             var nextPoint = points[waypoint - 1];
             for (; ; )
             {
@@ -408,7 +425,7 @@ namespace Acknex
                         AcknexObject.SetAcknexObject("TARGET", null);
                         yield break;
                     }
-                    AcknexObject.SetInteger("WAYPOINT", waypoint);
+                    AcknexObject.SetFloat("WAYPOINT", waypoint);
                     World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
                     nextPoint = points[waypoint - 1];
                 }
@@ -548,9 +565,14 @@ namespace Acknex
 
         public void MoveToAngleStep()
         {
+            var speed = AcknexObject.GetFloat("SPEED");
+            if (Mathf.Approximately(speed, 0f))
+            {
+                return;
+            }
             //todo: why angle inverted?
             var angle = AcknexObject.GetFloat("ANGLE");
-            var delta = new Vector3(MathExtension.Cos(angle), 0f, MathExtension.Sin(angle)) * World.Instance.GetSkillValue("TIME_CORR");
+            var delta = new Vector3(MathExtension.Cos(angle), 0f, MathExtension.Sin(angle)) * speed * World.Instance.GetSkillValue("TIME_CORR");
             if (AcknexObject.HasFlag("PASSABLE"))
             {
                 transform.Translate(delta, Space.World);
@@ -567,9 +589,13 @@ namespace Acknex
         public bool MoveToPointStep(Vector2 nextPoint, float? minDistance = null)
         {
             var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"));
-            var speed = AcknexObject.GetFloat("SPEED");
             AcknexObject.SetFloat("TARGET_X", nextPoint.x);
             AcknexObject.SetFloat("TARGET_Y", nextPoint.y);
+            var speed = AcknexObject.GetFloat("SPEED");
+            if (Mathf.Approximately(speed, 0f))
+            {
+                return false;
+            }
             var toTarget = nextPoint - pos;
             //todo: why angle inverted?
             var angle = AngleUtils.ConvertUnityToAcknexAngle(MathExtension.Atan2(toTarget) * Mathf.Rad2Deg);

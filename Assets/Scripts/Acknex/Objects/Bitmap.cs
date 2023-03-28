@@ -8,7 +8,11 @@ namespace Acknex
 {
     public class Bitmap : IAcknexObjectContainer
     {
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
 
+        }
+        public bool DebugMarked { get; set; }
         public GameObject GameObject => null;
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Bitmap);

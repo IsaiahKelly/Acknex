@@ -6,7 +6,6 @@ namespace Acknex
     public partial class World
     {
         private Vector3 _lastMousePosition;
-        private const float MouseMultiplier = 0.1f;
 
         private void CreateDefaultSkills()
         {

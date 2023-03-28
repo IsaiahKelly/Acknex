@@ -765,9 +765,9 @@ if (INNOCENTS_6_val < 3f)
 yield break;
 }
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)320f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)320f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -1140,9 +1140,9 @@ yield break;
 public IEnumerator SHOWMAINMENU(IAcknexObject MY, IAcknexObject THERE){
 WAITING:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -1924,9 +1924,9 @@ yield break;
 }
 public IEnumerator SAVEERRORMESSAGE(IAcknexObject MY, IAcknexObject THERE){
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)2f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -2236,9 +2236,9 @@ MY_54.SetAcknexObject("TEXTURE",EXP01TEX_52);
 var MY_57 = MY;
 MY_57.SetFloat("PLAY",1f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)4f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -2374,9 +2374,9 @@ var RENDER_MODE_24 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
 RENDER_MODE_24.SetFloat("VAL",1f);
 }
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)4f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -2425,9 +2425,9 @@ MY_39.SetAcknexObject("EACH_TICK",IMPLOSIONSTART_37);
 var MY_42 = MY;
 MY_42.SetFloat("PLAY",1f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)4f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -5299,9 +5299,9 @@ yield break;
 }
 public IEnumerator HITPLAYERDELAY(IAcknexObject MY, IAcknexObject THERE){
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)8f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)8f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -6913,9 +6913,9 @@ var PLAYER_TILT_36 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
 var PLAYER_TILT_36_val = PLAYER_TILT_36.GetFloat("VAL");
 MY_GUN_29.SetFloat("HEIGHT",PLAYER_Z_33_val-(PLAYER_TILT_36_val-1f)*0.844f-1.9f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -6953,9 +6953,9 @@ var PLAYER_TILT_81 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
 var PLAYER_TILT_81_val = PLAYER_TILT_81.GetFloat("VAL");
 MY_GUN_74.SetFloat("HEIGHT",PLAYER_Z_78_val-(PLAYER_TILT_81_val-1f)*0.844f-1.6f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -6993,9 +6993,9 @@ var PLAYER_TILT_126 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
 var PLAYER_TILT_126_val = PLAYER_TILT_126.GetFloat("VAL");
 MY_GUN_119.SetFloat("HEIGHT",PLAYER_Z_123_val-(PLAYER_TILT_126_val-1f)*0.844f-1.45f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7033,9 +7033,9 @@ var PLAYER_TILT_171 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
 var PLAYER_TILT_171_val = PLAYER_TILT_171.GetFloat("VAL");
 MY_GUN_164.SetFloat("HEIGHT",PLAYER_Z_168_val-(PLAYER_TILT_171_val-1f)*0.844f-1.35f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7045,9 +7045,9 @@ MY_GUN_182.SetFloat("HEIGHT",-20f);
 var MY_GUN_185 = _world.GetSynonymObject("MY_GUN");
 MY_GUN_185.SetFloat("INVISIBLE",1f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7088,9 +7088,9 @@ var PLAYER_TILT_36 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
 var PLAYER_TILT_36_val = PLAYER_TILT_36.GetFloat("VAL");
 MY_GUN_29.SetFloat("HEIGHT",PLAYER_Z_33_val-(PLAYER_TILT_36_val-1f)*0.844f-1.35f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7128,9 +7128,9 @@ var PLAYER_TILT_81 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
 var PLAYER_TILT_81_val = PLAYER_TILT_81.GetFloat("VAL");
 MY_GUN_74.SetFloat("HEIGHT",PLAYER_Z_78_val-(PLAYER_TILT_81_val-1f)*0.844f-1.45f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7168,9 +7168,9 @@ var PLAYER_TILT_126 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
 var PLAYER_TILT_126_val = PLAYER_TILT_126.GetFloat("VAL");
 MY_GUN_119.SetFloat("HEIGHT",PLAYER_Z_123_val-(PLAYER_TILT_126_val-1f)*0.844f-1.6f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7208,9 +7208,9 @@ var PLAYER_TILT_171 = _world.GetObject(ObjectType.Skill,"PLAYER_TILT");
 var PLAYER_TILT_171_val = PLAYER_TILT_171.GetFloat("VAL");
 MY_GUN_164.SetFloat("HEIGHT",PLAYER_Z_168_val-(PLAYER_TILT_171_val-1f)*0.844f-1.9f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7220,9 +7220,9 @@ MY_GUN_182.SetFloat("HEIGHT",-20f);
 var MY_GUN_185 = _world.GetSynonymObject("MY_GUN");
 MY_GUN_185.SetFloat("INVISIBLE",1f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7322,9 +7322,9 @@ MY_GUN_43.SetFloat("INVISIBLE",0f);
             }
         }WAITING:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)16f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)16f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7487,9 +7487,9 @@ MY_GUN_52.SetFloat("INVISIBLE",0f);
             }
         }WAITING:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)8f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)8f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7517,9 +7517,9 @@ MY_GUN_62.SetFloat("INVISIBLE",0f);
             }
         }WAITING1:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7680,9 +7680,9 @@ MY_GUN_44.SetFloat("INVISIBLE",0f);
             }
         }WAITING:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)8f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)8f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7710,9 +7710,9 @@ MY_GUN_54.SetFloat("INVISIBLE",0f);
             }
         }WAITING1:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7867,9 +7867,9 @@ MY_GUN_48.SetFloat("INVISIBLE",0f);
             }
         }WAITING:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)8f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)8f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -7897,9 +7897,9 @@ MY_GUN_58.SetFloat("INVISIBLE",0f);
             }
         }WAITING1:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8060,9 +8060,9 @@ MY_GUN_50.SetFloat("INVISIBLE",0f);
             }
         }WAITING:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)2f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8090,9 +8090,9 @@ MY_GUN_60.SetFloat("INVISIBLE",0f);
             }
         }WAITING1:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8250,9 +8250,9 @@ MY_GUN_50.SetFloat("INVISIBLE",0f);
             }
         }WAITING:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)2f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8280,9 +8280,9 @@ MY_GUN_60.SetFloat("INVISIBLE",0f);
             }
         }WAITING1:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8439,9 +8439,9 @@ MY_GUN_50.SetFloat("INVISIBLE",0f);
             }
         }WAITING:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)2f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8469,9 +8469,9 @@ MY_GUN_60.SetFloat("INVISIBLE",0f);
             }
         }WAITING1:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8532,9 +8532,9 @@ var MAP_SCALE_6_val = MAP_SCALE_6.GetFloat("VAL");
 MAP_SCALE_4.SetFloat("VAL",MAP_SCALE_6_val*1.1f);
 }
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)4f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8567,9 +8567,9 @@ var MAP_SCALE_6_val = MAP_SCALE_6.GetFloat("VAL");
 MAP_SCALE_4.SetFloat("VAL",MAP_SCALE_6_val*0.9f);
 }
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)4f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8595,9 +8595,9 @@ public IEnumerator SHOWPDABRIEFING(IAcknexObject MY, IAcknexObject THERE){
             }
         }WAITING0:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)2f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8643,9 +8643,9 @@ _world.AcknexObject.SetAcknexObject("IF_LEFT",null);
 _world.AcknexObject.SetAcknexObject("IF_ESC",null);
 _world.AcknexObject.SetAcknexObject("IF_ENTER",null);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)4f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8666,9 +8666,9 @@ MY_GUN_26.SetFloat("INVISIBLE",0f);
             }
         }WAITING2:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)2f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8708,9 +8708,9 @@ _world.SetSynonymObject("MESSAGE_TEXT",HLP03STR_47);
         }var RENDER_MODE_50 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
 RENDER_MODE_50.SetFloat("VAL",1f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8734,9 +8734,9 @@ _world.PlaySound(ALARM03SND_0,0.7f);
             }
         }WAITING0:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)2f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8781,9 +8781,9 @@ _world.AcknexObject.SetAcknexObject("IF_CTRL",null);
 _world.AcknexObject.SetAcknexObject("IF_LEFT",null);
 _world.AcknexObject.SetAcknexObject("IF_ESC",null);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)2f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8804,9 +8804,9 @@ MY_GUN_26.SetFloat("INVISIBLE",0f);
             }
         }WAITING2:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)2f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -8847,9 +8847,9 @@ _world.SetSynonymObject("MESSAGE_TEXT",HLP04STR_49);
         }var RENDER_MODE_52 = _world.GetObject(ObjectType.Skill,"RENDER_MODE");
 RENDER_MODE_52.SetFloat("VAL",1f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)2f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -9025,9 +9025,9 @@ public IEnumerator PICKUPLOCALMP5(IAcknexObject MY, IAcknexObject THERE){
         }//Unknown keyword: SAVE_INFO
 //Unknown keyword: SAVE_INFO
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)32f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)32f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -9244,9 +9244,9 @@ var BULLET_46 = _world.AcknexObject.GetAcknexObject("BULLET");
 var MY_48 = MY;
 MY_48.SetAcknexObject("TARGET",BULLET_46);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)384f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)384f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -9295,9 +9295,9 @@ MY_20.SetFloat("SPEED",0f);
 var MY_23 = MY;
 MY_23.SetAcknexObject("TARGET",null);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)120f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)120f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -9732,9 +9732,9 @@ MY_36.SetAcknexObject("IF_FAR",null);
 var MY_39 = MY;
 MY_39.SetAcknexObject("IF_HIT",null);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)6f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)6f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -10150,9 +10150,9 @@ MY_31.SetFloat("ANGLE",temp_37+UnityEngine.Random.value-0.5f);
                 }
             }
         }{
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)64f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)64f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -10405,9 +10405,9 @@ MY_55.SetAcknexObject("TARGET",BULLET_53);
                 }
             }
         }{
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)384f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)384f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -10525,9 +10525,9 @@ MY_42.SetFloat("SPEED",0f);
 var MY_45 = MY;
 MY_45.SetAcknexObject("TARGET",null);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)120f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)120f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -10606,9 +10606,9 @@ CONT:
 var MY_42 = MY;
 MY_42.SetFloat("SPEED",0f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)32f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)32f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -11391,9 +11391,9 @@ var TROP11SND_122 = _world.AcknexObject.GetAcknexObject("TROP11SND");
 _world.PlaySound(TROP11SND_122,0.2f,MY);
 WAIT:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)4f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -12198,9 +12198,9 @@ DROPPED_7.SetFloat("VAL",1f);
 var MY_10 = MY;
 MY_10.SetFloat("SPEED",0f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)4f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -12213,9 +12213,9 @@ TROPASSAULT2ACT_17.SetAcknexObjectAll("TARGET",ASSAULT2WAY_15);
 var TROPASSAULT2ACT_20 = _world.AcknexObject.GetAcknexObject("TROPASSAULT2ACT");
 TROPASSAULT2ACT_20.SetFloatAll("DIST",40f);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)160f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)160f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -12239,9 +12239,9 @@ MY_9.SetAcknexObject("TEXTURE",HUMM1ATEX_7);
 var MY_12 = MY;
 MY_12.SetAcknexObject("IF_ARRIVED",null);
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)4f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -12516,9 +12516,9 @@ var MISSILE_48 = _world.GetSynonymObject("MISSILE");
 MISSILE_48.SetFloat("INVISIBLE",0f);
 WAITING:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)16f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)16f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -12569,9 +12569,9 @@ var MISSILE_102 = _world.GetSynonymObject("MISSILE");
 MISSILE_102.SetFloat("INVISIBLE",0f);
 WAITING1:
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)16f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)16f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -12662,9 +12662,9 @@ ASSAULTSTARTED_3.SetFloat("VAL",1f);
                 }
             }
         }{
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)64f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)64f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
@@ -12682,180 +12682,180 @@ yield break;
 public IEnumerator FADEIN(IAcknexObject MY, IAcknexObject THERE){
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)8f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)8f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }
         }
 //Unknown keyword: FADE_PAL
 {
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int)1f;
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+            while (Time.time  < endTime)
             {
                 yield return _waitForEndOfFrame;
             }

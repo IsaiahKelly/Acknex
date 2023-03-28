@@ -7,6 +7,11 @@ namespace Acknex
 {
     public class Texture : IAcknexObjectContainer
     {
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+
+        }
+        public bool DebugMarked { get; set; }
         public GameObject GameObject => null;
 
         private List<WaitForSeconds> _textureObjectDelay;
@@ -77,21 +82,31 @@ namespace Acknex
             var cycles = Mathf.Max(1, AcknexObject.GetInteger("CYCLES"));
             var mirror = AcknexObject.GetObject<List<float>>("MIRROR");
             var scycles = AcknexObject.GetObject<List<float>>("SCYCLES");
+            bool CanBreakAnimation(IAcknexObject sound)
+            {
+                return cycles == 1 && sound == null;
+            }
             var cycle = 0;
             while (true)
             {
-                if (scycles != null && scycles.Count > cycles && scycles[cycle] > 0f)
+                var sound = AcknexObject.GetAcknexObject("SOUND");
+                if (MY.HasFlag("INVISIBLE"))
                 {
-                    World.Instance.PlaySound(AcknexObject.GetAcknexObject("SOUND"), AcknexObject.GetFloat("SVOL"));
+                    yield break;
                 }
-                var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : null;
+                MY.SetFloat("CYCLE", cycle);
+                if (sound != null && (scycles == null && cycle == 0 || scycles != null && scycles.Count > cycles && scycles[cycle] > 0f))
+                {
+                    World.Instance.PlaySound(sound, AcknexObject.GetFloat("SVOL"), MY, AcknexObject.GetFloat("DIST"), AcknexObject.GetFloat("SVDIST"));
+                }
+                var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : World.Instance.WaitForTick;
                 UpdateAngleFrameScale(scaleTexture, cycles, side, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, MY, sourceTransform);
                 yield return currentDelay;
                 cycle++;
                 if (cycle >= cycles)
                 {
                     World.Instance.TriggerEvent("EACH_CYCLE", MY, MY, THERE);
-                    if (MY.HasFlag("ONESHOT") || cycles == 1)
+                    if (MY.HasFlag("ONESHOT") || CanBreakAnimation(sound))
                     {
                         MY.RemoveFlag("ONESHOT");
                         yield break;

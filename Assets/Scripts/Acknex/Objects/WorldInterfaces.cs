@@ -203,7 +203,7 @@ namespace Acknex
                         var sound = CreateSound(name);
                         return sound.AcknexObject;
                     }
-                case ObjectType.Music:
+                case ObjectType.Song:
                     {
                         var music = CreateMusic(name);
                         return music.AcknexObject;
@@ -419,24 +419,31 @@ namespace Acknex
 
         public void PlaySong(IAcknexObject song, float volume)
         {
-
+            if (song == null)
+            {
+                return;
+            }
             //todo: volume
-            MidiPlayer.midiSource = ((Music)song.Container).Resource;
+            MidiPlayer.midiSource = ((Song)song.Container).Resource;
             MidiPlayer.LoadBank(new PatchBank(MidiPlayer.bankSource));
             MidiPlayer.LoadMidi(new MidiFile(MidiPlayer.midiSource));
             MidiPlayer.Play();
         }
 
-        public void PlaySound(IAcknexObject sound, float volume, IAcknexObject balance = null)
+        //todo: pool
+        public void PlaySound(IAcknexObject sound, float volume = 0.5f, IAcknexObject balance = null, float sDist = 100f, float svDist = 100f)
         {
+            var container = (Sound)sound?.Container;
+            if (container == null)
+            {
+                return;
+            }
             if (balance?.Container != null)
             {
-                AudioSource.PlayClipAtPoint(((Sound)sound.Container).AudioClip, balance.Container.GetCenter(), volume);
+                balance.Container.PlaySoundLocated(sound, volume, sDist, svDist);
+                return;
             }
-            else
-            {
-                AudioSource.PlayClipAtPoint(((Sound)sound.Container).AudioClip, View.Instance.transform.position, volume);
-            }
+            View.Instance.PlaySoundLocated(sound, volume, sDist, svDist);
         }
 
         public void PostSetupObjectInstance(IAcknexObject acknexObject)

@@ -1,29 +1,64 @@
 ﻿using Acknex.Interfaces;
-using System;
 using UnityEngine;
 
 namespace Acknex
 {
     public class View : MonoBehaviour, IAcknexObjectContainer
     {
-        public GameObject GameObject => gameObject;
+        public bool MainView;
+        private AudioSource _audioSource;
+
+        public static View Instance { get; private set; }
+
+        public Camera ViewCamera { get; set; }
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.View);
-        private static IAcknexObject GetTemplateCallback(string name)
+
+        [field: SerializeField] public bool DebugMarked { get; set; }
+
+        public void Disable()
+        {
+        }
+
+        public void Enable()
+        {
+        }
+
+        public GameObject GameObject => gameObject;
+
+        public Vector3 GetCenter()
+        {
+            return ViewCamera.transform.position;
+        }
+
+        public IAcknexObject GetRegion()
         {
             return null;
         }
 
-        public static View Instance { get; private set; }
-
-        public Camera ViewCamera
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
-            get => _viewCamera;
-            set => _viewCamera = value;
+            if (!(sound?.Container is Sound soundContainer))
+            {
+                return;
+            }
+            //if (_audioSource.clip == soundContainer.AudioClip && _audioSource.isPlaying)
+            //{
+            //    return;
+            //}
+            //_audioSource.Stop();
+            _audioSource.clip = soundContainer.AudioClip;
+            _audioSource.maxDistance = Mathf.Max(sDist, svDist);
+            _audioSource.Play();
         }
 
-        public bool MainView;
+        public void SetupInstance()
+        {
+        }
 
-        private Camera _viewCamera;
+        public void SetupTemplate()
+        {
+        }
 
         public void UpdateObject()
         {
@@ -37,7 +72,7 @@ namespace Acknex
                 var transformLocalRotation = transform.localRotation;
                 transformLocalRotation.eulerAngles = new Vector3(World.Instance.GetSkillValue("PLAYER_TILT") * Mathf.Rad2Deg, 0f, 0f);
                 transform.localRotation = transformLocalRotation;
-                Shader.SetGlobalFloat("_CAMERA_PITCH",  Mathf.DeltaAngle(CameraExtensions.GetLastActiveCamera().transform.localEulerAngles.x, 0f));
+                Shader.SetGlobalFloat("_CAMERA_PITCH", Mathf.DeltaAngle(CameraExtensions.GetLastActiveCamera().transform.localEulerAngles.x, 0f));
             }
             var ray = ViewCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hitInfo))
@@ -57,32 +92,7 @@ namespace Acknex
             }
         }
 
-        public void Enable()
-        {
-           
-        }
-
-        public void Disable()
-        {
-
-        }
-
-        public void SetupTemplate()
-        {
-            
-        }
-
-        public void SetupInstance()
-        {
-            
-        }
-
-        public Vector3 GetCenter()
-        {
-            return ViewCamera.transform.position;
-        }
-
-        public IAcknexObject GetRegion()
+        private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
         }
@@ -91,8 +101,12 @@ namespace Acknex
         {
             Instance = this;
             AcknexObject.Container = this;
+        }
+
+        private void Start() {
             ViewCamera = GetComponent<Camera>();
             ViewCamera.transparencySortMode = TransparencySortMode.Perspective;
+            _audioSource = GetComponent<AudioSource>();
         }
 
         private void Update()

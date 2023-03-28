@@ -12,6 +12,11 @@ namespace Acknex
     //TODO: missing keywords
     public class Action : IAcknexObjectContainer
     {
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+
+        }
+        public bool DebugMarked { get; set; }
         public GameObject GameObject => null;
 
         private const string CallEnumeratorTemplate = @"{{
@@ -36,9 +41,9 @@ namespace Acknex
         }}";
 
         private const string WaitCycles = @"{{
-            var startFrame = Time.frameCount;
-            var endFrame = startFrame + (int){0};
-            while (Time.frameCount  < endFrame)
+            var startTime = Time.time;
+            var endTime = startTime + TimeUtils.FramesToTime((int){0});
+            while (Time.time  < endTime)
             {{
                 yield return _waitForEndOfFrame;
             }}

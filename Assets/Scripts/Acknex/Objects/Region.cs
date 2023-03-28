@@ -12,6 +12,13 @@ namespace Acknex
     //todo: tesselation needs to implement the method to create new vertices
     public class Region : MonoBehaviour, IAcknexObjectContainer
     {
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+
+        }
+        [field:SerializeField]
+        public bool DebugMarked { get; set; }
+
         public GameObject GameObject => gameObject;
 
         public const float MaxHeight = 10000f;

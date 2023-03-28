@@ -23,7 +23,6 @@ namespace Acknex
         public readonly Dictionary<string, Flic> FlicsByName = new Dictionary<string, Flic>();
         public readonly Dictionary<string, Font> FontsByName = new Dictionary<string, Font>();
         public readonly Dictionary<string, Model> ModelsByName = new Dictionary<string, Model>();
-        public readonly Dictionary<string, Music> MusicsByName = new Dictionary<string, Music>();
         public readonly Dictionary<string, Overlay> OverlaysByName = new Dictionary<string, Overlay>();
         public readonly Dictionary<string, Palette> PalettesByName = new Dictionary<string, Palette>();
         public readonly Dictionary<string, Panel> PanelsByName = new Dictionary<string, Panel>();
@@ -33,6 +32,7 @@ namespace Acknex
         public readonly List<Region> RegionsByIndex = new List<Region>();
         public readonly Dictionary<string, Region> RegionsByName = new Dictionary<string, Region>();
         public readonly Dictionary<string, Skill> SkillsByName = new Dictionary<string, Skill>();
+        public readonly Dictionary<string, Song> SongsByName = new Dictionary<string, Song>();
         public readonly Dictionary<string, Sound> SoundsByName = new Dictionary<string, Sound>();
         public readonly Dictionary<string, AcknexString> StringsByName = new Dictionary<string, AcknexString>();
 
@@ -60,17 +60,19 @@ namespace Acknex
         //todo: how to calculate this?
         public float CanvasWidthRatio = 2f;
         public Color DebugColor;
-
         public GameObject DebugContainer;
         public Texture2D DebugTexture;
         public bool DisableEvents;
         public bool DisableWallTextures;
         public MidiPlayer MidiPlayer;
+        public float MouseMultiplier = 0.1f;
+        public bool RotationBeginsAtRight;
         public string SourceGenerationPath;
         public SingleUnityLayer Sprites;
         public SingleUnityLayer ThingsAndActorsLayer;
         public SingleUnityLayer TriggersLayer;
         public bool UseWDLEngine;
+        public float Volume = 1f;
 
         public SingleUnityLayer WallsAndRegionsLayer;
         public LayerMask WallsWaterAndRegions;
@@ -84,6 +86,9 @@ namespace Acknex
         public static World Instance { get; private set; }
 
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.World);
+
+        [field: SerializeField] public bool DebugMarked { get; set; }
+
         public GameObject GameObject => gameObject;
 
         public Vector3 GetCenter()
@@ -94,6 +99,10 @@ namespace Acknex
         public IAcknexObject GetRegion()
         {
             return null;
+        }
+
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
         }
 
         public void SetupInstance()
@@ -115,7 +124,7 @@ namespace Acknex
         {
             Instance = this;
             Cursor.lockState = CursorLockMode.Locked;
-            AudioListener.volume = 10f;
+            AudioListener.volume = Volume;
             CreateDefaultObjects();
             CreateDefaultSynonyms();
             CreateDefaultSkills();

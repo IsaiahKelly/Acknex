@@ -7,6 +7,12 @@ namespace Acknex
 {
     public class Way : MonoBehaviour, IAcknexObjectContainer
     {
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+
+        }
+        [field: SerializeField]
+        public bool DebugMarked { get; set; }
         public List<Vector2> Points = new List<Vector2>();
 
         public List<Vector2> InstancePoints
