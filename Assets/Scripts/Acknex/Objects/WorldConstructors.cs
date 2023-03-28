@@ -113,9 +113,6 @@ namespace Acknex
             newThing.AcknexObject.SetString("NAME", name);
             newThing.AcknexObject.SetFloat("SCALE_X", 16);
             newThing.AcknexObject.SetFloat("SCALE_Y", 16);
-            newThing.AcknexObject.SetFloat("SVOL", 0.5f);
-            newThing.AcknexObject.SetFloat("SDIST", 100f);
-            newThing.AcknexObject.SetFloat("SVDIST", 100f);
             newThing.AcknexObject.Type = ObjectType.Thing;
             return newThing;
         }
@@ -134,9 +131,6 @@ namespace Acknex
             newActor.AcknexObject.SetString("NAME", name);
             newActor.AcknexObject.SetFloat("SCALE_X", 16);
             newActor.AcknexObject.SetFloat("SCALE_Y", 16);
-            newActor.AcknexObject.SetFloat("SVOL", 0.5f);
-            newActor.AcknexObject.SetFloat("SDIST", 100f);
-            newActor.AcknexObject.SetFloat("SVDIST", 100f);
             newActor.AcknexObject.Type = ObjectType.Actor;
             return newActor;
         }
@@ -268,6 +262,9 @@ namespace Acknex
         {
             var texture = new Texture();
             texture.AcknexObject.SetString("NAME", name);
+            texture.AcknexObject.SetFloat("SVOL", 0.5f);
+            texture.AcknexObject.SetFloat("SDIST", 100f);
+            texture.AcknexObject.SetFloat("SVDIST", 100f);
             texture.AcknexObject.Type = ObjectType.Texture;
             TexturesByName.Add(name, texture);
             AcknexObject.SetAcknexObject(name, texture.AcknexObject);
