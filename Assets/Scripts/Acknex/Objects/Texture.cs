@@ -23,21 +23,29 @@ namespace Acknex
             return null;
         }
 
-        public List<string> BMaps
+        public List<IAcknexObject> BMaps
         {
             get
             {
-                if (AcknexObject.TryGetObject("BMAPS", out List<string> bmaps))
+                if (AcknexObject.TryGetObject("BMAPS", out List<IAcknexObject> bmaps))
                 {
                     return bmaps;
                 }
-                bmaps = new List<string>();
+                if (AcknexObject.TryGetAcknexObject("BMAP", out var bmap))
+                {
+                    bmaps = new List<IAcknexObject>();
+                    bmaps.Add(bmap);
+                }
+                else
+                {
+                    bmaps = new List<IAcknexObject>();
+                }
                 AcknexObject.SetObject("BMAPS", bmaps);
                 return bmaps;
             }
         }
 
-        public int BitmapCount => AcknexObject.TryGetObject("BMAPS", out List<string> bmaps) ? bmaps.Count : 0;
+        //public int BitmapCount => BMaps.Count;
         public float ScaleX => AcknexObject.TryGetFloat("SCALE_X", out var val) ? val : 16f;
         public float ScaleY => AcknexObject.TryGetFloat("SCALE_Y", out var val) ? val : 16f;
 
@@ -60,10 +68,7 @@ namespace Acknex
         {
             if (BMaps.Count > index)
             {
-                if (World.Instance.BitmapsByName.TryGetValue(BMaps[index], out var bitmapObject))
-                {
-                    return bitmapObject;
-                }
+                return BMaps[index].Container as Bitmap;
             }
             return null;
         }

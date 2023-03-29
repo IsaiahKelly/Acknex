@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
 using Acknex.Interfaces;
+using AcknexInterfaces;
 using AudioSynthesis.Bank;
 using AudioSynthesis.Midi;
 using LibTessDotNet;
@@ -18,7 +19,7 @@ namespace Acknex
     {
         private const int MaxHits = 255;
 
-        private readonly List<(IAcknexObject acknexObject, string keyword, string objectName)> _postResolve = new List<(IAcknexObject acknexObject, string keyword, string objectName)>();
+        private readonly List<PostResolveItem> _postResolve = new List<PostResolveItem>();
 
         private readonly Collider[] _overlapResults = new Collider[MaxHits];
         private readonly RaycastHit[] _raycastResults = new RaycastHit[MaxHits];
@@ -43,9 +44,9 @@ namespace Acknex
             Paths.Add(value);
         }
 
-        public void AddPostResolve((IAcknexObject acknexObject, string keyword, string objectName) postResolve)
+        public void AddPostResolve(PostResolveItem postResolveItem)
         {
-            _postResolve.Add(postResolve);
+            _postResolve.Add(postResolveItem);
         }
 
         //todo: move out from here
@@ -725,9 +726,19 @@ namespace Acknex
         {
             foreach (var item in _postResolve)
             {
-                if (AcknexObject.TryGetAcknexObject(item.objectName, out var acknexObject))
+                if (item.list != null)
                 {
-                    item.acknexObject.SetAcknexObject(item.keyword, acknexObject);
+                    if (AcknexObject.TryGetAcknexObject(item.objectName, out var acknexObject))
+                    {
+                        item.list.Add(acknexObject);
+                    }
+                }
+                else
+                {
+                    if (AcknexObject.TryGetAcknexObject(item.objectName, out var acknexObject))
+                    {
+                        item.acknexObject.SetAcknexObject(item.keyword, acknexObject);
+                    }
                 }
             }
         }

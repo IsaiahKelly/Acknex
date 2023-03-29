@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AcknexInterfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -160,6 +161,6 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Register an object to be post-processed.
         /// </summary>
-        void AddPostResolve((IAcknexObject acknexObject, string keyword, string objectName) postResolve);
+        void AddPostResolve(PostResolveItem postResolveItem);
     }
 }

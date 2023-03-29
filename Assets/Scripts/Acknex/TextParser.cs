@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using Acknex.Interfaces;
+using AcknexInterfaces;
 using Unity.Plastic.Antlr3.Runtime;
 using UnityEngine;
 using Resolution = Acknex.Interfaces.Resolution;
@@ -502,14 +503,18 @@ namespace Acknex
                     return true;
                 case PropertyType.ActionReference:
                 case PropertyType.ObjectReference:
-                    _world.AddPostResolve((acknexObject, keyword, GetNextToken(tokens)));
+                    var postResolveItem = new PostResolveItem();
+                    postResolveItem.acknexObject = acknexObject;
+                    postResolveItem.keyword = keyword;
+                    postResolveItem.objectName = GetNextToken(tokens);
+                    _world.AddPostResolve(postResolveItem);
                     CheckSemiColon(tokens);
                     return true;
                 case PropertyType.Flags:
                     ParseFlags(acknexObject, tokens);
                     return true;
                 case PropertyType.ObjectReferenceList:
-                    ParseStringList(keyword, acknexObject, tokens);
+                    ParseObjectReferenceList(keyword, acknexObject, tokens);
                     return true;
                 case PropertyType.FloatList:
                     ParseFloatList(keyword, acknexObject, tokens);
@@ -551,17 +556,21 @@ namespace Acknex
             }
         }
 
-        private void ParseStringList(string propertyName, IAcknexObject acknexObject, IEnumerator<string> tokens)
+        private void ParseObjectReferenceList(string propertyName, IAcknexObject acknexObject, IEnumerator<string> tokens)
         {
-            if (!acknexObject.TryGetObject(propertyName, out List<string> list))
+            if (!acknexObject.TryGetObject(propertyName, out List<IAcknexObject> list))
             {
-                list = new List<string>();
+                list = new List<IAcknexObject>();
                 acknexObject.SetObject(propertyName, list);
             }
             var token = GetNextToken(tokens);
             while (token != ";")
             {
-                list.Add(token);
+                var postResolveItem = new PostResolveItem();
+                postResolveItem.list = list;
+                postResolveItem.objectName = token;
+                _world.AddPostResolve(postResolveItem);
+                //list.Add(token);
                 token = GetNextToken(tokens);
             }
         }

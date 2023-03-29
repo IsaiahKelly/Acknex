@@ -189,7 +189,7 @@ namespace Acknex
                     material.SetInt("_SIDES", sides);
                     if (_bmaps == null)
                     {
-                        var bitmapCount = texture.BitmapCount;
+                        var bitmapCount = texture.BMaps.Count;
                         _bmaps = new Texture2DArray((int)Width, (int)Height, bitmapCount, BitmapTexture2D.graphicsFormat, TextureCreationFlags.MipChain);
                         for (var i = 0; i < bitmapCount; i++)
                         {

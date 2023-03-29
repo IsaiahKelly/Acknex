@@ -364,6 +364,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, "SVDIST");
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, "SDIST");
             AddObjectProperty(ObjectType.Texture, PropertyType.FloatList, "SCYCLES");
+            AddObjectProperty(ObjectType.Texture, PropertyType.ObjectReference, "BMAP");
 
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "POS_X");
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "POS_Y");
