@@ -170,7 +170,16 @@ namespace Acknex
             //    bitmapImage.UpdateMaterial(_floorMeshRenderer.material, FloorTexture, 0, false, AcknexObject);
             //}
             //}
-            _floorCollider.gameObject.layer = AcknexObject.TryGetAcknexObject("IF_DIVE", out var ifDive) && ifDive.GetString("VAL") != null ? World.Instance.WaterLayer.LayerIndex : World.Instance.WallsAndRegionsLayer.LayerIndex;
+            _floorCollider.gameObject.layer = 
+                AcknexObject.TryGetAcknexObject("IF_DIVE", out _)  ?
+                    World.Instance.WaterLayer.LayerIndex :
+                    World.Instance.WallsAndRegionsLayer.LayerIndex;
+
+            _ceilCollider.gameObject.layer =
+                AcknexObject.TryGetAcknexObject("IF_ARISE", out _)  ?
+                    World.Instance.WaterLayer.LayerIndex :
+                    World.Instance.WallsAndRegionsLayer.LayerIndex;
+
             if (CeilTexture != null)
             {
                 //var bitmapImage = CeilTexture.GetBitmapAt(0);
@@ -446,11 +455,16 @@ namespace Acknex
             }
             return currentRegion;
         }
+        
+        public float GetDepth()
+        {
+            return Mathf.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT"));
+        }
 
         //todo: sum below regions
         public float GetRealCeilHeight()
         {
-            return AcknexObject.GetFloat("FLOOR_HGT") + Mathf.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT"));
+            return AcknexObject.GetFloat("FLOOR_HGT") + GetDepth();
         }
 
         //todo: sum below regions

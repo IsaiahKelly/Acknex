@@ -85,25 +85,25 @@ namespace Acknex
             var regionContainer = (Region)region.Container;
             var forceUp = World.Instance.GetSkillValue("FORCE_UP");
             var playerHgt = World.Instance.GetSkillValue("PLAYER_HGT");
-            var actualSize = Mathf.Max(playerSize, playerWidth);
-            Debug.DrawLine(new Vector3(0f, regionContainer.GetRealCeilHeight(), 0f), new Vector3(playerX, regionContainer.GetRealCeilHeight() - actualSize - WaterBorderThickness, playerY), Color.cyan);
-            Debug.DrawLine(new Vector3(playerX, regionContainer.GetRealCeilHeight(), playerY), new Vector3(playerX, playerZ, playerY), Color.magenta);
-            if (
-                forceUp < 0f &&
-                playerZ < regionContainer.GetRealFloorHeight() + WaterBorderThickness && 
-                region.TryGetAcknexObject("IF_DIVE", out _)
-            ) 
-            {
-                transform.Translate(0f, -actualSize - WaterBorderThickness, 0f);
-            } 
-            else if (
-                forceUp > 0f &&
-                playerZ > regionContainer.GetRealCeilHeight() - actualSize - WaterBorderThickness &&
-                region.TryGetAcknexObject("IF_ARISE", out _)
-            )
-            {
-                transform.Translate(0f, actualSize + WaterBorderThickness, 0f);
-            }
+            //var actualSize = Mathf.Max(playerSize, playerWidth);
+            ////Debug.DrawLine(new Vector3(0f, regionContainer.GetRealCeilHeight(), 0f), new Vector3(playerX, regionContainer.GetRealCeilHeight() - actualSize - WaterBorderThickness, playerY), Color.cyan);
+            ////Debug.DrawLine(new Vector3(playerX, regionContainer.GetRealCeilHeight(), playerY), new Vector3(playerX, playerZ, playerY), Color.magenta);
+            //if (
+            //    forceUp < 0f &&
+            //    playerZ < regionContainer.GetRealFloorHeight() + WaterBorderThickness && 
+            //    region.TryGetAcknexObject("IF_DIVE", out _)
+            //) 
+            //{
+            //    transform.Translate(0f, -actualSize - WaterBorderThickness, 0f);
+            //} 
+            //else if (
+            //    forceUp > 0f &&
+            //    playerZ > regionContainer.GetRealCeilHeight() - actualSize - WaterBorderThickness &&
+            //    region.TryGetAcknexObject("IF_ARISE", out _)
+            //)
+            //{
+            //    transform.Translate(0f, actualSize + WaterBorderThickness, 0f);
+            //}
             playerX = _characterController.transform.position.x;
             playerY = _characterController.transform.position.z;
             playerZ = _characterController.transform.position.y;
@@ -171,6 +171,7 @@ namespace Acknex
             GUILayout.Label($"RGN:{region?.GetString("NAME")}");
             GUILayout.Label($"CEIL_HGT:{region?.GetFloat("CEIL_HGT")}");
             GUILayout.Label($"FLOOR_HGT:{region?.GetFloat("FLOOR_HGT")}");
+            GUILayout.Label($"PLAYER_DEPTH:{World.Instance.GetSkillValue("PLAYER_DEPTH")}");
             GUILayout.EndVertical();
         }
 
@@ -196,6 +197,14 @@ namespace Acknex
             }
             World.Instance.SetSynonymObject("HERE", region.AcknexObject);
             AcknexObject.SetAcknexObject("REGION", region.AcknexObject);
+            if (region.Below != null && region.AcknexObject.TryGetAcknexObject("IF_DIVE", out _))
+            {
+                World.Instance.UpdateSkillValue("PLAYER_DEPTH", region.Below.GetDepth());
+            }
+            else
+            {
+                World.Instance.UpdateSkillValue("PLAYER_DEPTH", 0f);
+            }
         }
 
         private void Awake()
