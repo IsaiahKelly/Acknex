@@ -326,7 +326,7 @@ namespace Acknex
                                 if (next != ";")
                                 {
                                     var rhs2 = GetValueAndType(next, "rhs2");
-                                    CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                                    CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).Append(",").Append(rhs2.property).AppendLine(");");
                                 }
                                 else
                                 {
