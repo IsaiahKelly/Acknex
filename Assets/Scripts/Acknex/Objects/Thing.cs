@@ -187,10 +187,14 @@ namespace Acknex
 
             if (!AcknexObject.IsDirty)
             {
+#if DEBUG_ENABLED
                 DebugExtension.DebugWireSphere(transform.position, Color.red);
+#endif
                 return;
             }
+#if DEBUG_ENABLED
             DebugExtension.DebugWireSphere(transform.position, Color.green);
+#endif
             AcknexObject.IsDirty = false;
 
             AcknexObject.SetFloat("VISIBLE", AcknexObject.GetFloat("INVISIBLE") > 0f ? 0f : 1f);
@@ -362,6 +366,7 @@ namespace Acknex
 
         private void OnDrawGizmos()
         {
+#if DEBUG_ENABLED
             if (DebugMarked)
             {
                 var position = transform.position + new Vector3(0f, 1f, 0f);
@@ -374,17 +379,20 @@ namespace Acknex
                 position.y += 0.2f; GizmosUtils.DrawString("SKILL7:" + AcknexObject.GetFloat("SKILL7"), position);
                 position.y += 0.2f; GizmosUtils.DrawString("SKILL8:" + AcknexObject.GetFloat("SKILL8"), position);
             }
+#endif
         }
 
 
         private void OnDrawGizmosSelected()
         {
+#if DEBUG_ENABLED
             Gizmos.color = Color.cyan;
             Gizmos.DrawLine(transform.position, new Vector3(AcknexObject.GetFloat("TARGET_X"), 0f, AcknexObject.GetFloat("TARGET_Y")));
             //Gizmos.color = AcknexObject.IsDirty ? Color.green : Color.red;
             //Gizmos.DrawSphere(transform.position, 1f);
             var quaternion = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE")), 0f);
             DebugExtension.DrawArrow(transform.position, quaternion * Vector3.forward, Color.cyan);
+#endif
         }
 
         private IEnumerator Animate(int side = 0)
@@ -584,7 +592,9 @@ namespace Acknex
             {
                 _characterController.Move(delta);
             }
+#if DEBUG_ENABLED
             DebugExtension.DebugArrow(new Vector3(AcknexObject.GetFloat("X"), 0f, AcknexObject.GetFloat("Y")), delta, Color.magenta, 10f);
+#endif
             AcknexObject.SetFloat("X", transform.position.x);
             AcknexObject.SetFloat("Y", transform.position.z);
         }
@@ -612,7 +622,9 @@ namespace Acknex
             {
                 _characterController.Move(delta);
             }
+#if DEBUG_ENABLED
             Debug.DrawLine(new Vector3(pos.x, 0f, pos.y), new Vector3(nextPoint.x, 0f, nextPoint.y), Color.magenta, 1f);
+#endif
             AcknexObject.SetFloat("X", transform.position.x);
             AcknexObject.SetFloat("Y", transform.position.z);
             AcknexObject.SetFloat("ANGLE", angle);
@@ -638,7 +650,9 @@ namespace Acknex
                 var color = acknexObject.CurrentBitmap.BitmapTexture2D.GetPixelBilinear(textureCoord.x, textureCoord.y);
                 World.Instance.DebugColor = color;
                 World.Instance.DebugTexture = acknexObject.CurrentBitmap.BitmapTexture2D;
+#if DEBUG_ENABLED
                 DebugExtension.DebugWireSphere(hitPoint, color, 0.1f, 60f);
+#endif
                 return color.a > 0.5f;
             }
             return false;

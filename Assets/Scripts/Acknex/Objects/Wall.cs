@@ -206,6 +206,7 @@ namespace Acknex
 
         private void OnDrawGizmos()
         {
+#if DEBUG_ENABLED
             if (DebugMarked)
             {
                 GizmosUtils.DrawString("0" + "(" + (Vector2)BottomUV.GetColumn(0) + ")", BottomQuad.GetColumn(0));
@@ -213,6 +214,7 @@ namespace Acknex
                 GizmosUtils.DrawString("2" + "(" + (Vector2)BottomUV.GetColumn(2) + ")", BottomQuad.GetColumn(2));
                 GizmosUtils.DrawString("3" + "(" + (Vector2)BottomUV.GetColumn(3) + ")", BottomQuad.GetColumn(3));
             }
+#endif
         }
 
         private void UpdateEvents()

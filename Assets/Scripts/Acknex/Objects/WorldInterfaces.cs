@@ -289,7 +289,9 @@ namespace Acknex
 
             UpdateSkillValue("HIT_DIST", 0f);
             UpdateSkillValue("RESULT", 0f);
+#if DEBUG_ENABLED
             DebugExtension.DebugWireSphere(origin, Color.black, shootRange);
+#endif
             Array.Clear(_overlapResults, 0, MaxHits);
             var hitCount = Physics.OverlapSphereNonAlloc(origin, shootRange, _overlapResults, WallsWaterRegionsAndSprites);
             for (var i = 0; i < hitCount; i++)
@@ -578,7 +580,9 @@ namespace Acknex
             if (acknexObject == null)
             {
                 ray = View.Instance.ViewCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+#if DEBUG_ENABLED
                 DebugExtension.DebugArrow(ray.origin, ray.direction, Color.black, 10f);
+#endif
             }
             else
             {
@@ -603,7 +607,9 @@ namespace Acknex
                 {
                     TriggerEvent("IF_HIT", hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
                 }
+#if DEBUG_ENABLED
                 Debug.DrawLine(ray.origin, raycastResult.point, Color.white, 10f);
+#endif
             }
             UpdateSkillValue("HIT_DIST", 0f);
             UpdateSkillValue("RESULT", 0f);
@@ -654,7 +660,9 @@ namespace Acknex
                     }
                 }
             }
+#if DEBUG_ENABLED
             Debug.DrawRay(ray.origin, ray.direction * shootRange, Color.black, 1f);
+#endif
         }
 
         public void UpdateObject()

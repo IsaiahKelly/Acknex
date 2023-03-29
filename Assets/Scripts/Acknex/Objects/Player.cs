@@ -1,10 +1,14 @@
 ﻿using Acknex.Interfaces;
 using UnityEngine;
+using Utils;
 
 namespace Acknex
 {
     public class Player : MonoBehaviour, IAcknexObjectContainer
     {
+
+        private const float WaterBorderThickness = 0.65f;
+
         private CharacterController _characterController;
 
         public static Player Instance { get; private set; }
@@ -55,14 +59,19 @@ namespace Acknex
             var unityPlayerAngle = AngleUtils.ConvertAcknexToUnityAngle(playerAngle);
             _characterController.transform.rotation = Quaternion.Euler(0f, unityPlayerAngle, 0f);
             _characterController.transform.position = new Vector3(playerX, playerZ, playerY);
-            _characterController.radius = World.Instance.GetSkillValue("PLAYER_WIDTH");
+            var playerWidth = World.Instance.GetSkillValue("PLAYER_WIDTH");
+            _characterController.radius = playerWidth;
             var playerSize = World.Instance.GetSkillValue("PLAYER_SIZE");
             _characterController.height = playerSize;
             _characterController.stepOffset = Mathf.Min(playerSize, World.Instance.GetSkillValue("PLAYER_CLIMB"));
             var characterControllerCenter = _characterController.center;
             characterControllerCenter.y = _characterController.height * 0.5f;
             _characterController.center = characterControllerCenter;
-            var playerMove = new Vector3(World.Instance.GetSkillValue("PLAYER_VX"), World.Instance.GetSkillValue("PLAYER_VZ"), World.Instance.GetSkillValue("PLAYER_VY")) * World.Instance.GetSkillValue("TIME_CORR");
+            var playerMove = new Vector3(
+                World.Instance.GetSkillValue("PLAYER_VX"), 
+                World.Instance.GetSkillValue("PLAYER_VZ"), 
+                World.Instance.GetSkillValue("PLAYER_VY")) 
+                             * World.Instance.GetSkillValue("TIME_CORR");
             //var moveAngle = playerMove.magnitude > 0f ? AngleUtils.ConvertUnityToAcknexAngle(Quaternion.LookRotation(playerMove).eulerAngles.y) : 0f;
             //var deltaAngle = moveAngle - World.Instance.GetSkillValue("MOVE_ANGLE");
             //World.Instance.UpdateSkillValue("MOVE_ANGLE", moveAngle);
@@ -72,9 +81,28 @@ namespace Acknex
             var delta = playerMove - desiredPosition;
             World.Instance.UpdateSkillValue("IMPACT_VX", delta.x);
             World.Instance.UpdateSkillValue("IMPACT_VY", delta.z);
-            if (World.Instance.GetSkillValue("FORCE_UP") < 0f && World.Instance.GetSkillValue("PLAYER_HGT") < 0.1f && GetRegion().TryGetAcknexObject("IF_DIVE", out _))
+            var region = GetRegion();
+            var regionContainer = (Region)region.Container;
+            var forceUp = World.Instance.GetSkillValue("FORCE_UP");
+            var playerHgt = World.Instance.GetSkillValue("PLAYER_HGT");
+            var actualSize = Mathf.Max(playerSize, playerWidth);
+            Debug.DrawLine(new Vector3(0f, regionContainer.GetRealCeilHeight(), 0f), new Vector3(playerX, regionContainer.GetRealCeilHeight() - actualSize - WaterBorderThickness, playerY), Color.cyan);
+            Debug.DrawLine(new Vector3(playerX, regionContainer.GetRealCeilHeight(), playerY), new Vector3(playerX, playerZ, playerY), Color.magenta);
+            if (
+                forceUp < 0f &&
+                playerZ < regionContainer.GetRealFloorHeight() + WaterBorderThickness && 
+                region.TryGetAcknexObject("IF_DIVE", out _)
+            ) 
             {
-                transform.Translate(0f, -playerSize, 0f);
+                transform.Translate(0f, -actualSize - WaterBorderThickness, 0f);
+            } 
+            else if (
+                forceUp > 0f &&
+                playerZ > regionContainer.GetRealCeilHeight() - actualSize - WaterBorderThickness &&
+                region.TryGetAcknexObject("IF_ARISE", out _)
+            )
+            {
+                transform.Translate(0f, actualSize + WaterBorderThickness, 0f);
             }
             playerX = _characterController.transform.position.x;
             playerY = _characterController.transform.position.z;
@@ -93,7 +121,7 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_ANGLE", playerAngle);
             var groundZ = playerZ;
             Locate(playerX, playerY, ref groundZ, false);
-            var playerHgt = playerZ - groundZ;
+            playerHgt = playerZ - groundZ;
             if (playerHgt < 0.1f)
             {
                 playerHgt = 0f;
@@ -141,6 +169,8 @@ namespace Acknex
             GUILayout.Label($"AMMO:{World.Instance.GetSkillValue("AMMO")}");
             var region = AcknexObject.GetAcknexObject("REGION");
             GUILayout.Label($"RGN:{region?.GetString("NAME")}");
+            GUILayout.Label($"CEIL_HGT:{region?.GetFloat("CEIL_HGT")}");
+            GUILayout.Label($"FLOOR_HGT:{region?.GetFloat("FLOOR_HGT")}");
             GUILayout.EndVertical();
         }
 

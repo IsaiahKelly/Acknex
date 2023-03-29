@@ -79,24 +79,28 @@ namespace Acknex
             return null;
         }
 
-        public void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
+#if DEBUG_ENABLED
             Gizmos.color = Color.yellow;
             for (var i = 1; i < Points.Count; i++)
             {
                 Gizmos.DrawLine(MeshUtils.ToXZ(Points[i - 1]), MeshUtils.ToXZ(Points[i]));
                 Gizmos.DrawSphere(MeshUtils.ToXZ(Points[i]), 1f);
             }
+#endif
         }
 
-        public void OnDrawGizmosSelected()
+        private void OnDrawGizmosSelected()
         {
+#if DEBUG_ENABLED
             Gizmos.color = Color.green;
             for (var i = 1; i < Points.Count; i++)
             {
                 Gizmos.DrawLine(MeshUtils.ToXZ(Points[i - 1]), MeshUtils.ToXZ(Points[i]));
                 Gizmos.DrawSphere(MeshUtils.ToXZ(Points[i]), 1f);
             }
+#endif
         }
 
         private void UpdateInstance()

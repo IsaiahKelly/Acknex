@@ -418,7 +418,9 @@ namespace Acknex
                 {
                     if (GetValue(raycastHit, ref thingZ, out var outRegion))
                     {
+#if DEBUG_ENABLED
                         Debug.DrawLine(point, raycastHit.point, Color.red, 1f);
+#endif
                         return outRegion;
                     }
                 }
@@ -431,7 +433,9 @@ namespace Acknex
                 {
                     if (GetValue(raycastHit, ref thingZ, out var outRegion))
                     {
+#if DEBUG_ENABLED
                         Debug.DrawLine(point, raycastHit.point, Color.red, 1f);
+#endif
                         return outRegion;
                     }
                 }
@@ -446,11 +450,11 @@ namespace Acknex
         //todo: sum below regions
         public float GetRealCeilHeight()
         {
-            return AcknexObject.GetFloat("CEIL_HGT");
+            return AcknexObject.GetFloat("FLOOR_HGT") + Mathf.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT"));
         }
 
         //todo: sum below regions
-        public double GetRealFloorHeight()
+        public float GetRealFloorHeight()
         {
             return AcknexObject.GetFloat("FLOOR_HGT");
         }

@@ -9,11 +9,6 @@ namespace Acknex.Interfaces
             return Mathf.Atan2(dir.x, dir.y);
         }
 
-        public static float PatchAngle(float angle)
-        {
-            return angle;// - Mathf.PI;
-        }
-
         public static float Sin(float radians)
         {
             return -Mathf.Cos(radians); //VRDEMO, SKAPH

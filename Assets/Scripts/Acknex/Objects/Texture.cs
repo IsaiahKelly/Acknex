@@ -15,6 +15,7 @@ namespace Acknex
         public GameObject GameObject => null;
 
         private List<WaitForSeconds> _textureObjectDelay;
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Texture);
 
         private static IAcknexObject GetTemplateCallback(string name)
@@ -37,7 +38,6 @@ namespace Acknex
         }
 
         public int BitmapCount => AcknexObject.TryGetObject("BMAPS", out List<string> bmaps) ? bmaps.Count : 0;
-
         public float ScaleX => AcknexObject.TryGetFloat("SCALE_X", out var val) ? val : 16f;
         public float ScaleY => AcknexObject.TryGetFloat("SCALE_Y", out var val) ? val : 16f;
 
@@ -84,18 +84,15 @@ namespace Acknex
             var scycles = AcknexObject.GetObject<List<float>>("SCYCLES");
             bool CanBreakAnimation(IAcknexObject sound)
             {
-                return MY.HasFlag("ONESHOT") || cycles == 1 && sound == null && !MY.TryGetAcknexObject("EACH_CYCLE", out _);
+                return MY.HasFlag("INVISIBLE") || MY.HasFlag("ONESHOT") || cycles == 1 && sound == null && !MY.TryGetAcknexObject("EACH_CYCLE", out _);
             }
             var cycle = 0;
             while (true)
             {
-                if (MY.HasFlag("INVISIBLE"))
-                {
-                    yield break;
-                }
-                MY.SetFloat("CYCLE", cycle);
+                cycle = (int)Mathf.Repeat(cycle, cycles);
+                //MY.SetFloat("CYCLE", cycle);
                 var sound = AcknexObject.GetAcknexObject("SOUND");
-                if (sound != null && (scycles == null && cycle == 0 || scycles != null && /*scycles.Count > cycles && */scycles[cycle] > 0f))
+                if (sound != null && (scycles == null && cycle == 0 || scycles != null && scycles[cycle] > 0f))
                 {
                     World.Instance.PlaySound(sound, AcknexObject.GetFloat("SVOL"), MY, AcknexObject.GetFloat("DIST"), AcknexObject.GetFloat("SVDIST"));
                 }
@@ -112,7 +109,6 @@ namespace Acknex
                         yield break;
                     }
                 }
-                cycle = (int)Mathf.Repeat(cycle, cycles);
             }
         }
 
