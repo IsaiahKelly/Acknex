@@ -5,7 +5,7 @@ namespace Utils
 {
     public static class GizmosUtils
     {
-
+#if UNITY_EDITOR
         public static void DrawLine(Vector3 a, Vector3 b, float thickness)
         {
             Handles.DrawAAPolyLine(thickness, a, b);
@@ -48,5 +48,6 @@ namespace Utils
             get { return Handles.color; }
             set { Handles.color = value; }
         }
+#endif
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using Acknex.Interfaces;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using static UnityEditor.UIElements.CurveField;
 
 namespace Acknex
 {

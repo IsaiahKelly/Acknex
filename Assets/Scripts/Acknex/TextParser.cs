@@ -5,7 +5,6 @@ using System.IO;
 using System.Text;
 using Acknex.Interfaces;
 using AcknexInterfaces;
-using Unity.Plastic.Antlr3.Runtime;
 using UnityEngine;
 using Resolution = Acknex.Interfaces.Resolution;
 
