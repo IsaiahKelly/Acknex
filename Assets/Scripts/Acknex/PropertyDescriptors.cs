@@ -338,6 +338,8 @@ namespace Acknex
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "IMPASSABLE");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "PLAY");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "VISIBLE");
+            AddObjectProperty(ObjectType.Wall, PropertyType.Float, "PASSABLE");
+            AddObjectProperty(ObjectType.Wall, PropertyType.Float, "INVISIBLE");
 
             AddObjectProperty(ObjectType.Texture, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Texture, PropertyType.ScaleXY, "SCALE_XY");

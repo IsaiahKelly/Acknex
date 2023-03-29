@@ -51,13 +51,17 @@ namespace Acknex
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Action);
         public StringBuilder CodeStringBuilder = new StringBuilder();
-        public long PositionInFile;
-        public BinaryReader BinaryReader;
+        //public long PositionInFile;
+        //public BinaryReader BinaryReader;
 
         private List<Tuple<string, float>> _skips = new List<Tuple<string, float>>();
         private Dictionary<string, string> _dropped = new Dictionary<string, string>();
         private int _varCounter;
         private int _ifStack;
+
+        private int _tokenIndex = 0;
+        private string _currentToken;
+        public List<string> Tokens = new List<string>();
 
         private static IAcknexObject GetTemplateCallback(string name)
         {
@@ -86,14 +90,12 @@ namespace Acknex
             CodeStringBuilder.AppendLine("yield break;").AppendLine("}");
         }
 
-        public void ParseAllStatements(TextParser textParser)
+        public void ParseAllStatements()
         {
-            BinaryReader.BaseStream.Position = PositionInFile;
-            while (BinaryReader.BaseStream.Position < BinaryReader.BaseStream.Length)
+            do
             {
-                var tokens = textParser.ParseStatement(BinaryReader);
-                var keyword = textParser.GetNextToken(tokens);
-                var labelOrStatement = textParser.GetNextToken(tokens);
+                var keyword = GetNextToken();
+                var labelOrStatement = GetNextToken();
                 if (labelOrStatement == ":")
                 {
                     CodeStringBuilder.Append(Sanitize(keyword)).AppendLine(":");
@@ -137,13 +139,13 @@ namespace Acknex
                         case "RANDOM":
                             {
                                 var identifier = labelOrStatement;
-                                var value = GetValue(tokens, textParser);
+                                var value = GetValue();
                                 var rhs = GetValueAndType(value, "rhs");
                                 var lhs = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
                                 rhs.property = $"{HandleFunction(keyword)}({rhs.property})";
                                 HandleAssignment(lhs, rhs);
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "RULE":
@@ -151,18 +153,18 @@ namespace Acknex
                                 var identifier = labelOrStatement;
                                 var lhsSetter = GetValueAndType(identifier, "lhsSetter", false);
                                 var lhsGetter = GetValueAndType(identifier, "lhsGetter", true);
-                                var assignmentOp1 = textParser.GetNextToken(tokens);
+                                var assignmentOp1 = GetNextToken();
                                 //todo: different assignments (-= += /= *=)
                                 if (assignmentOp1 == "-" || assignmentOp1 == "+" || assignmentOp1 == "*" || assignmentOp1 == "/")
                                 {
-                                    var assignmentOp2 = textParser.GetNextToken(tokens);
+                                    var assignmentOp2 = GetNextToken();
                                     if (assignmentOp2 != "=")
                                     {
                                         throw new Exception("Expected: =");
                                     }
                                 }
                                 var ruleStringBuilder = new StringBuilder();
-                                var token = textParser.GetNextToken(tokens);
+                                var token = GetNextToken();
                                 while (token != ";")
                                 {
                                     var tokenAndType = GetValueAndType(token, "temp");
@@ -171,7 +173,7 @@ namespace Acknex
                                         tokenAndType.property = HandleFunction(tokenAndType.property);
                                     }
                                     ruleStringBuilder.Append(tokenAndType.property);
-                                    token = textParser.GetNextToken(tokens);
+                                    token = GetNextToken();
                                 }
                                 switch (assignmentOp1)
                                 {
@@ -192,14 +194,14 @@ namespace Acknex
                                         break;
                                 }
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "SET":
                         case "SET_ALL":
                             {
                                 var identifier = labelOrStatement;
-                                var value = GetValue(tokens, textParser);
+                                var value = GetValue();
                                 var rhs = GetValueAndType(value, "rhs");
                                 var lhs = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
                                 if (rhs.propertyType == PropertyType.Function)
@@ -208,7 +210,7 @@ namespace Acknex
                                 }
                                 HandleAssignment(lhs, rhs, keyword == "SET_ALL");
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "ACCEL":
@@ -217,7 +219,7 @@ namespace Acknex
                         case "ADDT":
                             {
                                 var identifier = labelOrStatement;
-                                var value = GetValue(tokens, textParser);
+                                var value = GetValue();
                                 var rhs = GetValueAndType(value, "rhs");
                                 var lhsGetter = GetValueAndType(identifier, "lhs", true, rhs.propertyType);
                                 var lhsSetter = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
@@ -227,14 +229,14 @@ namespace Acknex
                                 }
                                 HandleAdd(lhsGetter, lhsSetter, rhs, keyword);
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "WAITT":
                         case "WAIT_TICKS":
                         case "WAIT":
                             {
-                                var value = GetValue(tokens, textParser, labelOrStatement);
+                                var value = GetValue(labelOrStatement);
                                 var rhs = GetValueAndType(value, "rhs", true, PropertyType.Float);
                                 if (rhs.propertyType == PropertyType.Function)
                                 {
@@ -251,14 +253,14 @@ namespace Acknex
                                     //CodeStringBuilder.Append("yield return new WaitForTicks(").Append(rhs.property).AppendLine(");");
                                 }
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "CALL":
                             {
                                 HandleCall(labelOrStatement);
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "BRANCH":
@@ -266,12 +268,12 @@ namespace Acknex
                                 HandleCall(labelOrStatement);
                                 CodeStringBuilder.AppendLine("yield break;");
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "SKIP":
                             {
-                                var count = float.Parse(GetValue(tokens, textParser, labelOrStatement));
+                                var count = float.Parse(GetValue(labelOrStatement));
                                 if (count < 0)
                                 {
                                     throw new Exception("Die: can't go back in instructions");
@@ -280,7 +282,7 @@ namespace Acknex
                                 CodeStringBuilder.Append("goto ").Append(skipName).AppendLine(";");
                                 _skips.Add(new Tuple<string, float>(skipName, count));
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "GOTO":
@@ -288,43 +290,42 @@ namespace Acknex
                                 var label = labelOrStatement;
                                 CodeStringBuilder.Append("goto ").Append(Sanitize(label)).AppendLine(";");
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "END":
                             {
                                 CodeStringBuilder.AppendLine("yield break;");
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "EXIT":
                             {
                                 CodeStringBuilder.AppendLine("Application.Quit();");
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "PLAY_SONG":
                             {
-                                var volume = GetValue(tokens, textParser);
+                                var volume = GetValue();
                                 var lhs = GetValueAndType(labelOrStatement, "rhs");
                                 var rhs = GetValueAndType(volume, "rhs");
                                 CodeStringBuilder.Append("_world.PlaySong(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "PLAY_SOUND":
                             {
-                                var volume = GetValue(tokens, textParser);
+                                var volume = GetValue();
                                 var lhs = GetValueAndType(labelOrStatement, "rhs");
                                 var rhs = GetValueAndType(volume, "rhs");
-                                var next = textParser.GetNextToken(tokens);
+                                var next = GetNextToken();
                                 if (next != ";")
                                 {
-                                    var rhs2 = GetValueAndType(next, "rhs2");
-                                    CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).Append(",").Append(rhs2.property).AppendLine(");");
+                                    CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).Append(",").Append(next).AppendLine(");");
                                 }
                                 else
                                 {
@@ -332,7 +333,7 @@ namespace Acknex
                                     CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                                 }
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "SHOOT":
@@ -350,7 +351,7 @@ namespace Acknex
                                     CodeStringBuilder.AppendLine($"_world.{method}(null, MY, THERE);");
                                 }
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "DROP":
@@ -361,7 +362,7 @@ namespace Acknex
                                 CodeStringBuilder.Append("_world.Drop(").Append(lhs.property).AppendLine(", MY, THERE);");
                                 _dropped.Add(labelOrStatement, droppedName);
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "INKEY":
@@ -369,7 +370,7 @@ namespace Acknex
                                 var key = labelOrStatement;
                                 CodeStringBuilder.Append("_world.ReadInkey(\"").Append(key).AppendLine("\");");
                                 HandleIfStack();
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "IF_MAX":
@@ -379,7 +380,7 @@ namespace Acknex
                                 CodeStringBuilder.Append("if (").Append(lhs.property).Append(" > ").Append(lhs.source).AppendLine(".GetFloat(\"MAX\"))");
                                 CodeStringBuilder.AppendLine("{");
                                 _ifStack++;
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         case "IF_EQUAL":
@@ -388,7 +389,7 @@ namespace Acknex
                         case "IF_BELOW":
                             {
                                 var identifier = labelOrStatement;
-                                var value = GetValue(tokens, textParser);
+                                var value = GetValue();
                                 var rhs = GetValueAndType(value, "rhs");
                                 var lhs = GetValueAndType(identifier, "lhs");
                                 if (lhs.propertyType == PropertyType.Function)
@@ -416,19 +417,33 @@ namespace Acknex
                                 }
                                 CodeStringBuilder.AppendLine("{");
                                 _ifStack++;
-                                ReadUntilSemiColon(tokens);
+                                ReadUntilSemiColon();
                                 break;
                             }
                         default:
                             CodeStringBuilder.Append("//Unknown keyword: ").Append(keyword).AppendLine();
                             Debug.LogWarning("<color=#00FF00>Unkown action keyword [" + keyword + "]</color>");
                             HandleIfStack();
-                            ReadUntilSemiColon(tokens);
+                            ReadUntilSemiColon();
                             break;
                     }
                 }
 
             }
+            while (_currentToken != null);
+        }
+
+        private string GetNextToken()
+        {
+            if (_tokenIndex < Tokens.Count)
+            {
+                _currentToken = Tokens[_tokenIndex++];
+            }
+            else
+            {
+                _currentToken = null;
+            }
+            return _currentToken; ;
         }
 
         private void HandleCall(string labelOrStatement)
@@ -445,11 +460,11 @@ namespace Acknex
             }
         }
 
-        private void ReadUntilSemiColon(IEnumerator<string> tokens)
+        private void ReadUntilSemiColon()
         {
-            while (tokens.Current != null && tokens.Current != ";")
+            while (_currentToken != null && _currentToken != ";")
             {
-                tokens.MoveNext();
+                GetNextToken();
             }
         }
 
@@ -489,14 +504,14 @@ namespace Acknex
             throw new Exception("Unknown function:" + property);
         }
 
-        private string GetValue(IEnumerator<string> tokens, TextParser textParser, string existingValue = null)
+        private string GetValue(string existingValue = null)
         {
             var result = string.Empty;
-            var value = existingValue ?? textParser.GetNextToken(tokens);
+            var value = existingValue ?? GetNextToken();
             if (value == "-")
             {
                 result += value;
-                value = textParser.GetNextToken(tokens);
+                value = GetNextToken();
             }
             result += value;
             return result;

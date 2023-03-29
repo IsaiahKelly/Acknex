@@ -37,7 +37,7 @@ namespace Acknex
             foreach (var action in ActionsByName)
             {
                 action.Value.WriteHeader();
-                action.Value.ParseAllStatements(_textParser);
+                action.Value.ParseAllStatements();
                 action.Value.WriteFooter();
                 sourceStringBuilder.Append(action.Value.CodeStringBuilder);
             }
