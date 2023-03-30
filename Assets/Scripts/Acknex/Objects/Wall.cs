@@ -5,18 +5,11 @@ using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Utils;
 
 namespace Acknex
 {
     public class Wall : MonoBehaviour, IAcknexObjectContainer
     {
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
-
-        }
-        [field: SerializeField]
-        public bool DebugMarked { get; set; }
         private GameObject _attached;
         private AudioSource _audioSource;
         private MeshCollider _collider;
@@ -36,7 +29,7 @@ namespace Acknex
         //todo: can remove, debug info
         public Matrix4x4 BottomQuad;
         public Matrix4x4 BottomUV;
-        
+
         //public Region LeftRegion;
         public bool Processed;
         //public Region RightRegion;
@@ -46,6 +39,8 @@ namespace Acknex
 
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Wall);
+
+        [field: SerializeField] public bool DebugMarked { get; set; }
 
         public void Disable()
         {
@@ -70,6 +65,10 @@ namespace Acknex
         public IAcknexObject GetRegion()
         {
             return null;
+        }
+
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
         }
 
         public void SetupInstance()
@@ -165,14 +164,9 @@ namespace Acknex
             {
                 yield return null;
             }
-            var textureObject = TextureObject;
-            var enumerator = textureObject.AnimateTexture(true, _meshRenderer, _meshFilter, null, AcknexObject, AcknexObject, null);
+            var enumerator = TextureObject.AnimateTexture(true, _meshRenderer, _meshFilter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
-                //if (AcknexObject.IsDirty)
-                //{
-                //    goto reload;
-                //}
                 yield return enumerator.Current;
             }
         }
@@ -340,8 +334,8 @@ namespace Acknex
 
             //todo: checking by the flag here is wrong
             if (AcknexObject.HasFlag("FENCE"))
-                //leftRegion.AcknexObject.GetNumber("FLOOR_HGT") == rightRegion.AcknexObject.GetNumber("FLOOR_HGT") && 
-                //leftRegion.AcknexObject.GetNumber("CEIL_HGT") == rightRegion.AcknexObject.GetNumber("CEIL_HGT"))
+            //leftRegion.AcknexObject.GetNumber("FLOOR_HGT") == rightRegion.AcknexObject.GetNumber("FLOOR_HGT") && 
+            //leftRegion.AcknexObject.GetNumber("CEIL_HGT") == rightRegion.AcknexObject.GetNumber("CEIL_HGT"))
             {
                 BuildFence(allVertices, allUVs, allTriangles, rightRegionAbove, leftRegionAbove, leftRegion, leftRegionBelowCeilHeight, rightRegion, rightRegionBelowCeilHeight, leftRegionAboveFloorHeight, rightRegionAboveFloorHeight, vertexA, vertexB, _xAxis);
             }
@@ -376,21 +370,24 @@ namespace Acknex
                     var v1 = new Vector3(vertexB.Position.X, ceilHeight + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, floorHeight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v3 = new Vector3(vertexA.Position.X, floorHeight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                    MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, AcknexObject.GetAcknexObject("TEXTURE").GetString("NAME"), allVertices.Count);
-                    allVertices.Add(v0); //a
-                    allVertices.Add(v1); //b
-                    allVertices.Add(v2); //c
-                    allVertices.Add(v3); //d
-                    var uv0 = CalculateUV(v0 - v0, _xAxis, v0);
-                    var uv1 = CalculateUV(v1 - v0, _xAxis, v1);
-                    var uv2 = CalculateUV(v2 - v0, _xAxis, v2);
-                    var uv3 = CalculateUV(v3 - v0, _xAxis, v3);
-                    allUVs.Add(uv0);
-                    allUVs.Add(uv1);
-                    allUVs.Add(uv2);
-                    allUVs.Add(uv3);
-                    BottomQuad = new Matrix4x4(v0, v1, v2, v3);
-                    BottomUV = new Matrix4x4(uv0, uv1, uv2, uv3);
+                    if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
+                    {
+                        MeshUtils.AddQuad(0, 1, 2, 3, allTriangles, AcknexObject.GetAcknexObject("TEXTURE").GetString("NAME"), allVertices.Count);
+                        allVertices.Add(v0); //a
+                        allVertices.Add(v1); //b
+                        allVertices.Add(v2); //c
+                        allVertices.Add(v3); //d
+                        var uv0 = CalculateUV(v0 - v0, _xAxis, v0);
+                        var uv1 = CalculateUV(v1 - v0, _xAxis, v1);
+                        var uv2 = CalculateUV(v2 - v0, _xAxis, v2);
+                        var uv3 = CalculateUV(v3 - v0, _xAxis, v3);
+                        allUVs.Add(uv0);
+                        allUVs.Add(uv1);
+                        allUVs.Add(uv2);
+                        allUVs.Add(uv3);
+                        BottomQuad = new Matrix4x4(v0, v1, v2, v3);
+                        BottomUV = new Matrix4x4(uv0, uv1, uv2, uv3);
+                    }
                 }
                 {
                     var ceilHeight = leftRegion.AcknexObject.GetFloat("CEIL_HGT");
@@ -411,19 +408,22 @@ namespace Acknex
                     var v1 = new Vector3(vertexB.Position.X, ceilHeight + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v2 = new Vector3(vertexB.Position.X, floorHeight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
                     var v3 = new Vector3(vertexA.Position.X, floorHeight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                    MeshUtils.AddQuad(3, 2, 1, 0, allTriangles, AcknexObject.GetAcknexObject("TEXTURE").GetString("NAME"), allVertices.Count);
-                    allVertices.Add(v0);
-                    allVertices.Add(v1);
-                    allVertices.Add(v2);
-                    allVertices.Add(v3);
-                    var uv0 = CalculateUV(v0 - v0, _xAxis, v0);
-                    var uv1 = CalculateUV(v1 - v0, _xAxis, v1);
-                    var uv2 = CalculateUV(v2 - v0, _xAxis, v2);
-                    var uv3 = CalculateUV(v3 - v0, _xAxis, v3);
-                    allUVs.Add(uv0);
-                    allUVs.Add(uv1);
-                    allUVs.Add(uv2);
-                    allUVs.Add(uv3);
+                    if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
+                    {
+                        MeshUtils.AddQuad(3, 2, 1, 0, allTriangles, AcknexObject.GetAcknexObject("TEXTURE").GetString("NAME"), allVertices.Count);
+                        allVertices.Add(v0);
+                        allVertices.Add(v1);
+                        allVertices.Add(v2);
+                        allVertices.Add(v3);
+                        var uv0 = CalculateUV(v0 - v0, _xAxis, v0);
+                        var uv1 = CalculateUV(v1 - v0, _xAxis, v1);
+                        var uv2 = CalculateUV(v2 - v0, _xAxis, v2);
+                        var uv3 = CalculateUV(v3 - v0, _xAxis, v3);
+                        allUVs.Add(uv0);
+                        allUVs.Add(uv1);
+                        allUVs.Add(uv2);
+                        allUVs.Add(uv3);
+                    }
                 }
             }
             if (leftRegion?.Below != null || rightRegion?.Below != null)

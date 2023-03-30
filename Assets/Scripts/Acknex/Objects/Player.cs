@@ -64,20 +64,29 @@ namespace Acknex
             _characterController.radius = playerWidth;
             var playerSize = World.Instance.GetSkillValue("PLAYER_SIZE");
             _characterController.height = playerSize;
-            _characterController.stepOffset = Mathf.Min(playerSize, World.Instance.GetSkillValue("PLAYER_CLIMB"));
+
+            var playerMove = new Vector3(
+                                 World.Instance.GetSkillValue("PLAYER_VX"),
+                                 World.Instance.GetSkillValue("PLAYER_VZ"),
+                                 World.Instance.GetSkillValue("PLAYER_VY"))
+                             * World.Instance.GetSkillValue("TIME_CORR");
+
+            var desiredPosition = _characterController.transform.position + playerMove;
+
+            var stepSize = Mathf.Min(playerSize, World.Instance.GetSkillValue("PLAYER_CLIMB"));
+            //var checkPosition = new Vector3(playerX, playerZ + playerSize - playerWidth, playerY);
+            var checkPosition = new Vector3(desiredPosition.x, desiredPosition.y + playerSize - playerWidth, desiredPosition.z);
+            //DebugExtension.DebugWireSphere(checkPosition, Color.yellow, playerWidth);
+            //if (Physics.Raycast(checkPosition, Vector3.up, out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.LayerIndex))
+            if (Physics.SphereCast(checkPosition, playerWidth, Vector3.up, out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
+            {
+                //DebugExtension.DebugWireSphere(checkPosition + new Vector3(0f, raycastHit.distance, 0f), Color.red, playerWidth);
+                stepSize = Mathf.Min(stepSize, raycastHit.distance);
+            }
+            _characterController.stepOffset = stepSize;
             var characterControllerCenter = _characterController.center;
             characterControllerCenter.y = _characterController.height * 0.5f;
             _characterController.center = characterControllerCenter;
-            var playerMove = new Vector3(
-                World.Instance.GetSkillValue("PLAYER_VX"),
-                World.Instance.GetSkillValue("PLAYER_VZ"),
-                World.Instance.GetSkillValue("PLAYER_VY"))
-                             * World.Instance.GetSkillValue("TIME_CORR");
-            //var moveAngle = playerMove.magnitude > 0f ? AngleUtils.ConvertUnityToAcknexAngle(Quaternion.LookRotation(playerMove).eulerAngles.y) : 0f;
-            //var deltaAngle = moveAngle - World.Instance.GetSkillValue("MOVE_ANGLE");
-            //World.Instance.UpdateSkillValue("MOVE_ANGLE", moveAngle);
-            //World.Instance.UpdateSkillValue("DELTA_ANGLE", deltaAngle);
-            var desiredPosition = _characterController.transform.position + playerMove;
             _characterController.Move(playerMove);
             var delta = playerMove - desiredPosition;
             World.Instance.UpdateSkillValue("IMPACT_VX", delta.x);
@@ -130,12 +139,16 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_HGT", playerHgt);
         }
 
-        //private void OnDrawGizmos()
-        //{
-        //    var size = new Vector3(_characterController.radius * 2f, _characterController.stepOffset, _characterController.radius * 2f);
-        //    var center = new Vector3(0f, _characterController.stepOffset * 0.5f, 0f);
-        //    DebugExtension.DebugLocalCube(transform, size, Color.magenta, center);
-        //}
+        private void OnDrawGizmos()
+        {
+            if (_characterController == null)
+            {
+                return;
+            }
+            var size = new Vector3(_characterController.radius * 2f, _characterController.stepOffset, _characterController.radius * 2f);
+            var center = new Vector3(0f, _characterController.stepOffset * 0.5f, 0f);
+            DebugExtension.DebugLocalCube(transform, size, Color.magenta, center);
+        }
 
         private static IAcknexObject GetTemplateCallback(string name)
         {
