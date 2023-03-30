@@ -2,6 +2,7 @@
 using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using UnityMidi;
 using WdlEngine;
 #if UNITY_EDITOR
@@ -46,6 +47,9 @@ namespace Acknex
         public readonly Dictionary<string, Wall> WallsByName = new Dictionary<string, Wall>();
         public readonly Dictionary<string, Way> WaysByName = new Dictionary<string, Way>();
         private List<ContourVertex> _contourVertices;
+
+        private Texture2D _palette;
+        private Color[] _palettePixels;
         private RegionWalls _regionWalls;
 
 
@@ -54,6 +58,7 @@ namespace Acknex
         public Light AmbientLight;
         public AudioSource AudioSource;
         public bool BilinearFilter = true;
+        public IAcknexObject BulletString;
 
         public Canvas Canvas;
 
@@ -64,14 +69,23 @@ namespace Acknex
         public Texture2D DebugTexture;
         public bool DisableEvents;
         public bool DisableWallTextures;
+        public IAcknexObject FollowString;
+        public IAcknexObject HoldString;
         public MidiPlayer MidiPlayer;
         public float MouseMultiplier = 0.1f;
+        public IAcknexObject MoveString;
+        public IAcknexObject Node1String;
+        public IAcknexObject Node2String;
+        public IAcknexObject RepelString;
         public bool RotationBeginsAtRight;
         public string SourceGenerationPath;
         public SingleUnityLayer Sprites;
+        public IAcknexObject StickString;
         public SingleUnityLayer ThingsAndActorsLayer;
         public SingleUnityLayer TriggersLayer;
+        public bool UsePalettes;
         public bool UseWDLEngine;
+        public IAcknexObject VertexString;
         public float Volume = 1f;
 
         public SingleUnityLayer WallsAndRegionsLayer;
@@ -82,7 +96,6 @@ namespace Acknex
 
         public string WDLPath;
         public bool WMPContainsRegionsByName;
-        public bool UsePalettes;
 
         public static World Instance { get; private set; }
 
@@ -119,6 +132,10 @@ namespace Acknex
         private void Awake()
         {
             AcknexObject.Container = this;
+            _palette = new Texture2D(256, 1, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.None);
+            _palette.filterMode = FilterMode.Point;
+            _palettePixels = new Color[256];
+            Shader.SetGlobalTexture("_AcknexPalette", _palette);
         }
 
         private void Start()
@@ -157,21 +174,20 @@ namespace Acknex
                     }
                 }
             }
-            Shader.SetGlobalInt("_AcknexUsePalettes", UsePalettes ? 1 : 0);
             SetupEvents();
         }
 
         private void CreateDefaultObjects()
         {
-            AddString("MOVE", "MOVE");
-            AddString("BULLET", "BULLET");
-            AddString("STICK", "STICK");
-            AddString("FOLLOW", "FOLLOW");
-            AddString("REPEL", "REPEL");
-            AddString("VERTEX", "VERTEX");
-            AddString("HOLD", "HOLD");
-            AddString("NODE1", "NODE1");
-            AddString("NODE2", "NODE2");
+            MoveString = AddString("MOVE", "MOVE");
+            BulletString = AddString("BULLET", "BULLET");
+            StickString = AddString("STICK", "STICK");
+            FollowString = AddString("FOLLOW", "FOLLOW");
+            RepelString = AddString("REPEL", "REPEL");
+            VertexString = AddString("VERTEX", "VERTEX");
+            HoldString = AddString("HOLD", "HOLD");
+            Node1String = AddString("NODE1", "NODE1");
+            Node2String = AddString("NODE2", "NODE2");
         }
 
         private void Update()

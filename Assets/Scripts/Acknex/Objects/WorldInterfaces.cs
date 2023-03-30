@@ -568,6 +568,22 @@ namespace Acknex
         {
         }
 
+        public void FadePal(IAcknexObject acknexObject, float factor)
+        {
+            //Debug.Log("FadePal:" + acknexObject.GetString("NAME") + "|" + factor + "|Instance:" + Palette.Instance.AcknexObject.GetString(("NAME")));
+            if (acknexObject?.Container is Palette palette)
+            {
+                var backgroundPixels = Palette.Instance.GetPixels();
+                var foregroundPixels = palette.GetPixels();
+                for (var i = 0; i < _palettePixels.Length; i++)
+                {
+                    _palettePixels[i] = Color.Lerp(backgroundPixels[i], foregroundPixels[i], factor);
+                }
+                _palette.SetPixels(_palettePixels);
+                _palette.Apply(false, false);
+            }
+        }
+
         public void Shoot(IAcknexObject acknexObject, IAcknexObject MY, IAcknexObject THERE)
         {
             if (View.Instance == null)
@@ -668,6 +684,7 @@ namespace Acknex
 
         public void UpdateObject()
         {
+            Shader.SetGlobalInt("_AcknexUsePalettes", UsePalettes ? 1 : 0);
             AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("LIGHT_ANGLE")), 0f) * Quaternion.Euler(45f, 0f, 0f);
             UpdateSkills();
         }

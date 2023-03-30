@@ -314,9 +314,11 @@ namespace DmitryBrant.ImageFormats
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[i * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[i * 3];
 
-                                    palData[4 * (y * imgWidth + x)] = (byte)(i * 3 + 2);
-                                    palData[4 * (y * imgWidth + x) + 1] = (byte)(i * 3 + 1);
-                                    palData[4 * (y * imgWidth + x) + 2] = (byte)(i * 3);
+                                    palData[(y * imgWidth + x) ] = (byte)i;
+
+                                    //palData[4 * (y * imgWidth + x)] = (byte)(i * 3 + 2);
+                                    //palData[4 * (y * imgWidth + x) + 1] = (byte)(i * 3 + 1);
+                                    //palData[4 * (y * imgWidth + x) + 2] = (byte)(i * 3);
                                 }
                             }
                         }
@@ -335,18 +337,18 @@ namespace DmitryBrant.ImageFormats
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[((i >> 4) & 0xF) * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[((i >> 4) & 0xF) * 3];
 
-                                    palData[4 * (y * imgWidth + x)] = (byte)(((i >> 4) & 0xF) * 3 + 2);
-                                    palData[4 * (y * imgWidth + x) + 1] = (byte)(((i >> 4) & 0xF) * 3 + 1);
-                                    palData[4 * (y * imgWidth + x) + 2] = (byte)(((i >> 4) & 0xF) * 3);
+                                    //palData[4 * (y * imgWidth + x)] = (byte)(((i >> 4) & 0xF) * 3 + 2);
+                                    //palData[4 * (y * imgWidth + x) + 1] = (byte)(((i >> 4) & 0xF) * 3 + 1);
+                                    //palData[4 * (y * imgWidth + x) + 2] = (byte)(((i >> 4) & 0xF) * 3);
 
                                     x++;
                                     bmpData[4 * (y * imgWidth + x)] = colorPalette[(i & 0xF) * 3 + 2];
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[(i & 0xF) * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[(i & 0xF) * 3];
 
-                                    palData[4 * (y * imgWidth + x)] = (byte)((i & 0xF) * 3 + 2);
-                                    palData[4 * (y * imgWidth + x) + 1] = (byte)((i & 0xF) * 3 + 1);
-                                    palData[4 * (y * imgWidth + x) + 2] = (byte)((i & 0xF) * 3);
+                                    //palData[4 * (y * imgWidth + x)] = (byte)((i & 0xF) * 3 + 2);
+                                    //palData[4 * (y * imgWidth + x) + 1] = (byte)((i & 0xF) * 3 + 1);
+                                    //palData[4 * (y * imgWidth + x) + 2] = (byte)((i & 0xF) * 3);
                                 }
                             }
                         }
@@ -365,36 +367,36 @@ namespace DmitryBrant.ImageFormats
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[((i >> 6) & 0x3) * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[((i >> 6) & 0x3) * 3];
 
-                                    palData[4 * (y * imgWidth + x)] = (byte)(((i >> 6) & 0x3) * 3 + 2);
-                                    palData[4 * (y * imgWidth + x) + 1] = (byte)(((i >> 6) & 0x3) * 3 + 1);
-                                    palData[4 * (y * imgWidth + x) + 2] = (byte)(((i >> 6) & 0x3) * 3);
+                                    //palData[4 * (y * imgWidth + x)] = (byte)(((i >> 6) & 0x3) * 3 + 2);
+                                    //palData[4 * (y * imgWidth + x) + 1] = (byte)(((i >> 6) & 0x3) * 3 + 1);
+                                    //palData[4 * (y * imgWidth + x) + 2] = (byte)(((i >> 6) & 0x3) * 3);
 
                                     x++;
                                     bmpData[4 * (y * imgWidth + x)] = colorPalette[((i >> 4) & 0x3) * 3 + 2];
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[((i >> 4) & 0x3) * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[((i >> 4) & 0x3) * 3];
 
-                                    palData[4 * (y * imgWidth + x)] = (byte)(((i >> 4) & 0x3) * 3 + 2);
-                                    palData[4 * (y * imgWidth + x) + 1] = (byte)(((i >> 4) & 0x3) * 3 + 1);
-                                    palData[4 * (y * imgWidth + x) + 2] = (byte)(((i >> 4) & 0x3) * 3);
+                                    //palData[4 * (y * imgWidth + x)] = (byte)(((i >> 4) & 0x3) * 3 + 2);
+                                    //palData[4 * (y * imgWidth + x) + 1] = (byte)(((i >> 4) & 0x3) * 3 + 1);
+                                    //palData[4 * (y * imgWidth + x) + 2] = (byte)(((i >> 4) & 0x3) * 3);
 
                                     x++;
                                     bmpData[4 * (y * imgWidth + x)] = colorPalette[((i >> 2) & 0x3) * 3 + 2];
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[((i >> 2) & 0x3) * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[((i >> 2) & 0x3) * 3];
 
-                                    palData[4 * (y * imgWidth + x)] = (byte)(((i >> 2) & 0x3) * 3 + 2);
-                                    palData[4 * (y * imgWidth + x) + 1] = (byte)(((i >> 2) & 0x3) * 3 + 1);
-                                    palData[4 * (y * imgWidth + x) + 2] = (byte)(((i >> 2) & 0x3) * 3);
+                                    //palData[4 * (y * imgWidth + x)] = (byte)(((i >> 2) & 0x3) * 3 + 2);
+                                    //palData[4 * (y * imgWidth + x) + 1] = (byte)(((i >> 2) & 0x3) * 3 + 1);
+                                    //palData[4 * (y * imgWidth + x) + 2] = (byte)(((i >> 2) & 0x3) * 3);
 
                                     x++;
                                     bmpData[4 * (y * imgWidth + x)] = colorPalette[(i & 0x3) * 3 + 2];
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[(i & 0x3) * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[(i & 0x3) * 3];
 
-                                    palData[4 * (y * imgWidth + x)] = (byte)((i & 0x3) * 3 + 2);
-                                    palData[4 * (y * imgWidth + x) + 1] = (byte)((i & 0x3) * 3 + 1);
-                                    palData[4 * (y * imgWidth + x) + 2] = (byte)((i & 0x3) * 3);
+                                    //palData[4 * (y * imgWidth + x)] = (byte)((i & 0x3) * 3 + 2);
+                                    //palData[4 * (y * imgWidth + x) + 1] = (byte)((i & 0x3) * 3 + 1);
+                                    //palData[4 * (y * imgWidth + x) + 2] = (byte)((i & 0x3) * 3);
                                 }
                             }
                         }
@@ -434,30 +436,26 @@ namespace DmitryBrant.ImageFormats
                 Debug.Log("Error while processing PCX file: " + e.Message);
             }
 
-            for (var j = 0; j < palData.Length - 4; j += 4)
-            {
-                byte r = palData[j + 0];
-                byte g = palData[j + 1];
-                byte b = palData[j + 2];
-                if (r == 0 && g == 1 && b == 2)
-                {
-                    palData[j + 3] = 0;
-                }
-                else
-                {
-                    palData[j + 3] = 1;
-                }
-            }
+            //for (var j = 0; j < palData.Length - 4; j += 4)
+            //{
+            //    byte r = palData[j + 0];
+            //    byte g = palData[j + 1];
+            //    byte b = palData[j + 2];
+            //    if (r == 0 && g == 1 && b == 2)
+            //    {
+            //        palData[j + 3] = 0;
+            //    }
+            //    else
+            //    {
+            //        palData[j + 3] = 1;
+            //    }
+            //}
 
-            palData = ImageUtils.FlipPixelsVertically(palData, imgWidth, imgHeight);
-
-            bmpData = ImageUtils.ColorToTransparent(bmpData, transparency);
-            bmpData = ImageUtils.FlipPixelsVertically(bmpData, imgWidth, imgHeight);
 
             if (paletteOnly)
             {
                 var width = colorPalette.Length / 3;
-                var palTexture2D = new Texture2D(width, 1, GraphicsFormat.B8G8R8A8_UNorm, TextureCreationFlags.None);
+                var palTexture2D = new Texture2D(width, 1, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.None);
                 palTexture2D.filterMode = FilterMode.Point;
                 for (var pX = 0; pX < width; pX++)
                 {
@@ -472,11 +470,14 @@ namespace DmitryBrant.ImageFormats
             }
             else
             {
+                bmpData = ImageUtils.ColorToTransparent(bmpData, transparency);
+                bmpData = ImageUtils.FlipPixelsVertically(bmpData, imgWidth, imgHeight);
                 var texture2D = new Texture2D(imgWidth, imgHeight, GraphicsFormat.B8G8R8A8_UNorm, TextureCreationFlags.MipChain);
                 texture2D.SetPixelData(bmpData, 0);
                 texture2D.Apply(false, false);
 
-                var palTexture2D = new Texture2D(imgWidth, imgHeight, GraphicsFormat.B8G8R8A8_UNorm, TextureCreationFlags.None);
+                palData = ImageUtils.FlipPalettePixelsVertically(palData, imgWidth, imgHeight);
+                var palTexture2D = new Texture2D(imgWidth, imgHeight, GraphicsFormat.R8_UNorm, TextureCreationFlags.None);
                 palTexture2D.filterMode = FilterMode.Point;
                 palTexture2D.SetPixelData(palData, 0);
                 palTexture2D.Apply(false, false);

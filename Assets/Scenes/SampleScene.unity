@@ -760,7 +760,7 @@ MonoBehaviour:
   AudioSource: {fileID: 1477033083}
   BilinearFilter: 0
   Canvas: {fileID: 1116186326}
-  CanvasWidthRatio: 1.6
+  CanvasWidthRatio: 1.565
   DebugColor: {r: 0, g: 0, b: 0, a: 0}
   DebugContainer: {fileID: 0}
   DebugTexture: {fileID: 0}
@@ -776,6 +776,7 @@ MonoBehaviour:
     m_LayerIndex: 9
   TriggersLayer:
     m_LayerIndex: 10
+  UsePalettes: 1
   UseWDLEngine: 0
   Volume: 1
   WallsAndRegionsLayer:
@@ -791,7 +792,7 @@ MonoBehaviour:
     m_Bits: 784
   WaterLayer:
     m_LayerIndex: 4
-  WDLPath: Assets/Data/Contato.wdl
+  WDLPath: Assets\Data\Contato.wdl
   WMPContainsRegionsByName: 0
   <DebugMarked>k__BackingField: 0
 --- !u!114 &1246573633

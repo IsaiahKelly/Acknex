@@ -119,7 +119,7 @@ namespace Acknex
 
         private void Start()
         {
-      
+
         }
 
         public void SetupTemplate()
@@ -208,7 +208,7 @@ namespace Acknex
 
             _spriteCollider.enabled = _collider.enabled = _characterController.enabled = true;
             _meshRenderer.enabled = true;
-            
+
             var thingX = AcknexObject.GetFloat("X");
             var thingY = AcknexObject.GetFloat("Y");
             var thingZ = AcknexObject.GetFloat("Z");
@@ -252,40 +252,28 @@ namespace Acknex
                 }
                 if (target != null)
                 {
-                    var targetName = target.GetString("NAME");
-                    switch (targetName)
+                    if (target == World.Instance.FollowString)
                     {
-                        case "FOLLOW":
-                            //Debug.Log(AcknexObject + "moving in direction of player with speed " + AcknexObject.GetFloat("SPEED"));
-                            _movingCoroutine = StartCoroutine(MoveToPlayer());
-                            break;
-                        case "REPEL":
-                            //Debug.Log(AcknexObject + "moving away from player with speed " + AcknexObject.GetFloat("SPEED"));
-                            _movingCoroutine = StartCoroutine(MoveAwayFromPlayer());
-                            break;
-                        case "VERTEX":
-                            //Debug.Log(AcknexObject + "moving in direction of vertex with speed " + AcknexObject.GetFloat("SPEED"));
-                            _movingCoroutine = StartCoroutine(MoveToVertex());
-                            break;
-                        case "MOVE":
-                        case "BULLET":
-                            //Debug.Log(AcknexObject + "moving in direction of its angle with speed " + AcknexObject.GetFloat("SPEED"));
-                            _movingCoroutine = StartCoroutine(MoveToAngle());
-                            break;
-                        default:
-                            {
-                                if (target.Container is Way way)
-                                //Debug.Log(AcknexObject + "moving in direction of way " + way.AcknexObject + " with speed " + AcknexObject.GetFloat("SPEED"));
-                                {
-                                    _movingCoroutine = StartCoroutine(MoveToWay(way));
-                                }
-
-                                //else
-                                //{
-                                //    Debug.Log(AcknexObject + "moving to nothing");
-                                //}
-                                break;
-                            }
+                        _movingCoroutine = StartCoroutine(MoveToPlayer());
+                    }
+                    else if (target == World.Instance.RepelString)
+                    {
+                        _movingCoroutine = StartCoroutine(MoveAwayFromPlayer());
+                    }
+                    else if (target == World.Instance.VertexString)
+                    {
+                        _movingCoroutine = StartCoroutine(MoveToVertex());
+                    }
+                    else if (target == World.Instance.MoveString || target == World.Instance.BulletString)
+                    {
+                        _movingCoroutine = StartCoroutine(MoveToAngle());
+                    }
+                    else
+                    {
+                        if (target.Container is Way way)
+                        {
+                            _movingCoroutine = StartCoroutine(MoveToWay(way));
+                        }
                     }
                 }
                 _lastTarget = target;
@@ -349,13 +337,9 @@ namespace Acknex
             if (AcknexObject.HasFlag("CAREFULLY") && !hasToTrigger)
             {
                 var target = AcknexObject.GetAcknexObject("TARGET");
-                if (target != null)
+                if (target == World.Instance.BulletString)
                 {
-                    var targetName = target.GetString("NAME");
-                    if (targetName == "BULLET")
-                    {
-                        hasToTrigger = true;
-                    }
+                    hasToTrigger = true;
                 }
             }
             if (hasToTrigger)

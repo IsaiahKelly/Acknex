@@ -17,6 +17,20 @@ namespace DmitryBrant.ImageFormats
             return temp;
         }
 
+        public static byte[] FlipPalettePixelsVertically(byte[] frameData, int width, int height)
+        {
+            byte[] data = new byte[frameData.Length];
+            for (int firstLine = 0; firstLine < height; firstLine++)
+            {
+                int lastLine = height - firstLine - 1;
+                Buffer.BlockCopy(
+                    frameData, firstLine * width,
+                    data, lastLine * width ,
+                    width);
+            }
+            return data;
+        }
+
         public static byte[] FlipPixelsVertically(byte[] frameData, int width, int height)
         {
             byte[] data = new byte[frameData.Length];

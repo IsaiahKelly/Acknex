@@ -35,6 +35,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("MESSAGES.14", PANELTEXT_3);
             var MSGSECCOUNT_7 = _world.GetObject(ObjectType.Skill, "MSGSECCOUNT");
             MSGSECCOUNT_7.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CONTROLMESSAGEDISPLAY(IAcknexObject MY, IAcknexObject THERE)
@@ -150,6 +151,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("MESSAGES.14", null);
             var MSGSECCOUNT_57 = _world.GetObject(ObjectType.Skill, "MSGSECCOUNT");
             MSGSECCOUNT_57.SetFloat("VAL", -1f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CONTROLUNDERWATERTIME(IAcknexObject MY, IAcknexObject THERE)
@@ -186,7 +188,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator VANISHSTOP(IAcknexObject MY, IAcknexObject THERE)
@@ -201,6 +203,7 @@ namespace Tests
             MY_11.SetAcknexObject("EACH_TICK", null);
             var MY_14 = MY;
             MY_14.SetFloat("INVISIBLE", 1f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator VANISHFORGOOD(IAcknexObject MY, IAcknexObject THERE)
@@ -219,6 +222,7 @@ namespace Tests
             MY_14.SetAcknexObject("TEXTURE", NULLTEXTURE_12);
             var MY_17 = MY;
             MY_17.SetFloat("INVISIBLE", 1f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator LOCATEACTOR(IAcknexObject MY, IAcknexObject THERE)
@@ -253,6 +257,7 @@ namespace Tests
             }
             var MY_26 = MY;
             MY_26.SetFloat("HEIGHT", -2.5f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator LOOKPLAYER(IAcknexObject MY, IAcknexObject THERE)
@@ -318,6 +323,7 @@ namespace Tests
             NOTVISIBLE:
             var MY_39 = MY;
             MY_39.SetFloat("FLAG1", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator PROBE(IAcknexObject MY, IAcknexObject THERE)
@@ -480,6 +486,7 @@ namespace Tests
             var ANGLEOUT_118_val = ANGLEOUT_118.GetFloat("VAL");
             var MY_120 = MY;
             MY_120.SetFloat("ANGLE", ANGLEOUT_118_val);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator FOLLOWANGLE(IAcknexObject MY, IAcknexObject THERE)
@@ -548,6 +555,7 @@ namespace Tests
             var MY_53 = MY;
             var temp_54 = MY_53.GetFloat("ANGLE");
             MY_46.SetFloat("ANGLE", PI_50_val - temp_54);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPELANGLE(IAcknexObject MY, IAcknexObject THERE)
@@ -569,6 +577,7 @@ namespace Tests
             var temp_3 = MY_2.GetFloat("ANGLE");
             var MY_5 = MY;
             MY_5.SetFloat("ANGLE", temp_3 + PI_0_val);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator ACTORJUMP(IAcknexObject MY, IAcknexObject THERE)
@@ -594,6 +603,7 @@ namespace Tests
             var MY_23 = MY;
             MY_23.SetAcknexObject("EACH_TICK", null);
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator ACTORJUMPSTOP(IAcknexObject MY, IAcknexObject THERE)
@@ -638,6 +648,7 @@ namespace Tests
             MY_45.SetFloat("CAREFULLY", 0f);
             var MY_48 = MY;
             MY_48.SetAcknexObject("TARGET", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TURNLEFT(IAcknexObject MY, IAcknexObject THERE)
@@ -658,6 +669,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TURNRIGHT(IAcknexObject MY, IAcknexObject THERE)
@@ -678,6 +690,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SHOWAMMO(IAcknexObject MY, IAcknexObject THERE)
@@ -725,6 +738,7 @@ namespace Tests
                 var AMMO_19 = _world.GetObject(ObjectType.Skill, "AMMO");
                 AMMO_19.SetFloat("VAL", AMMO_QUANTUM_18_val);
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator DECAMMO(IAcknexObject MY, IAcknexObject THERE)
@@ -772,6 +786,7 @@ namespace Tests
                 var AMMO_QUANTUM_19 = _world.GetObject(ObjectType.Skill, "AMMO_QUANTUM");
                 AMMO_QUANTUM_19.SetFloat("VAL", AMMO_18_val);
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator INNOCENTKILLED(IAcknexObject MY, IAcknexObject THERE)
@@ -793,9 +808,9 @@ namespace Tests
                 yield break;
             }
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)320f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)320f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -822,7 +837,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator DRILLHOLE(IAcknexObject MY, IAcknexObject THERE)
@@ -1165,15 +1180,16 @@ namespace Tests
             var HOLEY_336_val = HOLEY_336.GetFloat("VAL");
             MY_TEX_332.SetFloat("POS_Y", HOLEY_336_val);
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SHOWMAINMENU(IAcknexObject MY, IAcknexObject THERE)
         {
             WAITING:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -1189,23 +1205,24 @@ namespace Tests
             {
                 goto WAITING;
             }
-            //Unknown keyword: FADE_PAL
-            var BIP03SND_6 = _world.AcknexObject.GetAcknexObject("BIP03SND");
-            _world.PlaySound(BIP03SND_6, 0.5f);
-            var HIDEMENU_8 = _world.AcknexObject.GetAcknexObject("HIDEMENU");
-            _world.AcknexObject.SetAcknexObject("IF_ESC", HIDEMENU_8);
-            var MOVE_MODE_11 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
-            MOVE_MODE_11.SetFloat("VAL", -0.5f);
-            var MAXMENUITEM_13 = _world.GetObject(ObjectType.Skill, "MAXMENUITEM");
-            MAXMENUITEM_13.SetFloat("VAL", 4f);
-            var MENUUP_14 = _world.AcknexObject.GetAcknexObject("MENUUP");
-            _world.AcknexObject.SetAcknexObject("IF_CUU", MENUUP_14);
-            var MENUDOWN_16 = _world.AcknexObject.GetAcknexObject("MENUDOWN");
-            _world.AcknexObject.SetAcknexObject("IF_CUD", MENUDOWN_16);
-            var MENUUP_18 = _world.AcknexObject.GetAcknexObject("MENUUP");
-            _world.AcknexObject.SetAcknexObject("IF_CUR", MENUUP_18);
-            var MENUDOWN_20 = _world.AcknexObject.GetAcknexObject("MENUDOWN");
-            _world.AcknexObject.SetAcknexObject("IF_CUL", MENUDOWN_20);
+            var BLACK_6 = _world.AcknexObject.GetAcknexObject("BLACK");
+            _world.FadePal(BLACK_6, 0.4f);
+            var BIP03SND_8 = _world.AcknexObject.GetAcknexObject("BIP03SND");
+            _world.PlaySound(BIP03SND_8, 0.5f);
+            var HIDEMENU_10 = _world.AcknexObject.GetAcknexObject("HIDEMENU");
+            _world.AcknexObject.SetAcknexObject("IF_ESC", HIDEMENU_10);
+            var MOVE_MODE_13 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
+            MOVE_MODE_13.SetFloat("VAL", -0.5f);
+            var MAXMENUITEM_15 = _world.GetObject(ObjectType.Skill, "MAXMENUITEM");
+            MAXMENUITEM_15.SetFloat("VAL", 4f);
+            var MENUUP_16 = _world.AcknexObject.GetAcknexObject("MENUUP");
+            _world.AcknexObject.SetAcknexObject("IF_CUU", MENUUP_16);
+            var MENUDOWN_18 = _world.AcknexObject.GetAcknexObject("MENUDOWN");
+            _world.AcknexObject.SetAcknexObject("IF_CUD", MENUDOWN_18);
+            var MENUUP_20 = _world.AcknexObject.GetAcknexObject("MENUUP");
+            _world.AcknexObject.SetAcknexObject("IF_CUR", MENUUP_20);
+            var MENUDOWN_22 = _world.AcknexObject.GetAcknexObject("MENUDOWN");
+            _world.AcknexObject.SetAcknexObject("IF_CUL", MENUDOWN_22);
             {
                 var enumerator = HIDEWEAPON(MY, THERE);
                 while (enumerator.MoveNext())
@@ -1217,14 +1234,14 @@ namespace Tests
                     }
                 }
             }
-            var CHOOSESUBMENU_22 = _world.AcknexObject.GetAcknexObject("CHOOSESUBMENU");
-            _world.AcknexObject.SetAcknexObject("IF_ENTER", CHOOSESUBMENU_22);
-            var MENUPANEL_24 = _world.AcknexObject.GetAcknexObject("MENUPANEL");
-            _world.AcknexObject.SetAcknexObject("PANELS.16", MENUPANEL_24);
-            var MAINMENUTEXT_27 = _world.AcknexObject.GetAcknexObject("MAINMENUTEXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.16", MAINMENUTEXT_27);
-            var HLP01STR_30 = _world.AcknexObject.GetAcknexObject("HLP01STR");
-            _world.SetSynonymObject("MESSAGE_TEXT", HLP01STR_30);
+            var CHOOSESUBMENU_24 = _world.AcknexObject.GetAcknexObject("CHOOSESUBMENU");
+            _world.AcknexObject.SetAcknexObject("IF_ENTER", CHOOSESUBMENU_24);
+            var MENUPANEL_26 = _world.AcknexObject.GetAcknexObject("MENUPANEL");
+            _world.AcknexObject.SetAcknexObject("PANELS.16", MENUPANEL_26);
+            var MAINMENUTEXT_29 = _world.AcknexObject.GetAcknexObject("MAINMENUTEXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.16", MAINMENUTEXT_29);
+            var HLP01STR_32 = _world.AcknexObject.GetAcknexObject("HLP01STR");
+            _world.SetSynonymObject("MESSAGE_TEXT", HLP01STR_32);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
@@ -1235,7 +1252,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator SHOWSAVEMENU(IAcknexObject MY, IAcknexObject THERE)
@@ -1305,7 +1322,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator SHOWLOADMENU(IAcknexObject MY, IAcknexObject THERE)
@@ -1375,7 +1392,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator SHOWSOUNDVOLUMEMENU(IAcknexObject MY, IAcknexObject THERE)
@@ -1414,7 +1431,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator HIDEMENU(IAcknexObject MY, IAcknexObject THERE)
@@ -1446,7 +1463,8 @@ namespace Tests
             }
             goto CONT;
             NOWATER:
-            //Unknown keyword: FADE_PAL
+            var BLACK_18 = _world.AcknexObject.GetAcknexObject("BLACK");
+            _world.FadePal(BLACK_18, 0f);
             CONT:
             {
                 var enumerator = SHOWWEAPON(MY, THERE);
@@ -1459,8 +1477,9 @@ namespace Tests
                     }
                 }
             }
-            var MOVE_MODE_19 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
-            MOVE_MODE_19.SetFloat("VAL", 1f);
+            var MOVE_MODE_21 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
+            MOVE_MODE_21.SetFloat("VAL", 1f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator MENUUP(IAcknexObject MY, IAcknexObject THERE)
@@ -1480,6 +1499,7 @@ namespace Tests
             }
             var BIP01SND_7 = _world.AcknexObject.GetAcknexObject("BIP01SND");
             _world.PlaySound(BIP01SND_7, 0.5f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator MENUDOWN(IAcknexObject MY, IAcknexObject THERE)
@@ -1499,6 +1519,7 @@ namespace Tests
             }
             var BIP01SND_7 = _world.AcknexObject.GetAcknexObject("BIP01SND");
             _world.PlaySound(BIP01SND_7, 0.5f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SUBMENUUP(IAcknexObject MY, IAcknexObject THERE)
@@ -1518,6 +1539,7 @@ namespace Tests
             }
             var BIP01SND_7 = _world.AcknexObject.GetAcknexObject("BIP01SND");
             _world.PlaySound(BIP01SND_7, 0.5f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SUBMENUDOWN(IAcknexObject MY, IAcknexObject THERE)
@@ -1537,6 +1559,7 @@ namespace Tests
             }
             var BIP01SND_7 = _world.AcknexObject.GetAcknexObject("BIP01SND");
             _world.PlaySound(BIP01SND_7, 0.5f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator VOLUMEUP(IAcknexObject MY, IAcknexObject THERE)
@@ -1593,6 +1616,7 @@ namespace Tests
             TOUGHNESS_24.SetFloat("VAL", TOUGHNESS_23_val + 0.1f);
             var BIP01SND_25 = _world.AcknexObject.GetAcknexObject("BIP01SND");
             _world.PlaySound(BIP01SND_25, 0.5f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator VOLUMEDOWN(IAcknexObject MY, IAcknexObject THERE)
@@ -1649,6 +1673,7 @@ namespace Tests
             TOUGHNESS_24.SetFloat("VAL", TOUGHNESS_23_val + -0.1f);
             var BIP01SND_25 = _world.AcknexObject.GetAcknexObject("BIP01SND");
             _world.PlaySound(BIP01SND_25, 0.5f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator HIDEWEAPON(IAcknexObject MY, IAcknexObject THERE)
@@ -1694,6 +1719,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_6", null);
             var MAP_MODE_68 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             MAP_MODE_68.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SHOWWEAPON(IAcknexObject MY, IAcknexObject THERE)
@@ -1728,6 +1754,7 @@ namespace Tests
             var MAPMODE_29_val = MAPMODE_29.GetFloat("VAL");
             var MAP_MODE_30 = _world.GetObject(ObjectType.Skill, "MAP_MODE");
             MAP_MODE_30.SetFloat("VAL", MAPMODE_29_val);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TYPEGAME(IAcknexObject MY, IAcknexObject THERE)
@@ -1850,8 +1877,10 @@ namespace Tests
             SECCOUNTER_81.SetFloat("VAL", 0f);
             var MOVE_MODE_83 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
             MOVE_MODE_83.SetFloat("VAL", 1f);
-            //Unknown keyword: FADE_PAL
+            var BLACK_84 = _world.AcknexObject.GetAcknexObject("BLACK");
+            _world.FadePal(BLACK_84, 0f);
             //Unknown keyword: SAVE
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CHOOSEGAME(IAcknexObject MY, IAcknexObject THERE)
@@ -1894,6 +1923,7 @@ namespace Tests
                 }
             }
             //Unknown keyword: LOAD
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CHOOSESUBMENU(IAcknexObject MY, IAcknexObject THERE)
@@ -1979,18 +2009,20 @@ namespace Tests
                 }
                 yield break;
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SAVEERRORMESSAGE(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)2f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator EXITGAME(IAcknexObject MY, IAcknexObject THERE)
@@ -2007,6 +2039,7 @@ namespace Tests
                 }
             }
             Application.Quit();
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator RESETANSWER(IAcknexObject MY, IAcknexObject THERE)
@@ -2025,7 +2058,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator ASKFOREXIT(IAcknexObject MY, IAcknexObject THERE)
@@ -2056,37 +2089,38 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator ENDOFLEVEL(IAcknexObject MY, IAcknexObject THERE)
         {
             var MOVE_MODE_1 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
             MOVE_MODE_1.SetFloat("VAL", 1f);
-            //Unknown keyword: FADE_PAL
-            var BIP03SND_2 = _world.AcknexObject.GetAcknexObject("BIP03SND");
-            _world.PlaySound(BIP03SND_2, 0.5f);
-            var MENUITEM_5 = _world.GetObject(ObjectType.Skill, "MENUITEM");
-            MENUITEM_5.SetFloat("VAL", 3f);
-            var MAXMENUITEM_7 = _world.GetObject(ObjectType.Skill, "MAXMENUITEM");
-            MAXMENUITEM_7.SetFloat("VAL", 3f);
-            var HIDEMENU_8 = _world.AcknexObject.GetAcknexObject("HIDEMENU");
-            _world.AcknexObject.SetAcknexObject("IF_ESC", HIDEMENU_8);
+            var BLACK_2 = _world.AcknexObject.GetAcknexObject("BLACK");
+            _world.FadePal(BLACK_2, 0.4f);
+            var BIP03SND_4 = _world.AcknexObject.GetAcknexObject("BIP03SND");
+            _world.PlaySound(BIP03SND_4, 0.5f);
+            var MENUITEM_7 = _world.GetObject(ObjectType.Skill, "MENUITEM");
+            MENUITEM_7.SetFloat("VAL", 3f);
+            var MAXMENUITEM_9 = _world.GetObject(ObjectType.Skill, "MAXMENUITEM");
+            MAXMENUITEM_9.SetFloat("VAL", 3f);
+            var HIDEMENU_10 = _world.AcknexObject.GetAcknexObject("HIDEMENU");
+            _world.AcknexObject.SetAcknexObject("IF_ESC", HIDEMENU_10);
             _world.AcknexObject.SetAcknexObject("IF_CUU", null);
             _world.AcknexObject.SetAcknexObject("IF_CUD", null);
             _world.AcknexObject.SetAcknexObject("IF_CUR", null);
             _world.AcknexObject.SetAcknexObject("IF_CUL", null);
-            var MENUPANEL_18 = _world.AcknexObject.GetAcknexObject("MENUPANEL");
-            _world.AcknexObject.SetAcknexObject("PANELS.16", MENUPANEL_18);
-            var PLEASEWAITTEXT_21 = _world.AcknexObject.GetAcknexObject("PLEASEWAITTEXT");
-            _world.AcknexObject.SetAcknexObject("MESSAGES.16", PLEASEWAITTEXT_21);
-            var LEVEL_STRING_25 = _world.GetSynonymObject("LEVEL_STRING");
-            if (LEVEL_STRING_25 != null)
+            var MENUPANEL_20 = _world.AcknexObject.GetAcknexObject("MENUPANEL");
+            _world.AcknexObject.SetAcknexObject("PANELS.16", MENUPANEL_20);
+            var PLEASEWAITTEXT_23 = _world.AcknexObject.GetAcknexObject("PLEASEWAITTEXT");
+            _world.AcknexObject.SetAcknexObject("MESSAGES.16", PLEASEWAITTEXT_23);
+            var LEVEL_STRING_27 = _world.GetSynonymObject("LEVEL_STRING");
+            if (LEVEL_STRING_27 != null)
             {
                 goto CONT;
             }
-            var LOAD08STR_26 = _world.AcknexObject.GetAcknexObject("LOAD08STR");
-            _world.SetSynonymObject("MESSAGE_TEXT", LOAD08STR_26);
+            var LOAD08STR_28 = _world.AcknexObject.GetAcknexObject("LOAD08STR");
+            _world.SetSynonymObject("MESSAGE_TEXT", LOAD08STR_28);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
@@ -2098,8 +2132,8 @@ namespace Tests
                     }
                 }
             }
-            var PLAYER_HEALTH_29 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
-            PLAYER_HEALTH_29.SetFloat("VAL", 100f);
+            var PLAYER_HEALTH_31 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
+            PLAYER_HEALTH_31.SetFloat("VAL", 100f);
             //Unknown keyword: PLAY_CD
             {
                 var startTime = Time.time;
@@ -2115,8 +2149,8 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("MESSAGES.16", null);
             yield break;
             CONT:
-            var LOAD_STRING_37 = _world.GetSynonymObject("LOAD_STRING");
-            _world.SetSynonymObject("MESSAGE_TEXT", LOAD_STRING_37);
+            var LOAD_STRING_39 = _world.GetSynonymObject("LOAD_STRING");
+            _world.SetSynonymObject("MESSAGE_TEXT", LOAD_STRING_39);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
@@ -2137,6 +2171,7 @@ namespace Tests
                 }
             }
             Application.Quit();
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator EXPLOSIONSTART(IAcknexObject MY, IAcknexObject THERE)
@@ -2158,6 +2193,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator EXPLOSIONSMOKE(IAcknexObject MY, IAcknexObject THERE)
@@ -2168,6 +2204,7 @@ namespace Tests
             var EXPLOSIONEND_3 = _world.AcknexObject.GetAcknexObject("EXPLOSIONEND");
             var MY_5 = MY;
             MY_5.SetAcknexObject("EACH_CYCLE", EXPLOSIONEND_3);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator EXPLOSIONEND(IAcknexObject MY, IAcknexObject THERE)
@@ -2176,6 +2213,7 @@ namespace Tests
             MY_2.SetAcknexObject("EACH_CYCLE", null);
             var MY_5 = MY;
             MY_5.SetFloat("INVISIBLE", 1f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator EXPLODETARGET(IAcknexObject MY, IAcknexObject THERE)
@@ -2224,6 +2262,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator EXPLODEMISSILE(IAcknexObject MY, IAcknexObject THERE)
@@ -2312,15 +2351,16 @@ namespace Tests
             var MY_57 = MY;
             MY_57.SetFloat("PLAY", 1f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)4f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
             var EXPLOSION_ON_60 = _world.GetObject(ObjectType.Skill, "EXPLOSION_ON");
             EXPLOSION_ON_60.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator AIMMISSILE(IAcknexObject MY, IAcknexObject THERE)
@@ -2371,6 +2411,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator IMPLOSIONSTART(IAcknexObject MY, IAcknexObject THERE)
@@ -2399,6 +2440,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator IMPLOSIONCRUSH(IAcknexObject MY, IAcknexObject THERE)
@@ -2413,6 +2455,7 @@ namespace Tests
             MY_8.SetAcknexObject("EACH_CYCLE", IMPLOSIONFLARE_6);
             var MY_11 = MY;
             MY_11.SetFloat("PLAY", 1f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator IMPLOSIONFLARE(IAcknexObject MY, IAcknexObject THERE)
@@ -2425,6 +2468,7 @@ namespace Tests
             MY_5.SetAcknexObject("EACH_CYCLE", IMPLOSIONEND_3);
             var MY_8 = MY;
             MY_8.SetFloat("PLAY", 1f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator IMPLOSIONEND(IAcknexObject MY, IAcknexObject THERE)
@@ -2457,15 +2501,16 @@ namespace Tests
                 RENDER_MODE_24.SetFloat("VAL", 1f);
             }
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)4f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
             var EXPLOSION_ON_27 = _world.GetObject(ObjectType.Skill, "EXPLOSION_ON");
             EXPLOSION_ON_27.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator IMPLODEPARTICLE(IAcknexObject MY, IAcknexObject THERE)
@@ -2509,15 +2554,16 @@ namespace Tests
             var MY_42 = MY;
             MY_42.SetFloat("PLAY", 1f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)4f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
             var EXPLOSION_ON_45 = _world.GetObject(ObjectType.Skill, "EXPLOSION_ON");
             EXPLOSION_ON_45.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator BEAMREACT(IAcknexObject MY, IAcknexObject THERE)
@@ -2593,6 +2639,7 @@ namespace Tests
             PARTICLE_58.SetAcknexObject("EACH_CYCLE", LOCATEPARTICLE_56);
             var PARTICLE_61 = _world.GetSynonymObject("PARTICLE");
             PARTICLE_61.SetFloat("INVISIBLE", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator LOCATEPARTICLE(IAcknexObject MY, IAcknexObject THERE)
@@ -2703,6 +2750,7 @@ namespace Tests
                     }
                 }
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator LOCATEPLAYERPARTICLE(IAcknexObject MY, IAcknexObject THERE)
@@ -2748,6 +2796,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TIMEOUTPARTICLE(IAcknexObject MY, IAcknexObject THERE)
@@ -2776,6 +2825,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CHOOSEGRANADE(IAcknexObject MY, IAcknexObject THERE)
@@ -2831,6 +2881,7 @@ namespace Tests
             yield break;
             REFUSE:
             _world.SetSynonymObject("GRANADE", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CHOOSEMISSILE(IAcknexObject MY, IAcknexObject THERE)
@@ -2886,6 +2937,7 @@ namespace Tests
             yield break;
             REFUSE:
             _world.SetSynonymObject("MISSILE", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CHOOSEPARTICLE(IAcknexObject MY, IAcknexObject THERE)
@@ -2941,6 +2993,7 @@ namespace Tests
             yield break;
             REFUSE:
             _world.SetSynonymObject("PARTICLE", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CASTBLOOD(IAcknexObject MY, IAcknexObject THERE)
@@ -3006,6 +3059,7 @@ namespace Tests
             var dropped_44 = _world.Drop(BLOOD_43, MY, THERE);
             var BLOOD_47 = dropped_44;
             BLOOD_47.SetFloat("INVISIBLE", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKUPMEDKIT(IAcknexObject MY, IAcknexObject THERE)
@@ -3036,7 +3090,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKUPARMOUR(IAcknexObject MY, IAcknexObject THERE)
@@ -3067,7 +3121,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKUPMP5(IAcknexObject MY, IAcknexObject THERE)
@@ -3126,7 +3180,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKUPSTINGER(IAcknexObject MY, IAcknexObject THERE)
@@ -3178,7 +3232,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKUPQUANTUM(IAcknexObject MY, IAcknexObject THERE)
@@ -3230,7 +3284,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKAMMO(IAcknexObject MY, IAcknexObject THERE)
@@ -3268,6 +3322,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKGRANADE(IAcknexObject MY, IAcknexObject THERE)
@@ -3307,6 +3362,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKSTINGERAMMO(IAcknexObject MY, IAcknexObject THERE)
@@ -3344,6 +3400,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKQUANTUMAMMO(IAcknexObject MY, IAcknexObject THERE)
@@ -3381,6 +3438,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator FLASHREGION(IAcknexObject MY, IAcknexObject THERE)
@@ -3505,6 +3563,7 @@ namespace Tests
                 var IMPLODELIGHT_89 = _world.AcknexObject.GetAcknexObject("IMPLODELIGHT");
                 _world.AcknexObject.SetAcknexObject("EACH_TICK.9", IMPLODELIGHT_89);
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator IMPLODELIGHT(IAcknexObject MY, IAcknexObject THERE)
@@ -3767,6 +3826,7 @@ namespace Tests
             {
                 _world.AcknexObject.SetAcknexObject("EACH_TICK.9", null);
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator BOUNCE(IAcknexObject MY, IAcknexObject THERE)
@@ -3781,35 +3841,37 @@ namespace Tests
                 MY_8.SetFloat("SKILL2", temp_6);
             }
             var GRAN02SND_9 = _world.AcknexObject.GetAcknexObject("GRAN02SND");
-            _world.PlaySound(GRAN02SND_9, 0.7f, MY);
-            var MY_13 = MY;
-            var temp_14 = MY_13.GetFloat("SKILL1");
-            if (temp_14 == 0f)
+            var MY_11 = MY;
+            _world.PlaySound(GRAN02SND_9, 0.7f, MY_11);
+            var MY_14 = MY;
+            var temp_15 = MY_14.GetFloat("SKILL1");
+            if (temp_15 == 0f)
             {
                 goto YWALL;
             }
-            var MY_16 = MY;
-            var MY_18 = MY;
-            var temp_19 = MY_18.GetFloat("ANGLE");
-            var TWO_PI_20 = _world.GetObject(ObjectType.Skill, "TWO_PI");
-            var TWO_PI_20_val = TWO_PI_20.GetFloat("VAL");
-            var MY_23 = MY;
-            var temp_24 = MY_23.GetFloat("SKILL2");
-            MY_16.SetFloat("ANGLE", TWO_PI_20_val - temp_24);
-            var MY_27 = MY;
-            MY_27.SetFloat("SKILL1", 0f);
+            var MY_17 = MY;
+            var MY_19 = MY;
+            var temp_20 = MY_19.GetFloat("ANGLE");
+            var TWO_PI_21 = _world.GetObject(ObjectType.Skill, "TWO_PI");
+            var TWO_PI_21_val = TWO_PI_21.GetFloat("VAL");
+            var MY_24 = MY;
+            var temp_25 = MY_24.GetFloat("SKILL2");
+            MY_17.SetFloat("ANGLE", TWO_PI_21_val - temp_25);
+            var MY_28 = MY;
+            MY_28.SetFloat("SKILL1", 0f);
             yield break;
             YWALL:
-            var MY_29 = MY;
-            var MY_31 = MY;
-            var temp_32 = MY_31.GetFloat("ANGLE");
-            var PI_33 = _world.GetObject(ObjectType.Skill, "PI");
-            var PI_33_val = PI_33.GetFloat("VAL");
-            var MY_36 = MY;
-            var temp_37 = MY_36.GetFloat("SKILL2");
-            MY_29.SetFloat("ANGLE", PI_33_val - temp_37);
-            var MY_40 = MY;
-            MY_40.SetFloat("SKILL1", 1f);
+            var MY_30 = MY;
+            var MY_32 = MY;
+            var temp_33 = MY_32.GetFloat("ANGLE");
+            var PI_34 = _world.GetObject(ObjectType.Skill, "PI");
+            var PI_34_val = PI_34.GetFloat("VAL");
+            var MY_37 = MY;
+            var temp_38 = MY_37.GetFloat("SKILL2");
+            MY_30.SetFloat("ANGLE", PI_34_val - temp_38);
+            var MY_41 = MY;
+            MY_41.SetFloat("SKILL1", 1f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator FREEFALL(IAcknexObject MY, IAcknexObject THERE)
@@ -3869,48 +3931,50 @@ namespace Tests
                 goto STOP;
             }
             var GRAN02SND_47 = _world.AcknexObject.GetAcknexObject("GRAN02SND");
-            _world.PlaySound(GRAN02SND_47, 0.7f, MY);
-            var MY_50 = MY;
-            var MY_52 = MY;
-            var temp_53 = MY_52.GetFloat("VSPEED");
-            var MY_55 = MY;
-            var temp_56 = MY_55.GetFloat("VSPEED");
-            MY_50.SetFloat("VSPEED", temp_56 * -0.2f);
+            var MY_49 = MY;
+            _world.PlaySound(GRAN02SND_47, 0.7f, MY_49);
+            var MY_51 = MY;
+            var MY_53 = MY;
+            var temp_54 = MY_53.GetFloat("VSPEED");
+            var MY_56 = MY;
+            var temp_57 = MY_56.GetFloat("VSPEED");
+            MY_51.SetFloat("VSPEED", temp_57 * -0.2f);
             yield break;
             STOP:
-            var MY_62 = MY;
-            MY_62.SetFloat("GROUND", 0f);
-            var MY_65 = MY;
-            MY_65.SetFloat("HEIGHT", -0.05f);
-            var MY_68 = MY;
-            MY_68.SetFloat("VSPEED", 0f);
+            var MY_63 = MY;
+            MY_63.SetFloat("GROUND", 0f);
+            var MY_66 = MY;
+            MY_66.SetFloat("HEIGHT", -0.05f);
+            var MY_69 = MY;
+            MY_69.SetFloat("VSPEED", 0f);
             COAST:
-            var MY_70 = MY;
-            var MY_72 = MY;
-            var temp_73 = MY_72.GetFloat("SPEED");
-            var MY_75 = MY;
-            var temp_76 = MY_75.GetFloat("SPEED");
-            MY_70.SetFloat("SPEED", temp_76 * 0.7f);
-            var MY_81 = MY;
-            var temp_82 = MY_81.GetFloat("SPEED");
-            if (temp_82 < 0.1f)
+            var MY_71 = MY;
+            var MY_73 = MY;
+            var temp_74 = MY_73.GetFloat("SPEED");
+            var MY_76 = MY;
+            var temp_77 = MY_76.GetFloat("SPEED");
+            MY_71.SetFloat("SPEED", temp_77 * 0.7f);
+            var MY_82 = MY;
+            var temp_83 = MY_82.GetFloat("SPEED");
+            if (temp_83 < 0.1f)
             {
                 goto FULLSTOP;
             }
             yield break;
             FULLSTOP:
-            var GRAN0TEX_83 = _world.AcknexObject.GetAcknexObject("GRAN0TEX");
-            var MY_85 = MY;
-            MY_85.SetAcknexObject("TEXTURE", GRAN0TEX_83);
-            var MY_88 = MY;
-            MY_88.SetFloat("SPEED", 0f);
-            var MY_91 = MY;
-            MY_91.SetAcknexObject("IF_HIT", null);
-            var MY_94 = MY;
-            MY_94.SetFloat("SKILL5", 32f);
-            var EXPLOSIONTIMER_95 = _world.AcknexObject.GetAcknexObject("EXPLOSIONTIMER");
-            var MY_97 = MY;
-            MY_97.SetAcknexObject("EACH_TICK", EXPLOSIONTIMER_95);
+            var GRAN0TEX_84 = _world.AcknexObject.GetAcknexObject("GRAN0TEX");
+            var MY_86 = MY;
+            MY_86.SetAcknexObject("TEXTURE", GRAN0TEX_84);
+            var MY_89 = MY;
+            MY_89.SetFloat("SPEED", 0f);
+            var MY_92 = MY;
+            MY_92.SetAcknexObject("IF_HIT", null);
+            var MY_95 = MY;
+            MY_95.SetFloat("SKILL5", 32f);
+            var EXPLOSIONTIMER_96 = _world.AcknexObject.GetAcknexObject("EXPLOSIONTIMER");
+            var MY_98 = MY;
+            MY_98.SetAcknexObject("EACH_TICK", EXPLOSIONTIMER_96);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator EXPLOSIONTIMER(IAcknexObject MY, IAcknexObject THERE)
@@ -3930,6 +3994,7 @@ namespace Tests
             var EXPLODEMISSILE_13 = _world.AcknexObject.GetAcknexObject("EXPLODEMISSILE");
             var MY_15 = MY;
             MY_15.SetAcknexObject("EACH_CYCLE", EXPLODEMISSILE_13);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator INIT_MOVE(IAcknexObject MY, IAcknexObject THERE)
@@ -3948,7 +4013,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator MOVE_ME(IAcknexObject MY, IAcknexObject THERE)
@@ -4743,6 +4808,7 @@ namespace Tests
                 var PLAYER_ARC_495_val = PLAYER_ARC_495.GetFloat("VAL");
                 PLAYER_ARC_493.SetFloat("VAL", PLAYER_ARC_495_val + 0.1f);
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SET_WALKING(IAcknexObject MY, IAcknexObject THERE)
@@ -4767,6 +4833,7 @@ namespace Tests
             GRAVITY_15.SetFloat("VAL", -0.15f);
             var MOVE_ME_16 = _world.AcknexObject.GetAcknexObject("MOVE_ME");
             _world.AcknexObject.SetAcknexObject("EACH_TICK.16", MOVE_ME_16);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SET_SWIMMING(IAcknexObject MY, IAcknexObject THERE)
@@ -4791,6 +4858,7 @@ namespace Tests
             GRAVITY_15.SetFloat("VAL", -0.15f);
             var MOVE_ME_16 = _world.AcknexObject.GetAcknexObject("MOVE_ME");
             _world.AcknexObject.SetAcknexObject("EACH_TICK.16", MOVE_ME_16);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SET_DIVING(IAcknexObject MY, IAcknexObject THERE)
@@ -4815,6 +4883,7 @@ namespace Tests
             GRAVITY_15.SetFloat("VAL", 0f);
             var MOVE_ME_16 = _world.AcknexObject.GetAcknexObject("MOVE_ME");
             _world.AcknexObject.SetAcknexObject("EACH_TICK.16", MOVE_ME_16);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SET_DEATH(IAcknexObject MY, IAcknexObject THERE)
@@ -4839,6 +4908,7 @@ namespace Tests
             GRAVITY_15.SetFloat("VAL", -0.35f);
             var MOVE_ME_16 = _world.AcknexObject.GetAcknexObject("MOVE_ME");
             _world.AcknexObject.SetAcknexObject("EACH_TICK.16", MOVE_ME_16);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SET_MOVING(IAcknexObject MY, IAcknexObject THERE)
@@ -4906,6 +4976,7 @@ namespace Tests
                 }
                 yield break;
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator STOP_MOVING(IAcknexObject MY, IAcknexObject THERE)
@@ -4918,16 +4989,21 @@ namespace Tests
             PLAYER_VZ_5.SetFloat("VAL", 0f);
             var PLAYER_VROT_7 = _world.GetObject(ObjectType.Skill, "PLAYER_VROT");
             PLAYER_VROT_7.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SET_BLUE(IAcknexObject MY, IAcknexObject THERE)
         {
-            //Unknown keyword: FADE_PAL
+            var PAL_BLUE_0 = _world.AcknexObject.GetAcknexObject("PAL_BLUE");
+            _world.FadePal(PAL_BLUE_0, 0.7f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator RESET_BLUE(IAcknexObject MY, IAcknexObject THERE)
         {
-            //Unknown keyword: FADE_PAL
+            var PAL_BLUE_0 = _world.AcknexObject.GetAcknexObject("PAL_BLUE");
+            _world.FadePal(PAL_BLUE_0, 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator ENTER_WATER(IAcknexObject MY, IAcknexObject THERE)
@@ -4944,7 +5020,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator LEAVE_WATER(IAcknexObject MY, IAcknexObject THERE)
@@ -4959,7 +5035,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator DIVE_UP(IAcknexObject MY, IAcknexObject THERE)
@@ -4976,7 +5052,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator REGIO_DIVE(IAcknexObject MY, IAcknexObject THERE)
@@ -5040,7 +5116,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator REGIO_ARISE(IAcknexObject MY, IAcknexObject THERE)
@@ -5113,7 +5189,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator HITPLAYER(IAcknexObject MY, IAcknexObject THERE)
@@ -5239,6 +5315,7 @@ namespace Tests
                 var REDOUT_91 = _world.AcknexObject.GetAcknexObject("REDOUT");
                 _world.AcknexObject.SetAcknexObject("EACH_TICK.8", REDOUT_91);
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REDOUT(IAcknexObject MY, IAcknexObject THERE)
@@ -5251,27 +5328,31 @@ namespace Tests
             var PLAYER_ARC_4_val = PLAYER_ARC_4.GetFloat("VAL");
             var PLAYER_ARC_5 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
             PLAYER_ARC_5.SetFloat("VAL", PLAYER_ARC_4_val + -0.01f);
-            //Unknown keyword: FADE_PAL
-            var HITVALUE_6 = _world.GetObject(ObjectType.Skill, "HITVALUE");
-            var HITVALUE_6_val = HITVALUE_6.GetFloat("VAL");
+            var PAL_RED_6 = _world.AcknexObject.GetAcknexObject("PAL_RED");
             var REDVALUE_7 = _world.GetObject(ObjectType.Skill, "REDVALUE");
             var REDVALUE_7_val = REDVALUE_7.GetFloat("VAL");
-            if (REDVALUE_7_val < HITVALUE_6_val)
+            _world.FadePal(PAL_RED_6, REDVALUE_7_val);
+            var HITVALUE_8 = _world.GetObject(ObjectType.Skill, "HITVALUE");
+            var HITVALUE_8_val = HITVALUE_8.GetFloat("VAL");
+            var REDVALUE_9 = _world.GetObject(ObjectType.Skill, "REDVALUE");
+            var REDVALUE_9_val = REDVALUE_9.GetFloat("VAL");
+            if (REDVALUE_9_val < HITVALUE_8_val)
             {
                 yield break;
             }
-            var PLAYER_HEALTH_9 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
-            var PLAYER_HEALTH_9_val = PLAYER_HEALTH_9.GetFloat("VAL");
-            if (PLAYER_HEALTH_9_val < 1f)
+            var PLAYER_HEALTH_11 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
+            var PLAYER_HEALTH_11_val = PLAYER_HEALTH_11.GetFloat("VAL");
+            if (PLAYER_HEALTH_11_val < 1f)
             {
                 goto KILL;
             }
-            var REDIN_10 = _world.AcknexObject.GetAcknexObject("REDIN");
-            _world.AcknexObject.SetAcknexObject("EACH_TICK.8", REDIN_10);
+            var REDIN_12 = _world.AcknexObject.GetAcknexObject("REDIN");
+            _world.AcknexObject.SetAcknexObject("EACH_TICK.8", REDIN_12);
             yield break;
             KILL:
-            var KILLPLAYER_13 = _world.AcknexObject.GetAcknexObject("KILLPLAYER");
-            _world.AcknexObject.SetAcknexObject("EACH_TICK.8", KILLPLAYER_13);
+            var KILLPLAYER_15 = _world.AcknexObject.GetAcknexObject("KILLPLAYER");
+            _world.AcknexObject.SetAcknexObject("EACH_TICK.8", KILLPLAYER_15);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REDIN(IAcknexObject MY, IAcknexObject THERE)
@@ -5284,23 +5365,26 @@ namespace Tests
             var PLAYER_ARC_4_val = PLAYER_ARC_4.GetFloat("VAL");
             var PLAYER_ARC_5 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
             PLAYER_ARC_5.SetFloat("VAL", PLAYER_ARC_4_val + 0.01f);
-            //Unknown keyword: FADE_PAL
+            var PAL_RED_6 = _world.AcknexObject.GetAcknexObject("PAL_RED");
             var REDVALUE_7 = _world.GetObject(ObjectType.Skill, "REDVALUE");
             var REDVALUE_7_val = REDVALUE_7.GetFloat("VAL");
-            if (REDVALUE_7_val < 0f)
+            _world.FadePal(PAL_RED_6, REDVALUE_7_val);
+            var REDVALUE_9 = _world.GetObject(ObjectType.Skill, "REDVALUE");
+            var REDVALUE_9_val = REDVALUE_9.GetFloat("VAL");
+            if (REDVALUE_9_val < 0f)
             {
-                var REDVALUE_9 = _world.GetObject(ObjectType.Skill, "REDVALUE");
-                REDVALUE_9.SetFloat("VAL", 0f);
+                var REDVALUE_11 = _world.GetObject(ObjectType.Skill, "REDVALUE");
+                REDVALUE_11.SetFloat("VAL", 0f);
             }
-            var REDVALUE_11 = _world.GetObject(ObjectType.Skill, "REDVALUE");
-            var REDVALUE_11_val = REDVALUE_11.GetFloat("VAL");
-            if (REDVALUE_11_val > 0f)
+            var REDVALUE_13 = _world.GetObject(ObjectType.Skill, "REDVALUE");
+            var REDVALUE_13_val = REDVALUE_13.GetFloat("VAL");
+            if (REDVALUE_13_val > 0f)
             {
                 yield break;
             }
-            var UNDERWATER_13 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
-            var UNDERWATER_13_val = UNDERWATER_13.GetFloat("VAL");
-            if (UNDERWATER_13_val == 0f)
+            var UNDERWATER_15 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
+            var UNDERWATER_15_val = UNDERWATER_15.GetFloat("VAL");
+            if (UNDERWATER_15_val == 0f)
             {
                 goto NOWATER;
             }
@@ -5315,16 +5399,17 @@ namespace Tests
                     }
                 }
             }
-            var PLAYER_ARC_15 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
-            PLAYER_ARC_15.SetFloat("VAL", 1.3f);
+            var PLAYER_ARC_17 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
+            PLAYER_ARC_17.SetFloat("VAL", 1.3f);
             goto FINISH;
             NOWATER:
-            var PLAYER_ARC_17 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
-            PLAYER_ARC_17.SetFloat("VAL", 1f);
+            var PLAYER_ARC_19 = _world.GetObject(ObjectType.Skill, "PLAYER_ARC");
+            PLAYER_ARC_19.SetFloat("VAL", 1f);
             FINISH:
-            var PLAYER_HIT_19 = _world.GetObject(ObjectType.Skill, "PLAYER_HIT");
-            PLAYER_HIT_19.SetFloat("VAL", 0f);
+            var PLAYER_HIT_21 = _world.GetObject(ObjectType.Skill, "PLAYER_HIT");
+            PLAYER_HIT_21.SetFloat("VAL", 0f);
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator FLASHPLAYER(IAcknexObject MY, IAcknexObject THERE)
@@ -5393,6 +5478,7 @@ namespace Tests
             }
             var FLASHOUT_53 = _world.AcknexObject.GetAcknexObject("FLASHOUT");
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", FLASHOUT_53);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator FLASHOUT(IAcknexObject MY, IAcknexObject THERE)
@@ -5401,27 +5487,31 @@ namespace Tests
             var REDVALUE_1_val = REDVALUE_1.GetFloat("VAL");
             var REDVALUE_2 = _world.GetObject(ObjectType.Skill, "REDVALUE");
             REDVALUE_2.SetFloat("VAL", REDVALUE_1_val + 0.1f);
-            //Unknown keyword: FADE_PAL
-            var HITVALUE_3 = _world.GetObject(ObjectType.Skill, "HITVALUE");
-            var HITVALUE_3_val = HITVALUE_3.GetFloat("VAL");
+            var PAL_FLASH_3 = _world.AcknexObject.GetAcknexObject("PAL_FLASH");
             var REDVALUE_4 = _world.GetObject(ObjectType.Skill, "REDVALUE");
             var REDVALUE_4_val = REDVALUE_4.GetFloat("VAL");
-            if (REDVALUE_4_val < HITVALUE_3_val)
+            _world.FadePal(PAL_FLASH_3, REDVALUE_4_val);
+            var HITVALUE_5 = _world.GetObject(ObjectType.Skill, "HITVALUE");
+            var HITVALUE_5_val = HITVALUE_5.GetFloat("VAL");
+            var REDVALUE_6 = _world.GetObject(ObjectType.Skill, "REDVALUE");
+            var REDVALUE_6_val = REDVALUE_6.GetFloat("VAL");
+            if (REDVALUE_6_val < HITVALUE_5_val)
             {
                 yield break;
             }
-            var PLAYER_HEALTH_6 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
-            var PLAYER_HEALTH_6_val = PLAYER_HEALTH_6.GetFloat("VAL");
-            if (PLAYER_HEALTH_6_val < 1f)
+            var PLAYER_HEALTH_8 = _world.GetObject(ObjectType.Skill, "PLAYER_HEALTH");
+            var PLAYER_HEALTH_8_val = PLAYER_HEALTH_8.GetFloat("VAL");
+            if (PLAYER_HEALTH_8_val < 1f)
             {
                 goto KILL;
             }
-            var FLASHIN_7 = _world.AcknexObject.GetAcknexObject("FLASHIN");
-            _world.AcknexObject.SetAcknexObject("EACH_TICK.8", FLASHIN_7);
+            var FLASHIN_9 = _world.AcknexObject.GetAcknexObject("FLASHIN");
+            _world.AcknexObject.SetAcknexObject("EACH_TICK.8", FLASHIN_9);
             yield break;
             KILL:
-            var KILLPLAYER_10 = _world.AcknexObject.GetAcknexObject("KILLPLAYER");
-            _world.AcknexObject.SetAcknexObject("EACH_TICK.8", KILLPLAYER_10);
+            var KILLPLAYER_12 = _world.AcknexObject.GetAcknexObject("KILLPLAYER");
+            _world.AcknexObject.SetAcknexObject("EACH_TICK.8", KILLPLAYER_12);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator FLASHIN(IAcknexObject MY, IAcknexObject THERE)
@@ -5430,23 +5520,26 @@ namespace Tests
             var REDVALUE_1_val = REDVALUE_1.GetFloat("VAL");
             var REDVALUE_2 = _world.GetObject(ObjectType.Skill, "REDVALUE");
             REDVALUE_2.SetFloat("VAL", REDVALUE_1_val + -0.1f);
-            //Unknown keyword: FADE_PAL
+            var PAL_FLASH_3 = _world.AcknexObject.GetAcknexObject("PAL_FLASH");
             var REDVALUE_4 = _world.GetObject(ObjectType.Skill, "REDVALUE");
             var REDVALUE_4_val = REDVALUE_4.GetFloat("VAL");
-            if (REDVALUE_4_val < 0f)
+            _world.FadePal(PAL_FLASH_3, REDVALUE_4_val);
+            var REDVALUE_6 = _world.GetObject(ObjectType.Skill, "REDVALUE");
+            var REDVALUE_6_val = REDVALUE_6.GetFloat("VAL");
+            if (REDVALUE_6_val < 0f)
             {
-                var REDVALUE_6 = _world.GetObject(ObjectType.Skill, "REDVALUE");
-                REDVALUE_6.SetFloat("VAL", 0f);
+                var REDVALUE_8 = _world.GetObject(ObjectType.Skill, "REDVALUE");
+                REDVALUE_8.SetFloat("VAL", 0f);
             }
-            var REDVALUE_8 = _world.GetObject(ObjectType.Skill, "REDVALUE");
-            var REDVALUE_8_val = REDVALUE_8.GetFloat("VAL");
-            if (REDVALUE_8_val > 0f)
+            var REDVALUE_10 = _world.GetObject(ObjectType.Skill, "REDVALUE");
+            var REDVALUE_10_val = REDVALUE_10.GetFloat("VAL");
+            if (REDVALUE_10_val > 0f)
             {
                 yield break;
             }
-            var UNDERWATER_10 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
-            var UNDERWATER_10_val = UNDERWATER_10.GetFloat("VAL");
-            if (UNDERWATER_10_val != 0f)
+            var UNDERWATER_12 = _world.GetObject(ObjectType.Skill, "UNDERWATER");
+            var UNDERWATER_12_val = UNDERWATER_12.GetFloat("VAL");
+            if (UNDERWATER_12_val != 0f)
             {
                 {
                     var enumerator = SET_BLUE(MY, THERE);
@@ -5461,16 +5554,17 @@ namespace Tests
                 }
             }
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", null);
-            var PLAYER_HIT_15 = _world.GetObject(ObjectType.Skill, "PLAYER_HIT");
-            PLAYER_HIT_15.SetFloat("VAL", 0f);
+            var PLAYER_HIT_17 = _world.GetObject(ObjectType.Skill, "PLAYER_HIT");
+            PLAYER_HIT_17.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator HITPLAYERDELAY(IAcknexObject MY, IAcknexObject THERE)
         {
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)8f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)8f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -5487,6 +5581,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator KILLPLAYER(IAcknexObject MY, IAcknexObject THERE)
@@ -5502,9 +5597,10 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_ESC", null);
             var SELECTNONE_4 = _world.AcknexObject.GetAcknexObject("SELECTNONE");
             _world.AcknexObject.SetAcknexObject("EACH_SEC.1", SELECTNONE_4);
-            //Unknown keyword: FADE_PAL
-            var DEATH00SND_7 = _world.AcknexObject.GetAcknexObject("DEATH00SND");
-            _world.PlaySound(DEATH00SND_7, 1f);
+            var PAL_RED_7 = _world.AcknexObject.GetAcknexObject("PAL_RED");
+            _world.FadePal(PAL_RED_7, 0.5f);
+            var DEATH00SND_9 = _world.AcknexObject.GetAcknexObject("DEATH00SND");
+            _world.PlaySound(DEATH00SND_9, 1f);
             {
                 var enumerator = SET_DEATH(MY, THERE);
                 while (enumerator.MoveNext())
@@ -5516,38 +5612,39 @@ namespace Tests
                     }
                 }
             }
-            var DEATHCOUNTER_10 = _world.GetObject(ObjectType.Skill, "DEATHCOUNTER");
-            DEATHCOUNTER_10.SetFloat("VAL", 0f);
+            var DEATHCOUNTER_12 = _world.GetObject(ObjectType.Skill, "DEATHCOUNTER");
+            DEATHCOUNTER_12.SetFloat("VAL", 0f);
             yield break;
             DEATH:
-            var DEATHCOUNTER_12 = _world.GetObject(ObjectType.Skill, "DEATHCOUNTER");
-            var DEATHCOUNTER_12_val = DEATHCOUNTER_12.GetFloat("VAL");
-            var DEATHCOUNTER_13 = _world.GetObject(ObjectType.Skill, "DEATHCOUNTER");
-            DEATHCOUNTER_13.SetFloat("VAL", DEATHCOUNTER_12_val + 1f);
-            var PLAYER_VX_14 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
-            var PLAYER_VX_15 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
-            var PLAYER_VX_15_val = PLAYER_VX_15.GetFloat("VAL");
+            var DEATHCOUNTER_14 = _world.GetObject(ObjectType.Skill, "DEATHCOUNTER");
+            var DEATHCOUNTER_14_val = DEATHCOUNTER_14.GetFloat("VAL");
+            var DEATHCOUNTER_15 = _world.GetObject(ObjectType.Skill, "DEATHCOUNTER");
+            DEATHCOUNTER_15.SetFloat("VAL", DEATHCOUNTER_14_val + 1f);
             var PLAYER_VX_16 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
-            var PLAYER_VX_16_val = PLAYER_VX_16.GetFloat("VAL");
-            PLAYER_VX_14.SetFloat("VAL", PLAYER_VX_16_val * 0.5f);
-            var PLAYER_VY_19 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
-            var PLAYER_VY_20 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
-            var PLAYER_VY_20_val = PLAYER_VY_20.GetFloat("VAL");
+            var PLAYER_VX_17 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
+            var PLAYER_VX_17_val = PLAYER_VX_17.GetFloat("VAL");
+            var PLAYER_VX_18 = _world.GetObject(ObjectType.Skill, "PLAYER_VX");
+            var PLAYER_VX_18_val = PLAYER_VX_18.GetFloat("VAL");
+            PLAYER_VX_16.SetFloat("VAL", PLAYER_VX_18_val * 0.5f);
             var PLAYER_VY_21 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
-            var PLAYER_VY_21_val = PLAYER_VY_21.GetFloat("VAL");
-            PLAYER_VY_19.SetFloat("VAL", PLAYER_VY_21_val * 0.5f);
-            var DEATHCOUNTER_25 = _world.GetObject(ObjectType.Skill, "DEATHCOUNTER");
-            var DEATHCOUNTER_25_val = DEATHCOUNTER_25.GetFloat("VAL");
-            if (DEATHCOUNTER_25_val < 48f)
+            var PLAYER_VY_22 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
+            var PLAYER_VY_22_val = PLAYER_VY_22.GetFloat("VAL");
+            var PLAYER_VY_23 = _world.GetObject(ObjectType.Skill, "PLAYER_VY");
+            var PLAYER_VY_23_val = PLAYER_VY_23.GetFloat("VAL");
+            PLAYER_VY_21.SetFloat("VAL", PLAYER_VY_23_val * 0.5f);
+            var DEATHCOUNTER_27 = _world.GetObject(ObjectType.Skill, "DEATHCOUNTER");
+            var DEATHCOUNTER_27_val = DEATHCOUNTER_27.GetFloat("VAL");
+            if (DEATHCOUNTER_27_val < 48f)
             {
                 yield break;
             }
-            var DEATHCOUNTER_27 = _world.GetObject(ObjectType.Skill, "DEATHCOUNTER");
-            DEATHCOUNTER_27.SetFloat("VAL", 0f);
+            var DEATHCOUNTER_29 = _world.GetObject(ObjectType.Skill, "DEATHCOUNTER");
+            DEATHCOUNTER_29.SetFloat("VAL", 0f);
             _world.SetSynonymObject("LEVEL_STRING", null);
-            var ENDOFLEVEL_30 = _world.AcknexObject.GetAcknexObject("ENDOFLEVEL");
-            _world.AcknexObject.SetAcknexObject("EACH_SEC.1", ENDOFLEVEL_30);
+            var ENDOFLEVEL_32 = _world.AcknexObject.GetAcknexObject("ENDOFLEVEL");
+            _world.AcknexObject.SetAcknexObject("EACH_SEC.1", ENDOFLEVEL_32);
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator FINISHPLAYER(IAcknexObject MY, IAcknexObject THERE)
@@ -5558,6 +5655,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("EACH_TICK.8", KILLPLAYER_3);
             var EXP01SND_6 = _world.AcknexObject.GetAcknexObject("EXP01SND");
             _world.PlaySound(EXP01SND_6, 0.7f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TOGGLEGODMODE(IAcknexObject MY, IAcknexObject THERE)
@@ -5639,7 +5737,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator SETCKEY(IAcknexObject MY, IAcknexObject THERE)
@@ -5648,6 +5746,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_C", SETGKEY_0);
             var GODCOUNTER_3 = _world.GetObject(ObjectType.Skill, "GODCOUNTER");
             GODCOUNTER_3.SetFloat("VAL", 3f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SETGKEY(IAcknexObject MY, IAcknexObject THERE)
@@ -5657,6 +5756,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_G", SETOKEY_2);
             var GODCOUNTER_5 = _world.GetObject(ObjectType.Skill, "GODCOUNTER");
             GODCOUNTER_5.SetFloat("VAL", 3f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SETOKEY(IAcknexObject MY, IAcknexObject THERE)
@@ -5666,6 +5766,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_O", SETDKEY_2);
             var GODCOUNTER_5 = _world.GetObject(ObjectType.Skill, "GODCOUNTER");
             GODCOUNTER_5.SetFloat("VAL", 3f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SETDKEY(IAcknexObject MY, IAcknexObject THERE)
@@ -5675,6 +5776,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_D", TOGGLEGODMODE_2);
             var GODCOUNTER_5 = _world.GetObject(ObjectType.Skill, "GODCOUNTER");
             GODCOUNTER_5.SetFloat("VAL", 3f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator FIRE(IAcknexObject MY, IAcknexObject THERE)
@@ -5961,6 +6063,7 @@ namespace Tests
             FINISH:
             var GUNFIRING_147 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
             GUNFIRING_147.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator BURST(IAcknexObject MY, IAcknexObject THERE)
@@ -6255,6 +6358,7 @@ namespace Tests
             FINISH:
             var GUNFIRING_144 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
             GUNFIRING_144.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator THROW(IAcknexObject MY, IAcknexObject THERE)
@@ -6516,6 +6620,7 @@ namespace Tests
             FINISH:
             var GUNFIRING_159 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
             GUNFIRING_159.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator LAUNCH(IAcknexObject MY, IAcknexObject THERE)
@@ -6816,6 +6921,7 @@ namespace Tests
             FINISH:
             var GUNFIRING_225 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
             GUNFIRING_225.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator BEAM(IAcknexObject MY, IAcknexObject THERE)
@@ -7078,6 +7184,7 @@ namespace Tests
             FINISH:
             var GUNFIRING_206 = _world.GetObject(ObjectType.Skill, "GUNFIRING");
             GUNFIRING_206.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator RAISE(IAcknexObject MY, IAcknexObject THERE)
@@ -7115,9 +7222,9 @@ namespace Tests
             var PLAYER_TILT_36_val = PLAYER_TILT_36.GetFloat("VAL");
             MY_GUN_29.SetFloat("HEIGHT", PLAYER_Z_33_val - (PLAYER_TILT_36_val - 1f) * 0.844f - 1.9f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -7155,9 +7262,9 @@ namespace Tests
             var PLAYER_TILT_81_val = PLAYER_TILT_81.GetFloat("VAL");
             MY_GUN_74.SetFloat("HEIGHT", PLAYER_Z_78_val - (PLAYER_TILT_81_val - 1f) * 0.844f - 1.6f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -7195,9 +7302,9 @@ namespace Tests
             var PLAYER_TILT_126_val = PLAYER_TILT_126.GetFloat("VAL");
             MY_GUN_119.SetFloat("HEIGHT", PLAYER_Z_123_val - (PLAYER_TILT_126_val - 1f) * 0.844f - 1.45f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -7235,9 +7342,9 @@ namespace Tests
             var PLAYER_TILT_171_val = PLAYER_TILT_171.GetFloat("VAL");
             MY_GUN_164.SetFloat("HEIGHT", PLAYER_Z_168_val - (PLAYER_TILT_171_val - 1f) * 0.844f - 1.35f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -7247,13 +7354,14 @@ namespace Tests
             var MY_GUN_185 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_185.SetFloat("INVISIBLE", 1f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator LOWER(IAcknexObject MY, IAcknexObject THERE)
@@ -7291,9 +7399,9 @@ namespace Tests
             var PLAYER_TILT_36_val = PLAYER_TILT_36.GetFloat("VAL");
             MY_GUN_29.SetFloat("HEIGHT", PLAYER_Z_33_val - (PLAYER_TILT_36_val - 1f) * 0.844f - 1.35f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -7331,9 +7439,9 @@ namespace Tests
             var PLAYER_TILT_81_val = PLAYER_TILT_81.GetFloat("VAL");
             MY_GUN_74.SetFloat("HEIGHT", PLAYER_Z_78_val - (PLAYER_TILT_81_val - 1f) * 0.844f - 1.45f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -7371,9 +7479,9 @@ namespace Tests
             var PLAYER_TILT_126_val = PLAYER_TILT_126.GetFloat("VAL");
             MY_GUN_119.SetFloat("HEIGHT", PLAYER_Z_123_val - (PLAYER_TILT_126_val - 1f) * 0.844f - 1.6f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -7411,9 +7519,9 @@ namespace Tests
             var PLAYER_TILT_171_val = PLAYER_TILT_171.GetFloat("VAL");
             MY_GUN_164.SetFloat("HEIGHT", PLAYER_Z_168_val - (PLAYER_TILT_171_val - 1f) * 0.844f - 1.9f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -7423,24 +7531,27 @@ namespace Tests
             var MY_GUN_185 = _world.GetSynonymObject("MY_GUN");
             MY_GUN_185.SetFloat("INVISIBLE", 1f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TARGETON(IAcknexObject MY, IAcknexObject THERE)
         {
             var TARGETOVL_0 = _world.AcknexObject.GetAcknexObject("TARGETOVL");
             _world.AcknexObject.SetAcknexObject("LAYERS.16", TARGETOVL_0);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TARGETOFF(IAcknexObject MY, IAcknexObject THERE)
         {
             _world.AcknexObject.SetAcknexObject("LAYERS.16", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SELECTNONE(IAcknexObject MY, IAcknexObject THERE)
@@ -7531,9 +7642,9 @@ namespace Tests
             }
             WAITING:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)16f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)16f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -7568,6 +7679,7 @@ namespace Tests
             GUN_ON_70.SetFloat("VAL", 0f);
             var PLAYER_RESULT_72 = _world.GetObject(ObjectType.Skill, "PLAYER_RESULT");
             PLAYER_RESULT_72.SetFloat("VAL", -1f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SELECTTRICORDER(IAcknexObject MY, IAcknexObject THERE)
@@ -7702,9 +7814,9 @@ namespace Tests
             }
             WAITING:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)8f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)8f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -7733,9 +7845,9 @@ namespace Tests
             }
             WAITING1:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -7782,6 +7894,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_101);
             var GUN_ON_104 = _world.GetObject(ObjectType.Skill, "GUN_ON");
             GUN_ON_104.SetFloat("VAL", 1f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SELECTMP5(IAcknexObject MY, IAcknexObject THERE)
@@ -7901,9 +8014,9 @@ namespace Tests
             }
             WAITING:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)8f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)8f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -7932,9 +8045,9 @@ namespace Tests
             }
             WAITING1:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -7973,6 +8086,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_5", SELECTSTINGER_85);
             var SELECTQUANTUM_87 = _world.AcknexObject.GetAcknexObject("SELECTQUANTUM");
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_87);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SELECTMP5BURST(IAcknexObject MY, IAcknexObject THERE)
@@ -8094,9 +8208,9 @@ namespace Tests
             }
             WAITING:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)8f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)8f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -8125,9 +8239,9 @@ namespace Tests
             }
             WAITING1:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -8166,6 +8280,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_5", SELECTSTINGER_89);
             var SELECTQUANTUM_91 = _world.AcknexObject.GetAcknexObject("SELECTQUANTUM");
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_91);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SELECTGRANADE(IAcknexObject MY, IAcknexObject THERE)
@@ -8293,9 +8408,9 @@ namespace Tests
             }
             WAITING:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)2f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -8324,9 +8439,9 @@ namespace Tests
             }
             WAITING1:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -8366,6 +8481,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_5", SELECTSTINGER_91);
             var SELECTQUANTUM_93 = _world.AcknexObject.GetAcknexObject("SELECTQUANTUM");
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_93);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SELECTSTINGER(IAcknexObject MY, IAcknexObject THERE)
@@ -8489,9 +8605,9 @@ namespace Tests
             }
             WAITING:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)2f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -8520,9 +8636,9 @@ namespace Tests
             }
             WAITING1:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -8561,6 +8677,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_5", SELECTSTINGER_91);
             var SELECTQUANTUM_93 = _world.AcknexObject.GetAcknexObject("SELECTQUANTUM");
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_93);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SELECTQUANTUM(IAcknexObject MY, IAcknexObject THERE)
@@ -8684,9 +8801,9 @@ namespace Tests
             }
             WAITING:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)2f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -8715,9 +8832,9 @@ namespace Tests
             }
             WAITING1:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -8756,6 +8873,7 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_5", SELECTSTINGER_91);
             var SELECTQUANTUM_93 = _world.AcknexObject.GetAcknexObject("SELECTQUANTUM");
             _world.AcknexObject.SetAcknexObject("IF_6", SELECTQUANTUM_93);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator ZOOMMAPIN(IAcknexObject MY, IAcknexObject THERE)
@@ -8779,9 +8897,9 @@ namespace Tests
                 MAP_SCALE_4.SetFloat("VAL", MAP_SCALE_6_val * 1.1f);
             }
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)4f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -8792,6 +8910,7 @@ namespace Tests
             {
                 goto ZOOM;
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator ZOOMMAPOUT(IAcknexObject MY, IAcknexObject THERE)
@@ -8815,9 +8934,9 @@ namespace Tests
                 MAP_SCALE_4.SetFloat("VAL", MAP_SCALE_6_val * 0.9f);
             }
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)4f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -8828,6 +8947,7 @@ namespace Tests
             {
                 goto ZOOM;
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SHOWPDABRIEFING(IAcknexObject MY, IAcknexObject THERE)
@@ -8845,9 +8965,9 @@ namespace Tests
             }
             WAITING0:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)2f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -8895,9 +9015,9 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_ESC", null);
             _world.AcknexObject.SetAcknexObject("IF_ENTER", null);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)4f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -8919,9 +9039,9 @@ namespace Tests
             }
             WAITING2:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)2f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -8947,7 +9067,8 @@ namespace Tests
             GUN_ON_46.SetFloat("VAL", 0f);
             var HLP03STR_47 = _world.AcknexObject.GetAcknexObject("HLP03STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP03STR_47);
-            //Unknown keyword: FADE_PAL
+            var BLACK_49 = _world.AcknexObject.GetAcknexObject("BLACK");
+            _world.FadePal(BLACK_49, 0.4f);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
@@ -8959,18 +9080,19 @@ namespace Tests
                     }
                 }
             }
-            var RENDER_MODE_50 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
-            RENDER_MODE_50.SetFloat("VAL", 1f);
+            var RENDER_MODE_52 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
+            RENDER_MODE_52.SetFloat("VAL", 1f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            var MOVE_MODE_53 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
-            MOVE_MODE_53.SetFloat("VAL", 0f);
+            var MOVE_MODE_55 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
+            MOVE_MODE_55.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SHOWPDAGAMEOVER(IAcknexObject MY, IAcknexObject THERE)
@@ -8990,9 +9112,9 @@ namespace Tests
             }
             WAITING0:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)2f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -9039,9 +9161,9 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject("IF_LEFT", null);
             _world.AcknexObject.SetAcknexObject("IF_ESC", null);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)2f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -9063,9 +9185,9 @@ namespace Tests
             }
             WAITING2:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)2f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -9092,7 +9214,8 @@ namespace Tests
             GUN_ON_48.SetFloat("VAL", 0f);
             var HLP04STR_49 = _world.AcknexObject.GetAcknexObject("HLP04STR");
             _world.SetSynonymObject("MESSAGE_TEXT", HLP04STR_49);
-            //Unknown keyword: FADE_PAL
+            var BLACK_51 = _world.AcknexObject.GetAcknexObject("BLACK");
+            _world.FadePal(BLACK_51, 0.4f);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
                 while (enumerator.MoveNext())
@@ -9104,18 +9227,19 @@ namespace Tests
                     }
                 }
             }
-            var RENDER_MODE_52 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
-            RENDER_MODE_52.SetFloat("VAL", 1f);
+            var RENDER_MODE_54 = _world.GetObject(ObjectType.Skill, "RENDER_MODE");
+            RENDER_MODE_54.SetFloat("VAL", 1f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)2f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)2f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            var MOVE_MODE_55 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
-            MOVE_MODE_55.SetFloat("VAL", 0f);
+            var MOVE_MODE_57 = _world.GetObject(ObjectType.Skill, "MOVE_MODE");
+            MOVE_MODE_57.SetFloat("VAL", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator PDAMESSAGEOFF(IAcknexObject MY, IAcknexObject THERE)
@@ -9197,7 +9321,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator REPEATMUSIC(IAcknexObject MY, IAcknexObject THERE)
@@ -9221,6 +9345,7 @@ namespace Tests
                 var SECCOUNTER_8 = _world.GetObject(ObjectType.Skill, "SECCOUNTER");
                 SECCOUNTER_8.SetFloat("VAL", 0f);
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator SETSOUNDVOL(IAcknexObject MY, IAcknexObject THERE)
@@ -9233,6 +9358,7 @@ namespace Tests
             var CDAUDIO_VOL_BUFFER_2_val = CDAUDIO_VOL_BUFFER_2.GetFloat("VAL");
             var CDAUDIO_VOL_3 = _world.GetObject(ObjectType.Skill, "CDAUDIO_VOL");
             CDAUDIO_VOL_3.SetFloat("VAL", CDAUDIO_VOL_BUFFER_2_val);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKKEY1(IAcknexObject MY, IAcknexObject THERE)
@@ -9257,6 +9383,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKKEY2(IAcknexObject MY, IAcknexObject THERE)
@@ -9281,6 +9408,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKUPLOCALMP5(IAcknexObject MY, IAcknexObject THERE)
@@ -9298,14 +9426,15 @@ namespace Tests
             }//Unknown keyword: SAVE_INFO
              //Unknown keyword: SAVE_INFO
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)32f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)32f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
             Application.Quit();
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTTURN(IAcknexObject MY, IAcknexObject THERE)
@@ -9369,6 +9498,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTWAIT(IAcknexObject MY, IAcknexObject THERE)
@@ -9400,6 +9530,7 @@ namespace Tests
             MY_29.SetFloat("SPEED", 0f);
             var MY_32 = MY;
             MY_32.SetAcknexObject("TARGET", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTWANDER(IAcknexObject MY, IAcknexObject THERE)
@@ -9428,6 +9559,7 @@ namespace Tests
             var BULLET_24 = _world.AcknexObject.GetAcknexObject("BULLET");
             var MY_26 = MY;
             MY_26.SetAcknexObject("TARGET", BULLET_24);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTSEARCH(IAcknexObject MY, IAcknexObject THERE)
@@ -9481,6 +9613,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTHIDE(IAcknexObject MY, IAcknexObject THERE)
@@ -9529,9 +9662,9 @@ namespace Tests
             var MY_48 = MY;
             MY_48.SetAcknexObject("TARGET", BULLET_46);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)384f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)384f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -9558,6 +9691,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTLISTEN(IAcknexObject MY, IAcknexObject THERE)
@@ -9582,9 +9716,9 @@ namespace Tests
             var MY_23 = MY;
             MY_23.SetAcknexObject("TARGET", null);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)120f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)120f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -9606,6 +9740,7 @@ namespace Tests
                 }
                 yield break;
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTJUMP(IAcknexObject MY, IAcknexObject THERE)
@@ -9646,6 +9781,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTLOOKFOR(IAcknexObject MY, IAcknexObject THERE)
@@ -9709,6 +9845,7 @@ namespace Tests
             var BULLET_45 = _world.AcknexObject.GetAcknexObject("BULLET");
             var MY_47 = MY;
             MY_47.SetAcknexObject("TARGET", BULLET_45);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTHEAR(IAcknexObject MY, IAcknexObject THERE)
@@ -9732,6 +9869,7 @@ namespace Tests
             var FOLLOW_18 = _world.AcknexObject.GetAcknexObject("FOLLOW");
             var MY_20 = MY;
             MY_20.SetAcknexObject("TARGET", FOLLOW_18);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTDOWN(IAcknexObject MY, IAcknexObject THERE)
@@ -9754,6 +9892,7 @@ namespace Tests
             var BULLET_18 = _world.AcknexObject.GetAcknexObject("BULLET");
             var MY_20 = MY;
             MY_20.SetAcknexObject("TARGET", BULLET_18);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTFOLLOWATTACK(IAcknexObject MY, IAcknexObject THERE)
@@ -9779,6 +9918,7 @@ namespace Tests
             var FOLLOW_21 = _world.AcknexObject.GetAcknexObject("FOLLOW");
             var MY_23 = MY;
             MY_23.SetAcknexObject("TARGET", FOLLOW_21);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTSHOOT(IAcknexObject MY, IAcknexObject THERE)
@@ -9804,6 +9944,7 @@ namespace Tests
             var FOLLOW_21 = _world.AcknexObject.GetAcknexObject("FOLLOW");
             var MY_23 = MY;
             MY_23.SetAcknexObject("TARGET", FOLLOW_21);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTESCAPE(IAcknexObject MY, IAcknexObject THERE)
@@ -9831,6 +9972,7 @@ namespace Tests
             var REPEL_24 = _world.AcknexObject.GetAcknexObject("REPEL");
             var MY_26 = MY;
             MY_26.SetAcknexObject("TARGET", REPEL_24);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTDEAD(IAcknexObject MY, IAcknexObject THERE)
@@ -9856,6 +9998,7 @@ namespace Tests
             MY_26.SetFloat("PASSABLE", 1f);
             var MY_29 = MY;
             MY_29.SetFloat("CAREFULLY", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTDIE(IAcknexObject MY, IAcknexObject THERE)
@@ -9884,6 +10027,7 @@ namespace Tests
             MY_29.SetFloat("HEIGHT", -0.05f);
             var MY_32 = MY;
             MY_32.SetAcknexObject("TARGET", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTIMPLODE(IAcknexObject MY, IAcknexObject THERE)
@@ -9959,6 +10103,7 @@ namespace Tests
             MY_80.SetFloat("SPEED", 0f);
             var MY_83 = MY;
             MY_83.SetAcknexObject("TARGET", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTHIT(IAcknexObject MY, IAcknexObject THERE)
@@ -10035,9 +10180,9 @@ namespace Tests
             var MY_39 = MY;
             MY_39.SetAcknexObject("IF_HIT", null);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)6f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)6f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -10049,7 +10194,8 @@ namespace Tests
             var MY_46 = MY;
             MY_46.SetAcknexObject("TEXTURE", REPT_TEX_44);
             var REPT02SND_47 = _world.AcknexObject.GetAcknexObject("REPT02SND");
-            _world.PlaySound(REPT02SND_47, 0.7f, MY);
+            var MY_49 = MY;
+            _world.PlaySound(REPT02SND_47, 0.7f, MY_49);
             {
                 var enumerator = REPTHIDE(MY, THERE);
                 while (enumerator.MoveNext())
@@ -10063,8 +10209,8 @@ namespace Tests
             }
             yield break;
             DIE:
-            var MY_51 = MY;
-            MY_51.SetFloat("SKILL1", 10f);
+            var MY_52 = MY;
+            MY_52.SetFloat("SKILL1", 10f);
             {
                 var enumerator = REPTDIE(MY, THERE);
                 while (enumerator.MoveNext())
@@ -10102,6 +10248,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CYCLEREPTATTACK(IAcknexObject MY, IAcknexObject THERE)
@@ -10180,7 +10327,8 @@ namespace Tests
             var MY_24 = MY;
             MY_24.SetFloat("FLAG2", 1f);
             var REPT02SND_25 = _world.AcknexObject.GetAcknexObject("REPT02SND");
-            _world.PlaySound(REPT02SND_25, 0.7f, MY);
+            var MY_27 = MY;
+            _world.PlaySound(REPT02SND_25, 0.7f, MY_27);
             CONT1:
             {
                 var enumerator = REPTFOLLOWATTACK(MY, THERE);
@@ -10194,6 +10342,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CYCLEREPTHIDE(IAcknexObject MY, IAcknexObject THERE)
@@ -10234,6 +10383,7 @@ namespace Tests
             MY_24.SetFloat("SPEED", 0f);
             var MY_27 = MY;
             MY_27.SetAcknexObject("TARGET", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CYCLEREPTSHOOT(IAcknexObject MY, IAcknexObject THERE)
@@ -10346,6 +10496,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTTALK(IAcknexObject MY, IAcknexObject THERE)
@@ -10353,13 +10504,16 @@ namespace Tests
             if (UnityEngine.Random.value > 0.9f)
             {
                 var REPT01SND_2 = _world.AcknexObject.GetAcknexObject("REPT01SND");
-                _world.PlaySound(REPT01SND_2, 0.5f, MY);
+                var MY_4 = MY;
+                _world.PlaySound(REPT01SND_2, 0.5f, MY_4);
             }
             if (UnityEngine.Random.value < 0.1f)
             {
-                var REPT02SND_6 = _world.AcknexObject.GetAcknexObject("REPT02SND");
-                _world.PlaySound(REPT02SND_6, 0.5f, MY);
+                var REPT02SND_7 = _world.AcknexObject.GetAcknexObject("REPT02SND");
+                var MY_9 = MY;
+                _world.PlaySound(REPT02SND_7, 0.5f, MY_9);
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPTURN(IAcknexObject MY, IAcknexObject THERE)
@@ -10423,6 +10577,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPBACKOFF(IAcknexObject MY, IAcknexObject THERE)
@@ -10480,9 +10635,9 @@ namespace Tests
                 }
             }
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)64f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)64f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -10516,6 +10671,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPWAIT(IAcknexObject MY, IAcknexObject THERE)
@@ -10561,6 +10717,7 @@ namespace Tests
             MY_40.SetFloat("SPEED", 0f);
             var MY_43 = MY;
             MY_43.SetAcknexObject("TARGET", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPWANDER(IAcknexObject MY, IAcknexObject THERE)
@@ -10616,6 +10773,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPSEARCH(IAcknexObject MY, IAcknexObject THERE)
@@ -10669,6 +10827,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPHIDE(IAcknexObject MY, IAcknexObject THERE)
@@ -10748,9 +10907,9 @@ namespace Tests
                 }
             }
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)384f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)384f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -10815,7 +10974,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPLISTEN(IAcknexObject MY, IAcknexObject THERE)
@@ -10872,9 +11031,9 @@ namespace Tests
             var MY_45 = MY;
             MY_45.SetAcknexObject("TARGET", null);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)120f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)120f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -10896,6 +11055,7 @@ namespace Tests
                 }
                 yield break;
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPWARNING(IAcknexObject MY, IAcknexObject THERE)
@@ -10955,9 +11115,9 @@ namespace Tests
             var MY_42 = MY;
             MY_42.SetFloat("SPEED", 0f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)32f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)32f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -10995,6 +11155,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPLOOKFOR(IAcknexObject MY, IAcknexObject THERE)
@@ -11073,6 +11234,7 @@ namespace Tests
                 var MY_56 = MY;
                 MY_56.SetAcknexObject("EACH_CYCLE", TROPFOLLOWATTACK_54);
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPFOLLOW(IAcknexObject MY, IAcknexObject THERE)
@@ -11132,6 +11294,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPFOLLOWATTACK(IAcknexObject MY, IAcknexObject THERE)
@@ -11194,6 +11357,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPFOLLOWWARNING(IAcknexObject MY, IAcknexObject THERE)
@@ -11256,6 +11420,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPAIM(IAcknexObject MY, IAcknexObject THERE)
@@ -11304,6 +11469,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPSHOOT(IAcknexObject MY, IAcknexObject THERE)
@@ -11387,6 +11553,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPESCAPE(IAcknexObject MY, IAcknexObject THERE)
@@ -11458,6 +11625,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPDEAD(IAcknexObject MY, IAcknexObject THERE)
@@ -11507,6 +11675,7 @@ namespace Tests
             MY_48.SetAcknexObject("IF_NEAR", PICKTROPARMOUR_46);
             var MY_51 = MY;
             MY_51.SetFloat("DIST", 4f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPDIE(IAcknexObject MY, IAcknexObject THERE)
@@ -11547,6 +11716,7 @@ namespace Tests
             MY_27.SetFloat("SPEED", 0f);
             var MY_30 = MY;
             MY_30.SetAcknexObject("TARGET", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPIMPLODE(IAcknexObject MY, IAcknexObject THERE)
@@ -11638,6 +11808,7 @@ namespace Tests
                     }
                 }
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPHIT(IAcknexObject MY, IAcknexObject THERE)
@@ -11764,38 +11935,40 @@ namespace Tests
             var MY_116 = MY;
             MY_116.SetAcknexObject("TEXTURE", TROP5TEX_114);
             var TROP05SND_117 = _world.AcknexObject.GetAcknexObject("TROP05SND");
-            _world.PlaySound(TROP05SND_117, 0.2f, MY);
+            var MY_119 = MY;
+            _world.PlaySound(TROP05SND_117, 0.2f, MY_119);
             goto WAIT;
             SONOFA:
-            var TROP5ATEX_119 = _world.AcknexObject.GetAcknexObject("TROP5ATEX");
-            var MY_121 = MY;
-            MY_121.SetAcknexObject("TEXTURE", TROP5ATEX_119);
-            var TROP11SND_122 = _world.AcknexObject.GetAcknexObject("TROP11SND");
-            _world.PlaySound(TROP11SND_122, 0.2f, MY);
+            var TROP5ATEX_120 = _world.AcknexObject.GetAcknexObject("TROP5ATEX");
+            var MY_122 = MY;
+            MY_122.SetAcknexObject("TEXTURE", TROP5ATEX_120);
+            var TROP11SND_123 = _world.AcknexObject.GetAcknexObject("TROP11SND");
+            var MY_125 = MY;
+            _world.PlaySound(TROP11SND_123, 0.2f, MY_125);
             WAIT:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)4f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            var TROPESCAPE_125 = _world.AcknexObject.GetAcknexObject("TROPESCAPE");
-            var MY_127 = MY;
-            MY_127.SetAcknexObject("IF_NEAR", TROPESCAPE_125);
-            var TROPHIDE_128 = _world.AcknexObject.GetAcknexObject("TROPHIDE");
-            var MY_130 = MY;
-            MY_130.SetAcknexObject("IF_FAR", TROPHIDE_128);
-            var TROPHIT_131 = _world.AcknexObject.GetAcknexObject("TROPHIT");
-            var MY_133 = MY;
-            MY_133.SetAcknexObject("IF_HIT", TROPHIT_131);
-            var TROP_TEX_134 = _world.GetSynonymObject("TROP_TEX");
-            var MY_136 = MY;
-            MY_136.SetAcknexObject("TEXTURE", TROP_TEX_134);
-            var MY_139 = MY;
-            var temp_140 = MY_139.GetFloat("SKILL1");
-            if (temp_140 > 4f)
+            var TROPESCAPE_127 = _world.AcknexObject.GetAcknexObject("TROPESCAPE");
+            var MY_129 = MY;
+            MY_129.SetAcknexObject("IF_NEAR", TROPESCAPE_127);
+            var TROPHIDE_130 = _world.AcknexObject.GetAcknexObject("TROPHIDE");
+            var MY_132 = MY;
+            MY_132.SetAcknexObject("IF_FAR", TROPHIDE_130);
+            var TROPHIT_133 = _world.AcknexObject.GetAcknexObject("TROPHIT");
+            var MY_135 = MY;
+            MY_135.SetAcknexObject("IF_HIT", TROPHIT_133);
+            var TROP_TEX_136 = _world.GetSynonymObject("TROP_TEX");
+            var MY_138 = MY;
+            MY_138.SetAcknexObject("TEXTURE", TROP_TEX_136);
+            var MY_141 = MY;
+            var temp_142 = MY_141.GetFloat("SKILL1");
+            if (temp_142 > 4f)
             {
                 {
                     var enumerator = TROPHIDE(MY, THERE);
@@ -11810,9 +11983,9 @@ namespace Tests
                 }
                 yield break;
             }
-            var MY_143 = MY;
-            var temp_144 = MY_143.GetFloat("SKILL4");
-            if (temp_144 != 4f)
+            var MY_145 = MY;
+            var temp_146 = MY_145.GetFloat("SKILL4");
+            if (temp_146 != 4f)
             {
                 {
                     var enumerator = TROPFOLLOWATTACK(MY, THERE);
@@ -11829,8 +12002,8 @@ namespace Tests
             }
             yield break;
             DIE:
-            var MY_147 = MY;
-            MY_147.SetFloat("SKILL1", 10f);
+            var MY_149 = MY;
+            MY_149.SetFloat("SKILL1", 10f);
             {
                 var enumerator = TROPDIE(MY, THERE);
                 while (enumerator.MoveNext())
@@ -11857,6 +12030,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPDROPKEY(IAcknexObject MY, IAcknexObject THERE)
@@ -11886,6 +12060,7 @@ namespace Tests
             //Unknown keyword: LOCATE
             var KEY2TNG_34 = _world.AcknexObject.GetAcknexObject("KEY2TNG");
             KEY2TNG_34.SetFloat("GROUND", 0f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CYCLETROPATTACK(IAcknexObject MY, IAcknexObject THERE)
@@ -11997,6 +12172,7 @@ namespace Tests
                 }
                 yield break;
             }
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CYCLETROPHIDE(IAcknexObject MY, IAcknexObject THERE)
@@ -12063,6 +12239,7 @@ namespace Tests
             MY_32.SetFloat("SPEED", 0f);
             var MY_35 = MY;
             MY_35.SetAcknexObject("TARGET", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CYCLETROPBACK(IAcknexObject MY, IAcknexObject THERE)
@@ -12077,7 +12254,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator CYCLETROPSHOOT(IAcknexObject MY, IAcknexObject THERE)
@@ -12206,6 +12383,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator CYCLETROPWARNING(IAcknexObject MY, IAcknexObject THERE)
@@ -12286,7 +12464,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPTALK(IAcknexObject MY, IAcknexObject THERE)
@@ -12307,11 +12485,14 @@ namespace Tests
             yield break;
             SND1:
             var TROP09SND_4 = _world.AcknexObject.GetAcknexObject("TROP09SND");
-            _world.PlaySound(TROP09SND_4, 0.3f, MY);
+            var MY_6 = MY;
+            _world.PlaySound(TROP09SND_4, 0.3f, MY_6);
             yield break;
             SND2:
-            var TROP01SND_6 = _world.AcknexObject.GetAcknexObject("TROP01SND");
-            _world.PlaySound(TROP01SND_6, 0.3f, MY);
+            var TROP01SND_7 = _world.AcknexObject.GetAcknexObject("TROP01SND");
+            var MY_9 = MY;
+            _world.PlaySound(TROP01SND_7, 0.3f, MY_9);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPSHOUT(IAcknexObject MY, IAcknexObject THERE)
@@ -12336,19 +12517,24 @@ namespace Tests
                 goto SND3;
             }
             var TROP06SND_6 = _world.AcknexObject.GetAcknexObject("TROP06SND");
-            _world.PlaySound(TROP06SND_6, 0.3f, MY);
+            var MY_8 = MY;
+            _world.PlaySound(TROP06SND_6, 0.3f, MY_8);
             yield break;
             SND1:
-            var TROP12SND_8 = _world.AcknexObject.GetAcknexObject("TROP12SND");
-            _world.PlaySound(TROP12SND_8, 0.4f, MY);
+            var TROP12SND_9 = _world.AcknexObject.GetAcknexObject("TROP12SND");
+            var MY_11 = MY;
+            _world.PlaySound(TROP12SND_9, 0.4f, MY_11);
             yield break;
             SND2:
-            var TROP10SND_10 = _world.AcknexObject.GetAcknexObject("TROP10SND");
-            _world.PlaySound(TROP10SND_10, 0.3f, MY);
+            var TROP10SND_12 = _world.AcknexObject.GetAcknexObject("TROP10SND");
+            var MY_14 = MY;
+            _world.PlaySound(TROP10SND_12, 0.3f, MY_14);
             yield break;
             SND3:
-            var TROP03SND_12 = _world.AcknexObject.GetAcknexObject("TROP03SND");
-            _world.PlaySound(TROP03SND_12, 0.3f, MY);
+            var TROP03SND_15 = _world.AcknexObject.GetAcknexObject("TROP03SND");
+            var MY_17 = MY;
+            _world.PlaySound(TROP03SND_15, 0.3f, MY_17);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKTROPAMMO(IAcknexObject MY, IAcknexObject THERE)
@@ -12386,6 +12572,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator PICKTROPARMOUR(IAcknexObject MY, IAcknexObject THERE)
@@ -12416,7 +12603,7 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator HUMMERHIT(IAcknexObject MY, IAcknexObject THERE)
@@ -12486,12 +12673,14 @@ namespace Tests
             var MY_64 = MY;
             MY_64.SetAcknexObject("IF_HIT", null);
             var HUMM04SND_65 = _world.AcknexObject.GetAcknexObject("HUMM04SND");
-            _world.PlaySound(HUMM04SND_65, 0.5f, MY);
-            var MY_69 = MY;
-            MY_69.SetFloat("GROUND", 1f);
-            var ACTORJUMPSTOP_70 = _world.AcknexObject.GetAcknexObject("ACTORJUMPSTOP");
-            var MY_72 = MY;
-            MY_72.SetAcknexObject("EACH_TICK", ACTORJUMPSTOP_70);
+            var MY_67 = MY;
+            _world.PlaySound(HUMM04SND_65, 0.5f, MY_67);
+            var MY_70 = MY;
+            MY_70.SetFloat("GROUND", 1f);
+            var ACTORJUMPSTOP_71 = _world.AcknexObject.GetAcknexObject("ACTORJUMPSTOP");
+            var MY_73 = MY;
+            MY_73.SetAcknexObject("EACH_TICK", ACTORJUMPSTOP_71);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator TROPASSAULT(IAcknexObject MY, IAcknexObject THERE)
@@ -12510,6 +12699,7 @@ namespace Tests
             MY_14.SetAcknexObject("TEXTURE", TROPATEX_12);
             var MY_17 = MY;
             MY_17.SetFloat("SPEED", 0.7f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator WAYGUARD1(IAcknexObject MY, IAcknexObject THERE)
@@ -12541,6 +12731,7 @@ namespace Tests
             MY_12.SetAcknexObject("TARGET", GUARD1WAY_10);
             var MY_15 = MY;
             MY_15.SetFloat("SPEED", 0.5f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator WAYGUARD2(IAcknexObject MY, IAcknexObject THERE)
@@ -12572,6 +12763,7 @@ namespace Tests
             MY_12.SetAcknexObject("TARGET", GUARD2WAY_10);
             var MY_15 = MY;
             MY_15.SetFloat("SPEED", 0.5f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator WAYGUARD3(IAcknexObject MY, IAcknexObject THERE)
@@ -12609,6 +12801,7 @@ namespace Tests
             TROPASSAULT3ACT_18.SetAcknexObjectAll("TARGET", REPT1WAY_16);
             var TROPASSAULT3ACT_21 = _world.AcknexObject.GetAcknexObject("TROPASSAULT3ACT");
             TROPASSAULT3ACT_21.SetFloatAll("SPEED", 0.7f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator DROPTROOPS2(IAcknexObject MY, IAcknexObject THERE)
@@ -12630,9 +12823,9 @@ namespace Tests
             var MY_10 = MY;
             MY_10.SetFloat("SPEED", 0f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)4f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -12645,15 +12838,16 @@ namespace Tests
             var TROPASSAULT2ACT_20 = _world.AcknexObject.GetAcknexObject("TROPASSAULT2ACT");
             TROPASSAULT2ACT_20.SetFloatAll("DIST", 40f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)160f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)160f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
             var MY_24 = MY;
             MY_24.SetFloat("SPEED", 2f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator DROPTROOPS3(IAcknexObject MY, IAcknexObject THERE)
@@ -12672,9 +12866,9 @@ namespace Tests
             var MY_12 = MY;
             MY_12.SetAcknexObject("IF_ARRIVED", null);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)4f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)4f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -12688,6 +12882,7 @@ namespace Tests
             TROPASSAULT3ACT_22.SetFloatAll("DIST", 40f);
             var MY_25 = MY;
             MY_25.SetAcknexObject("TARGET", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator REPTFLEE(IAcknexObject MY, IAcknexObject THERE)
@@ -12722,7 +12917,9 @@ namespace Tests
             var MY_33 = MY;
             MY_33.SetAcknexObject("IF_ARRIVED", null);
             var REPT02SND_34 = _world.AcknexObject.GetAcknexObject("REPT02SND");
-            _world.PlaySound(REPT02SND_34, 0.5f, MY);
+            var MY_36 = MY;
+            _world.PlaySound(REPT02SND_34, 0.5f, MY_36);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator LOCATEREPT(IAcknexObject MY, IAcknexObject THERE)
@@ -12760,6 +12957,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator WALLTIMER(IAcknexObject MY, IAcknexObject THERE)
@@ -12777,6 +12975,7 @@ namespace Tests
             var WBR01REPTWALL_7 = _world.AcknexObject.GetAcknexObject("WBR01REPTWALL");
             WBR01REPTWALL_7.SetFloatAll("IMPASSABLE", 0f);
             _world.AcknexObject.SetAcknexObject("EACH_SEC.4", null);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator WARNPLAYER(IAcknexObject MY, IAcknexObject THERE)
@@ -12795,13 +12994,14 @@ namespace Tests
                         yield return current;
                     }
                 }
-            }
+            }//Unknown keyword: 
             yield break;
         }
         public IEnumerator RESETWARN(IAcknexObject MY, IAcknexObject THERE)
         {
             var MY_2 = MY;
             MY_2.SetFloat("DIST", 5f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator STARTLEVEL(IAcknexObject MY, IAcknexObject THERE)
@@ -12917,6 +13117,7 @@ namespace Tests
                 }
             }
             yield break;
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator LAUNCHMISSILES(IAcknexObject MY, IAcknexObject THERE)
@@ -12961,9 +13162,9 @@ namespace Tests
             MISSILE_48.SetFloat("INVISIBLE", 0f);
             WAITING:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)16f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)16f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -13014,9 +13215,9 @@ namespace Tests
             MISSILE_102.SetFloat("INVISIBLE", 0f);
             WAITING1:
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)16f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)16f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -13086,6 +13287,7 @@ namespace Tests
             REPT1ACT_164.SetAcknexObjectAll("EACH_TICK", REPTFLEE_162);
             var SHOT_SOUND_ON_166 = _world.GetObject(ObjectType.Skill, "SHOT_SOUND_ON");
             SHOT_SOUND_ON_166.SetFloat("VAL", 1f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator STARTASSAULT(IAcknexObject MY, IAcknexObject THERE)
@@ -13110,9 +13312,9 @@ namespace Tests
                 }
             }
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)64f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)64f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
@@ -13125,193 +13327,216 @@ namespace Tests
             TROPASSAULT1ACT_13.SetFloatAll("INVISIBLE", 0f);
             var TROPASSAULT1ACT_16 = _world.AcknexObject.GetAcknexObject("TROPASSAULT1ACT");
             TROPASSAULT1ACT_16.SetFloatAll("DIST", 40f);
+            //Unknown keyword: 
             yield break;
         }
         public IEnumerator FADEIN(IAcknexObject MY, IAcknexObject THERE)
         {
-            //Unknown keyword: FADE_PAL
+            var BLACK_0 = _world.AcknexObject.GetAcknexObject("BLACK");
+            _world.FadePal(BLACK_0, 2f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)8f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)8f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_3 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_3, 0.05f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_6 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_6, 0.1f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_9 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_9, 0.15f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_12 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_12, 0.2f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_15 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_15, 0.25f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_18 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_18, 0.3f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_21 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_21, 0.35f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_24 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_24, 0.4f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_27 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_27, 0.45f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_30 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_30, 0.5f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_33 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_33, 0.55f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_36 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_36, 0.6f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_39 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_39, 0.65f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_42 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_42, 0.7f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_45 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_45, 0.75f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_48 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_48, 0.8f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_51 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_51, 0.85f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_54 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_54, 0.9f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
+            var PAL1_57 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_57, 0.95f);
             {
-                var startFrame = Time.frameCount;
-                var endFrame = startFrame + (int)1f;
-                while (Time.frameCount < endFrame)
+                var startTime = Time.time;
+                var endTime = startTime + TimeUtils.FramesToTime((int)1f);
+                while (Time.time < endTime)
                 {
                     yield return _waitForEndOfFrame;
                 }
             }
-            //Unknown keyword: FADE_PAL
-            var REPEATMUSIC_20 = _world.AcknexObject.GetAcknexObject("REPEATMUSIC");
-            _world.AcknexObject.SetAcknexObject("EACH_SEC.1", REPEATMUSIC_20);
+            var PAL1_60 = _world.AcknexObject.GetAcknexObject("PAL1");
+            _world.FadePal(PAL1_60, 2f);
+            var REPEATMUSIC_62 = _world.AcknexObject.GetAcknexObject("REPEATMUSIC");
+            _world.AcknexObject.SetAcknexObject("EACH_SEC.1", REPEATMUSIC_62);
+            //Unknown keyword: 
             yield break;
         }
     }

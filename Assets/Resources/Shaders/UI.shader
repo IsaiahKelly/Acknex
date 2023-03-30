@@ -19,6 +19,9 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
+            #include "Common.cginc"
+
+        float4 _MainTex_ST;
 
             struct appdata
             {
@@ -31,23 +34,6 @@
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
             };
-                        
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-            float4 _MainTex_TexelSize;
-
-            fixed4 _Color;
-            float _LightMultiplier;
-
-            float _X0;
-            float _Y0;
-            float _X1;
-            float _Y1;
-            float _AMBIENT;
-            float _V0H;
-            float _V1H;
-            int _CLAMPX;
-            int _CLAMPY;
 
             v2f vert(appdata v)
             {
@@ -67,6 +53,7 @@
                 float2 uv = lerp(coord0, coord1, float2(i.uv.x, 1.0 - i.uv.y));
                 uv *= _MainTex_TexelSize.xy;
                 fixed4 col = tex2D(_MainTex, i.uv);
+                ApplyPalette(col);
                 return col;
             }
             ENDCG

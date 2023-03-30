@@ -115,6 +115,11 @@ namespace Acknex.Interfaces
         PropertyType GetPropertyType(ObjectType objectType, string property);
 
         /// <summary>
+        /// Fades the current palette to the given one.
+        /// </summary>
+        void FadePal(IAcknexObject acknexObject, float factor);
+
+        /// <summary>
         /// Shoots the given object.
         /// </summary>
         void Shoot(IAcknexObject acknexObject, IAcknexObject MY, IAcknexObject THERE);

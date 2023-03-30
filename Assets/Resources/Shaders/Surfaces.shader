@@ -31,17 +31,11 @@ Shader "Acknex/Surfaces"
 			LOD 200
 
 			CGPROGRAM
-			// Physically based Standard lighting model, and enable shadows on all light types
 			#pragma surface surf Standard addshadow vertex:vert 
 
-			// Use shader model 3.0 target, to get nicer looking lighting
 			#pragma target 3.0
 
-			sampler2D _MainTex;
-			float4 _MainTex_TexelSize;
-			int _AcknexUsePalettes;
-			sampler2D _AcknexPalette;
-			float4 _AcknexPalette_TexelSize;
+			#include "Common.cginc"
 
 			struct Input
 			{
@@ -50,30 +44,8 @@ Shader "Acknex/Surfaces"
 
 			half _Glossiness;
 			half _Metallic;
-			fixed4 _Color;
 
-			float _X0;
-			float _Y0;
-			float _X1;
-			float _Y1;
-
-			float _SCALEX;
-			float _SCALEY;
-			float _OFFSETX;
-			float _OFFSETY;
-
-			float _AMBIENT;
-			float _V0H;
-			float _V1H;
-
-			int _FENCE;
-			int _PORTCULLIS;
-
-			// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
-			// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
-			// #pragma instancing_options assumeuniformscaling
 			UNITY_INSTANCING_BUFFER_START(Props)
-				// put more per-instance properties here
 			UNITY_INSTANCING_BUFFER_END(Props)
 
 			void vert(inout appdata_full v) {
@@ -81,17 +53,7 @@ Shader "Acknex/Surfaces"
 				float3 worldNorm = UnityObjectToWorldNormal(v.normal);
 				float3 viewDir = worldPos - _WorldSpaceCameraPos;
 				v.normal *= dot(viewDir, worldNorm) > 0 ? -1 : 1;
-				//v.vertex.xyz += v.normal * _Amount;
 			}
-
-			//half4 LightingSimpleLambert(SurfaceOutput s, half3 lightDir, half atten) {
-			//	half NdotL = dot(s.Normal, lightDir);
-			//	half4 c;
-			//	float ambient = 0.5;// (1.0 - _AMBIENT);
-			//	c.rgb = s.Albedo * _LightColor0.rgb * (NdotL * atten) * ambient;
-			//	c.a = s.Alpha;
-			//	return c;
-			//}
 
 			void surf(Input IN, inout SurfaceOutputStandard o)
 			{
@@ -110,26 +72,7 @@ Shader "Acknex/Surfaces"
 				float2 uv = lerp(rectMin, rectMax, IN.uv_MainTex);
 				uv *= _MainTex_TexelSize.xy;
 				fixed4 c = tex2D(_MainTex, uv);
-				if (_AcknexUsePalettes) {
-					float xIndex = c.x;
-					if (xIndex > 0.0) {
-						xIndex /= 3.0;
-					}
-					float yIndex = c.y;
-					if (yIndex > 0.0) {
-						yIndex /= 3.0;
-					}
-					float zIndex = c.z;
-					if (zIndex > 0.0) {
-						zIndex /= 3.0;
-					}
-					c.x = tex2D(_AcknexPalette, float2(xIndex, 0)).x;
-					c.y = tex2D(_AcknexPalette, float2(xIndex, 0)).y;
-					c.z = tex2D(_AcknexPalette, float2(xIndex, 0)).z;
-				}
-				else {
-					c *= _Color;
-				}
+				ApplyPalette(c);
 				//todo: use another shader
 				if (_PORTCULLIS || _FENCE) {
 					/* Sharpen texture alpha to the width of a pixel */
@@ -142,5 +85,5 @@ Shader "Acknex/Surfaces"
 			}
 			ENDCG
 		}
-			FallBack "Diffuse"
+		FallBack "Diffuse"
 }

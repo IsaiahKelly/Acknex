@@ -5,8 +5,17 @@ namespace Acknex
 {
     public class Palette : IAcknexObjectContainer
     {
-        public TextureAndPalette BitmapTexture;
+        private Color[] _colors;
+
         public TextureAndPalette Texture;
+
+        public Palette()
+        {
+            AcknexObject.Container = this;
+            Instance = this;
+        }
+
+        public static Palette Instance { get; private set; }
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Palette);
         public bool DebugMarked { get; set; }
@@ -42,14 +51,10 @@ namespace Acknex
         public void SetupTemplate()
         {
             var filename = AcknexObject.GetString("PALFILE");
-            Bitmap.CreateBitmapTexture(filename, 0, 0, 0, 0, out Texture, ref BitmapTexture, true);
-            if (BitmapTexture != null)
+            Bitmap.CreateBitmapTexture(filename, 0, 0, 0, 0, out Texture, out _, true);
+            if (Texture != null)
             {
-                BitmapTexture.Palette.name = AcknexObject.GetString("NAME");
-            }
-            if (World.Instance.UsePalettes)
-            {
-                Shader.SetGlobalTexture("_AcknexPalette", Texture.Palette);
+                _colors = Texture.Palette.GetPixels();
             }
         }
 
@@ -62,9 +67,9 @@ namespace Acknex
             return null;
         }
 
-        public Palette()
+        public Color[] GetPixels()
         {
-            AcknexObject.Container = this;
+            return _colors;
         }
     }
 }

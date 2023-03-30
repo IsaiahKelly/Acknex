@@ -45,7 +45,7 @@ namespace Acknex
         public void SetupTemplate()
         {
             var filename = AcknexObject.GetString("FILENAME");
-            CreateBitmapTexture(filename, (int)X, (int)Y, (int)Width, (int)Height, out OriginalTexture, ref CropTexture);
+            CreateBitmapTexture(filename, (int)X, (int)Y, (int)Width, (int)Height, out OriginalTexture, out CropTexture);
         }
 
         public void SetupInstance()
@@ -69,8 +69,8 @@ namespace Acknex
             int y, 
             int width,
             int height,
-            out TextureAndPalette textureAndPalette, 
-            ref TextureAndPalette bitmapTexture, //todo: remove ref
+            out TextureAndPalette textureAndPalette,
+            out TextureAndPalette cropTexture, //todo: remove ref
             bool paletteOnly = false
         )
         {
@@ -123,7 +123,11 @@ namespace Acknex
                 paletteTexture2D.filterMode = FilterMode.Point;
                 TextureUtils.CopyTextureCPU(textureAndPalette.Palette, paletteTexture2D, true, false, x, y, width, height);
 
-                bitmapTexture = new TextureAndPalette(bitmapTexture2D, paletteTexture2D);
+                cropTexture = new TextureAndPalette(bitmapTexture2D, paletteTexture2D);
+            }
+            else
+            {
+                cropTexture = null;
             }
         }
 
@@ -212,6 +216,7 @@ namespace Acknex
                         var bitmapCount = texture.BMaps.Count;
                         _skyboxTexture2DArray = new Texture2DArray((int)Width, (int)Height, bitmapCount, CropTexture.Texture.graphicsFormat, TextureCreationFlags.MipChain);
                         _skyboxPalette2DArray = new Texture2DArray((int)Width, (int)Height, bitmapCount, CropTexture.Palette.graphicsFormat, TextureCreationFlags.None);
+                        _skyboxPalette2DArray.filterMode = FilterMode.Point;
                         for (var i = 0; i < bitmapCount; i++)
                         {
                             var bitmap = texture.GetBitmapAt(i);

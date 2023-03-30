@@ -310,7 +310,7 @@ namespace Acknex
                         case "PLAY_SONG":
                             {
                                 var volume = GetValue();
-                                var lhs = GetValueAndType(labelOrStatement, "rhs");
+                                var lhs = GetValueAndType(labelOrStatement, "lhs");
                                 var rhs = GetValueAndType(volume, "rhs");
                                 CodeStringBuilder.Append("_world.PlaySong(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                                 HandleIfStack();
@@ -320,7 +320,7 @@ namespace Acknex
                         case "PLAY_SOUND":
                             {
                                 var volume = GetValue();
-                                var lhs = GetValueAndType(labelOrStatement, "rhs");
+                                var lhs = GetValueAndType(labelOrStatement, "lhs");
                                 var rhs = GetValueAndType(volume, "rhs");
                                 var next = GetNextToken();
                                 if (next != ";")
@@ -333,6 +333,16 @@ namespace Acknex
 
                                     CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                                 }
+                                HandleIfStack();
+                                ReadUntilSemiColon();
+                                break;
+                            }
+                        case "FADE_PAL":
+                            {
+                                var factor = GetValue();
+                                var lhs = GetValueAndType(labelOrStatement, "lhs");
+                                var rhs = GetValueAndType(factor, "rhs");
+                                CodeStringBuilder.Append("_world.FadePal(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                                 HandleIfStack();
                                 ReadUntilSemiColon();
                                 break;
@@ -745,6 +755,10 @@ namespace Acknex
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Overlay);
                 }
+                if (World.Instance.PalettesByName.ContainsKey(valueObjectName))
+                {
+                    return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Palette);
+                }
             }
             return GetObjectPropertyValueAndType(
                 propertyAssignmentVariable,
@@ -876,6 +890,12 @@ namespace Acknex
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Way, "_world.AcknexObject");
                 return true;
             }
+            if (World.Instance.PalettesByName.ContainsKey(objectName))
+            {
+                HandleDroppedObjects();
+                valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Palette, "_world.AcknexObject");
+                return true;
+            }
             valueAndType = ("_world.AcknexObject", PropertyType.ObjectReference, ObjectType.World, null);
             return false;
         }
@@ -892,27 +912,13 @@ namespace Acknex
             {
                 objectType = World.Instance.GetSynonymType(originalName);
             }
-
             var propertyType = World.Instance.GetPropertyType(objectType, property);
             if (propertyType == PropertyType.Unknown)
             {
-                //if (property == "MOVE" || property == "BULLET" || property == "STICK" || property == "FOLLOW" || property == "REPEL" || property == "VERTEX" || property == "HOLD" || property == "NODE1" || property == "NODE2")
-                //{
-                //    propertyType = PropertyType.String;
-                //}
-                //else
-                //{
                 CodeStringBuilder.Append("//Unknown Property Type: ").Append(objectType).Append(".").Append(property).AppendLine();
-                //}
             }
             if (outputGetter)
             {
-                //if (moveAttribute)
-                //{
-                //    CodeStringBuilder.Append($"var temp_{_varCounter} =").Append("\"").Append(property).Append("\";");
-                //}
-                //else
-                //{
                 switch (propertyType)
                 {
                     case PropertyType.Float:
@@ -927,7 +933,6 @@ namespace Acknex
                         CodeStringBuilder.Append($"var temp_{_varCounter} =").Append($"{(objectType == ObjectType.World ? "_world.AcknexObject" : assignmentVariable)}?.GetAcknexObject(\"").Append(property).AppendLine("\");");
                         break;
                 }
-                //}
                 return ($"temp_{_varCounter++}", propertyType, objectType, sourceObject);
             }
             return objectType == ObjectType.World ? ($"\"{assignmentVariable}\"", propertyType, objectType, sourceObject) : ($"\"{property}\"", propertyType, objectType, assignmentVariable);
