@@ -39,6 +39,9 @@ Shader "Acknex/Surfaces"
 
 			sampler2D _MainTex;
 			float4 _MainTex_TexelSize;
+			int _AcknexUsePalettes;
+			sampler2D _AcknexPalette;
+			float4 _AcknexPalette_TexelSize;
 
 			struct Input
 			{
@@ -106,7 +109,28 @@ Shader "Acknex/Surfaces"
 				float2 rectMax = float2(rectMin.x + _SCALEX, rectMin.y + _SCALEY);
 				float2 uv = lerp(rectMin, rectMax, IN.uv_MainTex);
 				uv *= _MainTex_TexelSize.xy;
-				fixed4 c = tex2D(_MainTex, uv) * _Color;
+				fixed4 c = tex2D(_MainTex, uv);
+				if (_AcknexUsePalettes) {
+					float xIndex = c.x;
+					if (xIndex > 0.0) {
+						xIndex /= 3.0;
+					}
+					float yIndex = c.y;
+					if (yIndex > 0.0) {
+						yIndex /= 3.0;
+					}
+					float zIndex = c.z;
+					if (zIndex > 0.0) {
+						zIndex /= 3.0;
+					}
+					c.x = tex2D(_AcknexPalette, float2(xIndex, 0)).x;
+					c.y = tex2D(_AcknexPalette, float2(xIndex, 0)).y;
+					c.z = tex2D(_AcknexPalette, float2(xIndex, 0)).z;
+				}
+				else {
+					c *= _Color;
+				}
+				//todo: use another shader
 				if (_PORTCULLIS || _FENCE) {
 					/* Sharpen texture alpha to the width of a pixel */
 					o.Alpha = (c.a - 0.5) / max(fwidth(c.a), 0.0001) + 0.5;

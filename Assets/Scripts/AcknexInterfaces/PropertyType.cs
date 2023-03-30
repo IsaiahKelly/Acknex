@@ -18,6 +18,7 @@
         Function,
         Operator,
         LeftParen,
-        RightParen
+        RightParen,
+        Filename
     }
 }

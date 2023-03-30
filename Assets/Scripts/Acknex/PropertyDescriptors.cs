@@ -298,6 +298,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "FLOOR_LIFTED");
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "PLAY");
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "VISIBLE");
+            AddObjectProperty(ObjectType.Region, PropertyType.Float, "HERE");
 
             AddObjectProperty(ObjectType.Wall, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "AMBIENT");
@@ -393,7 +394,7 @@ namespace Acknex
             //todo: STRING
 
             AddObjectProperty(ObjectType.Palette, PropertyType.Flags, "FLAGS");
-            AddObjectProperty(ObjectType.Palette, PropertyType.String, "PALFILE");
+            AddObjectProperty(ObjectType.Palette, PropertyType.Filename, "PALFILE");
             //todo: range
 
             foreach (var properties in PropertyDescriptors[ObjectType.Thing])

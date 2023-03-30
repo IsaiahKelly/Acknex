@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using Acknex.Interfaces;
-using AcknexInterfaces;
+using Acknex.Interfaces;
 using UnityEngine;
 using Resolution = Acknex.Interfaces.Resolution;
 
@@ -498,6 +498,10 @@ namespace Acknex
                     return true;
                 case PropertyType.String:
                     acknexObject.SetString(keyword, GetNextToken(tokens));
+                    CheckSemiColon(tokens);
+                    return true;
+                case PropertyType.Filename:
+                    acknexObject.SetString(keyword, ParseDir(GetNextToken(tokens)));
                     CheckSemiColon(tokens);
                     return true;
                 case PropertyType.ActionReference:

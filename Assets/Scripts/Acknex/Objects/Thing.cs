@@ -634,7 +634,7 @@ namespace Acknex
         public bool HitPixel(Vector2 textureCoord, Vector3 hitPoint)
         {
             var acknexObject = (AcknexObject)AcknexObject;
-            if (acknexObject.CurrentBitmap?.BitmapTexture2D != null)
+            if (acknexObject.CurrentBitmap?.CropTexture != null)
             {
                 var texelSize = new Vector4(1f / acknexObject.CurrentBitmap.Width, 1f / acknexObject.CurrentBitmap.Height, acknexObject.CurrentBitmap.Width, acknexObject.CurrentBitmap.Height);
                 var y0 = texelSize.w - acknexObject.BitmapCoords[1];
@@ -647,9 +647,9 @@ namespace Acknex
                 uv.y = Mathf.Lerp(coord0.y, coord1.y, coord2.y);
                 uv.x *= texelSize.x;
                 uv.y *= texelSize.y;
-                var color = acknexObject.CurrentBitmap.BitmapTexture2D.GetPixelBilinear(textureCoord.x, textureCoord.y);
-                World.Instance.DebugColor = color;
-                World.Instance.DebugTexture = acknexObject.CurrentBitmap.BitmapTexture2D;
+                var color = acknexObject.CurrentBitmap.CropTexture.Texture.GetPixelBilinear(textureCoord.x, textureCoord.y);
+                //World.Instance.DebugColor = color;
+                //World.Instance.DebugTexture = acknexObject.CurrentBitmap.CropTexture;
 #if DEBUG_ENABLED
                 DebugExtension.DebugWireSphere(hitPoint, color, 0.1f, 60f);
 #endif

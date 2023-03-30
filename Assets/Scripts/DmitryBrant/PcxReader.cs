@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Acknex.Interfaces;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using Object = UnityEngine.Object;
@@ -34,13 +35,12 @@ namespace DmitryBrant.ImageFormats
         /// <summary>
         /// Reads a PCX image from a file.
         /// </summary>
-        /// <param name="fileName">Name of the file to read.</param>
         /// <returns>Bitmap that contains the image that was read.</returns>
-        public static Texture2D Load(string fileName)
+        public static TextureAndPalette Load(string fileName, bool useCgaPalette = false, bool paletteOnly = false)
         {
             using (var f = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                return Load(f);
+                return Load(f, useCgaPalette, paletteOnly);
             }
         }
 
@@ -53,7 +53,7 @@ namespace DmitryBrant.ImageFormats
         /// specified explicitly if you expect this image to use CGA palette information, as defined in
         /// the PCX specification.</param>
         /// <returns>Bitmap that contains the image that was read.</returns>
-        public static Texture2D Load(Stream stream, bool useCgaPalette = false)
+        public static TextureAndPalette Load(Stream stream, bool useCgaPalette = false, bool paletteOnly = false)
         {
             BinaryReader reader = new BinaryReader(stream);
 
@@ -230,6 +230,8 @@ namespace DmitryBrant.ImageFormats
                 }
             }
 
+            byte[] palData = new byte[(imgWidth + 1) * 4 * imgHeight];
+
             byte[] bmpData = new byte[(imgWidth + 1) * 4 * imgHeight];
             stream.Seek(128, SeekOrigin.Begin);
             int x, y, i;
@@ -275,12 +277,20 @@ namespace DmitryBrant.ImageFormats
                                 bmpData[4 * (y * imgWidth + x)] = (byte)b;
                                 bmpData[4 * (y * imgWidth + x) + 1] = (byte)b;
                                 bmpData[4 * (y * imgWidth + x) + 2] = (byte)b;
+
+                                palData[4 * (y * imgWidth + x)] = (byte)i;
+                                palData[4 * (y * imgWidth + x) + 1] = (byte)i;
+                                palData[4 * (y * imgWidth + x) + 2] = (byte)i;
                             }
                             else
                             {
                                 bmpData[4 * (y * imgWidth + x)] = colorPalette[i * 3 + 2];
                                 bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[i * 3 + 1];
                                 bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[i * 3];
+
+                                palData[4 * (y * imgWidth + x)] = (byte)(i * 3 + 2);
+                                palData[4 * (y * imgWidth + x) + 1] = (byte)(i * 3 + 1);
+                                palData[4 * (y * imgWidth + x) + 2] = (byte)(i * 3);
                             }
                         }
                     }
@@ -303,6 +313,10 @@ namespace DmitryBrant.ImageFormats
                                     bmpData[4 * (y * imgWidth + x)] = colorPalette[i * 3 + 2];
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[i * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[i * 3];
+
+                                    palData[4 * (y * imgWidth + x)] = (byte)(i * 3 + 2);
+                                    palData[4 * (y * imgWidth + x) + 1] = (byte)(i * 3 + 1);
+                                    palData[4 * (y * imgWidth + x) + 2] = (byte)(i * 3);
                                 }
                             }
                         }
@@ -320,10 +334,19 @@ namespace DmitryBrant.ImageFormats
                                     bmpData[4 * (y * imgWidth + x)] = colorPalette[((i >> 4) & 0xF) * 3 + 2];
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[((i >> 4) & 0xF) * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[((i >> 4) & 0xF) * 3];
+
+                                    palData[4 * (y * imgWidth + x)] = (byte)(((i >> 4) & 0xF) * 3 + 2);
+                                    palData[4 * (y * imgWidth + x) + 1] = (byte)(((i >> 4) & 0xF) * 3 + 1);
+                                    palData[4 * (y * imgWidth + x) + 2] = (byte)(((i >> 4) & 0xF) * 3);
+
                                     x++;
                                     bmpData[4 * (y * imgWidth + x)] = colorPalette[(i & 0xF) * 3 + 2];
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[(i & 0xF) * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[(i & 0xF) * 3];
+
+                                    palData[4 * (y * imgWidth + x)] = (byte)((i & 0xF) * 3 + 2);
+                                    palData[4 * (y * imgWidth + x) + 1] = (byte)((i & 0xF) * 3 + 1);
+                                    palData[4 * (y * imgWidth + x) + 2] = (byte)((i & 0xF) * 3);
                                 }
                             }
                         }
@@ -341,18 +364,37 @@ namespace DmitryBrant.ImageFormats
                                     bmpData[4 * (y * imgWidth + x)] = colorPalette[((i >> 6) & 0x3) * 3 + 2];
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[((i >> 6) & 0x3) * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[((i >> 6) & 0x3) * 3];
+
+                                    palData[4 * (y * imgWidth + x)] = (byte)(((i >> 6) & 0x3) * 3 + 2);
+                                    palData[4 * (y * imgWidth + x) + 1] = (byte)(((i >> 6) & 0x3) * 3 + 1);
+                                    palData[4 * (y * imgWidth + x) + 2] = (byte)(((i >> 6) & 0x3) * 3);
+
                                     x++;
                                     bmpData[4 * (y * imgWidth + x)] = colorPalette[((i >> 4) & 0x3) * 3 + 2];
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[((i >> 4) & 0x3) * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[((i >> 4) & 0x3) * 3];
+
+                                    palData[4 * (y * imgWidth + x)] = (byte)(((i >> 4) & 0x3) * 3 + 2);
+                                    palData[4 * (y * imgWidth + x) + 1] = (byte)(((i >> 4) & 0x3) * 3 + 1);
+                                    palData[4 * (y * imgWidth + x) + 2] = (byte)(((i >> 4) & 0x3) * 3);
+
                                     x++;
                                     bmpData[4 * (y * imgWidth + x)] = colorPalette[((i >> 2) & 0x3) * 3 + 2];
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[((i >> 2) & 0x3) * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[((i >> 2) & 0x3) * 3];
+
+                                    palData[4 * (y * imgWidth + x)] = (byte)(((i >> 2) & 0x3) * 3 + 2);
+                                    palData[4 * (y * imgWidth + x) + 1] = (byte)(((i >> 2) & 0x3) * 3 + 1);
+                                    palData[4 * (y * imgWidth + x) + 2] = (byte)(((i >> 2) & 0x3) * 3);
+
                                     x++;
                                     bmpData[4 * (y * imgWidth + x)] = colorPalette[(i & 0x3) * 3 + 2];
                                     bmpData[4 * (y * imgWidth + x) + 1] = colorPalette[(i & 0x3) * 3 + 1];
                                     bmpData[4 * (y * imgWidth + x) + 2] = colorPalette[(i & 0x3) * 3];
+
+                                    palData[4 * (y * imgWidth + x)] = (byte)((i & 0x3) * 3 + 2);
+                                    palData[4 * (y * imgWidth + x) + 1] = (byte)((i & 0x3) * 3 + 1);
+                                    palData[4 * (y * imgWidth + x) + 2] = (byte)((i & 0x3) * 3);
                                 }
                             }
                         }
@@ -392,14 +434,55 @@ namespace DmitryBrant.ImageFormats
                 Debug.Log("Error while processing PCX file: " + e.Message);
             }
 
+            for (var j = 0; j < palData.Length - 4; j += 4)
+            {
+                byte r = palData[j + 0];
+                byte g = palData[j + 1];
+                byte b = palData[j + 2];
+                if (r == 0 && g == 1 && b == 2)
+                {
+                    palData[j + 3] = 0;
+                }
+                else
+                {
+                    palData[j + 3] = 1;
+                }
+            }
+
+            palData = ImageUtils.FlipPixelsVertically(palData, imgWidth, imgHeight);
+
             bmpData = ImageUtils.ColorToTransparent(bmpData, transparency);
             bmpData = ImageUtils.FlipPixelsVertically(bmpData, imgWidth, imgHeight);
 
-            var texture2D = new Texture2D(imgWidth, imgHeight, GraphicsFormat.B8G8R8A8_UNorm, TextureCreationFlags.MipChain);
-            texture2D.SetPixelData(bmpData, 0);
-            texture2D.Apply(false, false);
+            if (paletteOnly)
+            {
+                var width = colorPalette.Length / 3;
+                var palTexture2D = new Texture2D(width, 1, GraphicsFormat.B8G8R8A8_UNorm, TextureCreationFlags.None);
+                palTexture2D.filterMode = FilterMode.Point;
+                for (var pX = 0; pX < width; pX++)
+                {
+                    var r = colorPalette[pX * 3 + 0];
+                    var g = colorPalette[pX * 3 + 1];
+                    var b = colorPalette[pX * 3 + 2];
+                    palTexture2D.SetPixel(pX, 0, new Color32(r, g, b, 1));
+                }
+                palTexture2D.Apply(false, false);
 
-            return texture2D;
+                return new TextureAndPalette(null, palTexture2D);
+            }
+            else
+            {
+                var texture2D = new Texture2D(imgWidth, imgHeight, GraphicsFormat.B8G8R8A8_UNorm, TextureCreationFlags.MipChain);
+                texture2D.SetPixelData(bmpData, 0);
+                texture2D.Apply(false, false);
+
+                var palTexture2D = new Texture2D(imgWidth, imgHeight, GraphicsFormat.B8G8R8A8_UNorm, TextureCreationFlags.None);
+                palTexture2D.filterMode = FilterMode.Point;
+                palTexture2D.SetPixelData(palData, 0);
+                palTexture2D.Apply(false, false);
+
+                return new TextureAndPalette(texture2D, palTexture2D);
+            }
         }
 
         /// <summary>

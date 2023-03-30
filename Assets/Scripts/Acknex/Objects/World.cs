@@ -38,7 +38,7 @@ namespace Acknex
 
         public readonly Dictionary<string, Synonym> SynonymsByName = new Dictionary<string, Synonym>();
         public readonly Dictionary<string, Text> TextsByName = new Dictionary<string, Text>();
-        public readonly Dictionary<string, Texture2D> TextureCache = new Dictionary<string, Texture2D>();
+        public readonly Dictionary<string, TextureAndPalette> TextureCache = new Dictionary<string, TextureAndPalette>();
         public readonly Dictionary<string, Texture> TexturesByName = new Dictionary<string, Texture>();
         public readonly Dictionary<string, Thing> ThingsByName = new Dictionary<string, Thing>();
 
@@ -82,6 +82,7 @@ namespace Acknex
 
         public string WDLPath;
         public bool WMPContainsRegionsByName;
+        public bool UsePalettes;
 
         public static World Instance { get; private set; }
 
@@ -146,16 +147,17 @@ namespace Acknex
             {
                 foreach (var texture in TextureCache.Values)
                 {
-                    texture.filterMode = FilterMode.Point;
+                    texture.Texture.filterMode = FilterMode.Point;
                 }
                 foreach (var bitmap in BitmapsByName.Values)
                 {
-                    if (bitmap.BitmapTexture2D != null)
+                    if (bitmap.CropTexture != null)
                     {
-                        bitmap.BitmapTexture2D.filterMode = FilterMode.Point;
+                        bitmap.CropTexture.Texture.filterMode = FilterMode.Point;
                     }
                 }
             }
+            Shader.SetGlobalInt("_AcknexUsePalettes", UsePalettes ? 1 : 0);
             SetupEvents();
         }
 
@@ -228,7 +230,6 @@ namespace Acknex
             if (acknexObject != null && acknexObject.Container is Texture textureObject)
             {
                 material = new Material(textureObject.AcknexObject.HasFlag("SKY") ? Shader.Find("Acknex/Sky") : Shader.Find("Acknex/Surfaces"));
-                material.mainTexture = textureObject.GetBitmapAt()?.Texture2D;
             }
             else
             {

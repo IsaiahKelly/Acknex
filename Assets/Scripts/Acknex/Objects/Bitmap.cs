@@ -21,15 +21,16 @@ namespace Acknex
             return null;
         }
 
-        public float Width => AcknexObject.GetFloat("DX") != 0 ? AcknexObject.GetFloat("DX") : Texture2D != null ? Texture2D.width : 0;
-        public float Height => AcknexObject.GetFloat("DY") != 0 ? AcknexObject.GetFloat("DY") : Texture2D != null ? Texture2D.height : 0;
+        public float Width => AcknexObject.GetFloat("DX") != 0 ? AcknexObject.GetFloat("DX") : OriginalTexture != null ? OriginalTexture.Texture.width : 0;
+        public float Height => AcknexObject.GetFloat("DY") != 0 ? AcknexObject.GetFloat("DY") : OriginalTexture != null ? OriginalTexture.Texture.height : 0;
         public float X => AcknexObject.GetFloat("X");
         public float Y => AcknexObject.GetFloat("Y");
 
-        private Texture2DArray _bmaps;
+        private Texture2DArray _skyboxTexture2DArray;
+        private Texture2DArray _skyboxPalette2DArray;
 
-        public Texture2D Texture2D;
-        public Texture2D BitmapTexture2D;
+        public TextureAndPalette OriginalTexture;
+        public TextureAndPalette CropTexture;
 
         public Bitmap()
         {
@@ -44,7 +45,7 @@ namespace Acknex
         public void SetupTemplate()
         {
             var filename = AcknexObject.GetString("FILENAME");
-            CreateBitmapTexture(filename, (int)X, (int)Y, (int)Width, (int)Height, out Texture2D, ref BitmapTexture2D);
+            CreateBitmapTexture(filename, (int)X, (int)Y, (int)Width, (int)Height, out OriginalTexture, ref CropTexture);
         }
 
         public void SetupInstance()
@@ -62,48 +63,67 @@ namespace Acknex
             return null;
         }
 
-        public static void CreateBitmapTexture(string filename, int x, int y, int width, int height, out Texture2D texture2D, ref Texture2D bitmapTexture2D)
+        public static void CreateBitmapTexture(
+            string filename,
+            int x, 
+            int y, 
+            int width,
+            int height,
+            out TextureAndPalette textureAndPalette, 
+            ref TextureAndPalette bitmapTexture, //todo: remove ref
+            bool paletteOnly = false
+        )
         {
-            if (!World.Instance.TextureCache.TryGetValue(filename, out texture2D))
+            if (!World.Instance.TextureCache.TryGetValue(filename, out textureAndPalette))
             {
                 var lowerInvariant = filename.ToLowerInvariant();
                 if (lowerInvariant.EndsWith("pcx"))
                 {
-                    texture2D = PcxReader.Load(filename);
-                    World.Instance.TextureCache.Add(filename, texture2D);
-                    if (width == 0)
+                    textureAndPalette = PcxReader.Load(filename, false, paletteOnly);
+                    if (!paletteOnly)
                     {
-                        width = texture2D.width;
-                    }
-                    if (height == 0)
-                    {
-                        height = texture2D.height;
-                    }
-                }
-                else if (lowerInvariant.EndsWith("lbm"))
-                {
-                    var parser = new IlbmReaderTest.IffReader();
-                    var iff = parser.Read(filename);
-                    if (iff.Ilbms.Count > 0)
-                    {
-                        texture2D = iff.Ilbms[0].Texture2D;
-                        World.Instance.TextureCache.Add(filename, texture2D);
+                        World.Instance.TextureCache.Add(filename, textureAndPalette);
                         if (width == 0)
                         {
-                            width = texture2D.width;
+                            width = textureAndPalette.Texture.width;
                         }
                         if (height == 0)
                         {
-                            height = texture2D.height;
+                            height = textureAndPalette.Texture.height;
                         }
                     }
                 }
+                //todo: reimplement
+                //else if (lowerInvariant.EndsWith("lbm"))
+                //{
+                //    var parser = new IlbmReaderTest.IffReader();
+                //    var iff = parser.Read(filename);
+                //    if (iff.Ilbms.Count > 0)
+                //    {
+                //        texture = iff.Ilbms[0].Texture2D;
+                //        World.Instance.TextureCache.Add(filename, texture);
+                //        if (width == 0)
+                //        {
+                //            width = texture.width;
+                //        }
+                //        if (height == 0)
+                //        {
+                //            height = texture.height;
+                //        }
+                //    }
+                //}
             }
-            if (texture2D != null && width > 0f && height > 0f)
+            if (!paletteOnly && textureAndPalette != null && width > 0f && height > 0f)
             {
-                bitmapTexture2D = new Texture2D(width, height, texture2D.graphicsFormat, TextureCreationFlags.MipChain);
-                TextureUtils.CopyTextureCPU(texture2D, bitmapTexture2D, true, false, x, y, width, height);
+                var bitmapTexture2D = new Texture2D(width, height, textureAndPalette.Texture.graphicsFormat, TextureCreationFlags.MipChain);
+                TextureUtils.CopyTextureCPU(textureAndPalette.Texture, bitmapTexture2D, true, false, x, y, width, height);
                 TextureUtils.Dilate(bitmapTexture2D);
+
+                var paletteTexture2D = new Texture2D(width, height, textureAndPalette.Palette.graphicsFormat, TextureCreationFlags.None);
+                paletteTexture2D.filterMode = FilterMode.Point;
+                TextureUtils.CopyTextureCPU(textureAndPalette.Palette, paletteTexture2D, true, false, x, y, width, height);
+
+                bitmapTexture = new TextureAndPalette(bitmapTexture2D, paletteTexture2D);
             }
         }
 
@@ -120,7 +140,7 @@ namespace Acknex
 
         public void UpdateMaterial(Material material, Texture texture, int index, bool mirror, IAcknexObject sourceAcknexObject)
         {
-            if (BitmapTexture2D == null)
+            if (CropTexture == null)
             {
                 return;
             }
@@ -134,7 +154,7 @@ namespace Acknex
             var offsetY = 0f;
             var cullMode = UnityEngine.Rendering.CullMode.Back;
             var ambient = 1f;
-            BitmapTexture2D.wrapModeV = TextureWrapMode.Repeat;
+            CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Repeat;
             if (sourceAcknexObject != null)
             {
                 if (sourceAcknexObject.TryGetFloat("AMBIENT", out var wallOrRegionAmbient))
@@ -156,7 +176,7 @@ namespace Acknex
                         material.SetFloat("_V0H", wall.BottomUV.m12);
                         material.SetFloat("_V1H", wall.BottomUV.m13);
                         material.SetInt("_FENCE", 1);
-                        BitmapTexture2D.wrapModeV = TextureWrapMode.Clamp;
+                        CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Clamp;
                         cullMode = UnityEngine.Rendering.CullMode.Off;
                     }
                     if (wall.AcknexObject.HasFlag("PORTCULLIS"))
@@ -187,19 +207,21 @@ namespace Acknex
                 {
                     var sides = texture.AcknexObject.GetInteger("SIDES");
                     material.SetInt("_SIDES", sides);
-                    if (_bmaps == null)
+                    if (_skyboxTexture2DArray == null)
                     {
                         var bitmapCount = texture.BMaps.Count;
-                        _bmaps = new Texture2DArray((int)Width, (int)Height, bitmapCount, BitmapTexture2D.graphicsFormat, TextureCreationFlags.MipChain);
+                        _skyboxTexture2DArray = new Texture2DArray((int)Width, (int)Height, bitmapCount, CropTexture.Texture.graphicsFormat, TextureCreationFlags.MipChain);
+                        _skyboxPalette2DArray = new Texture2DArray((int)Width, (int)Height, bitmapCount, CropTexture.Palette.graphicsFormat, TextureCreationFlags.None);
                         for (var i = 0; i < bitmapCount; i++)
                         {
                             var bitmap = texture.GetBitmapAt(i);
-                            var bitmapTexture2D = bitmap.BitmapTexture2D;
-                            _bmaps.SetPixels(bitmapTexture2D.GetPixels(), i);
+                            _skyboxTexture2DArray.SetPixels(bitmap.CropTexture.Texture.GetPixels(), i);
+                            _skyboxPalette2DArray.SetPixels(bitmap.CropTexture.Palette.GetPixels(), i);
                         }
-                        _bmaps.Apply(true, false);
+                        _skyboxTexture2DArray.Apply(true, false);
+                        _skyboxPalette2DArray.Apply(true, false);
                     }
-                    material.SetTexture("_BMAPS", _bmaps);
+                    material.SetTexture("_BMAPS", World.Instance.UsePalettes ? _skyboxPalette2DArray : _skyboxTexture2DArray);
                     //todo: SKY_OFFS_Y
                 }
             }
@@ -217,7 +239,7 @@ namespace Acknex
             material.SetFloat("_SCALEY", scaleY);
             material.SetInt("_CullMode", (int)cullMode);
             material.SetFloat("_AMBIENT", ambient);
-            material.mainTexture = BitmapTexture2D;
+            material.mainTexture = World.Instance.UsePalettes ? CropTexture.Palette : CropTexture.Texture;
             if (sourceAcknexObject is AcknexObject acknexObject)
             {
                 acknexObject.CurrentBitmap = this;

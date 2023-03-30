@@ -1,4 +1,5 @@
-﻿using Acknex.Interfaces;
+﻿using System.Linq;
+using Acknex.Interfaces;
 using UnityEngine;
 using Utils;
 
@@ -68,9 +69,9 @@ namespace Acknex
             characterControllerCenter.y = _characterController.height * 0.5f;
             _characterController.center = characterControllerCenter;
             var playerMove = new Vector3(
-                World.Instance.GetSkillValue("PLAYER_VX"), 
-                World.Instance.GetSkillValue("PLAYER_VZ"), 
-                World.Instance.GetSkillValue("PLAYER_VY")) 
+                World.Instance.GetSkillValue("PLAYER_VX"),
+                World.Instance.GetSkillValue("PLAYER_VZ"),
+                World.Instance.GetSkillValue("PLAYER_VY"))
                              * World.Instance.GetSkillValue("TIME_CORR");
             //var moveAngle = playerMove.magnitude > 0f ? AngleUtils.ConvertUnityToAcknexAngle(Quaternion.LookRotation(playerMove).eulerAngles.y) : 0f;
             //var deltaAngle = moveAngle - World.Instance.GetSkillValue("MOVE_ANGLE");
@@ -155,29 +156,37 @@ namespace Acknex
 
         private void OnGUI()
         {
-            GUILayout.BeginVertical();
-            GUILayout.Label($"PLAYER_ANGLE:{World.Instance.GetSkillValue("PLAYER_ANGLE") * Mathf.Rad2Deg}");
-            GUILayout.Label($"PLAYER_TILT:{World.Instance.GetSkillValue("PLAYER_TILT")}");
-            GUILayout.Label($"PLAYER_VX:{World.Instance.GetSkillValue("PLAYER_VX")}");
-            GUILayout.Label($"PLAYER_VY:{World.Instance.GetSkillValue("PLAYER_VY")}");
-            GUILayout.Label($"PLAYER_VZ:{World.Instance.GetSkillValue("PLAYER_VZ")}");
-            GUILayout.Label($"PLAYER_VROT:{World.Instance.GetSkillValue("PLAYER_VROT")}");
-            GUILayout.Label($"PLAYER_SIN:{World.Instance.GetSkillValue("PLAYER_SIN")}");
-            GUILayout.Label($"PLAYER_COS:{World.Instance.GetSkillValue("PLAYER_COS")}");
-            GUILayout.Label($"PLAYER_HGT:{World.Instance.GetSkillValue("PLAYER_HGT")}");
-            GUILayout.Label($"PLAYER_HEALTH:{World.Instance.GetSkillValue("PLAYER_HEALTH")}");
-            GUILayout.Label($"AMMO:{World.Instance.GetSkillValue("AMMO")}");
-            var region = AcknexObject.GetAcknexObject("REGION");
-            GUILayout.Label($"RGN:{region?.GetString("NAME")}");
-            GUILayout.Label($"CEIL_HGT:{region?.GetFloat("CEIL_HGT")}");
-            GUILayout.Label($"FLOOR_HGT:{region?.GetFloat("FLOOR_HGT")}");
-            GUILayout.Label($"PLAYER_DEPTH:{World.Instance.GetSkillValue("PLAYER_DEPTH")}");
-            GUILayout.EndVertical();
+            if (World.Instance.UsePalettes)
+            {
+                GUI.DrawTexture(new Rect(16f, 16f, 256f, 32f), Shader.GetGlobalTexture("_AcknexPalette"), ScaleMode.StretchToFill, false);
+            }
+            else
+            {
+                GUILayout.BeginVertical();
+                GUILayout.Label($"PLAYER_ANGLE:{World.Instance.GetSkillValue("PLAYER_ANGLE") * Mathf.Rad2Deg}");
+                GUILayout.Label($"PLAYER_TILT:{World.Instance.GetSkillValue("PLAYER_TILT")}");
+                GUILayout.Label($"PLAYER_VX:{World.Instance.GetSkillValue("PLAYER_VX")}");
+                GUILayout.Label($"PLAYER_VY:{World.Instance.GetSkillValue("PLAYER_VY")}");
+                GUILayout.Label($"PLAYER_VZ:{World.Instance.GetSkillValue("PLAYER_VZ")}");
+                GUILayout.Label($"PLAYER_VROT:{World.Instance.GetSkillValue("PLAYER_VROT")}");
+                GUILayout.Label($"PLAYER_SIN:{World.Instance.GetSkillValue("PLAYER_SIN")}");
+                GUILayout.Label($"PLAYER_COS:{World.Instance.GetSkillValue("PLAYER_COS")}");
+                GUILayout.Label($"PLAYER_HGT:{World.Instance.GetSkillValue("PLAYER_HGT")}");
+                GUILayout.Label($"PLAYER_HEALTH:{World.Instance.GetSkillValue("PLAYER_HEALTH")}");
+                GUILayout.Label($"AMMO:{World.Instance.GetSkillValue("AMMO")}");
+                var region = AcknexObject.GetAcknexObject("REGION");
+                GUILayout.Label($"RGN:{region?.GetString("NAME")}");
+                GUILayout.Label($"CEIL_HGT:{region?.GetFloat("CEIL_HGT")}");
+                GUILayout.Label($"FLOOR_HGT:{region?.GetFloat("FLOOR_HGT")}");
+                GUILayout.Label($"PLAYER_DEPTH:{World.Instance.GetSkillValue("PLAYER_DEPTH")}");
+                GUILayout.EndVertical();
+            }
         }
 
         private void Locate(float playerX, float playerY, ref float playerZ, bool initial = true)
         {
             var region = (Region)AcknexObject.GetAcknexObject("REGION").Container;
+            region.AcknexObject.RemoveFlag("HERE");
             var newRegion = Region.Locate(AcknexObject, region, World.Instance.GetSkillValue("PLAYER_WIDTH"), playerX, playerY, ref playerZ, false, initial ? Region.MaxHeight : World.Instance.GetSkillValue("PLAYER_CLIMB"));
             if (newRegion != region)
             {
@@ -195,6 +204,7 @@ namespace Acknex
                     World.Instance.TriggerEvent("IF_DIVE", region.Above.AcknexObject, null, region.Above.AcknexObject);
                 }
             }
+            region.AcknexObject.AddFlag("HERE");
             World.Instance.SetSynonymObject("HERE", region.AcknexObject);
             AcknexObject.SetAcknexObject("REGION", region.AcknexObject);
             if (region.Below != null && region.AcknexObject.TryGetAcknexObject("IF_DIVE", out _))

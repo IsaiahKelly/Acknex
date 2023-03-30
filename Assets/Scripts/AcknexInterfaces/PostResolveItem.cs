@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Acknex.Interfaces;
 
-namespace AcknexInterfaces
+namespace Acknex.Interfaces
 {
     public class PostResolveItem
     {

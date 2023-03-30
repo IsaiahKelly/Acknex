@@ -5,38 +5,21 @@ namespace Acknex
 {
     public class Palette : IAcknexObjectContainer
     {
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
-
-        }
-        public bool DebugMarked { get; set; }
-        public GameObject GameObject => null;
+        public TextureAndPalette BitmapTexture;
+        public TextureAndPalette Texture;
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Palette);
-        public void UpdateObject()
-        {
+        public bool DebugMarked { get; set; }
 
+        public void Disable()
+        {
         }
 
         public void Enable()
         {
-
         }
 
-        public void Disable()
-        {
-
-        }
-
-        public void SetupTemplate()
-        {
-            
-        }
-
-        public void SetupInstance()
-        {
-            
-        }
+        public GameObject GameObject => null;
 
         public Vector3 GetCenter()
         {
@@ -48,10 +31,40 @@ namespace Acknex
             return null;
         }
 
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+        }
+
+        public void SetupInstance()
+        {
+        }
+
+        public void SetupTemplate()
+        {
+            var filename = AcknexObject.GetString("PALFILE");
+            Bitmap.CreateBitmapTexture(filename, 0, 0, 0, 0, out Texture, ref BitmapTexture, true);
+            if (BitmapTexture != null)
+            {
+                BitmapTexture.Palette.name = AcknexObject.GetString("NAME");
+            }
+            if (World.Instance.UsePalettes)
+            {
+                Shader.SetGlobalTexture("_AcknexPalette", Texture.Palette);
+            }
+        }
+
+        public void UpdateObject()
+        {
+        }
+
         private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
         }
 
+        public Palette()
+        {
+            AcknexObject.Container = this;
+        }
     }
 }

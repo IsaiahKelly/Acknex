@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
 using Acknex.Interfaces;
-using AcknexInterfaces;
+using Acknex.Interfaces;
 using AudioSynthesis.Bank;
 using AudioSynthesis.Midi;
 using LibTessDotNet;
