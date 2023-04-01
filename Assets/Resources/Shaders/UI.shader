@@ -19,9 +19,10 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
+            sampler2D _MainTex;
             #include "Common.cginc"
 
-        float4 _MainTex_ST;
+             float4 _MainTex_ST;
 
             struct appdata
             {

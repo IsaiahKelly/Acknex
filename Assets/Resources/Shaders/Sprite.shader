@@ -16,17 +16,18 @@
     }
     SubShader
     {
-        Tags {"Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent"}
+        Tags {"Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" "ForceNoShadowCasting" = "True"}
         LOD 100
 
         ZWrite Off
         Blend SrcAlpha OneMinusSrcAlpha
 
         CGPROGRAM
-        #pragma surface surf Sprite addshadow alpha
+        #pragma surface surf Sprite alpha
 
         #pragma target 3.0
 
+        sampler2D _MainTex;
         #include "Common.cginc"
         
         struct Input

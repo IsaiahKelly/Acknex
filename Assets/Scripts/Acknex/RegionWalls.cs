@@ -5,12 +5,12 @@ namespace Acknex
 {
     public class RegionWalls : Dictionary<IAcknexObject, RegionWall>
     {
-        public List<Wall> GetWallsList(IAcknexObject index)
+        public List<Wall> GetWallsList(IAcknexObject region)
         {
-            if (!TryGetValue(index, out var walls))
+            if (!TryGetValue(region, out var walls))
             {
                 walls = new RegionWall();
-                Add(index, walls);
+                Add(region, walls);
             }
             return walls;
         }

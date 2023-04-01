@@ -238,14 +238,20 @@ namespace Acknex
             return font;
         }
 
-        private Text CreateText(string name)
+        public Text CreateText(string name)
         {
-            var text = new Text();
-            text.AcknexObject.SetString("NAME", name);
-            text.AcknexObject.Type = ObjectType.Text;
-            AcknexObject.SetAcknexObject(name, text.AcknexObject);
-            TextsByName.Add(name, text);
-            return text;
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            var newGameObject = new GameObject(name);
+            newGameObject.transform.SetParent(Canvas.transform, false);
+            var newText = newGameObject.AddComponent<Text>();
+            newText.AcknexObject.SetString("NAME", name);
+            newText.AcknexObject.Type = ObjectType.Text;
+            AcknexObject.SetAcknexObject(name, newText.AcknexObject);
+            TextsByName.Add(name, newText);
+            return newText;
         }
 
         private Flic CreateFlic(string name)

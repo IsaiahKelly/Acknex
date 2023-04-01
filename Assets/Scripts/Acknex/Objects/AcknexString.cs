@@ -22,6 +22,7 @@ namespace Acknex
 
         public AcknexString(string value)
         {
+            AcknexObject.Container = this;
             AcknexObject.SetString("VAL", value);
         }
 

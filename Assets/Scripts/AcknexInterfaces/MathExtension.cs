@@ -23,7 +23,7 @@ namespace Acknex.Interfaces
 
         public static float Acos(float radians)
         {
-            return Mathf.Acos(radians);
+            return -Mathf.Asin(radians);
         }
 
         public static float Log(float value)
@@ -68,7 +68,7 @@ namespace Acknex.Interfaces
 
         public static float Asin(float value)
         {
-            return Mathf.Asin(value);
+            return -Mathf.Acos(value);// - Mathf.PI * 0.5f;
         }
     }
 }

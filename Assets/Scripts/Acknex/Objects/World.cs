@@ -5,13 +5,12 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityMidi;
 using WdlEngine;
-#if UNITY_EDITOR
-#endif
 
 namespace Acknex
 {
     public partial class World : MonoBehaviour, IAcknexWorld
     {
+        private readonly Dictionary<Texture, IList<Mesh>> _meshesPerTexture = new Dictionary<Texture, IList<Mesh>>();
         public readonly Dictionary<string, Action> ActionsByName = new Dictionary<string, Action>();
         public readonly Dictionary<string, Actor> ActorsByName = new Dictionary<string, Actor>();
         public readonly Dictionary<string, HashSet<Actor>> AllActorsByName = new Dictionary<string, HashSet<Actor>>();
@@ -42,16 +41,15 @@ namespace Acknex
         public readonly Dictionary<string, TextureAndPalette> TextureCache = new Dictionary<string, TextureAndPalette>();
         public readonly Dictionary<string, Texture> TexturesByName = new Dictionary<string, Texture>();
         public readonly Dictionary<string, Thing> ThingsByName = new Dictionary<string, Thing>();
-
         public readonly List<Wall> Walls = new List<Wall>();
         public readonly Dictionary<string, Wall> WallsByName = new Dictionary<string, Wall>();
         public readonly Dictionary<string, Way> WaysByName = new Dictionary<string, Way>();
-        private List<ContourVertex> _contourVertices;
 
+        private bool _culled;
         private Texture2D _palette;
         private Color[] _palettePixels;
-        private RegionWalls _regionWalls;
-
+        private Material _skyMaterial;
+        private Material _surfacesMaterial;
 
         //Text parser variables
         private TextParser _textParser;
@@ -59,23 +57,27 @@ namespace Acknex
         public AudioSource AudioSource;
         public bool BilinearFilter = true;
         public IAcknexObject BulletString;
-
         public Canvas Canvas;
-
         //todo: how to calculate this?
         public float CanvasWidthRatio = 2f;
+        private ContouredRegions ContouredRegions;
+        public List<ContourVertex> ContourVertices;
         public Color DebugColor;
         public GameObject DebugContainer;
         public Texture2D DebugTexture;
-        public bool DisableEvents;
-        public bool DisableWallTextures;
+        public bool DisableCompilation;
+        public bool DisableMaterials;
+        public bool DrawShadows;
         public IAcknexObject FollowString;
+        public bool GodMode;
         public IAcknexObject HoldString;
+        public bool MeshBatch;
         public MidiPlayer MidiPlayer;
         public float MouseMultiplier = 0.1f;
         public IAcknexObject MoveString;
         public IAcknexObject Node1String;
         public IAcknexObject Node2String;
+        public RegionWalls RegionWalls;
         public IAcknexObject RepelString;
         public bool RotationBeginsAtRight;
         public string SourceGenerationPath;
@@ -136,6 +138,8 @@ namespace Acknex
             _palette.filterMode = FilterMode.Point;
             _palettePixels = new Color[256];
             Shader.SetGlobalTexture("_AcknexPalette", _palette);
+            _surfacesMaterial = new Material(Shader.Find("Acknex/Surfaces"));
+            _skyMaterial = new Material(Shader.Find("Acknex/Sky"));
         }
 
         private void Start()
@@ -147,8 +151,9 @@ namespace Acknex
             CreateDefaultSynonyms();
             CreateDefaultSkills();
             CreatePropertyDescriptors();
-            _contourVertices = new List<ContourVertex>();
-            _regionWalls = new RegionWalls();
+            ContouredRegions = new ContouredRegions();
+            ContourVertices = new List<ContourVertex>();
+            RegionWalls = new RegionWalls();
             if (UseWDLEngine)
             {
                 var engine = new ScriptingEngine(this);
@@ -193,7 +198,7 @@ namespace Acknex
         private void Update()
         {
             UpdateObject();
-            if (Input.GetKeyDown(KeyCode.K))
+            if (GodMode)
             {
                 UpdateSkillValue("AMMO", 9999999F);
                 UpdateSkillValue("PLAYER_HEALTH", 9999999F);
@@ -208,11 +213,18 @@ namespace Acknex
         //    GUILayout.EndVertical();
         //}
 
-        public void BuildRegionsAndWalls(RegionWalls regionWalls, List<ContourVertex> contourVertices)
+        public void BuildRegionsAndWalls()
         {
             var vertexCount = 0;
-            var contouredRegions = new ContouredRegions();
-            foreach (var kvp in regionWalls)
+            foreach (var kvp in AllWallsByName)
+            {
+                foreach (var wall in kvp.Value)
+                {
+                    RegionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION1", true, false)).Add(wall);
+                    RegionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION2", true, false)).Add(wall);
+                }
+            }
+            foreach (var kvp in RegionWalls)
             {
                 foreach (var wall in kvp.Value)
                 {
@@ -224,35 +236,27 @@ namespace Acknex
                     {
                         continue;
                     }
-                    var rightRegion = contouredRegions.GetContouredRegion(kvp.Key);
+                    var rightRegion = ContouredRegions.GetContouredRegion(kvp.Key);
                     var allContourVertices = rightRegion.GetNew();
-                    wall.ProcessWall(allContourVertices, contourVertices, wall, kvp, ref vertexCount, wall.AcknexObject.GetAcknexObject("REGION2") == kvp.Key);
+                    wall.ProcessWall(allContourVertices, wall, kvp, ref vertexCount, wall.AcknexObject.GetAcknexObject("REGION2", true, false) == kvp.Key);
                 }
             }
-            foreach (var kvp in contouredRegions)
+            foreach (var kvp in ContouredRegions)
             {
                 var region = (Region)kvp.Key.Container;
-                region.BuildRegionFloorAndCeiling(kvp.Value);
-            }
-            foreach (var wall in Walls)
-            {
-                wall.BuildWallAndMesh(contourVertices);
+                var contouredRegion = kvp.Value;
+                region.ContouredRegion = contouredRegion;
+                //region.BuildRegionFloorAndCeiling(contouredRegion);
             }
         }
 
         public Material BuildMaterial(IAcknexObject acknexObject)
         {
-            Material material;
-            if (acknexObject != null && acknexObject.Container is Texture textureObject)
+            if (acknexObject?.Container is Texture textureObject && textureObject.AcknexObject.HasFlag("SKY"))
             {
-                material = new Material(textureObject.AcknexObject.HasFlag("SKY") ? Shader.Find("Acknex/Sky") : Shader.Find("Acknex/Surfaces"));
+                return _skyMaterial;
             }
-            else
-            {
-                material = new Material(Shader.Find("Acknex/Surfaces"));
-            }
-            material.SetFloat("_Glossiness", 0f);
-            return material;
+            return _surfacesMaterial;
         }
 
         public int GetRegionIndex(Region region)
@@ -277,6 +281,71 @@ namespace Acknex
                 return RegionsByIndex[index];
             }
             return null;
+        }
+
+        private void SetupCulling()
+        {
+            _meshesPerTexture.Clear();
+            foreach (var walls in AllWallsByName.Values)
+            {
+                foreach (var wall in walls)
+                {
+                    if (wall.TextureObject.AcknexObject.GetInteger("CYCLES") > 1)
+                    {
+                        continue;
+                    }
+                    wall.DisableRender = true;
+                    if (!_meshesPerTexture.TryGetValue(wall.TextureObject, out var meshes))
+                    {
+                        meshes = new List<Mesh>();
+                        _meshesPerTexture.Add(wall.TextureObject, meshes);
+                    }
+                    meshes.Add(wall.Filter.sharedMesh);
+                }
+            }
+            foreach (var regions in AllRegionsByName.Values)
+            {
+                foreach (var region in regions)
+                {
+                    if (region.CeilTexture.AcknexObject.GetInteger("CYCLES") <= 1)
+                    {
+                        if (!_meshesPerTexture.TryGetValue(region.CeilTexture, out var meshes))
+                        {
+                            meshes = new List<Mesh>();
+                            _meshesPerTexture.Add(region.CeilTexture, meshes);
+                        }
+                        meshes.Add(region.CeilMeshFilter.sharedMesh);
+                        region.DisableCeilRender = true;
+                    }
+                    if (region.FloorTexture.AcknexObject.GetInteger("CYCLES") <= 1)
+                    {
+                        if (!_meshesPerTexture.TryGetValue(region.FloorTexture, out var meshes))
+                        {
+                            meshes = new List<Mesh>();
+                            _meshesPerTexture.Add(region.FloorTexture, meshes);
+                        }
+                        meshes.Add(region.FloorMeshFilter.sharedMesh);
+                        region.DisableFloorRender = true;
+                    }
+                }
+            }
+            foreach (var kvp in _meshesPerTexture)
+            {
+                var combinedMesh = new Mesh();
+                var combineInstances = new CombineInstance[kvp.Value.Count];
+                for (var i = 0; i < kvp.Value.Count; i++)
+                {
+                    combineInstances[i] = new CombineInstance();
+                    combineInstances[i].mesh = kvp.Value[i];
+                }
+                combinedMesh.CombineMeshes(combineInstances, false, false, false);
+                var groupGameObject = new GameObject(kvp.Key.AcknexObject.GetString("NAME"));
+                groupGameObject.transform.SetParent(transform, false);
+                var meshFilter = groupGameObject.AddComponent<MeshFilter>();
+                meshFilter.sharedMesh = combinedMesh;
+                var meshRenderer = groupGameObject.AddComponent<MeshRenderer>();
+                meshRenderer.sharedMaterial = BuildMaterial(kvp.Key.AcknexObject);
+            }
         }
     }
 }

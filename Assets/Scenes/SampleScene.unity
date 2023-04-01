@@ -760,12 +760,14 @@ MonoBehaviour:
   AudioSource: {fileID: 1477033083}
   BilinearFilter: 0
   Canvas: {fileID: 1116186326}
-  CanvasWidthRatio: 1.565
+  CanvasWidthRatio: 1.667
   DebugColor: {r: 0, g: 0, b: 0, a: 0}
   DebugContainer: {fileID: 0}
   DebugTexture: {fileID: 0}
-  DisableEvents: 0
+  DisableCompilation: 1
   DisableWallTextures: 0
+  DrawShadows: 1
+  GodMode: 1
   MidiPlayer: {fileID: 1246573634}
   MouseMultiplier: 0.1
   RotationBeginsAtRight: 0

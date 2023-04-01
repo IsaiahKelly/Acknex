@@ -30,10 +30,12 @@ namespace Acknex
 
         public string DebugMessage { get; set; }
 
-        public IAcknexObject GetAcknexObject(string propertyName, bool fromTemplate = true)
+        public bool IsGeometryDirty { get; set; }
+
+        public IAcknexObject GetAcknexObject(string propertyName, bool fromTemplate = true, bool setupInstance = true)
         {
             var obj = GetObject<IAcknexObject>(propertyName, fromTemplate);
-            if (obj != null && !obj.IsInstance)
+            if (setupInstance && obj != null && !obj.IsInstance)
             {
                 switch (obj.Type)
                 {

@@ -27,14 +27,15 @@ Shader "Acknex/Surfaces"
 		{
 			Tags { "RenderType" = "Opaque" }
 			//todo: lets add this here later
-			Cull[_CullMode]
+			//Cull[_CullMode]
 			LOD 200
 
 			CGPROGRAM
-			#pragma surface surf Standard addshadow vertex:vert 
+			#pragma surface surf Standard addshadow vertex:vert
 
 			#pragma target 3.0
 
+			sampler2D _MainTex;
 			#include "Common.cginc"
 
 			struct Input

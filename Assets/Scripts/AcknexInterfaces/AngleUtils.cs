@@ -5,12 +5,6 @@ namespace Acknex.Interfaces
 {
     public static class AngleUtils
     {
-
-        public static float PatchAngle(float angle)
-        {
-            return angle;// + Mathf.PI * 0.5f;
-        }
-
         public static float ConvertUnityToAcknexAngle(float degrees)
         {
             //return Mathf.Repeat(Mathf.Rad2Deg * degrees - 90f, 360f); VRDEMO, SKAPH

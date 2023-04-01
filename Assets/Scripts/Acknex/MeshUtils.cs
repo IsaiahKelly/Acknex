@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Acknex.Interfaces;
 using UnityEngine;
 
 namespace Acknex
@@ -13,17 +14,12 @@ namespace Acknex
             return Vector3.Cross(side1, side2).normalized;
         }
 
-        public static Vector3 ToXZ(Vector2 point)
+        public static void AddQuad(int a, int b, int c, int d, Dictionary<IAcknexObject, List<int>> allTriangles, IAcknexObject texture, int baseIndex = 0)
         {
-            return new Vector3(point.x, 0f, point.y);
-        }
-
-        public static void AddQuad(int a, int b, int c, int d, Dictionary<string, List<int>> allTriangles, string texture, int baseIndex = 0)
-        {
-            if (texture == null)
-            {
-                texture = "__default__";
-            }
+            //if (texture == null)
+            //{
+            //    texture = "__default__";
+            //}
             if (!allTriangles.TryGetValue(texture, out var indices))
             {
                 indices = new List<int>();
@@ -88,23 +84,5 @@ namespace Acknex
             mesh.uv = uv;
             return mesh;
         }
-
-        //public static MeshCollider BuildDoubleSidedMeshCollider(GameObject gameObject, Mesh mesh)
-        //{
-        //    var combineInstances = new CombineInstance[2];
-        //    combineInstances[0] = new CombineInstance() {  mesh = mesh };
-        //    var flippedMesh = new Mesh { vertices = mesh.vertices, normals = mesh.normals, uv = mesh.uv };
-        //    var triangles = mesh.GetTriangles(0);
-        //    Array.Reverse(triangles);
-        //    flippedMesh.triangles = triangles;
-        //    flippedMesh.UploadMeshData(false);
-        //    combineInstances[1] = new CombineInstance() { mesh = flippedMesh };
-        //    var combinedMesh = new Mesh();
-        //    combinedMesh.CombineMeshes(combineInstances, true, false);
-        //    combinedMesh.UploadMeshData(true);
-        //    var meshCollider = gameObject.AddComponent<MeshCollider>();
-        //    meshCollider.sharedMesh = combinedMesh;
-        //    return meshCollider;
-        //}
     }
 }

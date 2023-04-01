@@ -209,7 +209,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "ANGLE");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "X");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "Y");
-            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "Z");
+            //AddObjectProperty(ObjectType.Thing, PropertyType.Float, "Z");
             AddObjectProperty(ObjectType.Thing, PropertyType.ObjectReference, "REGION");
             AddObjectProperty(ObjectType.Thing, PropertyType.ObjectReference, "TARGET");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "FLOOR_HGT");

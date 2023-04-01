@@ -12,38 +12,35 @@ namespace Acknex
     //todo: tesselation needs to implement the method to create new vertices
     public class Region : MonoBehaviour, IAcknexObjectContainer
     {
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
-
-        }
-        [field:SerializeField]
-        public bool DebugMarked { get; set; }
-
-        public GameObject GameObject => gameObject;
-
         public const float MaxHeight = 10000f;
 
-        //private GameObject _triggerGameObject;
-        //private MeshCollider _triggerCollider;
-        //private CollisionCallback _triggerCollisionCallback;
-
+        private Dictionary<int, List<int>> _allTriangles;
+        private List<Vector2> _allUVs;
+        private List<Vector3> _allVertices;
+        private Coroutine _animateCeilCoroutine;
+        private Coroutine _animateFloorCoroutine;
         private AudioSource _audioSource;
-
         private Region _belowOverride;
         private MeshCollider _ceilCollider;
-        private MeshCollider _invertedCeilCollider;
         private GameObject _ceilGameObject;
-
-        private MeshFilter _ceilMeshFilter;
+        private Material _ceilMaterial;
+        private Mesh _ceilMesh;
         private MeshRenderer _ceilMeshRenderer;
         private MeshCollider _floorCollider;
-        private MeshCollider _invertedFloorCollider;
         private GameObject _floorGameObject;
-
-        private MeshFilter _floorMeshFilter;
+        private Material _floorMaterial;
+        private Mesh _floorMesh;
         private MeshRenderer _floorMeshRenderer;
-
+        private MeshCollider _invertedCeilCollider;
+        private Mesh _invertedCeilMesh;
+        private MeshCollider _invertedFloorCollider;
+        private Mesh _invertedFloorMesh;
+        private Texture _lastCeilTexture;
+        private Texture _lastFloorTexture;
+        private bool _materialsCreated;
         public ContouredRegion ContouredRegion;
+        public bool DisableCeilRender;
+        public bool DisableFloorRender;
 
         public Texture FloorTexture
         {
@@ -69,7 +66,7 @@ namespace Acknex
             }
         }
 
-        public Region Above { get; private set; }
+        public Region Above { get; set; }
 
         public Region Below
         {
@@ -89,19 +86,25 @@ namespace Acknex
             set => _belowOverride = value;
         }
 
+        public MeshFilter CeilMeshFilter { get; set; }
+
+        public MeshFilter FloorMeshFilter { get; set; }
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Region);
+
+        [field: SerializeField] public bool DebugMarked { get; set; }
 
         public void Disable()
         {
             AcknexObject.AddFlag("INVISIBLE");
-            AcknexObject.RemoveFlag("VISIBLE");
         }
 
         public void Enable()
         {
             AcknexObject.RemoveFlag("INVISIBLE");
-            AcknexObject.AddFlag("VISIBLE");
         }
+
+        public GameObject GameObject => gameObject;
 
         public Vector3 GetCenter()
         {
@@ -113,6 +116,10 @@ namespace Acknex
             return AcknexObject;
         }
 
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+        }
+
         public void SetupInstance()
         {
             if (AcknexObject.IsInstance)
@@ -120,10 +127,27 @@ namespace Acknex
                 return;
             }
             AcknexObject.IsInstance = true;
+            _allVertices = new List<Vector3>();
+            _allUVs = new List<Vector2>();
+            _allTriangles = new Dictionary<int, List<int>>();
+            _floorMesh = new Mesh();
+            _ceilMesh = new Mesh();
+            _invertedCeilMesh = new Mesh();
+            _invertedFloorMesh = new Mesh();
+            _floorGameObject = new GameObject("Floor");
+            _floorGameObject.transform.SetParent(transform, false);
+            _floorGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
+            _ceilGameObject = new GameObject("Ceil");
+            _ceilGameObject.transform.SetParent(transform, false);
+            _ceilGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
+            _ceilMeshRenderer = _ceilGameObject.AddComponent<MeshRenderer>();
+            CeilMeshFilter = _ceilGameObject.AddComponent<MeshFilter>();
+            _ceilCollider = _ceilGameObject.AddComponent<MeshCollider>();
+            _invertedCeilCollider = _ceilGameObject.AddComponent<MeshCollider>();
             //todo: move to middle
             _audioSource = gameObject.AddComponent<AudioSource>();
-            StartCoroutine(AnimateCeil());
-            StartCoroutine(AnimateFloor());
+            //StartCoroutine(AnimateCeil());
+            //StartCoroutine(AnimateFloor());
         }
 
         public void SetupTemplate()
@@ -132,62 +156,70 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            if (_floorMeshRenderer == null || _ceilMeshRenderer == null)
+            if (AcknexObject.IsGeometryDirty)
             {
-                return;
+                UpdateAllMeshes();
+                AcknexObject.IsGeometryDirty = false;
             }
             if (!AcknexObject.IsDirty)
             {
                 return;
             }
-            if (AcknexObject.HasFlag("INVISIBLE"))
-            {
-                return;
-            }
             AcknexObject.IsDirty = false;
-            if (AcknexObject.HasFlag("INVISIBLE", false))
+            if (AcknexObject.HasFlag("INVISIBLE"))
             {
                 _floorMeshRenderer.enabled = false;
                 _floorCollider.enabled = false;
                 _ceilMeshRenderer.enabled = false;
                 _ceilCollider.enabled = false;
+                return;
             }
-            else
-            {
-                _floorMeshRenderer.enabled = true;
-                _floorCollider.enabled = true;
-                _ceilMeshRenderer.enabled = true;
-                _ceilCollider.enabled = true;
-            }
+            _floorMeshRenderer.enabled = !DisableFloorRender;
+            _floorCollider.enabled = true;
+            _ceilMeshRenderer.enabled = !DisableCeilRender;
+            _ceilCollider.enabled = true;
             _floorMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
             _ceilMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
-
-            //if (FloorTexture != null)
-            //{
-            //var bitmapImage = FloorTexture.GetBitmapAt(0);
-            //if (bitmapImage != null)
-            //{
-            //    bitmapImage.UpdateMaterial(_floorMeshRenderer.material, FloorTexture, 0, false, AcknexObject);
-            //}
-            //}
-            _floorCollider.gameObject.layer = 
-                AcknexObject.TryGetAcknexObject("IF_DIVE", out _)  ?
-                    World.Instance.WaterLayer.LayerIndex :
-                    World.Instance.WallsAndRegionsLayer.LayerIndex;
-
-            _ceilCollider.gameObject.layer =
-                AcknexObject.TryGetAcknexObject("IF_ARISE", out _)  ?
-                    World.Instance.WaterLayer.LayerIndex :
-                    World.Instance.WallsAndRegionsLayer.LayerIndex;
-
+            _floorCollider.gameObject.layer = AcknexObject.TryGetAcknexObject("IF_DIVE", out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.WallsAndRegionsLayer.LayerIndex;
+            _ceilCollider.gameObject.layer = AcknexObject.TryGetAcknexObject("IF_ARISE", out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.WallsAndRegionsLayer.LayerIndex;
             if (CeilTexture != null)
             {
-                //var bitmapImage = CeilTexture.GetBitmapAt(0);
-                //if (bitmapImage != null)
-                //{
-                //    bitmapImage.UpdateMaterial(_ceilMeshRenderer.material, CeilTexture, 0, false, AcknexObject);
-                //}
                 _ceilMeshRenderer.shadowCastingMode = CeilTexture.AcknexObject.HasFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
+            }
+            var hasPlay = AcknexObject.HasFlag("PLAY");
+            if (CeilTexture != _lastCeilTexture || hasPlay)
+            {
+                if (_animateCeilCoroutine != null)
+                {
+                    StopCoroutine(_animateCeilCoroutine);
+                }
+                if (CeilTexture != null)
+                {
+                    if (hasPlay)
+                    {
+                        AcknexObject.AddFlag("ONESHOT");
+                        AcknexObject.RemoveFlag("PLAY");
+                    }
+                    _animateCeilCoroutine = StartCoroutine(AnimateCeil());
+                }
+                _lastCeilTexture = CeilTexture;
+            }
+            if (FloorTexture != _lastFloorTexture || hasPlay)
+            {
+                if (_animateFloorCoroutine != null)
+                {
+                    StopCoroutine(_animateFloorCoroutine);
+                }
+                if (FloorTexture != null)
+                {
+                    if (hasPlay)
+                    {
+                        AcknexObject.AddFlag("ONESHOT");
+                        AcknexObject.RemoveFlag("PLAY");
+                    }
+                    _animateFloorCoroutine = StartCoroutine(AnimateFloor());
+                }
+                _lastFloorTexture = FloorTexture;
             }
         }
 
@@ -211,14 +243,9 @@ namespace Acknex
             {
                 yield return null;
             }
-            var textureObject = CeilTexture;
-            var enumerator = textureObject.AnimateTexture(true, _ceilMeshRenderer, _ceilMeshFilter, null, AcknexObject, AcknexObject, null);
+            var enumerator = CeilTexture.AnimateTexture(true, _ceilMeshRenderer, CeilMeshFilter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
-                //if (AcknexObject.IsDirty)
-                //{
-                //    goto reload;
-                //}
                 yield return enumerator.Current;
             }
         }
@@ -229,14 +256,9 @@ namespace Acknex
             {
                 yield return null;
             }
-            var textureObject = FloorTexture;
-            var enumerator = textureObject.AnimateTexture(true, _floorMeshRenderer, _floorMeshFilter, null, AcknexObject, AcknexObject, null);
+            var enumerator = FloorTexture.AnimateTexture(true, _floorMeshRenderer, FloorMeshFilter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
-                //if (AcknexObject.IsDirty)
-                //{
-                //    goto reload;
-                //}
                 yield return enumerator.Current;
             }
         }
@@ -253,127 +275,88 @@ namespace Acknex
 
         private void UpdateEvents()
         {
-            //var playerZ = World.Instance.GetSkillValue("PLAYER_Z");
-            //if (playerZ < AcknexObject.GetFloat("FLOOR_HGT") && !_dive.Contains(Player.Instance.AcknexObject))
-            //{
-            //    World.Instance.TriggerEvent(AcknexObject, "IF_DIVE");
-            //    _dive.Add(Player.Instance.AcknexObject);
-            //}
-            //else if (playerZ > AcknexObject.GetFloat("CEIL_HGT") && !_dive.Contains(Player.Instance.AcknexObject))
-            //{
-            //    World.Instance.TriggerEvent(AcknexObject, "IF_ARISE");
-            //    _dive.Remove(Player.Instance.AcknexObject);
-            //}
         }
 
-        public void BuildFloorMesh(List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<int, List<int>> allTriangles)
+        public void BuildMeshes( /*List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<int, List<int>> allTriangles*/)
         {
-            var ceilTexture = this.AcknexObject.GetAcknexObject("CEIL_TEX");
-            var floorTexture = this.AcknexObject.GetAcknexObject("FLOOR_TEX");
+            var ceilTexture = AcknexObject.GetAcknexObject("CEIL_TEX");
+            var floorTexture = AcknexObject.GetAcknexObject("FLOOR_TEX");
+            _floorMesh.SetVertices(_allVertices);
+            _floorMesh.SetUVs(0, _allUVs);
+            _floorMesh.subMeshCount = 1;
+            _floorMesh.SetTriangles(_allTriangles[0], 0);
+            _floorMesh.RecalculateNormals();
+            _floorMesh.UploadMeshData(false);
+            _invertedFloorMesh = new Mesh();
+            _invertedFloorMesh.SetVertices(_allVertices);
+            _invertedFloorMesh.SetUVs(0, _allUVs);
+            _invertedFloorMesh.subMeshCount = 1;
+            //todo: allocation
+            var invertedFloorTriangles = new List<int>(_allTriangles[0]);
+            invertedFloorTriangles.Reverse();
+            _invertedFloorMesh.SetTriangles(invertedFloorTriangles, 0);
+            _invertedFloorMesh.UploadMeshData(false);
+            FloorMeshFilter = _floorGameObject.AddComponent<MeshFilter>();
+            FloorMeshFilter.sharedMesh = _floorMesh;
+            _floorMeshRenderer = _floorGameObject.AddComponent<MeshRenderer>();
+            if (!_materialsCreated)
             {
-                this._floorGameObject = new GameObject("Floor");
-                this._floorGameObject.transform.SetParent(this.transform, false);
-                this._floorGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
-                var floorMesh = new Mesh();
-                floorMesh.SetVertices(allVertices);
-                floorMesh.SetUVs(0, allUVs);
-                floorMesh.subMeshCount = 1;
-                floorMesh.SetTriangles(allTriangles[0], 0);
-                floorMesh.RecalculateNormals();
-                floorMesh.UploadMeshData(false);
-                var invertedFloorMesh = new Mesh();
-                invertedFloorMesh.SetVertices(allVertices);
-                invertedFloorMesh.SetUVs(0, allUVs);
-                invertedFloorMesh.subMeshCount = 1;
-                var invertedTriangles = new List<int>(allTriangles[0]);
-                invertedTriangles.Reverse();
-                invertedFloorMesh.SetTriangles(invertedTriangles, 0);
-                invertedFloorMesh.UploadMeshData(false);
-                this._floorMeshFilter = this._floorGameObject.AddComponent<MeshFilter>();
-                this._floorMeshFilter.mesh = floorMesh;
-                this._floorMeshRenderer = this._floorGameObject.AddComponent<MeshRenderer>();
-                var material = World.Instance.BuildMaterial(floorTexture);
-                this._floorMeshRenderer.material = material;
-                this._floorCollider = this._floorGameObject.AddComponent<MeshCollider>();
-                this._floorCollider.sharedMesh = floorMesh;
-                this._invertedFloorCollider = this._floorGameObject.AddComponent<MeshCollider>();
-                this._invertedFloorCollider.sharedMesh = invertedFloorMesh;
-                this._invertedFloorCollider.enabled = false;
+                _floorMaterial = World.Instance.BuildMaterial(floorTexture);
+                _floorMeshRenderer.sharedMaterial = _floorMaterial;
             }
+            _floorCollider = _floorGameObject.AddComponent<MeshCollider>();
+            _floorCollider.sharedMesh = _floorMesh;
+            _invertedFloorCollider = _floorGameObject.AddComponent<MeshCollider>();
+            _invertedFloorCollider.sharedMesh = _invertedFloorMesh;
+            _invertedFloorCollider.enabled = false;
+            _ceilMesh.SetVertices(_allVertices);
+            _ceilMesh.SetUVs(0, _allUVs);
+            _ceilMesh.subMeshCount = 1;
+            _ceilMesh.SetTriangles(_allTriangles[1], 0);
+            _ceilMesh.RecalculateNormals();
+            _ceilMesh.UploadMeshData(false);
+            _invertedCeilMesh.SetVertices(_allVertices);
+            _invertedCeilMesh.SetUVs(0, _allUVs);
+            _invertedCeilMesh.subMeshCount = 1;
+            //todo: allocation
+            var invertedCeilTriangles = new List<int>(_allTriangles[1]);
+            invertedCeilTriangles.Reverse();
+            _invertedCeilMesh.SetTriangles(invertedCeilTriangles, 0);
+            _invertedCeilMesh.UploadMeshData(false);
+            CeilMeshFilter.sharedMesh = _ceilMesh;
+            if (!_materialsCreated)
             {
-                this._ceilGameObject = new GameObject("Ceil");
-                this._ceilGameObject.transform.SetParent(this.transform, false);
-                this._ceilGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
-                var ceilMesh = new Mesh();
-                ceilMesh.SetVertices(allVertices);
-                ceilMesh.SetUVs(0, allUVs);
-                ceilMesh.subMeshCount = 1;
-                ceilMesh.SetTriangles(allTriangles[1], 0);
-                ceilMesh.RecalculateNormals();
-                ceilMesh.UploadMeshData(false);
-                var invertedCeilMesh = new Mesh();
-                invertedCeilMesh.SetVertices(allVertices);
-                invertedCeilMesh.SetUVs(0, allUVs);
-                invertedCeilMesh.subMeshCount = 1;
-                var invertedTriangles = new List<int>(allTriangles[1]);
-                invertedTriangles.Reverse();
-                invertedCeilMesh.SetTriangles(invertedTriangles, 0);
-                invertedCeilMesh.UploadMeshData(false);
-                this._ceilMeshFilter = this._ceilGameObject.AddComponent<MeshFilter>();
-                this._ceilMeshFilter.mesh = ceilMesh;
-                this._ceilMeshRenderer = this._ceilGameObject.AddComponent<MeshRenderer>();
-                var material = World.Instance.BuildMaterial(ceilTexture);
-                this._ceilMeshRenderer.material = material;
-                this._ceilCollider = this._ceilGameObject.AddComponent<MeshCollider>();
-                this._ceilCollider.sharedMesh = ceilMesh;
-                this._invertedCeilCollider = this._ceilGameObject.AddComponent<MeshCollider>();
-                this._invertedCeilCollider.sharedMesh = invertedCeilMesh;
-                this._invertedCeilCollider.enabled = false;
+                _ceilMaterial = World.Instance.BuildMaterial(ceilTexture);
+                _ceilMeshRenderer.sharedMaterial = _ceilMaterial;
             }
+            _ceilCollider.sharedMesh = _ceilMesh;
+            _invertedCeilCollider.sharedMesh = _invertedCeilMesh;
+            _invertedCeilCollider.enabled = false;
+            _materialsCreated = true;
         }
 
-        public void BuildRegionFloorAndCeiling(ContouredRegion contouredRegion)
+        public void UpdateAllMeshes()
         {
-            this.ContouredRegion = contouredRegion;
             var meshIndex = 0;
-            var allVertices = new List<Vector3>();
-            var allUVs = new List<Vector2>();
-            var allTriangles = new Dictionary<int, List<int>>();
-            if (Math.Abs(this.AcknexObject.GetFloat("CEIL_HGT") - this.AcknexObject.GetFloat("FLOOR_HGT")) > Mathf.Epsilon)
+            if (Math.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT")) > Mathf.Epsilon)
             {
-                BuildFloorOrCeil(contouredRegion,  allVertices, allUVs, allTriangles, ref meshIndex);
-                BuildFloorOrCeil(contouredRegion,  allVertices, allUVs, allTriangles, ref meshIndex, true);
-                BuildFloorMesh(allVertices, allUVs, allTriangles);
-            }
-            this.Enable();
-            if (this.Below != null)
-            {
-                var newRegion = Instantiate(this.Below.gameObject).GetComponent<Region>();
-                newRegion.transform.SetParent(World.Instance.transform, false);
-                newRegion.name = this.Below.name;
-                newRegion.Above = this;
-                var acknexObject = (AcknexObject)newRegion.AcknexObject;
-                var belowAcknexObject = (AcknexObject)this.Below.AcknexObject;
-                acknexObject.ObjectProperties = new Dictionary<string, object>(belowAcknexObject.ObjectProperties);
-                acknexObject.NumberProperties = new Dictionary<string, float>(belowAcknexObject.NumberProperties);
-                acknexObject.Type = belowAcknexObject.Type;
-                World.Instance.PostSetupObjectInstance(newRegion.AcknexObject);
-                this.Below = newRegion;
-                newRegion.BuildRegionFloorAndCeiling(contouredRegion);
+                BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex);
+                BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex, true);
+                BuildMeshes( /*allVertices, allUVs, allTriangles*/);
             }
         }
 
-        public  void BuildFloorOrCeil(ContouredRegion contouredRegion, List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<int, List<int>> allTriangles, ref int meshIndex, bool ceil = false)
+        public void BuildFloorOrCeil( /*ContouredRegion contouredRegion, List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<int, List<int>> allTriangles,*/ ref int meshIndex, bool ceil = false)
         {
             var tess = new Tess();
-            foreach (var contouredList in contouredRegion)
+            foreach (var contouredList in ContouredRegion)
             {
                 tess.AddContour(contouredList);
             }
             tess.Tessellate();
             var floorVertices = new Vector3[tess.VertexCount];
-            var height = ceil ? this.AcknexObject.GetFloat("CEIL_HGT") : this.AcknexObject.GetFloat("FLOOR_HGT");
-            var lifted = (ceil && this.AcknexObject.HasFlag("CEIL_LIFTED")) || (!ceil && this.AcknexObject.HasFlag("FLOOR_LIFTED"));
+            var height = ceil ? AcknexObject.GetFloat("CEIL_HGT") : AcknexObject.GetFloat("FLOOR_HGT");
+            var lifted = (ceil && AcknexObject.HasFlag("CEIL_LIFTED")) || (!ceil && AcknexObject.HasFlag("FLOOR_LIFTED"));
             for (var i = 0; i < tess.VertexCount; i++)
             {
                 var vertex = tess.Vertices[i];
@@ -389,10 +372,10 @@ namespace Acknex
             var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(ceil ? Vector3.up : Vector3.down));
             for (var i = 0; i < floorVertices.Length; i++)
             {
-                allUVs.Add(unRotateNormal * floorVertices[i]);
+                _allUVs.Add(unRotateNormal * floorVertices[i]);
             }
-            var vertexIndex = allVertices.Count;
-            allVertices.AddRange(floorVertices);
+            var vertexIndex = _allVertices.Count;
+            _allVertices.AddRange(floorVertices);
             for (var i = 0; i < tess.Elements.Length; i++)
             {
                 tess.Elements[i] += vertexIndex;
@@ -402,28 +385,28 @@ namespace Acknex
             {
                 elements.Reverse();
             }
-            allTriangles.Add(meshIndex, elements);
+            _allTriangles.Add(meshIndex, elements);
             meshIndex++;
         }
 
         public static Region Locate(IAcknexObject acknexObject, Region currentRegion, float radius, float thingX, float thingY, ref float thingZ, bool onCeil = false, float? height = null)
         {
-            var onGround = acknexObject.HasFlag("GROUND");
             bool GetValue(RaycastHit raycastHit, ref float outThingZ, out Region outRegion)
             {
                 if (raycastHit.transform.parent != null && raycastHit.transform.parent.TryGetComponent(out outRegion))
                 {
-                    outThingZ = onGround ? 0 : raycastHit.point.y;
+                    outThingZ = raycastHit.point.y;
                     return true;
                 }
                 outRegion = currentRegion;
                 return false;
             }
+
             if (onCeil)
             {
-                var zCheck = height == null ? currentRegion.AcknexObject.GetFloat("FLOOR_HGT") : thingZ + height.Value;
+                var zCheck = height ?? currentRegion.AcknexObject.GetFloat("FLOOR_HGT");
                 var point = new Vector3(thingX, zCheck, thingY);
-                if (Physics.SphereCast(new Ray(point, Vector3.up), radius,  out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
+                if (Physics.SphereCast(new Ray(point, Vector3.up), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, ref thingZ, out var outRegion))
                     {
@@ -436,7 +419,7 @@ namespace Acknex
             }
             else
             {
-                var zCheck = height == null ? currentRegion.AcknexObject.GetFloat("CEIL_HGT") : thingZ + height.Value;
+                var zCheck = height ?? currentRegion.AcknexObject.GetFloat("CEIL_HGT");
                 var point = new Vector3(thingX, zCheck, thingY);
                 if (Physics.SphereCast(new Ray(point, Vector3.down), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
@@ -449,13 +432,9 @@ namespace Acknex
                     }
                 }
             }
-            if (onGround)
-            {
-                thingZ = 0f;
-            }
             return currentRegion;
         }
-        
+
         public float GetDepth()
         {
             return Mathf.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT"));
@@ -471,6 +450,27 @@ namespace Acknex
         public float GetRealFloorHeight()
         {
             return AcknexObject.GetFloat("FLOOR_HGT");
+        }
+
+        public void CreateBelowInstance(List<Region> createdRegions)
+        {
+            //this.Enable();
+            if (Below != null)
+            {
+                var newRegion = Instantiate(Below.gameObject).GetComponent<Region>();
+                newRegion.transform.SetParent(World.Instance.transform, false);
+                newRegion.name = Below.name;
+                newRegion.Above = this;
+                newRegion.ContouredRegion = ContouredRegion;
+                var acknexObject = (AcknexObject)newRegion.AcknexObject;
+                var belowAcknexObject = (AcknexObject)Below.AcknexObject;
+                acknexObject.ObjectProperties = new Dictionary<string, object>(belowAcknexObject.ObjectProperties);
+                acknexObject.NumberProperties = new Dictionary<string, float>(belowAcknexObject.NumberProperties);
+                acknexObject.Type = belowAcknexObject.Type;
+                createdRegions.Add(newRegion);
+                Below = newRegion;
+                newRegion.CreateBelowInstance(createdRegions);
+            }
         }
     }
 }

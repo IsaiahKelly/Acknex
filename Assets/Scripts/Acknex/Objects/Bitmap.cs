@@ -3,22 +3,22 @@ using Acknex.Interfaces;
 using DmitryBrant.ImageFormats;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
+using UnityEngine.Rendering;
 
 namespace Acknex
 {
     public class Bitmap : IAcknexObjectContainer
     {
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
+        private Texture2DArray _skyboxPalette2DArray;
 
-        }
-        public bool DebugMarked { get; set; }
-        public GameObject GameObject => null;
+        private Texture2DArray _skyboxTexture2DArray;
+        public TextureAndPalette CropTexture;
 
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Bitmap);
-        private static IAcknexObject GetTemplateCallback(string name)
+        public TextureAndPalette OriginalTexture;
+
+        public Bitmap()
         {
-            return null;
+            AcknexObject.Container = this;
         }
 
         public float Width => AcknexObject.GetFloat("DX") != 0 ? AcknexObject.GetFloat("DX") : OriginalTexture != null ? OriginalTexture.Texture.width : 0;
@@ -26,32 +26,18 @@ namespace Acknex
         public float X => AcknexObject.GetFloat("X");
         public float Y => AcknexObject.GetFloat("Y");
 
-        private Texture2DArray _skyboxTexture2DArray;
-        private Texture2DArray _skyboxPalette2DArray;
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Bitmap);
+        public bool DebugMarked { get; set; }
 
-        public TextureAndPalette OriginalTexture;
-        public TextureAndPalette CropTexture;
-
-        public Bitmap()
+        public void Disable()
         {
-            AcknexObject.Container = this;
         }
 
-        public void UpdateObject()
+        public void Enable()
         {
-
         }
 
-        public void SetupTemplate()
-        {
-            var filename = AcknexObject.GetString("FILENAME");
-            CreateBitmapTexture(filename, (int)X, (int)Y, (int)Width, (int)Height, out OriginalTexture, out CropTexture);
-        }
-
-        public void SetupInstance()
-        {
-            
-        }
+        public GameObject GameObject => null;
 
         public Vector3 GetCenter()
         {
@@ -63,16 +49,31 @@ namespace Acknex
             return null;
         }
 
-        public static void CreateBitmapTexture(
-            string filename,
-            int x, 
-            int y, 
-            int width,
-            int height,
-            out TextureAndPalette textureAndPalette,
-            out TextureAndPalette cropTexture, //todo: remove ref
-            bool paletteOnly = false
-        )
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+        }
+
+        public void SetupInstance()
+        {
+        }
+
+        public void SetupTemplate()
+        {
+            var filename = AcknexObject.GetString("FILENAME");
+            CreateBitmapTexture(filename, (int)X, (int)Y, (int)Width, (int)Height, out OriginalTexture, out CropTexture);
+        }
+
+        public void UpdateObject()
+        {
+        }
+
+        private static IAcknexObject GetTemplateCallback(string name)
+        {
+            return null;
+        }
+
+        public static void CreateBitmapTexture(string filename, int x, int y, int width, int height, out TextureAndPalette textureAndPalette, out TextureAndPalette cropTexture, //todo: remove ref
+            bool paletteOnly = false)
         {
             if (!World.Instance.TextureCache.TryGetValue(filename, out textureAndPalette))
             {
@@ -118,27 +119,15 @@ namespace Acknex
                 var bitmapTexture2D = new Texture2D(width, height, textureAndPalette.Texture.graphicsFormat, TextureCreationFlags.MipChain);
                 TextureUtils.CopyTextureCPU(textureAndPalette.Texture, bitmapTexture2D, true, false, x, y, width, height);
                 TextureUtils.Dilate(bitmapTexture2D);
-
                 var paletteTexture2D = new Texture2D(width, height, textureAndPalette.Palette.graphicsFormat, TextureCreationFlags.None);
                 paletteTexture2D.filterMode = FilterMode.Point;
                 TextureUtils.CopyTextureCPU(textureAndPalette.Palette, paletteTexture2D, true, false, x, y, width, height);
-
                 cropTexture = new TextureAndPalette(bitmapTexture2D, paletteTexture2D);
             }
             else
             {
                 cropTexture = null;
             }
-        }
-
-        public void Enable()
-        {
-
-        }
-
-        public void Disable()
-        {
-
         }
 
 
@@ -148,7 +137,7 @@ namespace Acknex
             {
                 return;
             }
-            if (sourceAcknexObject != null && World.Instance.DisableWallTextures)
+            if (World.Instance.DisableMaterials)
             {
                 return;
             }
@@ -156,7 +145,7 @@ namespace Acknex
             var scaleY = 16f;
             var offsetX = 0f;
             var offsetY = 0f;
-            var cullMode = UnityEngine.Rendering.CullMode.Back;
+            var cullMode = CullMode.Back;
             var ambient = 1f;
             CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Repeat;
             if (sourceAcknexObject != null)
@@ -181,12 +170,12 @@ namespace Acknex
                         material.SetFloat("_V1H", wall.BottomUV.m13);
                         material.SetInt("_FENCE", 1);
                         CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Clamp;
-                        cullMode = UnityEngine.Rendering.CullMode.Off;
+                        cullMode = CullMode.Off;
                     }
                     if (wall.AcknexObject.HasFlag("PORTCULLIS"))
                     {
                         material.SetInt("_PORTCULLIS", 1);
-                        cullMode = UnityEngine.Rendering.CullMode.Off;
+                        cullMode = CullMode.Off;
                     }
                 }
             }
@@ -251,6 +240,19 @@ namespace Acknex
                 acknexObject.BitmapCoords = new Vector4(x0, y0, x1, y1);
                 acknexObject.OffsetScale = new Vector4(offsetX, offsetY, scaleX, scaleY);
             }
+        }
+
+        public static TextureAndPalette ExtractBitmap(TextureAndPalette texture, int x, int y, int w, int h)
+        {
+            var bitmapTexture2D = new Texture2D(w, h, texture.Texture.graphicsFormat, TextureCreationFlags.MipChain);
+            TextureUtils.CopyTextureCPU(texture.Texture, bitmapTexture2D, true, false, x, y, w, h);
+            TextureUtils.Dilate(bitmapTexture2D);
+
+            var paletteTexture2D = new Texture2D(w, h, texture.Palette.graphicsFormat, TextureCreationFlags.None);
+            paletteTexture2D.filterMode = FilterMode.Point;
+
+            TextureUtils.CopyTextureCPU(texture.Palette, paletteTexture2D, true, false, x, y, w, h);
+            return new TextureAndPalette(bitmapTexture2D, paletteTexture2D);
         }
     }
 }

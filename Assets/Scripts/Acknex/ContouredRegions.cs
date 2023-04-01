@@ -5,12 +5,12 @@ namespace Acknex
 {
     public class ContouredRegions : Dictionary<IAcknexObject, ContouredRegion>
     {
-        public ContouredRegion GetContouredRegion(IAcknexObject index)
+        public ContouredRegion GetContouredRegion(IAcknexObject region)
         {
-            if (!TryGetValue(index, out var contouredRegion))
+            if (!TryGetValue(region, out var contouredRegion))
             {
                 contouredRegion = new ContouredRegion();
-                Add(index, contouredRegion);
+                Add(region, contouredRegion);
             }
             return contouredRegion;
         }

@@ -53,7 +53,7 @@ namespace Acknex
 
         public void AddVertex(float x, float y, float z)
         {
-            _contourVertices.Add(new ContourVertex(new Vec3(x, y, z)));
+            ContourVertices.Add(new ContourVertex(new Vec3(x, y, z)));
         }
 
         public void AddWayPoint(IAcknexObject way, float x, float y)
@@ -239,23 +239,6 @@ namespace Acknex
             var containerGameObject = acknexObject.Container?.GameObject;
             if (containerGameObject != null)
             {
-                //var newGameObject = new GameObject(acknexObject.GetString("NAME"));
-                //newGameObject.transform.SetParent(transform, false);
-                //var newPosition =
-                //    new Vector3(GetSkillValue("PLAYER_X"), 0f, GetSkillValue("PLAYER_Y")) +
-                //    Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(GetSkillValue("PLAYER_ANGLE")), 0f) *
-                //    new Vector3(0f, 0f, acknexObject.GetFloat("DIST"));
-                //var newThing = acknexObject.Type == ObjectType.Actor ? newGameObject.AddComponent<Actor>() : newGameObject.AddComponent<Thing>();
-                //var existingAcknexObject = (AcknexObject)acknexObject;
-                //var newAcknexObject = new AcknexObject(existingAcknexObject.GetTemplateCallback, existingAcknexObject.Type);
-                //newAcknexObject.NumberProperties = new Dictionary<string, float>(existingAcknexObject.NumberProperties);
-                //newAcknexObject.ObjectProperties = new Dictionary<string, object>(existingAcknexObject.ObjectProperties);
-                //newAcknexObject.SetFloat("X", newPosition.x);
-                //newAcknexObject.SetFloat("Y", newPosition.z);
-                //newThing.AcknexObject = newAcknexObject;
-                //PostSetupObjectInstance(newThing.AcknexObject);
-                //newThing.SetupInstance();
-                //return newThing.AcknexObject;
                 PostSetupObjectInstance(acknexObject);
                 acknexObject.Container.SetupInstance();
                 return acknexObject;
@@ -467,8 +450,6 @@ namespace Acknex
                         {
                             AcknexObject.SetAcknexObject(name, wall.AcknexObject);
                         }
-                        _regionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION1")).Add(wall);
-                        _regionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION2")).Add(wall);
                         break;
                     }
                 case Region region:
@@ -545,13 +526,25 @@ namespace Acknex
         public void PostSetupWMP()
         {
             ResolveReferences();
-            BuildRegionsAndWalls(_regionWalls, _contourVertices);
+            BuildRegionsAndWalls();
             PostSetupObjects();
-            if (!DisableEvents && !UseWDLEngine)
+            if (!UseWDLEngine)
             {
-                ConvertActionsToCS();
+                if (!DisableCompilation)
+                {
+                    ConvertActionsToCS();
+                }
                 _runtime = new Game();
                 _runtime.SetWorld(this);
+            }
+        }
+
+        private void LateUpdate()
+        {
+            if (MeshBatch && !_culled)
+            {
+                SetupCulling();
+                _culled = true;
             }
         }
 
@@ -608,7 +601,6 @@ namespace Acknex
             //todo: shootSector
             var shootFac = GetSkillValue("SHOOT_FAC");
             var shootRange = GetSkillValue("SHOOT_RANGE");
-
             void HandleHit(RaycastHit raycastResult, IAcknexObject hitAcknexObject)
             {
                 if (acknexObject != null && hitAcknexObject != acknexObject)
@@ -685,6 +677,7 @@ namespace Acknex
         public void UpdateObject()
         {
             Shader.SetGlobalInt("_AcknexUsePalettes", UsePalettes ? 1 : 0);
+            AmbientLight.shadows = DrawShadows ? LightShadows.Hard : LightShadows.None;
             AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("LIGHT_ANGLE")), 0f) * Quaternion.Euler(45f, 0f, 0f);
             UpdateSkills();
         }
@@ -702,6 +695,44 @@ namespace Acknex
                     }
                 }
             }
+            var createdRegions = new List<Region>();
+            foreach (var items in AllRegionsByName.Values)
+            {
+                foreach (var item in items)
+                {
+                    item.SetupInstance();
+                    item.UpdateAllMeshes();
+                    item.CreateBelowInstance(createdRegions);
+                }
+            }
+            foreach (var item in createdRegions)
+            {
+                PostSetupObjectInstance(item.AcknexObject);
+                item.SetupInstance();
+                item.UpdateAllMeshes();
+            }
+            //foreach (var items in AllRegionsByName.Values)
+            //{
+            //    foreach (var item in items)
+            //    {
+            //        item.CreateBelowInstance();
+            //    }
+            //}
+            foreach (var items in AllWallsByName.Values)
+            {
+                foreach (var item in items)
+                {
+                    item.SetupInstance();
+                    item.UpdateAllMeshes();
+                }
+            }
+            foreach (var items in AllWaysByName.Values)
+            {
+                foreach (var item in items)
+                {
+                    item.SetupInstance();
+                }
+            }
             foreach (var items in AllThingsByName.Values)
             {
                 foreach (var item in items)
@@ -710,27 +741,6 @@ namespace Acknex
                 }
             }
             foreach (var items in AllActorsByName.Values)
-            {
-                foreach (var item in items)
-                {
-                    item.SetupInstance();
-                }
-            }
-            foreach (var items in AllRegionsByName.Values)
-            {
-                foreach (var item in items)
-                {
-                    item.SetupInstance();
-                }
-            }
-            foreach (var items in AllWallsByName.Values)
-            {
-                foreach (var item in items)
-                {
-                    item.SetupInstance();
-                }
-            }
-            foreach (var items in AllWaysByName.Values)
             {
                 foreach (var item in items)
                 {

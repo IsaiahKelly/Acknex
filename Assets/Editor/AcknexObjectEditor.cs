@@ -17,6 +17,7 @@ public class AcknexObjectEditor : Editor
             EditorGUILayout.TextField("Debug", container.AcknexObject.DebugMessage);
             EditorGUILayout.Toggle("Is Instance", container.AcknexObject.IsInstance);
             EditorGUILayout.Toggle("Is Dirty", container.AcknexObject.IsDirty);
+            EditorGUILayout.Toggle("Is Geometry Dirty", container.AcknexObject.IsGeometryDirty);
             EditorGUILayout.IntField("Index", container.AcknexObject.InstanceIndex);
             EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Instance");
             var objectProperties = ((AcknexObject)container.AcknexObject).ObjectProperties.OrderBy(x => x.Key);
@@ -49,7 +50,7 @@ public class AcknexObjectEditor : Editor
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(property.Key);
-                EditorGUILayout.LabelField((property.Key == "ANGLE" ? Mathf.Rad2Deg * property.Value : property.Value).ToString(CultureInfo.InvariantCulture));
+                EditorGUILayout.LabelField((property.Key == "ANGLE" ? (Mathf.Rad2Deg * property.Value) + "(" + property.Value + ")" : property.Value.ToString(CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture));
                 EditorGUILayout.EndHorizontal();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
@@ -88,8 +89,8 @@ public class AcknexObjectEditor : Editor
                     foreach (var property in templateNumberProperties)
                     {
                         EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField(property.Key);
-                        EditorGUILayout.LabelField((property.Key == "ANGLE" ? Mathf.Rad2Deg * property.Value : property.Value).ToString(CultureInfo.InvariantCulture));
+                        EditorGUILayout.LabelField(property.Key); 
+                        EditorGUILayout.LabelField((property.Key == "ANGLE" ? (Mathf.Rad2Deg * property.Value) + "(" + property.Value + ")" : property.Value.ToString(CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture));
                         EditorGUILayout.EndHorizontal();
                     }
                     EditorGUILayout.EndFoldoutHeaderGroup();

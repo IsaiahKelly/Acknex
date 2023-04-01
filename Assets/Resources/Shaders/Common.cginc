@@ -2,7 +2,6 @@
 sampler2D _AcknexPalette;
 float4 _AcknexPalette_TexelSize;
 
-sampler2D _MainTex;
 float4 _MainTex_TexelSize;
 
 fixed4 _Color;
@@ -27,15 +26,31 @@ int _CLAMPY;
 int _FENCE;
 int _PORTCULLIS;
 
-void ApplyPalette(inout float4 c)
+void ApplyPalette(inout float4 color)
 {
 	if (_AcknexUsePalettes) {
-		float alpha = c.x != 0.0;
-		c = tex2D(_AcknexPalette, float2(c.x, 0));
-		c.w = alpha;
+		float alpha = color.x != 0.0;
+		color = tex2D(_AcknexPalette, float2(color.x, 0));
+		color.w = alpha;
 	}
 	else 
 	{
-		c *= _Color;
+		color *= _Color;
 	}
+}
+
+void EmulatePalette(inout float4 color) {
+	float4 matchColor = color;
+	float matchDist = 1.0 / 0.0;
+	if (_AcknexUsePalettes) {
+		for (float u = 0.0; u < 1.0; u += _AcknexPalette_TexelSize.x) {
+			float4 palette = tex2D(_AcknexPalette, float2(u, 0));
+			float dist = distance(palette.xyz, color.xyz);
+			if (dist < matchDist) {
+				matchDist = dist;
+				matchColor = palette;
+			}
+		}
+	}
+	color = matchColor;
 }
