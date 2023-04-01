@@ -68,7 +68,6 @@ namespace Acknex
             return newRegion;
         }
 
-
         public Wall CreateWall(string name)
         {
             if (name == null)

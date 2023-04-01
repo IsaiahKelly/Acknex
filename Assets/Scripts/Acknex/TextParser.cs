@@ -212,28 +212,28 @@ namespace Acknex
                             switch (keyword)
                             {
                                 case "VIDEO":
-                                {
-                                    switch (GetNextToken(tokens))
                                     {
-                                        case "320X200":
-                                            _world.GameResolution = Resolution.Res320x200;
-                                            break;
-                                        case "X320X240":
-                                            _world.GameResolution = Resolution.ResX320x240;
-                                            break;
-                                        case "X320X400":
-                                            _world.GameResolution = Resolution.ResX320x400;
-                                            break;
-                                        case "S640X480":
-                                            _world.GameResolution = Resolution.ResS640x480;
-                                            break;
-                                        case "S800X600":
-                                            _world.GameResolution = Resolution.ResS800x600;
-                                            break;
+                                        switch (GetNextToken(tokens))
+                                        {
+                                            case "320X200":
+                                                _world.GameResolution = Resolution.Res320x200;
+                                                break;
+                                            case "X320X240":
+                                                _world.GameResolution = Resolution.ResX320x240;
+                                                break;
+                                            case "X320X400":
+                                                _world.GameResolution = Resolution.ResX320x400;
+                                                break;
+                                            case "S640X480":
+                                                _world.GameResolution = Resolution.ResS640x480;
+                                                break;
+                                            case "S800X600":
+                                                _world.GameResolution = Resolution.ResS800x600;
+                                                break;
+                                        }
+                                        CheckSemiColon(tokens);
+                                        break;
                                     }
-                                    CheckSemiColon(tokens);
-                                    break;
-                                }
                                 case "PATH":
                                     _world.AddPath(GetNextToken(tokens));
                                     CheckSemiColon(tokens);
@@ -247,78 +247,78 @@ namespace Acknex
                                     CheckSemiColon(tokens);
                                     break;
                                 case "PANEL":
-                                {
-                                    _openObject = _world.CreateObjectTemplate(ObjectType.Panel, GetNextToken(tokens));
-                                    CheckCurlyOpen(tokens);
-                                    break;
-                                }
+                                    {
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Panel, GetNextToken(tokens));
+                                        CheckCurlyOpen(tokens);
+                                        break;
+                                    }
                                 case "STRING":
-                                {
-                                    _world.AddString(GetNextToken(tokens), GetNextToken(tokens));
-                                    CheckSemiColon(tokens);
-                                    break;
-                                }
+                                    {
+                                        _world.AddString(GetNextToken(tokens), GetNextToken(tokens));
+                                        CheckSemiColon(tokens);
+                                        break;
+                                    }
                                 case "ACTION":
-                                {
-                                    _openObject = _world.CreateObjectTemplate(ObjectType.Action, GetNextToken(tokens));
-                                    CheckCurlyOpen(tokens);
-                                    var action = (Action)_openObject.Container;
-                                    continue;
-                                }
+                                    {
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Action, GetNextToken(tokens));
+                                        CheckCurlyOpen(tokens);
+                                        var action = (Action)_openObject.Container;
+                                        continue;
+                                    }
                                 case "SYNONYM":
-                                {
-                                    _openObject = _world.CreateObjectTemplate(ObjectType.Synonym, GetNextToken(tokens));
-                                    CheckCurlyOpen(tokens);
-                                    break;
-                                }
+                                    {
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Synonym, GetNextToken(tokens));
+                                        CheckCurlyOpen(tokens);
+                                        break;
+                                    }
                                 case "SKILL":
-                                {
-                                    _openObject = _world.CreateObjectTemplate(ObjectType.Skill, GetNextToken(tokens));
-                                    CheckCurlyOpen(tokens);
-                                    break;
-                                }
+                                    {
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Skill, GetNextToken(tokens));
+                                        CheckCurlyOpen(tokens);
+                                        break;
+                                    }
                                 case "REGION":
-                                {
-                                    _openObject = _world.CreateObjectTemplate(ObjectType.Region, GetNextToken(tokens));
-                                    CheckCurlyOpen(tokens);
-                                    break;
-                                }
+                                    {
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Region, GetNextToken(tokens));
+                                        CheckCurlyOpen(tokens);
+                                        break;
+                                    }
                                 case "WALL":
-                                {
-                                    _openObject = _world.CreateObjectTemplate(ObjectType.Wall, GetNextToken(tokens));
-                                    CheckCurlyOpen(tokens);
-                                    continue;
-                                }
+                                    {
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Wall, GetNextToken(tokens));
+                                        CheckCurlyOpen(tokens);
+                                        continue;
+                                    }
                                 case "BMAP":
                                 case "OVLY":
-                                {
-                                    var name = GetNextToken(tokens);
-                                    _openObject = _world.CreateObjectTemplate(ObjectType.Bitmap, name);
-                                    _openObject.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
-                                    var token = GetNextToken(tokens);
-                                    if (token != ";")
                                     {
-                                        _openObject.SetFloat("X", ParseFloat(tokens, token));
-                                        token = GetNextToken(tokens);
+                                        var name = GetNextToken(tokens);
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Bitmap, name);
+                                        _openObject.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                        var token = GetNextToken(tokens);
+                                        if (token != ";")
+                                        {
+                                            _openObject.SetFloat("X", ParseFloat(tokens, token));
+                                            token = GetNextToken(tokens);
+                                        }
+                                        if (token != ";")
+                                        {
+                                            _openObject.SetFloat("Y", ParseFloat(tokens, token));
+                                            token = GetNextToken(tokens);
+                                        }
+                                        if (token != ";")
+                                        {
+                                            _openObject.SetFloat("DX", ParseFloat(tokens, token));
+                                            token = GetNextToken(tokens);
+                                        }
+                                        if (token != ";")
+                                        {
+                                            _openObject.SetFloat("DY", ParseFloat(tokens, token));
+                                        }
+                                        //_world.PostSetupObjectTemplate(_openObject);
+                                        _openObject = null;
+                                        break;
                                     }
-                                    if (token != ";")
-                                    {
-                                        _openObject.SetFloat("Y", ParseFloat(tokens, token));
-                                        token = GetNextToken(tokens);
-                                    }
-                                    if (token != ";")
-                                    {
-                                        _openObject.SetFloat("DX", ParseFloat(tokens, token));
-                                        token = GetNextToken(tokens);
-                                    }
-                                    if (token != ";")
-                                    {
-                                        _openObject.SetFloat("DY", ParseFloat(tokens, token));
-                                    }
-                                    //_world.PostSetupObjectTemplate(_openObject);
-                                    _openObject = null;
-                                    break;
-                                }
                                 //case "FLIC":
                                 //    {
                                 //        _openObject = _world.CreateObjectTemplate(ObjectType.Flic, GetNextToken(tokens));
@@ -328,94 +328,94 @@ namespace Acknex
                                 //        break;
                                 //    }
                                 case "TEXTURE":
-                                {
-                                    _openObject = _world.CreateObjectTemplate(ObjectType.Texture, GetNextToken(tokens));
-                                    CheckCurlyOpen(tokens);
-                                    break;
-                                }
+                                    {
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Texture, GetNextToken(tokens));
+                                        CheckCurlyOpen(tokens);
+                                        break;
+                                    }
                                 case "WAY":
-                                {
-                                    var way = _world.CreateObjectTemplate(ObjectType.Way, GetNextToken(tokens));
-                                    CheckSemiColon(tokens);
-                                    break;
-                                }
+                                    {
+                                        var way = _world.CreateObjectTemplate(ObjectType.Way, GetNextToken(tokens));
+                                        CheckSemiColon(tokens);
+                                        break;
+                                    }
                                 case "THING":
-                                {
-                                    _openObject = _world.CreateObjectTemplate(ObjectType.Thing, GetNextToken(tokens));
-                                    CheckCurlyOpen(tokens);
-                                    break;
-                                }
+                                    {
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Thing, GetNextToken(tokens));
+                                        CheckCurlyOpen(tokens);
+                                        break;
+                                    }
                                 case "ACTOR":
-                                {
-                                    _openObject = _world.CreateObjectTemplate(ObjectType.Actor, GetNextToken(tokens));
-                                    CheckCurlyOpen(tokens);
-                                    break;
-                                }
+                                    {
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Actor, GetNextToken(tokens));
+                                        CheckCurlyOpen(tokens);
+                                        break;
+                                    }
                                 case "OVERLAY":
-                                {
-                                    _openObject = _world.CreateObjectTemplate(ObjectType.Overlay, GetNextToken(tokens));
-                                    CheckCurlyOpen(tokens);
-                                    break;
-                                }
+                                    {
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Overlay, GetNextToken(tokens));
+                                        CheckCurlyOpen(tokens);
+                                        break;
+                                    }
                                 case "PALETTE":
-                                {
-                                    _openObject = _world.CreateObjectTemplate(ObjectType.Palette, GetNextToken(tokens));
-                                    CheckCurlyOpen(tokens);
-                                    break;
-                                }
+                                    {
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Palette, GetNextToken(tokens));
+                                        CheckCurlyOpen(tokens);
+                                        break;
+                                    }
                                 case "FONT":
-                                {
-                                    var font = _world.CreateObjectTemplate(ObjectType.Font, GetNextToken(tokens));
-                                    font.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
-                                    font.SetFloat("WIDTH", ParseFloat(tokens));
-                                    font.SetFloat("HEIGHT", ParseFloat(tokens));
-                                    CheckSemiColon(tokens);
-                                    break;
-                                }
+                                    {
+                                        var font = _world.CreateObjectTemplate(ObjectType.Font, GetNextToken(tokens));
+                                        font.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                        font.SetFloat("WIDTH", ParseFloat(tokens));
+                                        font.SetFloat("HEIGHT", ParseFloat(tokens));
+                                        CheckSemiColon(tokens);
+                                        break;
+                                    }
                                 case "MODEL":
-                                {
-                                    var model = _world.CreateObjectTemplate(ObjectType.Model, GetNextToken(tokens));
-                                    model.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
-                                    //_world.PostSetupObjectTemplate(model);
-                                    CheckSemiColon(tokens);
-                                    break;
-                                }
+                                    {
+                                        var model = _world.CreateObjectTemplate(ObjectType.Model, GetNextToken(tokens));
+                                        model.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                        //_world.PostSetupObjectTemplate(model);
+                                        CheckSemiColon(tokens);
+                                        break;
+                                    }
                                 case "SOUND":
-                                {
-                                    var sound = _world.CreateObjectTemplate(ObjectType.Sound, GetNextToken(tokens));
-                                    sound.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
-                                    //_world.PostSetupObjectTemplate(sound);
-                                    CheckSemiColon(tokens);
-                                    break;
-                                }
+                                    {
+                                        var sound = _world.CreateObjectTemplate(ObjectType.Sound, GetNextToken(tokens));
+                                        sound.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                        //_world.PostSetupObjectTemplate(sound);
+                                        CheckSemiColon(tokens);
+                                        break;
+                                    }
                                 case "MUSIC":
-                                {
-                                    var music = _world.CreateObjectTemplate(ObjectType.Song, GetNextToken(tokens));
-                                    music.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
-                                    //_world.PostSetupObjectTemplate(music);
-                                    CheckSemiColon(tokens);
-                                    break;
-                                }
+                                    {
+                                        var music = _world.CreateObjectTemplate(ObjectType.Song, GetNextToken(tokens));
+                                        music.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                        //_world.PostSetupObjectTemplate(music);
+                                        CheckSemiColon(tokens);
+                                        break;
+                                    }
                                 case "TEXT":
-                                {
-                                    _openObject = _world.CreateObjectTemplate(ObjectType.Text, GetNextToken(tokens));
-                                    CheckCurlyOpen(tokens);
-                                    break;
-                                }
+                                    {
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Text, GetNextToken(tokens));
+                                        CheckCurlyOpen(tokens);
+                                        break;
+                                    }
                                 case null:
                                     return;
                                 default:
-                                {
-                                    var propertyType = _world.GetPropertyType(ObjectType.World, keyword);
-                                    if (!HandleProperty(_world.AcknexObject, tokens, keyword, propertyType))
                                     {
-                                        while (keyword != ";" && keyword != null)
+                                        var propertyType = _world.GetPropertyType(ObjectType.World, keyword);
+                                        if (!HandleProperty(_world.AcknexObject, tokens, keyword, propertyType))
                                         {
-                                            keyword = GetNextToken(tokens);
+                                            while (keyword != ";" && keyword != null)
+                                            {
+                                                keyword = GetNextToken(tokens);
+                                            }
                                         }
+                                        break;
                                     }
-                                    break;
-                                }
                             }
                         }
                     }
@@ -640,8 +640,9 @@ namespace Acknex
                         case "THING":
                         case "ACTOR":
                             {
+                                var actorOrThingName = GetNextToken(tokens);
                                 var type = keyword == "ACTOR" ? ObjectType.Actor : ObjectType.Thing;
-                                var thing = _world.CreateObjectInstance(type, GetNextToken(tokens));
+                                var thing = _world.CreateObjectInstance(type, actorOrThingName);
                                 thing.SetFloat("X", ParseFloat(tokens));
                                 thing.SetFloat("Y", ParseFloat(tokens));
                                 thing.SetFloat("ANGLE", Mathf.Deg2Rad * ParseFloat(tokens));

@@ -166,6 +166,10 @@ namespace Acknex
 
         public void UpdateFrame(Bitmap bitmap, Material unityMaterial, bool scaleTexture, bool mirror = false, int frameIndex = 0, IAcknexObject sourceAcknexObject = null)
         {
+            if (bitmap == null)
+            {
+                return;
+            }
             bitmap.UpdateMaterial(unityMaterial, scaleTexture ? this : null, frameIndex, mirror, sourceAcknexObject);
         }
 

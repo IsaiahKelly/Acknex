@@ -369,18 +369,9 @@ namespace Acknex
 
         public IAcknexObject GetObject(ObjectType type, string name)
         {
-            switch (type)
+            if (type == ObjectType.Player)
             {
-                case ObjectType.Player:
-                    return Player.Instance.AcknexObject;
-                    //case ObjectType.Wall when name != null:
-                    //    return AllWallsByName[name].First().AcknexObject;
-                    //case ObjectType.Region when name != null:
-                    //    return AllRegionsByName[name].First().AcknexObject;
-                    //case ObjectType.Thing when name != null:
-                    //    return AllThingsByName[name].First().AcknexObject;
-                    //case ObjectType.Way when name != null:
-                    //    return AllWaysByName[name].First().AcknexObject;
+                return Player.Instance.AcknexObject;
             }
             if (name != null && AcknexObject.TryGetAcknexObject(name, out var acknexObject))
             {
@@ -538,16 +529,7 @@ namespace Acknex
                 _runtime.SetWorld(this);
             }
         }
-
-        private void LateUpdate()
-        {
-            if (MeshBatch && !_culled)
-            {
-                SetupCulling();
-                _culled = true;
-            }
-        }
-
+        
         public void ReadInkey(string stringName)
         {
         }
@@ -585,6 +567,11 @@ namespace Acknex
             }
             var shootX = GetSkillValue("SHOOT_X");
             var shootY = GetSkillValue("SHOOT_Y");
+            //if (acknexObject == null)
+            //{
+            //    Debug.Log("SHOOTX: " + shootX);
+            //    Debug.Log("SHOOTY: " + shootY);
+            //}
             //todo: deviation
             Ray ray;
             if (acknexObject == null)
@@ -711,13 +698,6 @@ namespace Acknex
                 item.SetupInstance();
                 item.UpdateAllMeshes();
             }
-            //foreach (var items in AllRegionsByName.Values)
-            //{
-            //    foreach (var item in items)
-            //    {
-            //        item.CreateBelowInstance();
-            //    }
-            //}
             foreach (var items in AllWallsByName.Values)
             {
                 foreach (var item in items)
@@ -746,6 +726,11 @@ namespace Acknex
                 {
                     item.SetupInstance();
                 }
+            }
+            if (MeshBatch && !_culled)
+            {
+                SetupCulling();
+                _culled = true;
             }
         }
 

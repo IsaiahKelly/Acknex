@@ -51,8 +51,6 @@ namespace Acknex
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Action);
         public StringBuilder CodeStringBuilder = new StringBuilder();
-        //public long PositionInFile;
-        //public BinaryReader BinaryReader;
 
         private List<Tuple<string, float>> _skips = new List<Tuple<string, float>>();
         private Dictionary<string, string> _dropped = new Dictionary<string, string>();

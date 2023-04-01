@@ -19,20 +19,29 @@ namespace Acknex
         private List<Vector3> _allVertices;
         private Coroutine _animateCeilCoroutine;
         private Coroutine _animateFloorCoroutine;
+
         private AudioSource _audioSource;
         private Region _belowOverride;
+
         private MeshCollider _ceilCollider;
+
         private GameObject _ceilGameObject;
         private Material _ceilMaterial;
         private Mesh _ceilMesh;
+
         private MeshRenderer _ceilMeshRenderer;
+
         private MeshCollider _floorCollider;
+
         private GameObject _floorGameObject;
         private Material _floorMaterial;
         private Mesh _floorMesh;
+
         private MeshRenderer _floorMeshRenderer;
+
         private MeshCollider _invertedCeilCollider;
         private Mesh _invertedCeilMesh;
+
         private MeshCollider _invertedFloorCollider;
         private Mesh _invertedFloorMesh;
         private Texture _lastCeilTexture;
@@ -76,7 +85,7 @@ namespace Acknex
                 {
                     return _belowOverride;
                 }
-                var below = AcknexObject.GetAcknexObject("BELOW");
+                var below = AcknexObject.GetAcknexObject("BELOW", true, false);
                 if (below?.Container is Region region)
                 {
                     return region;
@@ -127,6 +136,10 @@ namespace Acknex
                 return;
             }
             AcknexObject.IsInstance = true;
+            foreach (Transform child in transform)
+            {
+                Destroy(child.gameObject);
+            }
             _allVertices = new List<Vector3>();
             _allUVs = new List<Vector2>();
             _allTriangles = new Dictionary<int, List<int>>();
@@ -145,9 +158,11 @@ namespace Acknex
             _ceilCollider = _ceilGameObject.AddComponent<MeshCollider>();
             _invertedCeilCollider = _ceilGameObject.AddComponent<MeshCollider>();
             //todo: move to middle
+            if (gameObject.TryGetComponent<AudioSource>(out var audioSource))
+            {
+                Destroy(audioSource);
+            }
             _audioSource = gameObject.AddComponent<AudioSource>();
-            //StartCoroutine(AnimateCeil());
-            //StartCoroutine(AnimateFloor());
         }
 
         public void SetupTemplate()
@@ -239,6 +254,10 @@ namespace Acknex
 
         private IEnumerator AnimateCeil()
         {
+            if (AcknexObject.IsInstance)
+            {
+                yield break;
+            }
             while (CeilTexture == null)
             {
                 yield return null;
@@ -252,6 +271,10 @@ namespace Acknex
 
         private IEnumerator AnimateFloor()
         {
+            if (AcknexObject.IsInstance)
+            {
+                yield break;
+            }
             while (FloorTexture == null)
             {
                 yield return null;
@@ -338,7 +361,7 @@ namespace Acknex
         public void UpdateAllMeshes()
         {
             var meshIndex = 0;
-            if (Math.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT")) > Mathf.Epsilon)
+            //if (Math.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT")) > Mathf.Epsilon)
             {
                 BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex);
                 BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex, true);
@@ -457,16 +480,17 @@ namespace Acknex
             //this.Enable();
             if (Below != null)
             {
+                var belowAcknexObject = (AcknexObject)Below.AcknexObject;
+                var newAcknexObject = new AcknexObject(GetTemplateCallback, ObjectType.Region);
+                newAcknexObject.ObjectProperties = new Dictionary<string, object>(belowAcknexObject.ObjectProperties);
+                newAcknexObject.NumberProperties = new Dictionary<string, float>(belowAcknexObject.NumberProperties);
                 var newRegion = Instantiate(Below.gameObject).GetComponent<Region>();
-                newRegion.transform.SetParent(World.Instance.transform, false);
-                newRegion.name = Below.name;
                 newRegion.Above = this;
                 newRegion.ContouredRegion = ContouredRegion;
-                var acknexObject = (AcknexObject)newRegion.AcknexObject;
-                var belowAcknexObject = (AcknexObject)Below.AcknexObject;
-                acknexObject.ObjectProperties = new Dictionary<string, object>(belowAcknexObject.ObjectProperties);
-                acknexObject.NumberProperties = new Dictionary<string, float>(belowAcknexObject.NumberProperties);
-                acknexObject.Type = belowAcknexObject.Type;
+                newRegion.AcknexObject = newAcknexObject;
+                newRegion.name = Below.name;
+                newRegion.transform.SetParent(World.Instance.transform, false);
+                newRegion._materialsCreated = false;
                 createdRegions.Add(newRegion);
                 Below = newRegion;
                 newRegion.CreateBelowInstance(createdRegions);

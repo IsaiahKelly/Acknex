@@ -765,9 +765,10 @@ MonoBehaviour:
   DebugContainer: {fileID: 0}
   DebugTexture: {fileID: 0}
   DisableCompilation: 1
-  DisableWallTextures: 0
+  DisableMaterials: 0
   DrawShadows: 1
   GodMode: 1
+  MeshBatch: 1
   MidiPlayer: {fileID: 1246573634}
   MouseMultiplier: 0.1
   RotationBeginsAtRight: 0
@@ -794,8 +795,10 @@ MonoBehaviour:
     m_Bits: 784
   WaterLayer:
     m_LayerIndex: 4
-  WDLPath: Assets\Data\Contato.wdl
+  WDLPath: c:\games\acknex\varginha2\contato.wdl
   WMPContainsRegionsByName: 0
+  IgnoreRaycastLayer:
+    m_LayerIndex: 2
   <DebugMarked>k__BackingField: 0
 --- !u!114 &1246573633
 MonoBehaviour:
