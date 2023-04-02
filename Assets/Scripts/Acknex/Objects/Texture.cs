@@ -92,15 +92,22 @@ namespace Acknex
             {
                 return MY.HasFlag("INVISIBLE") || MY.HasFlag("ONESHOT") || cycles == 1 && sound == null && !MY.TryGetAcknexObject("EACH_CYCLE", out _);
             }
-            var cycle = 0;
+            var cycle = MY?.GetInteger("CYCLE") ?? 0;
             while (true)
             {
                 cycle = (int)Mathf.Repeat(cycle, cycles);
-                //MY.SetFloat("CYCLE", cycle);
-                var sound = AcknexObject.GetAcknexObject("SOUND");
-                if (sound != null && (scycles == null && cycle == 0 || scycles != null && scycles[cycle] > 0f))
+                IAcknexObject sound = null;
+                if (MY != null)
                 {
-                    World.Instance.PlaySound(sound, AcknexObject.GetFloat("SVOL"), MY, AcknexObject.GetFloat("DIST"), AcknexObject.GetFloat("SVDIST"));
+                    MY.SetFloat("CYCLE", cycle);
+                    if (MY.Type != ObjectType.Region)
+                    {
+                        sound = AcknexObject.GetAcknexObject("SOUND");
+                        if (sound != null && (scycles == null && cycle == 0 || scycles != null && scycles[cycle] > 0f))
+                        {
+                            World.Instance.PlaySound(sound, AcknexObject.GetFloat("SVOL"), MY, AcknexObject.GetFloat("DIST"), AcknexObject.GetFloat("SVDIST"));
+                        }
+                    }
                 }
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : World.Instance.WaitForTick;
                 UpdateAngleFrameScale(scaleTexture, cycles, side, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, MY, sourceTransform);

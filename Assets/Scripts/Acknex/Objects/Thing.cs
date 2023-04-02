@@ -67,12 +67,13 @@ namespace Acknex
             {
                 return;
             }
+#if DEBUG_ENABLED
             Debug.Log(AcknexObject.GetString("NAME"));
             DebugExtension.DebugWireSphere(GetCenter(), Color.blue, 1f, 10f);
+#endif
             _audioSource.Stop();
             _audioSource.clip = soundContainer.AudioClip;
             _audioSource.maxDistance = Mathf.Max(sDist, svDist);
-            _audioSource.rolloffMode = AudioRolloffMode.Linear;
             _audioSource.volume = volume;
             _audioSource.Play();
         }
@@ -110,7 +111,13 @@ namespace Acknex
             _triggerCollisionCallback.OnTriggerEnterCallback += OnTriggerEnterCallback;
             _triggerCollisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
             _audioSource = gameObject.AddComponent<AudioSource>();
+            _audioSource.minDistance = 0f;
+            _audioSource.maxDistance = 0f;
+            _audioSource.volume = 0f;
+            _audioSource.playOnAwake = false;
             _audioSource.spatialBlend = 1f;
+            _audioSource.rolloffMode = AudioRolloffMode.Linear;
+            _audioSource.spread = 360f;
             StartCoroutine(TriggerTickEvents());
             StartCoroutine(TriggerSecEvents());
         }
@@ -185,15 +192,6 @@ namespace Acknex
             DebugExtension.DebugWireSphere(transform.position, Color.green);
 #endif
             AcknexObject.IsDirty = false;
-            AcknexObject.SetFloat("VISIBLE", AcknexObject.GetFloat("INVISIBLE") > 0f ? 0f : 1f);
-            if (AcknexObject.HasFlag("INVISIBLE"))
-            {
-                _meshRenderer.enabled = false;
-                _triggerCollider.enabled = _collider.enabled = _characterController.enabled = false;
-                return;
-            }
-            _spriteCollider.enabled = _collider.enabled = _characterController.enabled = true;
-            _meshRenderer.enabled = true;
             var thingX = AcknexObject.GetFloat("X");
             var thingY = AcknexObject.GetFloat("Y");
             var thingZ = AcknexObject.GetFloat("HEIGHT");
@@ -207,10 +205,16 @@ namespace Acknex
                 Locate(thingX, thingY, ref thingZ);
             }
             transform.position = new Vector3(thingX, thingZ, thingY);
-            AcknexObject.SetFloat("DISTANCE", Vector3.Distance(transform.position, Player.Instance.transform.position)); // * 0.2f);
-            //var thingPosition = _innerGameObject.transform.position;
-            //thingPosition.y = transform.position.y + AcknexObject.GetFloat("HEIGHT");
-            //_innerGameObject.transform.position = thingPosition;
+            AcknexObject.SetFloat("VISIBLE", AcknexObject.GetFloat("INVISIBLE") > 0f ? 0f : 1f);
+            if (AcknexObject.HasFlag("INVISIBLE"))
+            {
+                _meshRenderer.enabled = false;
+                _triggerCollider.enabled = _collider.enabled = _characterController.enabled = false;
+                return;
+            }
+            _spriteCollider.enabled = _collider.enabled = _characterController.enabled = true;
+            _meshRenderer.enabled = true;
+            AcknexObject.SetFloat("DISTANCE", Vector3.Distance(transform.position, Player.Instance.transform.position));
             _collider.center = _characterController.center = new Vector3(0f, _innerGameObject.transform.localPosition.y + _innerGameObject.transform.localScale.y * 0.5f, 0f);
             _collider.height = _characterController.height = _innerGameObject.transform.localScale.y;
             _collider.radius = _characterController.radius = GetColliderRadius();
@@ -309,37 +313,42 @@ namespace Acknex
         {
         }
 
-        private void OnControllerColliderHit(ControllerColliderHit hit)
+        private void OnControllerColliderHit(ControllerColliderHit controllerColliderHit)
         {
             //if (DebugMarked)
             //{
             //    Debug.Log(this + " collided with " + hit.collider);
             //}
-            if (Vector3.Dot(hit.normal, Vector3.up) > 0.5f || Vector3.Dot(hit.normal, Vector3.down) > 0.5f)
+            if (Vector3.Dot(controllerColliderHit.normal, Vector3.up) > 0.5f || Vector3.Dot(controllerColliderHit.normal, Vector3.down) > 0.5f)
             {
                 return;
             }
             OnCollisionEnter(null);
         }
 
-        private void OnCollisionEnter(Collision obj)
+        private void OnCollisionEnter(Collision collision)
         {
-            var hasToTrigger = AcknexObject.HasFlag("SENSITIVE");
-            if (AcknexObject.HasFlag("CAREFULLY") && !hasToTrigger)
+            //if (collision.transform.parent == null || !collision.transform.parent.TryGetComponent<Thing>(out _))
             {
-                var target = AcknexObject.GetAcknexObject("TARGET");
-                if (target == World.Instance.BulletString)
+                var hasToTrigger = AcknexObject.HasFlag("SENSITIVE");
+                if (AcknexObject.HasFlag("CAREFULLY") && !hasToTrigger)
                 {
-                    hasToTrigger = true;
+                    var target = AcknexObject.GetAcknexObject("TARGET");
+                    if (target == World.Instance.BulletString)
+                    {
+                        hasToTrigger = true;
+                    }
                 }
-            }
-            if (hasToTrigger)
-            {
-                World.Instance.TriggerEvent("IF_HIT", AcknexObject, AcknexObject, GetRegion());
+                if (hasToTrigger)
+                {
+                    World.Instance.UpdateSkillValue("HIT_DIST", 0f);
+                    World.Instance.UpdateSkillValue("RESULT", 0f);
+                    World.Instance.TriggerEvent("IF_HIT", AcknexObject, AcknexObject, GetRegion());
+                }
             }
         }
 
-        private void OnDrawGizmos()
+            private void OnDrawGizmos()
         {
 #if DEBUG_ENABLED
             if (DebugMarked)
@@ -517,10 +526,6 @@ namespace Acknex
         public void Locate(float thingX, float thingY, ref float thingZ, bool initial = false)
         {
             var region = GetRegion();
-            if (region == null || region.Container == null)
-            {
-                var x = 1;
-            }
             var regionContainer = (Region)region.Container;
             var ground = AcknexObject.HasFlag("GROUND");
             if (regionContainer != null)

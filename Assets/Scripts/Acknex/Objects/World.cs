@@ -239,7 +239,6 @@ namespace Acknex
                 var region = (Region)kvp.Key.Container;
                 var contouredRegion = kvp.Value;
                 region.ContouredRegion = contouredRegion;
-                //region.BuildRegionFloorAndCeiling(contouredRegion);
             }
         }
 
@@ -312,6 +311,10 @@ namespace Acknex
                     }
                     if (region.FloorTexture.AcknexObject.GetInteger("CYCLES") <= 1)
                     {
+                        if (region.FloorMeshFilter == null)
+                        {
+                            continue;
+                        }
                         if (!_meshesPerTexture.TryGetValue(region.FloorTexture, out var meshes))
                         {
                             meshes = new List<Mesh>();

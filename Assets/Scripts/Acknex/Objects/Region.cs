@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
@@ -136,12 +138,13 @@ namespace Acknex
             {
                 return;
             }
+#if DEBUG_ENABLED
             Debug.Log(AcknexObject.GetString("NAME"));
             DebugExtension.DebugWireSphere(GetCenter(), Color.blue, 1f, 10f);
+#endif
             _audioSource.Stop();
             _audioSource.clip = soundContainer.AudioClip;
             _audioSource.maxDistance = Mathf.Max(sDist, svDist);
-            _audioSource.rolloffMode = AudioRolloffMode.Linear;
             _audioSource.volume = volume;
             _audioSource.Play();
         }
@@ -181,9 +184,13 @@ namespace Acknex
             _audioSourceGameObject = new GameObject("AudioSource");
             _audioSourceGameObject.transform.SetParent(transform, false);
             _audioSource = _audioSourceGameObject.AddComponent<AudioSource>();
+            _audioSource.minDistance = 0f;
             _audioSource.maxDistance = 0f;
             _audioSource.volume = 0f;
             _audioSource.playOnAwake = false;
+            _audioSource.spatialBlend = 1f;
+            _audioSource.rolloffMode = AudioRolloffMode.Linear;
+            _audioSource.spread = 360f;
         }
 
         public void SetupTemplate()
@@ -192,6 +199,10 @@ namespace Acknex
 
         public void UpdateObject()
         {
+            if (_floorMeshRenderer == null)
+            {
+                return;
+            }
             if (AcknexObject.IsGeometryDirty)
             {
                 UpdateAllMeshes();
@@ -375,12 +386,12 @@ namespace Acknex
         public void UpdateAllMeshes()
         {
             var meshIndex = 0;
-            //if (Math.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT")) > Mathf.Epsilon)
-            //{
-            BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex);
-            BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex, true);
-            BuildMeshes( /*allVertices, allUVs, allTriangles*/);
-            //}
+            if (Math.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT")) > Mathf.Epsilon)
+            {
+                BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex);
+                BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex, true);
+                BuildMeshes( /*allVertices, allUVs, allTriangles*/);
+            }
         }
 
         public void BuildFloorOrCeil( /*ContouredRegion contouredRegion, List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<int, List<int>> allTriangles,*/ ref int meshIndex, bool ceil = false)
@@ -508,6 +519,24 @@ namespace Acknex
                 createdRegions.Add(newRegion);
                 Below = newRegion;
                 newRegion.BuildBelowInstance(createdRegions);
+            }
+        }
+
+        public void PlayRegionSound()
+        {
+            var floorSound = FloorTexture.AcknexObject.GetAcknexObject("SOUND");
+            if (floorSound != null)
+            {
+                World.Instance.PlaySound(floorSound, FloorTexture.AcknexObject.GetFloat("SVOL"), AcknexObject, FloorTexture.AcknexObject.GetFloat("DIST"), FloorTexture.AcknexObject.GetFloat("SVDIST"));
+            }
+        }
+
+        public void Rotate(Vector3 center, float degrees)
+        {
+            transform.RotateAround(center, Vector3.up, degrees);
+            foreach (var wall in World.Instance.RegionWalls[AcknexObject])
+            {
+                wall.transform.RotateAround(center, Vector3.up, degrees);
             }
         }
     }

@@ -39,6 +39,7 @@ namespace Acknex
         public Matrix4x4 BottomUV;
         public bool DisableRender;
         public bool Processed;
+        private CollisionCallback _colliderCollisionCallback;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -81,12 +82,13 @@ namespace Acknex
             {
                 return;
             }
+#if DEBUG_ENABLED
             Debug.Log(AcknexObject.GetString("NAME"));
             DebugExtension.DebugWireSphere(GetCenter(), Color.blue, 1f, 10f);
+#endif
             _audioSource.Stop();
             _audioSource.clip = soundContainer.AudioClip;
             _audioSource.maxDistance = Mathf.Max(sDist, svDist);
-            _audioSource.rolloffMode = AudioRolloffMode.Linear;
             _audioSource.volume = volume;
             _audioSource.Play();
         }
@@ -109,32 +111,52 @@ namespace Acknex
             Filter = _innerGameObject.AddComponent<MeshFilter>();
             _meshRenderer = _innerGameObject.AddComponent<MeshRenderer>();
             _collider = _innerGameObject.AddComponent<MeshCollider>();
+            //_colliderCollisionCallback = _innerGameObject.AddComponent<CollisionCallback>();
+            //_colliderCollisionCallback.OnCollisionEnterCallback += OnCollisionEnterCallback;
+            //_colliderCollisionCallback.OnCollisionExitCallback += OnCollisionExitCallback;
             _invertedCollider = _innerGameObject.AddComponent<MeshCollider>();
             _invertedCollider.enabled = false;
+
             _vertexGameObjectA = new GameObject("VertexA");
             _vertexGameObjectA.transform.SetParent(transform, false);
             _vertexGameObjectA.layer = World.Instance.TriggersLayer.LayerIndex;
             _vertexTriggerA = _vertexGameObjectA.AddComponent<SphereCollider>();
             _vertexTriggerA.isTrigger = true;
             _collisionCallbackA = _vertexGameObjectA.AddComponent<CollisionCallback>();
+            _collisionCallbackA.OnTriggerEnterCallback += OnWallTriggerEnter;
+            _collisionCallbackA.OnTriggerExitCallback += OnWallTriggerExit;
+
             _vertexGameObjectB = new GameObject("VertexB");
             _vertexGameObjectB.transform.SetParent(transform, false);
             _vertexGameObjectB.layer = World.Instance.TriggersLayer.LayerIndex;
-            _vertexTriggerB = _vertexGameObjectA.AddComponent<SphereCollider>();
+            _vertexTriggerB = _vertexGameObjectB.AddComponent<SphereCollider>();
             _vertexTriggerB.isTrigger = true;
             _collisionCallbackB = _vertexGameObjectB.AddComponent<CollisionCallback>();
-            _collisionCallbackA.OnTriggerEnterCallback += OnWallTriggerEnter;
-            _collisionCallbackA.OnTriggerExitCallback += OnWallTriggerExit;
             _collisionCallbackB.OnTriggerEnterCallback += OnWallTriggerEnter;
             _collisionCallbackB.OnTriggerExitCallback += OnWallTriggerExit;
+
             _audioSourceGameObject = new GameObject("AudioSource");
             _audioSourceGameObject.transform.SetParent(transform, false);
             _audioSource = _audioSourceGameObject.AddComponent<AudioSource>();
+            _audioSource.minDistance = 0f;
             _audioSource.maxDistance = 0f;
             _audioSource.volume = 0f;
             _audioSource.playOnAwake = false;
+            _audioSource.spatialBlend = 1f;
+            _audioSource.rolloffMode = AudioRolloffMode.Linear;
+            _audioSource.spread = 360f;
 
         }
+
+        //private void OnCollisionExitCallback(Collision collision)
+        //{
+        //
+        //}
+        //
+        //private void OnCollisionEnterCallback(Collision collision)
+        //{
+        //
+        //}
 
         public void SetupTemplate()
         {
@@ -160,7 +182,6 @@ namespace Acknex
                 return;
             }
             _meshRenderer.enabled = !DisableRender;
-            _collider.enabled = true;
             AcknexObject.SetFloat("VISIBLE", AcknexObject.GetFloat("INVISIBLE") > 0f ? 0f : 1f);
             var hasPlay = AcknexObject.HasFlag("PLAY");
             if (TextureObject != _lastTextureObject || hasPlay)
@@ -185,7 +206,7 @@ namespace Acknex
             _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.AcknexObject.HasFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             _collider.enabled = !AcknexObject.HasFlag("PASSABLE");
             _vertexTriggerB.radius = _vertexTriggerA.radius = AcknexObject.GetFloat("DIST");
-            _vertexTriggerB.enabled = _vertexTriggerA.enabled = (AcknexObject.TryGetAcknexObject("IF_NEAR", out var ifNear) && ifNear.GetString("VAL") != null) || (AcknexObject.TryGetAcknexObject("IF_FAR", out var ifFar) && ifFar.GetString("VAL") != null);
+            //_vertexTriggerB.enabled = _vertexTriggerA.enabled = (AcknexObject.TryGetAcknexObject("IF_NEAR", out var ifNear) && ifNear.GetString("VAL") != null) || (AcknexObject.TryGetAcknexObject("IF_FAR", out var ifFar) && ifFar.GetString("VAL") != null);
             _vertexGameObjectA.transform.position = BottomQuad.GetColumn(3);
             _vertexGameObjectB.transform.position = BottomQuad.GetColumn(2);
             _invertedCollider.enabled = AcknexObject.HasFlag("FENCE");

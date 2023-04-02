@@ -120,6 +120,11 @@ namespace Acknex.Interfaces
         void FadePal(IAcknexObject acknexObject, float factor);
 
         /// <summary>
+        /// Rotates the given region by the given angle.
+        /// </summary>
+        void Rotate(IAcknexObject acknexObject, float radians);
+
+        /// <summary>
         /// Shoots the given object.
         /// </summary>
         void Shoot(IAcknexObject acknexObject, IAcknexObject MY, IAcknexObject THERE);

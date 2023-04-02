@@ -270,7 +270,6 @@ namespace Acknex
                 TriggerEvent("IF_HIT", AcknexObject, AcknexObject, AcknexObject.Container.GetRegion());
                 minDist = Mathf.Min(minDist, distance);
             }
-
             UpdateSkillValue("HIT_DIST", 0f);
             UpdateSkillValue("RESULT", 0f);
 #if DEBUG_ENABLED
@@ -556,6 +555,22 @@ namespace Acknex
                 }
                 _palette.SetPixels(_palettePixels);
                 _palette.Apply(false, false);
+            }
+        }
+
+        public void Rotate(IAcknexObject acknexObject, float radians)
+        {
+            var region = acknexObject.Container as Region;
+            if (region != null)
+            {
+                if (acknexObject.TryGetAcknexObject("GENIUS", out var genius))
+                {
+                    region.Rotate(genius.Container.GetCenter(), Mathf.Rad2Deg * radians);
+                }
+                else
+                {
+                    region.Rotate(Vector3.zero, Mathf.Rad2Deg * radians);
+                }
             }
         }
 

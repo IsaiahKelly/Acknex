@@ -215,6 +215,7 @@ namespace Acknex
                         case "SUB":
                         case "ADD":
                         case "ADDT":
+                        case "RANDOMIZE":
                             {
                                 var identifier = labelOrStatement;
                                 var value = GetValue();
@@ -331,6 +332,16 @@ namespace Acknex
 
                                     CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                                 }
+                                HandleIfStack();
+                                ReadUntilSemiColon();
+                                break;
+                            }
+                        case "ROTATE":
+                            {
+                                var radians = GetValue();
+                                var lhs = GetValueAndType(labelOrStatement, "lhs");
+                                var rhs = GetValueAndType(radians, "rhs");
+                                CodeStringBuilder.Append("_world.Rotate(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                                 HandleIfStack();
                                 ReadUntilSemiColon();
                                 break;
@@ -615,6 +626,10 @@ namespace Acknex
                     if (mode == "MUL")
                     {
                         CodeStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsSetter.property).Append(",").Append(lhsGetter.property).Append(" * ").Append(rhs.property).AppendLine(");");
+                    }
+                    if (mode == "RANDOMIZE")
+                    {
+                        CodeStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsSetter.property).Append(",").Append("Random.Range(0f, ").Append(rhs.property).AppendLine("));");
                     }
                     break;
             }

@@ -1,16 +1,13 @@
-﻿using System.Linq;
-using Acknex.Interfaces;
+﻿using Acknex.Interfaces;
 using UnityEngine;
-using Utils;
 
 namespace Acknex
 {
     public class Player : MonoBehaviour, IAcknexObjectContainer
     {
-
-        private const float WaterBorderThickness = 0.65f;
-
         private CharacterController _characterController;
+        private bool _soundTriggered;
+        private float _walkTime;
 
         public static Player Instance { get; private set; }
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Player);
@@ -40,7 +37,6 @@ namespace Acknex
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
-
         }
 
         public void SetupInstance()
@@ -59,25 +55,17 @@ namespace Acknex
             var playerAngle = World.Instance.GetSkillValue("PLAYER_ANGLE");
             var unityPlayerAngle = AngleUtils.ConvertAcknexToUnityAngle(playerAngle);
             _characterController.transform.rotation = Quaternion.Euler(0f, unityPlayerAngle, 0f);
-            _characterController.transform.position = new Vector3(playerX, playerZ, playerY);
+            var initialPosition = _characterController.transform.position = new Vector3(playerX, playerZ, playerY);
             var playerWidth = World.Instance.GetSkillValue("PLAYER_WIDTH");
             _characterController.radius = playerWidth;
             var playerSize = World.Instance.GetSkillValue("PLAYER_SIZE");
-            
             //if (Physics.SphereCast(_characterController.transform.position, playerWidth, Vector3.up, out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
             //{
             //    playerSize = Mathf.Min(playerSize, raycastHit.distance);
             //    World.Instance.UpdateSkillValue("PLAYER_SIZE", playerSize);
             //}
-
             _characterController.height = playerSize;
-
-            var playerMove = new Vector3(
-                                 World.Instance.GetSkillValue("PLAYER_VX"),
-                                 World.Instance.GetSkillValue("PLAYER_VZ"),
-                                 World.Instance.GetSkillValue("PLAYER_VY"))
-                             * World.Instance.GetSkillValue("TIME_CORR");
-
+            var playerMove = new Vector3(World.Instance.GetSkillValue("PLAYER_VX"), World.Instance.GetSkillValue("PLAYER_VZ"), World.Instance.GetSkillValue("PLAYER_VY")) * World.Instance.GetSkillValue("TIME_CORR");
             var desiredPosition = _characterController.transform.position + playerMove;
             var stepSize = Mathf.Min(playerSize, World.Instance.GetSkillValue("PLAYER_CLIMB"));
             var checkPosition = new Vector3(desiredPosition.x, desiredPosition.y + playerSize - playerWidth, desiredPosition.z);
@@ -90,9 +78,26 @@ namespace Acknex
             characterControllerCenter.y = _characterController.height * 0.5f;
             _characterController.center = characterControllerCenter;
             _characterController.Move(playerMove);
-            var delta = playerMove - desiredPosition;
-            World.Instance.UpdateSkillValue("IMPACT_VX", delta.x);
-            World.Instance.UpdateSkillValue("IMPACT_VY", delta.z);
+            var delta = _characterController.transform.position - initialPosition;
+            var deltaXZ = new Vector3(delta.x, 0f, delta.z);
+            if (deltaXZ.magnitude > Mathf.Epsilon)
+            {
+                var period = deltaXZ.magnitude / World.Instance.GetSkillValue("WALK_PERIOD") * 2f;
+                _walkTime += period;
+                var walk = Mathf.Sin(_walkTime * Mathf.PI);
+                World.Instance.UpdateSkillValue("WALK", walk);
+                if (!_soundTriggered && walk >= 0.5f)
+                {
+                    ((Region)GetRegion().Container).PlayRegionSound();
+                    _soundTriggered = true;
+                }
+                if (_soundTriggered && walk < 0.5f)
+                {
+                    _soundTriggered = false;
+                }
+            }
+            World.Instance.UpdateSkillValue("IMPACT_VX", deltaXZ.x);
+            World.Instance.UpdateSkillValue("IMPACT_VY", deltaXZ.z);
             var region = GetRegion();
             var regionContainer = (Region)region.Container;
             var forceUp = World.Instance.GetSkillValue("FORCE_UP");
@@ -120,7 +125,6 @@ namespace Acknex
             playerY = _characterController.transform.position.z;
             playerZ = _characterController.transform.position.y;
             playerAngle = Mathf.Repeat(playerAngle + World.Instance.GetSkillValue("PLAYER_VROT"), Mathf.PI * 2f);
-            //playerAngle += /*TimeUtils.TimeToTicks(Time.deltaTime) **/ World.Instance.GetSkillValue("PLAYER_VROT");
             World.Instance.UpdateSkillValue("LAST_PLAYER_X", World.Instance.GetSkillValue("PLAYER_X"));
             World.Instance.UpdateSkillValue("LAST_PLAYER_Y", World.Instance.GetSkillValue("PLAYER_Y"));
             World.Instance.UpdateSkillValue("LAST_PLAYER_Z", World.Instance.GetSkillValue("PLAYER_Z"));
@@ -139,6 +143,19 @@ namespace Acknex
                 playerHgt = 0f;
             }
             World.Instance.UpdateSkillValue("PLAYER_HGT", playerHgt);
+        }
+
+        private void OnControllerColliderHit(ControllerColliderHit controllerColliderHit)
+        {
+            if (Vector3.Dot(controllerColliderHit.normal, Vector3.up) > 0.5f || Vector3.Dot(controllerColliderHit.normal, Vector3.down) > 0.5f)
+            {
+                return;
+            }
+            if (controllerColliderHit.transform.parent != null && controllerColliderHit.transform.parent.TryGetComponent<Wall>(out var wall) && wall.AcknexObject.GetFloat("DIST") <= 0f)
+            {
+                World.Instance.TriggerEvent("IF_NEAR", wall.AcknexObject, AcknexObject, GetRegion());
+                World.Instance.TriggerEvent("IF_FAR", wall.AcknexObject, AcknexObject, GetRegion());
+            }
         }
 
         //private void OnDrawGizmos()
@@ -199,10 +216,6 @@ namespace Acknex
         private void Locate(float playerX, float playerY, ref float playerZ, bool initial = true)
         {
             var region = GetRegion();
-            if (region == null || region.Container == null)
-            {
-                var x = 1;
-            }
             var regionContainer = (Region)region.Container;
             if (regionContainer.Below != null && region.TryGetAcknexObject("IF_DIVE", out _))
             {
@@ -215,14 +228,11 @@ namespace Acknex
             var ceilBasePoint = initial ? regionContainer.GetRealCeilHeight() : playerZ + World.Instance.GetSkillValue("PLAYER_CLIMB");
             var floorBasePoint = initial ? regionContainer.GetRealFloorHeight() : playerZ;
             var playerWidth = World.Instance.GetSkillValue("PLAYER_WIDTH");
-
             var newRegion = Region.Locate(AcknexObject, regionContainer, playerWidth, playerX, playerY, ref playerZ, false, ceilBasePoint);
             var ceilZ = playerZ;
             Region.Locate(AcknexObject, regionContainer, playerWidth, playerX, playerY, ref ceilZ, true, floorBasePoint);
-
             World.Instance.UpdateSkillValue("FLOOR_HGT", playerZ);
             World.Instance.UpdateSkillValue("CEIL_HGT", ceilZ);
-
             if (initial || newRegion != regionContainer)
             {
                 regionContainer.AcknexObject.RemoveFlag("HERE");
