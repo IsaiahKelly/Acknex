@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Utils;
 
 namespace Acknex
 {
@@ -19,29 +19,21 @@ namespace Acknex
         private List<Vector3> _allVertices;
         private Coroutine _animateCeilCoroutine;
         private Coroutine _animateFloorCoroutine;
-
         private AudioSource _audioSource;
+        private GameObject _audioSourceGameObject;
         private Region _belowOverride;
-
         private MeshCollider _ceilCollider;
-
         private GameObject _ceilGameObject;
         private Material _ceilMaterial;
         private Mesh _ceilMesh;
-
         private MeshRenderer _ceilMeshRenderer;
-
         private MeshCollider _floorCollider;
-
         private GameObject _floorGameObject;
         private Material _floorMaterial;
         private Mesh _floorMesh;
-
         private MeshRenderer _floorMeshRenderer;
-
         private MeshCollider _invertedCeilCollider;
         private Mesh _invertedCeilMesh;
-
         private MeshCollider _invertedFloorCollider;
         private Mesh _invertedFloorMesh;
         private Texture _lastCeilTexture;
@@ -117,7 +109,16 @@ namespace Acknex
 
         public Vector3 GetCenter()
         {
-            return default;
+            var bounds = new Bounds();
+            if (_ceilMeshRenderer != null)
+            {
+                bounds.Encapsulate(_ceilMeshRenderer.bounds);
+            }
+            if (_floorMeshRenderer != null)
+            {
+                bounds.Encapsulate(_floorMeshRenderer.bounds);
+            }
+            return bounds.center;
         }
 
         public IAcknexObject GetRegion()
@@ -127,6 +128,22 @@ namespace Acknex
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
+            if (!(sound?.Container is Sound soundContainer))
+            {
+                return;
+            }
+            if (_audioSource.clip == soundContainer.AudioClip && _audioSource.isPlaying)
+            {
+                return;
+            }
+            Debug.Log(AcknexObject.GetString("NAME"));
+            DebugExtension.DebugWireSphere(GetCenter(), Color.blue, 1f, 10f);
+            _audioSource.Stop();
+            _audioSource.clip = soundContainer.AudioClip;
+            _audioSource.maxDistance = Mathf.Max(sDist, svDist);
+            _audioSource.rolloffMode = AudioRolloffMode.Linear;
+            _audioSource.volume = volume;
+            _audioSource.Play();
         }
 
         public void SetupInstance()
@@ -157,12 +174,16 @@ namespace Acknex
             CeilMeshFilter = _ceilGameObject.AddComponent<MeshFilter>();
             _ceilCollider = _ceilGameObject.AddComponent<MeshCollider>();
             _invertedCeilCollider = _ceilGameObject.AddComponent<MeshCollider>();
-            //todo: move to middle
             if (gameObject.TryGetComponent<AudioSource>(out var audioSource))
             {
                 Destroy(audioSource);
             }
-            _audioSource = gameObject.AddComponent<AudioSource>();
+            _audioSourceGameObject = new GameObject("AudioSource");
+            _audioSourceGameObject.transform.SetParent(transform, false);
+            _audioSource = _audioSourceGameObject.AddComponent<AudioSource>();
+            _audioSource.maxDistance = 0f;
+            _audioSource.volume = 0f;
+            _audioSource.playOnAwake = false;
         }
 
         public void SetupTemplate()
@@ -181,6 +202,7 @@ namespace Acknex
                 return;
             }
             AcknexObject.IsDirty = false;
+            _audioSourceGameObject.transform.position = GetCenter();
             if (AcknexObject.HasFlag("INVISIBLE"))
             {
                 _floorMeshRenderer.enabled = false;
@@ -254,10 +276,6 @@ namespace Acknex
 
         private IEnumerator AnimateCeil()
         {
-            if (AcknexObject.IsInstance)
-            {
-                yield break;
-            }
             while (CeilTexture == null)
             {
                 yield return null;
@@ -271,10 +289,6 @@ namespace Acknex
 
         private IEnumerator AnimateFloor()
         {
-            if (AcknexObject.IsInstance)
-            {
-                yield break;
-            }
             while (FloorTexture == null)
             {
                 yield return null;
@@ -362,11 +376,11 @@ namespace Acknex
         {
             var meshIndex = 0;
             //if (Math.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT")) > Mathf.Epsilon)
-            {
-                BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex);
-                BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex, true);
-                BuildMeshes( /*allVertices, allUVs, allTriangles*/);
-            }
+            //{
+            BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex);
+            BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex, true);
+            BuildMeshes( /*allVertices, allUVs, allTriangles*/);
+            //}
         }
 
         public void BuildFloorOrCeil( /*ContouredRegion contouredRegion, List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<int, List<int>> allTriangles,*/ ref int meshIndex, bool ceil = false)
@@ -424,7 +438,6 @@ namespace Acknex
                 outRegion = currentRegion;
                 return false;
             }
-
             if (onCeil)
             {
                 var zCheck = height ?? currentRegion.AcknexObject.GetFloat("FLOOR_HGT");
@@ -475,7 +488,7 @@ namespace Acknex
             return AcknexObject.GetFloat("FLOOR_HGT");
         }
 
-        public void CreateBelowInstance(List<Region> createdRegions)
+        public void BuildBelowInstance(List<Region> createdRegions)
         {
             //this.Enable();
             if (Below != null)
@@ -491,9 +504,10 @@ namespace Acknex
                 newRegion.name = Below.name;
                 newRegion.transform.SetParent(World.Instance.transform, false);
                 newRegion._materialsCreated = false;
+                newAcknexObject.Container = newRegion;
                 createdRegions.Add(newRegion);
                 Below = newRegion;
-                newRegion.CreateBelowInstance(createdRegions);
+                newRegion.BuildBelowInstance(createdRegions);
             }
         }
     }

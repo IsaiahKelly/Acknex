@@ -689,7 +689,7 @@ namespace Acknex
                 {
                     item.SetupInstance();
                     item.UpdateAllMeshes();
-                    item.CreateBelowInstance(createdRegions);
+                    item.BuildBelowInstance(createdRegions);
                 }
             }
             foreach (var item in createdRegions)

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Acknex.Interfaces;
 using UnityEngine;
+using Utils;
 
 namespace Acknex
 {
@@ -36,13 +37,11 @@ namespace Acknex
         public void Disable()
         {
             AcknexObject.AddFlag("INVISIBLE");
-            //AcknexObject.RemoveFlag("VISIBLE");
         }
 
         public void Enable()
         {
             AcknexObject.RemoveFlag("INVISIBLE");
-            //AcknexObject.AddFlag("VISIBLE");
         }
 
         public GameObject GameObject => gameObject;
@@ -55,7 +54,7 @@ namespace Acknex
         public IAcknexObject GetRegion()
         {
             var regionObject = AcknexObject.GetAcknexObject("REGION");
-            return regionObject;
+            return regionObject ?? World.Instance.RegionsByIndex[0].AcknexObject;
         }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
@@ -68,6 +67,8 @@ namespace Acknex
             {
                 return;
             }
+            Debug.Log(AcknexObject.GetString("NAME"));
+            DebugExtension.DebugWireSphere(GetCenter(), Color.blue, 1f, 10f);
             _audioSource.Stop();
             _audioSource.clip = soundContainer.AudioClip;
             _audioSource.maxDistance = Mathf.Max(sDist, svDist);
@@ -391,7 +392,7 @@ namespace Acknex
             var waypoint = 1;
             AcknexObject.SetFloat("WAYPOINT", waypoint);
             var nextPoint = points[waypoint - 1];
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 if (MoveToPointStep(nextPoint))
@@ -412,7 +413,7 @@ namespace Acknex
         private IEnumerator MoveToVertex()
         {
             var targetPos = new Vector2(AcknexObject.GetFloat("TARGET_X"), AcknexObject.GetFloat("TARGET_Y"));
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 if (MoveToPointStep(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
@@ -428,7 +429,7 @@ namespace Acknex
         private IEnumerator MoveToPlayer()
         {
             var currentRegion = GetRegion();
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
@@ -472,7 +473,7 @@ namespace Acknex
             //var targetPos = new Vector2(AcknexObject.GetFloat("X") + sin, AcknexObject.GetFloat("Y") + cos);
             //DebugExtension.DebugArrow(new Vector3(transform.position.x, 0f, transform.position.z), new Vector3(targetPos.x, 0f, targetPos.y), Color.yellow, 10f);
             var currentRegion = GetRegion();
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 MoveToAngleStep();
@@ -516,7 +517,11 @@ namespace Acknex
         public void Locate(float thingX, float thingY, ref float thingZ, bool initial = false)
         {
             var region = GetRegion();
-            var regionContainer = region?.Container as Region;
+            if (region == null || region.Container == null)
+            {
+                var x = 1;
+            }
+            var regionContainer = (Region)region.Container;
             var ground = AcknexObject.HasFlag("GROUND");
             if (regionContainer != null)
             {

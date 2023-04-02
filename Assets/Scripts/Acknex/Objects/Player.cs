@@ -35,7 +35,7 @@ namespace Acknex
         public IAcknexObject GetRegion()
         {
             var regionObject = AcknexObject.GetAcknexObject("REGION");
-            return regionObject;
+            return regionObject ?? World.Instance.RegionsByIndex[0].AcknexObject;
         }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
@@ -198,38 +198,43 @@ namespace Acknex
 
         private void Locate(float playerX, float playerY, ref float playerZ, bool initial = true)
         {
-            var region = (Region)AcknexObject.GetAcknexObject("REGION").Container;
-            if (region.Below != null && region.AcknexObject.TryGetAcknexObject("IF_DIVE", out _))
+            var region = GetRegion();
+            if (region == null || region.Container == null)
             {
-                World.Instance.UpdateSkillValue("PLAYER_DEPTH", region.Below.GetDepth());
+                var x = 1;
+            }
+            var regionContainer = (Region)region.Container;
+            if (regionContainer.Below != null && region.TryGetAcknexObject("IF_DIVE", out _))
+            {
+                World.Instance.UpdateSkillValue("PLAYER_DEPTH", regionContainer.Below.GetDepth());
             }
             else
             {
                 World.Instance.UpdateSkillValue("PLAYER_DEPTH", 0f);
             }
-            var ceilBasePoint = initial ? region.GetRealCeilHeight() : playerZ + World.Instance.GetSkillValue("PLAYER_CLIMB");
-            var floorBasePoint = initial ? region.GetRealFloorHeight() : playerZ;
+            var ceilBasePoint = initial ? regionContainer.GetRealCeilHeight() : playerZ + World.Instance.GetSkillValue("PLAYER_CLIMB");
+            var floorBasePoint = initial ? regionContainer.GetRealFloorHeight() : playerZ;
             var playerWidth = World.Instance.GetSkillValue("PLAYER_WIDTH");
 
-            var newRegion = Region.Locate(AcknexObject, region, playerWidth, playerX, playerY, ref playerZ, false, ceilBasePoint);
+            var newRegion = Region.Locate(AcknexObject, regionContainer, playerWidth, playerX, playerY, ref playerZ, false, ceilBasePoint);
             var ceilZ = playerZ;
-            Region.Locate(AcknexObject, region, playerWidth, playerX, playerY, ref ceilZ, true, floorBasePoint);
+            Region.Locate(AcknexObject, regionContainer, playerWidth, playerX, playerY, ref ceilZ, true, floorBasePoint);
 
             World.Instance.UpdateSkillValue("FLOOR_HGT", playerZ);
             World.Instance.UpdateSkillValue("CEIL_HGT", ceilZ);
 
-            if (initial || newRegion != region)
+            if (initial || newRegion != regionContainer)
             {
-                region.AcknexObject.RemoveFlag("HERE");
+                regionContainer.AcknexObject.RemoveFlag("HERE");
                 newRegion.AcknexObject.AddFlag("HERE");
                 World.Instance.SetSynonymObject("HERE", newRegion.AcknexObject);
                 AcknexObject.SetAcknexObject("REGION", newRegion.AcknexObject);
                 if (!initial)
                 {
-                    World.Instance.TriggerEvent("IF_LEAVE", region.AcknexObject, null, region.AcknexObject);
-                    if (playerZ > region.GetRealCeilHeight())
+                    World.Instance.TriggerEvent("IF_LEAVE", regionContainer.AcknexObject, null, regionContainer.AcknexObject);
+                    if (playerZ > regionContainer.GetRealCeilHeight())
                     {
-                        World.Instance.TriggerEvent("IF_ARISE", region.AcknexObject, null, region.AcknexObject);
+                        World.Instance.TriggerEvent("IF_ARISE", regionContainer.AcknexObject, null, regionContainer.AcknexObject);
                     }
                 }
                 World.Instance.TriggerEvent("IF_ENTER", newRegion.AcknexObject, null, newRegion.AcknexObject);

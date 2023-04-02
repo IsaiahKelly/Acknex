@@ -73,6 +73,7 @@ namespace Acknex
             return null;
         }
 
+        //todo: SLOOP
         public IEnumerator AnimateTexture(
             bool scaleTexture,
             MeshRenderer meshRenderer,

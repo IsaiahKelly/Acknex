@@ -5,6 +5,7 @@ using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Utils;
 
 namespace Acknex
 {
@@ -16,6 +17,7 @@ namespace Acknex
         private Coroutine _animateCoroutine;
         private GameObject _attached;
         private AudioSource _audioSource;
+        private GameObject _audioSourceGameObject;
         private MeshCollider _collider;
         private CollisionCallback _collisionCallbackA;
         private CollisionCallback _collisionCallbackB;
@@ -25,7 +27,6 @@ namespace Acknex
         private Texture _lastTextureObject;
         private bool _materialsCreated;
         private Mesh _mesh;
-        private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
         private GameObject _vertexGameObjectA;
         private GameObject _vertexGameObjectB;
@@ -36,11 +37,14 @@ namespace Acknex
         //todo: can remove, debug info
         public Matrix4x4 BottomQuad;
         public Matrix4x4 BottomUV;
-        public bool Processed;
         public bool DisableRender;
+        public bool Processed;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
+
+        public MeshFilter Filter { get; set; }
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Wall);
 
         [field: SerializeField] public bool DebugMarked { get; set; }
@@ -57,16 +61,9 @@ namespace Acknex
 
         public GameObject GameObject => gameObject;
 
-        public MeshFilter Filter
-        {
-            get => _meshFilter;
-            set => _meshFilter = value;
-        }
-
-        //todo
         public Vector3 GetCenter()
         {
-            return default;
+            return Vector3.Lerp(_vertexGameObjectA.transform.position, _vertexGameObjectB.transform.position, 0.5f);
         }
 
         public IAcknexObject GetRegion()
@@ -76,6 +73,22 @@ namespace Acknex
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
+            if (!(sound?.Container is Sound soundContainer))
+            {
+                return;
+            }
+            if (_audioSource.clip == soundContainer.AudioClip && _audioSource.isPlaying)
+            {
+                return;
+            }
+            Debug.Log(AcknexObject.GetString("NAME"));
+            DebugExtension.DebugWireSphere(GetCenter(), Color.blue, 1f, 10f);
+            _audioSource.Stop();
+            _audioSource.clip = soundContainer.AudioClip;
+            _audioSource.maxDistance = Mathf.Max(sDist, svDist);
+            _audioSource.rolloffMode = AudioRolloffMode.Linear;
+            _audioSource.volume = volume;
+            _audioSource.Play();
         }
 
         public void SetupInstance()
@@ -98,7 +111,6 @@ namespace Acknex
             _collider = _innerGameObject.AddComponent<MeshCollider>();
             _invertedCollider = _innerGameObject.AddComponent<MeshCollider>();
             _invertedCollider.enabled = false;
-            _audioSource = gameObject.AddComponent<AudioSource>(); //todo: move audio to middle
             _vertexGameObjectA = new GameObject("VertexA");
             _vertexGameObjectA.transform.SetParent(transform, false);
             _vertexGameObjectA.layer = World.Instance.TriggersLayer.LayerIndex;
@@ -115,6 +127,13 @@ namespace Acknex
             _collisionCallbackA.OnTriggerExitCallback += OnWallTriggerExit;
             _collisionCallbackB.OnTriggerEnterCallback += OnWallTriggerEnter;
             _collisionCallbackB.OnTriggerExitCallback += OnWallTriggerExit;
+            _audioSourceGameObject = new GameObject("AudioSource");
+            _audioSourceGameObject.transform.SetParent(transform, false);
+            _audioSource = _audioSourceGameObject.AddComponent<AudioSource>();
+            _audioSource.maxDistance = 0f;
+            _audioSource.volume = 0f;
+            _audioSource.playOnAwake = false;
+
         }
 
         public void SetupTemplate()
@@ -133,6 +152,7 @@ namespace Acknex
                 return;
             }
             AcknexObject.IsDirty = false;
+            _audioSourceGameObject.transform.position = GetCenter();
             if (AcknexObject.HasFlag("INVISIBLE"))
             {
                 _meshRenderer.enabled = false;
@@ -352,8 +372,8 @@ namespace Acknex
             var rightRegionAboveFloorHeight = rightRegionAbove == null ? 0f : rightRegionAbove.AcknexObject.GetFloat("FLOOR_HGT");
             //todo: checking by the flag here is wrong
             if (AcknexObject.HasFlag("FENCE"))
-            //leftRegion.AcknexObject.GetNumber("FLOOR_HGT") == rightRegion.AcknexObject.GetNumber("FLOOR_HGT") && 
-            //leftRegion.AcknexObject.GetNumber("CEIL_HGT") == rightRegion.AcknexObject.GetNumber("CEIL_HGT"))
+                //leftRegion.AcknexObject.GetNumber("FLOOR_HGT") == rightRegion.AcknexObject.GetNumber("FLOOR_HGT") && 
+                //leftRegion.AcknexObject.GetNumber("CEIL_HGT") == rightRegion.AcknexObject.GetNumber("CEIL_HGT"))
             {
                 BuildFence(rightRegionAbove, leftRegionAbove, leftRegion, leftRegionBelowCeilHeight, rightRegion, rightRegionBelowCeilHeight, leftRegionAboveFloorHeight, rightRegionAboveFloorHeight, vertexA, vertexB);
             }
@@ -523,6 +543,5 @@ namespace Acknex
             BuildWall(vertexA, vertexB, contourVertices, rightRegion, leftRegion);
             BuildWallMesh();
         }
-        
     }
 }
