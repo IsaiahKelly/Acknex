@@ -234,7 +234,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "BERKELEY");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "IMMATERIAL");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "PLAY");
-
+            AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "DO");
 
             AddObjectProperty(ObjectType.Overlay, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Overlay, PropertyType.Float, "LAYER");
@@ -299,6 +299,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "PLAY");
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "VISIBLE");
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "HERE");
+            AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "DO");
 
             AddObjectProperty(ObjectType.Wall, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "AMBIENT");
@@ -339,6 +340,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "VISIBLE");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "PASSABLE");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "INVISIBLE");
+            AddObjectProperty(ObjectType.Wall, PropertyType.ActionReference, "DO");
 
             AddObjectProperty(ObjectType.Texture, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Texture, PropertyType.ScaleXY, "SCALE_XY");
@@ -364,6 +366,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, "SDIST");
             AddObjectProperty(ObjectType.Texture, PropertyType.FloatList, "SCYCLES");
             AddObjectProperty(ObjectType.Texture, PropertyType.ObjectReference, "BMAP");
+            AddObjectProperty(ObjectType.Texture, PropertyType.Float, "RANDOM");
 
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "POS_X");
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "POS_Y");

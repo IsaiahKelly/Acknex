@@ -280,6 +280,7 @@ namespace Acknex
 
         private void UpdateEvents()
         {
+            World.Instance.TriggerEvent("DO", AcknexObject, AcknexObject, GetRegion());
         }
 
         public void ProcessWall(List<ContourVertex> allContourVertices, Wall wallA, KeyValuePair<IAcknexObject, RegionWall> kvp, ref int vertexCount, bool inverted = false)

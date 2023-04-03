@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using Acknex.Interfaces;
 using Acknex.Interfaces;
 using AudioSynthesis.Bank;
 using AudioSynthesis.Midi;
@@ -10,7 +7,6 @@ using LibTessDotNet;
 using Tests;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils;
 using Resolution = Acknex.Interfaces.Resolution;
 
 namespace Acknex
@@ -241,6 +237,13 @@ namespace Acknex
             {
                 PostSetupObjectInstance(acknexObject);
                 acknexObject.Container.SetupInstance();
+                var newPosition =
+                    new Vector3(GetSkillValue("PLAYER_X"), 0f, GetSkillValue("PLAYER_Y")) +
+                    Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(GetSkillValue("PLAYER_ANGLE")), 0f) *
+                    new Vector3(0f, 0f, acknexObject.GetFloat("DIST"));
+                acknexObject.SetFloat("X", newPosition.x);
+                acknexObject.SetFloat("Y", newPosition.z);
+                Debug.DrawLine(Player.Instance.transform.position, newPosition, Color.red, 100f);
                 return acknexObject;
             }
             return null;
@@ -260,6 +263,12 @@ namespace Acknex
             var shootRange = GetSkillValue("SHOOT_RANGE");
             var minDist = Mathf.Infinity;
 
+            void HandleMinDist(IAcknexObject hitAcknexObject)
+            {
+                var hitPoint = hitAcknexObject.Container.GetCenter();
+                var distance = Vector3.Distance(hitPoint, origin);
+                minDist = Mathf.Min(minDist, distance);
+            }
             void HandleHit(Collider raycastResult, IAcknexObject hitAcknexObject)
             {
                 var hitPoint = hitAcknexObject.Container.GetCenter();
@@ -268,15 +277,56 @@ namespace Acknex
                 UpdateSkillValue("RESULT", shootFac * (1.0f - distance / shootRange));
                 UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(hitPoint), AngleUtils.To2D(origin))));
                 TriggerEvent("IF_HIT", AcknexObject, AcknexObject, AcknexObject.Container.GetRegion());
-                minDist = Mathf.Min(minDist, distance);
             }
             UpdateSkillValue("HIT_DIST", 0f);
             UpdateSkillValue("RESULT", 0f);
+            UpdateSkillValue("SHOOT_ANGLE", 0f);
+            SetSynonymObject("HIT", null);
 #if DEBUG_ENABLED
             DebugExtension.DebugWireSphere(origin, Color.black, shootRange);
 #endif
             Array.Clear(_overlapResults, 0, MaxHits);
-            var hitCount = Physics.OverlapSphereNonAlloc(origin, shootRange, _overlapResults, WallsWaterRegionsAndSprites);
+            var hitCount = Physics.OverlapSphereNonAlloc(origin, shootRange, _overlapResults, WallsWaterRegionsAndThings);
+            for (var i = 0; i < hitCount; i++)
+            {
+                var overlapResult = _overlapResults[i];
+                if (overlapResult == null)
+                {
+                    continue;
+                }
+                if (overlapResult.transform.TryGetComponent<Player>(out var player))
+                {
+                    HandleMinDist(player.AcknexObject);
+                }
+                else if (overlapResult.transform.TryGetComponent<Thing>(out var thing))
+                {
+                    if (!thing.AcknexObject.HasFlag("FRAGILE"))
+                    {
+                        continue;
+                    }
+                    HandleMinDist(thing.AcknexObject);
+                }
+                else if (overlapResult.transform.parent != null)
+                {
+                    if (overlapResult.transform.parent.TryGetComponent<Wall>(out var wall))
+                    {
+                        if (!wall.AcknexObject.HasFlag("FRAGILE"))
+                        {
+                            continue;
+                        }
+                        HandleMinDist(wall.AcknexObject);
+                    }
+                    else if (overlapResult.transform.parent.TryGetComponent<Region>(out var region))
+                    {
+                        if (!region.AcknexObject.HasFlag("FRAGILE"))
+                        {
+                            continue;
+                        }
+                        HandleMinDist(region.AcknexObject);
+                    }
+                }
+            }
+            UpdateSkillValue("HIT_MINDIST", minDist < Mathf.Infinity ? minDist : 0);
             for (var i = 0; i < hitCount; i++)
             {
                 var overlapResult = _overlapResults[i];
@@ -287,6 +337,14 @@ namespace Acknex
                 if (overlapResult.transform.TryGetComponent<Player>(out var player))
                 {
                     HandleHit(overlapResult, player.AcknexObject);
+                }
+                else if (overlapResult.transform.TryGetComponent<Thing>(out var thing))
+                {
+                    if (!thing.AcknexObject.HasFlag("FRAGILE"))
+                    {
+                        continue;
+                    }
+                    HandleHit(overlapResult, thing.AcknexObject);
                 }
                 else if (overlapResult.transform.parent != null)
                 {
@@ -306,17 +364,8 @@ namespace Acknex
                         }
                         HandleHit(overlapResult, region.AcknexObject);
                     }
-                    else if (overlapResult.transform.parent.TryGetComponent<Thing>(out var thing))
-                    {
-                        if (!thing.AcknexObject.HasFlag("FRAGILE"))
-                        {
-                            continue;
-                        }
-                        HandleHit(overlapResult, thing.AcknexObject);
-                    }
                 }
             }
-            UpdateSkillValue("HIT_MINDIST", minDist < Mathf.Infinity ? minDist : 0);
         }
 
         public Resolution GameResolution
@@ -324,8 +373,8 @@ namespace Acknex
             get => _resolution;
             set
             {
-                var canvasScaler = Canvas.GetComponent<CanvasScaler>();
-                var referenceResolution = canvasScaler.referenceResolution;
+                //todo: fixed
+                var referenceResolution = new Vector2();
                 switch (value)
                 {
                     case Resolution.Res320x200:
@@ -361,7 +410,10 @@ namespace Acknex
                 }
                 UpdateSkillValue("SCREEN_WIDTH", referenceResolution.x);
                 UpdateSkillValue("SCREEN_HGT", referenceResolution.y);
-                canvasScaler.referenceResolution = referenceResolution;
+                CanvasView.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, referenceResolution.x);
+                CanvasView.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, referenceResolution.y);
+                referenceResolution.x *= 2f;
+                CanvasScaler.referenceResolution = referenceResolution;
                 _resolution = value;
             }
         }
@@ -528,7 +580,7 @@ namespace Acknex
                 _runtime.SetWorld(this);
             }
         }
-        
+
         public void ReadInkey(string stringName)
         {
         }
@@ -678,6 +730,7 @@ namespace Acknex
 
         public void UpdateObject()
         {
+            CanvasWidthRatio = CanvasScaler.referenceResolution.x * (CanvasScaler.referenceResolution.x / Screen.width);
             Shader.SetGlobalInt("_AcknexUsePalettes", UsePalettes ? 1 : 0);
             AmbientLight.shadows = DrawShadows ? LightShadows.Hard : LightShadows.None;
             AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("LIGHT_ANGLE")), 0f) * Quaternion.Euler(45f, 0f, 0f);

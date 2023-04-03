@@ -508,6 +508,7 @@ namespace Acknex
 
         public virtual void UpdateEvents()
         {
+            World.Instance.TriggerEvent("DO", AcknexObject, AcknexObject, GetRegion());
         }
 
         public void StickToTheCeiling(float thingX, float thingY, ref float thingZ, bool initial = false)

@@ -3,6 +3,7 @@ using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
+using UnityEngine.UI;
 using UnityMidi;
 using WdlEngine;
 
@@ -47,14 +48,15 @@ namespace Acknex
         private Material _skyMaterial;
         private Material _surfacesMaterial;
         private TextParser _textParser;
+        private Thing _dummyObject;
 
         public Light AmbientLight;
         public AudioSource AudioSource;
         public bool BilinearFilter = true;
         public IAcknexObject BulletString;
         public Canvas Canvas;
-        //todo: how to calculate this?
-        public float CanvasWidthRatio = 2f;
+        public RectTransform CanvasView;
+        public float CanvasWidthRatio;
         private ContouredRegions ContouredRegions;
         public List<ContourVertex> ContourVertices;
         public Color DebugColor;
@@ -92,6 +94,8 @@ namespace Acknex
         public string WDLPath;
         public bool WMPContainsRegionsByName;
         public SingleUnityLayer IgnoreRaycastLayer;
+        public float PlaerLightMultiplier = 2f;
+        public CanvasScaler CanvasScaler;
 
         public static World Instance { get; private set; }
 
@@ -186,6 +190,7 @@ namespace Acknex
             HoldString = AddString("HOLD", "HOLD");
             Node1String = AddString("NODE1", "NODE1");
             Node2String = AddString("NODE2", "NODE2");
+            _dummyObject = CreateThing("_INTERNAL_DUMMY_");
         }
 
         private void Update()

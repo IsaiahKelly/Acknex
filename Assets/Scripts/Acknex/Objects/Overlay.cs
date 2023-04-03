@@ -58,11 +58,11 @@ namespace Acknex
             }
             _overlayGraphic.rectTransform.anchorMin = new Vector3(0f, 1f);
             _overlayGraphic.rectTransform.anchorMax = new Vector3(0f, 1f);
-            _overlayGraphic.rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat("POS_X") * World.Instance.CanvasWidthRatio, -AcknexObject.GetFloat("POS_Y"), 0f);
+            _overlayGraphic.rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat("POS_X") , -AcknexObject.GetFloat("POS_Y"), 0f);
             var overlaySprite = AcknexObject.GetAcknexObject("OVLYS")?.Container as Bitmap;
             if (_lastOverlaySprite != overlaySprite && overlaySprite != null)
             {
-                _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (AcknexObject.TryGetFloat("SIZE_X", out var width) ? width : overlaySprite.Width) * World.Instance.CanvasWidthRatio);
+                _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (AcknexObject.TryGetFloat("SIZE_X", out var width) ? width : overlaySprite.Width) /** World.Instance.CanvasWidthRatio*/);
                 _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, AcknexObject.TryGetFloat("SIZE_Y", out var height) ? height : overlaySprite.Height);
                 overlaySprite.UpdateMaterial(_overlayGraphic.material, null, 0, false, null);
                 _lastOverlaySprite = overlaySprite;

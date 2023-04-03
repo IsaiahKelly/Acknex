@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Diagnostics;
 using Acknex.Interfaces;
+using UnityEngine;
 
 namespace Acknex
 {
@@ -63,7 +62,8 @@ namespace Acknex
             {
                 return synonym.AcknexObject.GetAcknexObject("VAL");
             }
-            return null;
+            Debug.LogError($"Null value when trying to get the synonym object: {synonymName}");
+            return _dummyObject.AcknexObject;
         }
     }
 }

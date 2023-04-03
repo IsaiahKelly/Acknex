@@ -10148,7 +10148,7 @@ namespace Tests
         {
             var CALL_LIFT_DOWN_0 = _world.AcknexObject.GetAcknexObject("CALL_LIFT_DOWN");
             var LIFT1RGN_2 = _world.AcknexObject.GetAcknexObject("LIFT1RGN");
-            //Unknown Property Type: Region.DO
+            LIFT1RGN_2.SetAcknexObject("DO", CALL_LIFT_DOWN_0);
             //Unknown keyword: 
             yield break;
         }
@@ -10156,7 +10156,7 @@ namespace Tests
         {
             var CALL_LIFT_DOWN_0 = _world.AcknexObject.GetAcknexObject("CALL_LIFT_DOWN");
             var LIFT2RGN_2 = _world.AcknexObject.GetAcknexObject("LIFT2RGN");
-            //Unknown Property Type: Region.DO
+            LIFT2RGN_2.SetAcknexObject("DO", CALL_LIFT_DOWN_0);
             //Unknown keyword: 
             yield break;
         }
@@ -10164,7 +10164,7 @@ namespace Tests
         {
             var CALL_LIFT_DOWN_0 = _world.AcknexObject.GetAcknexObject("CALL_LIFT_DOWN");
             var LIFT3RGN_2 = _world.AcknexObject.GetAcknexObject("LIFT3RGN");
-            //Unknown Property Type: Region.DO
+            LIFT3RGN_2.SetAcknexObject("DO", CALL_LIFT_DOWN_0);
             //Unknown keyword: 
             yield break;
         }
@@ -15841,7 +15841,7 @@ namespace Tests
                 THERE_8.SetAcknexObject("EACH_TICK", LIFT_DOWN_6);
             }
             var THERE_11 = THERE;
-            //Unknown Property Type: Region.DO
+            THERE_11.SetAcknexObject("DO", null);
             //Unknown keyword: 
             yield break;
         }

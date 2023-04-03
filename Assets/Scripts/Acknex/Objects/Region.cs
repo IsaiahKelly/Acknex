@@ -323,6 +323,7 @@ namespace Acknex
 
         private void UpdateEvents()
         {
+            World.Instance.TriggerEvent("DO", AcknexObject, AcknexObject, GetRegion());
         }
 
         public void BuildMeshes( /*List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<int, List<int>> allTriangles*/)
@@ -531,12 +532,13 @@ namespace Acknex
             }
         }
 
+        //todo: rotate things and actors as well
         public void Rotate(Vector3 center, float degrees)
         {
-            transform.RotateAround(center, Vector3.up, degrees);
+            transform.RotateAround(center, Vector3.up, -degrees);
             foreach (var wall in World.Instance.RegionWalls[AcknexObject])
             {
-                wall.transform.RotateAround(center, Vector3.up, degrees);
+                wall.transform.RotateAround(center, Vector3.up, -degrees);
             }
         }
     }

@@ -7,6 +7,7 @@ namespace Acknex
     {
         public bool MainView;
         private AudioSource _audioSource;
+        private Light _light;
 
         public static View Instance { get; private set; }
 
@@ -74,6 +75,9 @@ namespace Acknex
                 transformLocalRotation.eulerAngles = new Vector3(World.Instance.GetSkillValue("PLAYER_TILT") * Mathf.Rad2Deg, 0f, 0f);
                 transform.localRotation = transformLocalRotation;
                 Shader.SetGlobalFloat("_CAMERA_PITCH", Mathf.DeltaAngle(CameraExtensions.GetLastActiveCamera().transform.localEulerAngles.x, 0f));
+
+                _light.intensity = World.Instance.GetSkillValue("PLAYER_LIGHT") * World.Instance.PlaerLightMultiplier;
+                _light.range = World.Instance.GetSkillValue("LIGHT_DIST");
             }
             var ray = ViewCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hitInfo))
@@ -108,6 +112,7 @@ namespace Acknex
             ViewCamera = GetComponent<Camera>();
             ViewCamera.transparencySortMode = TransparencySortMode.Perspective;
             _audioSource = GetComponent<AudioSource>();
+            _light = GetComponent<Light>();
         }
 
         private void Update()
