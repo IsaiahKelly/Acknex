@@ -94,7 +94,7 @@ namespace Acknex
         public string WDLPath;
         public bool WMPContainsRegionsByName;
         public SingleUnityLayer IgnoreRaycastLayer;
-        public float PlaerLightMultiplier = 2f;
+        public float LightMultiplier = 2f;
         public CanvasScaler CanvasScaler;
 
         public static World Instance { get; private set; }
@@ -134,9 +134,9 @@ namespace Acknex
             _palette = new Texture2D(256, 1, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.None);
             _palette.filterMode = FilterMode.Point;
             _palettePixels = new Color[256];
-            Shader.SetGlobalTexture("_AcknexPalette", _palette);
             _surfacesMaterial = new Material(Shader.Find("Acknex/Surfaces"));
             _skyMaterial = new Material(Shader.Find("Acknex/Sky"));
+            Shader.SetGlobalTexture("_AcknexPalette", _palette);
         }
 
         private void Start()
@@ -191,6 +191,7 @@ namespace Acknex
             Node1String = AddString("NODE1", "NODE1");
             Node2String = AddString("NODE2", "NODE2");
             _dummyObject = CreateThing("_INTERNAL_DUMMY_");
+            AcknexObject.SetFloat("CLIP_DIST", 1000f);
         }
 
         private void Update()

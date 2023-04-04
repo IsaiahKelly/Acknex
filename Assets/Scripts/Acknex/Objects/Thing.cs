@@ -27,6 +27,8 @@ namespace Acknex
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;
         private GameObject _triggerGameObject;
+        private GameObject _lightGameObject;
+        private Light _light;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -118,6 +120,13 @@ namespace Acknex
             _audioSource.spatialBlend = 1f;
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
             _audioSource.spread = 360f;
+            _lightGameObject = new GameObject("Light");
+            _lightGameObject.layer = World.Instance.IgnoreRaycastLayer.LayerIndex;
+            _lightGameObject.transform.SetParent(transform, false);
+            _light = _lightGameObject.AddComponent<Light>();
+            _light.type = LightType.Point;
+            _light.range = 1f;
+            _light.intensity = 0f;
             StartCoroutine(TriggerTickEvents());
             StartCoroutine(TriggerSecEvents());
         }
@@ -128,6 +137,16 @@ namespace Acknex
 
         public virtual void UpdateObject()
         {
+            var thingX = AcknexObject.GetFloat("X");
+            var thingY = AcknexObject.GetFloat("Y");
+            var thingZ = AcknexObject.GetFloat("HEIGHT");
+            var pos2D = new Vector2(thingX, thingY);
+            var playerPos2D = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
+            var distance = Vector2.Distance(playerPos2D, pos2D);
+            if (!AcknexObject.HasFlag("LIBER") && distance > World.Instance.AcknexObject.GetFloat("CLIP_DIST"))
+            {
+                return;
+            }
             //if (TextureObject == null || !TextureObject.HasModel(out _))
             //{
             var camera = CameraExtensions.GetLastActiveCamera();
@@ -192,9 +211,12 @@ namespace Acknex
             DebugExtension.DebugWireSphere(transform.position, Color.green);
 #endif
             AcknexObject.IsDirty = false;
-            var thingX = AcknexObject.GetFloat("X");
-            var thingY = AcknexObject.GetFloat("Y");
-            var thingZ = AcknexObject.GetFloat("HEIGHT");
+            AcknexObject.SetFloat("DISTANCE", distance);
+            _lightGameObject.transform.position = GetCenter();
+            if (TextureObject != null)
+            {
+                _light.intensity = TextureObject.AcknexObject.GetFloat("RADIANCE") * World.Instance.LightMultiplier;
+            }
             //todo: this block should only run on carefully flagged
             if (AcknexObject.HasFlag("CANDELABER"))
             {
@@ -214,7 +236,6 @@ namespace Acknex
             }
             _spriteCollider.enabled = _collider.enabled = _characterController.enabled = true;
             _meshRenderer.enabled = true;
-            AcknexObject.SetFloat("DISTANCE", Vector3.Distance(transform.position, Player.Instance.transform.position));
             _collider.center = _characterController.center = new Vector3(0f, _innerGameObject.transform.localPosition.y + _innerGameObject.transform.localScale.y * 0.5f, 0f);
             _collider.height = _characterController.height = _innerGameObject.transform.localScale.y;
             _collider.radius = _characterController.radius = GetColliderRadius();
@@ -259,10 +280,6 @@ namespace Acknex
                 }
                 _lastTarget = target;
             }
-            //Approximate distance(+/ -20 %) of the player
-            //    from the center of the object; only valid for
-            //    objects within the player's CLIP_DIST.
-            //todo: reimplement
             //Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, transform.right);
         }
 
@@ -328,27 +345,24 @@ namespace Acknex
 
         private void OnCollisionEnter(Collision collision)
         {
-            //if (collision.transform.parent == null || !collision.transform.parent.TryGetComponent<Thing>(out _))
+            var hasToTrigger = AcknexObject.HasFlag("SENSITIVE");
+            if (AcknexObject.HasFlag("CAREFULLY") && !hasToTrigger)
             {
-                var hasToTrigger = AcknexObject.HasFlag("SENSITIVE");
-                if (AcknexObject.HasFlag("CAREFULLY") && !hasToTrigger)
+                var target = AcknexObject.GetAcknexObject("TARGET");
+                if (target == World.Instance.BulletString)
                 {
-                    var target = AcknexObject.GetAcknexObject("TARGET");
-                    if (target == World.Instance.BulletString)
-                    {
-                        hasToTrigger = true;
-                    }
+                    hasToTrigger = true;
                 }
-                if (hasToTrigger)
-                {
-                    World.Instance.UpdateSkillValue("HIT_DIST", 0f);
-                    World.Instance.UpdateSkillValue("RESULT", 0f);
-                    World.Instance.TriggerEvent("IF_HIT", AcknexObject, AcknexObject, GetRegion());
-                }
+            }
+            if (hasToTrigger)
+            {
+                World.Instance.UpdateSkillValue("HIT_DIST", 0f);
+                World.Instance.UpdateSkillValue("RESULT", 0f);
+                World.Instance.TriggerEvent("IF_HIT", AcknexObject, AcknexObject, GetRegion());
             }
         }
 
-            private void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
 #if DEBUG_ENABLED
             if (DebugMarked)
@@ -474,13 +488,6 @@ namespace Acknex
 
         private IEnumerator MoveToAngle()
         {
-            //var angle = AcknexObject.GetFloat("ANGLE");
-            //var speed = AcknexObject.GetFloat("SPEED");
-            //var timeCorr = World.Instance.GetSkillValue("TIME_CORR");
-            //var sin = AngleUtils.Sin(angle) * speed * timeCorr;
-            //var cos = AngleUtils.Cos(angle) * speed * timeCorr;
-            //var targetPos = new Vector2(AcknexObject.GetFloat("X") + sin, AcknexObject.GetFloat("Y") + cos);
-            //DebugExtension.DebugArrow(new Vector3(transform.position.x, 0f, transform.position.z), new Vector3(targetPos.x, 0f, targetPos.y), Color.yellow, 10f);
             var currentRegion = GetRegion();
             for (; ; )
             {
@@ -511,6 +518,7 @@ namespace Acknex
             World.Instance.TriggerEvent("DO", AcknexObject, AcknexObject, GetRegion());
         }
 
+        //todo: reimplement
         public void StickToTheCeiling(float thingX, float thingY, ref float thingZ, bool initial = false)
         {
             return;

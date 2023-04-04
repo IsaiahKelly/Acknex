@@ -125,7 +125,7 @@ namespace Acknex
             CreateSkill("PLAYER_SIN", 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player angle sin IMPORTANT
             CreateSkill("PLAYER_COS", 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player angle cos IMPORTANT
             CreateSkill("PLAYER_SPEED", 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player speed IMPORTANT
-            //...
+
             //todo: some missing here?
             CreateSkill("PLAYER_DEPTH", 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player depth inside water IMPORTANT
             CreateSkill("PLAYER_LAST_X", 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player last pos IMPORTANT

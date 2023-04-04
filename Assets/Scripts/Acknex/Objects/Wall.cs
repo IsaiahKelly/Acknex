@@ -39,7 +39,6 @@ namespace Acknex
         public Matrix4x4 BottomUV;
         public bool DisableRender;
         public bool Processed;
-        private CollisionCallback _colliderCollisionCallback;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -111,9 +110,6 @@ namespace Acknex
             Filter = _innerGameObject.AddComponent<MeshFilter>();
             _meshRenderer = _innerGameObject.AddComponent<MeshRenderer>();
             _collider = _innerGameObject.AddComponent<MeshCollider>();
-            //_colliderCollisionCallback = _innerGameObject.AddComponent<CollisionCallback>();
-            //_colliderCollisionCallback.OnCollisionEnterCallback += OnCollisionEnterCallback;
-            //_colliderCollisionCallback.OnCollisionExitCallback += OnCollisionExitCallback;
             _invertedCollider = _innerGameObject.AddComponent<MeshCollider>();
             _invertedCollider.enabled = false;
 
@@ -206,7 +202,6 @@ namespace Acknex
             _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.AcknexObject.HasFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             _collider.enabled = !AcknexObject.HasFlag("PASSABLE");
             _vertexTriggerB.radius = _vertexTriggerA.radius = AcknexObject.GetFloat("DIST");
-            //_vertexTriggerB.enabled = _vertexTriggerA.enabled = (AcknexObject.TryGetAcknexObject("IF_NEAR", out var ifNear) && ifNear.GetString("VAL") != null) || (AcknexObject.TryGetAcknexObject("IF_FAR", out var ifFar) && ifFar.GetString("VAL") != null);
             _vertexGameObjectA.transform.position = BottomQuad.GetColumn(3);
             _vertexGameObjectB.transform.position = BottomQuad.GetColumn(2);
             _invertedCollider.enabled = AcknexObject.HasFlag("FENCE");

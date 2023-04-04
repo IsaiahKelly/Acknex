@@ -5,6 +5,8 @@
         _Color ("Color", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
         _AMBIENT("_AMBIENT", Float) = 1.0
+        _ALBEDO("_ALBEDO", Float) = 0.0
+        _RADIANCE("_RADIANCE", Float) = 1.0
         _X0("_X0", Float) = 0.0
         _X1("_X1", Float) = 0.0
         _Y0("_Y0", Float) = 0.0
@@ -40,8 +42,7 @@
 
         half4 LightingSprite(SurfaceOutput s, half3 lightDir, half atten) {
             half4 c;
-            float ambient = 0.5;// (1.0 - _AMBIENT);
-            c.rgb = s.Albedo /** lerp(1.0, _LightColor0.rgb * atten, 0.5)*/ * ambient;
+            c.rgb = (_RADIANCE + s.Albedo) * _AMBIENT;
             c.a = s.Alpha;
             return c;
         }

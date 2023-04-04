@@ -243,7 +243,9 @@ namespace Acknex
                     new Vector3(0f, 0f, acknexObject.GetFloat("DIST"));
                 acknexObject.SetFloat("X", newPosition.x);
                 acknexObject.SetFloat("Y", newPosition.z);
+#if DEBUG_ENABLED
                 Debug.DrawLine(Player.Instance.transform.position, newPosition, Color.red, 100f);
+#endif
                 return acknexObject;
             }
             return null;
@@ -643,7 +645,7 @@ namespace Acknex
             Ray ray;
             if (acknexObject == null)
             {
-                ray = View.Instance.ViewCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+                ray = View.Instance.ViewCamera.ViewportPointToRay(new Vector3(0.5f + shootX, 0.5f + shootY, 0f));
 #if DEBUG_ENABLED
                 DebugExtension.DebugArrow(ray.origin, ray.direction, Color.black, 10f);
 #endif

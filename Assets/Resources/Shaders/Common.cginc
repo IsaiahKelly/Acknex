@@ -17,6 +17,8 @@ float _OFFSETX;
 float _OFFSETY;
 
 float _AMBIENT;
+float _ALBEDO;
+float _RADIANCE;
 float _V0H;
 float _V1H;
 

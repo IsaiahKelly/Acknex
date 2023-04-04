@@ -10,6 +10,8 @@ Shader "Acknex/Surfaces"
 		_Metallic("Metallic", Range(0,1)) = 0.0
 		_CullMode("_CullMode", Int) = 0
 		_AMBIENT("_AMBIENT", Float) = 1.0
+		_ALBEDO("_ALBEDO", Float) = 0.0
+		_RADIANCE("_RADIANCE", Float) = 1.0
 		_X0("_X0", Float) = 0.0
 		_Y0("_Y0", Float) = 0.0
 		_X1("_X1", Float) = 0.0
@@ -31,12 +33,13 @@ Shader "Acknex/Surfaces"
 			LOD 200
 
 			CGPROGRAM
-			#pragma surface surf Standard addshadow vertex:vert
+			#pragma surface surf Surface addshadow vertex:vert
 
 			#pragma target 3.0
 
 			sampler2D _MainTex;
 			#include "Common.cginc"
+			#include "UnityPBSLighting.cginc"
 
 			struct Input
 			{
@@ -49,6 +52,14 @@ Shader "Acknex/Surfaces"
 			UNITY_INSTANCING_BUFFER_START(Props)
 			UNITY_INSTANCING_BUFFER_END(Props)
 
+			half4 LightingSurface(SurfaceOutput s, half3 lightDir, half atten) {
+				half NdotL = max(dot(s.Normal, lightDir), 0.0) * _ALBEDO;
+				half4 c;
+				c.rgb = (_RADIANCE + s.Albedo) * _AMBIENT * _LightColor0.rgb * (NdotL * atten);
+				c.a = s.Alpha;
+				return c;
+			}
+
 			void vert(inout appdata_full v) {
 				float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
 				float3 worldNorm = UnityObjectToWorldNormal(v.normal);
@@ -56,7 +67,12 @@ Shader "Acknex/Surfaces"
 				v.normal *= dot(viewDir, worldNorm) > 0 ? -1 : 1;
 			}
 
-			void surf(Input IN, inout SurfaceOutputStandard o)
+			void mycolor(Input IN, SurfaceOutput o, inout fixed4 color)
+			{
+				color *= _AMBIENT;
+			}
+
+			void surf(Input IN, inout SurfaceOutput o)
 			{
 				//todo: lerp between V0H V1H
 				if (_FENCE) {
@@ -81,8 +97,8 @@ Shader "Acknex/Surfaces"
 					clip(o.Alpha - 0.5);
 				}
 				o.Albedo = c.rgb;
-				o.Metallic = 0.0;
-				o.Smoothness = 0.0;
+				//o.Metallic = 0.0;
+				//o.Smoothness = 0.0;
 			}
 			ENDCG
 		}

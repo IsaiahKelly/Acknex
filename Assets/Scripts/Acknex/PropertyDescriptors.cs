@@ -235,6 +235,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "IMMATERIAL");
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, "PLAY");
             AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, "DO");
+            AddObjectProperty(ObjectType.Thing, PropertyType.Float, "LIBER");
 
             AddObjectProperty(ObjectType.Overlay, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Overlay, PropertyType.Float, "LAYER");

@@ -179,8 +179,18 @@ namespace Acknex
                     }
                 }
             }
+            float albedo = 0f;
+            float radiance = 0f;
             if (texture != null)
             {
+                if (texture.AcknexObject.TryGetFloat("ALBEDO", out var textureAlbedo))
+                {
+                    albedo = textureAlbedo;
+                }
+                if (texture.AcknexObject.TryGetFloat("RADIANCE", out var textureRadiance))
+                {
+                    radiance = textureRadiance;
+                }
                 if (texture.AcknexObject.TryGetFloat("AMBIENT", out var textureAmbient))
                 {
                     ambient *= textureAmbient;
@@ -233,6 +243,8 @@ namespace Acknex
             material.SetFloat("_SCALEY", scaleY);
             material.SetInt("_CullMode", (int)cullMode);
             material.SetFloat("_AMBIENT", ambient);
+            material.SetFloat("_ALBEDO", albedo);
+            material.SetFloat("_RADIANCE", radiance);
             material.mainTexture = World.Instance.UsePalettes ? CropTexture.Palette : CropTexture.Texture;
             if (sourceAcknexObject is AcknexObject acknexObject)
             {

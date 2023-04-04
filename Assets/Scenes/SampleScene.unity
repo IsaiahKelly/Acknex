@@ -828,9 +828,9 @@ MonoBehaviour:
   DebugColor: {r: 0, g: 0, b: 0, a: 0}
   DebugContainer: {fileID: 0}
   DebugTexture: {fileID: 0}
-  DisableCompilation: 1
+  DisableCompilation: 0
   DisableMaterials: 0
-  DrawShadows: 1
+  DrawShadows: 0
   GodMode: 1
   MeshBatch: 0
   MidiPlayer: {fileID: 1246573634}
@@ -859,11 +859,11 @@ MonoBehaviour:
     m_Bits: 784
   WaterLayer:
     m_LayerIndex: 4
-  WDLPath: Assets\\Data\Regional.WDL
+  WDLPath: Assets\Data\Contato.wdl
   WMPContainsRegionsByName: 0
   IgnoreRaycastLayer:
     m_LayerIndex: 2
-  PlaerLightMultiplier: 2
+  LightMultiplier: 2
   CanvasScaler: {fileID: 1116186325}
   <DebugMarked>k__BackingField: 0
 --- !u!114 &1246573633

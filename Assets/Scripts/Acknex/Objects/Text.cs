@@ -52,6 +52,15 @@ namespace Acknex
 
         public void UpdateObject()
         {
+            //todo: better way
+            if (World.Instance.AcknexObject.GetAcknexObject("LAYERS.1") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.2") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.3") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.4") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.5") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.6") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.7") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.8") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.9") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.10") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.11") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.12") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.13") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.14") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.15") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.16") == AcknexObject)
+            {
+                enabled = true;
+            }
+            else
+            {
+                enabled = false;
+            }
         }
 
         private static IAcknexObject GetTemplateCallback(string name)
@@ -74,6 +83,11 @@ namespace Acknex
             _verts = new UIVertex[4];
         }
 
+        private void Update()
+        {
+            UpdateObject();
+        }
+
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             materialForRendering.mainTexture = mainTexture;
@@ -91,14 +105,14 @@ namespace Acknex
             var charWidth = Font.AcknexObject.GetFloat("WIDTH");
             var charHeight = Font.AcknexObject.GetFloat("HEIGHT");
             var x = baseX;
-            var y = baseY;
+            var y = -baseY;
             vh.Clear();
             for (var i = 0; i < stringValue.Length; i++)
             {
                 var c = stringValue[i];
                 if (c == '\n')
                 {
-                    y -= charHeight;
+                    y += charHeight;
                     x = baseX;
                 }
                 var cUV = new Vector2(c, 0f);

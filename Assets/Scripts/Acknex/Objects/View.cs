@@ -76,7 +76,7 @@ namespace Acknex
                 transform.localRotation = transformLocalRotation;
                 Shader.SetGlobalFloat("_CAMERA_PITCH", Mathf.DeltaAngle(CameraExtensions.GetLastActiveCamera().transform.localEulerAngles.x, 0f));
 
-                _light.intensity = World.Instance.GetSkillValue("PLAYER_LIGHT") * World.Instance.PlaerLightMultiplier;
+                _light.intensity = World.Instance.GetSkillValue("PLAYER_LIGHT") * World.Instance.LightMultiplier;
                 _light.range = World.Instance.GetSkillValue("LIGHT_DIST");
             }
             var ray = ViewCamera.ScreenPointToRay(Input.mousePosition);
