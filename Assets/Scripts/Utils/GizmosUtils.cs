@@ -18,16 +18,16 @@ namespace Utils
             var restoreColor = GUI.color;
 
             if (colour.HasValue) GUI.color = colour.Value;
-            //var view = UnityEditor.SceneView.currentDrawingSceneView;
-            //Vector3 screenPos = view.camera.WorldToScreenPoint(worldPos);
+            var view = UnityEditor.SceneView.currentDrawingSceneView;
+            Vector3 screenPos = view.camera.WorldToScreenPoint(worldPos);
 
-            var camera = Camera.current;
-            if (camera == null)
-            {
-                return;
-            }
-            Vector3 screenPos =  camera.WorldToScreenPoint(worldPos);
-
+            //var camera = Camera.current;
+            //if (camera == null)
+            //{
+            //    return;
+            //}
+            //Vector3 screenPos =  camera.WorldToScreenPoint(worldPos);
+            //
             if (screenPos.y < 0 || screenPos.y > Screen.height || screenPos.x < 0 || screenPos.x > Screen.width ||
                 screenPos.z < 0)
             {

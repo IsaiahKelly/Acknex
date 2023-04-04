@@ -301,6 +301,10 @@ namespace Acknex
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "VISIBLE");
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "HERE");
             AddObjectProperty(ObjectType.Region, PropertyType.ActionReference, "DO");
+            AddObjectProperty(ObjectType.Region, PropertyType.Float, "CEIL_ASCEND");
+            AddObjectProperty(ObjectType.Region, PropertyType.Float, "FLOOR_ASCEND");
+            AddObjectProperty(ObjectType.Region, PropertyType.Float, "CEIL_DESCEND");
+            AddObjectProperty(ObjectType.Region, PropertyType.Float, "FLOOR_DESCEND");
 
             AddObjectProperty(ObjectType.Wall, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "AMBIENT");

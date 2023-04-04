@@ -39,6 +39,10 @@ namespace Acknex
         public Matrix4x4 BottomUV;
         public bool DisableRender;
         public bool Processed;
+        private float _ceilHeightDown;
+        private float _floorHeightDown;
+        private float _ceilHeightUp;
+        private float _floorHeightUp;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -260,15 +264,34 @@ namespace Acknex
             UpdateEvents();
         }
 
+
+        private void OnDrawGizmosSelected()
+        {
+            var middleX = Mathf.Lerp(_vertexGameObjectA.transform.position.x, _vertexGameObjectB.transform.position.x, 0.5f);
+            var middleZ = Mathf.Lerp(_vertexGameObjectA.transform.position.z, _vertexGameObjectB.transform.position.z, 0.5f);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(new Vector3(middleX, _floorHeightDown, middleZ), 0.5f);
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(new Vector3(middleX, _ceilHeightDown, middleZ), 0.5f);
+
+            Gizmos.color = Color.blue;
+            Gizmos.DrawSphere(new Vector3(middleX, _floorHeightUp, middleZ), 0.5f);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(new Vector3(middleX, _ceilHeightUp, middleZ), 0.5f);
+
+            GizmosUtils.DrawString("0" + "(" + (Vector2)BottomUV.GetColumn(0) + ")", BottomQuad.GetColumn(0));
+            GizmosUtils.DrawString("1" + "(" + (Vector2)BottomUV.GetColumn(1) + ")", BottomQuad.GetColumn(1));
+            GizmosUtils.DrawString("2" + "(" + (Vector2)BottomUV.GetColumn(2) + ")", BottomQuad.GetColumn(2));
+            GizmosUtils.DrawString("3" + "(" + (Vector2)BottomUV.GetColumn(3) + ")", BottomQuad.GetColumn(3));
+        }
+
         private void OnDrawGizmos()
         {
 #if DEBUG_ENABLED
             if (DebugMarked)
             {
-                GizmosUtils.DrawString("0" + "(" + (Vector2)BottomUV.GetColumn(0) + ")", BottomQuad.GetColumn(0));
-                GizmosUtils.DrawString("1" + "(" + (Vector2)BottomUV.GetColumn(1) + ")", BottomQuad.GetColumn(1));
-                GizmosUtils.DrawString("2" + "(" + (Vector2)BottomUV.GetColumn(2) + ")", BottomQuad.GetColumn(2));
-                GizmosUtils.DrawString("3" + "(" + (Vector2)BottomUV.GetColumn(3) + ")", BottomQuad.GetColumn(3));
+
             }
 #endif
         }
@@ -389,101 +412,120 @@ namespace Acknex
             var rightRegionAboveFloorHeight = rightRegionAbove == null ? 0f : rightRegionAbove.AcknexObject.GetFloat("FLOOR_HGT");
             //todo: checking by the flag here is wrong
             if (AcknexObject.HasFlag("FENCE"))
-                //leftRegion.AcknexObject.GetNumber("FLOOR_HGT") == rightRegion.AcknexObject.GetNumber("FLOOR_HGT") && 
-                //leftRegion.AcknexObject.GetNumber("CEIL_HGT") == rightRegion.AcknexObject.GetNumber("CEIL_HGT"))
+            //leftRegion.AcknexObject.GetNumber("FLOOR_HGT") == rightRegion.AcknexObject.GetNumber("FLOOR_HGT") && 
+            //leftRegion.AcknexObject.GetNumber("CEIL_HGT") == rightRegion.AcknexObject.GetNumber("CEIL_HGT"))
             {
                 BuildFence(rightRegionAbove, leftRegionAbove, leftRegion, leftRegionBelowCeilHeight, rightRegion, rightRegionBelowCeilHeight, leftRegionAboveFloorHeight, rightRegionAboveFloorHeight, vertexA, vertexB);
             }
             else
+
             {
+                //if (leftRegionAbove != null || rightRegionAbove != null)
                 {
-                    var ceilHeight = leftRegion.AcknexObject.GetFloat("FLOOR_HGT", false);
-                    var floorHeight = rightRegion.AcknexObject.GetFloat("FLOOR_HGT", false);
-                    if (leftRegion.Below != null)
                     {
-                        ceilHeight = Mathf.Max(ceilHeight, leftRegionBelowCeilHeight);
-                        floorHeight = Mathf.Max(floorHeight, leftRegionBelowCeilHeight);
+                        var ceilHeight = leftRegion.AcknexObject.GetFloat("FLOOR_HGT", false);
+                        var floorHeight = rightRegion.AcknexObject.GetFloat("FLOOR_HGT", false);
+                        if (leftRegion.Below != null)
+                        {
+                            ceilHeight = Mathf.Max(ceilHeight, leftRegionBelowCeilHeight);
+                            floorHeight = Mathf.Max(floorHeight, leftRegionBelowCeilHeight);
+                        }
+                        if (rightRegion.Below != null)
+                        {
+                            floorHeight = Mathf.Max(floorHeight, rightRegionBelowCeilHeight);
+                            ceilHeight = Mathf.Max(ceilHeight, rightRegionBelowCeilHeight);
+                        }
+                        if (leftRegionAbove != null && leftRegionAbove != leftRegion)
+                        {
+                            ceilHeight = Mathf.Min(ceilHeight, leftRegionAboveFloorHeight);
+                            floorHeight = Mathf.Min(floorHeight, leftRegionAboveFloorHeight);
+                        }
+                        if (rightRegionAbove != null && rightRegionAbove != rightRegion)
+                        {
+                            floorHeight = Mathf.Min(floorHeight, rightRegionAboveFloorHeight);
+                            ceilHeight = Mathf.Min(ceilHeight, rightRegionAboveFloorHeight);
+                        }
+                        _ceilHeightDown = ceilHeight;
+                        _floorHeightDown = floorHeight;
                     }
-                    if (rightRegion.Below != null)
                     {
-                        floorHeight = Mathf.Max(floorHeight, rightRegionBelowCeilHeight);
-                        ceilHeight = Mathf.Max(ceilHeight, rightRegionBelowCeilHeight);
+                        var ceilHeight = leftRegion.AcknexObject.GetFloat("CEIL_HGT", false);
+                        var floorHeight = rightRegion.AcknexObject.GetFloat("CEIL_HGT", false);
+                        if (leftRegionAbove != null && leftRegionAbove != leftRegion)
+                        {
+                            ceilHeight = Mathf.Min(ceilHeight, leftRegionAboveFloorHeight);
+                            floorHeight = Mathf.Min(floorHeight, leftRegionAboveFloorHeight);
+                        }
+                        if (rightRegionAbove != null && rightRegionAbove != rightRegion)
+                        {
+                            floorHeight = Mathf.Min(floorHeight, rightRegionAboveFloorHeight);
+                            ceilHeight = Mathf.Min(ceilHeight, rightRegionAboveFloorHeight);
+                        }
+                        _ceilHeightUp = ceilHeight;
+                        _floorHeightUp = floorHeight;
                     }
-                    if (leftRegionAbove != null && leftRegionAbove != leftRegion)
+                    var middleOpen = Mathf.Abs(_ceilHeightUp - _ceilHeightDown) > 0f;
+                    //open = Math.Abs(floorHeightUp - ceilHeightDown) > 0.001f;
                     {
-                        ceilHeight = Mathf.Min(ceilHeight, leftRegionAboveFloorHeight);
-                        floorHeight = Mathf.Min(floorHeight, leftRegionAboveFloorHeight);
+                        var liftedLeft = (middleOpen || leftRegionAbove == null) && leftRegion.AcknexObject.HasFlag("FLOOR_LIFTED");
+                        var liftedRight = (middleOpen || rightRegionAbove == null) && rightRegion.AcknexObject.HasFlag("FLOOR_LIFTED");
+                        var v0 = new Vector3(vertexA.Position.X, _ceilHeightDown + (liftedLeft ? vertexA.Position.Z : 0), vertexA.Position.Y);
+                        var v1 = new Vector3(vertexB.Position.X, _ceilHeightDown + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
+                        var v2 = new Vector3(vertexB.Position.X, _floorHeightDown + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
+                        var v3 = new Vector3(vertexA.Position.X, _floorHeightDown + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
+                        if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
+                        {
+                            MeshUtils.AddQuad(0, 1, 2, 3, _allTriangles, AcknexObject.GetAcknexObject("TEXTURE"), _allVertices.Count);
+                            _allVertices.Add(v0); //a
+                            _allVertices.Add(v1); //b
+                            _allVertices.Add(v2); //c
+                            _allVertices.Add(v3); //d
+                            var uv0 = CalculateUV(v0 - v0, v0);
+                            var uv1 = CalculateUV(v1 - v0, v1);
+                            var uv2 = CalculateUV(v2 - v0, v2);
+                            var uv3 = CalculateUV(v3 - v0, v3);
+                            _allUVs.Add(uv0);
+                            _allUVs.Add(uv1);
+                            _allUVs.Add(uv2);
+                            _allUVs.Add(uv3);
+                            BottomQuad = new Matrix4x4(v0, v1, v2, v3);
+                            BottomUV = new Matrix4x4(uv0, uv1, uv2, uv3);
+                        }
                     }
-                    if (rightRegionAbove != null && rightRegionAbove != rightRegion)
                     {
-                        floorHeight = Mathf.Min(floorHeight, rightRegionAboveFloorHeight);
-                        ceilHeight = Mathf.Min(ceilHeight, rightRegionAboveFloorHeight);
-                    }
-                    var liftedLeft = leftRegionAbove == null && leftRegion.AcknexObject.HasFlag("FLOOR_LIFTED");
-                    var liftedRight = rightRegionAbove == null && rightRegion.AcknexObject.HasFlag("FLOOR_LIFTED");
-                    var v0 = new Vector3(vertexA.Position.X, ceilHeight + (liftedLeft ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                    var v1 = new Vector3(vertexB.Position.X, ceilHeight + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
-                    var v2 = new Vector3(vertexB.Position.X, floorHeight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
-                    var v3 = new Vector3(vertexA.Position.X, floorHeight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                    if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
-                    {
-                        MeshUtils.AddQuad(0, 1, 2, 3, _allTriangles, AcknexObject.GetAcknexObject("TEXTURE"), _allVertices.Count);
-                        _allVertices.Add(v0); //a
-                        _allVertices.Add(v1); //b
-                        _allVertices.Add(v2); //c
-                        _allVertices.Add(v3); //d
-                        var uv0 = CalculateUV(v0 - v0, _xAxis, v0);
-                        var uv1 = CalculateUV(v1 - v0, _xAxis, v1);
-                        var uv2 = CalculateUV(v2 - v0, _xAxis, v2);
-                        var uv3 = CalculateUV(v3 - v0, _xAxis, v3);
-                        _allUVs.Add(uv0);
-                        _allUVs.Add(uv1);
-                        _allUVs.Add(uv2);
-                        _allUVs.Add(uv3);
-                        BottomQuad = new Matrix4x4(v0, v1, v2, v3);
-                        BottomUV = new Matrix4x4(uv0, uv1, uv2, uv3);
-                    }
-                }
-                {
-                    var ceilHeight = leftRegion.AcknexObject.GetFloat("CEIL_HGT");
-                    var floorHeight = rightRegion.AcknexObject.GetFloat("CEIL_HGT");
-                    if (leftRegionAbove != null && leftRegionAbove != leftRegion)
-                    {
-                        ceilHeight = Mathf.Min(ceilHeight, leftRegionAboveFloorHeight);
-                        floorHeight = Mathf.Min(floorHeight, leftRegionAboveFloorHeight);
-                    }
-                    if (rightRegionAbove != null && rightRegionAbove != rightRegion)
-                    {
-                        floorHeight = Mathf.Min(floorHeight, rightRegionAboveFloorHeight);
-                        ceilHeight = Mathf.Min(ceilHeight, rightRegionAboveFloorHeight);
-                    }
-                    var liftedLeft = leftRegion.AcknexObject.HasFlag("CEIL_LIFTED") && leftRegionAbove == null;
-                    var liftedRight = rightRegion.AcknexObject.HasFlag("CEIL_LIFTED") && rightRegionAbove == null;
-                    var v0 = new Vector3(vertexA.Position.X, ceilHeight + (liftedLeft ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                    var v1 = new Vector3(vertexB.Position.X, ceilHeight + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
-                    var v2 = new Vector3(vertexB.Position.X, floorHeight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
-                    var v3 = new Vector3(vertexA.Position.X, floorHeight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                    if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
-                    {
-                        MeshUtils.AddQuad(3, 2, 1, 0, _allTriangles, AcknexObject.GetAcknexObject("TEXTURE"), _allVertices.Count);
-                        _allVertices.Add(v0);
-                        _allVertices.Add(v1);
-                        _allVertices.Add(v2);
-                        _allVertices.Add(v3);
-                        var uv0 = CalculateUV(v0 - v0, _xAxis, v0);
-                        var uv1 = CalculateUV(v1 - v0, _xAxis, v1);
-                        var uv2 = CalculateUV(v2 - v0, _xAxis, v2);
-                        var uv3 = CalculateUV(v3 - v0, _xAxis, v3);
-                        _allUVs.Add(uv0);
-                        _allUVs.Add(uv1);
-                        _allUVs.Add(uv2);
-                        _allUVs.Add(uv3);
+                        var liftedLeft = (middleOpen || leftRegionAbove == null) && leftRegion.AcknexObject.HasFlag("CEIL_LIFTED");
+                        var liftedRight = (middleOpen || rightRegionAbove == null) && rightRegion.AcknexObject.HasFlag("CEIL_LIFTED");
+                        var v0 = new Vector3(vertexA.Position.X, _ceilHeightUp - (liftedLeft ? vertexA.Position.Z : 0), vertexA.Position.Y);
+                        var v1 = new Vector3(vertexB.Position.X, _ceilHeightUp - (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
+                        var v2 = new Vector3(vertexB.Position.X, _floorHeightUp - (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
+                        var v3 = new Vector3(vertexA.Position.X, _floorHeightUp - (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
+                        if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
+                        {
+                            MeshUtils.AddQuad(3, 2, 1, 0, _allTriangles, AcknexObject.GetAcknexObject("TEXTURE"), _allVertices.Count);
+                            _allVertices.Add(v0);
+                            _allVertices.Add(v1);
+                            _allVertices.Add(v2);
+                            _allVertices.Add(v3);
+                            var uv0 = CalculateUV(v0 - v0, v0);
+                            var uv1 = CalculateUV(v1 - v0, v1);
+                            var uv2 = CalculateUV(v2 - v0, v2);
+                            var uv3 = CalculateUV(v3 - v0, v3);
+                            _allUVs.Add(uv0);
+                            _allUVs.Add(uv1);
+                            _allUVs.Add(uv2);
+                            _allUVs.Add(uv3);
+                        }
                     }
                 }
             }
             if (leftRegion?.Below != null || rightRegion?.Below != null)
             {
-                BuildWall(vertexA, vertexB, vertices, rightRegion?.Below, leftRegion?.Below, rightRegion, leftRegion);
+                //var newWall = World.Instance.CreateWall(leftRegion?.Below?.AcknexObject.GetString("NAME") ?? rightRegion?.Below?.AcknexObject.GetString("NAME"));
+                //World.Instance.PostSetupObjectInstance(newWall.AcknexObject);
+                //newWall.BuildWall(vertexA, vertexB, vertices, rightRegion?.Below, leftRegion?.Below, rightRegion, leftRegion);
+                {
+                    BuildWall(vertexA, vertexB, vertices, rightRegion?.Below, leftRegion?.Below, rightRegion, leftRegion);
+                }
             }
         }
 
@@ -520,10 +562,10 @@ namespace Acknex
                 _allVertices.Add(v1); //b
                 _allVertices.Add(v2); //c
                 _allVertices.Add(v3); //d
-                var uv0 = CalculateUV(v0 - v0, _xAxis, v0);
-                var uv1 = CalculateUV(v1 - v0, _xAxis, v1);
-                var uv2 = CalculateUV(v2 - v0, _xAxis, v2);
-                var uv3 = CalculateUV(v3 - v0, _xAxis, v3);
+                var uv0 = CalculateUV(v0 - v0, v0);
+                var uv1 = CalculateUV(v1 - v0, v1);
+                var uv2 = CalculateUV(v2 - v0, v2);
+                var uv3 = CalculateUV(v3 - v0, v3);
                 _allUVs.Add(uv0);
                 _allUVs.Add(uv1);
                 _allUVs.Add(uv2);
@@ -533,9 +575,9 @@ namespace Acknex
             }
         }
 
-        private static Vector2 CalculateUV(Vector3 input, Vector3 xAxis, Vector3 yAxis)
+        private Vector2 CalculateUV(Vector3 input, Vector3 yAxis)
         {
-            var uv = new Vector2(Vector3.Project(input, xAxis).magnitude, yAxis.y);
+            var uv = new Vector2(Vector3.Project(input, _xAxis).magnitude, yAxis.y);
             return uv;
         }
 
