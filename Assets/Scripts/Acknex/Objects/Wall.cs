@@ -467,12 +467,14 @@ namespace Acknex
                     var middleOpen = Mathf.Abs(_ceilHeightUp - _ceilHeightDown) > 0f;
                     //open = Math.Abs(floorHeightUp - ceilHeightDown) > 0.001f;
                     {
-                        var liftedLeft = (middleOpen || leftRegionAbove == null) && leftRegion.AcknexObject.HasFlag("FLOOR_LIFTED");
-                        var liftedRight = (middleOpen || rightRegionAbove == null) && rightRegion.AcknexObject.HasFlag("FLOOR_LIFTED");
-                        var v0 = new Vector3(vertexA.Position.X, _ceilHeightDown + (liftedLeft ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                        var v1 = new Vector3(vertexB.Position.X, _ceilHeightDown + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
-                        var v2 = new Vector3(vertexB.Position.X, _floorHeightDown + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
-                        var v3 = new Vector3(vertexA.Position.X, _floorHeightDown + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
+                        var leftLift = leftRegion.GetFloorLift();
+                        var rightLift = rightRegion.GetFloorLift();
+                        var liftedLeft = (middleOpen || leftRegionAbove == null) && leftLift != 0;
+                        var liftedRight = (middleOpen || rightRegionAbove == null) && rightLift != 0;
+                        var v0 = new Vector3(vertexA.Position.X, _ceilHeightDown + (liftedLeft ? (vertexA.Position.Z * leftLift) : 0), vertexA.Position.Y);
+                        var v1 = new Vector3(vertexB.Position.X, _ceilHeightDown + (liftedLeft ? (vertexB.Position.Z * leftLift) : 0), vertexB.Position.Y);
+                        var v2 = new Vector3(vertexB.Position.X, _floorHeightDown + (liftedRight ? (vertexB.Position.Z * rightLift) : 0), vertexB.Position.Y);
+                        var v3 = new Vector3(vertexA.Position.X, _floorHeightDown + (liftedRight ? (vertexA.Position.Z * rightLift) : 0), vertexA.Position.Y);
                         if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
                         {
                             MeshUtils.AddQuad(0, 1, 2, 3, _allTriangles, AcknexObject.GetAcknexObject("TEXTURE"), _allVertices.Count);
@@ -493,12 +495,14 @@ namespace Acknex
                         }
                     }
                     {
-                        var liftedLeft = (middleOpen || leftRegionAbove == null) && leftRegion.AcknexObject.HasFlag("CEIL_LIFTED");
-                        var liftedRight = (middleOpen || rightRegionAbove == null) && rightRegion.AcknexObject.HasFlag("CEIL_LIFTED");
-                        var v0 = new Vector3(vertexA.Position.X, _ceilHeightUp - (liftedLeft ? vertexA.Position.Z : 0), vertexA.Position.Y);
-                        var v1 = new Vector3(vertexB.Position.X, _ceilHeightUp - (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
-                        var v2 = new Vector3(vertexB.Position.X, _floorHeightUp - (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
-                        var v3 = new Vector3(vertexA.Position.X, _floorHeightUp - (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
+                        var leftLift = leftRegion.GetCeilLift();
+                        var rightLift = rightRegion.GetCeilLift();
+                        var liftedLeft = (middleOpen || leftRegionAbove == null) && leftLift != 0;
+                        var liftedRight = (middleOpen || rightRegionAbove == null) && rightLift != 0;
+                        var v0 = new Vector3(vertexA.Position.X, _ceilHeightUp + (liftedLeft ? (vertexA.Position.Z * leftLift) : 0), vertexA.Position.Y);
+                        var v1 = new Vector3(vertexB.Position.X, _ceilHeightUp + (liftedLeft ? (vertexB.Position.Z * leftLift) : 0), vertexB.Position.Y);
+                        var v2 = new Vector3(vertexB.Position.X, _floorHeightUp + (liftedRight ? (vertexB.Position.Z * rightLift) : 0), vertexB.Position.Y);
+                        var v3 = new Vector3(vertexA.Position.X, _floorHeightUp + (liftedRight ? (vertexA.Position.Z * rightLift) : 0), vertexA.Position.Y);
                         if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
                         {
                             MeshUtils.AddQuad(3, 2, 1, 0, _allTriangles, AcknexObject.GetAcknexObject("TEXTURE"), _allVertices.Count);

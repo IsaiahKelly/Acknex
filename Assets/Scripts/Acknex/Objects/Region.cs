@@ -2,12 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Utils;
 
 namespace Acknex
 {
@@ -404,14 +402,16 @@ namespace Acknex
             }
             tess.Tessellate();
             var floorVertices = new Vector3[tess.VertexCount];
+            var ceilLift = GetCeilLift();
+            var floorLift = GetFloorLift();
             var height = ceil ? AcknexObject.GetFloat("CEIL_HGT") : AcknexObject.GetFloat("FLOOR_HGT");
-            var lifted = (ceil && AcknexObject.HasFlag("CEIL_LIFTED")) || (!ceil && AcknexObject.HasFlag("FLOOR_LIFTED"));
+            var lifted = (ceil && ceilLift != 0) || (!ceil && floorLift != 0);
             for (var i = 0; i < tess.VertexCount; i++)
             {
                 var vertex = tess.Vertices[i];
                 if (lifted)
                 {
-                    floorVertices[i] = new Vector3(vertex.Position.X, ceil ? height - vertex.Position.Z : height + vertex.Position.Z, vertex.Position.Y);
+                    floorVertices[i] = new Vector3(vertex.Position.X, ceil ? height + vertex.Position.Z * ceilLift : height + vertex.Position.Z * floorLift, vertex.Position.Y);
                 }
                 else
                 {
@@ -438,6 +438,40 @@ namespace Acknex
             meshIndex++;
         }
 
+        public int GetFloorLift()
+        {
+            if (AcknexObject.HasFlag("FLOOR_LIFTED"))
+            {
+                return 1;
+            }
+            if (AcknexObject.HasFlag("FLOOR_DESCEND"))
+            {
+                return -1;
+            }
+            if (AcknexObject.HasFlag("FLOOR_ASCEND"))
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+        public int GetCeilLift()
+        {
+            if (AcknexObject.HasFlag("CEIL_LIFTED"))
+            {
+                return -1;
+            }
+            if (AcknexObject.HasFlag("CEIL_ASCEND"))
+            {
+                return 1;
+            }
+            if (AcknexObject.HasFlag("CEIL_DESCEND"))
+            {
+                return -1;
+            }
+            return 0;
+        }
+
         public static Region Locate(IAcknexObject acknexObject, Region currentRegion, float radius, float thingX, float thingY, ref float thingZ, bool onCeil = false, float? height = null)
         {
             bool GetValue(RaycastHit raycastHit, ref float outThingZ, out Region outRegion)
@@ -450,6 +484,7 @@ namespace Acknex
                 outRegion = currentRegion;
                 return false;
             }
+
             if (onCeil)
             {
                 var zCheck = height ?? currentRegion.AcknexObject.GetFloat("FLOOR_HGT");
