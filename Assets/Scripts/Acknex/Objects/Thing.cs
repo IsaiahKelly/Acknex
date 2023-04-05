@@ -534,28 +534,27 @@ namespace Acknex
         //todo: A Thing with MASTER set, can trigger IF_LEAVE and IF_ENTER events
         public void Locate(float thingX, float thingY, ref float thingZ, bool initial = false)
         {
+            var ground = AcknexObject.HasFlag("GROUND");
             var region = GetRegion();
             var regionContainer = (Region)region.Container;
-            var ground = AcknexObject.HasFlag("GROUND");
+            if (initial && ground)
+            {
+                regionContainer = regionContainer.GetRegionWithCeilingAbove(thingZ);
+                region = regionContainer.AcknexObject;
+            }
+            float checkHeight;
             if (regionContainer != null)
             {
-                if (ground != _lastGround)
-                {
-                    if (ground)
-                    {
-                        thingZ = regionContainer.GetRealFloorHeight() + thingZ; //from relative to absolute
-                    }
-                    else
-                    {
-                        thingZ = thingZ - regionContainer.GetRealFloorHeight(); //from absolute to relative
-                    }
-                }
                 if (!ground)
                 {
                     thingZ = regionContainer.GetRealFloorHeight() + thingZ; //from relative to absolute
                 }
+                checkHeight = thingZ + World.Instance.GetSkillValue("ACTOR_CLIMB");
             }
-            var checkHeight = initial ? regionContainer == null ? Region.MaxHeight : regionContainer.GetRealCeilHeight() : thingZ + World.Instance.GetSkillValue("ACTOR_CLIMB");
+            else
+            {
+                checkHeight = Region.MaxHeight;
+            }
             var newRegionContainer = Region.Locate(AcknexObject, regionContainer, GetColliderRadius(), thingX, thingY, ref thingZ, false, checkHeight);
             float height;
             if (ground)

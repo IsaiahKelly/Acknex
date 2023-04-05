@@ -576,5 +576,16 @@ namespace Acknex
                 wall.transform.RotateAround(center, Vector3.up, -degrees);
             }
         }
+
+        public Region GetRegionWithCeilingAbove(float thingZ)
+        {
+            var floorHeight = GetRealFloorHeight();
+            var ceilHeight = GetRealCeilHeight();
+            if (floorHeight <= thingZ && ceilHeight >= thingZ)
+            {
+                return this;
+            }
+            return Below == null ? this : Below.GetRegionWithCeilingAbove(thingZ);
+        }
     }
 }

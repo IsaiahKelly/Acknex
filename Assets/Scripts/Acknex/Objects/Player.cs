@@ -96,6 +96,11 @@ namespace Acknex
                     _soundTriggered = false;
                 }
             }
+            {
+                var waveTime = TimeUtils.TimeToTicks(Time.time) / World.Instance.GetSkillValue("WAVE_PERIOD") * 2f;
+                var wave = Mathf.Sin(waveTime * Mathf.PI);
+                World.Instance.UpdateSkillValue("WAVE", wave);
+            }
             World.Instance.UpdateSkillValue("IMPACT_VX", deltaXZ.x);
             World.Instance.UpdateSkillValue("IMPACT_VY", deltaXZ.z);
             var region = GetRegion();
