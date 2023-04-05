@@ -35,10 +35,10 @@ void ApplyPalette(inout float4 color)
 		color = tex2D(_AcknexPalette, float2(color.x, 0));
 		color.w = alpha;
 	}
-	else 
-	{
-		color *= _Color;
-	}
+	//else 
+	//{
+	//	color *= _Color;
+	//}
 }
 
 void EmulatePalette(inout float4 color) {

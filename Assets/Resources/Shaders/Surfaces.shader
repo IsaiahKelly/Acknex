@@ -29,7 +29,7 @@ Shader "Acknex/Surfaces"
 		{
 			Tags { "RenderType" = "Opaque" }
 			//todo: lets add this here later
-			//Cull[_CullMode]
+			Cull[_CullMode]
 			LOD 200
 
 			CGPROGRAM

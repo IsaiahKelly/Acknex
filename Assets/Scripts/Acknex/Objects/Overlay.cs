@@ -62,9 +62,11 @@ namespace Acknex
             var overlaySprite = AcknexObject.GetAcknexObject("OVLYS")?.Container as Bitmap;
             if (_lastOverlaySprite != overlaySprite && overlaySprite != null)
             {
-                _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (AcknexObject.TryGetFloat("SIZE_X", out var width) ? width : overlaySprite.Width));
-                _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, AcknexObject.TryGetFloat("SIZE_Y", out var height) ? height : overlaySprite.Height);
+                _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,  overlaySprite.Width);
+                _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,  overlaySprite.Height);
                 overlaySprite.UpdateMaterial(_overlayGraphic.material, null, 0, false, null);
+                AcknexObject.SetFloat("SIZE_X", overlaySprite.Width);
+                AcknexObject.SetFloat("SIZE_Y", overlaySprite.Height);
                 _lastOverlaySprite = overlaySprite;
             }
             _overlayGraphic.transform.SetSiblingIndex(AcknexObject.GetInteger("LAYER"));

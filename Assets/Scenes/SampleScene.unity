@@ -859,7 +859,7 @@ MonoBehaviour:
     m_Bits: 784
   WaterLayer:
     m_LayerIndex: 4
-  WDLPath: Assets\Data\Contato.wdl
+  WDLPath: C:\games\acknex\varginha2\CONTATO.WDL
   WMPContainsRegionsByName: 0
   IgnoreRaycastLayer:
     m_LayerIndex: 2
@@ -1017,7 +1017,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1338610783
 RectTransform:
   m_ObjectHideFlags: 0
