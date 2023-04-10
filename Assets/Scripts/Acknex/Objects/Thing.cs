@@ -5,8 +5,6 @@ using Utils;
 
 namespace Acknex
 {
-    //todo: CYCLE PROP
-    //todo: skill ACTOR_WIDTH & THING_WIDTH
     public class Thing : MonoBehaviour, IAcknexObjectContainer
     {
         private Coroutine _animateCoroutine;
@@ -21,13 +19,12 @@ namespace Acknex
         private Texture _lastTextureObject;
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
-        //private MaterialPropertyBlock _meshRendererPropertyBlock;
         private Coroutine _movingCoroutine;
         private MeshCollider _spriteCollider;
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;
         private GameObject _triggerGameObject;
-        private GameObject _lightGameObject;
+        private GameObject _centerGameObject;
         private Light _light;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
@@ -112,18 +109,18 @@ namespace Acknex
             Locate(thingX, thingY, ref thingZ, true);
             _triggerCollisionCallback.OnTriggerEnterCallback += OnTriggerEnterCallback;
             _triggerCollisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
-            _audioSource = gameObject.AddComponent<AudioSource>();
+            _centerGameObject = new GameObject("Center");
+            _audioSource = _centerGameObject.AddComponent<AudioSource>();
             _audioSource.minDistance = 0f;
             _audioSource.maxDistance = 0f;
             _audioSource.volume = 0f;
             _audioSource.playOnAwake = false;
             _audioSource.spatialBlend = 1f;
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
-            _audioSource.spread = 360f;
-            _lightGameObject = new GameObject("Light");
-            _lightGameObject.layer = World.Instance.IgnoreRaycastLayer.LayerIndex;
-            _lightGameObject.transform.SetParent(transform, false);
-            _light = _lightGameObject.AddComponent<Light>();
+            //_audioSource.spread = 360f;
+            _centerGameObject.layer = World.Instance.IgnoreRaycastLayer.LayerIndex;
+            _centerGameObject.transform.SetParent(transform, false);
+            _light = _centerGameObject.AddComponent<Light>();
             _light.type = LightType.Point;
             _light.range = 1f;
             _light.intensity = 0f;
@@ -212,7 +209,7 @@ namespace Acknex
 #endif
             AcknexObject.IsDirty = false;
             AcknexObject.SetFloat("DISTANCE", distance);
-            _lightGameObject.transform.position = GetCenter();
+            _centerGameObject.transform.position = GetCenter();
             if (TextureObject != null)
             {
                 _light.intensity = TextureObject.AcknexObject.GetFloat("RADIANCE") * World.Instance.LightMultiplier;
@@ -346,7 +343,7 @@ namespace Acknex
         private void OnCollisionEnter(Collision collision)
         {
             var hasToTrigger = AcknexObject.HasFlag("SENSITIVE");
-            if (AcknexObject.HasFlag("CAREFULLY") && !hasToTrigger)
+            if (hasToTrigger && AcknexObject.HasFlag("CAREFULLY"))
             {
                 var target = AcknexObject.GetAcknexObject("TARGET");
                 if (target == World.Instance.BulletString)
@@ -387,11 +384,16 @@ namespace Acknex
 
         private IEnumerator Animate(int side = 0)
         {
-            var enumerator = TextureObject.AnimateTexture(false, _meshRenderer, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), _innerGameObject.transform, side);
+            var enumerator = TextureObject.AnimateTexture(TextureCanceled, false, _meshRenderer, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), _innerGameObject.transform, side);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
             }
+        }
+
+        private bool TextureCanceled(Texture texture)
+        {
+            return AcknexObject.HasFlag("INVISIBLE")|| texture != TextureObject;
         }
 
         protected virtual void Awake()
@@ -422,7 +424,8 @@ namespace Acknex
                 {
                     if (waypoint++ >= points.Count)
                     {
-                        AcknexObject.SetAcknexObject("TARGET", null);
+                        //AcknexObject.SetAcknexObject("TARGET", null);
+                        _lastTarget = null;
                         yield break;
                     }
                     AcknexObject.SetFloat("WAYPOINT", waypoint);
@@ -441,7 +444,8 @@ namespace Acknex
                 AcknexObject.IsDirty = true;
                 if (MoveToPointStep(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
-                    AcknexObject.SetAcknexObject("TARGET", null);
+                    //AcknexObject.SetAcknexObject("TARGET", null);
+                    _lastTarget = null;
                     World.Instance.TriggerEvent("IF_ARRIVED", AcknexObject, AcknexObject, GetRegion());
                     yield break;
                 }
@@ -459,7 +463,8 @@ namespace Acknex
                 MoveToPointStep(playerPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f);
                 if (CrossedRegion(ref currentRegion))
                 {
-                    AcknexObject.SetAcknexObject("TARGET", null);
+                    _lastTarget = null;
+                    //AcknexObject.SetAcknexObject("TARGET", null);
                     yield break;
                 }
                 yield return null;
@@ -495,7 +500,8 @@ namespace Acknex
                 MoveToAngleStep();
                 if (CrossedRegion(ref currentRegion))
                 {
-                    AcknexObject.SetAcknexObject("TARGET", null);
+                    _lastTarget = null;
+                    //AcknexObject.SetAcknexObject("TARGET", null);
                     yield break;
                 }
                 yield return null;
@@ -584,7 +590,7 @@ namespace Acknex
             }
             //todo: why angle inverted?
             var angle = AcknexObject.GetFloat("ANGLE");
-            var delta = new Vector3(MathExtension.Cos(angle), 0f, MathExtension.Sin(angle)) * speed * World.Instance.GetSkillValue("TIME_CORR");
+            var delta = new Vector3(MathUtils.Cos(angle), 0f, MathUtils.Sin(angle)) * speed * World.Instance.GetSkillValue("TIME_CORR");
             if (AcknexObject.HasFlag("PASSABLE"))
             {
                 transform.Translate(delta, Space.World);
@@ -612,7 +618,7 @@ namespace Acknex
             }
             var toTarget = nextPoint - pos;
             //todo: why angle inverted?
-            var angle = AngleUtils.ConvertUnityToAcknexAngle(MathExtension.Atan2(toTarget) * Mathf.Rad2Deg);
+            var angle = AngleUtils.ConvertUnityToAcknexAngle(MathUtils.Atan2(toTarget) * Mathf.Rad2Deg);
             var newPos = Vector2.MoveTowards(pos, nextPoint, speed * World.Instance.GetSkillValue("TIME_CORR"));
             var delta = new Vector3(newPos.x - pos.x, 0f, newPos.y - pos.y);
             if (AcknexObject.HasFlag("PASSABLE") || AcknexObject.GetAcknexObject("TARGET").Type == ObjectType.Way)

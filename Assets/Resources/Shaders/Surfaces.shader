@@ -90,15 +90,9 @@ Shader "Acknex/Surfaces"
 				uv *= _MainTex_TexelSize.xy;
 				fixed4 c = tex2D(_MainTex, uv);
 				ApplyPalette(c);
-				//todo: use another shader
-				if (_PORTCULLIS || _FENCE) {
-					/* Sharpen texture alpha to the width of a pixel */
-					o.Alpha = (c.a - 0.5) / max(fwidth(c.a), 0.0001) + 0.5;
-					clip(o.Alpha - 0.5);
-				}
+				o.Alpha = (c.a - 0.5) / max(fwidth(c.a), 0.0001) + 0.5;
+				clip(o.Alpha - 0.5);
 				o.Albedo = c.rgb;
-				//o.Metallic = 0.0;
-				//o.Smoothness = 0.0;
 			}
 			ENDCG
 		}

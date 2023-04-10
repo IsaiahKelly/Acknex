@@ -188,7 +188,7 @@ namespace Acknex
             _audioSource.playOnAwake = false;
             _audioSource.spatialBlend = 1f;
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
-            _audioSource.spread = 360f;
+            //_audioSource.spread = 360f;
         }
 
         public void SetupTemplate()
@@ -289,11 +289,16 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = CeilTexture.AnimateTexture(true, _ceilMeshRenderer, CeilMeshFilter, null, AcknexObject, AcknexObject, null);
+            var enumerator = CeilTexture.AnimateTexture(TextureCanceled, true, _ceilMeshRenderer, CeilMeshFilter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
             }
+        }
+
+        private bool TextureCanceled(Texture arg)
+        {
+            return false;
         }
 
         private IEnumerator AnimateFloor()
@@ -302,7 +307,7 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = FloorTexture.AnimateTexture(true, _floorMeshRenderer, FloorMeshFilter, null, AcknexObject, AcknexObject, null);
+            var enumerator = FloorTexture.AnimateTexture(TextureCanceled, true, _floorMeshRenderer, FloorMeshFilter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;

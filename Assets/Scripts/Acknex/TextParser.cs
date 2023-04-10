@@ -633,7 +633,7 @@ namespace Acknex
                                 var player = _world.GetObject(ObjectType.Player, null);
                                 _world.UpdateSkillValue("PLAYER_X", ParseFloat(tokens));
                                 _world.UpdateSkillValue("PLAYER_Y", ParseFloat(tokens));
-                                _world.UpdateSkillValue("PLAYER_ANGLE", Mathf.Deg2Rad * ParseFloat(tokens));
+                                _world.UpdateSkillValue("PLAYER_ANGLE", AngleUtils.HandleWMPAngle(ParseFloat(tokens)));
                                 ParseRegionIndex(player, "REGION", tokens);
                                 break;
                             }
@@ -645,7 +645,7 @@ namespace Acknex
                                 var thing = _world.CreateObjectInstance(type, actorOrThingName);
                                 thing.SetFloat("X", ParseFloat(tokens));
                                 thing.SetFloat("Y", ParseFloat(tokens));
-                                thing.SetFloat("ANGLE", Mathf.Deg2Rad * ParseFloat(tokens));
+                                thing.SetFloat("ANGLE", AngleUtils.HandleWMPAngle(ParseFloat(tokens)));
                                 ParseRegionIndex(thing, "REGION", tokens);
                                 _world.PostSetupObjectInstance(thing);
                                 break;

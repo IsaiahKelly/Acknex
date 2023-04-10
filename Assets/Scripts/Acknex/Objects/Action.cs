@@ -493,31 +493,31 @@ namespace Acknex
             switch (property)
             {
                 case "SIN":
-                    return "MathExtension.Sin";
+                    return "MathUtils.Sin";
                 case "COS":
-                    return "MathExtension.Cos";
+                    return "MathUtils.Cos";
                 case "TAN":
-                    return "MathExtension.Tan";
+                    return "MathUtils.Tan";
                 case "ASIN":
-                    return "MathExtension.Asin";
+                    return "MathUtils.Asin";
                 case "ACOS":
-                    return "MathExtension.Acos";
+                    return "MathUtils.Acos";
                 case "LOG":
-                    return "MathExtension.Log";
+                    return "MathUtils.Log";
                 case "LOG10":
-                    return "MathExtension.Log10";
+                    return "MathUtils.Log10";
                 case "LOG2":
-                    return "MathExtension.Log2";
+                    return "MathUtils.Log2";
                 case "SQRT":
-                    return "MathExtension.Sqrt";
+                    return "MathUtils.Sqrt";
                 case "SIGN":
-                    return "MathExtension.Sign";
+                    return "MathUtils.Sign";
                 case "ABS":
-                    return "MathExtension.Abs";
+                    return "MathUtils.Abs";
                 case "INT":
-                    return "MathExtension.RoundToInt";
+                    return "MathUtils.RoundToInt";
                 case "EXP":
-                    return "MathExtension.Exp";
+                    return "MathUtils.Exp";
                 case "RANDOM":
                     return "UnityEngine.Random.value";
             }

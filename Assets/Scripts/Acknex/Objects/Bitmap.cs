@@ -133,6 +133,10 @@ namespace Acknex
 
         public void UpdateMaterial(Material material, Texture texture, int index, bool mirror, IAcknexObject sourceAcknexObject)
         {
+            //if (sourceAcknexObject?.Container != null && sourceAcknexObject.Container.DebugMarked)
+            //{
+            //    var x = 1;
+            //}
             if (CropTexture == null)
             {
                 return;
@@ -179,8 +183,8 @@ namespace Acknex
                     }
                 }
             }
-            float albedo = 0f;
-            float radiance = 0f;
+            var albedo = 0f;
+            var radiance = 0f;
             if (texture != null)
             {
                 if (texture.AcknexObject.TryGetFloat("ALBEDO", out var textureAlbedo))
@@ -241,10 +245,10 @@ namespace Acknex
             material.SetFloat("_OFFSETY", offsetY);
             material.SetFloat("_SCALEX", scaleX);
             material.SetFloat("_SCALEY", scaleY);
-            material.SetInt("_CullMode", (int)cullMode);
             material.SetFloat("_AMBIENT", ambient);
             material.SetFloat("_ALBEDO", albedo);
             material.SetFloat("_RADIANCE", radiance);
+            material.SetInt("_CullMode", (int)cullMode);
             material.mainTexture = World.Instance.UsePalettes ? CropTexture.Palette : CropTexture.Texture;
             if (sourceAcknexObject is AcknexObject acknexObject)
             {

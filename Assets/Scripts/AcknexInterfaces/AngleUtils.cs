@@ -5,16 +5,23 @@ namespace Acknex.Interfaces
 {
     public static class AngleUtils
     {
+        public static float HandleWMPAngle(float degrees)
+        {
+            return Mathf.Repeat(Mathf.Deg2Rad * (degrees + 90f), Mathf.PI * 2f);
+        }
+
         public static float ConvertUnityToAcknexAngle(float degrees)
         {
+            return Mathf.Repeat(Mathf.Deg2Rad * (degrees - 90f), Mathf.PI * 2f);
             //return Mathf.Repeat(Mathf.Rad2Deg * degrees - 90f, 360f); VRDEMO, SKAPH
-            return Mathf.Repeat(Mathf.Deg2Rad * (degrees + 180f), 360f); //VARGINHA
+            //return Mathf.Repeat(Mathf.Deg2Rad * (degrees + 180f), 360f); //VARGINHA
         }
         
         public static float ConvertAcknexToUnityAngle(float radians)
         {
+            return Mathf.Repeat((Mathf.Rad2Deg * radians) + 90f, 360f);
             //return Mathf.Repeat(Mathf.Rad2Deg * radians + 90f, 360f); VRDEMO, SKAPH
-            return Mathf.Repeat(Mathf.Rad2Deg * radians - 180f, 360f); //VARGINHA
+            //return Mathf.Repeat(Mathf.Rad2Deg * radians - 180f, 360f); //VARGINHA
         }
 
         public static float Angle(Vector3 from, Vector3 to)

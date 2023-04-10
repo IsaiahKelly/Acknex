@@ -2,28 +2,38 @@
 
 namespace Acknex.Interfaces
 {
-    public static class MathExtension
+    public static class MathUtils
     {
         public static float Atan2(Vector2 dir)
         {
-            return Mathf.Atan2(dir.x, dir.y);
+            return (Mathf.Atan2(dir.y, dir.x) - Mathf.PI * 0.5f) * -1f;
+            //return Mathf.Atan2(dir.x, dir.y);
         }
 
         public static float Sin(float radians)
         {
-            return -Mathf.Cos(radians); //VRDEMO, SKAPH
+            return Mathf.Sin(radians*-1f);
+            //return -Mathf.Cos(radians); //VRDEMO, SKAPH
             //return -Mathf.Sin(radians); //VARGINHA
         }
 
         public static float Cos(float radians)
         {
-            return -Mathf.Sin(radians);  //VRDEMO, SKAPH
+            return Mathf.Cos(radians*-1f);
+            //return -Mathf.Sin(radians);  //VRDEMO, SKAPH
             //return Mathf.Cos(radians);  //VARGINHA
         }
 
         public static float Acos(float radians)
         {
-            return -Mathf.Asin(radians);
+            return Mathf.Acos(radians * -1f);
+            //return -Mathf.Acos(radians);
+        }
+
+        public static float Asin(float radians)
+        {
+            return Mathf.Asin(radians * -1f);
+            //return -Mathf.Asin(value);
         }
 
         public static float Log(float value)
@@ -66,9 +76,5 @@ namespace Acknex.Interfaces
             return Mathf.Abs(value);
         }
 
-        public static float Asin(float value)
-        {
-            return -Mathf.Acos(value);// - Mathf.PI * 0.5f;
-        }
     }
 }

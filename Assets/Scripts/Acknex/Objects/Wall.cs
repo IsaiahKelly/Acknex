@@ -140,7 +140,7 @@ namespace Acknex
             _audioSource.playOnAwake = false;
             _audioSource.spatialBlend = 1f;
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
-            _audioSource.spread = 360f;
+            //_audioSource.spread = 360f;
 
         }
 
@@ -227,11 +227,16 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = TextureObject.AnimateTexture(true, _meshRenderer, Filter, null, AcknexObject, AcknexObject, null);
+            var enumerator = TextureObject.AnimateTexture(TextureCanceled, true, _meshRenderer, Filter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
             }
+        }
+
+        private bool TextureCanceled(Texture arg)
+        {
+            return false;
         }
 
         private void OnWallTriggerExit(Collider collider)
@@ -470,7 +475,7 @@ namespace Acknex
                     var liftedLeftUp = (middleOpen || leftRegionAbove == null) && leftLiftUp != 0;
                     var liftedRightUp = (middleOpen || rightRegionAbove == null) && rightLiftUp != 0;
                     //negative space
-                    if (false)//( Math.Abs(ceilHeightDown - floorHeightDown) < Mathf.Epsilon && Math.Abs(ceilHeightUp - floorHeightUp) < Mathf.Epsilon)
+                    if (leftRegion.AcknexObject.GetString("NAME") == rightRegion.AcknexObject.GetString("NAME") && Math.Abs(ceilHeightDown - floorHeightDown) < Mathf.Epsilon && Math.Abs(ceilHeightUp - floorHeightUp) < Mathf.Epsilon)
                     {
                         var v0 = new Vector3(vertexA.Position.X, floorHeightUp + (liftedLeftUp ? (vertexA.Position.Z * leftLiftUp) : 0), vertexA.Position.Y);
                         var v1 = new Vector3(vertexB.Position.X, floorHeightUp + (liftedLeftUp ? (vertexB.Position.Z * leftLiftUp) : 0), vertexB.Position.Y);
@@ -479,6 +484,7 @@ namespace Acknex
                         if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
                         {
                             MeshUtils.AddQuad(0, 1, 2, 3, _allTriangles, AcknexObject.GetAcknexObject("TEXTURE"), _allVertices.Count);
+                            MeshUtils.AddQuad(3, 2, 1, 0, _allTriangles, AcknexObject.GetAcknexObject("TEXTURE"), _allVertices.Count);
                             _allVertices.Add(v0); //a
                             _allVertices.Add(v1); //b
                             _allVertices.Add(v2); //c

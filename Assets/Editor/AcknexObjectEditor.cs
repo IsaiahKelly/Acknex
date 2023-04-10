@@ -50,7 +50,7 @@ public class AcknexObjectEditor : Editor
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(property.Key);
-                EditorGUILayout.LabelField((property.Key == "ANGLE" ? (Mathf.Rad2Deg * property.Value) + "(" + property.Value + ")" : property.Value.ToString(CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture));
+                EditorGUILayout.LabelField((property.Key == "ANGLE" ? $"{(Mathf.Rad2Deg * property.Value)}({property.Value})" : property.Value.ToString()));
                 EditorGUILayout.EndHorizontal();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
@@ -89,8 +89,8 @@ public class AcknexObjectEditor : Editor
                     foreach (var property in templateNumberProperties)
                     {
                         EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField(property.Key); 
-                        EditorGUILayout.LabelField((property.Key == "ANGLE" ? (Mathf.Rad2Deg * property.Value) + "(" + property.Value + ")" : property.Value.ToString(CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture));
+                        EditorGUILayout.LabelField(property.Key);
+                        EditorGUILayout.LabelField((property.Key == "ANGLE" ? $"{(Mathf.Rad2Deg * property.Value)}({property.Value})" : property.Value.ToString()));
                         EditorGUILayout.EndHorizontal();
                     }
                     EditorGUILayout.EndFoldoutHeaderGroup();

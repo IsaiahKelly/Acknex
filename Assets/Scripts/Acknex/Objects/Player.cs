@@ -137,8 +137,8 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_X", playerX);
             World.Instance.UpdateSkillValue("PLAYER_Y", playerY);
             World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
-            World.Instance.UpdateSkillValue("PLAYER_SIN", MathExtension.Sin(playerAngle));
-            World.Instance.UpdateSkillValue("PLAYER_COS", MathExtension.Cos(playerAngle));
+            World.Instance.UpdateSkillValue("PLAYER_SIN", MathUtils.Sin(playerAngle));
+            World.Instance.UpdateSkillValue("PLAYER_COS", MathUtils.Cos(playerAngle));
             World.Instance.UpdateSkillValue("PLAYER_ANGLE", playerAngle);
             var groundZ = playerZ;
             Locate(playerX, playerY, ref groundZ, false);

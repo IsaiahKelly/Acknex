@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using UnityEngine;
@@ -75,6 +76,7 @@ namespace Acknex
 
         //todo: SLOOP
         public IEnumerator AnimateTexture(
+            Func<Texture, bool> canceled,
             bool scaleTexture,
             MeshRenderer meshRenderer,
             MeshFilter meshFilter,
@@ -90,23 +92,24 @@ namespace Acknex
             var scycles = AcknexObject.GetObject<List<float>>("SCYCLES");
             bool CanBreakAnimation(IAcknexObject sound)
             {
-                return MY.HasFlag("INVISIBLE") || MY.HasFlag("ONESHOT") || cycles == 1 && sound == null && !MY.TryGetAcknexObject("EACH_CYCLE", out _);
+                return MY.HasFlag("ONESHOT") || cycles == 1 && sound == null && !MY.TryGetAcknexObject("EACH_CYCLE", out _);
             }
-            var cycle = MY?.GetInteger("CYCLE") ?? 0;
+            var cycle = 0;
             while (true)
             {
+                if (canceled(this))
+                {
+                    yield break;
+                }
                 cycle = (int)Mathf.Repeat(cycle, cycles);
                 IAcknexObject sound = null;
-                if (MY != null)
+                MY.SetFloat("CYCLE", cycle + 1);
+                if (MY.Type != ObjectType.Region)
                 {
-                    MY.SetFloat("CYCLE", cycle);
-                    if (MY.Type != ObjectType.Region)
+                    sound = AcknexObject.GetAcknexObject("SOUND");
+                    if (sound != null && (scycles == null && cycle == 0 || scycles != null && scycles[cycle] > 0f))
                     {
-                        sound = AcknexObject.GetAcknexObject("SOUND");
-                        if (sound != null && (scycles == null && cycle == 0 || scycles != null && scycles[cycle] > 0f))
-                        {
-                            World.Instance.PlaySound(sound, AcknexObject.GetFloat("SVOL"), MY, AcknexObject.GetFloat("DIST"), AcknexObject.GetFloat("SVDIST"));
-                        }
+                        World.Instance.PlaySound(sound, AcknexObject.GetFloat("SVOL"), MY, AcknexObject.GetFloat("DIST"), AcknexObject.GetFloat("SVDIST"));
                     }
                 }
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : World.Instance.WaitForTick;
@@ -137,27 +140,12 @@ namespace Acknex
             //}
             //else
             {
-                Bitmap bitmap;
-                int angleFrame;
-                if (mirror != null && mirror[side] > 0) //mirrored
+                var angleFrame = side * cycles;
+                var frame = angleFrame + animFrame;
+                var bitmap = GetBitmapAt(frame);
+                if (meshRenderer?.material != null && bitmap != null)
                 {
-                    angleFrame = side * cycles;
-                    var frame = angleFrame + animFrame;
-                    bitmap = GetBitmapAt(frame);
-                    if (meshRenderer?.material != null && bitmap != null)
-                    {
-                        UpdateFrame(bitmap, meshRenderer.material, scaleTexture, true, frame, sourceAcknexObject);
-                    }
-                }
-                else
-                {
-                    angleFrame = side * cycles;
-                    var frame = angleFrame + animFrame;
-                    bitmap = GetBitmapAt(frame);
-                    if (meshRenderer?.material != null && bitmap != null)
-                    {
-                        UpdateFrame(bitmap, meshRenderer.material, scaleTexture, false, frame, sourceAcknexObject);
-                    }
+                    UpdateFrame(bitmap, meshRenderer.material, scaleTexture, mirror != null && mirror[side] > 0, frame, sourceAcknexObject);
                 }
                 if (sourceTransform != null)
                 {
@@ -174,11 +162,7 @@ namespace Acknex
 
         public void UpdateFrame(Bitmap bitmap, Material unityMaterial, bool scaleTexture, bool mirror = false, int frameIndex = 0, IAcknexObject sourceAcknexObject = null)
         {
-            if (bitmap == null)
-            {
-                return;
-            }
-            bitmap.UpdateMaterial(unityMaterial, scaleTexture ? this : null, frameIndex, mirror, sourceAcknexObject);
+            bitmap?.UpdateMaterial(unityMaterial, scaleTexture ? this : null, frameIndex, mirror, sourceAcknexObject);
         }
 
         public Texture()

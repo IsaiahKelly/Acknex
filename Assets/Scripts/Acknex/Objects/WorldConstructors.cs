@@ -12,12 +12,12 @@ namespace Acknex
             {
                 throw new Exception("String [" + name + "] already registered.");
             }
-            var newString = new AcknexString(value);
-            newString.AcknexObject.SetString("NAME", name);
-            newString.AcknexObject.Type = ObjectType.String;
-            StringsByName.Add(name, newString);
-            AcknexObject.SetAcknexObject(name, newString.AcknexObject);
-            return newString.AcknexObject;
+            var str = new AcknexString(value);
+            str.AcknexObject.SetString("NAME", name);
+            str.AcknexObject.Type = ObjectType.String;
+            StringsByName.Add(name, str);
+            AcknexObject.SetAcknexObject(name, str.AcknexObject);
+            return str.AcknexObject;
         }
 
         public Panel CreatePanel(string name)
@@ -28,12 +28,12 @@ namespace Acknex
             }
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(CanvasView, false);
-            var newPanel = newGameObject.AddComponent<Panel>();
-            newPanel.AcknexObject.SetString("NAME", name);
-            newPanel.AcknexObject.Type = ObjectType.Panel;
-            AcknexObject.SetAcknexObject(name, newPanel.AcknexObject);
-            PanelsByName.Add(name, newPanel);
-            return newPanel;
+            var panel = newGameObject.AddComponent<Panel>();
+            panel.AcknexObject.SetString("NAME", name);
+            panel.AcknexObject.Type = ObjectType.Panel;
+            AcknexObject.SetAcknexObject(name, panel.AcknexObject);
+            PanelsByName.Add(name, panel);
+            return panel;
         }
 
 
@@ -45,12 +45,12 @@ namespace Acknex
             }
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(CanvasView, false);
-            var newOverlay = newGameObject.AddComponent<Overlay>();
-            newOverlay.AcknexObject.SetString("NAME", name);
-            newOverlay.AcknexObject.Type = ObjectType.Overlay;
-            AcknexObject.SetAcknexObject(name, newOverlay.AcknexObject);
-            OverlaysByName.Add(name, newOverlay);
-            return newOverlay;
+            var overlay = newGameObject.AddComponent<Overlay>();
+            overlay.AcknexObject.SetString("NAME", name);
+            overlay.AcknexObject.Type = ObjectType.Overlay;
+            AcknexObject.SetAcknexObject(name, overlay.AcknexObject);
+            OverlaysByName.Add(name, overlay);
+            return overlay;
         }
 
         public Region CreateRegion(string name)
@@ -62,10 +62,10 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.layer = WallsAndRegionsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
-            var newRegion = newGameObject.AddComponent<Region>();
-            newRegion.AcknexObject.SetString("NAME", name);
-            newRegion.AcknexObject.Type = ObjectType.Region;
-            return newRegion;
+            var region = newGameObject.AddComponent<Region>();
+            region.AcknexObject.SetString("NAME", name);
+            region.AcknexObject.Type = ObjectType.Region;
+            return region;
         }
 
         public Wall CreateWall(string name)
@@ -77,10 +77,10 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.layer = WallsAndRegionsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
-            var newWall = newGameObject.AddComponent<Wall>();
-            newWall.AcknexObject.Type = ObjectType.Wall;
-            newWall.AcknexObject.SetString("NAME", name);
-            return newWall;
+            var wall = newGameObject.AddComponent<Wall>();
+            wall.AcknexObject.Type = ObjectType.Wall;
+            wall.AcknexObject.SetString("NAME", name);
+            return wall;
         }
 
 
@@ -92,10 +92,10 @@ namespace Acknex
             }
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
-            var newWay = newGameObject.AddComponent<Way>();
-            newWay.AcknexObject.SetString("NAME", name);
-            newWay.AcknexObject.Type = ObjectType.Way;
-            return newWay;
+            var way = newGameObject.AddComponent<Way>();
+            way.AcknexObject.SetString("NAME", name);
+            way.AcknexObject.Type = ObjectType.Way;
+            return way;
         }
 
 
@@ -108,12 +108,10 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.layer = ThingsAndActorsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
-            var newThing = newGameObject.AddComponent<Thing>();
-            newThing.AcknexObject.SetString("NAME", name);
-            newThing.AcknexObject.SetFloat("SCALE_X", 16);
-            newThing.AcknexObject.SetFloat("SCALE_Y", 16);
-            newThing.AcknexObject.Type = ObjectType.Thing;
-            return newThing;
+            var thing = newGameObject.AddComponent<Thing>();
+            thing.AcknexObject.SetString("NAME", name);
+            thing.AcknexObject.Type = ObjectType.Thing;
+            return thing;
         }
 
 
@@ -126,12 +124,10 @@ namespace Acknex
             var newGameObject = new GameObject(name);
             newGameObject.layer = ThingsAndActorsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
-            var newActor = newGameObject.AddComponent<Actor>();
-            newActor.AcknexObject.SetString("NAME", name);
-            newActor.AcknexObject.SetFloat("SCALE_X", 16);
-            newActor.AcknexObject.SetFloat("SCALE_Y", 16);
-            newActor.AcknexObject.Type = ObjectType.Actor;
-            return newActor;
+            var actor = newGameObject.AddComponent<Actor>();
+            actor.AcknexObject.SetString("NAME", name);
+            actor.AcknexObject.Type = ObjectType.Actor;
+            return actor;
         }
 
         public Skill CreateSkill(string name, float value = 0f, float min = 0f, float max = 0f)
@@ -270,6 +266,8 @@ namespace Acknex
             texture.AcknexObject.SetFloat("SVOL", 0.5f);
             texture.AcknexObject.SetFloat("SDIST", 100f);
             texture.AcknexObject.SetFloat("SVDIST", 100f);
+            texture.AcknexObject.SetFloat("SCALE_X", 16);
+            texture.AcknexObject.SetFloat("SCALE_Y", 16);
             texture.AcknexObject.Type = ObjectType.Texture;
             TexturesByName.Add(name, texture);
             AcknexObject.SetAcknexObject(name, texture.AcknexObject);
