@@ -271,5 +271,23 @@ namespace Acknex
         {
             UpdateObject();
         }
+
+        public void Rotate(Vector3 center, float degrees)
+        {
+            
+        }
+
+        public void Shift(float dx, float dy)
+        {
+            var playerX = World.Instance.GetSkillValue("PLAYER_X");
+            var playerY = World.Instance.GetSkillValue("PLAYER_Y");
+            World.Instance.UpdateSkillValue("PLAYER_X", playerX + dx);
+            World.Instance.UpdateSkillValue("PLAYER_Y", playerY + dy);
+        }
+
+        public void Lift(float dz)
+        {
+           
+        }
     }
 }

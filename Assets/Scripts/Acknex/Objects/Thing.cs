@@ -393,7 +393,7 @@ namespace Acknex
 
         private bool TextureCanceled(Texture texture)
         {
-            return AcknexObject.HasFlag("INVISIBLE")|| texture != TextureObject;
+            return AcknexObject.HasFlag("INVISIBLE") || texture != TextureObject;
         }
 
         protected virtual void Awake()
@@ -597,13 +597,22 @@ namespace Acknex
             }
             else
             {
-                _characterController.Move(delta);
+                if (WontDrop(delta))
+                {
+                    _characterController.Move(delta);
+                }
             }
 #if DEBUG_ENABLED
             DebugExtension.DebugArrow(new Vector3(AcknexObject.GetFloat("X"), 0f, AcknexObject.GetFloat("Y")), delta, Color.magenta, 10f);
 #endif
             AcknexObject.SetFloat("X", transform.position.x);
             AcknexObject.SetFloat("Y", transform.position.z);
+        }
+
+        private bool WontDrop(Vector3 delta)
+        {
+            var finalPos = _characterController.transform.position + delta;
+            return (!Physics.SphereCast(finalPos + new Vector3(0f, _characterController.radius, 0f), _characterController.radius, Vector3.down, out var raycastHit, World.Instance.WallsWaterRegionsAndThings) || raycastHit.distance < World.Instance.GetSkillValue("ACTOR_CLIMB"));
         }
 
         public bool MoveToPointStep(Vector2 nextPoint, float? minDistance = null)
@@ -627,12 +636,15 @@ namespace Acknex
             }
             else
             {
-                _characterController.Move(delta);
+                if (WontDrop(delta))
+                {
+                    _characterController.Move(delta);
+                }
             }
 #if DEBUG_ENABLED
             Debug.DrawLine(new Vector3(pos.x, 0f, pos.y), new Vector3(nextPoint.x, 0f, nextPoint.y), Color.magenta, 1f);
 #endif
-            AcknexObject.SetFloat("X", transform.position.x);
+                AcknexObject.SetFloat("X", transform.position.x);
             AcknexObject.SetFloat("Y", transform.position.z);
             AcknexObject.SetFloat("ANGLE", angle);
             return toTarget.magnitude <= (minDistance ?? speed);

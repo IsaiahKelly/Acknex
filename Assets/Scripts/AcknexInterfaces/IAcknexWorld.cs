@@ -125,6 +125,16 @@ namespace Acknex.Interfaces
         void Rotate(IAcknexObject acknexObject, float radians);
 
         /// <summary>
+        /// Lifts the given region by the given value.
+        /// </summary>
+        void Lift(IAcknexObject acknexObject, float dz);
+
+        /// <summary>
+        /// Shifts the given region by the given dx, dy.
+        /// </summary>
+        void Shift(IAcknexObject acknexObject, float dx, float dy);
+
+        /// <summary>
         /// Shoots the given object.
         /// </summary>
         void Shoot(IAcknexObject acknexObject, IAcknexObject MY, IAcknexObject THERE);
@@ -149,12 +159,10 @@ namespace Acknex.Interfaces
         /// </summary>
         float Accelerate(float value, float amount);
 
-
         /// <summary>
         /// Plays the given song.
         /// </summary>
         void PlaySong(IAcknexObject song, float volume);
-
 
         /// <summary>
         /// Plays the given sound.

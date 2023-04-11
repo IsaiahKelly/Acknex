@@ -178,7 +178,15 @@ namespace Acknex
             var action = new Action();
             action.AcknexObject.SetString("NAME", name);
             action.AcknexObject.Type = ObjectType.Action;
-            ActionsByName.Add(name, action);
+            if (ActionsByName.ContainsKey(name))
+            {
+                ActionsByName[name] = action;
+                Debug.Log("Replaced action " + name);
+            }
+            else
+            {
+                ActionsByName.Add(name, action);
+            }
             AcknexObject.SetAcknexObject(name, action.AcknexObject);
             return action;
         }

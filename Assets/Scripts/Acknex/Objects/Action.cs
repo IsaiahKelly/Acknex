@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Acknex.Interfaces;
@@ -12,14 +11,7 @@ namespace Acknex
     //TODO: missing keywords
     public class Action : IAcknexObjectContainer
     {
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
-
-        }
-        public bool DebugMarked { get; set; }
-        public GameObject GameObject => null;
-
-        private const string CallEnumeratorTemplate = @"{{
+        private const string CallEnumerator = @"{{
             var enumerator = {0};
             while (enumerator.MoveNext())
             {{
@@ -49,26 +41,62 @@ namespace Acknex
             }}
         }}";
 
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Action);
-        public StringBuilder CodeStringBuilder = new StringBuilder();
-
-        private List<Tuple<string, float>> _skips = new List<Tuple<string, float>>();
-        private Dictionary<string, string> _dropped = new Dictionary<string, string>();
-        private int _varCounter;
-        private int _ifStack;
-
-        private int _tokenIndex = 0;
+        private readonly Dictionary<string, string> _dropped = new Dictionary<string, string>();
+        private readonly List<Tuple<string, float>> _skips = new List<Tuple<string, float>>();
         private string _currentToken;
+        private int _ifStack;
+        private int _tokenIndex;
+        private int _varCounter;
+        public StringBuilder CodeStringBuilder = new StringBuilder();
         public List<string> Tokens = new List<string>();
-
-        private static IAcknexObject GetTemplateCallback(string name)
-        {
-            return null;
-        }
 
         public Action()
         {
             AcknexObject.Container = this;
+        }
+
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Action);
+        public bool DebugMarked { get; set; }
+
+        public void Disable()
+        {
+        }
+
+        public void Enable()
+        {
+        }
+
+        public GameObject GameObject => null;
+
+        public Vector3 GetCenter()
+        {
+            return default;
+        }
+
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+        }
+
+        public void SetupInstance()
+        {
+        }
+
+        public void SetupTemplate()
+        {
+        }
+
+        public void UpdateObject()
+        {
+        }
+
+        private static IAcknexObject GetTemplateCallback(string name)
+        {
+            return null;
         }
 
         private void Update()
@@ -117,10 +145,10 @@ namespace Acknex
                     switch (keyword)
                     {
                         case "}":
-                            {
-                                HandleIfStack();
-                                return;
-                            }
+                        {
+                            HandleIfStack();
+                            return;
+                        }
                         case "SIN":
                         case "COS":
                         case "TAN":
@@ -135,311 +163,330 @@ namespace Acknex
                         case "INT":
                         case "EXP":
                         case "RANDOM":
-                            {
-                                var identifier = labelOrStatement;
-                                var value = GetValue();
-                                var rhs = GetValueAndType(value, "rhs");
-                                var lhs = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
-                                rhs.property = $"{HandleFunction(keyword)}({rhs.property})";
-                                HandleAssignment(lhs, rhs);
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
-                            }
+                        {
+                            var identifier = labelOrStatement;
+                            var value = GetValue();
+                            var rhs = GetValueAndType(value, "rhs");
+                            var lhs = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
+                            rhs.property = $"{HandleFunction(keyword)}({rhs.property})";
+                            HandleAssignment(lhs, rhs);
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "RULE":
+                        {
+                            var identifier = labelOrStatement;
+                            var lhsSetter = GetValueAndType(identifier, "lhsSetter", false);
+                            var lhsGetter = GetValueAndType(identifier, "lhsGetter");
+                            var assignmentOp1 = GetNextToken();
+                            //todo: different assignments (-= += /= *=)
+                            if (assignmentOp1 == "-" || assignmentOp1 == "+" || assignmentOp1 == "*" || assignmentOp1 == "/")
                             {
-                                var identifier = labelOrStatement;
-                                var lhsSetter = GetValueAndType(identifier, "lhsSetter", false);
-                                var lhsGetter = GetValueAndType(identifier, "lhsGetter", true);
-                                var assignmentOp1 = GetNextToken();
-                                //todo: different assignments (-= += /= *=)
-                                if (assignmentOp1 == "-" || assignmentOp1 == "+" || assignmentOp1 == "*" || assignmentOp1 == "/")
+                                var assignmentOp2 = GetNextToken();
+                                if (assignmentOp2 != "=")
                                 {
-                                    var assignmentOp2 = GetNextToken();
-                                    if (assignmentOp2 != "=")
-                                    {
-                                        throw new Exception("Expected: =");
-                                    }
+                                    throw new Exception("Expected: =");
                                 }
-                                var ruleStringBuilder = new StringBuilder();
-                                var token = GetNextToken();
-                                while (token != ";")
-                                {
-                                    var tokenAndType = GetValueAndType(token, "temp");
-                                    if (tokenAndType.propertyType == PropertyType.Function)
-                                    {
-                                        tokenAndType.property = HandleFunction(tokenAndType.property);
-                                    }
-                                    ruleStringBuilder.Append(tokenAndType.property);
-                                    token = GetNextToken();
-                                }
-                                switch (assignmentOp1)
-                                {
-                                    case "=":
-                                        HandleAssignment(lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null));
-                                        break;
-                                    case "+":
-                                        HandleAdd(lhsGetter, lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null), "ADD");
-                                        break;
-                                    case "-":
-                                        HandleAdd(lhsGetter, lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null), "SUB");
-                                        break;
-                                    case "*":
-                                        HandleAdd(lhsGetter, lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null), "MUL");
-                                        break;
-                                    case "/":
-                                        HandleAdd(lhsGetter, lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null), "DIV");
-                                        break;
-                                }
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
                             }
+                            var ruleStringBuilder = new StringBuilder();
+                            var token = GetNextToken();
+                            while (token != ";")
+                            {
+                                var tokenAndType = GetValueAndType(token, "temp");
+                                if (tokenAndType.propertyType == PropertyType.Function)
+                                {
+                                    tokenAndType.property = HandleFunction(tokenAndType.property);
+                                }
+                                ruleStringBuilder.Append(tokenAndType.property);
+                                token = GetNextToken();
+                            }
+                            switch (assignmentOp1)
+                            {
+                                case "=":
+                                    HandleAssignment(lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null));
+                                    break;
+                                case "+":
+                                    HandleAdd(lhsGetter, lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null), "ADD");
+                                    break;
+                                case "-":
+                                    HandleAdd(lhsGetter, lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null), "SUB");
+                                    break;
+                                case "*":
+                                    HandleAdd(lhsGetter, lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null), "MUL");
+                                    break;
+                                case "/":
+                                    HandleAdd(lhsGetter, lhsSetter, (ruleStringBuilder.ToString(), PropertyType.Float, ObjectType.World, null), "DIV");
+                                    break;
+                            }
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "SET":
                         case "SET_ALL":
+                        {
+                            var identifier = labelOrStatement;
+                            var value = GetValue();
+                            var rhs = GetValueAndType(value, "rhs");
+                            var lhs = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
+                            if (rhs.propertyType == PropertyType.Function)
                             {
-                                var identifier = labelOrStatement;
-                                var value = GetValue();
-                                var rhs = GetValueAndType(value, "rhs");
-                                var lhs = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
-                                if (rhs.propertyType == PropertyType.Function)
-                                {
-                                    rhs.property = HandleFunction(rhs.property);
-                                }
-                                HandleAssignment(lhs, rhs, keyword == "SET_ALL");
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
+                                rhs.property = HandleFunction(rhs.property);
                             }
+                            HandleAssignment(lhs, rhs, keyword == "SET_ALL");
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "ACCEL":
                         case "SUB":
                         case "ADD":
                         case "ADDT":
                         case "RANDOMIZE":
+                        {
+                            var identifier = labelOrStatement;
+                            var value = GetValue();
+                            var rhs = GetValueAndType(value, "rhs");
+                            var lhsGetter = GetValueAndType(identifier, "lhs", true, rhs.propertyType);
+                            var lhsSetter = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
+                            if (rhs.propertyType == PropertyType.Function)
                             {
-                                var identifier = labelOrStatement;
-                                var value = GetValue();
-                                var rhs = GetValueAndType(value, "rhs");
-                                var lhsGetter = GetValueAndType(identifier, "lhs", true, rhs.propertyType);
-                                var lhsSetter = GetValueAndType(identifier, "lhs", false, rhs.propertyType);
-                                if (rhs.propertyType == PropertyType.Function)
-                                {
-                                    rhs.property = HandleFunction(rhs.property);
-                                }
-                                HandleAdd(lhsGetter, lhsSetter, rhs, keyword);
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
+                                rhs.property = HandleFunction(rhs.property);
                             }
+                            HandleAdd(lhsGetter, lhsSetter, rhs, keyword);
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "WAITT":
                         case "WAIT_TICKS":
                         case "WAIT":
+                        {
+                            var value = GetValue(labelOrStatement);
+                            var rhs = GetValueAndType(value, "rhs", true, PropertyType.Float);
+                            if (rhs.propertyType == PropertyType.Function)
                             {
-                                var value = GetValue(labelOrStatement);
-                                var rhs = GetValueAndType(value, "rhs", true, PropertyType.Float);
-                                if (rhs.propertyType == PropertyType.Function)
-                                {
-                                    rhs.property = HandleFunction(rhs.property);
-                                }
-                                if (keyword == "WAIT")
-                                {
-                                    CodeStringBuilder.AppendFormat(WaitTicks, rhs.property).AppendLine();
-                                    //CodeStringBuilder.Append("yield return new WaitForCycles(").Append(rhs.property).AppendLine(");");
-                                }
-                                else
-                                {
-                                    CodeStringBuilder.AppendFormat(WaitCycles, rhs.property).AppendLine();
-                                    //CodeStringBuilder.Append("yield return new WaitForTicks(").Append(rhs.property).AppendLine(");");
-                                }
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
+                                rhs.property = HandleFunction(rhs.property);
                             }
+                            if (keyword == "WAIT")
+                            {
+                                CodeStringBuilder.AppendFormat(WaitTicks, rhs.property).AppendLine();
+                                //CodeStringBuilder.Append("yield return new WaitForCycles(").Append(rhs.property).AppendLine(");");
+                            }
+                            else
+                            {
+                                CodeStringBuilder.AppendFormat(WaitCycles, rhs.property).AppendLine();
+                                //CodeStringBuilder.Append("yield return new WaitForTicks(").Append(rhs.property).AppendLine(");");
+                            }
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "CALL":
-                            {
-                                HandleCall(labelOrStatement);
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
-                            }
+                        {
+                            HandleCall(labelOrStatement);
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "BRANCH":
-                            {
-                                HandleCall(labelOrStatement);
-                                CodeStringBuilder.AppendLine("yield break;");
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
-                            }
+                        {
+                            HandleCall(labelOrStatement);
+                            CodeStringBuilder.AppendLine("yield break;");
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "SKIP":
+                        {
+                            var count = float.Parse(GetValue(labelOrStatement));
+                            if (count < 0)
                             {
-                                var count = float.Parse(GetValue(labelOrStatement));
-                                if (count < 0)
-                                {
-                                    throw new Exception("Die: can't go back in instructions");
-                                }
-                                var skipName = $"skip_{_varCounter++}";
-                                CodeStringBuilder.Append("goto ").Append(skipName).AppendLine(";");
-                                _skips.Add(new Tuple<string, float>(skipName, count));
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
+                                throw new Exception("Die: can't go back in instructions");
                             }
+                            var skipName = $"skip_{_varCounter++}";
+                            CodeStringBuilder.Append("goto ").Append(skipName).AppendLine(";");
+                            _skips.Add(new Tuple<string, float>(skipName, count));
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "GOTO":
-                            {
-                                var label = labelOrStatement;
-                                CodeStringBuilder.Append("goto ").Append(Sanitize(label)).AppendLine(";");
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
-                            }
+                        {
+                            var label = labelOrStatement;
+                            CodeStringBuilder.Append("goto ").Append(Sanitize(label)).AppendLine(";");
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "END":
-                            {
-                                CodeStringBuilder.AppendLine("yield break;");
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
-                            }
+                        {
+                            CodeStringBuilder.AppendLine("yield break;");
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "EXIT":
-                            {
-                                CodeStringBuilder.AppendLine("Application.Quit();");
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
-                            }
+                        {
+                            CodeStringBuilder.AppendLine("Application.Quit();");
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "PLAY_SONG":
-                            {
-                                var volume = GetValue();
-                                var lhs = GetValueAndType(labelOrStatement, "lhs");
-                                var rhs = GetValueAndType(volume, "rhs");
-                                CodeStringBuilder.Append("_world.PlaySong(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
-                            }
+                        {
+                            var volume = GetValue();
+                            var lhs = GetValueAndType(labelOrStatement, "lhs");
+                            var rhs = GetValueAndType(volume, "rhs");
+                            CodeStringBuilder.Append("_world.PlaySong(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "PLAY_SOUND":
+                        {
+                            var volume = GetValue();
+                            var lhs = GetValueAndType(labelOrStatement, "lhs");
+                            var rhs = GetValueAndType(volume, "rhs");
+                            var next = GetNextToken();
+                            if (next != ";")
                             {
-                                var volume = GetValue();
-                                var lhs = GetValueAndType(labelOrStatement, "lhs");
-                                var rhs = GetValueAndType(volume, "rhs");
-                                var next = GetNextToken();
-                                if (next != ";")
-                                {
-                                    var rhs2 = GetValueAndType(next, "rhs2");
-                                    CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).Append(",").Append(rhs2.property).AppendLine(");");
-                                }
-                                else
-                                {
-
-                                    CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
-                                }
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
+                                var rhs2 = GetValueAndType(next, "rhs2");
+                                CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).Append(",").Append(rhs2.property).AppendLine(");");
                             }
+                            else
+                            {
+                                CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            }
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
+                        case "SHIFT":
+                        {
+                            var lhs = GetValueAndType(labelOrStatement, "lhs");
+                            var rhs = GetValueAndType(GetValue(), "rhs");
+                            var rhs2 = GetValueAndType(GetValue(), "rhs2");
+                            CodeStringBuilder.Append("_world.Shift(").Append(lhs.property).Append(",").Append(rhs.property).Append(",").Append(rhs2.property).AppendLine(");");
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
+                        case "LIFT":
+                        {
+                            var zValue = GetValue();
+                            var lhs = GetValueAndType(labelOrStatement, "lhs");
+                            var rhs = GetValueAndType(zValue, "rhs");
+                            CodeStringBuilder.Append("_world.Lift(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "ROTATE":
-                            {
-                                var radians = GetValue();
-                                var lhs = GetValueAndType(labelOrStatement, "lhs");
-                                var rhs = GetValueAndType(radians, "rhs");
-                                CodeStringBuilder.Append("_world.Rotate(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
-                            }
+                        {
+                            var radians = GetValue();
+                            var lhs = GetValueAndType(labelOrStatement, "lhs");
+                            var rhs = GetValueAndType(radians, "rhs");
+                            CodeStringBuilder.Append("_world.Rotate(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "FADE_PAL":
-                            {
-                                var factor = GetValue();
-                                var lhs = GetValueAndType(labelOrStatement, "lhs");
-                                var rhs = GetValueAndType(factor, "rhs");
-                                CodeStringBuilder.Append("_world.FadePal(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
-                            }
+                        {
+                            var factor = GetValue();
+                            var lhs = GetValueAndType(labelOrStatement, "lhs");
+                            var rhs = GetValueAndType(factor, "rhs");
+                            CodeStringBuilder.Append("_world.FadePal(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "SHOOT":
                         case "EXPLODE":
+                        {
+                            var method = keyword == "SHOOT" ? "Shoot" : "Explode";
+                            var next = labelOrStatement;
+                            if (next != ";")
                             {
-                                var method = keyword == "SHOOT" ? "Shoot" : "Explode";
-                                var next = labelOrStatement;
-                                if (next != ";")
-                                {
-                                    var rhs = GetValueAndType(next, "rhs");
-                                    CodeStringBuilder.Append($"_world.{method}(").Append(rhs.property).AppendLine(", MY, THERE);");
-                                }
-                                else
-                                {
-                                    CodeStringBuilder.AppendLine($"_world.{method}(null, MY, THERE);");
-                                }
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
+                                var rhs = GetValueAndType(next, "rhs");
+                                CodeStringBuilder.Append($"_world.{method}(").Append(rhs.property).AppendLine(", MY, THERE);");
                             }
+                            else
+                            {
+                                CodeStringBuilder.AppendLine($"_world.{method}(null, MY, THERE);");
+                            }
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "DROP":
-                            {
-                                var lhs = GetValueAndType(labelOrStatement, "rhs");
-                                var droppedName = $"dropped_{_varCounter++}";
-                                CodeStringBuilder.Append("var ").Append(droppedName).Append(" = ");
-                                CodeStringBuilder.Append("_world.Drop(").Append(lhs.property).AppendLine(", MY, THERE);");
-                                _dropped.Add(labelOrStatement, droppedName);
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
-                            }
+                        {
+                            var lhs = GetValueAndType(labelOrStatement, "rhs");
+                            var droppedName = $"dropped_{_varCounter++}";
+                            CodeStringBuilder.Append("var ").Append(droppedName).Append(" = ");
+                            CodeStringBuilder.Append("_world.Drop(").Append(lhs.property).AppendLine(", MY, THERE);");
+                            _dropped.Add(labelOrStatement, droppedName);
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "INKEY":
-                            {
-                                var key = labelOrStatement;
-                                CodeStringBuilder.Append("_world.ReadInkey(\"").Append(key).AppendLine("\");");
-                                HandleIfStack();
-                                ReadUntilSemiColon();
-                                break;
-                            }
+                        {
+                            var key = labelOrStatement;
+                            CodeStringBuilder.Append("_world.ReadInkey(\"").Append(key).AppendLine("\");");
+                            HandleIfStack();
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "IF_MAX":
-                            {
-                                var identifier = labelOrStatement;
-                                var lhs = GetValueAndType(identifier, "lhs");
-                                CodeStringBuilder.Append("if (").Append(lhs.property).Append(" > ").Append(lhs.source).AppendLine(".GetFloat(\"MAX\"))");
-                                CodeStringBuilder.AppendLine("{");
-                                _ifStack++;
-                                ReadUntilSemiColon();
-                                break;
-                            }
+                        {
+                            var identifier = labelOrStatement;
+                            var lhs = GetValueAndType(identifier, "lhs");
+                            CodeStringBuilder.Append("if (").Append(lhs.property).Append(" > ").Append(lhs.source).AppendLine(".GetFloat(\"MAX\"))");
+                            CodeStringBuilder.AppendLine("{");
+                            _ifStack++;
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         case "IF_EQUAL":
                         case "IF_NEQUAL":
                         case "IF_ABOVE":
                         case "IF_BELOW":
+                        {
+                            var identifier = labelOrStatement;
+                            var value = GetValue();
+                            var rhs = GetValueAndType(value, "rhs");
+                            var lhs = GetValueAndType(identifier, "lhs");
+                            if (lhs.propertyType == PropertyType.Function)
                             {
-                                var identifier = labelOrStatement;
-                                var value = GetValue();
-                                var rhs = GetValueAndType(value, "rhs");
-                                var lhs = GetValueAndType(identifier, "lhs");
-                                if (lhs.propertyType == PropertyType.Function)
-                                {
-                                    lhs.property = HandleFunction(lhs.property);
-                                }
-                                if (rhs.propertyType == PropertyType.Function)
-                                {
-                                    rhs.property = HandleFunction(rhs.property);
-                                }
-                                switch (keyword)
-                                {
-                                    case "IF_EQUAL":
-                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" == ").Append(rhs.property).AppendLine(")");
-                                        break;
-                                    case "IF_NEQUAL":
-                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" != ").Append(rhs.property).AppendLine(")");
-                                        break;
-                                    case "IF_BELOW":
-                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" < ").Append(rhs.property).AppendLine(")");
-                                        break;
-                                    default:
-                                        CodeStringBuilder.Append("if (").Append(lhs.property).Append(" > ").Append(rhs.property).AppendLine(")");
-                                        break;
-                                }
-                                CodeStringBuilder.AppendLine("{");
-                                _ifStack++;
-                                ReadUntilSemiColon();
-                                break;
+                                lhs.property = HandleFunction(lhs.property);
                             }
+                            if (rhs.propertyType == PropertyType.Function)
+                            {
+                                rhs.property = HandleFunction(rhs.property);
+                            }
+                            switch (keyword)
+                            {
+                                case "IF_EQUAL":
+                                    CodeStringBuilder.Append("if (").Append(lhs.property).Append(" == ").Append(rhs.property).AppendLine(")");
+                                    break;
+                                case "IF_NEQUAL":
+                                    CodeStringBuilder.Append("if (").Append(lhs.property).Append(" != ").Append(rhs.property).AppendLine(")");
+                                    break;
+                                case "IF_BELOW":
+                                    CodeStringBuilder.Append("if (").Append(lhs.property).Append(" < ").Append(rhs.property).AppendLine(")");
+                                    break;
+                                default:
+                                    CodeStringBuilder.Append("if (").Append(lhs.property).Append(" > ").Append(rhs.property).AppendLine(")");
+                                    break;
+                            }
+                            CodeStringBuilder.AppendLine("{");
+                            _ifStack++;
+                            ReadUntilSemiColon();
+                            break;
+                        }
                         default:
                             CodeStringBuilder.Append("//Unknown keyword: ").Append(keyword).AppendLine();
                             Debug.LogWarning("<color=#00FF00>Unkown action keyword [" + keyword + "]</color>");
@@ -448,9 +495,7 @@ namespace Acknex
                             break;
                     }
                 }
-
-            }
-            while (_currentToken != null);
+            } while (_currentToken != null);
         }
 
         private string GetNextToken()
@@ -463,7 +508,8 @@ namespace Acknex
             {
                 _currentToken = null;
             }
-            return _currentToken; ;
+            return _currentToken;
+            ;
         }
 
         private void HandleCall(string labelOrStatement)
@@ -471,12 +517,12 @@ namespace Acknex
             var action = labelOrStatement;
             if (!World.Instance.SynonymsByName.ContainsKey(action))
             {
-                CodeStringBuilder.AppendFormat(CallEnumeratorTemplate, $"{Sanitize(action)}(MY, THERE)");
+                CodeStringBuilder.AppendFormat(CallEnumerator, $"{Sanitize(action)}(MY, THERE)");
             }
             else
             {
                 var actionGetter = $"_world.CallSynonymAction(\"{Sanitize(action)}\", MY, THERE)";
-                CodeStringBuilder.AppendFormat(CallEnumeratorTemplate, actionGetter);
+                CodeStringBuilder.AppendFormat(CallEnumerator, actionGetter);
             }
         }
 
@@ -546,11 +592,7 @@ namespace Acknex
             }
         }
 
-        private void HandleAssignment(
-            (string property, PropertyType propertyType, ObjectType objectType, string source) lhs,
-            (string property, PropertyType propertyType, ObjectType objectType, string source) rhs,
-            bool setAll = false
-        )
+        private void HandleAssignment((string property, PropertyType propertyType, ObjectType objectType, string source) lhs, (string property, PropertyType propertyType, ObjectType objectType, string source) rhs, bool setAll = false)
         {
             switch (lhs.objectType)
             {
@@ -569,36 +611,42 @@ namespace Acknex
                     {
                         case PropertyType.Float:
                             if (setAll)
-
+                            {
                                 CodeStringBuilder.Append($"{lhs.source}.SetFloatAll(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            }
                             else
+                            {
                                 CodeStringBuilder.Append($"{lhs.source}.SetFloat(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            }
                             break;
                         case PropertyType.Null:
                         case PropertyType.String:
                             if (setAll)
+                            {
                                 CodeStringBuilder.Append($"{lhs.source}.SetStringAll(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            }
                             else
+                            {
                                 CodeStringBuilder.Append($"{lhs.source}.SetString(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            }
                             break;
                         case PropertyType.ActionReference:
                         case PropertyType.ObjectReference:
                             if (setAll)
+                            {
                                 CodeStringBuilder.Append($"{lhs.source}.SetAcknexObjectAll(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            }
                             else
+                            {
                                 CodeStringBuilder.Append($"{lhs.source}.SetAcknexObject(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                            }
                             break;
                     }
                     break;
             }
         }
 
-        private void HandleAdd(
-            (string property, PropertyType propertyType, ObjectType objectType, string source) lhsGetter,
-            (string property, PropertyType propertyType, ObjectType objectType, string source) lhsSetter,
-            (string property, PropertyType propertyType, ObjectType objectType, string source) rhs,
-            string mode
-            )
+        private void HandleAdd((string property, PropertyType propertyType, ObjectType objectType, string source) lhsGetter, (string property, PropertyType propertyType, ObjectType objectType, string source) lhsSetter, (string property, PropertyType propertyType, ObjectType objectType, string source) rhs, string mode)
         {
             switch (lhsGetter.propertyType)
             {
@@ -636,8 +684,7 @@ namespace Acknex
         }
 
 
-
-        (string property, PropertyType propertyType, ObjectType objectType, string source) GetValueAndType(string objectOrPropertyOrValue, string propertyAssignmentVariable = "propertyValue", bool outputGetter = true, PropertyType returnType = PropertyType.Null)
+        private (string property, PropertyType propertyType, ObjectType objectType, string source) GetValueAndType(string objectOrPropertyOrValue, string propertyAssignmentVariable = "propertyValue", bool outputGetter = true, PropertyType returnType = PropertyType.Null)
         {
             propertyAssignmentVariable = Sanitize(objectOrPropertyOrValue);
             //propertyAssignmentVariable = Sanitize(propertyAssignmentVariable);
@@ -678,7 +725,7 @@ namespace Acknex
                 CodeStringBuilder.Append($"var {propertyAssignmentVariable} = _world.GetObject(ObjectType.Skill,\"").Append(objectOrPropertyOrValue).AppendLine("\");");
                 if (outputGetter)
                 {
-                    var objectAssignmentVariable = $"{propertyAssignmentVariable}_val";//$"temp_{_varCounter++}";
+                    var objectAssignmentVariable = $"{propertyAssignmentVariable}_val"; //$"temp_{_varCounter++}";
                     CodeStringBuilder.AppendLine($"var {objectAssignmentVariable} = {propertyAssignmentVariable}.GetFloat(\"VAL\");");
                     return (objectAssignmentVariable, PropertyType.Float, ObjectType.Skill, propertyAssignmentVariable);
                 }
@@ -704,7 +751,7 @@ namespace Acknex
             if (valueIndexOfDot > -1)
             {
                 var valueObjectName = objectOrPropertyOrValue.Substring(0, valueIndexOfDot);
-                var objectAssignmentVariable = Sanitize(valueObjectName);//$"acknexObject_{_varCounter}";
+                var objectAssignmentVariable = Sanitize(valueObjectName); //$"acknexObject_{_varCounter}";
                 objectAssignmentVariable += $"_{_varCounter++}";
                 HandleObject(valueObjectName, objectAssignmentVariable, true, out var innerObjectDeclaration);
                 var valueProperty = objectOrPropertyOrValue.Substring(valueIndexOfDot + 1);
@@ -773,13 +820,7 @@ namespace Acknex
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Palette);
                 }
             }
-            return GetObjectPropertyValueAndType(
-                propertyAssignmentVariable,
-                objectOrPropertyOrValue,
-                "_world.AcknexObject",
-                outputGetter,
-                ObjectType.World
-            );
+            return GetObjectPropertyValueAndType(propertyAssignmentVariable, objectOrPropertyOrValue, "_world.AcknexObject", outputGetter, ObjectType.World);
         }
 
         private bool HandleObject(string objectName, string assignmentVariable, bool outputGetter, out (string property, PropertyType propertyType, ObjectType objectType, string source) valueAndType)
@@ -913,13 +954,7 @@ namespace Acknex
             return false;
         }
 
-        private (string property, PropertyType propertyType, ObjectType objectType, string source) GetObjectPropertyValueAndType(
-            string assignmentVariable,
-            string property,
-            string sourceObject,
-            bool outputGetter,
-            ObjectType objectType,
-            string originalName = null)
+        private (string property, PropertyType propertyType, ObjectType objectType, string source) GetObjectPropertyValueAndType(string assignmentVariable, string property, string sourceObject, bool outputGetter, ObjectType objectType, string originalName = null)
         {
             if (objectType == ObjectType.Synonym && originalName != null)
             {
@@ -954,41 +989,6 @@ namespace Acknex
         private string Sanitize(string value)
         {
             return Regex.Replace(value, @"[^A-z0-9]", "_");
-        }
-
-        public void UpdateObject()
-        {
-
-        }
-
-        public void Enable()
-        {
-
-        }
-
-        public void Disable()
-        {
-
-        }
-
-        public void SetupTemplate()
-        {
-
-        }
-
-        public void SetupInstance()
-        {
-
-        }
-
-        public Vector3 GetCenter()
-        {
-            return default;
-        }
-
-        public IAcknexObject GetRegion()
-        {
-            return null;
         }
     }
 }

@@ -821,7 +821,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AmbientLight: {fileID: 705507994}
   AudioSource: {fileID: 1477033083}
-  BilinearFilter: 0
+  BilinearFilter: 1
   Canvas: {fileID: 1116186326}
   CanvasView: {fileID: 1520209880}
   CanvasWidthRatio: 0
@@ -830,7 +830,7 @@ MonoBehaviour:
   DebugTexture: {fileID: 0}
   DisableCompilation: 0
   DisableMaterials: 0
-  DrawShadows: 0
+  DrawShadows: 1
   GodMode: 1
   MeshBatch: 0
   MidiPlayer: {fileID: 1246573634}
@@ -843,7 +843,7 @@ MonoBehaviour:
     m_LayerIndex: 9
   TriggersLayer:
     m_LayerIndex: 10
-  UsePalettes: 1
+  UsePalettes: 0
   UseWDLEngine: 0
   Volume: 1
   WallsAndRegionsLayer:
@@ -859,7 +859,7 @@ MonoBehaviour:
     m_Bits: 784
   WaterLayer:
     m_LayerIndex: 4
-  WDLPath: C:\games\acknex\varginha2\CONTATO.WDL
+  WDLPath: Assets\Data\se.wdl
   WMPContainsRegionsByName: 0
   IgnoreRaycastLayer:
     m_LayerIndex: 2

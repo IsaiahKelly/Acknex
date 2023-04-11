@@ -6,7 +6,9 @@ using AudioSynthesis.Midi;
 using LibTessDotNet;
 using Tests;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Utils;
 using Resolution = Acknex.Interfaces.Resolution;
 
 namespace Acknex
@@ -111,7 +113,6 @@ namespace Acknex
                 case ObjectType.Actor:
                     {
                         var actor = CreateActor(name);
-                        //actor.Disable();
                         ActorsByName.Add(name, actor);
                         AcknexObject.SetAcknexObject(name, actor.AcknexObject);
                         return actor.AcknexObject;
@@ -127,7 +128,6 @@ namespace Acknex
                 case ObjectType.Region:
                     {
                         var region = CreateRegion(name);
-                        //region.Disable();
                         RegionsByName.Add(name, region);
                         AcknexObject.SetAcknexObject(name, region.AcknexObject);
                         if (WMPContainsRegionsByName)
@@ -154,7 +154,6 @@ namespace Acknex
                 case ObjectType.Thing:
                     {
                         var thing = CreateThing(name);
-                        //thing.Disable();
                         ThingsByName.Add(name, thing);
                         AcknexObject.SetAcknexObject(name, thing.AcknexObject);
                         return thing.AcknexObject;
@@ -162,7 +161,6 @@ namespace Acknex
                 case ObjectType.Wall:
                     {
                         var wall = CreateWall(name);
-                        //wall.Disable();
                         WallsByName.Add(name, wall);
                         AcknexObject.SetAcknexObject(name, wall.AcknexObject);
                         return wall.AcknexObject;
@@ -170,7 +168,6 @@ namespace Acknex
                 case ObjectType.Way:
                     {
                         var way = CreateWay(name);
-                        //way.Disable();
                         WaysByName.Add(name, way);
                         AcknexObject.SetAcknexObject(name, way.AcknexObject);
                         return way.AcknexObject;
@@ -617,13 +614,36 @@ namespace Acknex
             var region = acknexObject.Container as Region;
             if (region != null)
             {
-                if (acknexObject.TryGetAcknexObject("GENIUS", out var genius))
+                var regionName = region.AcknexObject.GetString("NAME");
+                foreach (var instance in AllRegionsByName[regionName])
                 {
-                    region.Rotate(genius.Container.GetCenter(), Mathf.Rad2Deg * radians);
+                    instance.Rotate(acknexObject.TryGetAcknexObject("GENIUS", out var genius) ? genius.Container.GetCenter() : Vector3.zero, Mathf.Rad2Deg * radians);
                 }
-                else
+            }
+        }
+
+        public void Lift(IAcknexObject acknexObject, float dz)
+        {
+            var region = acknexObject.Container as Region;
+            if (region != null)
+            {
+                var regionName = region.AcknexObject.GetString("NAME");
+                foreach (var instance in AllRegionsByName[regionName])
                 {
-                    region.Rotate(Vector3.zero, Mathf.Rad2Deg * radians);
+                    instance.Lift(dz);
+                }
+            }
+        }
+
+        public void Shift(IAcknexObject acknexObject, float dx, float dy)
+        {
+            var region = acknexObject.Container as Region;
+            if (region != null)
+            {
+                var regionName = region.AcknexObject.GetString("NAME");
+                foreach (var instance in AllRegionsByName[regionName])
+                {
+                    instance.Shift(dx, dy);
                 }
             }
         }
@@ -636,12 +656,6 @@ namespace Acknex
             }
             var shootX = GetSkillValue("SHOOT_X");
             var shootY = GetSkillValue("SHOOT_Y");
-            //if (acknexObject == null)
-            //{
-            //    Debug.Log("SHOOTX: " + shootX);
-            //    Debug.Log("SHOOTY: " + shootY);
-            //}
-            //todo: deviation
             Ray ray;
             if (acknexObject == null)
             {
@@ -672,8 +686,22 @@ namespace Acknex
                 {
                     TriggerEvent("IF_HIT", hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
                 }
-#if DEBUG_ENABLED
-                Debug.DrawLine(ray.origin, raycastResult.point, Color.white, 10f);
+#if true
+                var color = Color.magenta;
+                switch (hitAcknexObject.Type)
+                {
+                    case ObjectType.Wall:
+                        color = Color.red;
+                        break;
+                    case ObjectType.Region:
+                        color = Color.green;
+                        break;
+                    case ObjectType.Thing:
+                        color = Color.blue;
+                        break;
+                }
+                Debug.DrawLine(ray.origin, hitAcknexObject.Container.GetCenter(), color, 1f);
+                DebugExtension.DebugPoint(raycastResult.point, color, 1f, 1f);
 #endif
             }
             UpdateSkillValue("HIT_DIST", 0f);

@@ -142,6 +142,9 @@ namespace Acknex
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
             //_audioSource.spread = 360f;
 
+            StartCoroutine(TriggerTickEvents());
+            StartCoroutine(TriggerSecEvents());
+
         }
 
         //private void OnCollisionExitCallback(Collision collision)
@@ -176,6 +179,21 @@ namespace Acknex
                 _meshRenderer.enabled = false;
                 _collider.enabled = false;
                 return;
+            }
+            if (AckTransform.Degrees != 0f)
+            {
+                transform.RotateAround(AckTransform.Center, Vector3.up, -AckTransform.Degrees);
+                AckTransform.Degrees = 0f;
+            }
+            if (AckTransform.DX != 0f)
+            {
+                transform.Translate(AckTransform.DX, 0f, 0f, Space.World);
+                AckTransform.DX = 0f;
+            }
+            if (AckTransform.DY != 0f)
+            {
+                transform.Translate(0f, 0f, AckTransform.DY, Space.World);
+                AckTransform.DY = 0f;
             }
             _meshRenderer.enabled = !DisableRender;
             AcknexObject.SetFloat("VISIBLE", AcknexObject.GetFloat("INVISIBLE") > 0f ? 0f : 1f);
@@ -234,9 +252,9 @@ namespace Acknex
             }
         }
 
-        private bool TextureCanceled(Texture arg)
+        private bool TextureCanceled(Texture texture)
         {
-            return false;
+            return AcknexObject.HasFlag("INVISIBLE") || texture != TextureObject;
         }
 
         private void OnWallTriggerExit(Collider collider)
@@ -397,6 +415,10 @@ namespace Acknex
             {
                 rightRegion = rightRegionAbove;
             }
+            if (leftRegion != null)
+                leftRegion.Walls.Add(this);
+            if (rightRegion != null)
+                rightRegion.Walls.Add(this);
             var leftRegionBelowCeilHeight = leftRegion?.Below == null ? 0f : leftRegion.Below.AcknexObject.GetFloat("CEIL_HGT");
             var rightRegionBelowCeilHeight = rightRegion?.Below == null ? 0f : rightRegion.Below.AcknexObject.GetFloat("CEIL_HGT");
             var leftRegionAboveFloorHeight = leftRegionAbove == null ? 0f : leftRegionAbove.AcknexObject.GetFloat("FLOOR_HGT");
@@ -637,6 +659,47 @@ namespace Acknex
             //AcknexObject.SetFloat("Z2", vertexB.Position.Z);
             BuildWall(vertexA, vertexB, contourVertices, rightRegion, leftRegion);
             BuildWallMesh();
+        }
+
+        public AckTransform AckTransform;
+
+        public void Rotate(Vector3 center, float degrees)
+        {
+            AckTransform.Center = center;
+            AckTransform.Degrees = degrees;
+            AcknexObject.IsDirty = true;
+            //transform.RotateAround(center, Vector3.up, -degrees);
+        }
+
+        public void Shift(float dx, float dy)
+        {
+            AckTransform.DX = dx;
+            AckTransform.DY = dy;
+            AcknexObject.IsDirty = true;
+            //transform.Translate(dx, 0f, dy, Space.World);
+        }
+
+        private IEnumerator TriggerSecEvents()
+        {
+            while (true)
+            {
+                World.Instance.TriggerEvent("EACH_SEC", AcknexObject, AcknexObject, GetRegion());
+                yield return World.Instance.WaitForSecond;
+            }
+        }
+
+        private IEnumerator TriggerTickEvents()
+        {
+            while (true)
+            {
+                World.Instance.TriggerEvent("EACH_TICK", AcknexObject, AcknexObject, GetRegion());
+                yield return null;
+            }
+        }
+
+        public void Lift(float dz)
+        {
+            
         }
     }
 }

@@ -42,6 +42,7 @@ namespace Acknex
         public ContouredRegion ContouredRegion;
         public bool DisableCeilRender;
         public bool DisableFloorRender;
+        public HashSet<Wall> Walls = new HashSet<Wall>();
 
         public Texture FloorTexture
         {
@@ -189,7 +190,10 @@ namespace Acknex
             _audioSource.spatialBlend = 1f;
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
             //_audioSource.spread = 360f;
+            StartCoroutine(TriggerTickEvents());
+            StartCoroutine(TriggerSecEvents());
         }
+
 
         public void SetupTemplate()
         {
@@ -219,6 +223,26 @@ namespace Acknex
                 _ceilMeshRenderer.enabled = false;
                 _ceilCollider.enabled = false;
                 return;
+            }
+            if (AckTransform.Degrees != 0f)
+            {
+                transform.RotateAround(AckTransform.Center, Vector3.up, -AckTransform.Degrees);
+                AckTransform.Degrees = 0f;
+            }
+            if (AckTransform.DX != 0f)
+            {
+                transform.Translate(AckTransform.DX, 0f, 0f, Space.World);
+                AckTransform.DX = 0f;
+            }
+            if (AckTransform.DY != 0f)
+            {
+                transform.Translate(0f, 0f, AckTransform.DY, Space.World);
+                AckTransform.DY = 0f;
+            }
+            if (AckTransform.DZ != 0f)
+            {
+                transform.Translate(0f, AckTransform.DZ, 0f, Space.World);
+                AckTransform.DZ = 0f;
             }
             _floorMeshRenderer.enabled = !DisableFloorRender;
             _floorCollider.enabled = true;
@@ -289,16 +313,16 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = CeilTexture.AnimateTexture(TextureCanceled, true, _ceilMeshRenderer, CeilMeshFilter, null, AcknexObject, AcknexObject, null);
+            var enumerator = CeilTexture.AnimateTexture(CeilTextureCanceled, true, _ceilMeshRenderer, CeilMeshFilter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
             }
         }
 
-        private bool TextureCanceled(Texture arg)
+        private bool CeilTextureCanceled(Texture texture)
         {
-            return false;
+            return AcknexObject.HasFlag("INVISIBLE") || texture != CeilTexture;
         }
 
         private IEnumerator AnimateFloor()
@@ -307,11 +331,16 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = FloorTexture.AnimateTexture(TextureCanceled, true, _floorMeshRenderer, FloorMeshFilter, null, AcknexObject, AcknexObject, null);
+            var enumerator = FloorTexture.AnimateTexture(FloorTextureCanceled, true, _floorMeshRenderer, FloorMeshFilter, null, AcknexObject, AcknexObject, null);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
             }
+        }
+
+        private bool FloorTextureCanceled(Texture texture)
+        {
+            return AcknexObject.HasFlag("INVISIBLE") || texture != FloorTexture;
         }
 
         private void Update()
@@ -387,6 +416,25 @@ namespace Acknex
             _materialsCreated = true;
         }
 
+        private IEnumerator TriggerSecEvents()
+        {
+            while (true)
+            {
+                World.Instance.TriggerEvent("EACH_SEC", AcknexObject, AcknexObject, GetRegion());
+                yield return World.Instance.WaitForSecond;
+            }
+        }
+
+        private IEnumerator TriggerTickEvents()
+        {
+            while (true)
+            {
+                World.Instance.TriggerEvent("EACH_TICK", AcknexObject, AcknexObject, GetRegion());
+                yield return null;
+            }
+        }
+
+
         public void UpdateAllMeshes()
         {
             var meshIndex = 0;
@@ -401,10 +449,22 @@ namespace Acknex
         public void BuildFloorOrCeil( /*ContouredRegion contouredRegion, List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<int, List<int>> allTriangles,*/ ref int meshIndex, bool ceil = false)
         {
             var tess = new Tess();
+            var biggestArea = 0f;
+            IList<ContourVertex> biggestContour = null;
             foreach (var contouredList in ContouredRegion)
             {
-                tess.AddContour(contouredList);
+                var area = ContouredRegion.CalculateArea(contouredList);
+                if (area > biggestArea)
+                {
+                    biggestArea = area;
+                    biggestContour = contouredList;
+                }
             }
+            if (biggestContour == null)
+            {
+                return;
+            }
+            tess.AddContour(biggestContour);
             tess.Tessellate();
             var floorVertices = new Vector3[tess.VertexCount];
             var ceilLift = GetCeilLift();
@@ -572,13 +632,36 @@ namespace Acknex
             }
         }
 
+        public AckTransform AckTransform;
+
         //todo: rotate things and actors as well
         public void Rotate(Vector3 center, float degrees)
         {
-            transform.RotateAround(center, Vector3.up, -degrees);
-            foreach (var wall in World.Instance.RegionWalls[AcknexObject])
+            if (Player.Instance.GetRegion() == AcknexObject)
             {
-                wall.transform.RotateAround(center, Vector3.up, -degrees);
+                Player.Instance.Rotate(center, degrees);
+            }
+            AckTransform.Center = center;
+            AckTransform.Degrees = degrees;
+            AcknexObject.IsDirty = true;
+            foreach (var wall in Walls)
+            {
+                wall.Rotate(center, degrees);
+            }
+        }
+
+        public void Shift(float dx, float dy)
+        {
+            if (Player.Instance.GetRegion() == AcknexObject)
+            {
+                Player.Instance.Shift(dx, dy);
+            }
+            AckTransform.DX = dx;
+            AckTransform.DY = dy;
+            AcknexObject.IsDirty = true;
+            foreach (var wall in Walls)
+            {
+                wall.Shift(dx, dy);
             }
         }
 
@@ -591,6 +674,20 @@ namespace Acknex
                 return this;
             }
             return Below == null ? this : Below.GetRegionWithCeilingAbove(thingZ);
+        }
+
+        public void Lift(float dz)
+        {
+            if (Player.Instance.GetRegion() == AcknexObject)
+            {
+                Player.Instance.Lift(dz);
+            }
+            AckTransform.DZ = dz;
+            AcknexObject.IsDirty = true;
+            foreach (var wall in Walls)
+            {
+                wall.Lift(dz);
+            }
         }
     }
 }

@@ -82,6 +82,8 @@ namespace Acknex
                     case '^':
                     case '&':
                     case '=':
+                    case '<':
+                    case '>':
                         return true;
                 }
                 return false;
@@ -239,11 +241,11 @@ namespace Acknex
                                     CheckSemiColon(tokens);
                                     break;
                                 case "MAPFILE":
-                                    _mapFile = ParseDir(GetNextToken(tokens));
+                                    _mapFile = ParseDir(GetNextToken(tokens), tokens);
                                     CheckSemiColon(tokens);
                                     break;
                                 case "INCLUDE":
-                                    ParseWDL(ParseDir(GetNextToken(tokens)));
+                                    ParseWDL(ParseDir(GetNextToken(tokens), tokens));
                                     CheckSemiColon(tokens);
                                     break;
                                 case "PANEL":
@@ -294,7 +296,7 @@ namespace Acknex
                                     {
                                         var name = GetNextToken(tokens);
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Bitmap, name);
-                                        _openObject.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                        _openObject.SetString("FILENAME", ParseDir(GetNextToken(tokens), tokens));
                                         var token = GetNextToken(tokens);
                                         if (token != ";")
                                         {
@@ -366,7 +368,7 @@ namespace Acknex
                                 case "FONT":
                                     {
                                         var font = _world.CreateObjectTemplate(ObjectType.Font, GetNextToken(tokens));
-                                        font.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                        font.SetString("FILENAME", ParseDir(GetNextToken(tokens), tokens));
                                         font.SetFloat("WIDTH", ParseFloat(tokens));
                                         font.SetFloat("HEIGHT", ParseFloat(tokens));
                                         CheckSemiColon(tokens);
@@ -375,7 +377,7 @@ namespace Acknex
                                 case "MODEL":
                                     {
                                         var model = _world.CreateObjectTemplate(ObjectType.Model, GetNextToken(tokens));
-                                        model.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                        model.SetString("FILENAME", ParseDir(GetNextToken(tokens), tokens));
                                         //_world.PostSetupObjectTemplate(model);
                                         CheckSemiColon(tokens);
                                         break;
@@ -383,7 +385,7 @@ namespace Acknex
                                 case "SOUND":
                                     {
                                         var sound = _world.CreateObjectTemplate(ObjectType.Sound, GetNextToken(tokens));
-                                        sound.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                        sound.SetString("FILENAME", ParseDir(GetNextToken(tokens), tokens));
                                         //_world.PostSetupObjectTemplate(sound);
                                         CheckSemiColon(tokens);
                                         break;
@@ -391,7 +393,7 @@ namespace Acknex
                                 case "MUSIC":
                                     {
                                         var music = _world.CreateObjectTemplate(ObjectType.Song, GetNextToken(tokens));
-                                        music.SetString("FILENAME", ParseDir(GetNextToken(tokens)));
+                                        music.SetString("FILENAME", ParseDir(GetNextToken(tokens), tokens));
                                         //_world.PostSetupObjectTemplate(music);
                                         CheckSemiColon(tokens);
                                         break;
@@ -501,7 +503,7 @@ namespace Acknex
                     CheckSemiColon(tokens);
                     return true;
                 case PropertyType.Filename:
-                    acknexObject.SetString(keyword, ParseDir(GetNextToken(tokens)));
+                    acknexObject.SetString(keyword, ParseDir(GetNextToken(tokens), tokens));
                     CheckSemiColon(tokens);
                     return true;
                 case PropertyType.ActionReference:
@@ -603,14 +605,28 @@ namespace Acknex
             }
         }
 
-        private string ParseDir(string token)
+        private string ParseDir(string token, IEnumerator<string> tokens)
         {
-            token = token.Substring(1, token.Length - 2);
-            var filename = $"{_baseDir}/{token}";
-            return Path.GetFullPath(filename);
+            //token = token.Substring(1, token.Length - 2);
+            if (token != "<")
+            {
+                throw new Exception("Expected: <");
+            }
+            token = GetNextToken(tokens);
+            if (token != ">")
+            {
+                var filename = $"{_baseDir}/{token}";
+                token = GetNextToken(tokens);
+                if (token != ">")
+                {
+                    throw new Exception("Expected: >");
+                }
+                return Path.GetFullPath(filename);
+            }
+            return null;
         }
 
-        public void ParseWMP(string wmpFilename)
+            public void ParseWMP(string wmpFilename)
         {
             if (!File.Exists(wmpFilename))
             {
