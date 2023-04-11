@@ -5,7 +5,6 @@ using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Utils;
 
 namespace Acknex
 {
@@ -33,6 +32,8 @@ namespace Acknex
         private SphereCollider _vertexTriggerA;
         private SphereCollider _vertexTriggerB;
         private Vector3 _xAxis;
+
+        public AckTransform AckTransform;
 
         //todo: can remove, debug info
         public Matrix4x4 BottomQuad;
@@ -112,7 +113,6 @@ namespace Acknex
             _collider = _innerGameObject.AddComponent<MeshCollider>();
             _invertedCollider = _innerGameObject.AddComponent<MeshCollider>();
             _invertedCollider.enabled = false;
-
             _vertexGameObjectA = new GameObject("VertexA");
             _vertexGameObjectA.transform.SetParent(transform, false);
             _vertexGameObjectA.layer = World.Instance.TriggersLayer.LayerIndex;
@@ -121,7 +121,6 @@ namespace Acknex
             _collisionCallbackA = _vertexGameObjectA.AddComponent<CollisionCallback>();
             _collisionCallbackA.OnTriggerEnterCallback += OnWallTriggerEnter;
             _collisionCallbackA.OnTriggerExitCallback += OnWallTriggerExit;
-
             _vertexGameObjectB = new GameObject("VertexB");
             _vertexGameObjectB.transform.SetParent(transform, false);
             _vertexGameObjectB.layer = World.Instance.TriggersLayer.LayerIndex;
@@ -130,7 +129,6 @@ namespace Acknex
             _collisionCallbackB = _vertexGameObjectB.AddComponent<CollisionCallback>();
             _collisionCallbackB.OnTriggerEnterCallback += OnWallTriggerEnter;
             _collisionCallbackB.OnTriggerExitCallback += OnWallTriggerExit;
-
             _audioSourceGameObject = new GameObject("AudioSource");
             _audioSourceGameObject.transform.SetParent(transform, false);
             _audioSource = _audioSourceGameObject.AddComponent<AudioSource>();
@@ -141,10 +139,8 @@ namespace Acknex
             _audioSource.spatialBlend = 1f;
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
             //_audioSource.spread = 360f;
-
             StartCoroutine(TriggerTickEvents());
             StartCoroutine(TriggerSecEvents());
-
         }
 
         //private void OnCollisionExitCallback(Collision collision)
@@ -194,6 +190,11 @@ namespace Acknex
             {
                 transform.Translate(0f, 0f, AckTransform.DY, Space.World);
                 AckTransform.DY = 0f;
+            }
+            if (AckTransform.DZ != 0f)
+            {
+                transform.Translate(0f, AckTransform.DZ, 0f, Space.World);
+                AckTransform.DZ = 0f;
             }
             _meshRenderer.enabled = !DisableRender;
             AcknexObject.SetFloat("VISIBLE", AcknexObject.GetFloat("INVISIBLE") > 0f ? 0f : 1f);
@@ -416,22 +417,25 @@ namespace Acknex
                 rightRegion = rightRegionAbove;
             }
             if (leftRegion != null)
+            {
                 leftRegion.Walls.Add(this);
+            }
             if (rightRegion != null)
+            {
                 rightRegion.Walls.Add(this);
+            }
             var leftRegionBelowCeilHeight = leftRegion?.Below == null ? 0f : leftRegion.Below.AcknexObject.GetFloat("CEIL_HGT");
             var rightRegionBelowCeilHeight = rightRegion?.Below == null ? 0f : rightRegion.Below.AcknexObject.GetFloat("CEIL_HGT");
             var leftRegionAboveFloorHeight = leftRegionAbove == null ? 0f : leftRegionAbove.AcknexObject.GetFloat("FLOOR_HGT");
             var rightRegionAboveFloorHeight = rightRegionAbove == null ? 0f : rightRegionAbove.AcknexObject.GetFloat("FLOOR_HGT");
             //todo: checking by the flag here is wrong
             if (AcknexObject.HasFlag("FENCE"))
-            //leftRegion.AcknexObject.GetNumber("FLOOR_HGT") == rightRegion.AcknexObject.GetNumber("FLOOR_HGT") && 
-            //leftRegion.AcknexObject.GetNumber("CEIL_HGT") == rightRegion.AcknexObject.GetNumber("CEIL_HGT"))
+                //leftRegion.AcknexObject.GetNumber("FLOOR_HGT") == rightRegion.AcknexObject.GetNumber("FLOOR_HGT") && 
+                //leftRegion.AcknexObject.GetNumber("CEIL_HGT") == rightRegion.AcknexObject.GetNumber("CEIL_HGT"))
             {
                 BuildFence(rightRegionAbove, leftRegionAbove, leftRegion, leftRegionBelowCeilHeight, rightRegion, rightRegionBelowCeilHeight, leftRegionAboveFloorHeight, rightRegionAboveFloorHeight, vertexA, vertexB);
             }
             else
-
             {
                 //if (leftRegionAbove != null || rightRegionAbove != null)
                 {
@@ -499,10 +503,10 @@ namespace Acknex
                     //negative space
                     if (leftRegion.AcknexObject.GetString("NAME") == rightRegion.AcknexObject.GetString("NAME") && Math.Abs(ceilHeightDown - floorHeightDown) < Mathf.Epsilon && Math.Abs(ceilHeightUp - floorHeightUp) < Mathf.Epsilon)
                     {
-                        var v0 = new Vector3(vertexA.Position.X, floorHeightUp + (liftedLeftUp ? (vertexA.Position.Z * leftLiftUp) : 0), vertexA.Position.Y);
-                        var v1 = new Vector3(vertexB.Position.X, floorHeightUp + (liftedLeftUp ? (vertexB.Position.Z * leftLiftUp) : 0), vertexB.Position.Y);
-                        var v2 = new Vector3(vertexB.Position.X, ceilHeightDown + (liftedRightDown ? (vertexB.Position.Z * rightLiftDown) : 0), vertexB.Position.Y);
-                        var v3 = new Vector3(vertexA.Position.X, ceilHeightDown + (liftedRightDown ? (vertexA.Position.Z * rightLiftDown) : 0), vertexA.Position.Y);
+                        var v0 = new Vector3(vertexA.Position.X, floorHeightUp + (liftedLeftUp ? vertexA.Position.Z * leftLiftUp : 0), vertexA.Position.Y);
+                        var v1 = new Vector3(vertexB.Position.X, floorHeightUp + (liftedLeftUp ? vertexB.Position.Z * leftLiftUp : 0), vertexB.Position.Y);
+                        var v2 = new Vector3(vertexB.Position.X, ceilHeightDown + (liftedRightDown ? vertexB.Position.Z * rightLiftDown : 0), vertexB.Position.Y);
+                        var v3 = new Vector3(vertexA.Position.X, ceilHeightDown + (liftedRightDown ? vertexA.Position.Z * rightLiftDown : 0), vertexA.Position.Y);
                         if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
                         {
                             MeshUtils.AddQuad(0, 1, 2, 3, _allTriangles, AcknexObject.GetAcknexObject("TEXTURE"), _allVertices.Count);
@@ -527,10 +531,10 @@ namespace Acknex
                     {
                         //floor
                         {
-                            var v0 = new Vector3(vertexA.Position.X, ceilHeightDown + (liftedLeftDown ? (vertexA.Position.Z * leftLiftDown) : 0), vertexA.Position.Y);
-                            var v1 = new Vector3(vertexB.Position.X, ceilHeightDown + (liftedLeftDown ? (vertexB.Position.Z * leftLiftDown) : 0), vertexB.Position.Y);
-                            var v2 = new Vector3(vertexB.Position.X, floorHeightDown + (liftedRightDown ? (vertexB.Position.Z * rightLiftDown) : 0), vertexB.Position.Y);
-                            var v3 = new Vector3(vertexA.Position.X, floorHeightDown + (liftedRightDown ? (vertexA.Position.Z * rightLiftDown) : 0), vertexA.Position.Y);
+                            var v0 = new Vector3(vertexA.Position.X, ceilHeightDown + (liftedLeftDown ? vertexA.Position.Z * leftLiftDown : 0), vertexA.Position.Y);
+                            var v1 = new Vector3(vertexB.Position.X, ceilHeightDown + (liftedLeftDown ? vertexB.Position.Z * leftLiftDown : 0), vertexB.Position.Y);
+                            var v2 = new Vector3(vertexB.Position.X, floorHeightDown + (liftedRightDown ? vertexB.Position.Z * rightLiftDown : 0), vertexB.Position.Y);
+                            var v3 = new Vector3(vertexA.Position.X, floorHeightDown + (liftedRightDown ? vertexA.Position.Z * rightLiftDown : 0), vertexA.Position.Y);
                             if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
                             {
                                 MeshUtils.AddQuad(0, 1, 2, 3, _allTriangles, AcknexObject.GetAcknexObject("TEXTURE"), _allVertices.Count);
@@ -552,10 +556,10 @@ namespace Acknex
                         }
                         //ceil
                         {
-                            var v0 = new Vector3(vertexA.Position.X, ceilHeightUp + (liftedLeftUp ? (vertexA.Position.Z * leftLiftUp) : 0), vertexA.Position.Y);
-                            var v1 = new Vector3(vertexB.Position.X, ceilHeightUp + (liftedLeftUp ? (vertexB.Position.Z * leftLiftUp) : 0), vertexB.Position.Y);
-                            var v2 = new Vector3(vertexB.Position.X, floorHeightUp + (liftedRightUp ? (vertexB.Position.Z * rightLiftUp) : 0), vertexB.Position.Y);
-                            var v3 = new Vector3(vertexA.Position.X, floorHeightUp + (liftedRightUp ? (vertexA.Position.Z * rightLiftUp) : 0), vertexA.Position.Y);
+                            var v0 = new Vector3(vertexA.Position.X, ceilHeightUp + (liftedLeftUp ? vertexA.Position.Z * leftLiftUp : 0), vertexA.Position.Y);
+                            var v1 = new Vector3(vertexB.Position.X, ceilHeightUp + (liftedLeftUp ? vertexB.Position.Z * leftLiftUp : 0), vertexB.Position.Y);
+                            var v2 = new Vector3(vertexB.Position.X, floorHeightUp + (liftedRightUp ? vertexB.Position.Z * rightLiftUp : 0), vertexB.Position.Y);
+                            var v3 = new Vector3(vertexA.Position.X, floorHeightUp + (liftedRightUp ? vertexA.Position.Z * rightLiftUp : 0), vertexA.Position.Y);
                             if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
                             {
                                 MeshUtils.AddQuad(3, 2, 1, 0, _allTriangles, AcknexObject.GetAcknexObject("TEXTURE"), _allVertices.Count);
@@ -661,8 +665,6 @@ namespace Acknex
             BuildWallMesh();
         }
 
-        public AckTransform AckTransform;
-
         public void Rotate(Vector3 center, float degrees)
         {
             AckTransform.Center = center;
@@ -699,7 +701,8 @@ namespace Acknex
 
         public void Lift(float dz)
         {
-            
+            AckTransform.DZ = dz;
+            AcknexObject.IsDirty = true;
         }
     }
 }

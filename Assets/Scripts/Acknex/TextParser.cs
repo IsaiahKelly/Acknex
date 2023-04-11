@@ -17,16 +17,16 @@ namespace Acknex
         private readonly HashSet<string> _definitions = new HashSet<string>();
         private readonly Stack<bool> _directivesStack = new Stack<bool>();
         private readonly StringBuilder _tokenStringBuilder = new StringBuilder();
-        private readonly bool _wmpContainsRegionsByName;
+        private readonly bool _oldAckVersion;
         private readonly IAcknexWorld _world;
         private string _mapFile;
         private IAcknexObject _openObject;
 
-        public TextParser(IAcknexWorld world, string baseDir, bool wmpContainsRegionsByName)
+        public TextParser(IAcknexWorld world, string baseDir, bool oldAckVersion)
         {
             _world = world;
             _baseDir = baseDir;
-            _wmpContainsRegionsByName = wmpContainsRegionsByName;
+            _oldAckVersion = oldAckVersion;
         }
 
         private float ParseFloat(IEnumerator<string> tokens, string existingToken = null)
@@ -649,7 +649,7 @@ namespace Acknex
                                 var player = _world.GetObject(ObjectType.Player, null);
                                 _world.UpdateSkillValue("PLAYER_X", ParseFloat(tokens));
                                 _world.UpdateSkillValue("PLAYER_Y", ParseFloat(tokens));
-                                _world.UpdateSkillValue("PLAYER_ANGLE", AngleUtils.HandleWMPAngle(ParseFloat(tokens)));
+                                _world.UpdateSkillValue("PLAYER_ANGLE", AngleUtils.HandleWMPAngle(ParseFloat(tokens), _oldAckVersion));
                                 ParseRegionIndex(player, "REGION", tokens);
                                 break;
                             }
@@ -661,7 +661,7 @@ namespace Acknex
                                 var thing = _world.CreateObjectInstance(type, actorOrThingName);
                                 thing.SetFloat("X", ParseFloat(tokens));
                                 thing.SetFloat("Y", ParseFloat(tokens));
-                                thing.SetFloat("ANGLE", AngleUtils.HandleWMPAngle(ParseFloat(tokens)));
+                                thing.SetFloat("ANGLE", AngleUtils.HandleWMPAngle(ParseFloat(tokens), _oldAckVersion));
                                 ParseRegionIndex(thing, "REGION", tokens);
                                 _world.PostSetupObjectInstance(thing);
                                 break;
@@ -719,7 +719,7 @@ namespace Acknex
 
         private void ParseRegionIndex(IAcknexObject acknexObject, string propertyName, IEnumerator<string> tokens)
         {
-            if (!_wmpContainsRegionsByName)
+            if (!_oldAckVersion)
             {
                 var regionIndex = (int)ParseFloat(tokens);
                 acknexObject.SetAcknexObject(propertyName, World.Instance.RegionsByIndex[regionIndex].AcknexObject);

@@ -26,6 +26,7 @@ namespace Acknex
         public readonly Dictionary<string, Overlay> OverlaysByName = new Dictionary<string, Overlay>();
         public readonly Dictionary<string, Palette> PalettesByName = new Dictionary<string, Palette>();
         public readonly Dictionary<string, Panel> PanelsByName = new Dictionary<string, Panel>();
+        public readonly List<string> Paths = new List<string>();
         public readonly List<Region> RegionsByIndex = new List<Region>();
         public readonly Dictionary<string, Region> RegionsByName = new Dictionary<string, Region>();
         public readonly Dictionary<string, Skill> SkillsByName = new Dictionary<string, Skill>();
@@ -37,24 +38,24 @@ namespace Acknex
         public readonly Dictionary<string, TextureAndPalette> TextureCache = new Dictionary<string, TextureAndPalette>();
         public readonly Dictionary<string, Texture> TexturesByName = new Dictionary<string, Texture>();
         public readonly Dictionary<string, Thing> ThingsByName = new Dictionary<string, Thing>();
+        public readonly List<Wall> Walls = new List<Wall>();
         public readonly Dictionary<string, Wall> WallsByName = new Dictionary<string, Wall>();
         public readonly Dictionary<string, Way> WaysByName = new Dictionary<string, Way>();
-        public readonly List<Wall> Walls = new List<Wall>();
-        public readonly List<string> Paths = new List<string>();
 
         private bool _culled;
+        private Thing _dummyObject;
         private Texture2D _palette;
         private Color[] _palettePixels;
         private Material _skyMaterial;
         private Material _surfacesMaterial;
         private TextParser _textParser;
-        private Thing _dummyObject;
 
         public Light AmbientLight;
         public AudioSource AudioSource;
         public bool BilinearFilter = true;
         public IAcknexObject BulletString;
         public Canvas Canvas;
+        public CanvasScaler CanvasScaler;
         public RectTransform CanvasView;
         public float CanvasWidthRatio;
         private ContouredRegions ContouredRegions;
@@ -68,6 +69,8 @@ namespace Acknex
         public IAcknexObject FollowString;
         public bool GodMode;
         public IAcknexObject HoldString;
+        public SingleUnityLayer IgnoreRaycastLayer;
+        public float LightMultiplier = 2f;
         public bool MeshBatch;
         public MidiPlayer MidiPlayer;
         public float MouseMultiplier = 0.1f;
@@ -76,7 +79,7 @@ namespace Acknex
         public IAcknexObject Node2String;
         public RegionWalls RegionWalls;
         public IAcknexObject RepelString;
-        public bool RotationBeginsAtRight;
+        public bool OldAckVersion;
         public string SourceGenerationPath;
         public SingleUnityLayer Sprites;
         public IAcknexObject StickString;
@@ -92,10 +95,6 @@ namespace Acknex
         public LayerMask WallsWaterRegionsAndThings;
         public SingleUnityLayer WaterLayer;
         public string WDLPath;
-        public bool WMPContainsRegionsByName;
-        public SingleUnityLayer IgnoreRaycastLayer;
-        public float LightMultiplier = 2f;
-        public CanvasScaler CanvasScaler;
 
         public static World Instance { get; private set; }
 
@@ -159,7 +158,7 @@ namespace Acknex
             else
             {
                 var baseDir = PathUtils.GetFileDirectory(WDLPath);
-                _textParser = new TextParser(this, baseDir, WMPContainsRegionsByName);
+                _textParser = new TextParser(this, baseDir, OldAckVersion);
                 _textParser.ParseInitialWDL(WDLPath);
             }
             if (!BilinearFilter)
@@ -203,14 +202,6 @@ namespace Acknex
                 UpdateSkillValue("PLAYER_HEALTH", 9999999F);
             }
         }
-
-        //private void OnGUI()
-        //{
-        //    GUILayout.BeginVertical();
-        //    GUILayout.Label("SHOOT_X:" + GetSkillValue("SHOOT_X"));
-        //    GUILayout.Label("SHOOT_Y:" + GetSkillValue("SHOOT_Y"));
-        //    GUILayout.EndVertical();
-        //}
 
         public void BuildRegionsAndWalls()
         {
@@ -348,7 +339,7 @@ namespace Acknex
                 meshFilter.sharedMesh = combinedMesh;
                 var meshRenderer = groupGameObject.AddComponent<MeshRenderer>();
                 meshRenderer.material = BuildMaterial(kvp.Key.AcknexObject);
-                var bitmap = kvp.Key.GetBitmapAt(0);
+                var bitmap = kvp.Key.GetBitmapAt();
                 kvp.Key.UpdateFrame(bitmap, meshRenderer.material, false, false, 0, kvp.Key.AcknexObject);
             }
         }
