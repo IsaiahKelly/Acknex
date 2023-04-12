@@ -4,20 +4,37 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using Acknex.Interfaces;
-using Acknex.Interfaces;
+using JetBrains.Annotations;
 using UnityEngine;
 using Resolution = Acknex.Interfaces.Resolution;
 
 namespace Acknex
 {
+    public class LineBinaryReader : BinaryReader
+    {
+        public int LineCount = 1;
+
+        public LineBinaryReader([NotNull] Stream input) : base(input)
+        {
+        }
+
+        public LineBinaryReader([NotNull] Stream input, [NotNull] Encoding encoding) : base(input, encoding)
+        {
+        }
+
+        public LineBinaryReader(Stream input, Encoding encoding, bool leaveOpen) : base(input, encoding, leaveOpen)
+        {
+        }
+    }
+
     public class TextParser
     {
         private readonly string _baseDir;
 
         private readonly HashSet<string> _definitions = new HashSet<string>();
         private readonly Stack<bool> _directivesStack = new Stack<bool>();
-        private readonly StringBuilder _tokenStringBuilder = new StringBuilder();
         private readonly bool _oldAckVersion;
+        private readonly StringBuilder _tokenStringBuilder = new StringBuilder();
         private readonly IAcknexWorld _world;
         private string _mapFile;
         private IAcknexObject _openObject;
@@ -46,15 +63,17 @@ namespace Acknex
             return negative ? -value : value;
         }
 
-        public IEnumerator<string> ParseStatement(BinaryReader binaryReader)
+        public IEnumerator<string> ParseStatement(LineBinaryReader binaryReader)
         {
             bool IsSpace(int read)
             {
                 switch (read)
                 {
+                    case '\n':
+                        binaryReader.LineCount++;
+                        return true;
                     case '\0':
                     case '\r':
-                    case '\n':
                     case ' ':
                     case '\t':
                     case ',':
@@ -173,7 +192,7 @@ namespace Acknex
             {
                 return;
             }
-            var binaryReader = new BinaryReader(File.OpenRead(wdlFilename), Encoding.ASCII, true);
+            var binaryReader = new LineBinaryReader(File.OpenRead(wdlFilename), Encoding.ASCII, true);
             {
                 for (; ; )
                 {
@@ -196,7 +215,7 @@ namespace Acknex
                             if (_openObject.Type != ObjectType.Action)
                             {
                                 var propertyType = _world.GetPropertyType(_openObject.Type, keyword);
-                                if (!HandleProperty(_openObject, tokens, keyword, propertyType))
+                                if (!HandleProperty(_openObject, tokens, keyword, propertyType, binaryReader, wdlFilename))
                                 {
                                     while (keyword != ";" && keyword != null)
                                     {
@@ -317,7 +336,10 @@ namespace Acknex
                                         {
                                             _openObject.SetFloat("DY", ParseFloat(tokens, token));
                                         }
-                                        //_world.PostSetupObjectTemplate(_openObject);
+                                        if (token != ";")
+                                        {
+                                            CheckSemiColon(tokens);
+                                        }
                                         _openObject = null;
                                         break;
                                     }
@@ -378,7 +400,6 @@ namespace Acknex
                                     {
                                         var model = _world.CreateObjectTemplate(ObjectType.Model, GetNextToken(tokens));
                                         model.SetString("FILENAME", ParseDir(GetNextToken(tokens), tokens));
-                                        //_world.PostSetupObjectTemplate(model);
                                         CheckSemiColon(tokens);
                                         break;
                                     }
@@ -386,7 +407,6 @@ namespace Acknex
                                     {
                                         var sound = _world.CreateObjectTemplate(ObjectType.Sound, GetNextToken(tokens));
                                         sound.SetString("FILENAME", ParseDir(GetNextToken(tokens), tokens));
-                                        //_world.PostSetupObjectTemplate(sound);
                                         CheckSemiColon(tokens);
                                         break;
                                     }
@@ -394,7 +414,6 @@ namespace Acknex
                                     {
                                         var music = _world.CreateObjectTemplate(ObjectType.Song, GetNextToken(tokens));
                                         music.SetString("FILENAME", ParseDir(GetNextToken(tokens), tokens));
-                                        //_world.PostSetupObjectTemplate(music);
                                         CheckSemiColon(tokens);
                                         break;
                                     }
@@ -405,11 +424,13 @@ namespace Acknex
                                         break;
                                     }
                                 case null:
-                                    return;
+                                    {
+                                        return;
+                                    }
                                 default:
                                     {
                                         var propertyType = _world.GetPropertyType(ObjectType.World, keyword);
-                                        if (!HandleProperty(_world.AcknexObject, tokens, keyword, propertyType))
+                                        if (!HandleProperty(_world.AcknexObject, tokens, keyword, propertyType, binaryReader, wdlFilename))
                                         {
                                             while (keyword != ";" && keyword != null)
                                             {
@@ -490,7 +511,7 @@ namespace Acknex
             return false;
         }
 
-        private bool HandleProperty(IAcknexObject acknexObject, IEnumerator<string> tokens, string keyword, PropertyType propertyType)
+        private bool HandleProperty(IAcknexObject acknexObject, IEnumerator<string> tokens, string keyword, PropertyType propertyType, LineBinaryReader binaryReader = null, string filename = null)
         {
             switch (propertyType)
             {
@@ -524,13 +545,25 @@ namespace Acknex
                 case PropertyType.FloatList:
                     ParseFloatList(keyword, acknexObject, tokens);
                     return true;
+                case PropertyType.Range:
+                    acknexObject.SetFloat("RANGE_X", ParseFloat(tokens));
+                    acknexObject.SetFloat("RANGE_Y", ParseFloat(tokens));
+                    CheckSemiColon(tokens);
+                    return true;
                 case PropertyType.ScaleXY:
                     acknexObject.SetFloat("SCALE_X", ParseFloat(tokens));
                     acknexObject.SetFloat("SCALE_Y", ParseFloat(tokens));
                     CheckSemiColon(tokens);
                     return true;
                 case PropertyType.Unknown:
-                    Debug.LogWarning("Unknown WDL property: " + keyword);
+                    if (binaryReader != null && filename != null)
+                    {
+                        Debug.LogWarning($"{filename}:{binaryReader.LineCount} Unknown WDL property: {acknexObject.GetString("NAME")}.{keyword}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Unknown WDL property: {acknexObject.GetString("NAME")}.{keyword}");
+                    }
                     break;
             }
             return false;
@@ -632,7 +665,7 @@ namespace Acknex
             {
                 return;
             }
-            var binaryReader = new BinaryReader(File.OpenRead(wmpFilename), Encoding.ASCII, true);
+            var binaryReader = new LineBinaryReader(File.OpenRead(wmpFilename), Encoding.ASCII, true);
             {
                 for (; ; )
                 {

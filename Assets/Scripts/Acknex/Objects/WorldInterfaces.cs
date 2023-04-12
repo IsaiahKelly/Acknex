@@ -689,7 +689,7 @@ namespace Acknex
                 {
                     TriggerEvent("IF_HIT", hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
                 }
-#if true
+#if DEBUG_ENABLED
                 var color = Color.magenta;
                 switch (hitAcknexObject.Type)
                 {

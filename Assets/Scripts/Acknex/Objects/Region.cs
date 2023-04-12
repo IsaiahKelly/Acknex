@@ -646,7 +646,7 @@ namespace Acknex
             var floorSound = FloorTexture.AcknexObject.GetAcknexObject("SOUND");
             if (floorSound != null)
             {
-                World.Instance.PlaySound(floorSound, FloorTexture.AcknexObject.GetFloat("SVOL"), AcknexObject, FloorTexture.AcknexObject.GetFloat("DIST"), FloorTexture.AcknexObject.GetFloat("SVDIST"));
+                World.Instance.PlaySound(floorSound, FloorTexture.AcknexObject.GetFloat("SVOL"), 0.5f, FloorTexture.AcknexObject.GetFloat("SDIST"), FloorTexture.AcknexObject.GetFloat("SVDIST"));
             }
         }
 

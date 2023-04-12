@@ -28,7 +28,7 @@
         #pragma surface surf Sprite alpha
 
         #pragma target 3.0
-
+                    
         sampler2D _MainTex;
         #include "Common.cginc"
         
@@ -45,6 +45,10 @@
             c.rgb = (_RADIANCE + s.Albedo) * _AMBIENT;
             c.a = s.Alpha;
             return c;
+        }
+
+        half4 LightingSprite_GI(SurfaceOutput s, UnityGIInput data, inout UnityGI gi) {
+            return half4(s.Albedo, s.Alpha);
         }
 
         void surf (Input IN, inout SurfaceOutput o)

@@ -811,6 +811,10 @@ namespace Acknex
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Sound);
                 }
+                if (World.Instance.SongsByName.ContainsKey(valueObjectName))
+                {
+                    return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Song);
+                }
                 if (World.Instance.OverlaysByName.ContainsKey(valueObjectName))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Overlay);
@@ -839,7 +843,6 @@ namespace Acknex
                     }
                 }
             }
-
             if (World.Instance.StringsByName.ContainsKey(objectName))
             {
                 if (outputGetter)
@@ -936,6 +939,12 @@ namespace Acknex
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Sound, "_world.AcknexObject");
+                return true;
+            }
+            if (World.Instance.SongsByName.ContainsKey(objectName))
+            {
+                HandleDroppedObjects();
+                valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Song, "_world.AcknexObject");
                 return true;
             }
             if (World.Instance.WaysByName.ContainsKey(objectName))

@@ -13,6 +13,7 @@
         Flags,
         ObjectReferenceList,
         FloatList,
+        Range,
         ScaleXY,
         Unknown,
         Function,

@@ -419,7 +419,7 @@ namespace Acknex
 
             AddObjectProperty(ObjectType.Palette, PropertyType.Flags, "FLAGS");
             AddObjectProperty(ObjectType.Palette, PropertyType.Filename, "PALFILE");
-            //todo: range
+            AddObjectProperty(ObjectType.Palette, PropertyType.Range, "RANGE");
 
             foreach (var properties in PropertyDescriptors[ObjectType.Thing])
             {

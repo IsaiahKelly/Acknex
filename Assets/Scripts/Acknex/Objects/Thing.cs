@@ -342,19 +342,13 @@ namespace Acknex
 
         private void OnCollisionEnter(Collision collision)
         {
-            var hasToTrigger = AcknexObject.HasFlag("SENSITIVE");
-            if (hasToTrigger && AcknexObject.HasFlag("CAREFULLY"))
-            {
-                var target = AcknexObject.GetAcknexObject("TARGET");
-                if (target == World.Instance.BulletString)
-                {
-                    hasToTrigger = true;
-                }
-            }
+            var hasToTrigger = AcknexObject.HasFlag("SENSITIVE") || AcknexObject.HasFlag("CAREFULLY") && AcknexObject.GetAcknexObject("TARGET") == World.Instance.BulletString;
             if (hasToTrigger)
             {
                 World.Instance.UpdateSkillValue("HIT_DIST", 0f);
                 World.Instance.UpdateSkillValue("RESULT", 0f);
+                World.Instance.UpdateSkillValue("SHOOT_ANGLE", 0f);
+                World.Instance.SetSynonymObject("HIT", null);
                 World.Instance.TriggerEvent("IF_HIT", AcknexObject, AcknexObject, GetRegion());
             }
         }
@@ -644,7 +638,7 @@ namespace Acknex
 #if DEBUG_ENABLED
             Debug.DrawLine(new Vector3(pos.x, 0f, pos.y), new Vector3(nextPoint.x, 0f, nextPoint.y), Color.magenta, 1f);
 #endif
-                AcknexObject.SetFloat("X", transform.position.x);
+            AcknexObject.SetFloat("X", transform.position.x);
             AcknexObject.SetFloat("Y", transform.position.z);
             AcknexObject.SetFloat("ANGLE", angle);
             return toTarget.magnitude <= (minDistance ?? speed);

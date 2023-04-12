@@ -80,7 +80,8 @@ namespace Acknex
             _characterController.Move(playerMove);
             var delta = _characterController.transform.position - initialPosition;
             var deltaXZ = new Vector3(delta.x, 0f, delta.z);
-            if (deltaXZ.magnitude > Mathf.Epsilon)
+            var playerHgt = World.Instance.GetSkillValue("PLAYER_HGT");
+            if (playerHgt <= 0.1f && deltaXZ.magnitude > Mathf.Epsilon)
             {
                 var period = deltaXZ.magnitude / World.Instance.GetSkillValue("WALK_PERIOD") * 2f;
                 _walkTime += period;
@@ -96,17 +97,14 @@ namespace Acknex
                     _soundTriggered = false;
                 }
             }
-            {
-                var waveTime = TimeUtils.TimeToTicks(Time.time) / World.Instance.GetSkillValue("WAVE_PERIOD") * 2f;
-                var wave = Mathf.Sin(waveTime * Mathf.PI);
-                World.Instance.UpdateSkillValue("WAVE", wave);
-            }
+            var waveTime = Time.time / TimeUtils.TicksToTime((int)World.Instance.GetSkillValue("WAVE_PERIOD")) * 2f;
+            var wave = Mathf.Sin(waveTime * Mathf.PI);
+            World.Instance.UpdateSkillValue("WAVE", wave);
             World.Instance.UpdateSkillValue("IMPACT_VX", deltaXZ.x);
             World.Instance.UpdateSkillValue("IMPACT_VY", deltaXZ.z);
             var region = GetRegion();
             var regionContainer = (Region)region.Container;
             var forceUp = World.Instance.GetSkillValue("FORCE_UP");
-            var playerHgt = World.Instance.GetSkillValue("PLAYER_HGT");
             //var actualSize = Mathf.Max(playerSize, playerWidth);
             ////Debug.DrawLine(new Vector3(0f, regionContainer.GetRealCeilHeight(), 0f), new Vector3(playerX, regionContainer.GetRealCeilHeight() - actualSize - WaterBorderThickness, playerY), Color.cyan);
             ////Debug.DrawLine(new Vector3(playerX, regionContainer.GetRealCeilHeight(), playerY), new Vector3(playerX, playerZ, playerY), Color.magenta);
@@ -133,7 +131,11 @@ namespace Acknex
             World.Instance.UpdateSkillValue("LAST_PLAYER_X", World.Instance.GetSkillValue("PLAYER_X"));
             World.Instance.UpdateSkillValue("LAST_PLAYER_Y", World.Instance.GetSkillValue("PLAYER_Y"));
             World.Instance.UpdateSkillValue("LAST_PLAYER_Z", World.Instance.GetSkillValue("PLAYER_Z"));
-            //World.Instance.UpdateSkillValue("PLAYER_SPEED", _characterController.velocity.magnitude);
+
+            var playerSpeed = (Quaternion.Inverse(View.Instance.transform.rotation) * _characterController.velocity).z;
+            //playerSpeed = Mathf.Abs(playerSpeed) > 0.01f ? Mathf.Sign(playerSpeed) : 0f;
+
+            World.Instance.UpdateSkillValue("PLAYER_SPEED", playerSpeed);
             World.Instance.UpdateSkillValue("PLAYER_X", playerX);
             World.Instance.UpdateSkillValue("PLAYER_Y", playerY);
             World.Instance.UpdateSkillValue("PLAYER_Z", playerZ);
@@ -204,6 +206,7 @@ namespace Acknex
             GUILayout.Label($"PLAYER_COS:{World.Instance.GetSkillValue("PLAYER_COS")}");
             GUILayout.Label($"PLAYER_HGT:{World.Instance.GetSkillValue("PLAYER_HGT")}");
             GUILayout.Label($"PLAYER_HEALTH:{World.Instance.GetSkillValue("PLAYER_HEALTH")}");
+            GUILayout.Label($"PLAYER_SPEED:{World.Instance.GetSkillValue("PLAYER_SPEED")}");
             GUILayout.Label($"AMMO:{World.Instance.GetSkillValue("AMMO")}");
             var region = AcknexObject.GetAcknexObject("REGION");
             GUILayout.Label($"RGN:{region?.GetString("NAME")}");

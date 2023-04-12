@@ -60,16 +60,15 @@ Shader "Acknex/Surfaces"
 				return c;
 			}
 
+			half4 LightingSurface_GI(SurfaceOutput s, UnityGIInput data, inout UnityGI gi) {
+				return half4(s.Albedo, s.Alpha);
+			}
+
 			void vert(inout appdata_full v) {
 				float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
 				float3 worldNorm = UnityObjectToWorldNormal(v.normal);
 				float3 viewDir = worldPos - _WorldSpaceCameraPos;
 				v.normal *= dot(viewDir, worldNorm) > 0 ? -1 : 1;
-			}
-
-			void mycolor(Input IN, SurfaceOutput o, inout fixed4 color)
-			{
-				color *= _AMBIENT;
 			}
 
 			void surf(Input IN, inout SurfaceOutput o)
