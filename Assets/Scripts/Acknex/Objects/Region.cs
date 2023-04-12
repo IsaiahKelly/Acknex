@@ -358,10 +358,10 @@ namespace Acknex
             World.Instance.TriggerEvent("DO", AcknexObject, AcknexObject, GetRegion());
         }
 
-        public void BuildMeshes( /*List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<int, List<int>> allTriangles*/)
+        public void BuildMeshes()
         {
-            var ceilTexture = AcknexObject.GetAcknexObject("CEIL_TEX");
-            var floorTexture = AcknexObject.GetAcknexObject("FLOOR_TEX");
+            var ceilTexture = CeilTexture;
+            var floorTexture = FloorTexture;
             _floorMesh.SetVertices(_allVertices);
             _floorMesh.SetUVs(0, _allUVs);
             _floorMesh.subMeshCount = 1;
@@ -382,7 +382,7 @@ namespace Acknex
             _floorMeshRenderer = _floorGameObject.AddComponent<MeshRenderer>();
             if (!_materialsCreated)
             {
-                _floorMaterial = World.Instance.BuildMaterial(floorTexture);
+                _floorMaterial = World.Instance.BuildMaterial(floorTexture.AcknexObject);
                 _floorMeshRenderer.sharedMaterial = _floorMaterial;
             }
             _floorCollider = _floorGameObject.AddComponent<MeshCollider>();
@@ -407,7 +407,7 @@ namespace Acknex
             CeilMeshFilter.sharedMesh = _ceilMesh;
             if (!_materialsCreated)
             {
-                _ceilMaterial = World.Instance.BuildMaterial(ceilTexture);
+                _ceilMaterial = World.Instance.BuildMaterial(ceilTexture.AcknexObject);
                 _ceilMeshRenderer.sharedMaterial = _ceilMaterial;
             }
             _ceilCollider.sharedMesh = _ceilMesh;
@@ -437,34 +437,52 @@ namespace Acknex
 
         public void UpdateAllMeshes()
         {
-            var meshIndex = 0;
-            if (Math.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT")) > Mathf.Epsilon)
-            {
-                BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex);
-                BuildFloorOrCeil( /*contouredRegion, allVertices, allUVs, allTriangles,*/ ref meshIndex, true);
-                BuildMeshes( /*allVertices, allUVs, allTriangles*/);
-            }
-        }
-
-        public void BuildFloorOrCeil( /*ContouredRegion contouredRegion, List<Vector3> allVertices, List<Vector2> allUVs, Dictionary<int, List<int>> allTriangles,*/ ref int meshIndex, bool ceil = false)
-        {
-            var tess = new Tess();
-            var biggestArea = 0f;
-            IList<ContourVertex> biggestContour = null;
-            foreach (var contouredList in ContouredRegion)
-            {
-                var area = ContouredRegion.CalculateArea(contouredList);
-                if (area > biggestArea)
-                {
-                    biggestArea = area;
-                    biggestContour = contouredList;
-                }
-            }
-            if (biggestContour == null)
+            if (ContouredRegion == null)
             {
                 return;
             }
-            tess.AddContour(biggestContour);
+            var meshIndex = 0;
+            if (Math.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT")) > Mathf.Epsilon)
+            {
+                BuildFloorOrCeil(ref meshIndex);
+                BuildFloorOrCeil(ref meshIndex, true);
+                BuildMeshes();
+            }
+        }
+
+        public void BuildFloorOrCeil(ref int meshIndex, bool ceil = false)
+        {
+            var tess = new Tess();
+            if (World.Instance.OldAckVersion)
+            {
+                foreach (var contouredList in ContouredRegion)
+                {
+                    tess.AddContour(contouredList);
+                }
+            }
+            else
+            {
+                var biggestArea = 0f;
+                IList<ContourVertex> biggestContour = null;
+                if (ContouredRegion == null)
+                {
+                    return;
+                }
+                foreach (var contouredList in ContouredRegion)
+                {
+                    var area = ContouredRegion.CalculateArea(contouredList);
+                    if (area > biggestArea)
+                    {
+                        biggestArea = area;
+                        biggestContour = contouredList;
+                    }
+                }
+                if (biggestContour == null)
+                {
+                    return;
+                }
+                tess.AddContour(biggestContour);
+            }
             tess.Tessellate();
             var floorVertices = new Vector3[tess.VertexCount];
             var ceilLift = GetCeilLift();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Acknex.Interfaces;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using Color = System.Drawing.Color;
@@ -13,7 +14,7 @@ namespace IlbmReaderTest
     {
         public delegate IffReader Factory();
 
-        public IffFile Read(string fileName)
+        public TextureAndPalette Read(string fileName, bool paletteOnly)
         {
             var fileContent = File.ReadAllBytes(fileName);
             var topLevelIterator = new IffChunkIterator(fileContent);
@@ -44,6 +45,7 @@ namespace IlbmReaderTest
                     var bytesPerRowAllPlanes = body.BytesPerRowAllPlanes;
 
                     var bitmap = new Color32[width * height];
+                    var palette = new byte[width * height];
 
                     for (var pixelX = 0; pixelX < width; pixelX++)
                     {
@@ -78,10 +80,12 @@ namespace IlbmReaderTest
                                 int g = (clutIndex & 0x0000ff00) >> 8;
                                 int b = clutIndex & 0x000000ff;
                                 pixelCol = new Color32((byte)r, (byte)g, (byte)b, 255);
+                                palette[pixelY * width + pixelX] = 0;
                             }
                             else
                             {
                                 pixelCol = cmap.Colors[clutIndex];
+                                palette[pixelY * width + pixelX] = (byte)clutIndex;
                             }
                             bitmap[pixelY * width + pixelX] = pixelCol;
                         }
@@ -96,17 +100,43 @@ namespace IlbmReaderTest
                     {
                         transparency = UnityEngine.Color.magenta;
                     }
-                    bitmap = ImageUtils.FlipPixelsVertically(bitmap, width, height);
-                    bitmap = ImageUtils.ColorToTransparent(bitmap, transparency);
-                    ilbm.Bitmap = bitmap;
-                    ilbm.Texture2D = new Texture2D(width, height, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.MipChain);
-                    ilbm.Texture2D.SetPixels32(bitmap);
-                    ilbm.Texture2D.Apply(false, false);
+
+                    if (paletteOnly && cmap.Colors != null)
+                    {
+                       var palWidth = cmap.Colors.Count / 3;
+                       var palTexture2D = new Texture2D(palWidth, 1, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.None);
+                       palTexture2D.filterMode = FilterMode.Point;
+                       for (var pX = 0; pX < palWidth; pX++)
+                       {
+                           var r = cmap.Colors[pX].r;
+                           var g = cmap.Colors[pX].g;
+                           var b = cmap.Colors[pX].b;
+                           palTexture2D.SetPixel(pX, 0, new Color32(r, g, b, 1));
+                       }
+                       palTexture2D.Apply(false, false);
+                       return new TextureAndPalette(null, palTexture2D);
+                    }
+                    else
+                    {
+                        bitmap = ImageUtils.FlipPixelsVertically(bitmap, width, height);
+                        bitmap = ImageUtils.ColorToTransparent(bitmap, transparency);
+                        ilbm.Bitmap = bitmap;
+                        
+                        var texture2D = new Texture2D(width, height, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.MipChain);
+                        texture2D.SetPixels32(bitmap);
+                        texture2D.Apply(false, false);
+
+                        palette = ImageUtils.FlipPaletteVertically(palette, width, height);
+                        var palTexture2D = new Texture2D(width, height, GraphicsFormat.R8_UNorm, TextureCreationFlags.None);
+                        palTexture2D.filterMode = FilterMode.Point;
+                        palTexture2D.SetPixelData(palette, 0);
+                        palTexture2D.Apply(false, false);
+
+                        return new TextureAndPalette(texture2D, palTexture2D);
+                    }
                 }
             }
-
-
-            return iffFile;
+            return null;
         }
 
         private void HandleChunk(IffChunk chunk, IffFile iffFile, Ilbm ilbm = null)

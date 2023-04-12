@@ -94,25 +94,23 @@ namespace Acknex
                         }
                     }
                 }
-                //todo: reimplement
-                //else if (lowerInvariant.EndsWith("lbm"))
-                //{
-                //    var parser = new IlbmReaderTest.IffReader();
-                //    var iff = parser.Read(filename);
-                //    if (iff.Ilbms.Count > 0)
-                //    {
-                //        texture = iff.Ilbms[0].Texture2D;
-                //        World.Instance.TextureCache.Add(filename, texture);
-                //        if (width == 0)
-                //        {
-                //            width = texture.width;
-                //        }
-                //        if (height == 0)
-                //        {
-                //            height = texture.height;
-                //        }
-                //    }
-                //}
+                else if (lowerInvariant.EndsWith("lbm") || lowerInvariant.EndsWith("bbm"))
+                {
+                    var parser = new IlbmReaderTest.IffReader();
+                    textureAndPalette = parser.Read(filename, paletteOnly);
+                    if (!paletteOnly)
+                    {
+                        World.Instance.TextureCache.Add(filename, textureAndPalette);
+                        if (width == 0)
+                        {
+                            width = textureAndPalette.Texture.width;
+                        }
+                        if (height == 0)
+                        {
+                            height = textureAndPalette.Texture.height;
+                        }
+                    }
+                }
             }
             if (!paletteOnly && textureAndPalette != null && width > 0f && height > 0f)
             {

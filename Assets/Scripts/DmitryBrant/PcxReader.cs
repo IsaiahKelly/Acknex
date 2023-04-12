@@ -465,7 +465,6 @@ namespace DmitryBrant.ImageFormats
                     palTexture2D.SetPixel(pX, 0, new Color32(r, g, b, 1));
                 }
                 palTexture2D.Apply(false, false);
-
                 return new TextureAndPalette(null, palTexture2D);
             }
             else

@@ -225,6 +225,11 @@ namespace Acknex
         {
         }
 
+        public void PlaySound(IAcknexObject sound, float volume, float balance = 0.5f, float sDist = 100, float svDist = 100)
+        {
+            PlaySound(sound, volume, null, sDist, svDist);
+        }
+
         public IAcknexObject Drop(IAcknexObject acknexObject, IAcknexObject MY, IAcknexObject THERE)
         {
             var containerGameObject = acknexObject.Container?.GameObject;
@@ -777,6 +782,13 @@ namespace Acknex
                     {
                         acknexObject.Container?.SetupTemplate();
                     }
+                }
+            }
+            if (OldAckVersion)
+            {
+                foreach (var kvp in RegionsByName)
+                {
+                    PostSetupObjectInstance(kvp.Value.AcknexObject);
                 }
             }
             var createdRegions = new List<Region>();

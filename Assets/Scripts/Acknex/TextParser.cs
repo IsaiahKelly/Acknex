@@ -626,7 +626,7 @@ namespace Acknex
             return null;
         }
 
-            public void ParseWMP(string wmpFilename)
+        public void ParseWMP(string wmpFilename)
         {
             if (!File.Exists(wmpFilename))
             {

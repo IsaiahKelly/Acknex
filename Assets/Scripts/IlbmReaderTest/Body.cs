@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace IlbmReaderTest
 {
@@ -26,12 +27,12 @@ namespace IlbmReaderTest
             {
                 case 0:
                 {
-                    if (targetSize != innerIlbmChunk.Content.Length)
-                    {
-                        throw new Exception("Expected uncompressed data length not equal to chunk content length");
-                    }
+                    //if (targetSize != innerIlbmChunk.Content.Length)
+                    //{
+                    //    throw new Exception("Expected uncompressed data length not equal to chunk content length");
+                    //}
 
-                    for (int i = 0; i < targetSize; i++)
+                    for (int i = 0; i < Mathf.Min(targetSize, innerIlbmChunk.Content.Length); i++)
                     {
                         BitmapData[i] = innerIlbmChunk.Content[i];
                     }

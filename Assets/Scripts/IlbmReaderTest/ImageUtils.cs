@@ -6,6 +6,17 @@ namespace IlbmReaderTest
     public static class ImageUtils
     {
 
+        public static byte[] FlipPaletteVertically(byte[] frameData, int width, int height)
+        {
+            byte[] data = new byte[frameData.Length];
+            for (int firstLine = 0; firstLine < height; firstLine++)
+            {
+                int lastLine = height - firstLine - 1;
+                Array.Copy(frameData, firstLine * width, data, lastLine * width, width);
+            }
+            return data;
+        }
+
         public static Color32[] FlipPixelsVertically(Color32[] frameData, int width, int height)
         {
             Color32[] data = new Color32[frameData.Length];

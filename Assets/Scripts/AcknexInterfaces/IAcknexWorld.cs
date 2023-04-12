@@ -169,6 +169,11 @@ namespace Acknex.Interfaces
         /// </summary>
         void PlaySound(IAcknexObject sound, float volume, IAcknexObject balance = null, float sDist = 100f, float svDist = 100f);
 
+        /// <summary>
+        /// Plays the given sound.
+        /// </summary>
+        void PlaySound(IAcknexObject sound, float volume, float balance = 0.5f, float sDist = 100f, float svDist = 100f);
+
         //todo: change this to an IAcknexObject
         /// <summary>
         /// Drops the given thing or actor in front of player.

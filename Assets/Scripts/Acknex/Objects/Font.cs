@@ -64,6 +64,7 @@ namespace Acknex
                 {
                     if (charCount == 11)
                     {
+                        //TODO
                         //Glyphs[row * cols + col] = Bitmap.ExtractBitmap(Texture, col * width, row * height, width, height);
                     }
                     else if (charCount == 128)

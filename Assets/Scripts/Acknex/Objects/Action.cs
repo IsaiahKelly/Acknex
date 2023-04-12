@@ -357,7 +357,7 @@ namespace Acknex
                             }
                             else
                             {
-                                CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
+                                CodeStringBuilder.Append("_world.PlaySound(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(", null);");
                             }
                             HandleIfStack();
                             ReadUntilSemiColon();

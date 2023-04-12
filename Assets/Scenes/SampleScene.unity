@@ -823,6 +823,7 @@ MonoBehaviour:
   AudioSource: {fileID: 1477033083}
   BilinearFilter: 1
   Canvas: {fileID: 1116186326}
+  CanvasScaler: {fileID: 1116186325}
   CanvasView: {fileID: 1520209880}
   CanvasWidthRatio: 0
   DebugColor: {r: 0, g: 0, b: 0, a: 0}
@@ -830,12 +831,15 @@ MonoBehaviour:
   DebugTexture: {fileID: 0}
   DisableCompilation: 0
   DisableMaterials: 0
-  DrawShadows: 1
+  DrawShadows: 0
   GodMode: 1
+  IgnoreRaycastLayer:
+    m_LayerIndex: 2
+  LightMultiplier: 2
   MeshBatch: 0
   MidiPlayer: {fileID: 1246573634}
   MouseMultiplier: 0.1
-  RotationBeginsAtRight: 0
+  OldAckVersion: 1
   SourceGenerationPath: Assets\Scripts\Tests\Game.cs.new
   Sprites:
     m_LayerIndex: 11
@@ -859,12 +863,7 @@ MonoBehaviour:
     m_Bits: 784
   WaterLayer:
     m_LayerIndex: 4
-  WDLPath: Assets\Data\Sdrome.wdl
-  WMPContainsRegionsByName: 0
-  IgnoreRaycastLayer:
-    m_LayerIndex: 2
-  LightMultiplier: 2
-  CanvasScaler: {fileID: 1116186325}
+  WDLPath: C:\games\acknex\DEMO\VRDEMO.WDL
   <DebugMarked>k__BackingField: 0
 --- !u!114 &1246573633
 MonoBehaviour:

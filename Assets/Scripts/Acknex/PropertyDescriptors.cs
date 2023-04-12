@@ -305,6 +305,22 @@ namespace Acknex
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "FLOOR_ASCEND");
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "CEIL_DESCEND");
             AddObjectProperty(ObjectType.Region, PropertyType.Float, "FLOOR_DESCEND");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE1");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE2");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE3");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE4");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE5");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE6");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE7");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE8");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE9");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE10");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE11");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE12");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE13");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE14");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE15");
+            AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, "TEXTURE16");
 
             AddObjectProperty(ObjectType.Wall, PropertyType.String, "NAME");
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, "AMBIENT");
