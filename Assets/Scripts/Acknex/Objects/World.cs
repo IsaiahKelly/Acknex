@@ -290,6 +290,7 @@ namespace Acknex
                         _meshesPerTexture.Add(wall.TextureObject, meshes);
                     }
                     meshes.Add(wall.Filter.sharedMesh);
+                    meshes.Add(wall.GapFilter.sharedMesh);
                 }
             }
             foreach (var regions in AllRegionsByName.Values)
@@ -340,7 +341,7 @@ namespace Acknex
                 var meshRenderer = groupGameObject.AddComponent<MeshRenderer>();
                 meshRenderer.material = BuildMaterial(kvp.Key.AcknexObject);
                 var bitmap = kvp.Key.GetBitmapAt();
-                kvp.Key.UpdateFrame(bitmap, meshRenderer.material, false, false, 0, kvp.Key.AcknexObject);
+                kvp.Key.UpdateFrame(bitmap, meshRenderer.materials, false, false, 0, kvp.Key.AcknexObject);
             }
         }
     }

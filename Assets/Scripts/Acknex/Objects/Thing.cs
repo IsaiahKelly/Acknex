@@ -124,6 +124,7 @@ namespace Acknex
             _light.type = LightType.Point;
             _light.range = 1f;
             _light.intensity = 0f;
+            _light.enabled = false;
             StartCoroutine(TriggerTickEvents());
             StartCoroutine(TriggerSecEvents());
         }

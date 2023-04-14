@@ -2,7 +2,6 @@
 {
     Properties
     {
-        _Color ("Color", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
         _AMBIENT("_AMBIENT", Float) = 1.0
         _ALBEDO("_ALBEDO", Float) = 0.0
@@ -21,11 +20,8 @@
         Tags {"Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" "ForceNoShadowCasting" = "True"}
         LOD 100
 
-        ZWrite Off
-        Blend SrcAlpha OneMinusSrcAlpha
-
         CGPROGRAM
-        #pragma surface surf Sprite alpha
+        #pragma surface surf Sprite alpha:blend noambient novertexlights nolightmap noshadow
 
         #pragma target 3.0
                     

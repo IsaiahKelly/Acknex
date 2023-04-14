@@ -839,7 +839,7 @@ MonoBehaviour:
   MeshBatch: 0
   MidiPlayer: {fileID: 1246573634}
   MouseMultiplier: 0.1
-  OldAckVersion: 1
+  OldAckVersion: 0
   SourceGenerationPath: Assets\Scripts\Tests\Game.cs.new
   Sprites:
     m_LayerIndex: 11
@@ -847,7 +847,7 @@ MonoBehaviour:
     m_LayerIndex: 9
   TriggersLayer:
     m_LayerIndex: 10
-  UsePalettes: 0
+  UsePalettes: 1
   UseWDLEngine: 0
   Volume: 1
   WallsAndRegionsLayer:
@@ -863,7 +863,7 @@ MonoBehaviour:
     m_Bits: 784
   WaterLayer:
     m_LayerIndex: 4
-  WDLPath: C:\games\acknex\DEMO\VRDEMO.WDL
+  WDLPath: C:\games\acknex\varginha2\CONTATO.WDL
   <DebugMarked>k__BackingField: 0
 --- !u!114 &1246573633
 MonoBehaviour:

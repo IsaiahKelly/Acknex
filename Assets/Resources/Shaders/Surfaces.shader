@@ -1,14 +1,8 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-
-Shader "Acknex/Surfaces"
+﻿Shader "Acknex/Surfaces"
 {
 	Properties
 	{
-		_Color("Color", Color) = (1,1,1,1)
 		_MainTex("Albedo (RGB)", 2D) = "white" {}
-		_Glossiness("Smoothness", Range(0,1)) = 0.5
-		_Metallic("Metallic", Range(0,1)) = 0.0
-		_CullMode("_CullMode", Int) = 0
 		_AMBIENT("_AMBIENT", Float) = 1.0
 		_ALBEDO("_ALBEDO", Float) = 0.0
 		_RADIANCE("_RADIANCE", Float) = 1.0
@@ -24,38 +18,37 @@ Shader "Acknex/Surfaces"
 		_V1H("_V1H", Float) = 0.0
 		_FENCE("_FENCE", Int) = 0
 		_PORTCULLIS("_PORTCULLIS", Int) = 0
+		_TRANSPARENT("_TRANSPARENT", Int) = 0
+		_CullMode("_CullMode", Int) = 0
+
 	}
 		SubShader
 		{
-			Tags { "RenderType" = "Opaque" }
-			//todo: lets add this here later
-			Cull[_CullMode]
-			LOD 200
+			Tags { "RenderType" = "Opaque" "ForceNoShadowCasting" = "True" }
+
+			Cull [_CullMode]
+			LOD 100
 
 			CGPROGRAM
-			#pragma surface surf Surface addshadow vertex:vert
+			#pragma surface surf Surface vertex:vert noambient novertexlights nolightmap noshadow 
 
 			#pragma target 3.0
 
 			sampler2D _MainTex;
 			#include "Common.cginc"
-			#include "UnityPBSLighting.cginc"
 
 			struct Input
 			{
 				float2 uv_MainTex;
 			};
 
-			half _Glossiness;
-			half _Metallic;
-
 			UNITY_INSTANCING_BUFFER_START(Props)
 			UNITY_INSTANCING_BUFFER_END(Props)
 
 			half4 LightingSurface(SurfaceOutput s, half3 lightDir, half atten) {
-				half NdotL = max(dot(s.Normal, lightDir), 0.0) * _ALBEDO;
+				half light = max(dot(s.Normal, lightDir), 0.0) * _ALBEDO * atten;
 				half4 c;
-				c.rgb = (_RADIANCE + s.Albedo) * _AMBIENT * _LightColor0.rgb * (NdotL * atten);
+				c.rgb = (_RADIANCE + s.Albedo) * _LightColor0.rgb * lerp(_AMBIENT, light, 0.5);
 				c.a = s.Alpha;
 				return c;
 			}
@@ -89,9 +82,12 @@ Shader "Acknex/Surfaces"
 				uv *= _MainTex_TexelSize.xy;
 				fixed4 c = tex2D(_MainTex, uv);
 				ApplyPalette(c);
-				o.Alpha = (c.a - 0.5) / max(fwidth(c.a), 0.0001) + 0.5;
-				clip(o.Alpha - 0.5);
 				o.Albedo = c.rgb;
+				o.Alpha = c.a;
+				if (_TRANSPARENT && o.Alpha < 0.5) {
+					discard;
+				}
+				//clip(o.Alpha);
 			}
 			ENDCG
 		}

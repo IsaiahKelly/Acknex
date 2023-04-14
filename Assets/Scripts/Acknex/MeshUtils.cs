@@ -14,16 +14,16 @@ namespace Acknex
             return Vector3.Cross(side1, side2).normalized;
         }
 
-        public static void AddQuad(int a, int b, int c, int d, Dictionary<IAcknexObject, List<int>> allTriangles, IAcknexObject texture, int baseIndex = 0)
+        public static void AddQuad<T>(int a, int b, int c, int d, Dictionary<T, List<int>> allTriangles, T key, int baseIndex = 0)
         {
             //if (texture == null)
             //{
             //    texture = "__default__";
             //}
-            if (!allTriangles.TryGetValue(texture, out var indices))
+            if (!allTriangles.TryGetValue(key, out var indices))
             {
                 indices = new List<int>();
-                allTriangles[texture] = indices;
+                allTriangles[key] = indices;
             }
             //indices.Add(baseIndex + d);
             //indices.Add(baseIndex + c);

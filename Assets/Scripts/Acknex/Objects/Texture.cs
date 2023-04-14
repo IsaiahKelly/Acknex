@@ -145,7 +145,7 @@ namespace Acknex
                 var bitmap = GetBitmapAt(frame);
                 if (meshRenderer?.material != null && bitmap != null)
                 {
-                    UpdateFrame(bitmap, meshRenderer.material, scaleTexture, mirror != null && mirror[side] > 0, frame, sourceAcknexObject);
+                    UpdateFrame(bitmap, meshRenderer.materials, scaleTexture, mirror != null && mirror[side] > 0, frame, sourceAcknexObject);
                 }
                 if (sourceTransform != null)
                 {
@@ -160,9 +160,9 @@ namespace Acknex
             return this.AcknexObject.TryGetString("MODEL", out var model) && World.Instance.ModelsByName.TryGetValue(model, out modelObject);
         }
 
-        public void UpdateFrame(Bitmap bitmap, Material unityMaterial, bool scaleTexture, bool mirror = false, int frameIndex = 0, IAcknexObject sourceAcknexObject = null)
+        public void UpdateFrame(Bitmap bitmap, IList<Material> materials, bool scaleTexture, bool mirror = false, int frameIndex = 0, IAcknexObject sourceAcknexObject = null)
         {
-            bitmap?.UpdateMaterial(unityMaterial, scaleTexture ? this : null, frameIndex, mirror, sourceAcknexObject);
+            bitmap?.UpdateMaterial(materials, scaleTexture ? this : null, frameIndex, mirror, sourceAcknexObject);
         }
 
         public Texture()

@@ -27,13 +27,13 @@ int _CLAMPY;
 
 int _FENCE;
 int _PORTCULLIS;
+int _TRANSPARENT;
 
 void ApplyPalette(inout float4 color)
 {
 	if (_AcknexUsePalettes) {
-		float alpha = color.x != 0.0;
 		color = tex2D(_AcknexPalette, float2(color.x, 0));
-		color.w = alpha;
+		color.w = color.x != 0;
 	}
 	//else 
 	//{

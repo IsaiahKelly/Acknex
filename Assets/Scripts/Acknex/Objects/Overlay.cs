@@ -1,4 +1,5 @@
-﻿using Acknex.Interfaces;
+﻿using System.Collections.Generic;
+using Acknex.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ namespace Acknex
         private Bitmap _lastOverlaySprite;
 
         private Graphic _overlayGraphic;
+        private IList<Material> _materials;
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Overlay);
 
         [field: SerializeField] public bool DebugMarked { get; set; }
@@ -64,7 +66,7 @@ namespace Acknex
             {
                 _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,  overlaySprite.Width);
                 _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,  overlaySprite.Height);
-                overlaySprite.UpdateMaterial(_overlayGraphic.material, null, 0, false, null);
+                overlaySprite.UpdateMaterial(_materials, null, 0, false, null);
                 AcknexObject.SetFloat("SIZE_X", overlaySprite.Width);
                 AcknexObject.SetFloat("SIZE_Y", overlaySprite.Height);
                 _lastOverlaySprite = overlaySprite;
@@ -98,6 +100,7 @@ namespace Acknex
             overlayGraphic = overlayGameObject.AddComponent<Image>();
             overlayGraphic.rectTransform.pivot = new Vector3(0f, 1f);
             overlayGraphic.material = new Material(Shader.Find("Acknex/UI"));
+            _materials = new List<Material>() {_overlayGraphic.material};
         }
     }
 }

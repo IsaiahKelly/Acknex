@@ -113,6 +113,7 @@ namespace Acknex
             ViewCamera.transparencySortMode = TransparencySortMode.Perspective;
             _audioSource = GetComponent<AudioSource>();
             _light = GetComponent<Light>();
+            _light.enabled = false;
         }
 
         private void Update()
