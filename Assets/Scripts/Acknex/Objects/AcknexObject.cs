@@ -22,6 +22,9 @@ namespace Acknex
 
         public void AddFlag(string flag)
         {
+#if DEBUG_ENABLED
+            DebugMessage = "Got dirty because added flag " + flag;
+#endif
             NumberProperties[flag] = 1f;
             IsDirty = true;
         }
@@ -145,14 +148,23 @@ namespace Acknex
 
         public void RemoveFlag(string flag)
         {
+            #if DEBUG_ENABLED
+            DebugMessage = "Got dirty because removed flag " + flag;
+#endif
             NumberProperties[flag] = 0f;
             IsDirty = true;
         }
 
         public void SetAcknexObject(string propertyName, IAcknexObject value)
         {
+            #if DEBUG_ENABLED
+            DebugMessage = "Got dirty because setted object " + propertyName;
+#endif
+            if (ObjectProperties.TryGetValue(propertyName, out var existingValue))
+            {
+                IsDirty = existingValue != value;
+            }
             ObjectProperties[propertyName] = value;
-            IsDirty = true;
         }
 
         public void SetAcknexObjectAll(string propertyName, IAcknexObject value)
@@ -160,41 +172,41 @@ namespace Acknex
             switch (Type)
             {
                 case ObjectType.Wall:
-                {
-                    var all = World.Instance.AllWallsByName[GetString("NAME")];
-                    foreach (var item in all)
                     {
-                        item.AcknexObject.SetAcknexObject(propertyName, value);
+                        var all = World.Instance.AllWallsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetAcknexObject(propertyName, value);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case ObjectType.Region:
-                {
-                    var all = World.Instance.AllRegionsByName[GetString("NAME")];
-                    foreach (var item in all)
                     {
-                        item.AcknexObject.SetAcknexObject(propertyName, value);
+                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetAcknexObject(propertyName, value);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case ObjectType.Thing:
-                {
-                    var all = World.Instance.AllThingsByName[GetString("NAME")];
-                    foreach (var item in all)
                     {
-                        item.AcknexObject.SetAcknexObject(propertyName, value);
+                        var all = World.Instance.AllThingsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetAcknexObject(propertyName, value);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case ObjectType.Actor:
-                {
-                    var all = World.Instance.AllActorsByName[GetString("NAME")];
-                    foreach (var item in all)
                     {
-                        item.AcknexObject.SetAcknexObject(propertyName, value);
+                        var all = World.Instance.AllActorsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetAcknexObject(propertyName, value);
+                        }
+                        break;
                     }
-                    break;
-                }
             }
         }
 
@@ -218,17 +230,21 @@ namespace Acknex
                     if (*(int*)&existingValue != *(int*)&value)
                     {
                         IsDirty = true;
-                        //DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
+                        #if DEBUG_ENABLED
+                        DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
+#endif
                     }
                 }
             }
             else
             {
                 IsDirty = true;
-                //if (IsDirty)
-                //{
-                //    DebugMessage = "Got dirty because new property " + propertyName + " is " + value;
-                //}
+                if (IsDirty)
+                {
+                    #if DEBUG_ENABLED
+                    DebugMessage = "Got dirty because new property " + propertyName + " is " + value;
+#endif
+                }
             }
             NumberProperties[propertyName] = value;
         }
@@ -238,41 +254,41 @@ namespace Acknex
             switch (Type)
             {
                 case ObjectType.Wall:
-                {
-                    var all = World.Instance.AllWallsByName[GetString("NAME")];
-                    foreach (var item in all)
                     {
-                        item.AcknexObject.SetFloat(propertyName, value);
+                        var all = World.Instance.AllWallsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetFloat(propertyName, value);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case ObjectType.Region:
-                {
-                    var all = World.Instance.AllRegionsByName[GetString("NAME")];
-                    foreach (var item in all)
                     {
-                        item.AcknexObject.SetFloat(propertyName, value);
+                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetFloat(propertyName, value);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case ObjectType.Thing:
-                {
-                    var all = World.Instance.AllThingsByName[GetString("NAME")];
-                    foreach (var item in all)
                     {
-                        item.AcknexObject.SetFloat(propertyName, value);
+                        var all = World.Instance.AllThingsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetFloat(propertyName, value);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case ObjectType.Actor:
-                {
-                    var all = World.Instance.AllActorsByName[GetString("NAME")];
-                    foreach (var item in all)
                     {
-                        item.AcknexObject.SetFloat(propertyName, value);
+                        var all = World.Instance.AllActorsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetFloat(propertyName, value);
+                        }
+                        break;
                     }
-                    break;
-                }
             }
         }
 
@@ -294,16 +310,20 @@ namespace Acknex
                 if (existingValue != (object)value)
                 {
                     IsDirty = true;
-                    //DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
+                    #if DEBUG_ENABLED
+                    DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
+#endif
                 }
             }
             else
             {
                 IsDirty = true;
-                //if (IsDirty)
-                //{
-                //    DebugMessage = "Got dirty because new property " + propertyName + " is " + value;
-                //}
+                if (IsDirty)
+                {
+                    #if DEBUG_ENABLED
+                    DebugMessage = "Got dirty because new property " + propertyName + " is " + value;
+#endif
+                }
             }
         }
 
@@ -312,41 +332,41 @@ namespace Acknex
             switch (Type)
             {
                 case ObjectType.Wall:
-                {
-                    var all = World.Instance.AllWallsByName[GetString("NAME")];
-                    foreach (var item in all)
                     {
-                        item.AcknexObject.SetObject(propertyName, value);
+                        var all = World.Instance.AllWallsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetObject(propertyName, value);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case ObjectType.Region:
-                {
-                    var all = World.Instance.AllRegionsByName[GetString("NAME")];
-                    foreach (var item in all)
                     {
-                        item.AcknexObject.SetObject(propertyName, value);
+                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetObject(propertyName, value);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case ObjectType.Thing:
-                {
-                    var all = World.Instance.AllThingsByName[GetString("NAME")];
-                    foreach (var item in all)
                     {
-                        item.AcknexObject.SetObject(propertyName, value);
+                        var all = World.Instance.AllThingsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetObject(propertyName, value);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case ObjectType.Actor:
-                {
-                    var all = World.Instance.AllActorsByName[GetString("NAME")];
-                    foreach (var item in all)
                     {
-                        item.AcknexObject.SetObject(propertyName, value);
+                        var all = World.Instance.AllActorsByName[GetString("NAME")];
+                        foreach (var item in all)
+                        {
+                            item.AcknexObject.SetObject(propertyName, value);
+                        }
+                        break;
                     }
-                    break;
-                }
             }
         }
 

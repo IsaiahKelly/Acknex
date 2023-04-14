@@ -232,7 +232,7 @@ namespace Acknex
                 _triggerCollider.enabled = _collider.enabled = _characterController.enabled = false;
                 return;
             }
-            _spriteCollider.enabled = _collider.enabled = _characterController.enabled = true;
+            //_spriteCollider.enabled = _collider.enabled = _characterController.enabled = true;
             _meshRenderer.enabled = true;
             _collider.center = _characterController.center = new Vector3(0f, _innerGameObject.transform.localPosition.y + _innerGameObject.transform.localScale.y * 0.5f, 0f);
             _collider.height = _characterController.height = _innerGameObject.transform.localScale.y;
@@ -356,7 +356,9 @@ namespace Acknex
 
         private void OnDrawGizmos()
         {
-#if DEBUG_ENABLED
+#if DEBUG_ENABLED   
+            Gizmos.color = AcknexObject.IsDirty ? Color.green : Color.red;
+            Gizmos.DrawSphere(transform.position, 1f);
             if (DebugMarked)
             {
                 var quaternion = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE")), 0f);
@@ -370,8 +372,8 @@ namespace Acknex
 #if DEBUG_ENABLED
             Gizmos.color = Color.cyan;
             Gizmos.DrawLine(transform.position, new Vector3(AcknexObject.GetFloat("TARGET_X"), 0f, AcknexObject.GetFloat("TARGET_Y")));
-            //Gizmos.color = AcknexObject.IsDirty ? Color.green : Color.red;
-            //Gizmos.DrawSphere(transform.position, 1f);
+            Gizmos.color = AcknexObject.IsDirty ? Color.green : Color.red;
+            Gizmos.DrawSphere(transform.position, 1f);
             var quaternion = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("ANGLE")), 0f);
             DebugExtension.DrawArrow(transform.position, quaternion * Vector3.forward, Color.cyan);
 #endif
@@ -415,6 +417,9 @@ namespace Acknex
             for (; ; )
             {
                 AcknexObject.IsDirty = true;
+                #if DEBUG_ENABLED
+                AcknexObject.DebugMessage = "Got dirty because moved to way";
+#endif
                 if (MoveToPointStep(nextPoint))
                 {
                     if (waypoint++ >= points.Count)
@@ -437,6 +442,9 @@ namespace Acknex
             for (; ; )
             {
                 AcknexObject.IsDirty = true;
+                #if DEBUG_ENABLED
+                AcknexObject.DebugMessage = "Got dirty because moved to vertex";
+#endif
                 if (MoveToPointStep(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
                 {
                     //AcknexObject.SetAcknexObject("TARGET", null);
@@ -454,6 +462,9 @@ namespace Acknex
             for (; ; )
             {
                 AcknexObject.IsDirty = true;
+                #if DEBUG_ENABLED
+                AcknexObject.DebugMessage = "Got dirty because moved to player";
+#endif
                 var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
                 MoveToPointStep(playerPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f);
                 if (CrossedRegion(ref currentRegion))
@@ -492,6 +503,9 @@ namespace Acknex
             for (; ; )
             {
                 AcknexObject.IsDirty = true;
+                #if DEBUG_ENABLED
+                AcknexObject.DebugMessage = "Got dirty because moved to angle";
+#endif
                 MoveToAngleStep();
                 if (CrossedRegion(ref currentRegion))
                 {
@@ -556,7 +570,7 @@ namespace Acknex
             {
                 checkHeight = Region.MaxHeight;
             }
-            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, GetColliderRadius(), thingX, thingY, ref thingZ, false, checkHeight);
+            var newRegionContainer = initial || AcknexObject.HasFlag("CAREFULLY") ? Region.Locate(AcknexObject, regionContainer, GetColliderRadius(), thingX, thingY, ref thingZ, false, checkHeight) : regionContainer;
             float height;
             if (ground)
             {

@@ -43,9 +43,12 @@ namespace Acknex
 
         public AckTransform AckTransform;
 
-        //todo: can remove, debug info
         public Matrix4x4 BottomQuad;
         public Matrix4x4 BottomUV;
+        public Matrix4x4 TopQuad;
+        public Matrix4x4 TopUV;
+        public Matrix4x4 GapQuad;
+        public Matrix4x4 GapUV;
         public bool DisableRender;
         public bool Processed;
         public MeshFilter Filter { get; set; }
@@ -238,8 +241,8 @@ namespace Acknex
             _invertedCollider.enabled = _collider.enabled = AcknexObject.HasFlag("IMPASSABLE") || !AcknexObject.HasFlag("PASSABLE");//_collider.enabled = !AcknexObject.HasFlag("PASSABLE");
             _vertexTriggerB.radius = _vertexTriggerA.radius = AcknexObject.GetFloat("DIST");
             //todo: will disalign when rotate or move
-            _vertexGameObjectA.transform.position = BottomQuad.GetColumn(3);
-            _vertexGameObjectB.transform.position = BottomQuad.GetColumn(2);
+            _vertexGameObjectA.transform.position = (_hasGap ? GapQuad : BottomQuad).GetColumn(3);
+            _vertexGameObjectB.transform.position = (_hasGap ? GapQuad : BottomQuad).GetColumn(2);
             //_invertedCollider.enabled = AcknexObject.HasFlag("FENCE");
             _gapInvertedCollider.enabled = _gapCollider.enabled = _hasGap && !AcknexObject.HasFlag("IMPASSABLE") || !_hasGap && AcknexObject.HasFlag("IMPASSABLE");
             _gapMeshRenderer.enabled = _hasGap;
@@ -560,8 +563,8 @@ namespace Acknex
                             _allUVs.Add(uv1);
                             _allUVs.Add(uv2);
                             _allUVs.Add(uv3);
-                            BottomQuad = new Matrix4x4(v0, v1, v2, v3);
-                            BottomUV = new Matrix4x4(uv0, uv1, uv2, uv3);
+                            GapQuad = new Matrix4x4(v0, v1, v2, v3);
+                            GapUV = new Matrix4x4(uv0, uv1, uv2, uv3);
                         }
                     }
                     //else
@@ -612,6 +615,8 @@ namespace Acknex
                                 _allUVs.Add(uv1);
                                 _allUVs.Add(uv2);
                                 _allUVs.Add(uv3);
+                                TopQuad = new Matrix4x4(v0, v1, v2, v3);
+                                TopUV = new Matrix4x4(uv0, uv1, uv2, uv3);
                             }
                         }
                     }

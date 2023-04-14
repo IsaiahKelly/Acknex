@@ -129,6 +129,7 @@ namespace Acknex
 
         private void Awake()
         {
+            Instance = this;
             AcknexObject.Container = this;
             _palette = new Texture2D(256, 1, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.None);
             _palette.filterMode = FilterMode.Point;
@@ -140,7 +141,6 @@ namespace Acknex
 
         private void Start()
         {
-            Instance = this;
             Cursor.lockState = CursorLockMode.Locked;
             AudioListener.volume = Volume;
             CreateDefaultObjects();
