@@ -149,9 +149,15 @@ namespace Acknex
             var offsetY = 0f;
             var cullMode = CullMode.Back;
             var ambient = 1f;
+            CropTexture.Palette.wrapModeU = CropTexture.Texture.wrapModeU = TextureWrapMode.Repeat;
             CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Repeat;
             if (sourceAcknexObject != null)
             {
+                if (sourceAcknexObject.Type == ObjectType.Actor || sourceAcknexObject.Type == ObjectType.Thing)
+                {
+                    CropTexture.Palette.wrapModeU = CropTexture.Texture.wrapModeU = TextureWrapMode.Clamp;
+                    CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Clamp;
+                }
                 if (sourceAcknexObject.TryGetFloat("AMBIENT", out var wallOrRegionAmbient))
                 {
                     ambient *= wallOrRegionAmbient;
