@@ -7,3 +7,6 @@ To test it, just run the "SampleScene" after the data is extracted.
 Incidente em Varginha (The Varginha Incident, Alien Anarchy) copyright Perceptum.
 
 Acknex game engine copyright Conitec Datasystems.
+
+Discord server:
+https://discord.gg/CthKP95G
