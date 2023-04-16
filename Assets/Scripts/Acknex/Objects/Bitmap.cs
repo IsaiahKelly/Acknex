@@ -84,14 +84,6 @@ namespace Acknex
                     if (!paletteOnly)
                     {
                         World.Instance.TextureCache.Add(filename, textureAndPalette);
-                        if (width == 0)
-                        {
-                            width = textureAndPalette.Texture.width;
-                        }
-                        if (height == 0)
-                        {
-                            height = textureAndPalette.Texture.height;
-                        }
                     }
                 }
                 else if (lowerInvariant.EndsWith("lbm") || lowerInvariant.EndsWith("bbm"))
@@ -101,15 +93,18 @@ namespace Acknex
                     if (!paletteOnly)
                     {
                         World.Instance.TextureCache.Add(filename, textureAndPalette);
-                        if (width == 0)
-                        {
-                            width = textureAndPalette.Texture.width;
-                        }
-                        if (height == 0)
-                        {
-                            height = textureAndPalette.Texture.height;
-                        }
                     }
+                }
+            }
+            if (textureAndPalette != null && textureAndPalette.Texture != null)
+            {
+                if (width == 0)
+                {
+                    width = textureAndPalette.Texture.width;
+                }
+                if (height == 0)
+                {
+                    height = textureAndPalette.Texture.height;
                 }
             }
             if (!paletteOnly && textureAndPalette != null && width > 0f && height > 0f)
@@ -131,10 +126,6 @@ namespace Acknex
 
         public void UpdateMaterial(IList<Material> materials, Texture texture, int index, bool mirror, IAcknexObject sourceAcknexObject)
         {
-            //if (sourceAcknexObject?.Container != null && sourceAcknexObject.Container.DebugMarked)
-            //{
-            //    var x = 1;
-            //}
             if (CropTexture == null)
             {
                 return;

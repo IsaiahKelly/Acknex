@@ -28,6 +28,7 @@
         Palette,
         Font,
         Model,
-        Song
+        Song,
+        Digits
     }
 }

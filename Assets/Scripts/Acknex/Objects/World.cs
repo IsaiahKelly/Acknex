@@ -35,6 +35,7 @@ namespace Acknex
         public readonly Dictionary<string, AcknexString> StringsByName = new Dictionary<string, AcknexString>();
         public readonly Dictionary<string, Synonym> SynonymsByName = new Dictionary<string, Synonym>();
         public readonly Dictionary<string, Text> TextsByName = new Dictionary<string, Text>();
+        public readonly Dictionary<string, Digits> DigitsByName = new Dictionary<string, Digits>();
         public readonly Dictionary<string, TextureAndPalette> TextureCache = new Dictionary<string, TextureAndPalette>();
         public readonly Dictionary<string, Texture> TexturesByName = new Dictionary<string, Texture>();
         public readonly Dictionary<string, Thing> ThingsByName = new Dictionary<string, Thing>();

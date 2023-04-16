@@ -244,7 +244,7 @@ namespace Acknex
             _vertexGameObjectA.transform.position = (_hasGap ? GapQuad : BottomQuad).GetColumn(3);
             _vertexGameObjectB.transform.position = (_hasGap ? GapQuad : BottomQuad).GetColumn(2);
             //_invertedCollider.enabled = AcknexObject.HasFlag("FENCE");
-            _gapInvertedCollider.enabled = _gapCollider.enabled = _hasGap && !AcknexObject.HasFlag("IMPASSABLE") || !_hasGap && AcknexObject.HasFlag("IMPASSABLE");
+            _gapInvertedCollider.enabled = _gapCollider.enabled = !AcknexObject.HasFlag("PASSABLE") && (_hasGap && !AcknexObject.HasFlag("IMPASSABLE") || !_hasGap && AcknexObject.HasFlag("IMPASSABLE"));
             _gapMeshRenderer.enabled = _hasGap;
         }
 

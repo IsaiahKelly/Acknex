@@ -11,6 +11,53 @@ public class AcknexObjectEditor : Editor
 {
     public override void OnInspectorGUI()
     {
+        void ListProperties(IOrderedEnumerable<KeyValuePair<string, object>> objectProperties, IOrderedEnumerable<KeyValuePair<string, float>> numberProperties)
+        {
+            foreach (var property in objectProperties)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(property.Key);
+                if (property.Value is HashSet<string> list)
+                {
+                    EditorGUILayout.LabelField(string.Join(",", list));
+                }
+                else if (property.Value is IAcknexObject acknexObject && acknexObject.Container is MonoBehaviour mono)
+                {
+                    if (GUILayout.Button(property.Value?.ToString()))
+                    {
+                        Selection.activeTransform = mono.transform;
+                    }
+                }
+                else if (property.Value is List<IAcknexObject> objList)
+                {
+                    var values = "";
+                    foreach (var item in objList)
+                    {
+                        if (item.Type == ObjectType.String)
+                        {
+                            values += item.GetString("VAL") + "|";
+                        }
+                        else
+                        {
+                            values += item.ToString() + "|";
+                        }
+                    }
+                    EditorGUILayout.LabelField(values);
+                }
+                else
+                {
+                    EditorGUILayout.LabelField(property.Value?.ToString());
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+            foreach (var property in numberProperties)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(property.Key);
+                EditorGUILayout.LabelField((property.Key == "ANGLE" ? $"{(Mathf.Rad2Deg * property.Value)}({property.Value})" : property.Value.ToString()));
+                EditorGUILayout.EndHorizontal();
+            }
+        }
         base.OnInspectorGUI();
         if (target is IAcknexObjectContainer container)
         {
@@ -21,38 +68,8 @@ public class AcknexObjectEditor : Editor
             EditorGUILayout.IntField("Index", container.AcknexObject.InstanceIndex);
             EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Instance");
             var objectProperties = ((AcknexObject)container.AcknexObject).ObjectProperties.OrderBy(x => x.Key);
-            foreach (var property in objectProperties)
-            {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(property.Key);
-                if (property.Value is HashSet<string> list)
-                {
-                    EditorGUILayout.LabelField(string.Join(",", list));
-                }
-                else
-                {
-                    if (property.Value is IAcknexObject acknexObject && acknexObject.Container is MonoBehaviour mono)
-                    {
-                        if (GUILayout.Button(property.Value?.ToString()))
-                        {
-                            Selection.activeTransform = mono.transform;
-                        }
-                    }
-                    else
-                    {
-                        EditorGUILayout.LabelField(property.Value?.ToString());
-                    }
-                }
-                EditorGUILayout.EndHorizontal();
-            }
             var numberProperties = ((AcknexObject)container.AcknexObject).NumberProperties.OrderBy(x => x.Key);
-            foreach (var property in numberProperties)
-            {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(property.Key);
-                EditorGUILayout.LabelField((property.Key == "ANGLE" ? $"{(Mathf.Rad2Deg * property.Value)}({property.Value})" : property.Value.ToString()));
-                EditorGUILayout.EndHorizontal();
-            }
+            ListProperties(objectProperties, numberProperties);
             EditorGUILayout.EndFoldoutHeaderGroup();
             if (container.AcknexObject.GetTemplateCallback != null && container.AcknexObject.TryGetString("NAME", out var name))
             {
@@ -61,38 +78,8 @@ public class AcknexObjectEditor : Editor
                 {
                     EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Template");
                     var templateObjectProperties = ((AcknexObject)template).ObjectProperties.OrderBy(x => x.Key);
-                    foreach (var property in templateObjectProperties)
-                    {
-                        EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField(property.Key);
-                        if (property.Value is HashSet<string> list)
-                        {
-                            EditorGUILayout.LabelField(string.Join(",", list));
-                        }
-                        else
-                        {
-                            if (property.Value is IAcknexObject acknexObject && acknexObject.Container is MonoBehaviour mono)
-                            {
-                                if (GUILayout.Button(property.Value?.ToString()))
-                                {
-                                    Selection.activeTransform = mono.transform;
-                                }
-                            }
-                            else
-                            {
-                                EditorGUILayout.LabelField(property.Value?.ToString());
-                            }
-                        }
-                        EditorGUILayout.EndHorizontal();
-                    }
                     var templateNumberProperties = ((AcknexObject)template).NumberProperties.OrderBy(x => x.Key);
-                    foreach (var property in templateNumberProperties)
-                    {
-                        EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField(property.Key);
-                        EditorGUILayout.LabelField((property.Key == "ANGLE" ? $"{(Mathf.Rad2Deg * property.Value)}({property.Value})" : property.Value.ToString()));
-                        EditorGUILayout.EndHorizontal();
-                    }
+                    ListProperties(templateObjectProperties, templateNumberProperties);
                     EditorGUILayout.EndFoldoutHeaderGroup();
                 }
             }
@@ -168,9 +155,17 @@ public class OverlayEditor : AcknexObjectEditor
 public class PlayerEditor : AcknexObjectEditor
 {
 }
+[UnityEditor.CustomEditor(typeof(Panel))]
+public class PanelEditor : AcknexObjectEditor
+{
+}
+[UnityEditor.CustomEditor(typeof(Text))]
+public class TextEditor : AcknexObjectEditor
+{
+}
 
 [CustomEditor(typeof(World))]
-public class WorldEditor : Editor
+public class WorldEditor : AcknexObjectEditor
 {
     public override void OnInspectorGUI()
     {

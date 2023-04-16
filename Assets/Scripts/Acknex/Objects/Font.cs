@@ -56,24 +56,29 @@ namespace Acknex
             var cols = Texture.Texture.width / width;
             var charCount = rows * cols;
             GlyphsTexture = new Texture2DArray(width, height, 256, Texture.Texture.graphicsFormat, TextureCreationFlags.None);
+            GlyphsTexture.wrapMode = TextureWrapMode.Clamp;
             GlyphsPalette = new Texture2DArray(width, height, 256, Texture.Palette.graphicsFormat, TextureCreationFlags.None);
+            GlyphsPalette.wrapMode = TextureWrapMode.Clamp;
             GlyphsPalette.filterMode = FilterMode.Point;
             for (var row = 0; row < rows; row++)
             {
                 for (var col = 0; col < cols; col++)
                 {
+                    var slice = row * cols + col;
                     if (charCount == 11)
                     {
-                        //TODO
-                        //Glyphs[row * cols + col] = Bitmap.ExtractBitmap(Texture, col * width, row * height, width, height);
+                        if (slice <= 9)
+                        {
+                            slice += 48;
+                        }
+                        else
+                        {
+                            slice = 32;
+                        }
                     }
-                    else if (charCount == 128)
-                    {
-                        var slice = row * cols + col;
-                        var extracted = Bitmap.ExtractBitmap(Texture, col * width, row * height, width, height);
-                        Graphics.CopyTexture(extracted.Texture, 0, 0, GlyphsTexture, slice, 0);
-                        Graphics.CopyTexture(extracted.Palette, 0, 0, GlyphsPalette, slice, 0);
-                    }
+                    var extracted = Bitmap.ExtractBitmap(Texture, col * width, row * height, width, height);
+                    Graphics.CopyTexture(extracted.Texture, 0, 0, GlyphsTexture, slice, 0);
+                    Graphics.CopyTexture(extracted.Palette, 0, 0, GlyphsPalette, slice, 0);
                 }
             }
         }

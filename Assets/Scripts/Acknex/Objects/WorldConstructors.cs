@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Acknex.Interfaces;
 using UnityEngine;
 
@@ -114,6 +115,18 @@ namespace Acknex
             return thing;
         }
 
+        public Bitmap CreateBitmap(string name)
+        {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            var bitmap = new Bitmap();
+            bitmap.AcknexObject.SetString("NAME", name);
+            BitmapsByName.Add(name, bitmap);
+            AcknexObject.SetAcknexObject(name, bitmap.AcknexObject);
+            return bitmap;
+        }
 
         public Actor CreateActor(string name)
         {
@@ -241,6 +254,22 @@ namespace Acknex
             return font;
         }
 
+        public Text CreateDigitis(string name)
+        {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            var newGameObject = new GameObject(name);
+            newGameObject.transform.SetParent(CanvasView, false);
+            var digits = newGameObject.AddComponent<Digits>();
+            digits.AcknexObject.SetString("NAME", name);
+            digits.AcknexObject.Type = ObjectType.Digits;
+            AcknexObject.SetAcknexObject(name, digits.AcknexObject);
+            DigitsByName.Add(name, digits);
+            return digits;
+        }
+
         public Text CreateText(string name)
         {
             if (name == null)
@@ -249,12 +278,14 @@ namespace Acknex
             }
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(CanvasView, false);
-            var newText = newGameObject.AddComponent<Text>();
-            newText.AcknexObject.SetString("NAME", name);
-            newText.AcknexObject.Type = ObjectType.Text;
-            AcknexObject.SetAcknexObject(name, newText.AcknexObject);
-            TextsByName.Add(name, newText);
-            return newText;
+            var text = newGameObject.AddComponent<Text>();
+            text.AcknexObject.SetString("NAME", name);
+            text.AcknexObject.SetObject("STRING", new List<IAcknexObject> { null });
+            text.AcknexObject.SetFloat("INDEX", 1);
+            text.AcknexObject.Type = ObjectType.Text;
+            AcknexObject.SetAcknexObject(name, text.AcknexObject);
+            TextsByName.Add(name, text);
+            return text;
         }
 
         private Flic CreateFlic(string name)

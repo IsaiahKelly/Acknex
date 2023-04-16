@@ -630,6 +630,12 @@ namespace Acknex
                                 CodeStringBuilder.Append($"{lhs.source}.SetString(").Append(lhs.property).Append(",").Append(rhs.property).AppendLine(");");
                             }
                             break;
+                        case PropertyType.ObjectReferenceList:
+                            CodeStringBuilder.Append($"var {lhs.source}_array = {lhs.source}.GetObject<List<IAcknexObject>>(").Append(lhs.property).AppendLine(");");
+                            CodeStringBuilder.AppendLine($"var {lhs.source}_index = {lhs.source}.GetInteger(\"INDEX\");");
+                            CodeStringBuilder.Append($"{lhs.source}_array[{lhs.source}_index-1] = ").Append(rhs.property).AppendLine(";");
+                            CodeStringBuilder.AppendLine($"{lhs.source}.IsDirty = true;");
+                            break;
                         case PropertyType.ActionReference:
                         case PropertyType.ObjectReference:
                             if (setAll)
@@ -988,6 +994,16 @@ namespace Acknex
                     case PropertyType.ActionReference:
                     case PropertyType.ObjectReference:
                         CodeStringBuilder.Append($"var temp_{_varCounter} =").Append($"{(objectType == ObjectType.World ? "_world.AcknexObject" : assignmentVariable)}?.GetAcknexObject(\"").Append(property).AppendLine("\");");
+                        break;
+                    case PropertyType.ObjectReferenceList:
+                        CodeStringBuilder.AppendLine($"IAcknexObject temp_{_varCounter};");
+                        CodeStringBuilder.Append($"var temp_{_varCounter}_array =").Append($"{(objectType == ObjectType.World ? "_world.AcknexObject" : assignmentVariable)}?.GetObject<List<IAcknexObject>>(\"").Append(property).AppendLine("\");");
+                        CodeStringBuilder.AppendLine($"if (temp_{_varCounter}_array == null || temp_{_varCounter}_array.Count == 0) {{");
+                        CodeStringBuilder.AppendLine($"  temp_{_varCounter} = null;");
+                        CodeStringBuilder.AppendLine(" } else {");
+                        CodeStringBuilder.Append($"var temp_{_varCounter}_index =").AppendLine($"{(objectType == ObjectType.World ? "_world.AcknexObject" : assignmentVariable)}.GetInteger(\"INDEX\");");
+                        CodeStringBuilder.AppendLine($"  temp_{_varCounter} = temp_{_varCounter}_array[temp_{_varCounter}_index-1];");
+                        CodeStringBuilder.AppendLine("}");
                         break;
                 }
                 return ($"temp_{_varCounter++}", propertyType, objectType, sourceObject);

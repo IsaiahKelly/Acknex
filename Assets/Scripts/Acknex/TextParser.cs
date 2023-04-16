@@ -149,16 +149,20 @@ namespace Acknex
                 if (read == '"')
                 {
                     _tokenStringBuilder.Clear();
-                    do
+                    for(; ; )
                     {
-                        _tokenStringBuilder.Append((char)read);
                         read = binaryReader.Read();
                         if (read == -1)
                         {
                             yield break;
                         }
-                    } while (read > -1 && read != '"');
-                    _tokenStringBuilder.Append('"');
+                        if (read == '"')
+                        {
+                            break;
+                        }
+                        _tokenStringBuilder.Append((char)read);
+                    };
+                    //_tokenStringBuilder.Append('"');
                     yield return _tokenStringBuilder.ToString();
                     continue;
                 }
@@ -185,6 +189,8 @@ namespace Acknex
                 yield return _tokenStringBuilder.ToString();
             }
         }
+
+        private int _internalCount;
 
         public void ParseWDL(string wdlFilename)
         {
@@ -214,12 +220,37 @@ namespace Acknex
                         {
                             if (_openObject.Type != ObjectType.Action)
                             {
-                                var propertyType = _world.GetPropertyType(_openObject.Type, keyword);
-                                if (!HandleProperty(_openObject, tokens, keyword, propertyType, binaryReader, wdlFilename))
+                                var handled = false;
+                                if (_openObject.Type == ObjectType.Panel)
                                 {
-                                    while (keyword != ";" && keyword != null)
+                                    switch (keyword)
                                     {
-                                        keyword = GetNextToken(tokens);
+                                        case "DIGITS":
+                                            {
+                                                //todo: constructor
+                                                handled = true;
+                                                var digits = _world.CreateObjectTemplate(ObjectType.Digits, "__DIGITS__" + _internalCount++);
+                                                digits.SetFloat("POS_X", ParseFloat(tokens, GetNextToken(tokens)));
+                                                digits.SetFloat("POS_Y", ParseFloat(tokens, GetNextToken(tokens)));
+                                                digits.SetFloat("LEN", ParseFloat(tokens, GetNextToken(tokens)));
+                                                AddPostResolve(digits, tokens, "FONT");
+                                                digits.SetFloat("FAC", ParseFloat(tokens, GetNextToken(tokens)));
+                                                AddPostResolve(digits, tokens, "SKILL");
+                                                ((Digits)digits.Container).transform.SetParent(((Panel)_openObject.Container).transform, false);
+                                                CheckSemiColon(tokens);
+                                                break;
+                                            }
+                                    }
+                                }
+                                if (!handled)
+                                {
+                                    var propertyType = _world.GetPropertyType(_openObject.Type, keyword);
+                                    if (!HandleProperty(_openObject, tokens, keyword, propertyType, binaryReader, wdlFilename))
+                                    {
+                                        while (keyword != ";" && keyword != null)
+                                        {
+                                            keyword = GetNextToken(tokens);
+                                        }
                                     }
                                 }
                             }
@@ -529,11 +560,7 @@ namespace Acknex
                     return true;
                 case PropertyType.ActionReference:
                 case PropertyType.ObjectReference:
-                    var postResolveItem = new PostResolveItem();
-                    postResolveItem.acknexObject = acknexObject;
-                    postResolveItem.keyword = keyword;
-                    postResolveItem.objectName = GetNextToken(tokens);
-                    _world.AddPostResolve(postResolveItem);
+                    AddPostResolve(acknexObject, tokens, keyword);
                     CheckSemiColon(tokens);
                     return true;
                 case PropertyType.Flags:
@@ -567,6 +594,15 @@ namespace Acknex
                     break;
             }
             return false;
+        }
+
+        private void AddPostResolve(IAcknexObject acknexObject, IEnumerator<string> tokens, string keyword)
+        {
+            var postResolveItem = new PostResolveItem();
+            postResolveItem.acknexObject = acknexObject;
+            postResolveItem.keyword = keyword;
+            postResolveItem.objectName = GetNextToken(tokens);
+            _world.AddPostResolve(postResolveItem);
         }
 
         public string GetNextToken(IEnumerator<string> tokens)

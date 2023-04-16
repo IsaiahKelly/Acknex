@@ -391,14 +391,21 @@ namespace Acknex
 
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "POS_X");
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "POS_Y");
-            AddObjectProperty(ObjectType.Text, PropertyType.ObjectReference, "STRING");
+            AddObjectProperty(ObjectType.Text, PropertyType.ObjectReferenceList, "STRING");
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "STRINGS");
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "VISIBLE");
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "INDEX");
             AddObjectProperty(ObjectType.Text, PropertyType.ObjectReference, "FONT");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "SCALE_X");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "SCALE_Y");
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "SIZE_X");
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "SIZE_Y");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "OFFSET_Y");
             AddObjectProperty(ObjectType.Text, PropertyType.Float, "LAYER");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "CENTER_X");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "CENTER_Y");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "CONDENSED");
+            AddObjectProperty(ObjectType.Text, PropertyType.Float, "NARROW");
 
             AddObjectProperty(ObjectType.Panel, PropertyType.Float, "POS_X");
             AddObjectProperty(ObjectType.Panel, PropertyType.Float, "POS_Y");

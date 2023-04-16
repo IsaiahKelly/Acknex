@@ -6,11 +6,11 @@
     }
     SubShader
     {
-         Tags {"Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent"}
-         LOD 100
+        Tags {"Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent"}
+        LOD 100
 
-         ZWrite Off
-         Blend SrcAlpha OneMinusSrcAlpha
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -18,11 +18,12 @@
             #pragma vertex vert
             #pragma fragment frag
 
-            #include "UnityCG.cginc"
             sampler2D _MainTex;
+            float4 _MainTex_ST;
+
+            #include "UnityCG.cginc"
             #include "Common.cginc"
 
-             float4 _MainTex_ST;
 
             struct appdata
             {
@@ -41,7 +42,6 @@
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                UNITY_TRANSFER_FOG(o, o.vertex);
                 return o;
             }
 
