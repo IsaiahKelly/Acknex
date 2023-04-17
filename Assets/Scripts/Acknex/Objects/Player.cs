@@ -214,6 +214,7 @@ namespace Acknex
             GUILayout.Label($"CEIL_HGT:{World.Instance.GetSkillValue("CEIL_HGT")}");
             GUILayout.Label($"FLOOR_HGT:{World.Instance.GetSkillValue("FLOOR_HGT")}");
             GUILayout.Label($"PLAYER_DEPTH:{World.Instance.GetSkillValue("PLAYER_DEPTH")}");
+            GUILayout.Label($"MOVE_MODE:{World.Instance.GetSkillValue("MOVE_MODE")}");
             if (World.Instance.UsePalettes)
             {
                 var rect = GUILayoutUtility.GetRect(256, 256, 32, 32);

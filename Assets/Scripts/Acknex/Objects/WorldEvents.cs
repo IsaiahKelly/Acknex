@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using UnityEngine;
@@ -79,6 +80,11 @@ namespace Acknex
             {
                 yield break;
             }
+            var moveMode = GetSkillValue("MOVE_MODE");
+            if (moveMode <= 0.5f)
+            {
+                yield break;
+            }
             yield return (IEnumerator)_runtime.CallAction(name, MY, THERE);
         }
 
@@ -88,12 +94,104 @@ namespace Acknex
             {
                 return;
             }
+            var moveMode = GetSkillValue("MOVE_MODE");
+            if (moveMode <= 0.5f && name == "EACH_TICK" || moveMode <= 0f && !IsKeyboardEvent(name))
+            {
+                return;
+            }
             if (source.TryGetAcknexObject(name, out var acknexObject) && acknexObject != null)
             {
                 if (acknexObject.TryGetString("NAME", out var value) && value != null)
                 {
                     StartCoroutine(_runtime.CallAction(value, MY, THERE));
                 }
+            }
+        }
+
+        private bool IsKeyboardEvent(string name)
+        {
+            switch (name)
+            {
+                case "IF_ANYKEY":
+                case "IF_TAST":
+                case "IF_0":
+                case "IF_1":
+                case "IF_2":
+                case "IF_3":
+                case "IF_4":
+                case "IF_5":
+                case "IF_6":
+                case "IF_7":
+                case "IF_8":
+                case "IF_9":
+                case "IF_A":
+                case "IF_B":
+                case "IF_C":
+                case "IF_D":
+                case "IF_E":
+                case "IF_F":
+                case "IF_G":
+                case "IF_H":
+                case "IF_I":
+                case "IF_J":
+                case "IF_K":
+                case "IF_L":
+                case "IF_M":
+                case "IF_N":
+                case "IF_O":
+                case "IF_P":
+                case "IF_Q":
+                case "IF_R":
+                case "IF_S":
+                case "IF_T":
+                case "IF_U":
+                case "IF_V":
+                case "IF_X":
+                case "IF_Y":
+                case "IF_Z":
+                case "IF_W":
+                case "IF_ALT":
+                case "IF_BKSP":
+                case "IF_CAL":
+                case "IF_CAR":
+                case "IF_CTRL":
+                case "IF_DEL":
+                case "IF_END":
+                case "IF_ENTER":
+                case "IF_ESC":
+                case "IF_F1":
+                case "IF_F2":
+                case "IF_F3":
+                case "IF_F4":
+                case "IF_F5":
+                case "IF_F6":
+                case "IF_F7":
+                case "IF_F8":
+                case "IF_F9":
+                case "IF_F10":
+                case "IF_F11":
+                case "IF_F12":
+                case "IF_HOME":
+                case "IF_INS":
+                case "IF_LEFT":
+                case "IF_MIDDLE":
+                case "IF_RIGHT":
+                case "IF_PAUSE":
+                case "IF_PGDN":
+                case "IF_PGUP":
+                case "IF_SPACE":
+                case "IF_TAB":
+                case "IF_CUU":
+                case "IF_CUD":
+                case "IF_CUR":
+                case "IF_CUL":
+                case "IF_SHIFT":
+                case "IF_APO":
+                case "IF_MINUS":
+                case "IF_PLUS":
+                    return true;
+                default:
+                    return false;
             }
         }
 
@@ -197,7 +295,7 @@ namespace Acknex
                 TriggerEventConditional(AcknexObject, "IF_CAL", Input.GetKeyDown(KeyCode.Comma));
                 TriggerEventConditional(AcknexObject, "IF_CAR", Input.GetKeyDown(KeyCode.Period));
                 TriggerEventConditional(AcknexObject, "IF_CTRL", Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl));
-                TriggerEventConditional(AcknexObject, "IF_DEL", Input.GetKeyDown(KeyCode.Delete));
+                //TriggerEventConditional(AcknexObject, "IF_DEL", Input.GetKeyDown(KeyCode.Delete));
                 TriggerEventConditional(AcknexObject, "IF_END", Input.GetKeyDown(KeyCode.End));
                 TriggerEventConditional(AcknexObject, "IF_ENTER", Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return));
                 TriggerEventConditional(AcknexObject, "IF_ESC", Input.GetKeyDown(KeyCode.Escape));

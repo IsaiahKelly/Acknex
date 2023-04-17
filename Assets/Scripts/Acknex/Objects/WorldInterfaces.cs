@@ -242,6 +242,8 @@ namespace Acknex
                 var newPosition = new Vector3(GetSkillValue("PLAYER_X"), 0f, GetSkillValue("PLAYER_Y")) + Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(GetSkillValue("PLAYER_ANGLE")), 0f) * new Vector3(0f, 0f, acknexObject.GetFloat("DIST"));
                 acknexObject.SetFloat("X", newPosition.x);
                 acknexObject.SetFloat("Y", newPosition.z);
+                ((Thing)acknexObject.Container).ResetTexture();
+                acknexObject.IsDirty = true;
 #if DEBUG_ENABLED
                 Debug.DrawLine(Player.Instance.transform.position, newPosition, Color.red, 100f);
 #endif
@@ -508,6 +510,10 @@ namespace Acknex
 
         public void PostSetupObjectInstance(IAcknexObject acknexObject)
         {
+            if (acknexObject.IsInstance)
+            {
+                return;
+            }
             switch (acknexObject.Container)
             {
                 case Wall wall:

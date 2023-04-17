@@ -4,7 +4,9 @@ using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
-
+#if DEBUG_ENABLED
+using Utils;
+#endif
 namespace Acknex
 {
     public class Wall : MonoBehaviour, IAcknexObjectContainer

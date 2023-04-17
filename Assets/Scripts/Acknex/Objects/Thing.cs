@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Acknex.Interfaces;
+using Codice.CM.Common.Tree.Partial;
 using UnityEngine;
 using Utils;
 
@@ -456,6 +457,11 @@ namespace Acknex
             }
         }
 
+        public void ResetTexture()
+        {
+            _lastTextureObject = null;
+        }
+
         private IEnumerator MoveToPlayer()
         {
             var currentRegion = GetRegion();
@@ -466,8 +472,7 @@ namespace Acknex
                 AcknexObject.DebugMessage = "Got dirty because moved to player";
 #endif
                 var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
-                MoveToPointStep(playerPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f);
-                if (CrossedRegion(ref currentRegion))
+                if (!MoveToPointStep(playerPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f) || CrossedRegion(ref currentRegion))
                 {
                     _lastTarget = null;
                     //AcknexObject.SetAcknexObject("TARGET", null);
@@ -507,7 +512,7 @@ namespace Acknex
                 AcknexObject.DebugMessage = "Got dirty because moved to angle";
 #endif
                 MoveToAngleStep();
-                if (CrossedRegion(ref currentRegion))
+                if (AcknexObject.HasFlag("INVISIBLE")|| CrossedRegion(ref currentRegion))
                 {
                     _lastTarget = null;
                     //AcknexObject.SetAcknexObject("TARGET", null);
@@ -592,6 +597,11 @@ namespace Acknex
 
         public void MoveToAngleStep()
         {
+            var moveMode = World.Instance.GetSkillValue("MOVE_MODE");
+            if (moveMode <= 0.5f)
+            {
+                return;
+            }
             var speed = AcknexObject.GetFloat("SPEED");
             if (Mathf.Approximately(speed, 0f))
             {
@@ -626,6 +636,15 @@ namespace Acknex
 
         public bool MoveToPointStep(Vector2 nextPoint, float? minDistance = null)
         {
+            var moveMode = World.Instance.GetSkillValue("MOVE_MODE");
+            if (moveMode <= 0.5f)
+            {
+                return false;
+            }
+            if (AcknexObject.HasFlag("INVISIBLE"))
+            {
+                return true;
+            }
             var pos = new Vector2(AcknexObject.GetFloat("X"), AcknexObject.GetFloat("Y"));
             AcknexObject.SetFloat("TARGET_X", nextPoint.x);
             AcknexObject.SetFloat("TARGET_Y", nextPoint.y);

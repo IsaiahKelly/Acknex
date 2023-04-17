@@ -20,7 +20,7 @@ namespace Acknex
             CreateSkill("MOTION_BLUR", 0, 0, 1); //todo
             CreateSkill("BLUR_MODE", 0, 0, 1); //todo
             CreateSkill("RENDER_MODE", 0.5f, 0, 2); //todo
-            CreateSkill("MOVE_MODE", 1, -0.5f, 0.5f); //todo
+            CreateSkill("MOVE_MODE", 1, -0.5f, 1f); //todo
             CreateSkill("CLIPPING", 0, 0, 1); //todo
             CreateSkill("LOAD_MODE", 0, 0, 1); //todo
             CreateSkill("THING_DIST", 1, 0, 1); //todo
@@ -246,9 +246,9 @@ namespace Acknex
             CreateSkill("IMPACT_VX", 0, Mathf.NegativeInfinity, Mathf.Infinity);
             CreateSkill("IMPACT_VY", 0, Mathf.NegativeInfinity, Mathf.Infinity);
 
-            CreateSkill("HALF_PI", Mathf.PI*0.5f, Mathf.NegativeInfinity, Mathf.Infinity);
+            CreateSkill("HALF_PI", Mathf.PI * 0.5f, Mathf.NegativeInfinity, Mathf.Infinity);
             CreateSkill("PI", Mathf.PI, Mathf.NegativeInfinity, Mathf.Infinity);
-            CreateSkill("TWO_PI", Mathf.PI*2f, Mathf.NegativeInfinity, Mathf.Infinity);
+            CreateSkill("TWO_PI", Mathf.PI * 2f, Mathf.NegativeInfinity, Mathf.Infinity);
         }
 
         private void UpdateSkills()
@@ -291,13 +291,28 @@ namespace Acknex
             UpdateSkillValue("JOYSTICK_Y", Input.GetAxis("Vertical") * 255f);
             UpdateSkillValue("TICKS", TimeUtils.TimeToTicks(Time.time));
 
-            var keySense = GetSkillValue("KEY_SENSE");
-            UpdateSkillValue("FORCE_AHEAD", Input.GetAxis("Vertical") * keySense);
-            //todo: is it inverted in the original?
-            UpdateSkillValue("FORCE_STRAFE", -Input.GetAxis("Horizontal") * keySense);
-            UpdateSkillValue("FORCE_ROT", mouseX * keySense);
-            UpdateSkillValue("FORCE_TILT", (GetSkillValue("FORCE_TILT") - (mouseY * MouseMultiplier * keySense)));
-            UpdateSkillValue("FORCE_UP", (Input.GetButton("Jump") ? 1 : Input.GetButton("Crouch") ? -1 : 0) * keySense);
+            var moveMode = GetSkillValue("MOVE_MODE");
+            if (moveMode > 0f)
+            {
+                var keySense = GetSkillValue("KEY_SENSE");
+                UpdateSkillValue("FORCE_AHEAD", Input.GetAxis("Vertical") * keySense);
+                UpdateSkillValue("FORCE_STRAFE", -Input.GetAxis("Horizontal") * keySense);
+                UpdateSkillValue("FORCE_ROT", mouseX * keySense);
+                UpdateSkillValue("FORCE_TILT", (GetSkillValue("FORCE_TILT") - (mouseY * MouseMultiplier * keySense)));
+                UpdateSkillValue("FORCE_UP", (Input.GetButton("Jump") ? 1 : Input.GetButton("Crouch") ? -1 : 0) * keySense);
+            }
+            else
+            {
+                UpdateSkillValue("FORCE_AHEAD", 0f);
+                UpdateSkillValue("FORCE_STRAFE", 0f);
+                UpdateSkillValue("FORCE_ROT", 0f);
+                UpdateSkillValue("FORCE_TILT", 0f);
+                UpdateSkillValue("FORCE_UP", 0f);
+                UpdateSkillValue("PLAYER_VX", 0f);
+                UpdateSkillValue("PLAYER_VY", 0f);
+                UpdateSkillValue("PLAYER_VZ", 0f);
+                UpdateSkillValue("PLAYER_VROT", 0f);
+            }
 
             //todo: WALK_PERIOD, WALK_TIME, WAVE_PERIOD, WALK, WAVE
             //var oneStepTime = TimeUtils.TicksToTime((int)(GetSkillValue("WALK_TIME")));
@@ -346,7 +361,7 @@ namespace Acknex
             UpdateSkillValue("KEY_CAL", Input.GetKey(KeyCode.Comma));
             UpdateSkillValue("KEY_CAR", Input.GetKey(KeyCode.Period));
             UpdateSkillValue("KEY_CTRL", Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl));
-            UpdateSkillValue("KEY_DEL", Input.GetKey(KeyCode.Delete));
+            //UpdateSkillValue("KEY_DEL", Input.GetKey(KeyCode.Delete));
             UpdateSkillValue("KEY_END", Input.GetKey(KeyCode.End));
             UpdateSkillValue("KEY_ENTER", Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.Return));
             UpdateSkillValue("KEY_ESC", Input.GetKey(KeyCode.Escape));
@@ -364,10 +379,10 @@ namespace Acknex
             UpdateSkillValue("KEY_F12", Input.GetKey(KeyCode.F12));
             UpdateSkillValue("KEY_HOME", Input.GetKey(KeyCode.Home));
             UpdateSkillValue("KEY_INS", Input.GetKey(KeyCode.Insert));
-            UpdateSkillValue("KEY_DEL", Input.GetKey(KeyCode.PageDown));
-            UpdateSkillValue("KEY_LEFT", Input.GetMouseButtonDown(0));
-            UpdateSkillValue("KEY_MIDDLE", Input.GetMouseButtonDown(1));
-            UpdateSkillValue("KEY_RIGHT", Input.GetMouseButtonDown(2));
+            UpdateSkillValue("KEY_DEL", Input.GetKey(KeyCode.Delete));
+            UpdateSkillValue("KEY_LEFT", Input.GetMouseButton(0));
+            UpdateSkillValue("KEY_MIDDLE", Input.GetMouseButton(1));
+            UpdateSkillValue("KEY_RIGHT", Input.GetMouseButton(2));
             UpdateSkillValue("KEY_PAUSE", Input.GetKey(KeyCode.Pause));
             UpdateSkillValue("KEY_PGDN", Input.GetKey(KeyCode.PageDown));
             UpdateSkillValue("KEY_PGUP", Input.GetKey(KeyCode.PageUp));

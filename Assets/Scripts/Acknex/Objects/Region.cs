@@ -6,7 +6,9 @@ using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
-
+#if DEBUG_ENABLED
+using Utils;
+#endif
 namespace Acknex
 {
     //todo: tesselation needs to implement the method to create new vertices

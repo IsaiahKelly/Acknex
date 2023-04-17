@@ -821,7 +821,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AmbientLight: {fileID: 705507994}
   AudioSource: {fileID: 1477033083}
-  BilinearFilter: 1
+  BilinearFilter: 0
   Canvas: {fileID: 1116186326}
   CanvasScaler: {fileID: 1116186325}
   CanvasView: {fileID: 1520209880}
@@ -832,7 +832,7 @@ MonoBehaviour:
   DisableCompilation: 0
   DisableMaterials: 0
   DrawShadows: 0
-  GodMode: 1
+  GodMode: 0
   IgnoreRaycastLayer:
     m_LayerIndex: 2
   LightMultiplier: 2
@@ -847,7 +847,7 @@ MonoBehaviour:
     m_LayerIndex: 9
   TriggersLayer:
     m_LayerIndex: 10
-  UsePalettes: 0
+  UsePalettes: 1
   UseWDLEngine: 0
   Volume: 1
   WallsAndRegionsLayer:

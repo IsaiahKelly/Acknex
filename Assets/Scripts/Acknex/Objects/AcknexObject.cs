@@ -22,11 +22,7 @@ namespace Acknex
 
         public void AddFlag(string flag)
         {
-#if DEBUG_ENABLED
-            DebugMessage = "Got dirty because added flag " + flag;
-#endif
-            NumberProperties[flag] = 1f;
-            IsDirty = true;
+            SetFloat(flag, 1f);
         }
 
         public IAcknexObjectContainer Container { get; set; }
@@ -148,21 +144,17 @@ namespace Acknex
 
         public void RemoveFlag(string flag)
         {
-            #if DEBUG_ENABLED
-            DebugMessage = "Got dirty because removed flag " + flag;
-#endif
-            NumberProperties[flag] = 0f;
-            IsDirty = true;
+            SetFloat(flag, 0f);
         }
 
         public void SetAcknexObject(string propertyName, IAcknexObject value)
         {
-            #if DEBUG_ENABLED
-            DebugMessage = "Got dirty because setted object " + propertyName;
-#endif
             if (ObjectProperties.TryGetValue(propertyName, out var existingValue))
             {
                 IsDirty = existingValue != value;
+#if DEBUG_ENABLED
+                //DebugMessage = "Got dirty because setted object " + propertyName;
+#endif
             }
             ObjectProperties[propertyName] = value;
         }
@@ -230,8 +222,8 @@ namespace Acknex
                     if (*(int*)&existingValue != *(int*)&value)
                     {
                         IsDirty = true;
-                        #if DEBUG_ENABLED
-                        DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
+#if DEBUG_ENABLED
+//                        DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
 #endif
                     }
                 }
@@ -241,8 +233,8 @@ namespace Acknex
                 IsDirty = true;
                 if (IsDirty)
                 {
-                    #if DEBUG_ENABLED
-                    DebugMessage = "Got dirty because new property " + propertyName + " is " + value;
+#if DEBUG_ENABLED
+ //                   DebugMessage = "Got dirty because new property " + propertyName + " is " + value;
 #endif
                 }
             }
@@ -310,8 +302,8 @@ namespace Acknex
                 if (existingValue != (object)value)
                 {
                     IsDirty = true;
-                    #if DEBUG_ENABLED
-                    DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
+#if DEBUG_ENABLED
+//                    DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
 #endif
                 }
             }
@@ -320,8 +312,8 @@ namespace Acknex
                 IsDirty = true;
                 if (IsDirty)
                 {
-                    #if DEBUG_ENABLED
-                    DebugMessage = "Got dirty because new property " + propertyName + " is " + value;
+#if DEBUG_ENABLED
+//                    DebugMessage = "Got dirty because new property " + propertyName + " is " + value;
 #endif
                 }
             }
