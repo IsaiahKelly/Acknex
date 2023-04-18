@@ -58,6 +58,7 @@ namespace Acknex
             var initialPosition = _characterController.transform.position = new Vector3(playerX, playerZ, playerY);
             var playerWidth = World.Instance.GetSkillValue("PLAYER_WIDTH");
             _characterController.radius = playerWidth;
+            _characterController.skinWidth = playerWidth * 0.1f;
             var playerSize = World.Instance.GetSkillValue("PLAYER_SIZE");
             //if (Physics.SphereCast(_characterController.transform.position, playerWidth, Vector3.up, out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
             //{
@@ -77,6 +78,12 @@ namespace Acknex
             var characterControllerCenter = _characterController.center;
             characterControllerCenter.y = _characterController.height * 0.5f;
             _characterController.center = characterControllerCenter;
+            //var midPoint = initialPosition + (playerMove * 0.5f);
+            //if (playerMove.z != 0f && Physics.CheckCapsule(midPoint + new Vector3(0f, _characterController.radius + 0.1f, 0f), midPoint + new Vector3(0f, _characterController.height - _characterController.radius + 0.1f, 0f), _characterController.radius, World.Instance.WallsAndRegionsLayer.Mask))
+            //{
+            //    Debug.Log("blocked");
+            //    playerMove = Vector3.zero;
+            //}
             _characterController.Move(playerMove);
             var delta = _characterController.transform.position - initialPosition;
             var deltaXZ = new Vector3(delta.x, 0f, delta.z);
@@ -145,7 +152,7 @@ namespace Acknex
             World.Instance.UpdateSkillValue("PLAYER_ANGLE", playerAngle);
             var groundZ = playerZ;
             Locate(playerX, playerY, ref groundZ, false);
-            playerHgt = playerZ - groundZ;
+            playerHgt = playerZ - groundZ - _characterController.skinWidth;
             if (playerHgt < 0.1f)
             {
                 playerHgt = 0f;

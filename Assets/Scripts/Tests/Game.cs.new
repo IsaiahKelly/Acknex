@@ -61,6 +61,8 @@ _callbacks.Add("SAVEERRORMESSAGE", SAVEERRORMESSAGE);
 _callbacks.Add("EXITGAME", EXITGAME);
 _callbacks.Add("RESETANSWER", RESETANSWER);
 _callbacks.Add("ASKFOREXIT", ASKFOREXIT);
+_callbacks.Add("MOUSE_TOGGLE", MOUSE_TOGGLE);
+_callbacks.Add("SCAN_OBJ", SCAN_OBJ);
 _callbacks.Add("ENDOFLEVEL", ENDOFLEVEL);
 _callbacks.Add("EXPLOSIONSTART", EXPLOSIONSTART);
 _callbacks.Add("EXPLOSIONSMOKE", EXPLOSIONSMOKE);
@@ -2347,6 +2349,21 @@ _world.SetSynonymObject("MESSAGE_TEXT",HLP02STR_19);
                 }
             }
         }//Unknown keyword: 
+yield break;
+}
+public IEnumerator MOUSE_TOGGLE(IAcknexObject MY, IAcknexObject THERE){
+var MOUSE_MODE_0 = _world.GetObject(ObjectType.Skill,"MOUSE_MODE");
+var MOUSE_MODE_1 = _world.GetObject(ObjectType.Skill,"MOUSE_MODE");
+var MOUSE_MODE_1_val = MOUSE_MODE_1.GetFloat("VAL");
+MOUSE_MODE_0.SetFloat("VAL",MOUSE_MODE_1_val + 2f);
+//Unknown keyword: IF
+yield break;
+//Unknown keyword: 
+yield break;
+}
+public IEnumerator SCAN_OBJ(IAcknexObject MY, IAcknexObject THERE){
+//Unknown keyword: IF
+//Unknown keyword: 
 yield break;
 }
 public IEnumerator ENDOFLEVEL(IAcknexObject MY, IAcknexObject THERE){
