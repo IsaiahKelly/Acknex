@@ -557,7 +557,7 @@ namespace Acknex
             return 0;
         }
 
-        public static Region Locate(IAcknexObject acknexObject, Region currentRegion, float radius, float thingX, float thingY, ref float thingZ, bool onCeil = false, float? height = null)
+        public static Region Locate(IAcknexObject acknexObject, Region currentRegion, float radius, float thingX, float thingY, ref float thingHgt, bool onCeil = false, float? height = null)
         {
             bool GetValue(RaycastHit raycastHit, ref float outThingZ, out Region outRegion)
             {
@@ -576,7 +576,7 @@ namespace Acknex
                 var point = new Vector3(thingX, zCheck, thingY);
                 if (Physics.SphereCast(new Ray(point, Vector3.up), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
-                    if (GetValue(raycastHit, ref thingZ, out var outRegion))
+                    if (GetValue(raycastHit, ref thingHgt, out var outRegion))
                     {
 #if DEBUG_ENABLED
                         Debug.DrawLine(point, raycastHit.point, Color.red, 1f);
@@ -591,7 +591,7 @@ namespace Acknex
                 var point = new Vector3(thingX, zCheck, thingY);
                 if (Physics.SphereCast(new Ray(point, Vector3.down), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
-                    if (GetValue(raycastHit, ref thingZ, out var outRegion))
+                    if (GetValue(raycastHit, ref thingHgt, out var outRegion))
                     {
 #if DEBUG_ENABLED
                         Debug.DrawLine(point, raycastHit.point, Color.red, 1f);
