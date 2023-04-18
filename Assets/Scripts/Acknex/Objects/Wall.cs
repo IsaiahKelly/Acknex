@@ -270,7 +270,7 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = TextureObject.AnimateTexture(TextureCanceled, true, _hasGap ? _gapMeshRenderer : _meshRenderer, _hasGap ? GapFilter : Filter, null, AcknexObject, AcknexObject, null);
+            var enumerator = TextureObject.AnimateTexture(TextureCanceled, true, _hasGap ? _gapMeshRenderer.materials : _meshRenderer.materials, _hasGap ? GapFilter : Filter, null, AcknexObject, AcknexObject);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;

@@ -187,6 +187,11 @@ namespace Acknex
                         var text = CreateDigitis(name);
                         return text.AcknexObject;
                     }
+                case ObjectType.Picture:
+                    {
+                        var picture = CreatePicture(name);
+                        return picture.AcknexObject;
+                    }
                 case ObjectType.Font:
                     {
                         var font = CreateFont(name);
@@ -216,7 +221,7 @@ namespace Acknex
                     {
                         var panel = CreatePanel(name);
                         return panel.AcknexObject;
-                    }
+                    }              
                 case ObjectType.World:
                     throw new Exception("It is not possible to create a new world.");
             }
@@ -851,6 +856,8 @@ namespace Acknex
             }
         }
 
+        private int _unnamedStringCount;
+
         private void ResolveReferences()
         {
             foreach (var item in _postResolve)
@@ -860,6 +867,16 @@ namespace Acknex
                     if (AcknexObject.TryGetAcknexObject(item.objectName, out var acknexObject))
                     {
                         item.list.Add(acknexObject);
+                    }
+                    else if (item.objectName == "NULL")
+                    {
+                        item.list.Add(null);
+                    }
+                    else
+                    {
+                        //todo: this is hacky
+                        var str = AddString($"_UNNAMED_{_unnamedStringCount++}", item.objectName);
+                        item.list.Add(str);
                     }
                 }
                 else

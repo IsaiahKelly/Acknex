@@ -223,20 +223,36 @@ namespace Acknex
                                 var handled = false;
                                 if (_openObject.Type == ObjectType.Panel)
                                 {
+                                    //todo: constructor
                                     switch (keyword)
                                     {
                                         case "DIGITS":
                                             {
-                                                //todo: constructor
                                                 handled = true;
-                                                var digits = _world.CreateObjectTemplate(ObjectType.Digits, "__DIGITS__" + _internalCount++);
+                                                var digits = _world.CreateObjectTemplate(ObjectType.Digits, $"__DIGITS__{_internalCount++}");
+                                                var digitsContainer = ((Digits)digits.Container);
                                                 digits.SetFloat("POS_X", ParseFloat(tokens, GetNextToken(tokens)));
                                                 digits.SetFloat("POS_Y", ParseFloat(tokens, GetNextToken(tokens)));
                                                 digits.SetFloat("LEN", ParseFloat(tokens, GetNextToken(tokens)));
                                                 AddPostResolve(digits, tokens, "FONT");
                                                 digits.SetFloat("FAC", ParseFloat(tokens, GetNextToken(tokens)));
                                                 AddPostResolve(digits, tokens, "SKILL");
-                                                ((Digits)digits.Container).transform.SetParent(((Panel)_openObject.Container).transform, false);
+                                                digitsContainer.transform.SetParent(((Panel)_openObject.Container).transform, false);
+                                                digitsContainer.Panel = ((Panel)_openObject.Container);
+                                                CheckSemiColon(tokens);
+                                                break;
+                                            }
+                                        case "PICTURE":
+                                            {
+                                                handled = true;
+                                                var picture = _world.CreateObjectTemplate(ObjectType.Picture, $"__PICTURE__{_internalCount++}");
+                                                var pictureContainer = ((Picture)picture.Container);
+                                                picture.SetFloat("POS_X", ParseFloat(tokens, GetNextToken(tokens)));
+                                                picture.SetFloat("POS_Y", ParseFloat(tokens, GetNextToken(tokens)));
+                                                AddPostResolve(picture, tokens, "TEXTURE");
+                                                AddPostResolve(picture, tokens, "SKILL");
+                                                pictureContainer.transform.SetParent(((Panel)_openObject.Container).transform, false);
+                                                pictureContainer.Panel = ((Panel)_openObject.Container);
                                                 CheckSemiColon(tokens);
                                                 break;
                                             }

@@ -196,6 +196,10 @@ namespace Acknex
 
         private void OnGUI()
         {
+            if (!World.Instance.DebugSkills)
+            {
+                return;
+            }
             GUILayout.BeginVertical();
             GUILayout.Label($"PLAYER_ANGLE:{World.Instance.GetSkillValue("PLAYER_ANGLE") * Mathf.Rad2Deg}");
             GUILayout.Label($"PLAYER_TILT:{World.Instance.GetSkillValue("PLAYER_TILT")}");

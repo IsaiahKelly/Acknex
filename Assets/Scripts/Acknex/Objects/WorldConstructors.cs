@@ -37,7 +37,6 @@ namespace Acknex
             return panel;
         }
 
-
         public Overlay CreateOverlay(string name)
         {
             if (name == null)
@@ -254,7 +253,7 @@ namespace Acknex
             return font;
         }
 
-        public Text CreateDigitis(string name)
+        public Digits CreateDigitis(string name)
         {
             if (name == null)
             {
@@ -270,6 +269,22 @@ namespace Acknex
             return digits;
         }
 
+        public Picture CreatePicture(string name)
+        {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            var newGameObject = new GameObject(name);
+            newGameObject.transform.SetParent(CanvasView, false);
+            var picture = newGameObject.AddComponent<Picture>();
+            picture.AcknexObject.SetString("NAME", name);
+            picture.AcknexObject.Type = ObjectType.Picture;
+            AcknexObject.SetAcknexObject(name, picture.AcknexObject);
+            PicturesByName.Add(name, picture);
+            return picture;
+        }
+
         public Text CreateText(string name)
         {
             if (name == null)
@@ -280,7 +295,7 @@ namespace Acknex
             newGameObject.transform.SetParent(CanvasView, false);
             var text = newGameObject.AddComponent<Text>();
             text.AcknexObject.SetString("NAME", name);
-            text.AcknexObject.SetObject("STRING", new List<IAcknexObject> { null });
+           // text.AcknexObject.SetObject("STRING", new List<IAcknexObject> { null });
             text.AcknexObject.SetFloat("INDEX", 1);
             text.AcknexObject.Type = ObjectType.Text;
             AcknexObject.SetAcknexObject(name, text.AcknexObject);

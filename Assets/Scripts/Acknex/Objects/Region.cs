@@ -315,7 +315,7 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = CeilTexture.AnimateTexture(CeilTextureCanceled, true, _ceilMeshRenderer, CeilMeshFilter, null, AcknexObject, AcknexObject, null);
+            var enumerator = CeilTexture.AnimateTexture(CeilTextureCanceled, true, _ceilMeshRenderer.materials, CeilMeshFilter, null, AcknexObject, AcknexObject);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
@@ -333,7 +333,7 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = FloorTexture.AnimateTexture(FloorTextureCanceled, true, _floorMeshRenderer, FloorMeshFilter, null, AcknexObject, AcknexObject, null);
+            var enumerator = FloorTexture.AnimateTexture(FloorTextureCanceled, true, _floorMeshRenderer.materials, FloorMeshFilter, null, AcknexObject, AcknexObject);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;

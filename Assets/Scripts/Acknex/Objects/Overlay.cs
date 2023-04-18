@@ -5,13 +5,12 @@ using UnityEngine.UI;
 
 namespace Acknex
 {
-
     public class Overlay : MonoBehaviour, IAcknexObjectContainer
     {
         private Bitmap _lastOverlaySprite;
 
-        private Graphic _overlayGraphic;
-        private IList<Material> _materials;
+        public Graphic OverlayGraphic;
+        protected IList<Material> Materials;
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Overlay);
 
         [field: SerializeField] public bool DebugMarked { get; set; }
@@ -50,13 +49,30 @@ namespace Acknex
 
         public virtual void UpdateObject()
         {
-            if (World.Instance.AcknexObject.GetAcknexObject("LAYERS.1") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.2") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.3") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.4") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.5") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.6") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.7") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.8") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.9") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.10") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.11") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.12") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.13") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.14") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.15") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("LAYERS.16") == AcknexObject)
+            //todo: better way
+            if (
+                World.Instance.AcknexObject.GetAcknexObject("LAYERS.1") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.2") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.3") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.4") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.5") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.6") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.7") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.8") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.9") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.10") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.11") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.12") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.13") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.14") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.15") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("LAYERS.16") == AcknexObject)
             {
-                _overlayGraphic.enabled = true;
+                OverlayGraphic.enabled = true;
             }
             else
             {
-                _overlayGraphic.enabled = false;
+                OverlayGraphic.enabled = false;
             }
             var overlaySprite = AcknexObject.GetAcknexObject("OVLYS")?.Container as Bitmap;
             Draw(overlaySprite);
@@ -64,20 +80,24 @@ namespace Acknex
 
         protected void Draw(Bitmap overlaySprite)
         {
-            _overlayGraphic.rectTransform.anchorMin = new Vector3(0f, 1f);
-            _overlayGraphic.rectTransform.anchorMax = new Vector3(0f, 1f);
-            _overlayGraphic.rectTransform.pivot = new Vector3(0f, 1f);
-            _overlayGraphic.rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat("POS_X"), -AcknexObject.GetFloat("POS_Y"), 0f);
+            OverlayGraphic.rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat("POS_X"), -AcknexObject.GetFloat("POS_Y"), 0f);
             if (_lastOverlaySprite != overlaySprite && overlaySprite != null)
             {
-                _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, overlaySprite.Width);
-                _overlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, overlaySprite.Height);
-                overlaySprite.UpdateMaterial(_materials, null, 0, false, null);
+                OverlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, overlaySprite.Width);
+                OverlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, overlaySprite.Height);
+                overlaySprite.UpdateMaterial(Materials, null, 0, false, null);
                 AcknexObject.SetFloat("SIZE_X", overlaySprite.Width);
                 AcknexObject.SetFloat("SIZE_Y", overlaySprite.Height);
                 _lastOverlaySprite = overlaySprite;
             }
-            _overlayGraphic.transform.SetSiblingIndex(AcknexObject.GetInteger("LAYER"));
+            else if (overlaySprite == null)
+            {
+                foreach (var material in Materials)
+                {
+                    material.SetTexture("_MainTex", World.Instance.NullTexture);
+                }
+            }
+            OverlayGraphic.transform.SetSiblingIndex(AcknexObject.GetInteger("LAYER"));
         }
 
         private static IAcknexObject GetTemplateCallback(string name)
@@ -92,7 +112,7 @@ namespace Acknex
 
         private void Start()
         {
-            SetupInnerGameObject(gameObject, out _overlayGraphic);
+            SetupInnerGameObject(gameObject, out OverlayGraphic);
         }
 
         private void Update()
@@ -104,9 +124,11 @@ namespace Acknex
         {
             overlayGameObject.transform.SetParent(transform, false);
             overlayGraphic = overlayGameObject.AddComponent<Image>();
+            overlayGraphic.rectTransform.anchorMin = new Vector3(0f, 1f);
+            overlayGraphic.rectTransform.anchorMax = new Vector3(0f, 1f);
             overlayGraphic.rectTransform.pivot = new Vector3(0f, 1f);
             overlayGraphic.material = new Material(Shader.Find("Acknex/UI"));
-            _materials = new List<Material>() {_overlayGraphic.material};
+            Materials = new List<Material>() { OverlayGraphic.material };
         }
     }
 }

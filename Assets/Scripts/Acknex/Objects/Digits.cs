@@ -7,6 +7,7 @@ namespace Acknex
     public class Digits : Text
     {
         public override IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Digits);
+        public Panel Panel;
         private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
@@ -27,12 +28,15 @@ namespace Acknex
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             vh.Clear();
-            materialForRendering.SetTexture("_MainTex", World.Instance.UsePalettes ? Font.GlyphsPalette : Font.GlyphsTexture);
-            if (AcknexObject.TryGetAcknexObject("SKILL", out var skill))
+            if (Panel != null && Panel.OverlayGraphic.enabled)
             {
-                var len = AcknexObject.GetFloat("LEN");
-                var skillValue = skill.GetInteger("VAL").ToString("D" + len.ToString());
-                DrawText(vh, skillValue);
+                materialForRendering.SetTexture("_MainTex", World.Instance.UsePalettes ? Font.GlyphsPalette : Font.GlyphsTexture);
+                if (AcknexObject.TryGetAcknexObject("SKILL", out var skill))
+                {
+                    var len = AcknexObject.GetFloat("LEN");
+                    var skillValue = skill.GetInteger("VAL").ToString("D" + len.ToString());
+                    DrawText(vh, skillValue);
+                }
             }
         }
     }

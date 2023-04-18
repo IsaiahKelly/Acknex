@@ -69,7 +69,11 @@ namespace Acknex
         {
             if (BMaps.Count > index)
             {
-                return BMaps[index].Container as Bitmap;
+                var bmap = BMaps[index];
+                if (bmap != null)
+                {
+                    return bmap.Container as Bitmap;
+                }
             }
             return null;
         }
@@ -78,12 +82,11 @@ namespace Acknex
         public IEnumerator AnimateTexture(
             Func<Texture, bool> canceled,
             bool scaleTexture,
-            MeshRenderer meshRenderer,
+            IList<Material> materials,
             MeshFilter meshFilter,
-            GameObject thingGameObject,
+            GameObject sourceGameObject,
             IAcknexObject MY,
             IAcknexObject THERE,
-            Transform sourceTransform,
             int side = 0
         )
         {
@@ -113,7 +116,7 @@ namespace Acknex
                     }
                 }
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : World.Instance.WaitForTick;
-                UpdateAngleFrameScale(scaleTexture, cycles, side, cycle, mirror, currentDelay, meshRenderer, meshFilter, thingGameObject, MY, sourceTransform);
+                UpdateAngleFrameScale(scaleTexture, cycles, side, cycle, mirror, currentDelay, materials, meshFilter, sourceGameObject, MY);
                 yield return currentDelay;
                 cycle++;
                 if (cycle >= cycles)
@@ -128,7 +131,7 @@ namespace Acknex
             }
         }
 
-        public void UpdateAngleFrameScale(bool scaleTexture, int cycles, int side, int animFrame, IList<float> mirror, WaitForSeconds delay, MeshRenderer meshRenderer, MeshFilter meshFilter, GameObject sourceGameObject, IAcknexObject sourceAcknexObject, Transform sourceTransform)
+        public void UpdateAngleFrameScale(bool scaleTexture, int cycles, int side, int animFrame, IList<float> mirror, WaitForSeconds delay, IList<Material> materials, MeshFilter meshFilter, GameObject sourceGameObject, IAcknexObject sourceAcknexObject/*, Transform sourceTransform*/)
         {
             //if (HasModel(out var modelObject))
             //{
@@ -143,13 +146,13 @@ namespace Acknex
                 var angleFrame = side * cycles;
                 var frame = angleFrame + animFrame;
                 var bitmap = GetBitmapAt(frame);
-                if (meshRenderer?.material != null && bitmap != null)
+                if (materials != null && bitmap != null)
                 {
-                    UpdateFrame(bitmap, meshRenderer.materials, scaleTexture, mirror != null && mirror[side] > 0, frame, sourceAcknexObject);
+                    UpdateFrame(bitmap, materials, scaleTexture, mirror != null && mirror[side] > 0, frame, sourceAcknexObject);
                 }
-                if (sourceTransform != null)
+                if (sourceGameObject != null)
                 {
-                    sourceTransform.localScale = TextureUtils.CalculateObjectSize(bitmap, this);
+                    sourceGameObject.transform.localScale = TextureUtils.CalculateObjectSize(bitmap, this);
                 }
             }
         }

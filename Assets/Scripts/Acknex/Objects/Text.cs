@@ -55,25 +55,43 @@ namespace Acknex
 
         }
 
+        private bool _hasToDisplay;
+        private bool _lastHasToDisplay;
+
         public virtual void UpdateObject()
         {
+            if (World.Instance.AcknexObject.GetAcknexObject("MESSAGES.1") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.2") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.3") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.4") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.5") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.6") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.7") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.8") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.9") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.10") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.11") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.12") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.13") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.14") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.15") == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.16") == AcknexObject)
+            {
+                _hasToDisplay = true;
+            }
+            else
+            {
+                _hasToDisplay = false;
+            }
             rectTransform.anchorMin = new Vector3(0f, 1f);
             rectTransform.anchorMax = new Vector3(0f, 1f);
             rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat("POS_X"), -AcknexObject.GetFloat("POS_Y"), 0f);
-            if (AcknexObject.IsDirty)
+            if (_hasToDisplay != _lastHasToDisplay || AcknexObject.IsDirty)
             {
                 SetAllDirty();
             }
             AcknexObject.IsDirty = false;
-            //todo: better way
-            //if (World.Instance.AcknexObject.GetAcknexObject("MESSAGES.1") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.2") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.3") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.4") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.5") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.6") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.7") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.8") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.9") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.10") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.11") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.12") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.13") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.14") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.15") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.16") == AcknexObject)
-            //{
-            //    enabled = true;
-            //}
-            //else
-            //{
-            //    enabled = false;
-            //}
+            _lastHasToDisplay = _hasToDisplay;
         }
 
         private static IAcknexObject GetTemplateCallback(string name)
@@ -106,23 +124,27 @@ namespace Acknex
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             vh.Clear();
-            materialForRendering.SetTexture("_MainTex", World.Instance.UsePalettes ? Font.GlyphsPalette : Font.GlyphsTexture);
-            var stringIndex = AcknexObject.GetInteger("INDEX") - 1;
-            if (!AcknexObject.TryGetObject<List<IAcknexObject>>("STRING", out var strings) || stringIndex < 0 || stringIndex >= strings.Count)
+            //todo: better way
+            if (_hasToDisplay)
             {
-                return;
+                materialForRendering.SetTexture("_MainTex", World.Instance.UsePalettes ? Font.GlyphsPalette : Font.GlyphsTexture);
+                var stringIndex = AcknexObject.GetInteger("INDEX") - 1;
+                if (!AcknexObject.TryGetObject<List<IAcknexObject>>("STRING", out var strings) || stringIndex < 0 || stringIndex >= strings.Count)
+                {
+                    return;
+                }
+                var str = strings[stringIndex];
+                if (str == null)
+                {
+                    return;
+                }
+                var stringValue = str.GetString("VAL");
+                if (stringValue == null)
+                {
+                    return;
+                }
+                DrawText(vh, stringValue);
             }
-            var str = strings[stringIndex];
-            if (str == null)
-            {
-                return;
-            }
-            var stringValue = str.GetString("VAL");
-            if (stringValue == null)
-            {
-                return;
-            }
-            DrawText(vh, stringValue);
         }
 
         protected void DrawText(VertexHelper vh, string stringValue)
@@ -134,9 +156,16 @@ namespace Acknex
             for (var i = 0; i < stringValue.Length; i++)
             {
                 var c = stringValue[i];
+                if (c == '\\' && i < stringValue.Length - 1 && stringValue[i+1] == 'n')
+                {
+                    y -= charHeight;
+                    x = 0f;
+                    i++;
+                    continue;
+                }
                 if (c == '\n')
                 {
-                    y += charHeight;
+                    y -= charHeight;
                     x = 0f;
                 }
                 var cUV = new Vector2(c, 0f);

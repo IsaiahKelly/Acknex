@@ -85,6 +85,7 @@ namespace Acknex
 
         public void UpdateObject()
         {
+
         }
 
         private static IAcknexObject GetTemplateCallback(string name)

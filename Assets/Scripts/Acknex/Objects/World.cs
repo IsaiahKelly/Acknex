@@ -36,6 +36,7 @@ namespace Acknex
         public readonly Dictionary<string, Synonym> SynonymsByName = new Dictionary<string, Synonym>();
         public readonly Dictionary<string, Text> TextsByName = new Dictionary<string, Text>();
         public readonly Dictionary<string, Digits> DigitsByName = new Dictionary<string, Digits>();
+        public readonly Dictionary<string, Picture> PicturesByName = new Dictionary<string, Picture>();
         public readonly Dictionary<string, TextureAndPalette> TextureCache = new Dictionary<string, TextureAndPalette>();
         public readonly Dictionary<string, Texture> TexturesByName = new Dictionary<string, Texture>();
         public readonly Dictionary<string, Thing> ThingsByName = new Dictionary<string, Thing>();
@@ -61,9 +62,9 @@ namespace Acknex
         public float CanvasWidthRatio;
         private ContouredRegions ContouredRegions;
         public List<ContourVertex> ContourVertices;
-        public Color DebugColor;
-        public GameObject DebugContainer;
-        public Texture2D DebugTexture;
+        //public Color DebugColor;
+        //public GameObject DebugContainer;
+        //public Texture2D DebugTexture;
         public bool DisableCompilation;
         public bool DisableMaterials;
         public bool DrawShadows;
@@ -96,6 +97,8 @@ namespace Acknex
         public LayerMask WallsWaterRegionsAndThings;
         public SingleUnityLayer WaterLayer;
         public string WDLPath;
+        public Texture2D NullTexture;
+        public bool DebugSkills;
 
         public static World Instance { get; private set; }
 

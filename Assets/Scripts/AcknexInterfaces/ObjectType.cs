@@ -29,6 +29,7 @@
         Font,
         Model,
         Song,
-        Digits
+        Digits,
+        Picture
     }
 }

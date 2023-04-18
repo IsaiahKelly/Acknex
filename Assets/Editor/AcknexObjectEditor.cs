@@ -33,6 +33,11 @@ public class AcknexObjectEditor : Editor
                     var values = "";
                     foreach (var item in objList)
                     {
+                        if (item == null)
+                        {
+                            values += "NULL|";
+                            continue;
+                        }
                         if (item.Type == ObjectType.String)
                         {
                             values += item.GetString("VAL") + "|";

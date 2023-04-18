@@ -382,7 +382,7 @@ namespace Acknex
 
         private IEnumerator Animate(int side = 0)
         {
-            var enumerator = TextureObject.AnimateTexture(TextureCanceled, false, _meshRenderer, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), _innerGameObject.transform, side);
+            var enumerator = TextureObject.AnimateTexture(TextureCanceled, false, _meshRenderer.materials, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), side);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
