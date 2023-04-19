@@ -821,7 +821,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AmbientLight: {fileID: 705507994}
   AudioSource: {fileID: 1477033083}
-  BilinearFilter: 0
+  BilinearFilter: 1
   Canvas: {fileID: 1116186326}
   CanvasScaler: {fileID: 1116186325}
   CanvasView: {fileID: 1520209880}
@@ -837,14 +837,14 @@ MonoBehaviour:
   MidiPlayer: {fileID: 1246573634}
   MouseMultiplier: 0.1
   OldAckVersion: 0
-  SourceGenerationPath: Assets\Scripts\Tests\Game.cs.new
+  SourceGenerationPath: Assets\Scripts\Tests\game.cs.new
   Sprites:
     m_LayerIndex: 11
   ThingsAndActorsLayer:
     m_LayerIndex: 9
   TriggersLayer:
     m_LayerIndex: 10
-  UsePalettes: 1
+  UsePalettes: 0
   UseWDLEngine: 0
   Volume: 1
   WallsAndRegionsLayer:

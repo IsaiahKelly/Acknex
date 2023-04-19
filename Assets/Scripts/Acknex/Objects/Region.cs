@@ -485,7 +485,7 @@ namespace Acknex
                 }
                 tess.AddContour(biggestContour);
             }
-            tess.Tessellate();
+            tess.Tessellate(WindingRule.EvenOdd, ElementType.Polygons, 3, CombineCallback);
             var floorVertices = new Vector3[tess.VertexCount];
             var ceilLift = GetCeilLift();
             var floorLift = GetFloorLift();
@@ -494,13 +494,14 @@ namespace Acknex
             for (var i = 0; i < tess.VertexCount; i++)
             {
                 var vertex = tess.Vertices[i];
+                var position = vertex.Data as Vec3? ?? vertex.Position;
                 if (lifted)
                 {
-                    floorVertices[i] = new Vector3(vertex.Position.X, ceil ? height + vertex.Position.Z * ceilLift : height + vertex.Position.Z * floorLift, vertex.Position.Y);
+                    floorVertices[i] = new Vector3(position.X, ceil ? height + position.Z * ceilLift : height + position.Z * floorLift, position.Y);
                 }
                 else
                 {
-                    floorVertices[i] = new Vector3(vertex.Position.X, height, vertex.Position.Y);
+                    floorVertices[i] = new Vector3(position.X, height, position.Y);
                 }
             }
             var unRotateNormal = Quaternion.Inverse(Quaternion.LookRotation(ceil ? Vector3.up : Vector3.down));
@@ -555,6 +556,11 @@ namespace Acknex
                 return -1;
             }
             return 0;
+        }
+
+        private static object CombineCallback(Vec3 position, object[] data, float[] weights)
+        {
+            return position;
         }
 
         public static Region Locate(IAcknexObject acknexObject, Region currentRegion, float radius, float thingX, float thingY, ref float thingHgt, bool onCeil = false, float? height = null)

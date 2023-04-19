@@ -144,7 +144,7 @@ namespace Acknex
             CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Repeat;
             if (sourceAcknexObject != null)
             {
-                if (sourceAcknexObject.Type == ObjectType.Actor || sourceAcknexObject.Type == ObjectType.Thing)
+                if (sourceAcknexObject.Type == ObjectType.Actor || sourceAcknexObject.Type == ObjectType.Thing || sourceAcknexObject.Type == ObjectType.Overlay || sourceAcknexObject.Type == ObjectType.Panel)
                 {
                     CropTexture.Palette.wrapModeU = CropTexture.Texture.wrapModeU = TextureWrapMode.Clamp;
                     CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Clamp;
