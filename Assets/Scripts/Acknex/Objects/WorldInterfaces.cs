@@ -25,7 +25,6 @@ namespace Acknex
 
         public float Accelerate(float value, float amount)
         {
-            //todo: RULE PLAYER_VX = (1 - TIME_CORR * fric) * PLAYER_VX + TIME_CORR * (force_x +drift_x)/ mass;
             var timeCorr = GetSkillValue("TIME_CORR");
             var result = (1f - timeCorr * GetSkillValue("FRICTION")) * value + timeCorr * amount / GetSkillValue("INERTIA");
             if (Mathf.Abs(result) < Mathf.Epsilon)

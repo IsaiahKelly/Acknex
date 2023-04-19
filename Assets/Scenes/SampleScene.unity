@@ -829,7 +829,7 @@ MonoBehaviour:
   DisableCompilation: 0
   DisableMaterials: 0
   DrawShadows: 0
-  GodMode: 0
+  GodMode: 1
   IgnoreRaycastLayer:
     m_LayerIndex: 2
   LightMultiplier: 2
@@ -862,7 +862,7 @@ MonoBehaviour:
     m_LayerIndex: 4
   WDLPath: C:\games\acknex\varginha2\CONTATO.WDL
   NullTexture: {fileID: 2800000, guid: da40acbc9325ea9438512fe4fee1f7fc, type: 3}
-  DebugSkills: 0
+  DebugSkills: 1
   <DebugMarked>k__BackingField: 0
 --- !u!114 &1246573633
 MonoBehaviour:

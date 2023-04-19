@@ -99,6 +99,7 @@ namespace Acknex
         public string WDLPath;
         public Texture2D NullTexture;
         public bool DebugSkills;
+        public float TestTimeScale = 1f;
 
         public static World Instance { get; private set; }
 

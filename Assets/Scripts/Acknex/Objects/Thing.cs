@@ -16,6 +16,7 @@ namespace Acknex
         private GameObject _innerGameObject;
         private bool _lastGround;
         private int _lastSide;
+        private bool _lastInvisible;
         private IAcknexObject _lastTarget;
         private Texture _lastTextureObject;
         private MeshFilter _meshFilter;
@@ -181,7 +182,8 @@ namespace Acknex
             {
                 side = 0;
             }
-            if (side != _lastSide || TextureObject != _lastTextureObject || AcknexObject.HasFlag("PLAY"))
+            var invisible = AcknexObject.HasFlag("INVISIBLE");
+            if (!invisible && invisible != _lastInvisible || side != _lastSide || TextureObject != _lastTextureObject || AcknexObject.HasFlag("PLAY"))
             {
                 if (_animateCoroutine != null)
                 {
@@ -199,6 +201,7 @@ namespace Acknex
             }
             _lastTextureObject = TextureObject;
             _lastSide = side;
+            _lastInvisible = invisible;
             if (!AcknexObject.IsDirty)
             {
 #if DEBUG_ENABLED
@@ -227,7 +230,7 @@ namespace Acknex
             }
             transform.position = new Vector3(thingX, thingZ, thingY);
             AcknexObject.SetFloat("VISIBLE", AcknexObject.GetFloat("INVISIBLE") > 0f ? 0f : 1f);
-            if (AcknexObject.HasFlag("INVISIBLE"))
+            if (invisible)
             {
                 _meshRenderer.enabled = false;
                 _triggerCollider.enabled = _collider.enabled = _characterController.enabled = false;
