@@ -163,12 +163,26 @@ namespace Acknex
                 }
                 if (sourceAcknexObject.Container is Wall wall)
                 {
-                    if (wall.AcknexObject.HasFlag("FENCE"))
+                    if (wall.HasGap)
+                    {
+                        foreach (var material in materials)
+                        {
+                            material.SetFloat("_V0H", wall.GapUV.m12);
+                            material.SetFloat("_V1H", wall.GapUV.m13);
+                        }
+                    }
+                    else
                     {
                         foreach (var material in materials)
                         {
                             material.SetFloat("_V0H", wall.BottomUV.m12);
                             material.SetFloat("_V1H", wall.BottomUV.m13);
+                        }
+                    }
+                    if (wall.AcknexObject.HasFlag("FENCE"))
+                    {
+                        foreach (var material in materials)
+                        {
                             material.SetInt("_FENCE", 1);
                         }
                         CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Clamp;

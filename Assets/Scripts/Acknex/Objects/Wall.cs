@@ -76,6 +76,8 @@ namespace Acknex
 
         public GameObject GameObject => gameObject;
 
+        public bool HasGap { get => _hasGap;  }
+
         public Vector3 GetCenter()
         {
             return Vector3.Lerp(_vertexGameObjectA.transform.position, _vertexGameObjectB.transform.position, 0.5f);
@@ -191,32 +193,6 @@ namespace Acknex
             }
             AcknexObject.IsDirty = false;
             _audioSourceGameObject.transform.position = GetCenter();
-            if (AcknexObject.HasFlag("INVISIBLE"))
-            {
-                _gapMeshRenderer.enabled = _meshRenderer.enabled = false;
-                _gapCollider.enabled = _collider.enabled = false;
-                return;
-            }
-            if (AckTransform.Degrees != 0f)
-            {
-                transform.RotateAround(AckTransform.Center, Vector3.up, -AckTransform.Degrees);
-                AckTransform.Degrees = 0f;
-            }
-            if (AckTransform.DX != 0f)
-            {
-                transform.Translate(AckTransform.DX, 0f, 0f, Space.World);
-                AckTransform.DX = 0f;
-            }
-            if (AckTransform.DY != 0f)
-            {
-                transform.Translate(0f, 0f, AckTransform.DY, Space.World);
-                AckTransform.DY = 0f;
-            }
-            if (AckTransform.DZ != 0f)
-            {
-                transform.Translate(0f, AckTransform.DZ, 0f, Space.World);
-                AckTransform.DZ = 0f;
-            }
             _meshRenderer.enabled = !DisableRender;
             AcknexObject.SetFloat("VISIBLE", AcknexObject.GetFloat("INVISIBLE") > 0f ? 0f : 1f);
             var hasPlay = AcknexObject.HasFlag("PLAY");
@@ -242,12 +218,38 @@ namespace Acknex
             _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.AcknexObject.HasFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             _invertedCollider.enabled = _collider.enabled = AcknexObject.HasFlag("IMPASSABLE") || !AcknexObject.HasFlag("PASSABLE");//_collider.enabled = !AcknexObject.HasFlag("PASSABLE");
             _vertexTriggerB.radius = _vertexTriggerA.radius = AcknexObject.GetFloat("DIST");
+            _gapInvertedCollider.enabled = _gapCollider.enabled = !AcknexObject.HasFlag("PASSABLE") && (_hasGap && !AcknexObject.HasFlag("IMPASSABLE") || !_hasGap && AcknexObject.HasFlag("IMPASSABLE"));
+            if (AcknexObject.HasFlag("INVISIBLE"))
+            {
+                _gapMeshRenderer.enabled = _meshRenderer.enabled = false;
+                //_gapCollider.enabled = _collider.enabled = false;
+                return;
+            }
+            _gapMeshRenderer.enabled = _hasGap;
+            if (AckTransform.Degrees != 0f)
+            {
+                transform.RotateAround(AckTransform.Center, Vector3.up, -AckTransform.Degrees);
+                AckTransform.Degrees = 0f;
+            }
+            if (AckTransform.DX != 0f)
+            {
+                transform.Translate(AckTransform.DX, 0f, 0f, Space.World);
+                AckTransform.DX = 0f;
+            }
+            if (AckTransform.DY != 0f)
+            {
+                transform.Translate(0f, 0f, AckTransform.DY, Space.World);
+                AckTransform.DY = 0f;
+            }
+            if (AckTransform.DZ != 0f)
+            {
+                transform.Translate(0f, AckTransform.DZ, 0f, Space.World);
+                AckTransform.DZ = 0f;
+            }
             //todo: will disalign when rotate or move
             _vertexGameObjectA.transform.position = (_hasGap ? GapQuad : BottomQuad).GetColumn(3);
             _vertexGameObjectB.transform.position = (_hasGap ? GapQuad : BottomQuad).GetColumn(2);
             //_invertedCollider.enabled = AcknexObject.HasFlag("FENCE");
-            _gapInvertedCollider.enabled = _gapCollider.enabled = !AcknexObject.HasFlag("PASSABLE") && (_hasGap && !AcknexObject.HasFlag("IMPASSABLE") || !_hasGap && AcknexObject.HasFlag("IMPASSABLE"));
-            _gapMeshRenderer.enabled = _hasGap;
         }
 
         private static IAcknexObject GetTemplateCallback(string name)

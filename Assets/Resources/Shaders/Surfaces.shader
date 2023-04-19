@@ -67,12 +67,12 @@
 			void surf(Input IN, inout SurfaceOutput o)
 			{
 				//todo: lerp between V0H V1H
-				if (_FENCE) {
+				if (_FENCE || _PORTCULLIS) {
 					_OFFSETY = 0;
 					//todo: better take this as width and height from the original sprite to avoid distortion
 					float worldHeight = (_Y1 - _Y0) / _SCALEY;
 					IN.uv_MainTex.y -= _V0H;
-					if (IN.uv_MainTex.y > worldHeight) {
+					if (_FENCE && IN.uv_MainTex.y > worldHeight) {
 						discard;
 					}
 				}
