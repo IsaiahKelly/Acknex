@@ -182,6 +182,9 @@ namespace Acknex
 
         public void UpdateObject()
         {
+            //todo: will disalign when rotate or move
+            _vertexGameObjectA.transform.position = (_hasGap ? GapQuad : TopQuad).GetColumn(3);
+            _vertexGameObjectB.transform.position = (_hasGap ? GapQuad : TopQuad).GetColumn(2);
             if (AcknexObject.IsGeometryDirty)
             {
                 UpdateAllMeshes();
@@ -246,9 +249,6 @@ namespace Acknex
                 transform.Translate(0f, AckTransform.DZ, 0f, Space.World);
                 AckTransform.DZ = 0f;
             }
-            //todo: will disalign when rotate or move
-            _vertexGameObjectA.transform.position = (_hasGap ? GapQuad : BottomQuad).GetColumn(3);
-            _vertexGameObjectB.transform.position = (_hasGap ? GapQuad : BottomQuad).GetColumn(2);
             //_invertedCollider.enabled = AcknexObject.HasFlag("FENCE");
         }
 
@@ -401,19 +401,23 @@ namespace Acknex
                 {
                     _hasGap = false;
                 }
+                _mesh.Clear();
                 _mesh.SetVertices(_allVertices);
                 _mesh.SetUVs(0, _allUVs);
                 _mesh.subMeshCount = 1;
                 _mesh.SetIndices(triangles, MeshTopology.Quads, 0);
                 _mesh.RecalculateNormals();
                 _mesh.UploadMeshData(false);
+                _mesh.RecalculateBounds();
                 Filter.sharedMesh = _collider.sharedMesh = _mesh;
+                _invertedMesh.Clear();
                 _invertedMesh.SetVertices(_allVertices);
                 _invertedMesh.SetUVs(0, _allUVs);
                 _invertedMesh.subMeshCount = 1;
                 triangles.Reverse();
                 _invertedMesh.SetIndices(triangles, MeshTopology.Quads, 0);
                 _invertedMesh.UploadMeshData(false);
+                _invertedMesh.RecalculateBounds();
                 _invertedCollider.sharedMesh = _invertedMesh;
                 //todo: this needs another approach, as textures might change from common to sky and vice-versa
                 if (!_materialsCreated)
@@ -425,19 +429,23 @@ namespace Acknex
             }
             if (_allTriangles.TryGetValue(WallPart.Gap, out var gapTriangles))
             {
+                _gapMesh.Clear();
                 _gapMesh.SetVertices(_allVertices);
                 _gapMesh.SetUVs(0, _allUVs);
                 _gapMesh.subMeshCount = 1;
                 _gapMesh.SetIndices(gapTriangles, MeshTopology.Quads, 0);
                 _gapMesh.RecalculateNormals();
                 _gapMesh.UploadMeshData(false);
+                _gapMesh.RecalculateBounds();
                 GapFilter.sharedMesh = _gapCollider.sharedMesh = _gapMesh;
+                _gapInvertedMesh.Clear();
                 _gapInvertedMesh.SetVertices(_allVertices);
                 _gapInvertedMesh.SetUVs(0, _allUVs);
                 _gapInvertedMesh.subMeshCount = 1;
                 gapTriangles.Reverse();
                 _gapInvertedMesh.SetIndices(gapTriangles, MeshTopology.Quads, 0);
                 _gapInvertedMesh.UploadMeshData(false);
+                _gapInvertedMesh.RecalculateBounds();
                 _gapInvertedCollider.sharedMesh = _gapInvertedMesh;
                 //todo: this needs another approach, as textures might change from common to sky and vice-versa
                 if (!_materialsCreated)

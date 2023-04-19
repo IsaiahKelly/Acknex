@@ -178,6 +178,12 @@ namespace Acknex
             CeilMeshFilter = _ceilGameObject.AddComponent<MeshFilter>();
             _ceilCollider = _ceilGameObject.AddComponent<MeshCollider>();
             _invertedCeilCollider = _ceilGameObject.AddComponent<MeshCollider>();
+            FloorMeshFilter = _floorGameObject.AddComponent<MeshFilter>();
+            _floorMeshRenderer = _floorGameObject.AddComponent<MeshRenderer>();
+            _floorCollider = _floorGameObject.AddComponent<MeshCollider>();
+            _invertedFloorCollider = _floorGameObject.AddComponent<MeshCollider>();
+            _floorCollider = _floorGameObject.AddComponent<MeshCollider>();
+            _invertedFloorCollider = _floorGameObject.AddComponent<MeshCollider>();
             if (gameObject.TryGetComponent<AudioSource>(out var audioSource))
             {
                 Destroy(audioSource);
@@ -207,8 +213,22 @@ namespace Acknex
             {
                 return;
             }
+            var floorHgt = AcknexObject.GetFloat("FLOOR_HGT");
+            var ceilHgt = AcknexObject.GetFloat("CEIL_HGT");
+            if (floorHgt != _lastFloorHgt || ceilHgt != _lastCeilHgt)
+            {
+                AcknexObject.IsGeometryDirty = true;
+                _lastCeilTexture = null;
+                _lastFloorTexture = null;
+            }
+            _lastFloorHgt = floorHgt;
+            _lastCeilHgt = ceilHgt;
             if (AcknexObject.IsGeometryDirty)
             {
+                foreach (var wall in Walls)
+                {
+                    wall.AcknexObject.IsGeometryDirty = true;
+                }
                 UpdateAllMeshes();
                 AcknexObject.IsGeometryDirty = false;
             }
@@ -364,13 +384,15 @@ namespace Acknex
         {
             var ceilTexture = CeilTexture;
             var floorTexture = FloorTexture;
+            _floorMesh.Clear();
             _floorMesh.SetVertices(_allVertices);
             _floorMesh.SetUVs(0, _allUVs);
             _floorMesh.subMeshCount = 1;
             _floorMesh.SetTriangles(_allTriangles[0], 0);
             _floorMesh.RecalculateNormals();
             _floorMesh.UploadMeshData(false);
-            _invertedFloorMesh = new Mesh();
+            _floorMesh.RecalculateBounds();
+            _invertedFloorMesh.Clear();
             _invertedFloorMesh.SetVertices(_allVertices);
             _invertedFloorMesh.SetUVs(0, _allUVs);
             _invertedFloorMesh.subMeshCount = 1;
@@ -379,25 +401,25 @@ namespace Acknex
             invertedFloorTriangles.Reverse();
             _invertedFloorMesh.SetTriangles(invertedFloorTriangles, 0);
             _invertedFloorMesh.UploadMeshData(false);
-            FloorMeshFilter = _floorGameObject.AddComponent<MeshFilter>();
+            _invertedFloorMesh.RecalculateBounds();
             FloorMeshFilter.sharedMesh = _floorMesh;
-            _floorMeshRenderer = _floorGameObject.AddComponent<MeshRenderer>();
             if (!_materialsCreated)
             {
                 _floorMaterial = World.Instance.BuildMaterial(floorTexture.AcknexObject);
                 _floorMeshRenderer.sharedMaterial = _floorMaterial;
             }
-            _floorCollider = _floorGameObject.AddComponent<MeshCollider>();
             _floorCollider.sharedMesh = _floorMesh;
-            _invertedFloorCollider = _floorGameObject.AddComponent<MeshCollider>();
             _invertedFloorCollider.sharedMesh = _invertedFloorMesh;
             _invertedFloorCollider.enabled = false;
+            _ceilMesh.Clear();
             _ceilMesh.SetVertices(_allVertices);
             _ceilMesh.SetUVs(0, _allUVs);
             _ceilMesh.subMeshCount = 1;
             _ceilMesh.SetTriangles(_allTriangles[1], 0);
             _ceilMesh.RecalculateNormals();
             _ceilMesh.UploadMeshData(false);
+            _ceilMesh.RecalculateBounds();
+            _invertedCeilMesh.Clear();
             _invertedCeilMesh.SetVertices(_allVertices);
             _invertedCeilMesh.SetUVs(0, _allUVs);
             _invertedCeilMesh.subMeshCount = 1;
@@ -406,6 +428,7 @@ namespace Acknex
             invertedCeilTriangles.Reverse();
             _invertedCeilMesh.SetTriangles(invertedCeilTriangles, 0);
             _invertedCeilMesh.UploadMeshData(false);
+            _invertedCeilMesh.RecalculateBounds();
             CeilMeshFilter.sharedMesh = _ceilMesh;
             if (!_materialsCreated)
             {
@@ -444,6 +467,9 @@ namespace Acknex
                 return;
             }
             var meshIndex = 0;
+            _allVertices.Clear();
+            _allUVs.Clear();
+            _allTriangles.Clear();
             if (Math.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT")) > Mathf.Epsilon)
             {
                 BuildFloorOrCeil(ref meshIndex);
@@ -659,6 +685,8 @@ namespace Acknex
         }
 
         public AckTransform AckTransform;
+        private float _lastFloorHgt;
+        private float _lastCeilHgt;
 
         //todo: rotate things and actors as well
         public void Rotate(Vector3 center, float degrees)
