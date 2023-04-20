@@ -37,9 +37,14 @@
 			sampler2D _MainTex;
 			#include "Common.cginc"
 
+			sampler2D_float _CameraDepthTexture;
+			float4 _CameraDepthTexture_TexelSize;
+
 			struct Input
 			{
 				float2 uv_MainTex;
+				float4 screenPos;
+				float eyeDepth;
 			};
 
 			UNITY_INSTANCING_BUFFER_START(Props)
@@ -57,7 +62,9 @@
 				return half4(s.Albedo, s.Alpha);
 			}
 
-			void vert(inout appdata_full v) {
+			void vert(inout appdata_full v, out Input o) {
+				UNITY_INITIALIZE_OUTPUT(Input, o);
+				COMPUTE_EYEDEPTH(o.eyeDepth);
 				float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
 				float3 worldNorm = UnityObjectToWorldNormal(v.normal);
 				float3 viewDir = worldPos - _WorldSpaceCameraPos;
@@ -66,6 +73,9 @@
 
 			void surf(Input IN, inout SurfaceOutput o)
 			{
+				float rawZ = SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, UNITY_PROJ_COORD(IN.screenPos));
+				float sceneZ = Linear01Depth(rawZ);
+				float partZ = IN.eyeDepth;
 				//todo: lerp between V0H V1H
 				if (_FENCE || _PORTCULLIS) {
 					_OFFSETY = 0;
@@ -82,7 +92,7 @@
 				uv *= _MainTex_TexelSize.xy;
 				fixed4 c = tex2D(_MainTex, uv);
 				ApplyPalette(c);
-				o.Albedo = c.rgb;
+				o.Albedo = c.rgb;// *(1.0 - (partZ * 0.01));// c.rgb* sceneZ;
 				o.Alpha = c.a;
 				if (_TRANSPARENT && o.Alpha < 0.5) {
 					discard;

@@ -640,13 +640,13 @@ namespace Acknex
             return Mathf.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT"));
         }
 
-        //todo: sum below regions
+        //todo: is this needed?
         public float GetRealCeilHeight()
         {
             return AcknexObject.GetFloat("FLOOR_HGT") + GetDepth();
         }
 
-        //todo: sum below regions
+        //todo:is this needed?
         public float GetRealFloorHeight()
         {
             return AcknexObject.GetFloat("FLOOR_HGT");

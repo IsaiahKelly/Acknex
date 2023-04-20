@@ -212,7 +212,7 @@ namespace Acknex
             var floorBasePoint = initial ? regionContainer.GetRealFloorHeight() : playerFootZ;
             var playerWidth = World.Instance.GetSkillValue("PLAYER_WIDTH");
             var floorHgt = playerFootZ;
-            var newRegion = Region.Locate(AcknexObject, regionContainer, playerWidth, playerX, playerY, ref floorHgt, false, ceilBasePoint);
+            var newRegion = Region.Locate(AcknexObject, regionContainer, playerWidth * 0.1f, playerX, playerY, ref floorHgt, false, ceilBasePoint);
             var ceilHgt = floorHgt;
             Region.Locate(AcknexObject, regionContainer, playerWidth, playerX, playerY, ref ceilHgt, true, floorBasePoint);
             World.Instance.UpdateSkillValue("FLOOR_HGT", floorHgt);
@@ -223,6 +223,7 @@ namespace Acknex
                 newRegion.AcknexObject.AddFlag("HERE");
                 World.Instance.SetSynonymObject("HERE", newRegion.AcknexObject);
                 AcknexObject.SetAcknexObject("REGION", newRegion.AcknexObject);
+                //todo: these events must be triggered if the player is entirely inside the region
                 if (!initial)
                 {
                     World.Instance.TriggerEvent("IF_LEAVE", regionContainer.AcknexObject, null, regionContainer.AcknexObject);

@@ -59,7 +59,6 @@ namespace Acknex
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
 
-
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Wall);
 
         [field: SerializeField] public bool DebugMarked { get; set; }
@@ -182,9 +181,8 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            //todo: will disalign when rotate or move
-            _vertexGameObjectA.transform.position = (_hasGap ? GapQuad : TopQuad).GetColumn(3);
-            _vertexGameObjectB.transform.position = (_hasGap ? GapQuad : TopQuad).GetColumn(2);
+            _vertexGameObjectA.transform.position = (_hasGap ? GapQuad : BottomQuad).GetColumn(3);
+            _vertexGameObjectB.transform.position = (_hasGap ? GapQuad : BottomQuad).GetColumn(2);
             if (AcknexObject.IsGeometryDirty)
             {
                 UpdateAllMeshes();
@@ -232,21 +230,29 @@ namespace Acknex
             if (AckTransform.Degrees != 0f)
             {
                 transform.RotateAround(AckTransform.Center, Vector3.up, -AckTransform.Degrees);
+                _vertexGameObjectA.transform.RotateAround(AckTransform.Center, Vector3.up, -AckTransform.Degrees);
+                _vertexGameObjectB.transform.RotateAround(AckTransform.Center, Vector3.up, -AckTransform.Degrees);
                 AckTransform.Degrees = 0f;
             }
             if (AckTransform.DX != 0f)
             {
                 transform.Translate(AckTransform.DX, 0f, 0f, Space.World);
+                _vertexGameObjectA.transform.Translate(AckTransform.DX, 0f, 0f, Space.World);
+                _vertexGameObjectB.transform.Translate(AckTransform.DX, 0f, 0f, Space.World);
                 AckTransform.DX = 0f;
             }
             if (AckTransform.DY != 0f)
             {
                 transform.Translate(0f, 0f, AckTransform.DY, Space.World);
+                _vertexGameObjectA.transform.Translate(0f, 0f, AckTransform.DY, Space.World);
+                _vertexGameObjectB.transform.Translate(0f, 0f, AckTransform.DY, Space.World);
                 AckTransform.DY = 0f;
             }
             if (AckTransform.DZ != 0f)
             {
                 transform.Translate(0f, AckTransform.DZ, 0f, Space.World);
+                _vertexGameObjectA.transform.Translate(0f, AckTransform.DZ, 0f, Space.World);
+                _vertexGameObjectB.transform.Translate(0f, AckTransform.DZ, 0f, Space.World);
                 AckTransform.DZ = 0f;
             }
             //_invertedCollider.enabled = AcknexObject.HasFlag("FENCE");
@@ -559,7 +565,7 @@ namespace Acknex
                         var v1 = new Vector3(vertexB.Position.X, floorHeightUp + (liftedLeftUp ? vertexB.Position.Z * leftLiftUp : 0), vertexB.Position.Y);
                         var v2 = new Vector3(vertexB.Position.X, ceilHeightDown + (liftedRightDown ? vertexB.Position.Z * rightLiftDown : 0), vertexB.Position.Y);
                         var v3 = new Vector3(vertexA.Position.X, ceilHeightDown + (liftedRightDown ? vertexA.Position.Z * rightLiftDown : 0), vertexA.Position.Y);
-                        if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
+                        //if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
                         {
                             MeshUtils.AddQuad(0, 1, 2, 3, _allTriangles, WallPart.Gap, _allVertices.Count);
                             //MeshUtils.AddQuad(3, 2, 1, 0, _allTriangles, WallPart.Middle, _allVertices.Count);
@@ -587,7 +593,7 @@ namespace Acknex
                             var v1 = new Vector3(vertexB.Position.X, ceilHeightDown + (liftedLeftDown ? vertexB.Position.Z * leftLiftDown : 0), vertexB.Position.Y);
                             var v2 = new Vector3(vertexB.Position.X, floorHeightDown + (liftedRightDown ? vertexB.Position.Z * rightLiftDown : 0), vertexB.Position.Y);
                             var v3 = new Vector3(vertexA.Position.X, floorHeightDown + (liftedRightDown ? vertexA.Position.Z * rightLiftDown : 0), vertexA.Position.Y);
-                            if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
+                            //if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
                             {
                                 MeshUtils.AddQuad(0, 1, 2, 3, _allTriangles, WallPart.FloorAndCeil, _allVertices.Count);
                                 _allVertices.Add(v0); //a
@@ -612,7 +618,7 @@ namespace Acknex
                             var v1 = new Vector3(vertexB.Position.X, ceilHeightUp + (liftedLeftUp ? vertexB.Position.Z * leftLiftUp : 0), vertexB.Position.Y);
                             var v2 = new Vector3(vertexB.Position.X, floorHeightUp + (liftedRightUp ? vertexB.Position.Z * rightLiftUp : 0), vertexB.Position.Y);
                             var v3 = new Vector3(vertexA.Position.X, floorHeightUp + (liftedRightUp ? vertexA.Position.Z * rightLiftUp : 0), vertexA.Position.Y);
-                            if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
+                            //if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
                             {
                                 MeshUtils.AddQuad(3, 2, 1, 0, _allTriangles, WallPart.FloorAndCeil, _allVertices.Count);
                                 _allVertices.Add(v0);
@@ -666,7 +672,7 @@ namespace Acknex
             var v1 = new Vector3(vertexB.Position.X, ceilHeight + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
             var v2 = new Vector3(vertexB.Position.X, floorHeight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
             var v3 = new Vector3(vertexA.Position.X, floorHeight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
-            if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
+            //if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
             {
                 MeshUtils.AddQuad(0, 1, 2, 3, _allTriangles, WallPart.FloorAndCeil, _allVertices.Count);
                 _allVertices.Add(v0); //a

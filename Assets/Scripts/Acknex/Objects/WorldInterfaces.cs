@@ -635,7 +635,16 @@ namespace Acknex
                 var regionName = region.AcknexObject.GetString("NAME");
                 foreach (var instance in AllRegionsByName[regionName])
                 {
-                    instance.Rotate(acknexObject.TryGetAcknexObject("GENIUS", out var genius) ? genius.Container.GetCenter() : Vector3.zero, Mathf.Rad2Deg * radians);
+                    Vector3 center;
+                    if (acknexObject.TryGetAcknexObject("GENIUS", out var genius))
+                    {
+                        center = genius.Container.GetCenter();
+                    }
+                    else
+                    {
+                        center = Vector3.zero; 
+                    }
+                    instance.Rotate(center, Mathf.Rad2Deg * radians);
                 }
             }
         }

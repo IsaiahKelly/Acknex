@@ -109,6 +109,7 @@ namespace Acknex
             var thingY = AcknexObject.GetFloat("Y");
             var thingZ = AcknexObject.GetFloat("HEIGHT");
             Locate(thingX, thingY, ref thingZ, true);
+            transform.position = new Vector3(thingX, thingZ, thingY);
             _triggerCollisionCallback.OnTriggerEnterCallback += OnTriggerEnterCallback;
             _triggerCollisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
             _centerGameObject = new GameObject("Center");
