@@ -76,9 +76,9 @@ public class AcknexObjectEditor : Editor
             var numberProperties = ((AcknexObject)container.AcknexObject).NumberProperties.OrderBy(x => x.Key);
             ListProperties(objectProperties, numberProperties);
             EditorGUILayout.EndFoldoutHeaderGroup();
-            if (container.AcknexObject.GetTemplateCallback != null && container.AcknexObject.TryGetString("NAME", out var name))
+            if (container.AcknexObject.GetTemplateCallback != null)
             {
-                var template = container.AcknexObject.GetTemplateCallback(name);
+                var template = container.AcknexObject.GetTemplateCallback(container.AcknexObject.Name);
                 if (template != null)
                 {
                     EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Template");
@@ -95,29 +95,6 @@ public class AcknexObjectEditor : Editor
 [UnityEditor.CustomEditor(typeof(Actor))]
 public class ActorEditor : AcknexObjectEditor
 {
-    private float _speed = 2f;
-    private Way _way;
-    public override void OnInspectorGUI()
-    {
-        var actor = (Actor)target;
-        EditorGUILayout.BeginVertical();
-        _speed = EditorGUILayout.FloatField("Speed", _speed);
-        _way = EditorGUILayout.ObjectField("Target", _way, typeof(Way)) as Way;
-        if (GUILayout.Button("Go to Way") && _way != null)
-        {
-            actor.AcknexObject.SetFloat("SPEED", _speed);
-            actor.AcknexObject.SetString("TARGET", _way.AcknexObject.GetString("NAME"));
-            actor.AcknexObject.IsDirty = true;
-        }
-        if (GUILayout.Button("Go to Player"))
-        {
-            actor.AcknexObject.SetFloat("SPEED", _speed);
-            actor.AcknexObject.SetString("TARGET", "FOLLOW");
-            actor.AcknexObject.IsDirty = true;
-        }
-        EditorGUILayout.EndVertical();
-        base.OnInspectorGUI();
-    }
 }
 [UnityEditor.CustomEditor(typeof(Region))]
 public class RegionEditor : AcknexObjectEditor

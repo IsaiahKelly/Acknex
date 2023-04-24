@@ -52,7 +52,7 @@ namespace Acknex
 
         public void UpdateObject()
         {
-
+            AcknexObject.IsDirty = false;
         }
 
         public void Enable()

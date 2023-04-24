@@ -53,3 +53,7 @@ void EmulatePalette(inout float4 color) {
 	}
 	color = matchColor;
 }
+
+float4 AlphaBlend(float4 underlying, float4 overlying) {
+	return overlying + (1.0 - overlying.a) * underlying;
+}

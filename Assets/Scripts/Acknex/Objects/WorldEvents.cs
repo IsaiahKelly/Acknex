@@ -69,7 +69,7 @@ namespace Acknex
                 var value = synonym.AcknexObject.GetAcknexObject("VAL") ?? synonym.AcknexObject.GetAcknexObject("DEFAULT");
                 if (value != null)
                 {
-                    yield return CallAction(MY, value.GetString("NAME"), MY, THERE);
+                    yield return CallAction(MY, value.Name, MY, THERE);
                 }
             }
         }
@@ -99,12 +99,9 @@ namespace Acknex
             {
                 return;
             }
-            if (source.TryGetAcknexObject(name, out var acknexObject) && acknexObject != null)
+            if (source.TryGetAcknexObject(name, out var acknexObject) && acknexObject != null && acknexObject.Name != null)
             {
-                if (acknexObject.TryGetString("NAME", out var value) && value != null)
-                {
-                    StartCoroutine(_runtime.CallAction(value, MY, THERE));
-                }
+                StartCoroutine(_runtime.CallAction(acknexObject.Name, MY, THERE));
             }
         }
 
@@ -248,10 +245,10 @@ namespace Acknex
             while (true)
             {
                 //todo
-                if (Input.GetKeyDown(KeyCode.P))
-                {
-                    Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
-                }
+                //if (Input.GetKeyDown(KeyCode.P))
+                //{
+                //    Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
+                //}
                 TriggerEventConditional(AcknexObject, "IF_ANYKEY", Input.anyKeyDown);
                 TriggerEventConditional(AcknexObject, "IF_TAST", Input.anyKeyDown);
                 TriggerEventConditional(AcknexObject, "IF_0", Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0));

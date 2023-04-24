@@ -22,9 +22,23 @@ namespace Acknex
                 }
                 public IEnumerator CallAction(string name, IAcknexObject MY, IAcknexObject THERE)
                 {
+                    reset:
                     if (name != null) {
                         if (_callbacks.TryGetValue(name, out var callback)) {
-                            yield return callback(MY, THERE);
+                            var enumerator = callback(MY, THERE);
+                            var next = true;
+                            while (next) {
+                                try {
+                                    enumerator.MoveNext();
+                                }
+                                catch (Exception e) {
+                                    Debug.LogError(""ACK Runtime Error:"" + e + ""("" + Environment.StackTrace + "")"");
+                                    goto reset;
+                                }
+                                if (next) {
+                                    yield return enumerator.Current;
+                                }
+                            }
                         }
                     }
                     yield break;

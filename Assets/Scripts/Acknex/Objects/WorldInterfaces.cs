@@ -269,12 +269,17 @@ namespace Acknex
             var shootFac = GetSkillValue("SHOOT_FAC");
             var shootRange = GetSkillValue("SHOOT_RANGE");
             var minDist = Mathf.Infinity;
+            IAcknexObject minObject = null;
 
             void HandleMinDist(IAcknexObject hitAcknexObject)
             {
                 var hitPoint = hitAcknexObject.Container.GetCenter();
                 var distance = Vector3.Distance(hitPoint, origin);
-                minDist = Mathf.Min(minDist, distance);
+                if (distance < minDist)
+                {
+                    minObject = hitAcknexObject;
+                    minDist = distance;
+                }
             }
 
             void HandleHit(Collider raycastResult, IAcknexObject hitAcknexObject)
@@ -284,13 +289,8 @@ namespace Acknex
                 UpdateSkillValue("HIT_DIST", distance);
                 UpdateSkillValue("RESULT", shootFac * (1.0f - distance / shootRange));
                 UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(hitPoint), AngleUtils.To2D(origin))));
-                TriggerEvent("IF_HIT", AcknexObject, AcknexObject, AcknexObject.Container.GetRegion());
+                TriggerEvent("IF_HIT", hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
             }
-
-            UpdateSkillValue("HIT_DIST", 0f);
-            UpdateSkillValue("RESULT", 0f);
-            UpdateSkillValue("SHOOT_ANGLE", 0f);
-            SetSynonymObject("HIT", null);
 #if DEBUG_ENABLED
             DebugExtension.DebugWireSphere(origin, Color.black, shootRange);
 #endif
@@ -335,6 +335,10 @@ namespace Acknex
                     }
                 }
             }
+            UpdateSkillValue("HIT_DIST", 0f);
+            UpdateSkillValue("RESULT", 0f);
+            UpdateSkillValue("SHOOT_ANGLE", 0f);
+            SetSynonymObject("HIT", minObject);
             UpdateSkillValue("HIT_MINDIST", minDist < Mathf.Infinity ? minDist : 0);
             for (var i = 0; i < hitCount; i++)
             {
@@ -379,7 +383,6 @@ namespace Acknex
 
         public void FadePal(IAcknexObject acknexObject, float factor)
         {
-            //Debug.Log("FadePal:" + acknexObject.GetString("NAME") + "|" + factor + "|Instance:" + Palette.Instance.AcknexObject.GetString(("NAME")));
             if (acknexObject?.Container is Palette palette)
             {
                 var backgroundPixels = Palette.Instance.GetPixels();
@@ -475,7 +478,7 @@ namespace Acknex
             var region = acknexObject.Container as Region;
             if (region != null)
             {
-                var regionName = region.AcknexObject.GetString("NAME");
+                var regionName = region.AcknexObject.Name;
                 foreach (var instance in AllRegionsByName[regionName])
                 {
                     instance.Lift(dz);
@@ -522,7 +525,7 @@ namespace Acknex
             {
                 case Wall wall:
                     {
-                        var name = acknexObject.GetString("NAME");
+                        var name = acknexObject.Name;
                         if (!AllWallsByName.TryGetValue(name, out var list))
                         {
                             list = new HashSet<Wall>();
@@ -538,7 +541,7 @@ namespace Acknex
                     }
                 case Region region:
                     {
-                        var name = acknexObject.GetString("NAME");
+                        var name = acknexObject.Name;
                         if (!AllRegionsByName.TryGetValue(name, out var list))
                         {
                             list = new HashSet<Region>();
@@ -554,7 +557,7 @@ namespace Acknex
                     }
                 case Actor actor:
                     {
-                        var name = acknexObject.GetString("NAME");
+                        var name = acknexObject.Name;
                         if (!AllActorsByName.TryGetValue(name, out var list))
                         {
                             list = new HashSet<Actor>();
@@ -570,7 +573,7 @@ namespace Acknex
                     }
                 case Thing thing:
                     {
-                        var name = acknexObject.GetString("NAME");
+                        var name = acknexObject.Name;
                         if (!AllThingsByName.TryGetValue(name, out var list))
                         {
                             list = new HashSet<Thing>();
@@ -586,7 +589,7 @@ namespace Acknex
                     }
                 case Way way:
                     {
-                        var name = acknexObject.GetString("NAME");
+                        var name = acknexObject.Name;
                         if (!AllWaysByName.TryGetValue(name, out var list))
                         {
                             list = new HashSet<Way>();
@@ -632,7 +635,7 @@ namespace Acknex
             var region = acknexObject.Container as Region;
             if (region != null)
             {
-                var regionName = region.AcknexObject.GetString("NAME");
+                var regionName = region.AcknexObject.Name;
                 foreach (var instance in AllRegionsByName[regionName])
                 {
                     Vector3 center;
@@ -663,7 +666,7 @@ namespace Acknex
             var region = acknexObject.Container as Region;
             if (region != null)
             {
-                var regionName = region.AcknexObject.GetString("NAME");
+                var regionName = region.AcknexObject.Name;
                 foreach (var instance in AllRegionsByName[regionName])
                 {
                     instance.Shift(dx, dy);
@@ -790,6 +793,14 @@ namespace Acknex
             AmbientLight.shadows = DrawShadows ? LightShadows.Hard : LightShadows.None;
             AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("LIGHT_ANGLE")), 0f) * Quaternion.Euler(45f, 0f, 0f);
             UpdateSkills();
+        }
+
+        public void LateUpdate()
+        {
+            foreach (var texture in TexturesByName.Values)
+            {
+                texture.AcknexObject.IsDirty = false;
+            }
         }
 
         private void PostSetupObjects()

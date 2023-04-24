@@ -13,12 +13,13 @@ namespace Acknex
             CreateSynonym("MY", "THING");
             CreateSynonym("HIT", "THING");
             CreateSynonym("TOUCHED", "THING");
-            CreateSynonym("TOUCH_TEX","TEXTURE");
+            CreateSynonym("TOUCH_TEX", "TEXTURE");
             CreateSynonym("TOUCH_REG", "REGION");
             CreateSynonym("TOUCH_TEXT", "TEXT");
         }
 
-        public void SetSynonymObject(string synonymName, IAcknexObject target) {
+        public void SetSynonymObject(string synonymName, IAcknexObject target)
+        {
             if (!SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
                 throw new Exception("Synonym [" + synonymName + "] not found");
@@ -38,11 +39,11 @@ namespace Acknex
                 case "ACTOR":
                     return ObjectType.Actor;
                 case "WALL":
-                    return  ObjectType.Wall;
+                    return ObjectType.Wall;
                 case "REGION":
                     return ObjectType.Region;
                 case "OVERLAY":
-                    return  ObjectType.Overlay;
+                    return ObjectType.Overlay;
                 case "PANEL":
                     return ObjectType.Panel;
                 case "TEXT":
@@ -56,14 +57,18 @@ namespace Acknex
             }
         }
 
-        public IAcknexObject GetSynonymObject(string synonymName)
+        public IAcknexObject GetSynonymObject(string synonymName, bool fromRuntime = false)
         {
+            IAcknexObject value = null;
             if (SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
-                return synonym.AcknexObject.GetAcknexObject("VAL");
+                value = synonym.AcknexObject.GetAcknexObject("VAL");
             }
-            Debug.LogError($"Null value when trying to get the synonym object: {synonymName}");
-            return _dummyObject.AcknexObject;
+            if (value == null && fromRuntime)
+            {
+                //Debug.LogError($"Null value when trying to get the synonym object: {synonymName}");
+            }
+            return value;
         }
     }
 }

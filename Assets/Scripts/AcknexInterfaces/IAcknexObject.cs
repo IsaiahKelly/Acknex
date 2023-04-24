@@ -8,6 +8,11 @@ namespace Acknex.Interfaces
     public interface IAcknexObject
     {
         /// <summary>
+        /// Object name.
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
         ///     Gets/Sets the object type.
         ///     <remarks>
         ///         The object type is set automatically by the IAcknexWorld implementation.

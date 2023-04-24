@@ -12,40 +12,39 @@ namespace Acknex
     public partial class World : MonoBehaviour, IAcknexWorld
     {
         private readonly Dictionary<Texture, IList<Mesh>> _meshesPerTexture = new Dictionary<Texture, IList<Mesh>>();
-        public readonly Dictionary<string, Action> ActionsByName = new Dictionary<string, Action>();
-        public readonly Dictionary<string, Actor> ActorsByName = new Dictionary<string, Actor>();
-        public readonly Dictionary<string, HashSet<Actor>> AllActorsByName = new Dictionary<string, HashSet<Actor>>();
-        public readonly Dictionary<string, HashSet<Region>> AllRegionsByName = new Dictionary<string, HashSet<Region>>();
-        public readonly Dictionary<string, HashSet<Thing>> AllThingsByName = new Dictionary<string, HashSet<Thing>>();
-        public readonly Dictionary<string, HashSet<Wall>> AllWallsByName = new Dictionary<string, HashSet<Wall>>();
-        public readonly Dictionary<string, HashSet<Way>> AllWaysByName = new Dictionary<string, HashSet<Way>>();
-        public readonly Dictionary<string, Bitmap> BitmapsByName = new Dictionary<string, Bitmap>();
-        public readonly Dictionary<string, Flic> FlicsByName = new Dictionary<string, Flic>();
-        public readonly Dictionary<string, Font> FontsByName = new Dictionary<string, Font>();
-        public readonly Dictionary<string, Model> ModelsByName = new Dictionary<string, Model>();
-        public readonly Dictionary<string, Overlay> OverlaysByName = new Dictionary<string, Overlay>();
-        public readonly Dictionary<string, Palette> PalettesByName = new Dictionary<string, Palette>();
-        public readonly Dictionary<string, Panel> PanelsByName = new Dictionary<string, Panel>();
+        public readonly Dictionary<string, Action> ActionsByName = new EqualityComparerDictionary<string, Action>();
+        public readonly Dictionary<string, Actor> ActorsByName = new EqualityComparerDictionary<string, Actor>();
+        public readonly Dictionary<string, HashSet<Actor>> AllActorsByName = new EqualityComparerDictionary<string, HashSet<Actor>>();
+        public readonly Dictionary<string, HashSet<Region>> AllRegionsByName = new EqualityComparerDictionary<string, HashSet<Region>>();
+        public readonly Dictionary<string, HashSet<Thing>> AllThingsByName = new EqualityComparerDictionary<string, HashSet<Thing>>();
+        public readonly Dictionary<string, HashSet<Wall>> AllWallsByName = new EqualityComparerDictionary<string, HashSet<Wall>>();
+        public readonly Dictionary<string, HashSet<Way>> AllWaysByName = new EqualityComparerDictionary<string, HashSet<Way>>();
+        public readonly Dictionary<string, Bitmap> BitmapsByName = new EqualityComparerDictionary<string, Bitmap>();
+        public readonly Dictionary<string, Flic> FlicsByName = new EqualityComparerDictionary<string, Flic>();
+        public readonly Dictionary<string, Font> FontsByName = new EqualityComparerDictionary<string, Font>();
+        public readonly Dictionary<string, Model> ModelsByName = new EqualityComparerDictionary<string, Model>();
+        public readonly Dictionary<string, Overlay> OverlaysByName = new EqualityComparerDictionary<string, Overlay>();
+        public readonly Dictionary<string, Palette> PalettesByName = new EqualityComparerDictionary<string, Palette>();
+        public readonly Dictionary<string, Panel> PanelsByName = new EqualityComparerDictionary<string, Panel>();
         public readonly List<string> Paths = new List<string>();
-        public readonly List<Region> RegionsByIndex = new List<Region>();
-        public readonly Dictionary<string, Region> RegionsByName = new Dictionary<string, Region>();
-        public readonly Dictionary<string, Skill> SkillsByName = new Dictionary<string, Skill>();
-        public readonly Dictionary<string, Song> SongsByName = new Dictionary<string, Song>();
-        public readonly Dictionary<string, Sound> SoundsByName = new Dictionary<string, Sound>();
-        public readonly Dictionary<string, AcknexString> StringsByName = new Dictionary<string, AcknexString>();
-        public readonly Dictionary<string, Synonym> SynonymsByName = new Dictionary<string, Synonym>();
-        public readonly Dictionary<string, Text> TextsByName = new Dictionary<string, Text>();
-        public readonly Dictionary<string, Digits> DigitsByName = new Dictionary<string, Digits>();
-        public readonly Dictionary<string, Picture> PicturesByName = new Dictionary<string, Picture>();
-        public readonly Dictionary<string, TextureAndPalette> TextureCache = new Dictionary<string, TextureAndPalette>();
-        public readonly Dictionary<string, Texture> TexturesByName = new Dictionary<string, Texture>();
-        public readonly Dictionary<string, Thing> ThingsByName = new Dictionary<string, Thing>();
+        public readonly List<Region> RegionsByIndex = new List<Region>(1000);
+        public readonly Dictionary<string, Region> RegionsByName = new EqualityComparerDictionary<string, Region>();
+        public readonly Dictionary<string, Skill> SkillsByName = new EqualityComparerDictionary<string, Skill>();
+        public readonly Dictionary<string, Song> SongsByName = new EqualityComparerDictionary<string, Song>();
+        public readonly Dictionary<string, Sound> SoundsByName = new EqualityComparerDictionary<string, Sound>();
+        public readonly Dictionary<string, AcknexString> StringsByName = new EqualityComparerDictionary<string, AcknexString>();
+        public readonly Dictionary<string, Synonym> SynonymsByName = new EqualityComparerDictionary<string, Synonym>();
+        public readonly Dictionary<string, Text> TextsByName = new EqualityComparerDictionary<string, Text>();
+        public readonly Dictionary<string, Digits> DigitsByName = new EqualityComparerDictionary<string, Digits>();
+        public readonly Dictionary<string, Picture> PicturesByName = new EqualityComparerDictionary<string, Picture>();
+        public readonly Dictionary<string, TextureAndPalette> TextureCache = new EqualityComparerDictionary<string, TextureAndPalette>();
+        public readonly Dictionary<string, Texture> TexturesByName = new EqualityComparerDictionary<string, Texture>();
+        public readonly Dictionary<string, Thing> ThingsByName = new EqualityComparerDictionary<string, Thing>();
         public readonly List<Wall> Walls = new List<Wall>();
-        public readonly Dictionary<string, Wall> WallsByName = new Dictionary<string, Wall>();
-        public readonly Dictionary<string, Way> WaysByName = new Dictionary<string, Way>();
+        public readonly Dictionary<string, Wall> WallsByName = new EqualityComparerDictionary<string, Wall>();
+        public readonly Dictionary<string, Way> WaysByName = new EqualityComparerDictionary<string, Way>();
 
         private bool _culled;
-        private Thing _dummyObject;
         private Texture2D _palette;
         private Color[] _palettePixels;
         private Material _skyMaterial;
@@ -104,7 +103,6 @@ namespace Acknex
         public static World Instance { get; private set; }
 
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.World);
-
         [field: SerializeField] public bool DebugMarked { get; set; }
 
         public GameObject GameObject => gameObject;
@@ -194,8 +192,12 @@ namespace Acknex
             HoldString = AddString("HOLD", "HOLD");
             Node1String = AddString("NODE1", "NODE1");
             Node2String = AddString("NODE2", "NODE2");
-            _dummyObject = CreateThing("_INTERNAL_DUMMY_");
             AcknexObject.SetFloat("CLIP_DIST", 1000f);
+        }
+
+        private static IAcknexObject GetNullTemplateCallback(string name)
+        {
+            return null;
         }
 
         private void Update()
@@ -260,7 +262,7 @@ namespace Acknex
             {
                 return indexOf;
             }
-            var template = region.AcknexObject.GetTemplateCallback(region.AcknexObject.GetString("NAME"));
+            var template = region.AcknexObject.GetTemplateCallback(region.AcknexObject.Name);
             if (template.Container is Region templateRegion)
             {
                 return RegionsByIndex.IndexOf(templateRegion);
@@ -338,7 +340,7 @@ namespace Acknex
                     combineInstances[i].mesh = kvp.Value[i];
                 }
                 combinedMesh.CombineMeshes(combineInstances, true, false, false);
-                var groupGameObject = new GameObject(kvp.Key.AcknexObject.GetString("NAME"));
+                var groupGameObject = new GameObject(kvp.Key.AcknexObject.Name);
                 groupGameObject.transform.SetParent(transform, false);
                 groupGameObject.layer = IgnoreRaycastLayer.LayerIndex;
                 var meshFilter = groupGameObject.AddComponent<MeshFilter>();

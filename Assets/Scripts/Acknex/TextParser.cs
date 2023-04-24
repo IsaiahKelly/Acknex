@@ -601,11 +601,11 @@ namespace Acknex
                 case PropertyType.Unknown:
                     if (binaryReader != null && filename != null)
                     {
-                        Debug.LogWarning($"{filename}:{binaryReader.LineCount} Unknown WDL property: {acknexObject.GetString("NAME")}.{keyword}");
+                        Debug.LogWarning($"{filename}:{binaryReader.LineCount} Unknown WDL property: {acknexObject.Name}.{keyword}");
                     }
                     else
                     {
-                        Debug.LogWarning($"Unknown WDL property: {acknexObject.GetString("NAME")}.{keyword}");
+                        Debug.LogWarning($"Unknown WDL property: {acknexObject.Name}.{keyword}");
                     }
                     break;
             }

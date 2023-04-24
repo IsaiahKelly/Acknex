@@ -1,121 +1,74 @@
 ﻿using Acknex.Interfaces;
+using System.Collections.Generic;
 using UnityEngine;
-using Quaternion = UnityEngine.Quaternion;
-using Vector3 = UnityEngine.Vector3;
 
 namespace Acknex
 {
-    public class Attachment : MonoBehaviour, IAcknexObjectContainer
+    public static class Attachment
     {
-        public bool DebugMarked { get; set; }
-        public GameObject GameObject => gameObject;
-        public IAcknexObject AcknexObject { get; set; }
-
-        public Bitmap BitmapImage;
-        public Texture TextureObject;
-        public Material Material;
-
-        private GameObject _attached;
-
-        //todo: looks like an attachment disappear when it gets outside a given wall area, so we'll need barycentric interpolation to handle that
-        //public static void HandleAttachment(
-        //    ref GameObject attached,
-        //    GameObject parent,
-        //    IAcknexObject acknexObject,
-        //    Texture textureObject,
-        //    Vector3 baseRightDirection,
-        //    Vector3? basePosition = null,
-        //    bool pivotAtLeft = false)
-        //{
-        //    var attach = acknexObject.GetAcknexObject("ATTACH");
-        //    if (attach == null && textureObject != null)
-        //    {
-        //        attach = textureObject.AcknexObject.GetAcknexObject("ATTACH");
-        //    }
-        //    if (attach != null && attached != null || attached != null && attach != attached)
-        //    {
-        //        Object.Destroy(attached);
-        //    }
-        //    if (attach != null && attached == null)
-        //    {
-        //        if (attach.Container is Texture toAttachTextureObject)
-        //        {
-        //            var toAttachBitmapImage = toAttachTextureObject.GetBitmapAt();
-        //            attached = TextureUtils.BuildTextureGameObject(parent.transform, toAttachTextureObject.AcknexObject.GetString("NAME"), toAttachBitmapImage, out _, out var toAttachMeshRenderer, pivotAtLeft);
-        //            var transformPosition = attached.transform.position;
-        //            if (basePosition.HasValue)
-        //            {
-        //                transformPosition = basePosition.Value;
-        //            }
-        //            var baseForwardDirection = Vector3.Cross(baseRightDirection, Vector3.up);
-        //            attached.transform.rotation = Quaternion.LookRotation(baseForwardDirection);
-        //            var posX = textureObject.AcknexObject.GetFloat("POS_X") + toAttachTextureObject.AcknexObject.GetFloat("POS_X");
-        //            var posY = textureObject.AcknexObject.GetFloat("POS_Y") + toAttachTextureObject.AcknexObject.GetFloat("POS_Y");
-        //            var upperLeftPos = baseRightDirection * (posX / toAttachTextureObject.ScaleX);
-        //            var upperTopPos = Vector3.down * (posY / toAttachTextureObject.ScaleY);
-        //            transformPosition += upperLeftPos + upperTopPos - (baseForwardDirection * 0.01f);
-        //            attached.transform.position = transformPosition;
-        //            var attachment = attached.AddComponent<Attachment>();
-        //            attachment.AcknexObject = acknexObject;
-        //            attachment.AcknexObject.Container = attachment;
-        //            attachment.TextureObject = toAttachTextureObject;
-        //            attachment.BitmapImage = toAttachBitmapImage;
-        //            attachment.Material = toAttachMeshRenderer.material;
-        //        }
-        //    }
-        //}
-
-        public void UpdateObject()
+        public static void ProcessAttachments(List<Texture> _tempAttachments, ref Texture2DArray attachmentsTexture, ref Texture2DArray palettesTexture, List<Vector4> positions, Texture attachment, IList<Material> materials)
         {
-            //TODO: this is causing an infinite loop
-            //TextureUtils.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject.AcknexObject);
-            //TextureUtils.UpdateScale(transform, BitmapImage, TextureObject);
-            //transform.localScale = TextureUtils.CalculateObjectSize(BitmapImage, TextureObject);
-            //BitmapImage?.UpdateMaterial(Material, TextureObject, 0, false); //TODO: flag mirror?
-            //if (TextureObject.AcknexObject.ContainsFlag("SHADOW"))
-            //{
-            //    gameObject.SetActive(false);
-            //}
-        }
-
-        public void Enable()
-        {
-
-        }
-
-        public void Disable()
-        {
-
-        }
-
-        public void SetupTemplate()
-        {
-            
-        }
-
-        public void SetupInstance()
-        {
-            
-        }
-
-        public Vector3 GetCenter()
-        {
-            return transform.position;
-        }
-
-        public IAcknexObject GetRegion()
-        {
-            return null;
-        }
-
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
-            
-        }
-
-        private void Update()
-        {
-            UpdateObject();
+            _tempAttachments.Clear();
+            if (materials == null)
+            {
+                return;
+            }
+            if (!attachment.AcknexObject.TryGetAcknexObject("ATTACH", out var attach))
+            {
+                for (int i = 0; i < materials.Count; i++)
+                {
+                    Material material = materials[i];
+                    if (material == null)
+                    {
+                        return;
+                    }
+                    material.SetInt("_ATTACH_COUNT", 0);
+                }
+                return;
+            }
+            var posX = attachment.AcknexObject.GetFloat("POS_X");
+            var posY = attachment.AcknexObject.GetFloat("POS_Y");
+            positions.Add(new Vector2(posX, posY));
+            attachment = (Texture)attach.Container;
+            _tempAttachments.Add(attachment);
+            while (attachment.AcknexObject.TryGetAcknexObject("ATTACH", out var child))
+            {
+                var childTexture = (Texture)child.Container;
+                _tempAttachments.Add(childTexture);
+                posX += attachment.AcknexObject.GetFloat("POS_X");
+                posY += attachment.AcknexObject.GetFloat("POS_Y");
+                positions.Add(new Vector2(posX, posY));
+                attachment = childTexture;
+            }
+            if (attachmentsTexture == null || palettesTexture == null)
+            {
+                var bitmap = attachment.GetBitmapAt(0);
+                attachmentsTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, _tempAttachments.Count, bitmap.CropTexture.Texture.format, bitmap.CropTexture.Texture.mipmapCount > 1);
+                palettesTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, _tempAttachments.Count, bitmap.CropTexture.Palette.format, bitmap.CropTexture.Palette.mipmapCount > 1);
+            }
+            positions.Clear();
+            for (var i = 0; i < _tempAttachments.Count; i++)
+            {
+                attachment = _tempAttachments[i];
+                var cycle = attachment.AcknexObject.GetInteger("CYCLE");
+                var bitmap = attachment.GetBitmapAt(cycle);
+                Graphics.CopyTexture(bitmap.CropTexture.Texture, 0, attachmentsTexture, i);
+                Graphics.CopyTexture(bitmap.CropTexture.Palette, 0, palettesTexture, i);
+                //attachmentsTexture.SetPixelData(bitmap.CropTexture.Texture.GetPixels(), 0, i, 0);
+                //palettesTexture.SetPixelData(bitmap.CropTexture.Palette.GetPixels(), 0, i, 0);
+            }
+            attachmentsTexture.Apply(true, false);
+            palettesTexture.Apply(true, false);
+            for (var i = 0; i < materials.Count; i++)
+            {
+                Material material = materials[i];
+                if (material != null)
+                {
+                    material.SetTexture("_ATTACH", World.Instance.UsePalettes ? palettesTexture : attachmentsTexture);
+                    material.SetInt("_ATTACH_COUNT", _tempAttachments.Count);
+                    material.SetVectorArray("_ATTACH_POS", positions);
+                }
+            }
         }
     }
 }

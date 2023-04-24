@@ -21,10 +21,8 @@ namespace Acknex
         private MeshCollider _collider;
         private CollisionCallback _collisionCallbackA;
         private CollisionCallback _collisionCallbackB;
-
         private GameObject _gameObject;
         private MeshCollider _gapCollider;
-
         private GameObject _gapGameObject;
         private MeshCollider _gapInvertedCollider;
         private Mesh _gapInvertedMesh;
@@ -42,6 +40,12 @@ namespace Acknex
         private SphereCollider _vertexTriggerA;
         private SphereCollider _vertexTriggerB;
         private Vector3 _xAxis;
+        private Texture2DArray _attachmentsTexture;
+        private Texture2DArray _paletteTextures;
+        private List<Vector4> _attachmentPos = new List<Vector4>();
+        private List<Texture> _tempAttachments = new List<Texture>();
+        private Material[] _gapMeshRendererMaterials;
+        private Material[] _meshRendererMaterials;
 
         public AckTransform AckTransform;
 
@@ -53,6 +57,7 @@ namespace Acknex
         public Matrix4x4 GapUV;
         public bool DisableRender;
         public bool Processed;
+
         public MeshFilter Filter { get; set; }
         public MeshFilter GapFilter { get; set; }
 
@@ -75,11 +80,15 @@ namespace Acknex
 
         public GameObject GameObject => gameObject;
 
-        public bool HasGap { get => _hasGap;  }
+        public bool HasGap { get => _hasGap; }
 
         public Vector3 GetCenter()
         {
-            return Vector3.Lerp(_vertexGameObjectA.transform.position, _vertexGameObjectB.transform.position, 0.5f);
+            if (_hasGap)
+            {
+                return (GapQuad.GetColumn(0) + GapQuad.GetColumn(1) + GapQuad.GetColumn(2) + GapQuad.GetColumn(3)) / 4f;
+            }
+            return (BottomQuad.GetColumn(0) + BottomQuad.GetColumn(1) + BottomQuad.GetColumn(2) + BottomQuad.GetColumn(3)) / 4f;
         }
 
         public IAcknexObject GetRegion()
@@ -98,7 +107,6 @@ namespace Acknex
                 return;
             }
 #if DEBUG_ENABLED
-            Debug.Log(AcknexObject.GetString("NAME"));
             DebugExtension.DebugWireSphere(GetCenter(), Color.blue, 1f, 10f);
 #endif
             _audioSource.Stop();
@@ -179,6 +187,8 @@ namespace Acknex
         {
         }
 
+        private float _lastAmbient;
+
         public void UpdateObject()
         {
             _vertexGameObjectA.transform.position = (_hasGap ? GapQuad : BottomQuad).GetColumn(3);
@@ -195,9 +205,11 @@ namespace Acknex
             AcknexObject.IsDirty = false;
             _audioSourceGameObject.transform.position = GetCenter();
             _meshRenderer.enabled = !DisableRender;
-            AcknexObject.SetFloat("VISIBLE", AcknexObject.GetFloat("INVISIBLE") > 0f ? 0f : 1f);
+            var invisible = AcknexObject.GetFloat("INVISIBLE");
+            AcknexObject.SetFloat("VISIBLE", invisible > 0f ? 0f : 1f);
             var hasPlay = AcknexObject.HasFlag("PLAY");
-            if (TextureObject != _lastTextureObject || hasPlay)
+            var ambient = AcknexObject.GetFloat("AMBIENT");
+            if (ambient != _lastAmbient || TextureObject != null && TextureObject.AcknexObject.IsDirty || TextureObject != _lastTextureObject || hasPlay)
             {
                 if (_animateCoroutine != null)
                 {
@@ -214,16 +226,18 @@ namespace Acknex
                 }
                 _lastTextureObject = TextureObject;
             }
-            //todo reimplement
-            //Attachment.HandleAttachment(ref _attached, gameObject, AcknexObject, TextureObject, XAxis, BottomQuad.GetColumn(0), true);
+            _lastAmbient = ambient;
             _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.AcknexObject.HasFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
-            _invertedCollider.enabled = _collider.enabled = AcknexObject.HasFlag("IMPASSABLE") || !AcknexObject.HasFlag("PASSABLE");//_collider.enabled = !AcknexObject.HasFlag("PASSABLE");
-            _vertexTriggerB.radius = _vertexTriggerA.radius = AcknexObject.GetFloat("DIST");
-            _gapInvertedCollider.enabled = _gapCollider.enabled = !AcknexObject.HasFlag("PASSABLE") && (_hasGap && !AcknexObject.HasFlag("IMPASSABLE") || !_hasGap && AcknexObject.HasFlag("IMPASSABLE"));
-            if (AcknexObject.HasFlag("INVISIBLE"))
+            var impassable = AcknexObject.HasFlag("IMPASSABLE");
+            var passable = AcknexObject.HasFlag("PASSABLE");
+            var dist = AcknexObject.GetFloat("DIST");
+            _invertedCollider.cookingOptions = MeshColliderCookingOptions.None;
+            _invertedCollider.enabled = _collider.enabled = impassable || !passable;
+            _vertexTriggerB.radius = _vertexTriggerA.radius = dist;
+            _gapInvertedCollider.enabled = _gapCollider.enabled = !passable && (_hasGap && !impassable || !_hasGap && impassable);
+            if (invisible == 1f)
             {
                 _gapMeshRenderer.enabled = _meshRenderer.enabled = false;
-                //_gapCollider.enabled = _collider.enabled = false;
                 return;
             }
             _gapMeshRenderer.enabled = _hasGap;
@@ -255,7 +269,6 @@ namespace Acknex
                 _vertexGameObjectB.transform.Translate(0f, AckTransform.DZ, 0f, Space.World);
                 AckTransform.DZ = 0f;
             }
-            //_invertedCollider.enabled = AcknexObject.HasFlag("FENCE");
         }
 
         private static IAcknexObject GetTemplateCallback(string name)
@@ -278,9 +291,10 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = TextureObject.AnimateTexture(TextureCanceled, true, _hasGap ? _gapMeshRenderer.materials : _meshRenderer.materials, _hasGap ? GapFilter : Filter, null, AcknexObject, AcknexObject);
+            var enumerator = TextureObject.AnimateTexture(TextureCanceled, true, _hasGap ? _gapMeshRendererMaterials : _meshRendererMaterials, _hasGap ? GapFilter : Filter, null, AcknexObject, AcknexObject);
             while (enumerator.MoveNext())
             {
+                Attachment.ProcessAttachments(_tempAttachments, ref _attachmentsTexture, ref _paletteTextures, _attachmentPos, TextureObject, _hasGap ? _gapMeshRendererMaterials : _meshRendererMaterials);
                 yield return enumerator.Current;
             }
         }
@@ -296,6 +310,14 @@ namespace Acknex
             {
                 World.Instance.TriggerEvent("IF_FAR", AcknexObject, player.AcknexObject, player.GetRegion());
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+#if DEBUG_ENABLED
+            Gizmos.color = AcknexObject.IsDirty ? Color.green : Color.red;
+            Gizmos.DrawSphere(GetCenter(), 1f);
+#endif
         }
 
         private void OnWallTriggerEnter(Collider collider)
@@ -400,13 +422,15 @@ namespace Acknex
 
         private void BuildWallMesh()
         {
-            _hasGap = AcknexObject.GetAcknexObject("REGION1").GetString("NAME") == AcknexObject.GetAcknexObject("REGION2").GetString("NAME");
+            var region1 = AcknexObject.GetAcknexObject("REGION1");
+            var region2 = AcknexObject.GetAcknexObject("REGION2");
+            _hasGap = region1.Name == region2.Name && region1.GetFloat("CEIL_HGT") == region2.GetFloat("CEIL_HGT") && region1.GetFloat("FLOOR_HGT") == region2.GetFloat("FLOOR_HGT");
             if (_allTriangles.TryGetValue(WallPart.FloorAndCeil, out var triangles))
             {
-                if (triangles.Count > 0)
-                {
-                    _hasGap = false;
-                }
+                //if (triangles.Count > 0)
+                //{
+                //    _hasGap = false;
+                //}
                 _mesh.Clear();
                 _mesh.SetVertices(_allVertices);
                 _mesh.SetUVs(0, _allUVs);
@@ -415,6 +439,7 @@ namespace Acknex
                 _mesh.RecalculateNormals();
                 _mesh.UploadMeshData(false);
                 _mesh.RecalculateBounds();
+                _collider.cookingOptions = MeshColliderCookingOptions.None;
                 Filter.sharedMesh = _collider.sharedMesh = _mesh;
                 _invertedMesh.Clear();
                 _invertedMesh.SetVertices(_allVertices);
@@ -431,6 +456,12 @@ namespace Acknex
                     var materials = new Material[1];
                     materials[0] = World.Instance.BuildMaterial(TextureObject.AcknexObject);
                     _meshRenderer.sharedMaterials = materials;
+                }
+                _meshRendererMaterials = _meshRenderer.materials;
+                foreach (var material in _meshRendererMaterials)
+                {
+                    material.mainTexture = World.Instance.NullTexture;
+                    material.SetInt("_TRANSPARENT", 1);
                 }
             }
             if (_allTriangles.TryGetValue(WallPart.Gap, out var gapTriangles))
@@ -459,6 +490,12 @@ namespace Acknex
                     var materials = new Material[1];
                     materials[0] = World.Instance.BuildMaterial(TextureObject.AcknexObject);
                     _gapMeshRenderer.sharedMaterials = materials;
+                }
+                _gapMeshRendererMaterials = _gapMeshRenderer.materials;
+                foreach (var material in _gapMeshRendererMaterials)
+                {
+                    material.mainTexture = World.Instance.NullTexture;
+                    material.SetInt("_TRANSPARENT", 1);
                 }
             }
             _materialsCreated = true;
@@ -559,7 +596,6 @@ namespace Acknex
                     var liftedRightUp = (middleOpen || rightRegionAbove == null) && rightLiftUp != 0;
                     var texture = AcknexObject.GetAcknexObject("TEXTURE");
                     //negative space
-                    //if (leftRegion.AcknexObject.GetString("NAME") == rightRegion.AcknexObject.GetString("NAME") && Math.Abs(ceilHeightDown - floorHeightDown) < Mathf.Epsilon && Math.Abs(ceilHeightUp - floorHeightUp) < Mathf.Epsilon)
                     {
                         var v0 = new Vector3(vertexA.Position.X, floorHeightUp + (liftedLeftUp ? vertexA.Position.Z * leftLiftUp : 0), vertexA.Position.Y);
                         var v1 = new Vector3(vertexB.Position.X, floorHeightUp + (liftedLeftUp ? vertexB.Position.Z * leftLiftUp : 0), vertexB.Position.Y);

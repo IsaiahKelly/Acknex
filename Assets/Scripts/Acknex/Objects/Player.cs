@@ -182,7 +182,7 @@ namespace Acknex
                 GUILayout.Label($"PLAYER_SPEED:{World.Instance.GetSkillValue("PLAYER_SPEED")}");
                 GUILayout.Label($"AMMO:{World.Instance.GetSkillValue("AMMO")}");
                 var region = AcknexObject.GetAcknexObject("REGION");
-                GUILayout.Label($"RGN:{region?.GetString("NAME")}");
+                GUILayout.Label($"RGN:{region?.Name}");
                 GUILayout.Label($"CEIL_HGT:{World.Instance.GetSkillValue("CEIL_HGT")}");
                 GUILayout.Label($"FLOOR_HGT:{World.Instance.GetSkillValue("FLOOR_HGT")}");
                 GUILayout.Label($"PLAYER_DEPTH:{World.Instance.GetSkillValue("PLAYER_DEPTH")}");

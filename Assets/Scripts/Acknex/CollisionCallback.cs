@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Acknex
 {
+
     public class CollisionCallback : MonoBehaviour
     {
         public Action<Collision> OnCollisionEnterCallback;

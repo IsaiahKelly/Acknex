@@ -91,7 +91,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Returns the object stored into the given synonym.
         /// </summary>
-        IAcknexObject GetSynonymObject(string synonymName);
+        IAcknexObject GetSynonymObject(string synonymName, bool fromRuntime = false);
 
         /// <summary>
         /// Gets/Sets the internal game resolution.

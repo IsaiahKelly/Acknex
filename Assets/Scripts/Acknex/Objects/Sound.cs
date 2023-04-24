@@ -53,7 +53,7 @@ namespace Acknex
 
                 }
                 AudioClip = DownloadHandlerAudioClip.GetContent(request);
-                AudioClip.name = AcknexObject.GetString("NAME");
+                AudioClip.name = AcknexObject.Name;
             }
         }
 

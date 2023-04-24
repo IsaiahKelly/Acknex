@@ -19,7 +19,7 @@ namespace Acknex
         {
             get
             {
-                var firstInstance = World.Instance.AllWaysByName[AcknexObject.GetString("NAME")].First();
+                var firstInstance = World.Instance.AllWaysByName[AcknexObject.Name].First();
                 return firstInstance.Points;
             }
         }

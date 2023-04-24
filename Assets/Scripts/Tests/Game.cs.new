@@ -15,9 +15,23 @@
                 }
                 public IEnumerator CallAction(string name, IAcknexObject MY, IAcknexObject THERE)
                 {
+                    reset:
                     if (name != null) {
                         if (_callbacks.TryGetValue(name, out var callback)) {
-                            yield return callback(MY, THERE);
+                            var enumerator = callback(MY, THERE);
+                            var next = true;
+                            while (next) {
+                                try {
+                                    enumerator.MoveNext();
+                                }
+                                catch (Exception e) {
+                                    Debug.LogError("ACK Runtime Error:" + e + "(" + Environment.StackTrace + ")");
+                                    goto reset;
+                                }
+                                if (next) {
+                                    yield return enumerator.Current;
+                                }
+                            }
                         }
                     }
                     yield break;
@@ -147,6 +161,8 @@ _callbacks.Add("SHOWPDAGAMEOVER", SHOWPDAGAMEOVER);
 _callbacks.Add("PDAMESSAGEOFF", PDAMESSAGEOFF);
 _callbacks.Add("REPEATMUSIC", REPEATMUSIC);
 _callbacks.Add("SETSOUNDVOL", SETSOUNDVOL);
+_callbacks.Add("MOUSE_TOGGLE", MOUSE_TOGGLE);
+_callbacks.Add("SCAN_OBJ", SCAN_OBJ);
 _callbacks.Add("PICKKEY1", PICKKEY1);
 _callbacks.Add("PICKKEY2", PICKKEY2);
 _callbacks.Add("PICKUPLOCALMP5", PICKUPLOCALMP5);
@@ -9451,6 +9467,21 @@ var CDAUDIO_VOL_BUFFER_2 = _world.GetObject(ObjectType.Skill,"CDAUDIO_VOL_BUFFER
 var CDAUDIO_VOL_BUFFER_2_val = CDAUDIO_VOL_BUFFER_2.GetFloat("VAL");
 var CDAUDIO_VOL_3 = _world.GetObject(ObjectType.Skill,"CDAUDIO_VOL");
 CDAUDIO_VOL_3.SetFloat("VAL",CDAUDIO_VOL_BUFFER_2_val);
+//Unknown keyword: 
+yield break;
+}
+public IEnumerator MOUSE_TOGGLE(IAcknexObject MY, IAcknexObject THERE){
+var MOUSE_MODE_0 = _world.GetObject(ObjectType.Skill,"MOUSE_MODE");
+var MOUSE_MODE_1 = _world.GetObject(ObjectType.Skill,"MOUSE_MODE");
+var MOUSE_MODE_1_val = MOUSE_MODE_1.GetFloat("VAL");
+MOUSE_MODE_0.SetFloat("VAL",MOUSE_MODE_1_val + 2f);
+//Unknown keyword: IF
+yield break;
+//Unknown keyword: 
+yield break;
+}
+public IEnumerator SCAN_OBJ(IAcknexObject MY, IAcknexObject THERE){
+//Unknown keyword: IF
 //Unknown keyword: 
 yield break;
 }

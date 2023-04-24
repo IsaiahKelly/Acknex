@@ -41,7 +41,7 @@ namespace Acknex
             }}
         }}";
 
-        private readonly Dictionary<string, string> _dropped = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _dropped = new EqualityComparerDictionary<string, string>();
         private readonly List<Tuple<string, float>> _skips = new List<Tuple<string, float>>();
         private string _currentToken;
         private int _ifStack;
@@ -105,7 +105,7 @@ namespace Acknex
 
         public void WriteHeader()
         {
-            var name = AcknexObject.GetString("NAME");
+            var name = AcknexObject.Name;
             var sanitizedName = Sanitize(name);
             CodeStringBuilder.Append("public IEnumerator ").Append(sanitizedName).AppendLine("(IAcknexObject MY, IAcknexObject THERE){");
             //CodeStringBuilder.Append("  Debug.Log(\"<color=00FF00>Calling:").Append(sanitizedName).AppendLine("</color>\");");

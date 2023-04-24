@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Acknex.Interfaces;
+using TreeEditor;
 using UnityEngine;
 
 namespace Acknex
 {
     public class AcknexObject : IAcknexObject
     {
-        public Dictionary<string, float> NumberProperties = new Dictionary<string, float>();
-        public Dictionary<string, object> ObjectProperties = new Dictionary<string, object>();
+        public string Name { get; set; }
+
+        public Dictionary<string, float> NumberProperties = new EqualityComparerDictionary<string, float>();
+        public Dictionary<string, object> ObjectProperties = new EqualityComparerDictionary<string, object>();
 
         public AcknexObject(Func<string, IAcknexObject> getTemplateCallback, ObjectType type)
         {
@@ -34,7 +37,7 @@ namespace Acknex
         public IAcknexObject GetAcknexObject(string propertyName, bool fromTemplate = true, bool setupInstance = true)
         {
             var obj = GetObject<IAcknexObject>(propertyName, fromTemplate);
-            if (setupInstance && obj != null && !obj.IsInstance)
+            if (setupInstance && obj != null && !obj.IsInstance /*&& obj != World.Instance.DummyObject*/)
             {
                 switch (obj.Type)
                 {
@@ -56,9 +59,9 @@ namespace Acknex
             {
                 return number;
             }
-            if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
+            if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(name.ToString());
+                var template = GetTemplateCallback(Name);
                 if (template != null && template.TryGetFloat(propertyName, out var definitionNumber, false))
                 {
                     return definitionNumber;
@@ -73,9 +76,9 @@ namespace Acknex
             {
                 return (int)number;
             }
-            if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
+            if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(name.ToString());
+                var template = GetTemplateCallback(Name);
                 if (template != null && template.TryGetInteger(propertyName, out var definitionNumber, false))
                 {
                     return definitionNumber;
@@ -90,9 +93,9 @@ namespace Acknex
             {
                 return (T)obj;
             }
-            if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
+            if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(name.ToString());
+                var template = GetTemplateCallback(Name);
                 if (template != null && template.TryGetObject<T>(propertyName, out var definitionObj, false))
                 {
                     return definitionObj;
@@ -107,9 +110,9 @@ namespace Acknex
             {
                 return obj?.ToString();
             }
-            if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
+            if (fromTemplate && GetTemplateCallback != null )
             {
-                var template = GetTemplateCallback(name.ToString());
+                var template = GetTemplateCallback(Name);
                 if (template != null && template.TryGetObject<string>(propertyName, out var definitionObj, false))
                 {
                     return definitionObj;
@@ -128,7 +131,7 @@ namespace Acknex
             }
             if (fromTemplate)
             {
-                var template = GetTemplateCallback(GetString("NAME", false));
+                var template = GetTemplateCallback(Name);
                 if (template != null)
                 {
                     return template.HasFlag(flag, false);
@@ -165,7 +168,7 @@ namespace Acknex
             {
                 case ObjectType.Wall:
                     {
-                        var all = World.Instance.AllWallsByName[GetString("NAME")];
+                        var all = World.Instance.AllWallsByName[Name];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetAcknexObject(propertyName, value);
@@ -174,7 +177,7 @@ namespace Acknex
                     }
                 case ObjectType.Region:
                     {
-                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                        var all = World.Instance.AllRegionsByName[Name];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetAcknexObject(propertyName, value);
@@ -183,7 +186,7 @@ namespace Acknex
                     }
                 case ObjectType.Thing:
                     {
-                        var all = World.Instance.AllThingsByName[GetString("NAME")];
+                        var all = World.Instance.AllThingsByName[Name];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetAcknexObject(propertyName, value);
@@ -192,7 +195,7 @@ namespace Acknex
                     }
                 case ObjectType.Actor:
                     {
-                        var all = World.Instance.AllActorsByName[GetString("NAME")];
+                        var all = World.Instance.AllActorsByName[Name];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetAcknexObject(propertyName, value);
@@ -247,7 +250,7 @@ namespace Acknex
             {
                 case ObjectType.Wall:
                     {
-                        var all = World.Instance.AllWallsByName[GetString("NAME")];
+                        var all = World.Instance.AllWallsByName[Name];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetFloat(propertyName, value);
@@ -256,7 +259,7 @@ namespace Acknex
                     }
                 case ObjectType.Region:
                     {
-                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                        var all = World.Instance.AllRegionsByName[Name];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetFloat(propertyName, value);
@@ -265,7 +268,7 @@ namespace Acknex
                     }
                 case ObjectType.Thing:
                     {
-                        var all = World.Instance.AllThingsByName[GetString("NAME")];
+                        var all = World.Instance.AllThingsByName[Name];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetFloat(propertyName, value);
@@ -274,7 +277,7 @@ namespace Acknex
                     }
                 case ObjectType.Actor:
                     {
-                        var all = World.Instance.AllActorsByName[GetString("NAME")];
+                        var all = World.Instance.AllActorsByName[Name];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetFloat(propertyName, value);
@@ -325,7 +328,7 @@ namespace Acknex
             {
                 case ObjectType.Wall:
                     {
-                        var all = World.Instance.AllWallsByName[GetString("NAME")];
+                        var all = World.Instance.AllWallsByName[Name];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetObject(propertyName, value);
@@ -334,7 +337,7 @@ namespace Acknex
                     }
                 case ObjectType.Region:
                     {
-                        var all = World.Instance.AllRegionsByName[GetString("NAME")];
+                        var all = World.Instance.AllRegionsByName[Name];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetObject(propertyName, value);
@@ -343,7 +346,7 @@ namespace Acknex
                     }
                 case ObjectType.Thing:
                     {
-                        var all = World.Instance.AllThingsByName[GetString("NAME")];
+                        var all = World.Instance.AllThingsByName[Name];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetObject(propertyName, value);
@@ -352,7 +355,7 @@ namespace Acknex
                     }
                 case ObjectType.Actor:
                     {
-                        var all = World.Instance.AllActorsByName[GetString("NAME")];
+                        var all = World.Instance.AllActorsByName[Name];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetObject(propertyName, value);
@@ -390,9 +393,9 @@ namespace Acknex
                 result = number;
                 return true;
             }
-            if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
+            if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(name.ToString());
+                var template = GetTemplateCallback(Name);
                 if (template != null && template.TryGetFloat(propertyName, out var definitionNumber, false))
                 {
                     result = definitionNumber;
@@ -410,9 +413,9 @@ namespace Acknex
                 result = (int)number;
                 return true;
             }
-            if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
+            if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(name.ToString());
+                var template = GetTemplateCallback(Name);
                 if (template != null && template.TryGetInteger(propertyName, out var definitionNumber, false))
                 {
                     result = definitionNumber;
@@ -430,9 +433,9 @@ namespace Acknex
                 result = (T)obj;
                 return true;
             }
-            if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
+            if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(name.ToString());
+                var template = GetTemplateCallback(Name);
                 if (template != null && template.TryGetObject<T>(propertyName, out var definitionObj, false))
                 {
                     result = definitionObj;
@@ -450,9 +453,9 @@ namespace Acknex
                 result = obj.ToString();
                 return true;
             }
-            if (fromTemplate && GetTemplateCallback != null && ObjectProperties.TryGetValue("NAME", out var name))
+            if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(name.ToString());
+                var template = GetTemplateCallback(Name);
                 if (template != null && template.TryGetObject<string>(propertyName, out var definitionObj, false))
                 {
                     result = definitionObj;
@@ -467,9 +470,9 @@ namespace Acknex
 
         public override string ToString()
         {
-            if (TryGetString("NAME", out var name))
+            if (Name != null)
             {
-                return $"{name}({InstanceIndex})";
+                return $"{Name}({Type})({InstanceIndex})";
             }
             return base.ToString();
         }

@@ -16,6 +16,8 @@ namespace Acknex
     {
         public const float MaxHeight = 10000f;
 
+        private float _lastFloorHgt;
+        private float _lastCeilHgt;
         private Dictionary<int, List<int>> _allTriangles;
         private List<Vector2> _allUVs;
         private List<Vector3> _allVertices;
@@ -45,6 +47,9 @@ namespace Acknex
         public bool DisableCeilRender;
         public bool DisableFloorRender;
         public HashSet<Wall> Walls = new HashSet<Wall>();
+        public AckTransform AckTransform;
+        private Material[] _floorMeshRendererMaterials;
+        private Material[] _ceilMeshRendererMaterials;
 
         public Texture FloorTexture
         {
@@ -140,7 +145,6 @@ namespace Acknex
                 return;
             }
 #if DEBUG_ENABLED
-            Debug.Log(AcknexObject.GetString("NAME"));
             DebugExtension.DebugWireSphere(GetCenter(), Color.blue, 1f, 10f);
 #endif
             _audioSource.Stop();
@@ -206,6 +210,8 @@ namespace Acknex
         public void SetupTemplate()
         {
         }
+
+        private float _lastAmbient;
 
         public void UpdateObject()
         {
@@ -279,7 +285,8 @@ namespace Acknex
                 _ceilMeshRenderer.shadowCastingMode = CeilTexture.AcknexObject.HasFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             }
             var hasPlay = AcknexObject.HasFlag("PLAY");
-            if (CeilTexture != _lastCeilTexture || hasPlay)
+            var ambient = AcknexObject.GetFloat("AMBIENT");
+            if (ambient != _lastAmbient || CeilTexture != null && CeilTexture.AcknexObject.IsDirty || CeilTexture != _lastCeilTexture || hasPlay)
             {
                 if (_animateCeilCoroutine != null)
                 {
@@ -296,7 +303,7 @@ namespace Acknex
                 }
                 _lastCeilTexture = CeilTexture;
             }
-            if (FloorTexture != _lastFloorTexture || hasPlay)
+            if (ambient != _lastAmbient || AcknexObject.IsDirty || FloorTexture != null && FloorTexture.AcknexObject.IsDirty || FloorTexture != _lastFloorTexture || hasPlay)
             {
                 if (_animateFloorCoroutine != null)
                 {
@@ -312,7 +319,8 @@ namespace Acknex
                     _animateFloorCoroutine = StartCoroutine(AnimateFloor());
                 }
                 _lastFloorTexture = FloorTexture;
-            }
+            };
+            _lastAmbient = ambient;
         }
 
         private static IAcknexObject GetTemplateCallback(string name)
@@ -335,7 +343,7 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = CeilTexture.AnimateTexture(CeilTextureCanceled, true, _ceilMeshRenderer.materials, CeilMeshFilter, null, AcknexObject, AcknexObject);
+            var enumerator = CeilTexture.AnimateTexture(CeilTextureCanceled, true, _ceilMeshRendererMaterials, CeilMeshFilter, null, AcknexObject, AcknexObject);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
@@ -353,7 +361,7 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = FloorTexture.AnimateTexture(FloorTextureCanceled, true, _floorMeshRenderer.materials, FloorMeshFilter, null, AcknexObject, AcknexObject);
+            var enumerator = FloorTexture.AnimateTexture(FloorTextureCanceled, true, _floorMeshRendererMaterials, FloorMeshFilter, null, AcknexObject, AcknexObject);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
@@ -408,6 +416,12 @@ namespace Acknex
                 _floorMaterial = World.Instance.BuildMaterial(floorTexture.AcknexObject);
                 _floorMeshRenderer.sharedMaterial = _floorMaterial;
             }
+            _floorMeshRendererMaterials = _floorMeshRenderer.materials;
+            foreach (var material in _floorMeshRendererMaterials)
+            {
+                material.mainTexture = World.Instance.NullTexture;
+                material.SetInt("_TRANSPARENT", 1);
+            }
             _floorCollider.sharedMesh = _floorMesh;
             _invertedFloorCollider.sharedMesh = _invertedFloorMesh;
             _invertedFloorCollider.enabled = false;
@@ -434,6 +448,12 @@ namespace Acknex
             {
                 _ceilMaterial = World.Instance.BuildMaterial(ceilTexture.AcknexObject);
                 _ceilMeshRenderer.sharedMaterial = _ceilMaterial;
+            }
+            _ceilMeshRendererMaterials = _ceilMeshRenderer.materials;
+            foreach (var material in _ceilMeshRendererMaterials)
+            {
+                material.mainTexture = World.Instance.NullTexture;
+                material.SetInt("_TRANSPARENT", 1);
             }
             _ceilCollider.sharedMesh = _ceilMesh;
             _invertedCeilCollider.sharedMesh = _invertedCeilMesh;
@@ -510,6 +530,10 @@ namespace Acknex
                     return;
                 }
                 tess.AddContour(biggestContour);
+                if (!ceil)
+                {
+                    View.Instance.AddMapRegion(this, biggestContour);
+                }
             }
             tess.Tessellate(WindingRule.EvenOdd, ElementType.Polygons, 3, CombineCallback);
             var floorVertices = new Vector3[tess.VertexCount];
@@ -659,8 +683,9 @@ namespace Acknex
             {
                 var belowAcknexObject = (AcknexObject)Below.AcknexObject;
                 var newAcknexObject = new AcknexObject(GetTemplateCallback, ObjectType.Region);
-                newAcknexObject.ObjectProperties = new Dictionary<string, object>(belowAcknexObject.ObjectProperties);
-                newAcknexObject.NumberProperties = new Dictionary<string, float>(belowAcknexObject.NumberProperties);
+                newAcknexObject.ObjectProperties = new EqualityComparerDictionary<string, object>(belowAcknexObject.ObjectProperties);
+                newAcknexObject.NumberProperties = new EqualityComparerDictionary<string, float>(belowAcknexObject.NumberProperties);
+                newAcknexObject.Name = belowAcknexObject.Name;
                 var newRegion = Instantiate(Below.gameObject).GetComponent<Region>();
                 newRegion.Above = this;
                 newRegion.ContouredRegion = ContouredRegion;
@@ -683,10 +708,6 @@ namespace Acknex
                 World.Instance.PlaySound(floorSound, FloorTexture.AcknexObject.GetFloat("SVOL"), 0.5f, FloorTexture.AcknexObject.GetFloat("SDIST"), FloorTexture.AcknexObject.GetFloat("SVDIST"));
             }
         }
-
-        public AckTransform AckTransform;
-        private float _lastFloorHgt;
-        private float _lastCeilHgt;
 
         //todo: rotate things and actors as well
         public void Rotate(Vector3 center, float degrees)

@@ -9,11 +9,11 @@ namespace Acknex
 {
     public class Bitmap : IAcknexObjectContainer
     {
+        //todo: move
         private Texture2DArray _skyboxPalette2DArray;
-
         private Texture2DArray _skyboxTexture2DArray;
-        public TextureAndPalette CropTexture;
 
+        public TextureAndPalette CropTexture;
         public TextureAndPalette OriginalTexture;
 
         public Bitmap()
@@ -72,10 +72,10 @@ namespace Acknex
             return null;
         }
 
-        public static void CreateBitmapTexture(string filename, int x, int y, int width, int height, out TextureAndPalette textureAndPalette, out TextureAndPalette cropTexture, //todo: remove ref
-            bool paletteOnly = false)
+        public static void CreateBitmapTexture(string filename, int x, int y, int width, int height, out TextureAndPalette textureAndPalette, out TextureAndPalette cropTexture, bool paletteOnly = false)
         {
-            if (!World.Instance.TextureCache.TryGetValue(filename, out textureAndPalette))
+            textureAndPalette = null;
+            if (filename != null && !World.Instance.TextureCache.TryGetValue(filename, out textureAndPalette))
             {
                 var lowerInvariant = filename.ToLowerInvariant();
                 if (lowerInvariant.EndsWith("pcx"))
@@ -138,8 +138,8 @@ namespace Acknex
             var scaleY = 16f;
             var offsetX = 0f;
             var offsetY = 0f;
-            var cullMode = CullMode.Back;
             var ambient = 1f;
+            var transparent = false;
             CropTexture.Palette.wrapModeU = CropTexture.Texture.wrapModeU = TextureWrapMode.Repeat;
             CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Repeat;
             if (sourceAcknexObject != null)
@@ -165,44 +165,41 @@ namespace Acknex
                 {
                     if (wall.HasGap)
                     {
-                        foreach (var material in materials)
+                        for (var i = 0; i < materials.Count; i++)
                         {
+                            Material material = materials[i];
                             material.SetFloat("_V0H", wall.GapUV.m12);
                             material.SetFloat("_V1H", wall.GapUV.m13);
                         }
                     }
                     else
                     {
-                        foreach (var material in materials)
+                        for (var i = 0; i < materials.Count; i++)
                         {
+                            Material material = materials[i];
                             material.SetFloat("_V0H", wall.BottomUV.m12);
                             material.SetFloat("_V1H", wall.BottomUV.m13);
                         }
                     }
                     if (wall.AcknexObject.HasFlag("FENCE"))
                     {
-                        foreach (var material in materials)
+                        for (var i = 0; i < materials.Count; i++)
                         {
+                            Material material = materials[i];
                             material.SetInt("_FENCE", 1);
                         }
                         CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Clamp;
                     }
                     if (wall.AcknexObject.HasFlag("PORTCULLIS"))
                     {
-                        foreach (var material in materials)
+                        for (var i = 0; i < materials.Count; i++)
                         {
+                            Material material = materials[i];
                             material.SetInt("_PORTCULLIS", 1);
                         }
                     }
                 }
-                if (sourceAcknexObject.HasFlag("TRANSPARENT"))
-                {
-                    foreach (var material in materials)
-                    {
-                        material.SetInt("_TRANSPARENT", 1);
-                    }
-                    cullMode = CullMode.Off;
-                }
+                transparent = sourceAcknexObject.HasFlag("TRANSPARENT");
             }
             var albedo = 0f;
             var radiance = 0f;
@@ -249,8 +246,9 @@ namespace Acknex
                         _skyboxTexture2DArray.Apply(true, false);
                         _skyboxPalette2DArray.Apply(true, false);
                     }
-                    foreach (var material in materials)
+                    for (var i = 0; i < materials.Count; i++)
                     {
+                        Material material = materials[i];
                         material.SetInt("_SIDES", sides);
                         material.SetTexture("_BMAPS", World.Instance.UsePalettes ? _skyboxPalette2DArray : _skyboxTexture2DArray);
                     }
@@ -261,8 +259,10 @@ namespace Acknex
             var y0 = 0;
             var x1 = mirror ? 0 : 0 + Width;
             var y1 = 0 + Height;
-            foreach (var material in materials)
+            var cullMode = transparent ? CullMode.Off : CullMode.Back;
+            for (var i = 0; i < materials.Count; i++)
             {
+                Material material = materials[i];
                 material.SetFloat("_X0", x0);
                 material.SetFloat("_Y0", y0);
                 material.SetFloat("_X1", x1);
@@ -274,6 +274,7 @@ namespace Acknex
                 material.SetFloat("_AMBIENT", ambient);
                 material.SetFloat("_ALBEDO", albedo);
                 material.SetFloat("_RADIANCE", radiance);
+                material.SetInt("_TRANSPARENT", transparent ? 1 : 0);
                 material.SetInt("_CullMode", (int)cullMode);
                 material.mainTexture = World.Instance.UsePalettes ? CropTexture.Palette : CropTexture.Texture;
             }

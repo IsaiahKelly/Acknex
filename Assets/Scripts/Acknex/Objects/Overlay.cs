@@ -95,6 +95,7 @@ namespace Acknex
                 foreach (var material in Materials)
                 {
                     material.SetTexture("_MainTex", World.Instance.NullTexture);
+                    material.SetInt("_TRANSPARENT", 1);
                 }
             }
             OverlayGraphic.transform.SetSiblingIndex(AcknexObject.GetInteger("LAYER"));

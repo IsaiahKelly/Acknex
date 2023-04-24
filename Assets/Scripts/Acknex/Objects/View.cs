@@ -1,4 +1,8 @@
 ﻿using Acknex.Interfaces;
+using LibTessDotNet;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.Plastic.Newtonsoft.Json.Bson;
 using UnityEngine;
 
 namespace Acknex
@@ -16,6 +20,10 @@ namespace Acknex
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.View);
 
         [field: SerializeField] public bool DebugMarked { get; set; }
+
+        public LineRenderer LineRendererTemplate;
+
+        public Transform LinesCanvas;
 
         public void Disable()
         {
@@ -108,7 +116,8 @@ namespace Acknex
             AcknexObject.Container = this;
         }
 
-        private void Start() {
+        private void Start()
+        {
             ViewCamera = GetComponent<Camera>();
             ViewCamera.transparencySortMode = TransparencySortMode.Perspective;
             _audioSource = GetComponent<AudioSource>();
@@ -119,6 +128,19 @@ namespace Acknex
         private void Update()
         {
             UpdateObject();
+        }
+
+        public void AddMapRegion(Region region, IList<ContourVertex> vertices)
+        {
+            var positions = new Vector3[vertices.Count];
+            for (var i = 0; i < positions.Length; i++)
+            {
+                positions[i] = new Vector3(vertices[i].Position.X, 0f, vertices[i].Position.Y);
+            }
+            var newLineRenderer = Instantiate<LineRenderer>(LineRendererTemplate, LinesCanvas, false);
+            newLineRenderer.transform.localPosition = Vector3.zero;
+            newLineRenderer.positionCount = vertices.Count;
+            newLineRenderer.SetPositions(positions);
         }
     }
 }
