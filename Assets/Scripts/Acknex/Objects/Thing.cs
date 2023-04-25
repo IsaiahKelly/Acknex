@@ -365,11 +365,13 @@ namespace Acknex
             //{
             //    Debug.Log(this + " collided with " + hit.collider);
             //}
-            if (Vector3.Dot(controllerColliderHit.normal, Vector3.up) > 0.5f || Vector3.Dot(controllerColliderHit.normal, Vector3.down) > 0.5f)
+            var movingVertically = Mathf.Abs(AcknexObject.GetFloat("VSPEED")) > 0.1f;
+            var movingHorizontally = !Mathf.Approximately(AcknexObject.GetFloat("SPEED"), 0f);
+            var hittingUpOrDown = Vector3.Dot(controllerColliderHit.normal, Vector3.up) > 0.5f || Vector3.Dot(controllerColliderHit.normal, Vector3.down) > 0.5f;
+            if (movingVertically && hittingUpOrDown || movingHorizontally && !hittingUpOrDown)
             {
-                return;
+                OnCollisionEnter(null);
             }
-            OnCollisionEnter(null);
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -624,6 +626,8 @@ namespace Acknex
             }
             AcknexObject.SetFloat("HEIGHT", height);
             AcknexObject.SetAcknexObject("REGION", newRegionContainer.AcknexObject);
+            AcknexObject.SetFloat("FLOOR_HGT", newRegionContainer.AcknexObject.GetFloat("FLOOR_HGT"));
+            AcknexObject.SetFloat("CEIL_HGT", newRegionContainer.AcknexObject.GetFloat("CEIL_HGT"));
             _lastGround = ground;
         }
 
@@ -634,11 +638,11 @@ namespace Acknex
 
         public void MoveToAngleStep()
         {
-            //var moveMode = World.Instance.GetSkillValue("MOVE_MODE");
-            //if (moveMode <= 0.5f)
-            //{
-            //    return;
-            //}
+            var moveMode = World.Instance.GetSkillValue("MOVE_MODE");
+            if (moveMode <= 0.5f)
+            {
+                return;
+            }
             var speed = AcknexObject.GetFloat("SPEED");
             //if (Mathf.Approximately(speed, 0f))
             //{
@@ -648,23 +652,27 @@ namespace Acknex
             var angle = AcknexObject.GetFloat("ANGLE");
             var timeCorr = World.Instance.GetSkillValue("TIME_CORR");
             var delta = new Vector3(MathUtils.Cos(angle), 0f, MathUtils.Sin(angle)) * speed * timeCorr;
-            delta.y = AcknexObject.GetFloat("VSPEED") /** timeCorr*/ * speed;
+            delta.y = AcknexObject.GetFloat("VSPEED") /** timeCorr*/;
+            var initialPosition = transform.position;
             //if (AcknexObject.HasFlag("PASSABLE"))
             //{
             //    transform.Translate(delta, Space.World);
             //}
             //else
             //{
-                //if (WontDrop(delta))
-                //{
-                    _characterController.Move(delta);
-                //}
+            //if (WontDrop(delta))
+            //{
+            _characterController.Move(delta);
+            //}
             //}
 #if DEBUG_ENABLED
             DebugExtension.DebugArrow(new Vector3(AcknexObject.GetFloat("X"), 0f, AcknexObject.GetFloat("Y")), delta, Color.magenta, 10f);
 #endif
+            var height = AcknexObject.GetFloat("HEIGHT");
+            delta = transform.position - initialPosition;
             AcknexObject.SetFloat("X", transform.position.x);
             AcknexObject.SetFloat("Y", transform.position.z);
+            AcknexObject.SetFloat("HEIGHT", height + delta.y);
         }
 
         private bool WontDrop(Vector3 delta)
@@ -675,11 +683,11 @@ namespace Acknex
 
         public bool MoveToPointStep(Vector2 nextPoint, float? minDistance = null)
         {
-            //var moveMode = World.Instance.GetSkillValue("MOVE_MODE");
-            //if (moveMode <= 0.5f)
-            //{
-            //    return false;
-            //}
+            var moveMode = World.Instance.GetSkillValue("MOVE_MODE");
+            if (moveMode <= 0.5f)
+            {
+                return false;
+            }
             //if (AcknexObject.HasFlag("INVISIBLE"))
             //{
             //    return true;
@@ -698,7 +706,8 @@ namespace Acknex
             var timeCorr = World.Instance.GetSkillValue("TIME_CORR");
             var newPos = Vector2.MoveTowards(pos, nextPoint, speed * timeCorr);
             var delta = new Vector3(newPos.x - pos.x, 0f, newPos.y - pos.y);
-            delta.y = AcknexObject.GetFloat("VSPEED") /** timeCorr */* speed;
+            delta.y = AcknexObject.GetFloat("VSPEED") /** timeCorr */;
+            var initialPosition = transform.position;
             if (/*AcknexObject.HasFlag("PASSABLE") || */AcknexObject.GetAcknexObject("TARGET").Type == ObjectType.Way)
             {
                 transform.Translate(delta, Space.World);
@@ -713,8 +722,12 @@ namespace Acknex
 #if DEBUG_ENABLED
             Debug.DrawLine(new Vector3(pos.x, 0f, pos.y), new Vector3(nextPoint.x, 0f, nextPoint.y), Color.magenta, 1f);
 #endif
+
+            var height = AcknexObject.GetFloat("HEIGHT");
+            delta = transform.position - initialPosition;
             AcknexObject.SetFloat("X", transform.position.x);
             AcknexObject.SetFloat("Y", transform.position.z);
+            AcknexObject.SetFloat("HEIGHT", height + delta.y);
             AcknexObject.SetFloat("ANGLE", angle);
             return toTarget.magnitude <= (minDistance ?? speed);
         }
