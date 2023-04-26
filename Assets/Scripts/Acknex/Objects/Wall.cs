@@ -148,7 +148,7 @@ namespace Acknex
             _allTriangles = new Dictionary<WallPart, List<int>>();
             _mesh = new Mesh();
             _invertedMesh = new Mesh();
-            _gameObject = new GameObject("Wall") { layer = World.Instance.WallsAndRegionsLayer.LayerIndex };
+            _gameObject = new GameObject("Wall") { layer = World.Instance.WallsLayer.LayerIndex };
             _gameObject.transform.SetParent(transform, false);
             _meshRenderer = _gameObject.AddComponent<MeshRenderer>();
             _collider = _gameObject.AddComponent<MeshCollider>();
@@ -157,7 +157,7 @@ namespace Acknex
             Filter = _gameObject.AddComponent<MeshFilter>();
             _gapMesh = new Mesh();
             _gapInvertedMesh = new Mesh();
-            _gapGameObject = new GameObject("Gap") { layer = World.Instance.WallsAndRegionsLayer.LayerIndex };
+            _gapGameObject = new GameObject("Gap") { layer = World.Instance.WallsLayer.LayerIndex };
             _gapGameObject.transform.SetParent(transform, false);
             _gapMeshRenderer = _gapGameObject.AddComponent<MeshRenderer>();
             _gapCollider = _gapGameObject.AddComponent<MeshCollider>();

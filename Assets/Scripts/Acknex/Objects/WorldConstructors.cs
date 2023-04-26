@@ -68,7 +68,7 @@ namespace Acknex
             }
             name = string.Intern(name);
             var newGameObject = new GameObject(name);
-            newGameObject.layer = WallsAndRegionsLayer.LayerIndex;
+            newGameObject.layer = RegionsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
             var region = newGameObject.AddComponent<Region>();
             region.AcknexObject.Name = name;
@@ -84,7 +84,7 @@ namespace Acknex
             }
             name = string.Intern(name);
             var newGameObject = new GameObject(name);
-            newGameObject.layer = WallsAndRegionsLayer.LayerIndex;
+            newGameObject.layer = WallsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
             var wall = newGameObject.AddComponent<Wall>();
             wall.AcknexObject.Type = ObjectType.Wall;

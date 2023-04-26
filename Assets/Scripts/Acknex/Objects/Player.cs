@@ -79,7 +79,7 @@ namespace Acknex
             var desiredPosition = initialPosition + playerMove;
             var stepSize = Mathf.Min(playerSize, World.Instance.GetSkillValue("PLAYER_CLIMB"));
             var checkPosition = new Vector3(desiredPosition.x, desiredPosition.y + playerSize - playerWidth, desiredPosition.z);
-            if (Physics.SphereCast(checkPosition, playerWidth, Vector3.up, out var raycastHit, Mathf.Infinity, World.Instance.WallsAndRegionsLayer.Mask))
+            if (Physics.SphereCast(checkPosition, playerWidth, Vector3.up, out var raycastHit, Mathf.Infinity, World.Instance.RegionsLayer.Mask))
             {
                 stepSize = Mathf.Min(stepSize, raycastHit.distance);
             }

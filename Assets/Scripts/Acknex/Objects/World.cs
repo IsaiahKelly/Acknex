@@ -51,6 +51,8 @@ namespace Acknex
         private Material _surfacesMaterial;
         private TextParser _textParser;
 
+        public SingleUnityLayer WallsLayer;
+        public SingleUnityLayer RegionsLayer;
         public Light AmbientLight;
         public AudioSource AudioSource;
         public bool BilinearFilter = true;
@@ -89,7 +91,7 @@ namespace Acknex
         public bool UseWDLEngine;
         public IAcknexObject VertexString;
         public float Volume = 1f;
-        public SingleUnityLayer WallsAndRegionsLayer;
+        //public SingleUnityLayer WallsAndRegionsLayer;
         public LayerMask WallsWaterAndRegions;
         public LayerMask WallsWaterRegionsAndSprites;
         public LayerMask WallsWaterRegionsAndThings;

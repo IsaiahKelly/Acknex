@@ -346,7 +346,7 @@ namespace Acknex
             var movingVertically = Mathf.Abs(AcknexObject.GetFloat("VSPEED")) > 0.1f;
             var movingHorizontally = !Mathf.Approximately(AcknexObject.GetFloat("SPEED"), 0f);
             var hittingUpOrDown = Vector3.Dot(controllerColliderHit.normal, Vector3.up) > 0.5f || Vector3.Dot(controllerColliderHit.normal, Vector3.down) > 0.5f;
-            if ((movingVertically && hittingUpOrDown) || (movingHorizontally && !hittingUpOrDown))
+            if (/*(movingVertically && hittingUpOrDown) ||*/ (movingHorizontally && !hittingUpOrDown))
             {
                 OnCollisionEnter(null);
             }

@@ -205,7 +205,7 @@ GameObject:
   m_Component:
   - component: {fileID: 601205405}
   - component: {fileID: 601205406}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,7 +427,7 @@ GameObject:
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
   - component: {fileID: 963194231}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: MainCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -886,6 +886,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b52af5bca98fed4c9690969a13ed559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WallsLayer:
+    m_LayerIndex: 12
+  RegionsLayer:
+    m_LayerIndex: 13
   AmbientLight: {fileID: 705507994}
   AudioSource: {fileID: 1477033083}
   BilinearFilter: 0
@@ -893,7 +897,7 @@ MonoBehaviour:
   CanvasScaler: {fileID: 1116186325}
   CanvasView: {fileID: 1520209880}
   CanvasWidthRatio: 0
-  DebugSkills: 0
+  DebugSkills: 1
   DisableCompilation: 0
   DisableMaterials: 0
   DrawShadows: 0
@@ -916,17 +920,15 @@ MonoBehaviour:
   UsePalettes: 1
   UseWDLEngine: 0
   Volume: 1
-  WallsAndRegionsLayer:
-    m_LayerIndex: 8
   WallsWaterAndRegions:
     serializedVersion: 2
-    m_Bits: 272
+    m_Bits: 12304
   WallsWaterRegionsAndSprites:
     serializedVersion: 2
-    m_Bits: 2320
+    m_Bits: 14352
   WallsWaterRegionsAndThings:
     serializedVersion: 2
-    m_Bits: 784
+    m_Bits: 12816
   WaterLayer:
     m_LayerIndex: 4
   WDLPath: C:\games\acknex\varginha2\CONTATO.WDL
@@ -1151,7 +1153,7 @@ GameObject:
   - component: {fileID: 1477033081}
   - component: {fileID: 1477033084}
   - component: {fileID: 1477033083}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1344,7 +1346,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1607464824}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LinesCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}

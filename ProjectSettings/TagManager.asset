@@ -13,12 +13,12 @@ TagManager:
   - UI
   - 
   - 
-  - WallsAndRegions
+  - Player
   - ThingsAndActors
   - Triggers
   - Sprites
-  - 
-  - 
+  - Walls
+  - Regions
   - 
   - 
   - 

@@ -195,10 +195,10 @@ namespace Acknex
             _invertedFloorMesh = new Mesh();
             _floorGameObject = new GameObject("Floor");
             _floorGameObject.transform.SetParent(transform, false);
-            _floorGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
+            _floorGameObject.layer = World.Instance.RegionsLayer.LayerIndex;
             _ceilGameObject = new GameObject("Ceil");
             _ceilGameObject.transform.SetParent(transform, false);
-            _ceilGameObject.layer = World.Instance.WallsAndRegionsLayer.LayerIndex;
+            _ceilGameObject.layer = World.Instance.RegionsLayer.LayerIndex;
             _ceilMeshRenderer = _ceilGameObject.AddComponent<MeshRenderer>();
             CeilMeshFilter = _ceilGameObject.AddComponent<MeshFilter>();
             _ceilCollider = _ceilGameObject.AddComponent<MeshCollider>();
@@ -303,8 +303,8 @@ namespace Acknex
             _ceilCollider.enabled = true;
             _floorMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
             _ceilMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
-            _floorCollider.gameObject.layer = AcknexObject.TryGetAcknexObject("IF_DIVE", out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.WallsAndRegionsLayer.LayerIndex;
-            _ceilCollider.gameObject.layer = AcknexObject.TryGetAcknexObject("IF_ARISE", out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.WallsAndRegionsLayer.LayerIndex;
+            _floorCollider.gameObject.layer = AcknexObject.TryGetAcknexObject("IF_DIVE", out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
+            _ceilCollider.gameObject.layer = AcknexObject.TryGetAcknexObject("IF_ARISE", out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
             if (CeilTexture != null)
             {
                 _ceilMeshRenderer.shadowCastingMode = CeilTexture.AcknexObject.HasFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
