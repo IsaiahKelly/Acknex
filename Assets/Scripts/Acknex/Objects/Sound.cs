@@ -1,50 +1,54 @@
 ﻿using Acknex.Interfaces;
-using UnityEngine.Networking;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Acknex
 {
-
     public class Sound : IAcknexObjectContainer
     {
-        public void ResetTexture()
-        {
-
-        }
-        public bool IsTextureDirty => false;
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
-
-        }
-        public bool DebugMarked { get; set; }
-        public GameObject GameObject => null;
-
         public AudioClip AudioClip;
-
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Sound);
-        public void UpdateObject()
-        {
-
-        }
-
-        public void Enable()
-        {
-
-        }
-
-        public void Disable()
-        {
-
-        }
-
-        private static IAcknexObject GetTemplateCallback(string name)
-        {
-            return null;
-        }
 
         public Sound()
         {
             AcknexObject.Container = this;
+        }
+
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Sound);
+
+        public void Disable()
+        {
+        }
+
+        public void Enable()
+        {
+        }
+
+        public GameObject GameObject => null;
+
+        public Vector3 GetCenter()
+        {
+            return default;
+        }
+
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
+        public bool IsDebugMarked { get; set; }
+        public bool IsGeometryDirty { get; set; }
+        public bool IsTextureDirty { get; set; }
+
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+        }
+
+        public void ResetTexture()
+        {
+        }
+
+        public void SetupInstance()
+        {
         }
 
         public void SetupTemplate()
@@ -55,24 +59,17 @@ namespace Acknex
                 var enumerator = request.SendWebRequest();
                 while (!enumerator.isDone)
                 {
-
                 }
                 AudioClip = DownloadHandlerAudioClip.GetContent(request);
                 AudioClip.name = AcknexObject.Name;
             }
         }
 
-        public void SetupInstance()
+        public void UpdateObject()
         {
-            
         }
 
-        public Vector3 GetCenter()
-        {
-            return default;
-        }
-
-        public IAcknexObject GetRegion()
+        private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
         }

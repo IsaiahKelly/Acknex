@@ -37,12 +37,7 @@ namespace Acknex
             }
         }
 
-        //public int BitmapCount => BMaps.Count;
-        public float ScaleX => AcknexObject.TryGetFloat("SCALE_X", out var val) ? val : 16f;
-        public float ScaleY => AcknexObject.TryGetFloat("SCALE_Y", out var val) ? val : 16f;
-
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Texture);
-        public bool DebugMarked { get; set; }
 
         public void Disable()
         {
@@ -64,7 +59,10 @@ namespace Acknex
             return null;
         }
 
-        public bool IsTextureDirty => false;
+        public bool IsDebugMarked { get; set; }
+        public bool IsGeometryDirty { get; set; }
+
+        public bool IsTextureDirty { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {

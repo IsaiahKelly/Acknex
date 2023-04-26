@@ -11,7 +11,6 @@ namespace Acknex
         }
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Skill);
-        public bool DebugMarked { get; set; }
 
         public void Disable()
         {
@@ -33,7 +32,10 @@ namespace Acknex
             return null;
         }
 
-        public bool IsTextureDirty => false;
+        public bool IsDebugMarked { get; set; }
+        public bool IsGeometryDirty { get; set; }
+
+        public bool IsTextureDirty { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {

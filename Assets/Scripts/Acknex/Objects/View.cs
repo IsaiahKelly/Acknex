@@ -8,20 +8,16 @@ namespace Acknex
     public class View : MonoBehaviour, IAcknexObjectContainer
     {
         private AudioSource _audioSource;
-        private Light _light;
 
         public LineRenderer LineRendererTemplate;
 
         public Transform LinesCanvas;
         public bool MainView;
-
         public static View Instance { get; private set; }
 
         public Camera ViewCamera { get; set; }
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.View);
-
-        [field: SerializeField] public bool DebugMarked { get; set; }
 
         public void Disable()
         {
@@ -43,7 +39,11 @@ namespace Acknex
             return null;
         }
 
-        public bool IsTextureDirty => false;
+        [field: SerializeField] public bool IsDebugMarked { get; set; }
+
+        public bool IsGeometryDirty { get; set; }
+
+        public bool IsTextureDirty { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
@@ -87,8 +87,6 @@ namespace Acknex
                 transformLocalRotation.eulerAngles = new Vector3(World.Instance.GetSkillValue("PLAYER_TILT") * Mathf.Rad2Deg, 0f, 0f);
                 transform.localRotation = transformLocalRotation;
                 Shader.SetGlobalFloat("_CAMERA_PITCH", Mathf.DeltaAngle(CameraExtensions.GetLastActiveCamera().transform.localEulerAngles.x, 0f));
-                _light.intensity = World.Instance.GetSkillValue("PLAYER_LIGHT") * World.Instance.LightMultiplier;
-                _light.range = World.Instance.GetSkillValue("LIGHT_DIST");
             }
             var ray = ViewCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hitInfo))
@@ -124,8 +122,6 @@ namespace Acknex
             ViewCamera = GetComponent<Camera>();
             ViewCamera.transparencySortMode = TransparencySortMode.Perspective;
             _audioSource = GetComponent<AudioSource>();
-            _light = GetComponent<Light>();
-            _light.enabled = false;
         }
 
         private void Update()

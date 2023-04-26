@@ -5,15 +5,16 @@ using UnityEngine.UI;
 
 namespace Acknex
 {
-    public class Overlay : MonoBehaviour, IAcknexObjectContainer
+    public class Overlay : MonoBehaviour, IAcknexObjectContainer, IGraphicObject
     {
         private Bitmap _lastOverlaySprite;
         protected IList<Material> Materials;
 
         public Graphic OverlayGraphic;
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Overlay);
+        public Vector4 BitmapCoords { get; set; }
 
-        [field: SerializeField] public bool DebugMarked { get; set; }
+        public Bitmap CurrentBitmap { get; set; }
 
         public void Disable()
         {
@@ -35,7 +36,11 @@ namespace Acknex
             return null;
         }
 
-        public bool IsTextureDirty => false;
+        [field: SerializeField] public bool IsDebugMarked { get; set; }
+        public bool IsGeometryDirty { get; set; }
+
+        public bool IsTextureDirty { get; set; }
+        public Vector4 OffsetScale { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {

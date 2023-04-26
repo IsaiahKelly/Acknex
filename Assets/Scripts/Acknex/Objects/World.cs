@@ -61,12 +61,7 @@ namespace Acknex
         public float CanvasWidthRatio;
         private ContouredRegions ContouredRegions;
         public List<ContourVertex> ContourVertices;
-
         public bool DebugSkills;
-
-        //public Color DebugColor;
-        //public GameObject DebugContainer;
-        //public Texture2D DebugTexture;
         public bool DisableCompilation;
         public bool DisableMaterials;
         public bool DrawShadows;
@@ -74,7 +69,6 @@ namespace Acknex
         public bool GodMode;
         public IAcknexObject HoldString;
         public SingleUnityLayer IgnoreRaycastLayer;
-        public float LightMultiplier = 2f;
         public bool MeshBatch;
         public MidiPlayer MidiPlayer;
         public float MouseMultiplier = 0.1f;
@@ -105,7 +99,6 @@ namespace Acknex
         public static World Instance { get; private set; }
 
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.World);
-        [field: SerializeField] public bool DebugMarked { get; set; }
 
         public GameObject GameObject => gameObject;
 
@@ -119,7 +112,10 @@ namespace Acknex
             return null;
         }
 
-        public bool IsTextureDirty => false;
+        [field: SerializeField] public bool IsDebugMarked { get; set; }
+        public bool IsGeometryDirty { get; set; }
+
+        public bool IsTextureDirty { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {

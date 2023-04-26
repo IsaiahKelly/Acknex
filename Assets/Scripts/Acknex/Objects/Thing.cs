@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using Acknex.Interfaces;
 using UnityEngine;
-using Utils;
 
 namespace Acknex
 {
-    public class Thing : MonoBehaviour, IAcknexObjectContainer
+    public class Thing : MonoBehaviour, IAcknexObjectContainer, IGraphicObject
     {
         private Coroutine _animateCoroutine;
         private GameObject _attached;
@@ -19,7 +18,6 @@ namespace Acknex
         private int _lastSide;
         private IAcknexObject _lastTarget;
         private Texture _lastTextureObject;
-        private Light _light;
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
         private Material[] _meshRendererMaterials;
@@ -33,8 +31,6 @@ namespace Acknex
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
 
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Thing);
-
-        [field: SerializeField] public bool DebugMarked { get; set; }
 
         public void Disable()
         {
@@ -59,6 +55,9 @@ namespace Acknex
             return regionObject ?? World.Instance.RegionsByIndex[0].AcknexObject;
         }
 
+        [field: SerializeField] public bool IsDebugMarked { get; set; }
+        public bool IsGeometryDirty { get; set; }
+
         public bool IsTextureDirty
         {
             get
@@ -66,6 +65,10 @@ namespace Acknex
                 var invisible = AcknexObject.HasFlag("INVISIBLE");
                 var side = AcknexObject.GetInteger("SIDE");
                 return (!invisible && invisible != _lastInvisible) || side != _lastSide || TextureObject != _lastTextureObject || AcknexObject.HasFlag("PLAY");
+            }
+            set
+            {
+
             }
         }
 
@@ -87,6 +90,11 @@ namespace Acknex
             _audioSource.maxDistance = Mathf.Max(sDist, svDist);
             _audioSource.volume = volume;
             _audioSource.Play();
+        }
+
+        public void ResetTexture()
+        {
+            _lastTextureObject = null;
         }
 
         public void SetupInstance()
@@ -132,11 +140,6 @@ namespace Acknex
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
             _centerGameObject.layer = World.Instance.IgnoreRaycastLayer.LayerIndex;
             _centerGameObject.transform.SetParent(transform, false);
-            _light = _centerGameObject.AddComponent<Light>();
-            _light.type = LightType.Point;
-            _light.range = 1f;
-            _light.intensity = 0f;
-            _light.enabled = false;
             StartCoroutine(TriggerTickEvents());
             StartCoroutine(TriggerSecEvents());
         }
@@ -423,7 +426,7 @@ namespace Acknex
             var waypoint = 1;
             AcknexObject.SetFloat("WAYPOINT", waypoint);
             var nextPoint = points[waypoint - 1];
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 if (World.Instance.GetSkillValue("MOVE_MODE") <= 0.5f || AcknexObject.HasFlag("INVISIBLE") || AcknexObject.GetAcknexObject("TARGET") != _lastTarget)
@@ -450,7 +453,7 @@ namespace Acknex
         private IEnumerator MoveToVertex()
         {
             var targetPos = new Vector2(AcknexObject.GetFloat("TARGET_X"), AcknexObject.GetFloat("TARGET_Y"));
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 if (World.Instance.GetSkillValue("MOVE_MODE") <= 0.5f || AcknexObject.HasFlag("INVISIBLE") || AcknexObject.GetAcknexObject("TARGET") != _lastTarget)
@@ -468,15 +471,10 @@ namespace Acknex
             }
         }
 
-        public void ResetTexture()
-        {
-            _lastTextureObject = null;
-        }
-
         private IEnumerator MoveToPlayer()
         {
             var currentRegion = GetRegion();
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
 #if DEBUG_ENABLED
@@ -520,7 +518,7 @@ namespace Acknex
         private IEnumerator MoveToAngle()
         {
             var currentRegion = GetRegion();
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 MoveToAngleStep();
@@ -710,22 +708,20 @@ namespace Acknex
         public bool HitPixel(Vector2 textureCoord, Vector3 hitPoint)
         {
             var acknexObject = (AcknexObject)AcknexObject;
-            if (acknexObject.CurrentBitmap?.CropTexture != null)
+            if (CurrentBitmap?.CropTexture != null)
             {
-                var texelSize = new Vector4(1f / acknexObject.CurrentBitmap.Width, 1f / acknexObject.CurrentBitmap.Height, acknexObject.CurrentBitmap.Width, acknexObject.CurrentBitmap.Height);
-                var y0 = texelSize.w - acknexObject.BitmapCoords[1];
-                var y1 = texelSize.w - acknexObject.BitmapCoords[3];
-                var coord0 = new Vector2(acknexObject.BitmapCoords[0], y0);
-                var coord1 = new Vector2(acknexObject.BitmapCoords[2], y1);
+                var texelSize = new Vector4(1f / CurrentBitmap.Width, 1f / CurrentBitmap.Height, CurrentBitmap.Width, CurrentBitmap.Height);
+                var y0 = texelSize.w - BitmapCoords[1];
+                var y1 = texelSize.w - BitmapCoords[3];
+                var coord0 = new Vector2(BitmapCoords[0], y0);
+                var coord1 = new Vector2(BitmapCoords[2], y1);
                 var coord2 = new Vector2(textureCoord.x, 1.0f - textureCoord.y);
                 var uv = new Vector2();
                 uv.x = Mathf.Lerp(coord0.x, coord1.x, coord2.x);
                 uv.y = Mathf.Lerp(coord0.y, coord1.y, coord2.y);
                 uv.x *= texelSize.x;
                 uv.y *= texelSize.y;
-                var color = acknexObject.CurrentBitmap.CropTexture.Texture.GetPixelBilinear(textureCoord.x, textureCoord.y);
-                //World.Instance.DebugColor = color;
-                //World.Instance.DebugTexture = acknexObject.CurrentBitmap.CropTexture;
+                var color = CurrentBitmap.CropTexture.Texture.GetPixelBilinear(textureCoord.x, textureCoord.y);
 #if DEBUG_ENABLED
                 DebugExtension.DebugWireSphere(hitPoint, color, 0.1f, 60f);
 #endif
@@ -733,5 +729,9 @@ namespace Acknex
             }
             return false;
         }
+
+        public Bitmap CurrentBitmap { get; set; }
+        public Vector4 BitmapCoords { get; set; }
+        public Vector4 OffsetScale { get; set; }
     }
 }

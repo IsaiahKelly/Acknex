@@ -104,7 +104,7 @@ namespace Acknex
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Region);
 
-        [field: SerializeField] public bool DebugMarked { get; set; }
+        [field: SerializeField] public bool IsDebugMarked { get; set; }
 
         public void Disable()
         {
@@ -144,6 +144,10 @@ namespace Acknex
                 var hasPlay = AcknexObject.HasFlag("PLAY");
                 var ambient = AcknexObject.GetFloat("AMBIENT");
                 return ambient != _lastAmbient || (CeilTexture != null && CeilTexture.AcknexObject.IsDirty) || CeilTexture != _lastCeilTexture || (FloorTexture != null && FloorTexture.AcknexObject.IsDirty) || FloorTexture != _lastFloorTexture || hasPlay;
+            }
+            set
+            {
+
             }
         }
 
@@ -228,30 +232,36 @@ namespace Acknex
         {
         }
 
+        public bool IsGeometryDirty
+        {
+            get
+            {
+                var floorHgt = AcknexObject.GetFloat("FLOOR_HGT");
+                var ceilHgt = AcknexObject.GetFloat("CEIL_HGT");
+                var differentHeight = Math.Abs(floorHgt - _lastFloorHgt) > Mathf.Epsilon || Math.Abs(ceilHgt - _lastCeilHgt) > Mathf.Epsilon;
+                _lastFloorHgt = floorHgt;
+                _lastCeilHgt = ceilHgt;
+                return differentHeight;
+            }
+            set
+            {
+
+            }
+        }
+
         public void UpdateObject()
         {
             if (_floorMeshRenderer == null)
             {
                 return;
             }
-            var floorHgt = AcknexObject.GetFloat("FLOOR_HGT");
-            var ceilHgt = AcknexObject.GetFloat("CEIL_HGT");
-            if (floorHgt != _lastFloorHgt || ceilHgt != _lastCeilHgt)
-            {
-                AcknexObject.IsGeometryDirty = true;
-                _lastCeilTexture = null;
-                _lastFloorTexture = null;
-            }
-            _lastFloorHgt = floorHgt;
-            _lastCeilHgt = ceilHgt;
-            if (AcknexObject.IsGeometryDirty)
+            if (IsGeometryDirty)
             {
                 foreach (var wall in Walls)
                 {
-                    wall.AcknexObject.IsGeometryDirty = true;
+                    wall.IsGeometryDirty = true;
                 }
                 UpdateAllMeshes();
-                AcknexObject.IsGeometryDirty = false;
             }
             if (!AcknexObject.IsDirty)
             {

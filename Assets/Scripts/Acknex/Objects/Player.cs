@@ -12,8 +12,6 @@ namespace Acknex
         public static Player Instance { get; private set; }
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Player);
 
-        [field: SerializeField] public bool DebugMarked { get; set; }
-
         public void Disable()
         {
         }
@@ -35,7 +33,10 @@ namespace Acknex
             return regionObject ?? World.Instance.RegionsByIndex[0].AcknexObject;
         }
 
-        public bool IsTextureDirty => false;
+        [field: SerializeField] public bool IsDebugMarked { get; set; }
+        public bool IsGeometryDirty { get; set; }
+
+        public bool IsTextureDirty { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {

@@ -5,44 +5,22 @@ namespace Acknex
 {
     public class Flic : IAcknexObjectContainer
     {
-        public bool IsTextureDirty => false;
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        public Flic()
         {
-
-        }
-        public bool DebugMarked { get; set; }
-        public GameObject GameObject => null;
-
-        public void ResetTexture()
-        {
-            
+            AcknexObject.Container = this;
         }
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Flic);
-        public void UpdateObject()
+
+        public void Disable()
         {
-            
         }
 
         public void Enable()
         {
-          
         }
 
-        public void Disable()
-        {
-           
-        }
-
-        public void SetupTemplate()
-        {
-            
-        }
-
-        public void SetupInstance()
-        {
-            
-        }
+        public GameObject GameObject => null;
 
         public Vector3 GetCenter()
         {
@@ -54,15 +32,33 @@ namespace Acknex
             return null;
         }
 
+        public bool IsDebugMarked { get; set; }
+        public bool IsGeometryDirty { get; set; }
+        public bool IsTextureDirty { get; set; }
+
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+        }
+
+        public void ResetTexture()
+        {
+        }
+
+        public void SetupInstance()
+        {
+        }
+
+        public void SetupTemplate()
+        {
+        }
+
+        public void UpdateObject()
+        {
+        }
+
         private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
-        }
-
-
-        public Flic()
-        {
-            AcknexObject.Container = this;
         }
     }
 }

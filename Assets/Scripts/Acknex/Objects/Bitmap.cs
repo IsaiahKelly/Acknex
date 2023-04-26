@@ -16,6 +16,7 @@ namespace Acknex
 
         public TextureAndPalette CropTexture;
         public TextureAndPalette OriginalTexture;
+        public bool IsGeometryDirty { get; set; }
 
         public Bitmap()
         {
@@ -28,7 +29,7 @@ namespace Acknex
         public float Y => AcknexObject.GetFloat("Y");
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Bitmap);
-        public bool DebugMarked { get; set; }
+        public bool IsDebugMarked { get; set; }
 
         public void Disable()
         {
@@ -50,7 +51,7 @@ namespace Acknex
             return null;
         }
 
-        public bool IsTextureDirty => false;
+        public bool IsTextureDirty { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
@@ -174,38 +175,29 @@ namespace Acknex
                 }
                 if (sourceAcknexObject.Container is Wall wall)
                 {
-                    if (wall.HasGap)
+                    for (var i = 0; i < materials.Count; i++)
                     {
-                        for (var i = 0; i < materials.Count; i++)
+                        var material = materials[i];
+
+                        if (wall.HasGap)
                         {
-                            var material = materials[i];
+
                             material.SetFloat("_V0H", wall.GapUV.m12);
                             material.SetFloat("_V1H", wall.GapUV.m13);
                         }
-                    }
-                    else
-                    {
-                        for (var i = 0; i < materials.Count; i++)
+                        else
                         {
-                            var material = materials[i];
                             material.SetFloat("_V0H", wall.BottomUV.m12);
                             material.SetFloat("_V1H", wall.BottomUV.m13);
+
                         }
-                    }
-                    if (wall.AcknexObject.HasFlag("FENCE"))
-                    {
-                        for (var i = 0; i < materials.Count; i++)
+                        if (wall.AcknexObject.HasFlag("FENCE"))
                         {
-                            var material = materials[i];
                             material.SetInt("_FENCE", 1);
+                            CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Clamp;
                         }
-                        CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Clamp;
-                    }
-                    if (wall.AcknexObject.HasFlag("PORTCULLIS"))
-                    {
-                        for (var i = 0; i < materials.Count; i++)
+                        if (wall.AcknexObject.HasFlag("PORTCULLIS"))
                         {
-                            var material = materials[i];
                             material.SetInt("_PORTCULLIS", 1);
                         }
                     }
@@ -236,8 +228,8 @@ namespace Acknex
                 {
                     offsetY = offsetYList[index];
                 }
-                scaleX = texture.ScaleX;
-                scaleY = texture.ScaleY;
+                scaleX = texture.AcknexObject.GetFloat("SCALE_X");
+                scaleY = texture.AcknexObject.GetFloat("SCALE_Y");
                 //todo: is there a better place to build that?
                 if (texture.AcknexObject.HasFlag("SKY"))
                 {
@@ -289,11 +281,11 @@ namespace Acknex
                 material.SetInt("_CullMode", (int)cullMode);
                 material.mainTexture = World.Instance.UsePalettes ? CropTexture.Palette : CropTexture.Texture;
             }
-            if (sourceAcknexObject is AcknexObject acknexObject)
+            if (sourceAcknexObject?.Container is IGraphicObject graphicObject)
             {
-                acknexObject.CurrentBitmap = this;
-                acknexObject.BitmapCoords = new Vector4(x0, y0, x1, y1);
-                acknexObject.OffsetScale = new Vector4(offsetX, offsetY, scaleX, scaleY);
+                graphicObject.CurrentBitmap = this;
+                graphicObject.BitmapCoords = new Vector4(x0, y0, x1, y1);
+                graphicObject.OffsetScale = new Vector4(offsetX, offsetY, scaleX, scaleY);
             }
         }
 

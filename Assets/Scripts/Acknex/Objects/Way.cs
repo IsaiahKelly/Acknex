@@ -20,8 +20,6 @@ namespace Acknex
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Way);
 
-        [field: SerializeField] public bool DebugMarked { get; set; }
-
         public void Disable()
         {
             gameObject.SetActive(false);
@@ -44,7 +42,10 @@ namespace Acknex
             return null;
         }
 
-        public bool IsTextureDirty => false;
+        [field: SerializeField] public bool IsDebugMarked { get; set; }
+        public bool IsGeometryDirty { get; set; }
+
+        public bool IsTextureDirty { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {

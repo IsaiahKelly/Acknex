@@ -18,10 +18,6 @@ namespace Acknex
             Type = type;
         }
 
-        public Bitmap CurrentBitmap { get; set; }
-        public Vector4 BitmapCoords { get; set; }
-        public Vector4 OffsetScale { get; set; }
-
         public void AddFlag(string flag)
         {
             string.Intern(flag);
@@ -31,9 +27,7 @@ namespace Acknex
         public IAcknexObjectContainer Container { get; set; }
 
         public string DebugMessage { get; set; }
-
-        public bool IsGeometryDirty { get; set; }
-
+        
         public IAcknexObject GetAcknexObject(string propertyName, bool fromTemplate = true, bool setupInstance = true)
         {
             string.Intern(propertyName);

@@ -56,7 +56,6 @@ namespace Acknex
         }
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Action);
-        public bool DebugMarked { get; set; }
 
         public void Disable()
         {
@@ -78,7 +77,10 @@ namespace Acknex
             return null;
         }
 
-        public bool IsTextureDirty => false;
+        public bool IsDebugMarked { get; set; }
+        public bool IsGeometryDirty { get; set; }
+
+        public bool IsTextureDirty { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
@@ -842,6 +844,7 @@ namespace Acknex
         private bool HandleObject(string objectName, string assignmentVariable, bool outputGetter, out (string property, PropertyType propertyType, ObjectType objectType, string source) valueAndType)
         {
             objectName = string.Intern(objectName);
+
             void HandleDroppedObjects()
             {
                 if (outputGetter)

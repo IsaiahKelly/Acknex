@@ -30,6 +30,7 @@ namespace Acknex
     //        }
     //    }
     //}
+
     //public class StringKeyDictionary<T1, T2>  : Dictionary<string, T2>
     //{
     //    public StringKeyDictionary() : base(new ReferenceEqualityComparer())

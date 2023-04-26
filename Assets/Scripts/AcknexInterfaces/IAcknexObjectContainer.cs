@@ -7,12 +7,17 @@ namespace Acknex.Interfaces
     /// </summary>
     public interface IAcknexObjectContainer
     {
-        bool DebugMarked { get; set; }
+        bool IsDebugMarked { get; set; }
+
+        /// <summary>
+        /// Indicates whether the object geometry has to be updated.
+        /// </summary>
+        bool IsGeometryDirty { get; set; }
 
         /// <summary>
         /// Indicates whether the object texture has to be updated.
         /// </summary>
-        bool IsTextureDirty { get; }
+        bool IsTextureDirty { get; set; }
 
         /// <summary>
         /// Resets the object texture.

@@ -10,7 +10,8 @@ namespace Acknex
         {
 
         }
-        public bool IsTextureDirty => false;
+        public bool IsGeometryDirty { get; set; }
+        public bool IsTextureDirty { get; set; }
         public TextureAndPalette Texture;
         public Texture2DArray GlyphsPalette;
         public Texture2DArray GlyphsTexture;
@@ -21,7 +22,7 @@ namespace Acknex
         }
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Font);
-        public bool DebugMarked { get; set; }
+        public bool IsDebugMarked { get; set; }
 
         public void Disable()
         {

@@ -65,7 +65,6 @@ namespace Acknex
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
         public bool HasGap { get; private set; }
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Wall);
-        [field: SerializeField] public bool DebugMarked { get; set; }
 
         public void Disable()
         {
@@ -93,6 +92,10 @@ namespace Acknex
             return null;
         }
 
+        [field: SerializeField] public bool IsDebugMarked { get; set; }
+
+        public bool IsGeometryDirty { get; set; }
+
         public bool IsTextureDirty
         {
             get
@@ -102,6 +105,10 @@ namespace Acknex
                 var ambient = AcknexObject.GetFloat("AMBIENT");
                 var hasPlay = AcknexObject.HasFlag("PLAY");
                 return region1.Container.IsTextureDirty || region2.Container.IsTextureDirty || ambient != _lastAmbient || (TextureObject != null && TextureObject.AcknexObject.IsDirty) || TextureObject != _lastTextureObject || hasPlay;
+            }
+            set
+            {
+
             }
         }
 
@@ -194,10 +201,10 @@ namespace Acknex
         {
             _vertexGameObjectA.transform.position = (HasGap ? GapQuad : BottomQuad).GetColumn(3);
             _vertexGameObjectB.transform.position = (HasGap ? GapQuad : BottomQuad).GetColumn(2);
-            if (AcknexObject.IsGeometryDirty)
+            if (IsGeometryDirty)
             {
                 UpdateAllMeshes();
-                AcknexObject.IsGeometryDirty = false;
+                IsGeometryDirty = false;
             }
             if (!AcknexObject.IsDirty)
             {

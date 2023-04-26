@@ -53,11 +53,6 @@ namespace Acknex.Interfaces
         bool IsDirty { get; set; }
 
         /// <summary>
-        ///     Defines whether the wall or region geometry has to be rebuilt.
-        /// </summary>
-        bool IsGeometryDirty { get; set; }
-
-        /// <summary>
         ///     Sets a float property value for all objects with the given name.
         /// </summary>
         void SetFloatAll(string propertyName, float value);

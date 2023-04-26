@@ -69,7 +69,7 @@ public class AcknexObjectEditor : Editor
             EditorGUILayout.TextField("Debug", container.AcknexObject.DebugMessage);
             EditorGUILayout.Toggle("Is Instance", container.AcknexObject.IsInstance);
             EditorGUILayout.Toggle("Is Dirty", container.AcknexObject.IsDirty);
-            EditorGUILayout.Toggle("Is Geometry Dirty", container.AcknexObject.IsGeometryDirty);
+            EditorGUILayout.Toggle("Is Geometry Dirty", container.IsGeometryDirty);
             EditorGUILayout.IntField("Index", container.AcknexObject.InstanceIndex);
             EditorGUILayout.BeginFoldoutHeaderGroup(true, "From Instance");
             var objectProperties = ((AcknexObject)container.AcknexObject).ObjectProperties.OrderBy(x => x.Key);

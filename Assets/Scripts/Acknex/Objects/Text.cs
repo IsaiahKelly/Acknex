@@ -9,17 +9,15 @@ namespace Acknex
     {
         private bool _hasToDisplay;
         private bool _lastHasToDisplay;
-        //private Material[] _materials;
         private UIVertex[] _verts;
         public Font Font => (Font)AcknexObject.GetAcknexObject("FONT").Container;
 
-        //public override UnityEngine.Texture mainTexture => World.Instance.UsePalettes ? Font.GlyphsPalette : Font.GlyphsTexture;
-
         public override Material material { get; set; }
+        public bool IsGeometryDirty { get; set; }
 
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Text);
 
-        public bool DebugMarked { get; set; }
+        public bool IsDebugMarked { get; set; }
 
         public void Disable()
         {
@@ -41,7 +39,7 @@ namespace Acknex
             return null;
         }
 
-        public bool IsTextureDirty => false;
+        public bool IsTextureDirty { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {

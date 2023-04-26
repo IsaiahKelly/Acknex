@@ -6,11 +6,15 @@ namespace Acknex
 {
     public class Picture : Overlay
     {
+        private Coroutine _animateCoroutine;
+
+        private int _lastSide = -1;
+        private Texture _lastTextureObject;
+
+        public Panel Panel;
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
         public override IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Picture);
-
-        public Panel Panel;
 
         private static IAcknexObject GetTemplateCallback(string name)
         {
@@ -30,10 +34,6 @@ namespace Acknex
                 yield return enumerator.Current;
             }
         }
-
-        private int _lastSide = -1;
-        private Texture _lastTextureObject;
-        private Coroutine _animateCoroutine;
 
         public override void UpdateObject()
         {
@@ -74,11 +74,10 @@ namespace Acknex
             _lastTextureObject = TextureObject;
             _lastSide = side;
             OverlayGraphic.rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat("POS_X"), -AcknexObject.GetFloat("POS_Y"), 0f);
-            var acknexObject = (AcknexObject)AcknexObject;
-            if (acknexObject.CurrentBitmap != null)
+            if (CurrentBitmap != null)
             {
-                OverlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, acknexObject.CurrentBitmap.Width);
-                OverlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, acknexObject.CurrentBitmap.Height);
+                OverlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentBitmap.Width);
+                OverlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, CurrentBitmap.Height);
             }
         }
     }
