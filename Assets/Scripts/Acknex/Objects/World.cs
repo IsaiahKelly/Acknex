@@ -20,6 +20,7 @@ namespace Acknex
         public readonly Dictionary<string, HashSet<Wall>> AllWallsByName = new EqualityComparerDictionary<string, HashSet<Wall>>();
         public readonly Dictionary<string, HashSet<Way>> AllWaysByName = new EqualityComparerDictionary<string, HashSet<Way>>();
         public readonly Dictionary<string, Bitmap> BitmapsByName = new EqualityComparerDictionary<string, Bitmap>();
+        public readonly Dictionary<string, Digits> DigitsByName = new EqualityComparerDictionary<string, Digits>();
         public readonly Dictionary<string, Flic> FlicsByName = new EqualityComparerDictionary<string, Flic>();
         public readonly Dictionary<string, Font> FontsByName = new EqualityComparerDictionary<string, Font>();
         public readonly Dictionary<string, Model> ModelsByName = new EqualityComparerDictionary<string, Model>();
@@ -27,6 +28,7 @@ namespace Acknex
         public readonly Dictionary<string, Palette> PalettesByName = new EqualityComparerDictionary<string, Palette>();
         public readonly Dictionary<string, Panel> PanelsByName = new EqualityComparerDictionary<string, Panel>();
         public readonly List<string> Paths = new List<string>();
+        public readonly Dictionary<string, Picture> PicturesByName = new EqualityComparerDictionary<string, Picture>();
         public readonly List<Region> RegionsByIndex = new List<Region>(1000);
         public readonly Dictionary<string, Region> RegionsByName = new EqualityComparerDictionary<string, Region>();
         public readonly Dictionary<string, Skill> SkillsByName = new EqualityComparerDictionary<string, Skill>();
@@ -35,8 +37,6 @@ namespace Acknex
         public readonly Dictionary<string, AcknexString> StringsByName = new EqualityComparerDictionary<string, AcknexString>();
         public readonly Dictionary<string, Synonym> SynonymsByName = new EqualityComparerDictionary<string, Synonym>();
         public readonly Dictionary<string, Text> TextsByName = new EqualityComparerDictionary<string, Text>();
-        public readonly Dictionary<string, Digits> DigitsByName = new EqualityComparerDictionary<string, Digits>();
-        public readonly Dictionary<string, Picture> PicturesByName = new EqualityComparerDictionary<string, Picture>();
         public readonly Dictionary<string, TextureAndPalette> TextureCache = new EqualityComparerDictionary<string, TextureAndPalette>();
         public readonly Dictionary<string, Texture> TexturesByName = new EqualityComparerDictionary<string, Texture>();
         public readonly Dictionary<string, Thing> ThingsByName = new EqualityComparerDictionary<string, Thing>();
@@ -61,6 +61,9 @@ namespace Acknex
         public float CanvasWidthRatio;
         private ContouredRegions ContouredRegions;
         public List<ContourVertex> ContourVertices;
+
+        public bool DebugSkills;
+
         //public Color DebugColor;
         //public GameObject DebugContainer;
         //public Texture2D DebugTexture;
@@ -78,12 +81,14 @@ namespace Acknex
         public IAcknexObject MoveString;
         public IAcknexObject Node1String;
         public IAcknexObject Node2String;
+        public Texture2D NullTexture;
+        public bool OldAckVersion;
         public RegionWalls RegionWalls;
         public IAcknexObject RepelString;
-        public bool OldAckVersion;
         public string SourceGenerationPath;
         public SingleUnityLayer Sprites;
         public IAcknexObject StickString;
+        public float TestTimeScale = 1f;
         public SingleUnityLayer ThingsAndActorsLayer;
         public SingleUnityLayer TriggersLayer;
         public bool UsePalettes;
@@ -96,9 +101,6 @@ namespace Acknex
         public LayerMask WallsWaterRegionsAndThings;
         public SingleUnityLayer WaterLayer;
         public string WDLPath;
-        public Texture2D NullTexture;
-        public bool DebugSkills;
-        public float TestTimeScale = 1f;
 
         public static World Instance { get; private set; }
 
@@ -117,7 +119,13 @@ namespace Acknex
             return null;
         }
 
+        public bool IsTextureDirty => false;
+
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+        }
+
+        public void ResetTexture()
         {
         }
 

@@ -1,16 +1,15 @@
-﻿using Acknex.Interfaces;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Acknex.Interfaces;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace Acknex
 {
     public class Text : MaskableGraphic, IAcknexObjectContainer
     {
-        private Material[] _materials;
+        private bool _hasToDisplay;
+        private bool _lastHasToDisplay;
+        //private Material[] _materials;
         private UIVertex[] _verts;
         public Font Font => (Font)AcknexObject.GetAcknexObject("FONT").Container;
 
@@ -42,7 +41,13 @@ namespace Acknex
             return null;
         }
 
+        public bool IsTextureDirty => false;
+
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+        }
+
+        public void ResetTexture()
         {
         }
 
@@ -52,30 +57,11 @@ namespace Acknex
 
         public void SetupTemplate()
         {
-
         }
-
-        private bool _hasToDisplay;
-        private bool _lastHasToDisplay;
 
         public virtual void UpdateObject()
         {
-            if (World.Instance.AcknexObject.GetAcknexObject("MESSAGES.1") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.2") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.3") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.4") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.5") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.6") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.7") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.8") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.9") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.10") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.11") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.12") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.13") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.14") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.15") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.16") == AcknexObject)
+            if (World.Instance.AcknexObject.GetAcknexObject("MESSAGES.1") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.2") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.3") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.4") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.5") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.6") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.7") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.8") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.9") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.10") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.11") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.12") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.13") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.14") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.15") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.16") == AcknexObject)
             {
                 _hasToDisplay = true;
             }
@@ -112,7 +98,7 @@ namespace Acknex
             rectTransform.anchorMin = new Vector3(0f, 1f);
             rectTransform.anchorMax = new Vector3(0f, 1f);
             rectTransform.pivot = new Vector3(0f, 1f);
-            _materials = new Material[] { material };
+            //_materials = new[] { material };
             _verts = new UIVertex[4];
         }
 
@@ -156,7 +142,7 @@ namespace Acknex
             for (var i = 0; i < stringValue.Length; i++)
             {
                 var c = stringValue[i];
-                if (c == '\\' && i < stringValue.Length - 1 && stringValue[i+1] == 'n')
+                if (c == '\\' && i < stringValue.Length - 1 && stringValue[i + 1] == 'n')
                 {
                     y -= charHeight;
                     x = 0f;

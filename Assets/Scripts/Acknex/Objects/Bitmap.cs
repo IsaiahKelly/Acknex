@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Acknex.Interfaces;
 using DmitryBrant.ImageFormats;
+using IlbmReaderTest;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
@@ -49,7 +50,13 @@ namespace Acknex
             return null;
         }
 
+        public bool IsTextureDirty => false;
+
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+        }
+
+        public void ResetTexture()
         {
         }
 
@@ -88,7 +95,7 @@ namespace Acknex
                 }
                 else if (lowerInvariant.EndsWith("lbm") || lowerInvariant.EndsWith("bbm"))
                 {
-                    var parser = new IlbmReaderTest.IffReader();
+                    var parser = new IffReader();
                     textureAndPalette = parser.Read(filename, paletteOnly);
                     if (!paletteOnly)
                     {
@@ -153,6 +160,10 @@ namespace Acknex
                 {
                     ambient *= wallOrRegionAmbient;
                 }
+                if (sourceAcknexObject.Type == ObjectType.Wall)
+                {
+                    ambient *= ((Wall)sourceAcknexObject.Container).AmbientOverride;
+                }
                 if (sourceAcknexObject.TryGetFloat("OFFSET_X", out var offsetXVal))
                 {
                     offsetX = offsetXVal;
@@ -167,7 +178,7 @@ namespace Acknex
                     {
                         for (var i = 0; i < materials.Count; i++)
                         {
-                            Material material = materials[i];
+                            var material = materials[i];
                             material.SetFloat("_V0H", wall.GapUV.m12);
                             material.SetFloat("_V1H", wall.GapUV.m13);
                         }
@@ -176,7 +187,7 @@ namespace Acknex
                     {
                         for (var i = 0; i < materials.Count; i++)
                         {
-                            Material material = materials[i];
+                            var material = materials[i];
                             material.SetFloat("_V0H", wall.BottomUV.m12);
                             material.SetFloat("_V1H", wall.BottomUV.m13);
                         }
@@ -185,7 +196,7 @@ namespace Acknex
                     {
                         for (var i = 0; i < materials.Count; i++)
                         {
-                            Material material = materials[i];
+                            var material = materials[i];
                             material.SetInt("_FENCE", 1);
                         }
                         CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Clamp;
@@ -194,7 +205,7 @@ namespace Acknex
                     {
                         for (var i = 0; i < materials.Count; i++)
                         {
-                            Material material = materials[i];
+                            var material = materials[i];
                             material.SetInt("_PORTCULLIS", 1);
                         }
                     }
@@ -248,7 +259,7 @@ namespace Acknex
                     }
                     for (var i = 0; i < materials.Count; i++)
                     {
-                        Material material = materials[i];
+                        var material = materials[i];
                         material.SetInt("_SIDES", sides);
                         material.SetTexture("_BMAPS", World.Instance.UsePalettes ? _skyboxPalette2DArray : _skyboxTexture2DArray);
                     }
@@ -262,7 +273,7 @@ namespace Acknex
             var cullMode = transparent ? CullMode.Off : CullMode.Back;
             for (var i = 0; i < materials.Count; i++)
             {
-                Material material = materials[i];
+                var material = materials[i];
                 material.SetFloat("_X0", x0);
                 material.SetFloat("_Y0", y0);
                 material.SetFloat("_X1", x1);
@@ -291,10 +302,8 @@ namespace Acknex
             var bitmapTexture2D = new Texture2D(w, h, texture.Texture.graphicsFormat, TextureCreationFlags.MipChain);
             TextureUtils.CopyTextureCPU(texture.Texture, bitmapTexture2D, true, false, x, y, w, h);
             TextureUtils.Dilate(bitmapTexture2D);
-
             var paletteTexture2D = new Texture2D(w, h, texture.Palette.graphicsFormat, TextureCreationFlags.None);
             paletteTexture2D.filterMode = FilterMode.Point;
-
             TextureUtils.CopyTextureCPU(texture.Palette, paletteTexture2D, true, false, x, y, w, h);
             return new TextureAndPalette(bitmapTexture2D, paletteTexture2D);
         }

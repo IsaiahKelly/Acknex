@@ -11,6 +11,11 @@ namespace Acknex
 
     public class Model : IAcknexObjectContainer
     {
+        public void ResetTexture()
+        {
+
+        }
+        public bool IsTextureDirty => false;
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
 

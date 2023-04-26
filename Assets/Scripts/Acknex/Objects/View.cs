@@ -1,17 +1,19 @@
-﻿using Acknex.Interfaces;
+﻿using System.Collections.Generic;
+using Acknex.Interfaces;
 using LibTessDotNet;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Plastic.Newtonsoft.Json.Bson;
 using UnityEngine;
 
 namespace Acknex
 {
     public class View : MonoBehaviour, IAcknexObjectContainer
     {
-        public bool MainView;
         private AudioSource _audioSource;
         private Light _light;
+
+        public LineRenderer LineRendererTemplate;
+
+        public Transform LinesCanvas;
+        public bool MainView;
 
         public static View Instance { get; private set; }
 
@@ -20,10 +22,6 @@ namespace Acknex
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.View);
 
         [field: SerializeField] public bool DebugMarked { get; set; }
-
-        public LineRenderer LineRendererTemplate;
-
-        public Transform LinesCanvas;
 
         public void Disable()
         {
@@ -45,6 +43,8 @@ namespace Acknex
             return null;
         }
 
+        public bool IsTextureDirty => false;
+
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
             if (!(sound?.Container is Sound soundContainer))
@@ -60,6 +60,10 @@ namespace Acknex
             _audioSource.maxDistance = Mathf.Max(sDist, svDist);
             _audioSource.volume = volume;
             _audioSource.Play();
+        }
+
+        public void ResetTexture()
+        {
         }
 
         public void SetupInstance()
@@ -83,7 +87,6 @@ namespace Acknex
                 transformLocalRotation.eulerAngles = new Vector3(World.Instance.GetSkillValue("PLAYER_TILT") * Mathf.Rad2Deg, 0f, 0f);
                 transform.localRotation = transformLocalRotation;
                 Shader.SetGlobalFloat("_CAMERA_PITCH", Mathf.DeltaAngle(CameraExtensions.GetLastActiveCamera().transform.localEulerAngles.x, 0f));
-
                 _light.intensity = World.Instance.GetSkillValue("PLAYER_LIGHT") * World.Instance.LightMultiplier;
                 _light.range = World.Instance.GetSkillValue("LIGHT_DIST");
             }
@@ -137,7 +140,7 @@ namespace Acknex
             {
                 positions[i] = new Vector3(vertices[i].Position.X, 0f, vertices[i].Position.Y);
             }
-            var newLineRenderer = Instantiate<LineRenderer>(LineRendererTemplate, LinesCanvas, false);
+            var newLineRenderer = Instantiate(LineRendererTemplate, LinesCanvas, false);
             newLineRenderer.transform.localPosition = Vector3.zero;
             newLineRenderer.positionCount = vertices.Count;
             newLineRenderer.SetPositions(positions);

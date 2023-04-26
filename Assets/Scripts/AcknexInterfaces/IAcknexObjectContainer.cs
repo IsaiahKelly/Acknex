@@ -10,6 +10,16 @@ namespace Acknex.Interfaces
         bool DebugMarked { get; set; }
 
         /// <summary>
+        /// Indicates whether the object texture has to be updated.
+        /// </summary>
+        bool IsTextureDirty { get; }
+
+        /// <summary>
+        /// Resets the object texture.
+        /// </summary>
+        void ResetTexture();
+
+        /// <summary>
         /// Gets/Sets the AcknexObject this container holds.
         /// </summary>
         IAcknexObject AcknexObject { get; set; }

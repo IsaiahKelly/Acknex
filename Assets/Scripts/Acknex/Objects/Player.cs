@@ -35,7 +35,13 @@ namespace Acknex
             return regionObject ?? World.Instance.RegionsByIndex[0].AcknexObject;
         }
 
+        public bool IsTextureDirty => false;
+
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+        }
+
+        public void ResetTexture()
         {
         }
 
@@ -153,7 +159,7 @@ namespace Acknex
             var playerX = World.Instance.GetSkillValue("PLAYER_X");
             var playerY = World.Instance.GetSkillValue("PLAYER_Y");
             var playerSize = World.Instance.GetSkillValue("PLAYER_SIZE");
-            Locate(playerX, playerY, 0f, playerSize, true);
+            Locate(playerX, playerY, 0f, playerSize);
         }
 
         private void OnGUI()
@@ -162,7 +168,7 @@ namespace Acknex
             {
                 return;
             }
-            GUI.Window(0, new Rect(0f, 0f, 320f, Screen.height), delegate (int windowId)
+            GUI.Window(0, new Rect(0f, 0f, 320f, Screen.height), delegate
             {
                 GUILayout.BeginVertical();
                 GUILayout.Label($"PLAYER_ANGLE:{World.Instance.GetSkillValue("PLAYER_ANGLE") * Mathf.Rad2Deg}");
@@ -238,7 +244,7 @@ namespace Acknex
                     World.Instance.TriggerEvent("IF_DIVE", newRegion.Above.AcknexObject, null, newRegion.Above.AcknexObject);
                 }
             }
-            var playerHgt = playerFootZ - floorHgt;// - _characterController.skinWidth;
+            var playerHgt = playerFootZ - floorHgt; // - _characterController.skinWidth;
             if (playerHgt < 0.1f)
             {
                 playerHgt = 0f;
@@ -263,7 +269,6 @@ namespace Acknex
 
         public void Rotate(Vector3 center, float degrees)
         {
-
         }
 
         public void Shift(float dx, float dy)
@@ -276,7 +281,6 @@ namespace Acknex
 
         public void Lift(float dz)
         {
-
         }
     }
 }

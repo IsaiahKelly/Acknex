@@ -5,6 +5,10 @@ namespace Acknex
 {
     public class AcknexString : IAcknexObjectContainer
     {
+        public void ResetTexture()
+        {
+
+        }
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
 
@@ -12,7 +16,9 @@ namespace Acknex
         public bool DebugMarked { get; set; }
 
         public GameObject GameObject => null;
-        
+
+        public bool IsTextureDirty => false;
+
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallbackActor, ObjectType.String);
 
         private static IAcknexObject GetDefinitionCallbackActor(string name)

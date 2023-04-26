@@ -155,7 +155,6 @@ namespace Acknex
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.14");
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.15");
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "PANELS.16");
-
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.1");
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.2");
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, "LAYERS.3");

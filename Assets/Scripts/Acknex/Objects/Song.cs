@@ -1,6 +1,4 @@
 ﻿using Acknex.Interfaces;
-using System.ComponentModel;
-using System.IO;
 using UnityEngine;
 using UnityMidi;
 
@@ -8,34 +6,48 @@ namespace Acknex
 {
     public class Song : IAcknexObjectContainer
     {
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
-
-        }
-        public bool DebugMarked { get; set; }
-        public GameObject GameObject => null;
-
         public FileResource Resource;
 
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Song);
-        public void UpdateObject()
+        public Song()
         {
+            AcknexObject.Container = this;
+        }
 
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Song);
+        public bool DebugMarked { get; set; }
+
+        public void Disable()
+        {
         }
 
         public void Enable()
         {
-
         }
 
-        public void Disable()
+        public GameObject GameObject => null;
+
+        public Vector3 GetCenter()
         {
-
+            return default;
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        public IAcknexObject GetRegion()
         {
             return null;
+        }
+
+        public bool IsTextureDirty => false;
+
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+        }
+
+        public void ResetTexture()
+        {
+        }
+
+        public void SetupInstance()
+        {
         }
 
 
@@ -48,24 +60,13 @@ namespace Acknex
             }
         }
 
-        public void SetupInstance()
+        public void UpdateObject()
         {
-            
         }
 
-        public Vector3 GetCenter()
-        {
-            return default;
-        }
-
-        public IAcknexObject GetRegion()
+        private static IAcknexObject GetTemplateCallback(string name)
         {
             return null;
-        }
-
-        public Song()
-        {
-            AcknexObject.Container = this;
         }
     }
 }

@@ -9,6 +9,7 @@ using UnityEngine.Rendering;
 #if DEBUG_ENABLED
 using Utils;
 #endif
+
 namespace Acknex
 {
     //todo: tesselation needs to implement the method to create new vertices
@@ -16,8 +17,6 @@ namespace Acknex
     {
         public const float MaxHeight = 10000f;
 
-        private float _lastFloorHgt;
-        private float _lastCeilHgt;
         private Dictionary<int, List<int>> _allTriangles;
         private List<Vector2> _allUVs;
         private List<Vector3> _allVertices;
@@ -27,29 +26,33 @@ namespace Acknex
         private GameObject _audioSourceGameObject;
         private Region _belowOverride;
         private MeshCollider _ceilCollider;
-        private GameObject _ceilGameObject;
+        private GameObject _ceilGameObject; 
         private Material _ceilMaterial;
         private Mesh _ceilMesh;
         private MeshRenderer _ceilMeshRenderer;
+        private Material[] _ceilMeshRendererMaterials;
         private MeshCollider _floorCollider;
         private GameObject _floorGameObject;
         private Material _floorMaterial;
         private Mesh _floorMesh;
         private MeshRenderer _floorMeshRenderer;
+        private Material[] _floorMeshRendererMaterials;
         private MeshCollider _invertedCeilCollider;
         private Mesh _invertedCeilMesh;
         private MeshCollider _invertedFloorCollider;
         private Mesh _invertedFloorMesh;
+        private float _lastAmbient;
+        private float _lastCeilHgt;
         private Texture _lastCeilTexture;
+        private float _lastFloorHgt;
         private Texture _lastFloorTexture;
         private bool _materialsCreated;
+
+        public AckTransform AckTransform;
         public ContouredRegion ContouredRegion;
         public bool DisableCeilRender;
         public bool DisableFloorRender;
         public HashSet<Wall> Walls = new HashSet<Wall>();
-        public AckTransform AckTransform;
-        private Material[] _floorMeshRendererMaterials;
-        private Material[] _ceilMeshRendererMaterials;
 
         public Texture FloorTexture
         {
@@ -134,6 +137,16 @@ namespace Acknex
             return AcknexObject;
         }
 
+        public bool IsTextureDirty
+        {
+            get
+            {
+                var hasPlay = AcknexObject.HasFlag("PLAY");
+                var ambient = AcknexObject.GetFloat("AMBIENT");
+                return ambient != _lastAmbient || (CeilTexture != null && CeilTexture.AcknexObject.IsDirty) || CeilTexture != _lastCeilTexture || (FloorTexture != null && FloorTexture.AcknexObject.IsDirty) || FloorTexture != _lastFloorTexture || hasPlay;
+            }
+        }
+
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
             if (!(sound?.Container is Sound soundContainer))
@@ -152,6 +165,10 @@ namespace Acknex
             _audioSource.maxDistance = Mathf.Max(sDist, svDist);
             _audioSource.volume = volume;
             _audioSource.Play();
+        }
+
+        public void ResetTexture()
+        {
         }
 
         public void SetupInstance()
@@ -210,8 +227,6 @@ namespace Acknex
         public void SetupTemplate()
         {
         }
-
-        private float _lastAmbient;
 
         public void UpdateObject()
         {
@@ -286,8 +301,14 @@ namespace Acknex
             }
             var hasPlay = AcknexObject.HasFlag("PLAY");
             var ambient = AcknexObject.GetFloat("AMBIENT");
-            if (ambient != _lastAmbient || CeilTexture != null && CeilTexture.AcknexObject.IsDirty || CeilTexture != _lastCeilTexture || hasPlay)
+            var isTextureDirty = IsTextureDirty;
+            if (isTextureDirty)
             {
+                //foreach (var wall in Walls)
+                //{
+                //    wall.AmbientOverride = ambient;
+                //    wall.AcknexObject.Container.ResetTexture();
+                //}
                 if (_animateCeilCoroutine != null)
                 {
                     StopCoroutine(_animateCeilCoroutine);
@@ -302,9 +323,9 @@ namespace Acknex
                     _animateCeilCoroutine = StartCoroutine(AnimateCeil());
                 }
                 _lastCeilTexture = CeilTexture;
-            }
-            if (ambient != _lastAmbient || AcknexObject.IsDirty || FloorTexture != null && FloorTexture.AcknexObject.IsDirty || FloorTexture != _lastFloorTexture || hasPlay)
-            {
+                //}
+                //if (isTextureDirty)
+                //{
                 if (_animateFloorCoroutine != null)
                 {
                     StopCoroutine(_animateFloorCoroutine);
@@ -319,7 +340,7 @@ namespace Acknex
                     _animateFloorCoroutine = StartCoroutine(AnimateFloor());
                 }
                 _lastFloorTexture = FloorTexture;
-            };
+            }
             _lastAmbient = ambient;
         }
 
@@ -478,7 +499,6 @@ namespace Acknex
                 yield return null;
             }
         }
-
 
         public void UpdateAllMeshes()
         {

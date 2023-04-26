@@ -5,12 +5,18 @@ namespace Acknex
 {
     public class Flic : IAcknexObjectContainer
     {
+        public bool IsTextureDirty => false;
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
 
         }
         public bool DebugMarked { get; set; }
         public GameObject GameObject => null;
+
+        public void ResetTexture()
+        {
+            
+        }
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Flic);
         public void UpdateObject()

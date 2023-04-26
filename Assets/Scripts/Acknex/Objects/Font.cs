@@ -6,6 +6,11 @@ namespace Acknex
 {
     public class Font : IAcknexObjectContainer
     {
+        public void ResetTexture()
+        {
+
+        }
+        public bool IsTextureDirty => false;
         public TextureAndPalette Texture;
         public Texture2DArray GlyphsPalette;
         public Texture2DArray GlyphsTexture;

@@ -5,45 +5,23 @@ namespace Acknex
 {
     public class Skill : IAcknexObjectContainer
     {
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        public Skill()
         {
-
+            AcknexObject.Container = this;
         }
-        public bool DebugMarked { get; set; }
-
-        public GameObject GameObject => null;
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Skill);
+        public bool DebugMarked { get; set; }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        public void Disable()
         {
-            return null;
-        }
-
-        public void UpdateObject()
-        {
-            
         }
 
         public void Enable()
         {
-            
         }
 
-        public void Disable()
-        {
-            
-        }
-
-        public void SetupTemplate()
-        {
-            
-        }
-
-        public void SetupInstance()
-        {
-            
-        }
+        public GameObject GameObject => null;
 
         public Vector3 GetCenter()
         {
@@ -55,9 +33,31 @@ namespace Acknex
             return null;
         }
 
-        public Skill()
+        public bool IsTextureDirty => false;
+
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
-            AcknexObject.Container = this;
+        }
+
+        public void ResetTexture()
+        {
+        }
+
+        public void SetupInstance()
+        {
+        }
+
+        public void SetupTemplate()
+        {
+        }
+
+        public void UpdateObject()
+        {
+        }
+
+        private static IAcknexObject GetTemplateCallback(string name)
+        {
+            return null;
         }
     }
 }

@@ -8,20 +8,11 @@ namespace Acknex
 {
     public class Texture : IAcknexObjectContainer
     {
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
-
-        }
-        public bool DebugMarked { get; set; }
-        public GameObject GameObject => null;
-
         private List<WaitForSeconds> _textureObjectDelay;
 
-        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Texture);
-
-        private static IAcknexObject GetTemplateCallback(string name)
+        public Texture()
         {
-            return null;
+            AcknexObject.Container = this;
         }
 
         public List<IAcknexObject> BMaps
@@ -50,19 +41,64 @@ namespace Acknex
         public float ScaleX => AcknexObject.TryGetFloat("SCALE_X", out var val) ? val : 16f;
         public float ScaleY => AcknexObject.TryGetFloat("SCALE_Y", out var val) ? val : 16f;
 
+        public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Texture);
+        public bool DebugMarked { get; set; }
+
+        public void Disable()
+        {
+        }
+
+        public void Enable()
+        {
+        }
+
+        public GameObject GameObject => null;
+
+        public Vector3 GetCenter()
+        {
+            return default;
+        }
+
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
+        public bool IsTextureDirty => false;
+
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+        }
+
+        public void ResetTexture()
+        {
+        }
+
+        public void SetupInstance()
+        {
+        }
+
+        public void SetupTemplate()
+        {
+            var delay = AcknexObject.GetObject<List<float>>("DELAY");
+            if (delay != null)
+            {
+                _textureObjectDelay = new List<WaitForSeconds>(delay.Count);
+                for (var i = 0; i < delay.Count; i++)
+                {
+                    _textureObjectDelay.Add(new WaitForSeconds(TimeUtils.TicksToTime((int)delay[i])));
+                }
+            }
+        }
+
         public void UpdateObject()
         {
             AcknexObject.IsDirty = false;
         }
 
-        public void Enable()
+        private static IAcknexObject GetTemplateCallback(string name)
         {
-
-        }
-
-        public void Disable()
-        {
-
+            return null;
         }
 
         public Bitmap GetBitmapAt(int index = 0)
@@ -79,24 +115,17 @@ namespace Acknex
         }
 
         //todo: SLOOP
-        public IEnumerator AnimateTexture(
-            Func<Texture, bool> canceled,
-            bool scaleTexture,
-            IList<Material> materials,
-            MeshFilter meshFilter,
-            GameObject sourceGameObject,
-            IAcknexObject MY,
-            IAcknexObject THERE,
-            int side = 0
-        )
+        public IEnumerator AnimateTexture(Func<Texture, bool> canceled, bool scaleTexture, IList<Material> materials, MeshFilter meshFilter, GameObject sourceGameObject, IAcknexObject MY, IAcknexObject THERE, int side = 0)
         {
             var cycles = Mathf.Max(1, AcknexObject.GetInteger("CYCLES"));
             var mirror = AcknexObject.GetObject<List<float>>("MIRROR");
             var scycles = AcknexObject.GetObject<List<float>>("SCYCLES");
+
             bool CanBreakAnimation(IAcknexObject sound)
             {
-                return MY.HasFlag("ONESHOT") || cycles == 1 && sound == null && !MY.TryGetAcknexObject("EACH_CYCLE", out _);
+                return MY.HasFlag("ONESHOT") || (cycles == 1 && sound == null && !MY.TryGetAcknexObject("EACH_CYCLE", out _));
             }
+
             var cycle = 0;
             while (true)
             {
@@ -110,7 +139,7 @@ namespace Acknex
                 if (MY.Type != ObjectType.Region)
                 {
                     sound = AcknexObject.GetAcknexObject("SOUND");
-                    if (sound != null && (scycles == null && cycle == 0 || scycles != null && scycles[cycle] > 0f))
+                    if (sound != null && ((scycles == null && cycle == 0) || (scycles != null && scycles[cycle] > 0f)))
                     {
                         World.Instance.PlaySound(sound, AcknexObject.GetFloat("SVOL"), MY, AcknexObject.GetFloat("DIST"), AcknexObject.GetFloat("SVDIST"));
                     }
@@ -131,7 +160,7 @@ namespace Acknex
             }
         }
 
-        public void UpdateAngleFrameScale(bool scaleTexture, int cycles, int side, int animFrame, IList<float> mirror, WaitForSeconds delay, IList<Material> materials, MeshFilter meshFilter, GameObject sourceGameObject, IAcknexObject sourceAcknexObject/*, Transform sourceTransform*/)
+        public void UpdateAngleFrameScale(bool scaleTexture, int cycles, int side, int animFrame, IList<float> mirror, WaitForSeconds delay, IList<Material> materials, MeshFilter meshFilter, GameObject sourceGameObject, IAcknexObject sourceAcknexObject /*, Transform sourceTransform*/)
         {
             //if (HasModel(out var modelObject))
             //{
@@ -160,45 +189,12 @@ namespace Acknex
         public bool HasModel(out Model modelObject)
         {
             modelObject = null;
-            return this.AcknexObject.TryGetString("MODEL", out var model) && World.Instance.ModelsByName.TryGetValue(model, out modelObject);
+            return AcknexObject.TryGetString("MODEL", out var model) && World.Instance.ModelsByName.TryGetValue(model, out modelObject);
         }
 
         public void UpdateFrame(Bitmap bitmap, IList<Material> materials, bool scaleTexture, bool mirror = false, int frameIndex = 0, IAcknexObject sourceAcknexObject = null)
         {
             bitmap?.UpdateMaterial(materials, scaleTexture ? this : null, frameIndex, mirror, sourceAcknexObject);
-        }
-
-        public Texture()
-        {
-            AcknexObject.Container = this;
-        }
-
-        public void SetupTemplate()
-        {
-            var delay = AcknexObject.GetObject<List<float>>("DELAY");
-            if (delay != null)
-            {
-                _textureObjectDelay = new List<WaitForSeconds>(delay.Count);
-                for (var i = 0; i < delay.Count; i++)
-                {
-                    _textureObjectDelay.Add(new WaitForSeconds(TimeUtils.TicksToTime((int)delay[i])));
-                }
-            }
-        }
-
-        public void SetupInstance()
-        {
-
-        }
-
-        public Vector3 GetCenter()
-        {
-            return default;
-        }
-
-        public IAcknexObject GetRegion()
-        {
-            return null;
         }
     }
 }
