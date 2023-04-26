@@ -9,6 +9,11 @@ namespace Acknex
     {
         public IAcknexObject AddString(string name, string value)
         {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            name = string.Intern(name);
             if (StringsByName.ContainsKey(name))
             {
                 throw new Exception("String [" + name + "] already registered.");
@@ -27,6 +32,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(CanvasView, false);
             var panel = newGameObject.AddComponent<Panel>();
@@ -43,6 +49,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(CanvasView, false);
             var overlay = newGameObject.AddComponent<Overlay>();
@@ -59,6 +66,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             var newGameObject = new GameObject(name);
             newGameObject.layer = WallsAndRegionsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
@@ -74,6 +82,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             var newGameObject = new GameObject(name);
             newGameObject.layer = WallsAndRegionsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
@@ -83,13 +92,13 @@ namespace Acknex
             return wall;
         }
 
-
         public Way CreateWay(string name)
         {
             if (name == null)
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(transform, false);
             var way = newGameObject.AddComponent<Way>();
@@ -105,6 +114,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             var newGameObject = new GameObject(name);
             newGameObject.layer = ThingsAndActorsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
@@ -120,6 +130,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             var bitmap = new Bitmap();
             bitmap.AcknexObject.Name = name;
             BitmapsByName.Add(name, bitmap);
@@ -133,6 +144,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             var newGameObject = new GameObject(name);
             newGameObject.layer = ThingsAndActorsLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
@@ -148,6 +160,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             if (SkillsByName.TryGetValue(name, out var existingSkill))
             {
                 return existingSkill;
@@ -172,6 +185,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             var synonym = new Synonym();
             synonym.AcknexObject.Name = name;
             synonym.AcknexObject.SetString("TYPE", type);
@@ -187,6 +201,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             var action = new Action();
             action.AcknexObject.Name = name;
             action.AcknexObject.Type = ObjectType.Action;
@@ -205,6 +220,11 @@ namespace Acknex
 
         private Palette CreatePalette(string name)
         {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            name = string.Intern(name);
             var palette = new Palette();
             palette.AcknexObject.Name = name;
             palette.AcknexObject.Type = ObjectType.Palette;
@@ -215,6 +235,11 @@ namespace Acknex
 
         private Model CreateModel(string name)
         {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            name = string.Intern(name);
             var model = new Model();
             model.AcknexObject.Name = name;
             model.AcknexObject.Type = ObjectType.Model;
@@ -225,6 +250,11 @@ namespace Acknex
 
         private Song CreateMusic(string name)
         {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            name = string.Intern(name);
             var music = new Song();
             music.AcknexObject.Name = name;
             music.AcknexObject.Type = ObjectType.Song;
@@ -235,6 +265,11 @@ namespace Acknex
 
         private Sound CreateSound(string name)
         {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            name = string.Intern(name);
             var sound = new Sound();
             sound.AcknexObject.Name = name;
             sound.AcknexObject.Type = ObjectType.Sound;
@@ -245,6 +280,11 @@ namespace Acknex
 
         private Font CreateFont(string name)
         {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            name = string.Intern(name);
             var font = new Font();
             font.AcknexObject.Name = name;
             font.AcknexObject.Type = ObjectType.Font;
@@ -259,6 +299,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(CanvasView, false);
             var digits = newGameObject.AddComponent<Digits>();
@@ -275,6 +316,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(CanvasView, false);
             var picture = newGameObject.AddComponent<Picture>();
@@ -291,6 +333,7 @@ namespace Acknex
             {
                 throw new Exception("Expected: name");
             }
+            name = string.Intern(name);
             var newGameObject = new GameObject(name);
             newGameObject.transform.SetParent(CanvasView, false);
             var text = newGameObject.AddComponent<Text>();
@@ -305,6 +348,11 @@ namespace Acknex
 
         private Flic CreateFlic(string name)
         {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            name = string.Intern(name);
             var flic = new Flic();
             flic.AcknexObject.Name = name;
             flic.AcknexObject.Type = ObjectType.Flic;
@@ -315,6 +363,11 @@ namespace Acknex
 
         private Texture CreateTexture(string name)
         {
+            if (name == null)
+            {
+                throw new Exception("Expected: name");
+            }
+            name = string.Intern(name);
             var texture = new Texture();
             texture.AcknexObject.Name = name;
             texture.AcknexObject.SetFloat("SVOL", 0.5f);

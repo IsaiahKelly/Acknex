@@ -41,7 +41,7 @@ namespace Acknex
             }}
         }}";
 
-        private readonly Dictionary<string, string> _dropped = new EqualityComparerDictionary<string, string>();
+        private readonly IDictionary<string, string> _dropped = new StringKeyDictionary<string, string>();
         private readonly List<Tuple<string, float>> _skips = new List<Tuple<string, float>>();
         private string _currentToken;
         private int _ifStack;
@@ -186,7 +186,6 @@ namespace Acknex
                             var lhsSetter = GetValueAndType(identifier, "lhsSetter", false);
                             var lhsGetter = GetValueAndType(identifier, "lhsGetter");
                             var assignmentOp1 = GetNextToken();
-                            //todo: different assignments (-= += /= *=)
                             if (assignmentOp1 == "-" || assignmentOp1 == "+" || assignmentOp1 == "*" || assignmentOp1 == "/")
                             {
                                 var assignmentOp2 = GetNextToken();
@@ -698,6 +697,7 @@ namespace Acknex
 
         private (string property, PropertyType propertyType, ObjectType objectType, string source) GetValueAndType(string objectOrPropertyOrValue, string propertyAssignmentVariable = "propertyValue", bool outputGetter = true, PropertyType returnType = PropertyType.Null)
         {
+            objectOrPropertyOrValue = string.Intern(objectOrPropertyOrValue);
             propertyAssignmentVariable = Sanitize(objectOrPropertyOrValue);
             //propertyAssignmentVariable = Sanitize(propertyAssignmentVariable);
             propertyAssignmentVariable += $"_{_varCounter++}";
@@ -841,6 +841,7 @@ namespace Acknex
 
         private bool HandleObject(string objectName, string assignmentVariable, bool outputGetter, out (string property, PropertyType propertyType, ObjectType objectType, string source) valueAndType)
         {
+            objectName = string.Intern(objectName);
             void HandleDroppedObjects()
             {
                 if (outputGetter)

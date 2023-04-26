@@ -5,6 +5,7 @@ using AudioSynthesis.Bank;
 using AudioSynthesis.Midi;
 using LibTessDotNet;
 using Tests;
+using UnityEditor;
 using UnityEngine;
 using Utils;
 using Resolution = Acknex.Interfaces.Resolution;
@@ -61,6 +62,7 @@ namespace Acknex
 
         public IAcknexObject CreateObjectInstance(ObjectType type, string name)
         {
+            name = string.Intern(name);
             switch (type)
             {
                 case ObjectType.Thing:
@@ -99,6 +101,7 @@ namespace Acknex
 
         public IAcknexObject CreateObjectTemplate(ObjectType type, string name)
         {
+            name = string.Intern(name);
             switch (type)
             {
                 case ObjectType.Action:
@@ -874,9 +877,10 @@ namespace Acknex
         {
             foreach (var item in _postResolve)
             {
+                var objectName = string.Intern(item.objectName);
                 if (item.list != null)
                 {
-                    if (AcknexObject.TryGetAcknexObject(item.objectName, out var acknexObject))
+                    if (AcknexObject.TryGetAcknexObject(objectName, out var acknexObject))
                     {
                         item.list.Add(acknexObject);
                     }
@@ -887,15 +891,17 @@ namespace Acknex
                     else
                     {
                         //todo: this is hacky
-                        var str = AddString($"_UNNAMED_{_unnamedStringCount++}", item.objectName);
+                        var propertyName = string.Intern($"_UNNAMED_{_unnamedStringCount++}");
+                        var str = AddString(propertyName, objectName);
                         item.list.Add(str);
                     }
                 }
                 else
                 {
-                    if (AcknexObject.TryGetAcknexObject(item.objectName, out var acknexObject))
+                    if (AcknexObject.TryGetAcknexObject(objectName, out var acknexObject))
                     {
-                        item.acknexObject.SetAcknexObject(item.keyword, acknexObject);
+                        var propertyName = string.Intern(item.keyword);
+                        item.acknexObject.SetAcknexObject(propertyName, acknexObject);
                     }
                 }
             }

@@ -9,8 +9,8 @@ namespace Acknex
     {
         public string Name { get; set; }
 
-        public Dictionary<string, float> NumberProperties = new EqualityComparerDictionary<string, float>();
-        public Dictionary<string, object> ObjectProperties = new EqualityComparerDictionary<string, object>();
+        public IDictionary<string, float> NumberProperties = new StringKeyDictionary<string, float>();
+        public IDictionary<string, object> ObjectProperties = new StringKeyDictionary<string, object>();
 
         public AcknexObject(Func<string, IAcknexObject> getTemplateCallback, ObjectType type)
         {
@@ -24,6 +24,7 @@ namespace Acknex
 
         public void AddFlag(string flag)
         {
+            string.Intern(flag);
             SetFloat(flag, 1f);
         }
 
@@ -35,6 +36,7 @@ namespace Acknex
 
         public IAcknexObject GetAcknexObject(string propertyName, bool fromTemplate = true, bool setupInstance = true)
         {
+            string.Intern(propertyName);
             var obj = GetObject<IAcknexObject>(propertyName, fromTemplate);
             if (setupInstance && obj != null && !obj.IsInstance /*&& obj != World.Instance.DummyObject*/)
             {

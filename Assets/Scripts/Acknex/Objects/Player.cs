@@ -70,7 +70,7 @@ namespace Acknex
             var initialPosition = _characterController.transform.position = new Vector3(playerX, playerFootZ, playerY);
             var playerWidth = World.Instance.GetSkillValue("PLAYER_WIDTH");
             _characterController.radius = playerWidth;
-            //_characterController.skinWidth = playerWidth * 0.1f;
+            //todo: _characterController.skinWidth = playerWidth * 0.1f;
             var playerSize = World.Instance.GetSkillValue("PLAYER_SIZE");
             _characterController.height = playerSize;
             var playerMove = new Vector3(World.Instance.GetSkillValue("PLAYER_VX"), 0f, World.Instance.GetSkillValue("PLAYER_VY")) * World.Instance.GetSkillValue("TIME_CORR");
@@ -137,17 +137,6 @@ namespace Acknex
                 World.Instance.TriggerEvent("IF_FAR", wall.AcknexObject, AcknexObject, GetRegion());
             }
         }
-
-        //private void OnDrawGizmos()
-        //{
-        //    if (_characterController == null)
-        //    {
-        //        return;
-        //    }
-        //    var size = new Vector3(_characterController.radius * 2f, _characterController.stepOffset, _characterController.radius * 2f);
-        //    var center = new Vector3(0f, _characterController.stepOffset * 0.5f, 0f);
-        //    DebugExtension.DebugLocalCube(transform, size, Color.magenta, center);
-        //}
 
         private static IAcknexObject GetTemplateCallback(string name)
         {
@@ -218,9 +207,9 @@ namespace Acknex
             var floorBasePoint = initial ? regionContainer.GetRealFloorHeight() : playerFootZ;
             var playerWidth = World.Instance.GetSkillValue("PLAYER_WIDTH");
             var floorHgt = playerFootZ;
-            var newRegion = Region.Locate(AcknexObject, regionContainer, playerWidth * 0.1f, playerX, playerY, ref floorHgt, false, ceilBasePoint);
+            var newRegion = Region.Locate(AcknexObject, regionContainer, 0f, playerX, playerY, ref floorHgt, false, ceilBasePoint);
             var ceilHgt = floorHgt;
-            Region.Locate(AcknexObject, regionContainer, playerWidth, playerX, playerY, ref ceilHgt, true, floorBasePoint);
+            Region.Locate(AcknexObject, regionContainer, 0f, playerX, playerY, ref ceilHgt, true, floorBasePoint);
             World.Instance.UpdateSkillValue("FLOOR_HGT", floorHgt);
             World.Instance.UpdateSkillValue("CEIL_HGT", ceilHgt);
             if (initial || newRegion != regionContainer)
@@ -229,7 +218,6 @@ namespace Acknex
                 newRegion.AcknexObject.AddFlag("HERE");
                 World.Instance.SetSynonymObject("HERE", newRegion.AcknexObject);
                 AcknexObject.SetAcknexObject("REGION", newRegion.AcknexObject);
-                //todo: these events must be triggered if the player is entirely inside the region
                 if (!initial)
                 {
                     World.Instance.TriggerEvent("IF_LEAVE", regionContainer.AcknexObject, null, regionContainer.AcknexObject);
@@ -244,7 +232,7 @@ namespace Acknex
                     World.Instance.TriggerEvent("IF_DIVE", newRegion.Above.AcknexObject, null, newRegion.Above.AcknexObject);
                 }
             }
-            var playerHgt = playerFootZ - floorHgt; // - _characterController.skinWidth;
+            var playerHgt = playerFootZ - floorHgt; //todo:  - _characterController.skinWidth;
             if (playerHgt < 0.1f)
             {
                 playerHgt = 0f;
@@ -269,6 +257,7 @@ namespace Acknex
 
         public void Rotate(Vector3 center, float degrees)
         {
+            //todo
         }
 
         public void Shift(float dx, float dy)
@@ -281,6 +270,10 @@ namespace Acknex
 
         public void Lift(float dz)
         {
+            var playerHgt = World.Instance.GetSkillValue("PLAYER_HGT");
+            var playerZ = World.Instance.GetSkillValue("PLAYER_Z");
+            World.Instance.UpdateSkillValue("PLAYER_HGT", playerHgt + dz);
+            World.Instance.UpdateSkillValue("PLAYER_Z", playerZ + dz);
         }
     }
 }

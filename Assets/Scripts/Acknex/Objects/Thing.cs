@@ -431,7 +431,7 @@ namespace Acknex
                     _lastTarget = null;
                     yield break;
                 }
-                //TODO
+                //todo: ensure this is right
                 if (MoveToPointStep(nextPoint))
                 {
                     if (waypoint++ >= points.Count)
@@ -578,7 +578,7 @@ namespace Acknex
                 region = regionContainer.AcknexObject;
             }
             float checkHeight;
-            if (regionContainer != null)
+            //if (regionContainer != null)
             {
                 if (!ground)
                 {
@@ -586,10 +586,10 @@ namespace Acknex
                 }
                 checkHeight = thingZ + World.Instance.GetSkillValue("ACTOR_CLIMB");
             }
-            else
-            {
-                checkHeight = Region.MaxHeight;
-            }
+            //else
+            //{
+            //    checkHeight = Region.MaxHeight;
+            //}
             var newRegionContainer = initial || AcknexObject.HasFlag("CAREFULLY") ? Region.Locate(AcknexObject, regionContainer, GetColliderRadius(), thingX, thingY, ref thingZ, false, checkHeight) : regionContainer;
             float height;
             if (ground)

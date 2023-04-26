@@ -560,6 +560,7 @@ namespace Acknex
 
         private bool HandleProperty(IAcknexObject acknexObject, IEnumerator<string> tokens, string keyword, PropertyType propertyType, LineBinaryReader binaryReader = null, string filename = null)
         {
+            keyword = string.Intern(keyword);
             switch (propertyType)
             {
                 case PropertyType.Float:
@@ -567,7 +568,7 @@ namespace Acknex
                     CheckSemiColon(tokens);
                     return true;
                 case PropertyType.String:
-                    acknexObject.SetString(keyword, GetNextToken(tokens));
+                    acknexObject.SetString(keyword, string.Intern(GetNextToken(tokens)));
                     CheckSemiColon(tokens);
                     return true;
                 case PropertyType.Filename:
@@ -648,6 +649,7 @@ namespace Acknex
 
         private void ParseObjectReferenceList(string propertyName, IAcknexObject acknexObject, IEnumerator<string> tokens)
         {
+            propertyName = string.Intern(propertyName);
             if (!acknexObject.TryGetObject(propertyName, out List<IAcknexObject> list))
             {
                 list = new List<IAcknexObject>();
@@ -677,6 +679,7 @@ namespace Acknex
 
         private void ParseFloatList(string propertyName, IAcknexObject acknexObject, IEnumerator<string> tokens)
         {
+            propertyName = string.Intern(propertyName);
             if (!acknexObject.TryGetObject(propertyName, out List<float> list))
             {
                 list = new List<float>();
@@ -706,7 +709,7 @@ namespace Acknex
                 {
                     throw new Exception("Expected: >");
                 }
-                return Path.GetFullPath(filename);
+                return string.Intern(Path.GetFullPath(filename));
             }
             return null;
         }
@@ -804,6 +807,7 @@ namespace Acknex
 
         private void ParseRegionIndex(IAcknexObject acknexObject, string propertyName, IEnumerator<string> tokens)
         {
+            propertyName = string.Intern(propertyName);
             if (!_oldAckVersion)
             {
                 var regionIndex = (int)ParseFloat(tokens);

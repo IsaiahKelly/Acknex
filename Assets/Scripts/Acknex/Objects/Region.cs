@@ -650,7 +650,8 @@ namespace Acknex
             {
                 var zCheck = height ?? currentRegion.AcknexObject.GetFloat("FLOOR_HGT");
                 var point = new Vector3(thingX, zCheck, thingY);
-                if (Physics.SphereCast(new Ray(point, Vector3.up), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
+                RaycastHit raycastHit;
+                if (radius == 0f && Physics.Raycast(new Ray(point, Vector3.up), out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions) || Physics.SphereCast(new Ray(point, Vector3.up), radius, out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, ref thingHgt, out var outRegion))
                     {
@@ -698,13 +699,12 @@ namespace Acknex
 
         public void BuildBelowInstance(List<Region> createdRegions)
         {
-            //this.Enable();
             if (Below != null)
             {
                 var belowAcknexObject = (AcknexObject)Below.AcknexObject;
                 var newAcknexObject = new AcknexObject(GetTemplateCallback, ObjectType.Region);
-                newAcknexObject.ObjectProperties = new EqualityComparerDictionary<string, object>(belowAcknexObject.ObjectProperties);
-                newAcknexObject.NumberProperties = new EqualityComparerDictionary<string, float>(belowAcknexObject.NumberProperties);
+                newAcknexObject.ObjectProperties = new StringKeyDictionary<string, object>(belowAcknexObject.ObjectProperties);
+                newAcknexObject.NumberProperties = new StringKeyDictionary<string, float>(belowAcknexObject.NumberProperties);
                 newAcknexObject.Name = belowAcknexObject.Name;
                 var newRegion = Instantiate(Below.gameObject).GetComponent<Region>();
                 newRegion.Above = this;

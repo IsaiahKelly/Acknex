@@ -255,7 +255,6 @@ namespace Acknex
         {
             UpdateSkillValue("SECS", (int)Time.time);
 
-            //todo: how to calc timecorr?
             var timeCorr = Time.deltaTime / TimeUtils.OneTick;
             UpdateSkillValue("TIME_CORR", timeCorr);
             UpdateSkillValue("TIME_FAC", 1f - timeCorr);
@@ -314,11 +313,6 @@ namespace Acknex
                 UpdateSkillValue("PLAYER_VROT", 0f);
             }
 
-            //todo: WALK_PERIOD, WALK_TIME, WAVE_PERIOD, WALK, WAVE
-            //var oneStepTime = TimeUtils.TicksToTime((int)(GetSkillValue("WALK_TIME")));
-            //var walkFactor = Mathf.Sin(-1f + ((Time.time % oneStepTime) * 2f));
-            //UpdateSkillValue("WALK", walkFactor);
-
             UpdateSkillValue("KEY_ANY", Input.anyKeyDown);
             UpdateSkillValue("KEY_0", Input.GetKey(KeyCode.Keypad0) || Input.GetKey(KeyCode.Alpha0));
             UpdateSkillValue("KEY_1", Input.GetKey(KeyCode.Keypad1) || Input.GetKey(KeyCode.Alpha1));
@@ -361,7 +355,6 @@ namespace Acknex
             UpdateSkillValue("KEY_CAL", Input.GetKey(KeyCode.Comma));
             UpdateSkillValue("KEY_CAR", Input.GetKey(KeyCode.Period));
             UpdateSkillValue("KEY_CTRL", Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl));
-            //UpdateSkillValue("KEY_DEL", Input.GetKey(KeyCode.Delete));
             UpdateSkillValue("KEY_END", Input.GetKey(KeyCode.End));
             UpdateSkillValue("KEY_ENTER", Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.Return));
             UpdateSkillValue("KEY_ESC", Input.GetKey(KeyCode.Escape));
