@@ -37,7 +37,7 @@ namespace Acknex
                 throw new Exception("String " + obj + " is not internalized");
             }
 #endif
-            return RuntimeHelpers.GetHashCode(obj); //obj.GetHashCode();
+            return RuntimeHelpers.GetHashCode(obj);
         }
     }
 }

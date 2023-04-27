@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace Acknex
 {
+    //https://github.com/kpol/trie
     /// <summary>
     /// Defines a key/value pair that can be set or retrieved from <see cref="StringTrie{TValue}"/>.
     /// </summary>

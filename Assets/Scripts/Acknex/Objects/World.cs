@@ -143,7 +143,7 @@ namespace Acknex
             _palette = new Texture2D(256, 1, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.None);
             _palette.filterMode = FilterMode.Point;
             _palettePixels = new Color[256];
-            _surfacesMaterial = new Material(Shader.Find("Acknex/Surfaces"));
+            _surfacesMaterial = new Material(Shader.Find("Acknex/Surface"));
             _skyMaterial = new Material(Shader.Find("Acknex/Sky"));
             Shader.SetGlobalTexture("_AcknexPalette", _palette);
         }

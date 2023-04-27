@@ -343,13 +343,15 @@ namespace Acknex
 
         private void OnControllerColliderHit(ControllerColliderHit controllerColliderHit)
         {
-            var movingVertically = Mathf.Abs(AcknexObject.GetFloat("VSPEED")) > 0.1f;
-            var movingHorizontally = !Mathf.Approximately(AcknexObject.GetFloat("SPEED"), 0f);
-            var hittingUpOrDown = Vector3.Dot(controllerColliderHit.normal, Vector3.up) > 0.5f || Vector3.Dot(controllerColliderHit.normal, Vector3.down) > 0.5f;
-            if (/*(movingVertically && hittingUpOrDown) ||*/ (movingHorizontally && !hittingUpOrDown))
-            {
-                OnCollisionEnter(null);
-            }
+            //var movingVertically = Mathf.Abs(AcknexObject.GetFloat("VSPEED")) > 0.1f;
+            //var movingHorizontally = !Mathf.Approximately(AcknexObject.GetFloat("SPEED"), 0f);
+            //var region = GetRegion().Container as Region;
+            //var height = AcknexObject.GetFloat("HEIGHT");
+            //var hittingUpOrDown = height < region.GetRealFloorHeight() || height > region.GetRealCeilHeight();
+            //if (/*(movingVertically && hittingUpOrDown) ||*/ (movingHorizontally && !hittingUpOrDown))
+            //{
+            OnCollisionEnter(null);
+            //}
         }
 
         private void OnCollisionEnter(Collision collision)

@@ -37,8 +37,9 @@
         UNITY_INSTANCING_BUFFER_END(Props)
 
         half4 LightingSprite(SurfaceOutput s, half3 lightDir, half atten) {
+            half light = _AMBIENT + (max(dot(s.Normal, lightDir), 0.0) * _ALBEDO);
             half4 c;
-            c.rgb = (_RADIANCE + s.Albedo) * _AMBIENT;
+            c.rgb = _RADIANCE + s.Albedo * light;
             c.a = s.Alpha;
             return c;
         }

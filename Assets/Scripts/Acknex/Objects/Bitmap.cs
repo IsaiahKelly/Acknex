@@ -161,10 +161,10 @@ namespace Acknex
                 {
                     ambient *= wallOrRegionAmbient;
                 }
-                if (sourceAcknexObject.Type == ObjectType.Wall)
-                {
-                    ambient *= ((Wall)sourceAcknexObject.Container).AmbientOverride;
-                }
+                //if (sourceAcknexObject.Type == ObjectType.Wall)
+                //{
+                //    ambient *= ((Wall)sourceAcknexObject.Container).AmbientOverride;
+                //}
                 if (sourceAcknexObject.TryGetFloat("OFFSET_X", out var offsetXVal))
                 {
                     offsetX = offsetXVal;

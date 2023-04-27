@@ -6,9 +6,9 @@ namespace Acknex
 {
     public static class Attachment
     {
-        public static void ProcessAttachments(List<Texture> _tempAttachments, ref Texture2DArray attachmentsTexture, ref Texture2DArray palettesTexture, List<Vector4> positions, Texture attachment, IList<Material> materials)
+        public static void ProcessAttachments(List<Texture> tempAttachments, ref Texture2DArray attachmentsTexture, ref Texture2DArray palettesTexture, List<Vector4> positions, Texture attachment, IList<Material> materials)
         {
-            _tempAttachments.Clear();
+            tempAttachments.Clear();
             if (materials == null)
             {
                 return;
@@ -30,11 +30,11 @@ namespace Acknex
             var posY = attachment.AcknexObject.GetFloat("POS_Y");
             positions.Add(new Vector2(posX, posY));
             attachment = (Texture)attach.Container;
-            _tempAttachments.Add(attachment);
+            tempAttachments.Add(attachment);
             while (attachment.AcknexObject.TryGetAcknexObject("ATTACH", out var child))
             {
                 var childTexture = (Texture)child.Container;
-                _tempAttachments.Add(childTexture);
+                tempAttachments.Add(childTexture);
                 posX += attachment.AcknexObject.GetFloat("POS_X");
                 posY += attachment.AcknexObject.GetFloat("POS_Y");
                 positions.Add(new Vector2(posX, posY));
@@ -43,19 +43,18 @@ namespace Acknex
             if (attachmentsTexture == null || palettesTexture == null)
             {
                 var bitmap = attachment.GetBitmapAt(0);
-                attachmentsTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, _tempAttachments.Count, bitmap.CropTexture.Texture.format, bitmap.CropTexture.Texture.mipmapCount > 1);
-                palettesTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, _tempAttachments.Count, bitmap.CropTexture.Palette.format, bitmap.CropTexture.Palette.mipmapCount > 1);
+                attachmentsTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, tempAttachments.Count, bitmap.CropTexture.Texture.format, bitmap.CropTexture.Texture.mipmapCount > 1);
+                palettesTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, tempAttachments.Count, bitmap.CropTexture.Palette.format, bitmap.CropTexture.Palette.mipmapCount > 1);
+                attachmentsTexture.filterMode = palettesTexture.filterMode = World.Instance.UsePalettes ? FilterMode.Point : (World.Instance.BilinearFilter ? FilterMode.Bilinear : FilterMode.Point);
             }
             positions.Clear();
-            for (var i = 0; i < _tempAttachments.Count; i++)
+            for (var i = 0; i < tempAttachments.Count; i++)
             {
-                attachment = _tempAttachments[i];
+                attachment = tempAttachments[i];
                 var cycle = attachment.AcknexObject.GetInteger("CYCLE");
                 var bitmap = attachment.GetBitmapAt(cycle);
                 Graphics.CopyTexture(bitmap.CropTexture.Texture, 0, attachmentsTexture, i);
                 Graphics.CopyTexture(bitmap.CropTexture.Palette, 0, palettesTexture, i);
-                //attachmentsTexture.SetPixelData(bitmap.CropTexture.Texture.GetPixels(), 0, i, 0);
-                //palettesTexture.SetPixelData(bitmap.CropTexture.Palette.GetPixels(), 0, i, 0);
             }
             attachmentsTexture.Apply(true, false);
             palettesTexture.Apply(true, false);
@@ -65,7 +64,7 @@ namespace Acknex
                 if (material != null)
                 {
                     material.SetTexture("_ATTACH", World.Instance.UsePalettes ? palettesTexture : attachmentsTexture);
-                    material.SetInt("_ATTACH_COUNT", _tempAttachments.Count);
+                    material.SetInt("_ATTACH_COUNT", tempAttachments.Count);
                     material.SetVectorArray("_ATTACH_POS", positions);
                 }
             }

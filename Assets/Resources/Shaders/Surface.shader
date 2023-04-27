@@ -1,4 +1,4 @@
-﻿Shader "Acknex/Surfaces"
+﻿Shader "Acknex/Surface"
 {
 	Properties
 	{
@@ -46,9 +46,9 @@
 			UNITY_INSTANCING_BUFFER_END(Props)
 
 			half4 LightingSurface(SurfaceOutput s, half3 lightDir, half atten) {
-				half light = max(dot(s.Normal, lightDir), 0.0) * _ALBEDO * atten;
+				half light = _AMBIENT + (max(dot(s.Normal, lightDir), 0.0) * _ALBEDO);
 				half4 c;
-				c.rgb = (_RADIANCE + s.Albedo) * _LightColor0.rgb * lerp(_AMBIENT, light, 0.5);
+				c.rgb = _RADIANCE + s.Albedo * light;
 				c.a = s.Alpha;
 				return c;
 			}

@@ -7,6 +7,9 @@ namespace Acknex.Interfaces
     /// </summary>
     public interface IAcknexObjectContainer
     {
+        /// <summary>
+        /// Indicates whether the object is marked for debugging.
+        /// </summary>
         bool IsDebugMarked { get; set; }
 
         /// <summary>
@@ -41,6 +44,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Enables the Unity object representation.
         /// </summary>
+        /// 
         void Enable();
         /// <summary>
         /// Disables the Unity object representation.

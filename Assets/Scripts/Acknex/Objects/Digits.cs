@@ -34,7 +34,7 @@ namespace Acknex
                 if (AcknexObject.TryGetAcknexObject("SKILL", out var skill))
                 {
                     var len = AcknexObject.GetFloat("LEN");
-                    var skillValue = skill.GetInteger("VAL").ToString("D" + len.ToString());
+                    var skillValue = skill.GetInteger("VAL").ToString($"D{len}");
                     DrawText(vh, skillValue);
                 }
             }

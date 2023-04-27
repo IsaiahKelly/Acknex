@@ -182,7 +182,7 @@ namespace Acknex
                 Mesh.SetUVs(0, meshTexcoords);
                 Mesh.SetTriangles(meshTris, 0);
                 Mesh.UploadMeshData(true);
-                Material = new Material(Shader.Find("Acknex/Surfaces"));
+                Material = new Material(Shader.Find("Acknex/Surface"));
                 var skin = new Color32[skinWidth * skinHeight];
                 for (var i = 0; i < skin.Length; ++i)
                 {

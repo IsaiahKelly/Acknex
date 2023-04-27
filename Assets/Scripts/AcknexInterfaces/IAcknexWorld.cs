@@ -1,8 +1,6 @@
 ﻿using Acknex.Interfaces;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-
 namespace Acknex.Interfaces
 {
     /// <summary>
@@ -65,7 +63,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// This method should be called when all properties from a given object template have been processed.
         /// </summary>
-        [Obsolete("Deprecated.")]
+        [Obsolete("Deprecated")]
         void PostSetupObjectTemplate(IAcknexObject acknexObject);
 
         /// <summary>
