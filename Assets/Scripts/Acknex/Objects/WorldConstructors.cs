@@ -73,6 +73,7 @@ namespace Acknex
             var region = newGameObject.AddComponent<Region>();
             region.AcknexObject.Name = name;
             region.AcknexObject.Type = ObjectType.Region;
+            region.AcknexObject.SetFloat("AMBIENT", 1.0f);
             return region;
         }
 
@@ -89,6 +90,7 @@ namespace Acknex
             var wall = newGameObject.AddComponent<Wall>();
             wall.AcknexObject.Type = ObjectType.Wall;
             wall.AcknexObject.Name = name;
+            wall.AcknexObject.SetFloat("AMBIENT", 1.0f);
             return wall;
         }
 
@@ -121,6 +123,7 @@ namespace Acknex
             var thing = newGameObject.AddComponent<Thing>();
             thing.AcknexObject.Name = name;
             thing.AcknexObject.Type = ObjectType.Thing;
+            thing.AcknexObject.SetFloat("AMBIENT", 1.0f);
             return thing;
         }
 
@@ -151,6 +154,7 @@ namespace Acknex
             var actor = newGameObject.AddComponent<Actor>();
             actor.AcknexObject.Name = name;
             actor.AcknexObject.Type = ObjectType.Actor;
+            actor.AcknexObject.SetFloat("AMBIENT", 1.0f);
             return actor;
         }
 

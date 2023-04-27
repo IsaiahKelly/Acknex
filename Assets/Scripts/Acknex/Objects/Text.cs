@@ -13,11 +13,11 @@ namespace Acknex
         public Font Font => (Font)AcknexObject.GetAcknexObject("FONT").Container;
 
         public override Material material { get; set; }
-        public bool IsGeometryDirty { get; set; }
+        
 
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Text);
 
-        public bool IsDebugMarked { get; set; }
+        
 
         public void Disable()
         {
@@ -39,7 +39,7 @@ namespace Acknex
             return null;
         }
 
-        public bool IsTextureDirty { get; set; }
+        
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {

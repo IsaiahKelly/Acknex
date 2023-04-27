@@ -6,12 +6,6 @@ namespace Acknex
 {
     public class Font : IAcknexObjectContainer
     {
-        public void ResetTexture()
-        {
-
-        }
-        public bool IsGeometryDirty { get; set; }
-        public bool IsTextureDirty { get; set; }
         public TextureAndPalette Texture;
         public Texture2DArray GlyphsPalette;
         public Texture2DArray GlyphsTexture;
@@ -22,7 +16,7 @@ namespace Acknex
         }
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Font);
-        public bool IsDebugMarked { get; set; }
+        
 
         public void Disable()
         {

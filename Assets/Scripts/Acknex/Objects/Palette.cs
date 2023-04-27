@@ -18,8 +18,7 @@ namespace Acknex
         public static Palette Instance { get; private set; }
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Palette);
-        public bool IsDebugMarked { get; set; }
-        public bool IsGeometryDirty { get; set; }
+        
 
         public void Disable()
         {
@@ -41,13 +40,7 @@ namespace Acknex
             return null;
         }
 
-        public bool IsTextureDirty { get; set; }
-
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
-        }
-
-        public void ResetTexture()
         {
         }
 

@@ -12,11 +12,8 @@ using Utils;
 
 namespace Acknex
 {
-    //todo: tesselation needs to implement the method to create new vertices
-    public class Region : MonoBehaviour, IAcknexObjectContainer
+    public class Region : MonoBehaviour, IAcknexObjectContainer, IGraphicObject
     {
-        public const float MaxHeight = 10000f;
-
         private Dictionary<int, List<int>> _allTriangles;
         private List<Vector2> _allUVs;
         private List<Vector3> _allVertices;
@@ -26,7 +23,7 @@ namespace Acknex
         private GameObject _audioSourceGameObject;
         private Region _belowOverride;
         private MeshCollider _ceilCollider;
-        private GameObject _ceilGameObject; 
+        private GameObject _ceilGameObject;
         private Material _ceilMaterial;
         private Mesh _ceilMesh;
         private MeshRenderer _ceilMeshRenderer;
@@ -103,8 +100,9 @@ namespace Acknex
         public MeshFilter FloorMeshFilter { get; set; }
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Region);
+        public Vector4 BitmapCoords { get; set; }
 
-        [field: SerializeField] public bool IsDebugMarked { get; set; }
+        public Bitmap CurrentBitmap { get; set; }
 
         public void Disable()
         {
@@ -137,19 +135,38 @@ namespace Acknex
             return AcknexObject;
         }
 
+        public bool IsGeometryDirty
+        {
+            get
+            {
+                var floorHgt = AcknexObject.GetFloat("FLOOR_HGT");
+                var ceilHgt = AcknexObject.GetFloat("CEIL_HGT");
+                var differentHeight = Math.Abs(floorHgt - _lastFloorHgt) > Mathf.Epsilon || Math.Abs(ceilHgt - _lastCeilHgt) > Mathf.Epsilon;
+                _lastFloorHgt = floorHgt;
+                _lastCeilHgt = ceilHgt;
+                return differentHeight;
+            }
+            set { }
+        }
+
         public bool IsTextureDirty
         {
             get
             {
                 var hasPlay = AcknexObject.HasFlag("PLAY");
-                var ambient = AcknexObject.GetFloat("AMBIENT");
-                return ambient != _lastAmbient || (CeilTexture != null && CeilTexture.AcknexObject.IsDirty) || CeilTexture != _lastCeilTexture || (FloorTexture != null && FloorTexture.AcknexObject.IsDirty) || FloorTexture != _lastFloorTexture || hasPlay;
+                var ambient = GetAmbient();
+                var ceilTexture = CeilTexture;
+                var floorTexture = FloorTexture;
+                var isTextureDirty = ambient != _lastAmbient || (ceilTexture != null && ceilTexture.AcknexObject.IsDirty) || ceilTexture != _lastCeilTexture || (floorTexture != null && floorTexture.AcknexObject.IsDirty) || floorTexture != _lastFloorTexture || hasPlay;
+                _lastAmbient = ambient;
+                _lastCeilTexture = ceilTexture;
+                _lastFloorTexture = floorTexture;
+                return isTextureDirty;
             }
-            set
-            {
-
-            }
+            set { }
         }
+
+        public Vector4 OffsetScale { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
@@ -173,6 +190,16 @@ namespace Acknex
 
         public void ResetTexture()
         {
+        }
+
+        public float GetAmbient()
+        {
+            var ambient = AcknexObject.GetFloat("AMBIENT");
+            //if (AcknexObject.HasFlag("HERE"))
+            //{
+            //    ambient += World.Instance.GetSkillValue("PLAYER_LIGHT") * Mathf.InverseLerp(World.Instance.GetSkillValue("CLIP_DIST"), 0f, AcknexObject.GetFloat("DISTANCE"));
+            //}
+            return ambient;
         }
 
         public void SetupInstance()
@@ -222,7 +249,6 @@ namespace Acknex
             _audioSource.playOnAwake = false;
             _audioSource.spatialBlend = 1f;
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
-            //_audioSource.spread = 360f;
             StartCoroutine(TriggerTickEvents());
             StartCoroutine(TriggerSecEvents());
         }
@@ -230,23 +256,6 @@ namespace Acknex
 
         public void SetupTemplate()
         {
-        }
-
-        public bool IsGeometryDirty
-        {
-            get
-            {
-                var floorHgt = AcknexObject.GetFloat("FLOOR_HGT");
-                var ceilHgt = AcknexObject.GetFloat("CEIL_HGT");
-                var differentHeight = Math.Abs(floorHgt - _lastFloorHgt) > Mathf.Epsilon || Math.Abs(ceilHgt - _lastCeilHgt) > Mathf.Epsilon;
-                _lastFloorHgt = floorHgt;
-                _lastCeilHgt = ceilHgt;
-                return differentHeight;
-            }
-            set
-            {
-
-            }
         }
 
         public void UpdateObject()
@@ -263,6 +272,45 @@ namespace Acknex
                 }
                 UpdateAllMeshes();
             }
+            if (IsTextureDirty)
+            {
+                if (_animateCeilCoroutine != null)
+                {
+                    StopCoroutine(_animateCeilCoroutine);
+                }
+                var hasPlay = AcknexObject.HasFlag("PLAY");
+                if (CeilTexture != null)
+                {
+                    if (hasPlay)
+                    {
+                        AcknexObject.AddFlag("ONESHOT");
+                        AcknexObject.RemoveFlag("PLAY");
+                    }
+                    _animateCeilCoroutine = StartCoroutine(AnimateCeil());
+                }
+                if (_animateFloorCoroutine != null)
+                {
+                    StopCoroutine(_animateFloorCoroutine);
+                }
+                if (FloorTexture != null)
+                {
+                    if (hasPlay)
+                    {
+                        AcknexObject.AddFlag("ONESHOT");
+                        AcknexObject.RemoveFlag("PLAY");
+                    }
+                    _animateFloorCoroutine = StartCoroutine(AnimateFloor());
+                }
+            }
+            var center = GetCenter();
+            var pos2D = new Vector2(center.x, center.z);
+            var playerPos2D = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
+            var distance = Vector2.Distance(playerPos2D, pos2D);
+            if (!AcknexObject.HasFlag("LIBER") && distance > World.Instance.AcknexObject.GetFloat("CLIP_DIST"))
+            {
+                return;
+            }
+            AcknexObject.SetFloat("DISTANCE", distance);
             if (!AcknexObject.IsDirty)
             {
                 return;
@@ -309,49 +357,6 @@ namespace Acknex
             {
                 _ceilMeshRenderer.shadowCastingMode = CeilTexture.AcknexObject.HasFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             }
-            var hasPlay = AcknexObject.HasFlag("PLAY");
-            var ambient = AcknexObject.GetFloat("AMBIENT");
-            var isTextureDirty = IsTextureDirty;
-            if (isTextureDirty)
-            {
-                //foreach (var wall in Walls)
-                //{
-                //    wall.AmbientOverride = ambient;
-                //    wall.AcknexObject.Container.ResetTexture();
-                //}
-                if (_animateCeilCoroutine != null)
-                {
-                    StopCoroutine(_animateCeilCoroutine);
-                }
-                if (CeilTexture != null)
-                {
-                    if (hasPlay)
-                    {
-                        AcknexObject.AddFlag("ONESHOT");
-                        AcknexObject.RemoveFlag("PLAY");
-                    }
-                    _animateCeilCoroutine = StartCoroutine(AnimateCeil());
-                }
-                _lastCeilTexture = CeilTexture;
-                //}
-                //if (isTextureDirty)
-                //{
-                if (_animateFloorCoroutine != null)
-                {
-                    StopCoroutine(_animateFloorCoroutine);
-                }
-                if (FloorTexture != null)
-                {
-                    if (hasPlay)
-                    {
-                        AcknexObject.AddFlag("ONESHOT");
-                        AcknexObject.RemoveFlag("PLAY");
-                    }
-                    _animateFloorCoroutine = StartCoroutine(AnimateFloor());
-                }
-                _lastFloorTexture = FloorTexture;
-            }
-            _lastAmbient = ambient;
         }
 
         private static IAcknexObject GetTemplateCallback(string name)
@@ -661,7 +666,7 @@ namespace Acknex
                 var zCheck = height ?? currentRegion.AcknexObject.GetFloat("FLOOR_HGT");
                 var point = new Vector3(thingX, zCheck, thingY);
                 RaycastHit raycastHit;
-                if (radius == 0f && Physics.Raycast(new Ray(point, Vector3.up), out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions) || Physics.SphereCast(new Ray(point, Vector3.up), radius, out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
+                if ((radius == 0f && Physics.Raycast(new Ray(point, Vector3.up), out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions)) || Physics.SphereCast(new Ray(point, Vector3.up), radius, out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, ref thingHgt, out var outRegion))
                     {

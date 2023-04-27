@@ -10,7 +10,7 @@ using Utils;
 
 namespace Acknex
 {
-    public class Wall : MonoBehaviour, IAcknexObjectContainer
+    public class Wall : MonoBehaviour, IAcknexObjectContainer, IGraphicObject
     {
         private readonly List<Vector4> _attachmentPos = new List<Vector4>();
         private readonly List<Texture> _tempAttachments = new List<Texture>();
@@ -49,7 +49,6 @@ namespace Acknex
         private Vector3 _xAxis;
 
         public AckTransform AckTransform;
-        public float AmbientOverride = 1f;
         public Matrix4x4 BottomQuad;
         public Matrix4x4 BottomUV;
         public bool DisableRender;
@@ -58,6 +57,8 @@ namespace Acknex
         public bool Processed;
         public Matrix4x4 TopQuad;
         public Matrix4x4 TopUV;
+        private IAcknexObject _rightRegionInstance;
+        private IAcknexObject _leftRegionInstance;
 
         public MeshFilter Filter { get; set; }
         public MeshFilter GapFilter { get; set; }
@@ -65,6 +66,9 @@ namespace Acknex
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
         public bool HasGap { get; private set; }
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Wall);
+        public Vector4 BitmapCoords { get; set; }
+
+        public Bitmap CurrentBitmap { get; set; }
 
         public void Disable()
         {
@@ -89,28 +93,28 @@ namespace Acknex
 
         public IAcknexObject GetRegion()
         {
-            return null;
+            return _rightRegionInstance;
         }
 
-        [field: SerializeField] public bool IsDebugMarked { get; set; }
-
         public bool IsGeometryDirty { get; set; }
+
 
         public bool IsTextureDirty
         {
             get
             {
-                var region1 = AcknexObject.GetAcknexObject("REGION1");
-                var region2 = AcknexObject.GetAcknexObject("REGION2");
-                var ambient = AcknexObject.GetFloat("AMBIENT");
+                var ambient = GetAmbient();
+                var textureObject = TextureObject;
                 var hasPlay = AcknexObject.HasFlag("PLAY");
-                return region1.Container.IsTextureDirty || region2.Container.IsTextureDirty || ambient != _lastAmbient || (TextureObject != null && TextureObject.AcknexObject.IsDirty) || TextureObject != _lastTextureObject || hasPlay;
+                var isTextureDirty = ambient != _lastAmbient || textureObject != _lastTextureObject || (textureObject != null && textureObject.AcknexObject.IsDirty) || hasPlay;
+                _lastAmbient = ambient;
+                _lastTextureObject = textureObject;
+                return isTextureDirty;
             }
-            set
-            {
-
-            }
+            set { }
         }
+
+        public Vector4 OffsetScale { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
@@ -134,6 +138,13 @@ namespace Acknex
 
         public void ResetTexture()
         {
+        }
+
+        public float GetAmbient()
+        {
+            var ambient = AcknexObject.GetFloat("AMBIENT");
+            ambient *= ((IGraphicObject)GetRegion().Container).GetAmbient();
+            return ambient;
         }
 
         public void SetupInstance()
@@ -199,25 +210,12 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            _vertexGameObjectA.transform.position = (HasGap ? GapQuad : BottomQuad).GetColumn(3);
-            _vertexGameObjectB.transform.position = (HasGap ? GapQuad : BottomQuad).GetColumn(2);
             if (IsGeometryDirty)
             {
                 UpdateAllMeshes();
                 IsGeometryDirty = false;
             }
-            if (!AcknexObject.IsDirty)
-            {
-                return;
-            }
-            AcknexObject.IsDirty = false;
-            _audioSourceGameObject.transform.position = GetCenter();
-            _meshRenderer.enabled = !DisableRender;
-            var invisible = AcknexObject.GetFloat("INVISIBLE");
-            var hasPlay = AcknexObject.HasFlag("PLAY");
-            AcknexObject.SetFloat("VISIBLE", invisible > 0f ? 0f : 1f);
-            var isTextureDirty = IsTextureDirty;
-            if (isTextureDirty)
+            if (IsTextureDirty)
             {
                 if (_animateCoroutine != null)
                 {
@@ -225,21 +223,38 @@ namespace Acknex
                 }
                 if (TextureObject != null)
                 {
-                    if (hasPlay)
+                    if (AcknexObject.HasFlag("PLAY"))
                     {
                         AcknexObject.AddFlag("ONESHOT");
                         AcknexObject.RemoveFlag("PLAY");
                     }
                     _animateCoroutine = StartCoroutine(Animate());
                 }
-                _lastTextureObject = TextureObject;
             }
-            _lastAmbient = AcknexObject.GetFloat("AMBIENT");
+            var center = GetCenter();
+            var pos2D = new Vector2(center.x, center.z);
+            var playerPos2D = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
+            var distance = Vector2.Distance(playerPos2D, pos2D);
+            if (!AcknexObject.HasFlag("LIBER") && distance > World.Instance.AcknexObject.GetFloat("CLIP_DIST"))
+            {
+                return;
+            }
+            AcknexObject.SetFloat("DISTANCE", distance);
+            if (!AcknexObject.IsDirty)
+            {
+                return;
+            }
+            AcknexObject.IsDirty = false;
+            _vertexGameObjectA.transform.position = (HasGap ? GapQuad : BottomQuad).GetColumn(3);
+            _vertexGameObjectB.transform.position = (HasGap ? GapQuad : BottomQuad).GetColumn(2);
+            _audioSourceGameObject.transform.position = GetCenter();
+            _meshRenderer.enabled = !DisableRender;
+            var invisible = AcknexObject.GetFloat("INVISIBLE");
+            AcknexObject.SetFloat("VISIBLE", invisible > 0f ? 0f : 1f);
             _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.AcknexObject.HasFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             var impassable = AcknexObject.HasFlag("IMPASSABLE");
             var passable = AcknexObject.HasFlag("PASSABLE");
             var dist = AcknexObject.GetFloat("DIST");
-            _invertedCollider.cookingOptions = MeshColliderCookingOptions.None;
             _invertedCollider.enabled = _collider.enabled = impassable || !passable;
             _vertexTriggerB.radius = _vertexTriggerA.radius = dist;
             _gapInvertedCollider.enabled = _gapCollider.enabled = !passable && ((HasGap && !impassable) || (!HasGap && impassable));
@@ -457,6 +472,7 @@ namespace Acknex
                 _invertedMesh.SetIndices(triangles, MeshTopology.Quads, 0);
                 _invertedMesh.UploadMeshData(false);
                 _invertedMesh.RecalculateBounds();
+                _invertedCollider.cookingOptions = MeshColliderCookingOptions.None;
                 _invertedCollider.sharedMesh = _invertedMesh;
                 //todo: this needs another approach, as textures might change from common to sky and vice-versa
                 if (!_materialsCreated)
@@ -522,10 +538,12 @@ namespace Acknex
             }
             if (leftRegion != null)
             {
+                _leftRegionInstance = rightRegion.AcknexObject;
                 leftRegion.Walls.Add(this);
             }
             if (rightRegion != null)
             {
+                _rightRegionInstance = rightRegion.AcknexObject;
                 rightRegion.Walls.Add(this);
             }
             var leftRegionBelowCeilHeight = leftRegion?.Below == null ? 0f : leftRegion.Below.AcknexObject.GetFloat("CEIL_HGT");

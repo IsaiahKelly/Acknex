@@ -26,6 +26,11 @@ namespace Acknex
 
         public GameObject GameObject => gameObject;
 
+        public float GetAmbient()
+        {
+            return 1f;
+        }
+
         public Vector3 GetCenter()
         {
             return default;
@@ -36,10 +41,9 @@ namespace Acknex
             return null;
         }
 
-        [field: SerializeField] public bool IsDebugMarked { get; set; }
         public bool IsGeometryDirty { get; set; }
+        public virtual bool IsTextureDirty { get; set; }
 
-        public bool IsTextureDirty { get; set; }
         public Vector4 OffsetScale { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)

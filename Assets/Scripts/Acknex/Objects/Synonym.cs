@@ -10,9 +10,9 @@ namespace Acknex
             AcknexObject.Container = this;
         }
 
-        public bool IsGeometryDirty { get; set; }
+        
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Synonym);
-        public bool IsDebugMarked { get; set; }
+        
 
         public void Disable()
         {
@@ -34,7 +34,7 @@ namespace Acknex
             return null;
         }
 
-        public bool IsTextureDirty { get; set; }
+        
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {

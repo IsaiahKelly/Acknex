@@ -21,12 +21,13 @@
         LOD 100
 
         CGPROGRAM
-        #pragma surface surf Sprite alpha:blend noambient novertexlights nolightmap noshadow
+        #pragma surface surf Acknex alpha:blend noambient novertexlights nolightmap noshadow
 
         #pragma target 3.0
                     
         sampler2D _MainTex;
         #include "Common.cginc"
+        #include "Lighting.cginc"
         
         struct Input
         {
@@ -35,18 +36,6 @@
 
         UNITY_INSTANCING_BUFFER_START(Props)
         UNITY_INSTANCING_BUFFER_END(Props)
-
-        half4 LightingSprite(SurfaceOutput s, half3 lightDir, half atten) {
-            half light = _AMBIENT + (max(dot(s.Normal, lightDir), 0.0) * _ALBEDO);
-            half4 c;
-            c.rgb = _RADIANCE + s.Albedo * light;
-            c.a = s.Alpha;
-            return c;
-        }
-
-        half4 LightingSprite_GI(SurfaceOutput s, UnityGIInput data, inout UnityGI gi) {
-            return half4(s.Albedo, s.Alpha);
-        }
 
         void surf (Input IN, inout SurfaceOutput o)
         {

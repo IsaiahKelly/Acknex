@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Acknex
 {
     public class StringKeyDictionary<T1, T2> : Dictionary<string, T2>
     {
-        public StringKeyDictionary() : base()
+        public StringKeyDictionary() : base(StringComparer.Ordinal)
         {
     
         }
     
-        public StringKeyDictionary(IDictionary<string, T2> existing) : base(existing)
+        public StringKeyDictionary(IDictionary<string, T2> existing) : base(existing, StringComparer.Ordinal)
         {
     
         }

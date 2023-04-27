@@ -16,7 +16,6 @@ namespace Acknex
 
         public TextureAndPalette CropTexture;
         public TextureAndPalette OriginalTexture;
-        public bool IsGeometryDirty { get; set; }
 
         public Bitmap()
         {
@@ -29,7 +28,7 @@ namespace Acknex
         public float Y => AcknexObject.GetFloat("Y");
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Bitmap);
-        public bool IsDebugMarked { get; set; }
+        
 
         public void Disable()
         {
@@ -51,13 +50,7 @@ namespace Acknex
             return null;
         }
 
-        public bool IsTextureDirty { get; set; }
-
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
-        }
-
-        public void ResetTexture()
         {
         }
 
@@ -150,6 +143,7 @@ namespace Acknex
             var transparent = false;
             CropTexture.Palette.wrapModeU = CropTexture.Texture.wrapModeU = TextureWrapMode.Repeat;
             CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Repeat;
+            var graphicObject = sourceAcknexObject?.Container as IGraphicObject; 
             if (sourceAcknexObject != null)
             {
                 if (sourceAcknexObject.Type == ObjectType.Actor || sourceAcknexObject.Type == ObjectType.Thing || sourceAcknexObject.Type == ObjectType.Overlay || sourceAcknexObject.Type == ObjectType.Panel)
@@ -157,14 +151,6 @@ namespace Acknex
                     CropTexture.Palette.wrapModeU = CropTexture.Texture.wrapModeU = TextureWrapMode.Clamp;
                     CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Clamp;
                 }
-                if (sourceAcknexObject.TryGetFloat("AMBIENT", out var wallOrRegionAmbient))
-                {
-                    ambient *= wallOrRegionAmbient;
-                }
-                //if (sourceAcknexObject.Type == ObjectType.Wall)
-                //{
-                //    ambient *= ((Wall)sourceAcknexObject.Container).AmbientOverride;
-                //}
                 if (sourceAcknexObject.TryGetFloat("OFFSET_X", out var offsetXVal))
                 {
                     offsetX = offsetXVal;
@@ -203,6 +189,10 @@ namespace Acknex
                     }
                 }
                 transparent = sourceAcknexObject.HasFlag("TRANSPARENT");
+                if (graphicObject != null)
+                {
+                    ambient *= graphicObject.GetAmbient();
+                }
             }
             var albedo = 0f;
             var radiance = 0f;
@@ -281,7 +271,7 @@ namespace Acknex
                 material.SetInt("_CullMode", (int)cullMode);
                 material.mainTexture = World.Instance.UsePalettes ? CropTexture.Palette : CropTexture.Texture;
             }
-            if (sourceAcknexObject?.Container is IGraphicObject graphicObject)
+            if (graphicObject != null)
             {
                 graphicObject.CurrentBitmap = this;
                 graphicObject.BitmapCoords = new Vector4(x0, y0, x1, y1);

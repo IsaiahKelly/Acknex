@@ -31,6 +31,9 @@ namespace Acknex
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
 
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Thing);
+        public Vector4 BitmapCoords { get; set; }
+
+        public Bitmap CurrentBitmap { get; set; }
 
         public void Disable()
         {
@@ -55,7 +58,6 @@ namespace Acknex
             return regionObject ?? World.Instance.RegionsByIndex[0].AcknexObject;
         }
 
-        [field: SerializeField] public bool IsDebugMarked { get; set; }
         public bool IsGeometryDirty { get; set; }
 
         public bool IsTextureDirty
@@ -64,13 +66,17 @@ namespace Acknex
             {
                 var invisible = AcknexObject.HasFlag("INVISIBLE");
                 var side = AcknexObject.GetInteger("SIDE");
-                return (!invisible && invisible != _lastInvisible) || side != _lastSide || TextureObject != _lastTextureObject || AcknexObject.HasFlag("PLAY");
+                var textureObject = TextureObject;
+                var IsTextureDirty = (!invisible && invisible != _lastInvisible) || side != _lastSide || textureObject != _lastTextureObject || AcknexObject.HasFlag("PLAY");
+                _lastTextureObject = TextureObject;
+                _lastSide = side;
+                _lastInvisible = invisible;
+                return IsTextureDirty;
             }
-            set
-            {
-
-            }
+            set { }
         }
+
+        public Vector4 OffsetScale { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
@@ -96,6 +102,14 @@ namespace Acknex
         {
             _lastTextureObject = null;
         }
+
+        public float GetAmbient()
+        {
+            var ambient = AcknexObject.GetFloat("AMBIENT");
+            ambient *= ((IGraphicObject)GetRegion().Container).GetAmbient();
+            return ambient;
+        }
+
 
         public void SetupInstance()
         {
@@ -160,6 +174,7 @@ namespace Acknex
             {
                 return;
             }
+            AcknexObject.SetFloat("DISTANCE", distance);
             //if (TextureObject == null || !TextureObject.HasModel(out _))
             //{
             var camera = CameraExtensions.GetLastActiveCamera();
@@ -196,7 +211,6 @@ namespace Acknex
                 side = 0;
             }
             AcknexObject.SetInteger("SIDE", side);
-            var invisible = AcknexObject.HasFlag("INVISIBLE");
             if (IsTextureDirty)
             {
                 if (_animateCoroutine != null)
@@ -213,9 +227,6 @@ namespace Acknex
                     _animateCoroutine = StartCoroutine(Animate());
                 }
             }
-            _lastTextureObject = TextureObject;
-            _lastSide = side;
-            _lastInvisible = invisible;
             if (!AcknexObject.IsDirty)
             {
 #if DEBUG_ENABLED
@@ -227,7 +238,6 @@ namespace Acknex
             DebugExtension.DebugWireSphere(transform.position, Color.green);
 #endif
             AcknexObject.IsDirty = false;
-            AcknexObject.SetFloat("DISTANCE", distance);
             _centerGameObject.transform.position = GetCenter();
             //todo: this block should only run on carefully flagged
             if (AcknexObject.HasFlag("CANDELABER"))
@@ -240,6 +250,7 @@ namespace Acknex
             }
             transform.position = new Vector3(thingX, thingZ, thingY);
             AcknexObject.SetFloat("VISIBLE", AcknexObject.GetFloat("INVISIBLE") > 0f ? 0f : 1f);
+            var invisible = AcknexObject.HasFlag("INVISIBLE");
             if (invisible)
             {
                 _meshRenderer.enabled = false;
@@ -428,7 +439,7 @@ namespace Acknex
             var waypoint = 1;
             AcknexObject.SetFloat("WAYPOINT", waypoint);
             var nextPoint = points[waypoint - 1];
-            for (; ; )
+            for (;;)
             {
                 AcknexObject.IsDirty = true;
                 if (World.Instance.GetSkillValue("MOVE_MODE") <= 0.5f || AcknexObject.HasFlag("INVISIBLE") || AcknexObject.GetAcknexObject("TARGET") != _lastTarget)
@@ -455,7 +466,7 @@ namespace Acknex
         private IEnumerator MoveToVertex()
         {
             var targetPos = new Vector2(AcknexObject.GetFloat("TARGET_X"), AcknexObject.GetFloat("TARGET_Y"));
-            for (; ; )
+            for (;;)
             {
                 AcknexObject.IsDirty = true;
                 if (World.Instance.GetSkillValue("MOVE_MODE") <= 0.5f || AcknexObject.HasFlag("INVISIBLE") || AcknexObject.GetAcknexObject("TARGET") != _lastTarget)
@@ -476,7 +487,7 @@ namespace Acknex
         private IEnumerator MoveToPlayer()
         {
             var currentRegion = GetRegion();
-            for (; ; )
+            for (;;)
             {
                 AcknexObject.IsDirty = true;
 #if DEBUG_ENABLED
@@ -520,7 +531,7 @@ namespace Acknex
         private IEnumerator MoveToAngle()
         {
             var currentRegion = GetRegion();
-            for (; ; )
+            for (;;)
             {
                 AcknexObject.IsDirty = true;
                 MoveToAngleStep();
@@ -731,9 +742,5 @@ namespace Acknex
             }
             return false;
         }
-
-        public Bitmap CurrentBitmap { get; set; }
-        public Vector4 BitmapCoords { get; set; }
-        public Vector4 OffsetScale { get; set; }
     }
 }

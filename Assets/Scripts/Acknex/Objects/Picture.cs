@@ -7,13 +7,28 @@ namespace Acknex
     public class Picture : Overlay
     {
         private Coroutine _animateCoroutine;
-
         private int _lastSide = -1;
         private Texture _lastTextureObject;
 
+        public override bool IsTextureDirty
+        {
+            get
+            {
+                var side = AcknexObject.GetInteger("SIDE");
+                var hasPlay = AcknexObject.HasFlag("PLAY");
+                var textureObject = TextureObject;
+                var isTextureDirty = side != _lastSide || textureObject != _lastTextureObject || hasPlay;
+                _lastSide = side;
+                _lastTextureObject = textureObject;
+                return isTextureDirty;
+            }
+            set
+            {
+            }
+        }
+
         public Panel Panel;
         public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
-        public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
         public override IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Picture);
 
         private static IAcknexObject GetTemplateCallback(string name)
@@ -55,7 +70,8 @@ namespace Acknex
             {
                 side = 0;
             }
-            if (side != _lastSide || TextureObject != _lastTextureObject || AcknexObject.HasFlag("PLAY"))
+            AcknexObject.SetFloat("SIDE", side);
+            if (IsTextureDirty)
             {
                 if (_animateCoroutine != null)
                 {
@@ -71,8 +87,6 @@ namespace Acknex
                     _animateCoroutine = StartCoroutine(Animate(side));
                 }
             }
-            _lastTextureObject = TextureObject;
-            _lastSide = side;
             OverlayGraphic.rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat("POS_X"), -AcknexObject.GetFloat("POS_Y"), 0f);
             if (CurrentBitmap != null)
             {

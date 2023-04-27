@@ -33,16 +33,8 @@ namespace Acknex
             return regionObject ?? World.Instance.RegionsByIndex[0].AcknexObject;
         }
 
-        [field: SerializeField] public bool IsDebugMarked { get; set; }
-        public bool IsGeometryDirty { get; set; }
-
-        public bool IsTextureDirty { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
-        }
-
-        public void ResetTexture()
         {
         }
 
@@ -176,6 +168,7 @@ namespace Acknex
                 GUILayout.Label($"PLAYER_COS:{World.Instance.GetSkillValue("PLAYER_COS")}");
                 GUILayout.Label($"PLAYER_HEALTH:{World.Instance.GetSkillValue("PLAYER_HEALTH")}");
                 GUILayout.Label($"PLAYER_SPEED:{World.Instance.GetSkillValue("PLAYER_SPEED")}");
+                GUILayout.Label($"PLAYER_LIGHT:{World.Instance.GetSkillValue("PLAYER_LIGHT")}");
                 GUILayout.Label($"AMMO:{World.Instance.GetSkillValue("AMMO")}");
                 var region = AcknexObject.GetAcknexObject("REGION");
                 GUILayout.Label($"RGN:{region?.Name}");

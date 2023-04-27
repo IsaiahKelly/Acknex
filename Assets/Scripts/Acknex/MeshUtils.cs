@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Acknex.Interfaces;
 using UnityEngine;
 
 namespace Acknex
@@ -16,19 +15,11 @@ namespace Acknex
 
         public static void AddQuad<T>(int a, int b, int c, int d, Dictionary<T, List<int>> allTriangles, T key, int baseIndex = 0)
         {
-            //if (texture == null)
-            //{
-            //    texture = "__default__";
-            //}
             if (!allTriangles.TryGetValue(key, out var indices))
             {
                 indices = new List<int>();
                 allTriangles[key] = indices;
             }
-            //indices.Add(baseIndex + d);
-            //indices.Add(baseIndex + c);
-            //indices.Add(baseIndex + b);
-            //indices.Add(baseIndex + a);
             indices.Add(baseIndex + a);
             indices.Add(baseIndex + b);
             indices.Add(baseIndex + c);

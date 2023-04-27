@@ -30,12 +30,13 @@
 			LOD 100
 
 			CGPROGRAM
-			#pragma surface surf Surface vertex:vert noambient novertexlights nolightmap noshadow 
+			#pragma surface surf Acknex vertex:vert noambient novertexlights nolightmap noshadow 
 
 			#pragma target 3.0
 
 			sampler2D _MainTex;
 			#include "Common.cginc"
+			#include "Lighting.cginc"
 
 			struct Input
 			{
@@ -44,18 +45,6 @@
 
 			UNITY_INSTANCING_BUFFER_START(Props)
 			UNITY_INSTANCING_BUFFER_END(Props)
-
-			half4 LightingSurface(SurfaceOutput s, half3 lightDir, half atten) {
-				half light = _AMBIENT + (max(dot(s.Normal, lightDir), 0.0) * _ALBEDO);
-				half4 c;
-				c.rgb = _RADIANCE + s.Albedo * light;
-				c.a = s.Alpha;
-				return c;
-			}
-
-			half4 LightingSurface_GI(SurfaceOutput s, UnityGIInput data, inout UnityGI gi) {
-				return half4(s.Albedo, s.Alpha);
-			}
 
 			void vert(inout appdata_full v) {
 				float3 worldPos = mul(unity_ObjectToWorld, v.vertex);

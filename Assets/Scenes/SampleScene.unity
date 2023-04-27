@@ -515,7 +515,6 @@ MonoBehaviour:
   LineRendererTemplate: {fileID: 601205406}
   LinesCanvas: {fileID: 1607464824}
   MainView: 1
-  <IsDebugMarked>k__BackingField: 0
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,7 +891,7 @@ MonoBehaviour:
     m_LayerIndex: 13
   AmbientLight: {fileID: 705507994}
   AudioSource: {fileID: 1477033083}
-  BilinearFilter: 0
+  BilinearFilter: 1
   Canvas: {fileID: 1116186326}
   CanvasScaler: {fileID: 1116186325}
   CanvasView: {fileID: 1520209880}
@@ -917,7 +916,7 @@ MonoBehaviour:
     m_LayerIndex: 9
   TriggersLayer:
     m_LayerIndex: 10
-  UsePalettes: 1
+  UsePalettes: 0
   UseWDLEngine: 0
   Volume: 1
   WallsWaterAndRegions:
@@ -932,7 +931,6 @@ MonoBehaviour:
   WaterLayer:
     m_LayerIndex: 4
   WDLPath: C:\games\acknex\varginha2\CONTATO.WDL
-  <IsDebugMarked>k__BackingField: 0
 --- !u!114 &1246573633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1172,7 +1170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d15f27722fbe5d42b74b91933d8d826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <IsDebugMarked>k__BackingField: 0
 --- !u!4 &1477033082
 Transform:
   m_ObjectHideFlags: 0
