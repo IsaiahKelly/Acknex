@@ -571,7 +571,7 @@ namespace Acknex
                     CheckSemiColon(tokens);
                     return true;
                 case PropertyType.String:
-                    acknexObject.SetString(objectProperty, string.Intern(GetNextToken(tokens)));
+                    acknexObject.SetString(objectProperty, GetNextToken(tokens));
                     CheckSemiColon(tokens);
                     return true;
                 case PropertyType.Filename:
@@ -714,7 +714,7 @@ namespace Acknex
                 {
                     throw new Exception("Expected: >");
                 }
-                return string.Intern(Path.GetFullPath(filename));
+                return Path.GetFullPath(filename);
             }
             return null;
         }

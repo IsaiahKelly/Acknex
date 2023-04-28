@@ -724,8 +724,8 @@ namespace Acknex
             {
                 var belowAcknexObject = (AcknexObject)Below.AcknexObject;
                 var newAcknexObject = new AcknexObject(GetTemplateCallback, ObjectType.Region);
-                newAcknexObject.ObjectProperties = new Dictionary<int, object>(belowAcknexObject.ObjectProperties);
-                newAcknexObject.NumberProperties = new Dictionary<int, float>(belowAcknexObject.NumberProperties);
+                newAcknexObject.ObjectProperties = new Dictionary<int, object>(belowAcknexObject.ObjectProperties, EqualityComparer<int>.Default);
+                newAcknexObject.NumberProperties = new Dictionary<int, float>(belowAcknexObject.NumberProperties, EqualityComparer<int>.Default);
                 newAcknexObject.Name = belowAcknexObject.Name;
                 var newRegion = Instantiate(Below.gameObject).GetComponent<Region>();
                 newRegion.Above = this;

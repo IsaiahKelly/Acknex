@@ -157,39 +157,37 @@ namespace Acknex
                 return;
             }
             //todo: reimplement
-            //GUI.Window(0, new Rect(0f, 0f, 320f, Screen.height), delegate
-            //{
-            //    GUILayout.BeginVertical();
-            //    GUILayout.Label($"PLAYER_ANGLE:{World.Instance.GetSkillValue("PLAYER_ANGLE") * Mathf.Rad2Deg}");
-            //    GUILayout.Label($"PLAYER_TILT:{World.Instance.GetSkillValue("PLAYER_TILT")}");
-            //    GUILayout.Label($"PLAYER_VX:{World.Instance.GetSkillValue("PLAYER_VX")}");
-            //    GUILayout.Label($"PLAYER_VY:{World.Instance.GetSkillValue("PLAYER_VY")}");
-            //    GUILayout.Label($"PLAYER_VZ:{World.Instance.GetSkillValue("PLAYER_VZ")}");
-            //    GUILayout.Label($"PLAYER_X:{World.Instance.GetSkillValue("PLAYER_X")}");
-            //    GUILayout.Label($"PLAYER_Y:{World.Instance.GetSkillValue("PLAYER_Y")}");
-            //    GUILayout.Label($"PLAYER_Z:{World.Instance.GetSkillValue("PLAYER_Z")}");
-            //    GUILayout.Label($"PLAYER_HGT:{World.Instance.GetSkillValue("PLAYER_HGT")}");
-            //    GUILayout.Label($"PLAYER_SIZE:{World.Instance.GetSkillValue("PLAYER_SIZE")}");
-            //    GUILayout.Label($"PLAYER_VROT:{World.Instance.GetSkillValue("PLAYER_VROT")}");
-            //    GUILayout.Label($"PLAYER_SIN:{World.Instance.GetSkillValue("PLAYER_SIN")}");
-            //    GUILayout.Label($"PLAYER_COS:{World.Instance.GetSkillValue("PLAYER_COS")}");
-            //    GUILayout.Label($"PLAYER_HEALTH:{World.Instance.GetSkillValue("PLAYER_HEALTH")}");
-            //    GUILayout.Label($"PLAYER_SPEED:{World.Instance.GetSkillValue("PLAYER_SPEED")}");
-            //    GUILayout.Label($"PLAYER_LIGHT:{World.Instance.GetSkillValue("PLAYER_LIGHT")}");
-            //    GUILayout.Label($"AMMO:{World.Instance.GetSkillValue("AMMO")}");
-            //    var region = AcknexObject.GetAcknexObject(ObjectProperty.REGION);
-            //    GUILayout.Label($"RGN:{region?.Name}");
-            //    GUILayout.Label($"CEIL_HGT:{World.Instance.GetSkillValue(ObjectProperty.CEIL_HGT)}");
-            //    GUILayout.Label($"FLOOR_HGT:{World.Instance.GetSkillValue(ObjectProperty.FLOOR_HGT)}");
-            //    GUILayout.Label($"PLAYER_DEPTH:{World.Instance.GetSkillValue("PLAYER_DEPTH")}");
-            //    GUILayout.Label($"MOVE_MODE:{World.Instance.GetSkillValue("MOVE_MODE")}");
-            //    if (World.Instance.UsePalettes)
-            //    {
-            //        var rect = GUILayoutUtility.GetRect(256, 256, 32, 32);
-            //        GUI.DrawTexture(rect, Shader.GetGlobalTexture("_AcknexPalette"), ScaleMode.StretchToFill, false);
-            //    }
-            //    GUILayout.EndVertical();
-            //}, "Debug");
+            GUI.Window(0, new Rect(0f, 0f, 320f, Screen.height), delegate
+            {
+                GUILayout.BeginVertical();
+                GUILayout.Label($"PLAYER_ANGLE:{World.Instance.GetSkillValue(SkillName.PLAYER_ANGLE) * Mathf.Rad2Deg}");
+                GUILayout.Label($"PLAYER_TILT:{World.Instance.GetSkillValue(SkillName.PLAYER_TILT)}");
+                GUILayout.Label($"PLAYER_VX:{World.Instance.GetSkillValue(SkillName.PLAYER_VX)}");
+                GUILayout.Label($"PLAYER_VY:{World.Instance.GetSkillValue(SkillName.PLAYER_VY)}");
+                GUILayout.Label($"PLAYER_VZ:{World.Instance.GetSkillValue(SkillName.PLAYER_VZ)}");
+                GUILayout.Label($"PLAYER_X:{World.Instance.GetSkillValue(SkillName.PLAYER_X)}");
+                GUILayout.Label($"PLAYER_Y:{World.Instance.GetSkillValue(SkillName.PLAYER_Y)}");
+                GUILayout.Label($"PLAYER_Z:{World.Instance.GetSkillValue(SkillName.PLAYER_Z)}");
+                GUILayout.Label($"PLAYER_HGT:{World.Instance.GetSkillValue(SkillName.PLAYER_HGT)}");
+                GUILayout.Label($"PLAYER_SIZE:{World.Instance.GetSkillValue(SkillName.PLAYER_SIZE)}");
+                GUILayout.Label($"PLAYER_VROT:{World.Instance.GetSkillValue(SkillName.PLAYER_VROT)}");
+                GUILayout.Label($"PLAYER_SIN:{World.Instance.GetSkillValue(SkillName.PLAYER_SIN)}");
+                GUILayout.Label($"PLAYER_COS:{World.Instance.GetSkillValue(SkillName.PLAYER_COS)}");
+                GUILayout.Label($"PLAYER_SPEED:{World.Instance.GetSkillValue(SkillName.PLAYER_SPEED)}");
+                GUILayout.Label($"PLAYER_LIGHT:{World.Instance.GetSkillValue(SkillName.PLAYER_LIGHT)}");
+                GUILayout.Label($"CEIL_HGT:{World.Instance.GetSkillValue(SkillName.CEIL_HGT)}");
+                GUILayout.Label($"FLOOR_HGT:{World.Instance.GetSkillValue(SkillName.FLOOR_HGT)}");
+                GUILayout.Label($"PLAYER_DEPTH:{World.Instance.GetSkillValue(SkillName.PLAYER_DEPTH)}");
+                GUILayout.Label($"MOVE_MODE:{World.Instance.GetSkillValue(SkillName.MOVE_MODE)}");
+                var region = AcknexObject.GetAcknexObject(PropertyName.REGION);
+                GUILayout.Label($"RGN:{region?.Name}");
+                if (World.Instance.UsePalettes)
+                {
+                    var rect = GUILayoutUtility.GetRect(256, 256, 32, 32);
+                    GUI.DrawTexture(rect, Shader.GetGlobalTexture("_AcknexPalette"), ScaleMode.StretchToFill, false);
+                }
+                GUILayout.EndVertical();
+            }, "Debug");
         }
 
         private void Locate(float playerX, float playerY, float playerFootZ, float playerSize, bool initial = true)

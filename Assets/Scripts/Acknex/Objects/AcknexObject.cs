@@ -26,8 +26,8 @@ namespace Acknex
         private int _nameInt;
         public int NameInt => _nameInt;
 
-        public IDictionary<int, float> NumberProperties = new Dictionary<int, float>();
-        public IDictionary<int, object> ObjectProperties = new Dictionary<int, object>();
+        public IDictionary<int, float> NumberProperties = new Dictionary<int, float>(EqualityComparer<int>.Default);
+        public IDictionary<int, object> ObjectProperties = new Dictionary<int, object>(EqualityComparer<int>.Default);
 
         public AcknexObject(Func<int, IAcknexObject> getTemplateCallback, ObjectType type)
         {
