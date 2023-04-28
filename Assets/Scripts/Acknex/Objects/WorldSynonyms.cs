@@ -5,14 +5,17 @@ namespace Acknex
 {
     public partial class World
     {
-        public Synonym Here { get; private set; }
+        public IAcknexObject GetSynonymObject(SynonymName synonymName, bool fromRuntime = false)
+        {
+            return GetSynonymObject((int)synonymName, fromRuntime);
+        }
 
-        public IAcknexObject GetSynonymObject(string synonymName, bool fromRuntime = false)
+        public IAcknexObject GetSynonymObject(int synonymName, bool fromRuntime = false)
         {
             IAcknexObject value = null;
             if (SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
-                value = synonym.AcknexObject.GetAcknexObject("VAL");
+                value = synonym.AcknexObject.GetAcknexObject(PropertyName.VAL);
             }
             if (value == null && fromRuntime)
             {
@@ -21,30 +24,35 @@ namespace Acknex
             return value;
         }
 
-        public void SetSynonymObject(string synonymName, IAcknexObject target)
+        public void SetSynonymObject(SynonymName synonymName, IAcknexObject target)
+        {
+            SetSynonymObject((int)synonymName, target);
+        }
+
+        public void SetSynonymObject(int synonymName, IAcknexObject target)
         {
             if (!SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
                 throw new Exception("Synonym [" + synonymName + "] not found");
             }
-            synonym.AcknexObject.SetAcknexObject("VAL", target);
+            synonym.AcknexObject.SetAcknexObject(PropertyName.VAL, target);
         }
 
         private void CreateDefaultSynonyms()
         {
-            Here = CreateSynonym("HERE", "REGION");
-            CreateSynonym("THERE", "REGION");
-            CreateSynonym("MY", "THING");
-            CreateSynonym("HIT", "THING");
-            CreateSynonym("TOUCHED", "THING");
-            CreateSynonym("TOUCH_TEX", "TEXTURE");
-            CreateSynonym("TOUCH_REG", "REGION");
-            CreateSynonym("TOUCH_TEXT", "TEXT");
+            CreateSynonym(SynonymName.HERE, "REGION");
+            CreateSynonym(SynonymName.THERE, "REGION");
+            CreateSynonym(SynonymName.MY, "THING");
+            CreateSynonym(SynonymName.HIT, "THING");
+            CreateSynonym(SynonymName.TOUCHED, "THING");
+            CreateSynonym(SynonymName.TOUCH_TEX, "TEXTURE");
+            CreateSynonym(SynonymName.TOUCH_REG, "REGION");
+            CreateSynonym(SynonymName.TOUCH_TEXT, "TEXT");
         }
 
-        public ObjectType GetSynonymType(string synonymName)
+        public ObjectType GetSynonymType(int synonymName)
         {
-            var synonymType = SynonymsByName[synonymName].AcknexObject.GetString("TYPE");
+            var synonymType = SynonymsByName[synonymName].AcknexObject.GetString(PropertyName.TYPE);
             switch (synonymType)
             {
                 case "TEXTURE":

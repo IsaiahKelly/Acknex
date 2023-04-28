@@ -4,6 +4,7 @@ using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
+using PropertyName = Acknex.Interfaces.PropertyName;
 #if DEBUG_ENABLED
 using Utils;
 #endif
@@ -12,6 +13,11 @@ namespace Acknex
 {
     public class Wall : MonoBehaviour, IAcknexObjectContainer, IGraphicObject
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         private readonly List<Vector4> _attachmentPos = new List<Vector4>();
         private readonly List<Texture> _tempAttachments = new List<Texture>();
         private Dictionary<WallPart, List<int>> _allTriangles;
@@ -62,7 +68,7 @@ namespace Acknex
 
         public MeshFilter Filter { get; set; }
         public MeshFilter GapFilter { get; set; }
-        public Texture TextureObject => AcknexObject.TryGetAcknexObject("TEXTURE", out var textureObject) ? textureObject?.Container as Texture : null;
+        public Texture TextureObject => AcknexObject.TryGetAcknexObject(PropertyName.TEXTURE, out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
         public bool HasGap { get; private set; }
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Wall);
@@ -72,12 +78,12 @@ namespace Acknex
 
         public void Disable()
         {
-            AcknexObject.AddFlag("INVISIBLE");
+            AcknexObject.AddFlag(PropertyName.INVISIBLE);
         }
 
         public void Enable()
         {
-            AcknexObject.RemoveFlag("INVISIBLE");
+            AcknexObject.RemoveFlag(PropertyName.INVISIBLE);
         }
 
         public GameObject GameObject => gameObject;
@@ -105,7 +111,7 @@ namespace Acknex
             {
                 var ambient = GetAmbient();
                 var textureObject = TextureObject;
-                var hasPlay = AcknexObject.HasFlag("PLAY");
+                var hasPlay = AcknexObject.HasFlag(PropertyName.PLAY);
                 var isTextureDirty = ambient != _lastAmbient || textureObject != _lastTextureObject || (textureObject != null && textureObject.AcknexObject.IsDirty) || hasPlay;
                 _lastAmbient = ambient;
                 _lastTextureObject = textureObject;
@@ -142,7 +148,7 @@ namespace Acknex
 
         public float GetAmbient()
         {
-            var ambient = AcknexObject.GetFloat("AMBIENT");
+            var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
             ambient *= ((IGraphicObject)GetRegion().Container).GetAmbient();
             return ambient;
         }
@@ -223,23 +229,23 @@ namespace Acknex
                 }
                 if (TextureObject != null)
                 {
-                    if (AcknexObject.HasFlag("PLAY"))
+                    if (AcknexObject.HasFlag(PropertyName.PLAY))
                     {
-                        AcknexObject.AddFlag("ONESHOT");
-                        AcknexObject.RemoveFlag("PLAY");
+                        AcknexObject.AddFlag(PropertyName.ONESHOT);
+                        AcknexObject.RemoveFlag(PropertyName.PLAY);
                     }
                     _animateCoroutine = StartCoroutine(Animate());
                 }
             }
             var center = GetCenter();
             var pos2D = new Vector2(center.x, center.z);
-            var playerPos2D = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
+            var playerPos2D = new Vector2(World.Instance.GetSkillValue(SkillName.PLAYER_X), World.Instance.GetSkillValue(SkillName.PLAYER_Y));
             var distance = Vector2.Distance(playerPos2D, pos2D);
-            if (!AcknexObject.HasFlag("LIBER") && distance > World.Instance.AcknexObject.GetFloat("CLIP_DIST"))
+            if (!AcknexObject.HasFlag(PropertyName.LIBER) && distance > World.Instance.AcknexObject.GetFloat(PropertyName.CLIP_DIST))
             {
                 return;
             }
-            AcknexObject.SetFloat("DISTANCE", distance);
+            AcknexObject.SetFloat(PropertyName.DISTANCE, distance);
             if (!AcknexObject.IsDirty)
             {
                 return;
@@ -249,12 +255,12 @@ namespace Acknex
             _vertexGameObjectB.transform.position = (HasGap ? GapQuad : BottomQuad).GetColumn(2);
             _audioSourceGameObject.transform.position = GetCenter();
             _meshRenderer.enabled = !DisableRender;
-            var invisible = AcknexObject.GetFloat("INVISIBLE");
-            AcknexObject.SetFloat("VISIBLE", invisible > 0f ? 0f : 1f);
-            _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.AcknexObject.HasFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
-            var impassable = AcknexObject.HasFlag("IMPASSABLE");
-            var passable = AcknexObject.HasFlag("PASSABLE");
-            var dist = AcknexObject.GetFloat("DIST");
+            var invisible = AcknexObject.GetFloat(PropertyName.INVISIBLE);
+            AcknexObject.SetFloat(PropertyName.VISIBLE, invisible > 0f ? 0f : 1f);
+            _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.AcknexObject.HasFlag(PropertyName.SKY) ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
+            var impassable = AcknexObject.HasFlag(PropertyName.IMPASSABLE);
+            var passable = AcknexObject.HasFlag(PropertyName.PASSABLE);
+            var dist = AcknexObject.GetFloat(PropertyName.DIST);
             _invertedCollider.enabled = _collider.enabled = impassable || !passable;
             _vertexTriggerB.radius = _vertexTriggerA.radius = dist;
             _gapInvertedCollider.enabled = _gapCollider.enabled = !passable && ((HasGap && !impassable) || (!HasGap && impassable));
@@ -294,7 +300,7 @@ namespace Acknex
             }
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             if (World.Instance.WallsByName.TryGetValue(name, out var wall))
             {
@@ -324,14 +330,14 @@ namespace Acknex
 
         private bool TextureCanceled(Texture texture)
         {
-            return AcknexObject.HasFlag("INVISIBLE") || texture != TextureObject;
+            return AcknexObject.HasFlag(PropertyName.INVISIBLE) || texture != TextureObject;
         }
 
         private void OnWallTriggerExit(Collider collider)
         {
             if (collider.TryGetComponent<Player>(out var player))
             {
-                World.Instance.TriggerEvent("IF_FAR", AcknexObject, player.AcknexObject, player.GetRegion());
+                World.Instance.TriggerEvent(PropertyName.IF_FAR, AcknexObject, player.AcknexObject, player.GetRegion());
             }
         }
 
@@ -347,7 +353,7 @@ namespace Acknex
         {
             if (collider.TryGetComponent<Player>(out var player))
             {
-                World.Instance.TriggerEvent("IF_NEAR", AcknexObject, player.AcknexObject, player.GetRegion());
+                World.Instance.TriggerEvent(PropertyName.IF_NEAR, AcknexObject, player.AcknexObject, player.GetRegion());
             }
         }
 
@@ -385,14 +391,14 @@ namespace Acknex
 
         private void UpdateEvents()
         {
-            World.Instance.TriggerEvent("DO", AcknexObject, AcknexObject, GetRegion());
+            World.Instance.TriggerEvent(PropertyName.DO, AcknexObject, AcknexObject, GetRegion());
         }
 
         public void ProcessWall(List<ContourVertex> allContourVertices, Wall wallA, KeyValuePair<IAcknexObject, RegionWall> kvp, ref int vertexCount, bool inverted = false)
         {
             var contourVertices = World.Instance.ContourVertices;
             vertexCount++;
-            var initialVertex = contourVertices[inverted ? wallA.AcknexObject.GetInteger("VERTEX2") : wallA.AcknexObject.GetInteger("VERTEX1")];
+            var initialVertex = contourVertices[inverted ? wallA.AcknexObject.GetInteger(PropertyName.VERTEX2) : wallA.AcknexObject.GetInteger(PropertyName.VERTEX1)];
             initialVertex = new ContourVertex(initialVertex.Position, new WallWithSide(wallA, inverted));
             allContourVertices.Add(initialVertex);
             wallA.Processed = true;
@@ -405,13 +411,13 @@ namespace Acknex
                 }
                 if (inverted)
                 {
-                    if (wallB.AcknexObject.GetInteger("VERTEX2") == wallA.AcknexObject.GetInteger("VERTEX1"))
+                    if (wallB.AcknexObject.GetInteger(PropertyName.VERTEX2) == wallA.AcknexObject.GetInteger(PropertyName.VERTEX1))
                     {
                         ProcessWall(allContourVertices, wallB, kvp, ref vertexCount, true);
                         foundPair = true;
                         break;
                     }
-                    if (wallB.AcknexObject.GetInteger("VERTEX1") == wallA.AcknexObject.GetInteger("VERTEX1"))
+                    if (wallB.AcknexObject.GetInteger(PropertyName.VERTEX1) == wallA.AcknexObject.GetInteger(PropertyName.VERTEX1))
                     {
                         ProcessWall(allContourVertices, wallB, kvp, ref vertexCount);
                         foundPair = true;
@@ -420,13 +426,13 @@ namespace Acknex
                 }
                 else
                 {
-                    if (wallB.AcknexObject.GetInteger("VERTEX1") == wallA.AcknexObject.GetInteger("VERTEX2"))
+                    if (wallB.AcknexObject.GetInteger(PropertyName.VERTEX1) == wallA.AcknexObject.GetInteger(PropertyName.VERTEX2))
                     {
                         ProcessWall(allContourVertices, wallB, kvp, ref vertexCount);
                         foundPair = true;
                         break;
                     }
-                    if (wallB.AcknexObject.GetInteger("VERTEX2") == wallA.AcknexObject.GetInteger("VERTEX2"))
+                    if (wallB.AcknexObject.GetInteger(PropertyName.VERTEX2) == wallA.AcknexObject.GetInteger(PropertyName.VERTEX2))
                     {
                         ProcessWall(allContourVertices, wallB, kvp, ref vertexCount, true);
                         foundPair = true;
@@ -436,7 +442,7 @@ namespace Acknex
             }
             if (!foundPair)
             {
-                var endingVertex = contourVertices[inverted ? wallA.AcknexObject.GetInteger("VERTEX1") : wallA.AcknexObject.GetInteger("VERTEX2")];
+                var endingVertex = contourVertices[inverted ? wallA.AcknexObject.GetInteger(PropertyName.VERTEX1) : wallA.AcknexObject.GetInteger(PropertyName.VERTEX2)];
                 endingVertex = new ContourVertex(endingVertex.Position, new WallWithSide(wallA, inverted));
                 allContourVertices.Add(endingVertex);
                 vertexCount++;
@@ -445,9 +451,9 @@ namespace Acknex
 
         private void BuildWallMesh()
         {
-            var region1 = AcknexObject.GetAcknexObject("REGION1");
-            var region2 = AcknexObject.GetAcknexObject("REGION2");
-            HasGap = region1.Name == region2.Name && region1.GetFloat("CEIL_HGT") == region2.GetFloat("CEIL_HGT") && region1.GetFloat("FLOOR_HGT") == region2.GetFloat("FLOOR_HGT");
+            var region1 = AcknexObject.GetAcknexObject(PropertyName.REGION1);
+            var region2 = AcknexObject.GetAcknexObject(PropertyName.REGION2);
+            HasGap = region1.Name == region2.Name && region1.GetFloat(PropertyName.CEIL_HGT) == region2.GetFloat(PropertyName.CEIL_HGT) && region1.GetFloat(PropertyName.FLOOR_HGT) == region2.GetFloat(PropertyName.FLOOR_HGT);
             if (_allTriangles.TryGetValue(WallPart.FloorAndCeil, out var triangles))
             {
                 //if (triangles.Count > 0)
@@ -546,12 +552,12 @@ namespace Acknex
                 _rightRegionInstance = rightRegion.AcknexObject;
                 rightRegion.Walls.Add(this);
             }
-            var leftRegionBelowCeilHeight = leftRegion?.Below == null ? 0f : leftRegion.Below.AcknexObject.GetFloat("CEIL_HGT");
-            var rightRegionBelowCeilHeight = rightRegion?.Below == null ? 0f : rightRegion.Below.AcknexObject.GetFloat("CEIL_HGT");
-            var leftRegionAboveFloorHeight = leftRegionAbove == null ? 0f : leftRegionAbove.AcknexObject.GetFloat("FLOOR_HGT");
-            var rightRegionAboveFloorHeight = rightRegionAbove == null ? 0f : rightRegionAbove.AcknexObject.GetFloat("FLOOR_HGT");
+            var leftRegionBelowCeilHeight = leftRegion?.Below == null ? 0f : leftRegion.Below.AcknexObject.GetFloat(PropertyName.CEIL_HGT);
+            var rightRegionBelowCeilHeight = rightRegion?.Below == null ? 0f : rightRegion.Below.AcknexObject.GetFloat(PropertyName.CEIL_HGT);
+            var leftRegionAboveFloorHeight = leftRegionAbove == null ? 0f : leftRegionAbove.AcknexObject.GetFloat(PropertyName.FLOOR_HGT);
+            var rightRegionAboveFloorHeight = rightRegionAbove == null ? 0f : rightRegionAbove.AcknexObject.GetFloat(PropertyName.FLOOR_HGT);
             //todo: checking by the flag here is wrong
-            if (AcknexObject.HasFlag("FENCE"))
+            if (AcknexObject.HasFlag(PropertyName.FENCE))
             {
                 BuildFence(rightRegionAbove, leftRegionAbove, leftRegion, leftRegionBelowCeilHeight, rightRegion, rightRegionBelowCeilHeight, leftRegionAboveFloorHeight, rightRegionAboveFloorHeight, vertexA, vertexB);
             }
@@ -565,8 +571,8 @@ namespace Acknex
                     int leftLiftDown;
                     int rightLiftDown;
                     {
-                        var ceilHeight = leftRegion.AcknexObject.GetFloat("FLOOR_HGT", false);
-                        var floorHeight = rightRegion.AcknexObject.GetFloat("FLOOR_HGT", false);
+                        var ceilHeight = leftRegion.AcknexObject.GetFloat(PropertyName.FLOOR_HGT, false);
+                        var floorHeight = rightRegion.AcknexObject.GetFloat(PropertyName.FLOOR_HGT, false);
                         if (leftRegion.Below != null)
                         {
                             ceilHeight = Mathf.Max(ceilHeight, leftRegionBelowCeilHeight);
@@ -598,8 +604,8 @@ namespace Acknex
                     int leftLiftUp;
                     int rightLiftUp;
                     {
-                        var ceilHeight = leftRegion.AcknexObject.GetFloat("CEIL_HGT", false);
-                        var floorHeight = rightRegion.AcknexObject.GetFloat("CEIL_HGT", false);
+                        var ceilHeight = leftRegion.AcknexObject.GetFloat(PropertyName.CEIL_HGT, false);
+                        var floorHeight = rightRegion.AcknexObject.GetFloat(PropertyName.CEIL_HGT, false);
                         if (leftRegionAbove != null && leftRegionAbove != leftRegion)
                         {
                             ceilHeight = Mathf.Min(ceilHeight, leftRegionAboveFloorHeight);
@@ -620,7 +626,7 @@ namespace Acknex
                     var liftedRightDown = (middleOpen || rightRegionAbove == null) && rightLiftDown != 0;
                     var liftedLeftUp = (middleOpen || leftRegionAbove == null) && leftLiftUp != 0;
                     var liftedRightUp = (middleOpen || rightRegionAbove == null) && rightLiftUp != 0;
-                    var texture = AcknexObject.GetAcknexObject("TEXTURE");
+                    var texture = AcknexObject.GetAcknexObject(PropertyName.TEXTURE);
                     //negative space
                     {
                         var v0 = new Vector3(vertexA.Position.X, floorHeightUp + (liftedLeftUp ? vertexA.Position.Z * leftLiftUp : 0), vertexA.Position.Y);
@@ -710,8 +716,8 @@ namespace Acknex
 
         private void BuildFence(Region rightRegionAbove, Region leftRegionAbove, Region leftRegion, float leftRegionBelowCeilHeight, Region rightRegion, float rightRegionBelowCeilHeight, float leftRegionAboveFloorHeight, float rightRegionAboveFloorHeight, ContourVertex vertexA, ContourVertex vertexB)
         {
-            var floorHeight = leftRegion.AcknexObject.GetFloat("FLOOR_HGT", false);
-            var ceilHeight = leftRegion.AcknexObject.GetFloat("CEIL_HGT", false);
+            var floorHeight = leftRegion.AcknexObject.GetFloat(PropertyName.FLOOR_HGT, false);
+            var ceilHeight = leftRegion.AcknexObject.GetFloat(PropertyName.CEIL_HGT, false);
             if (leftRegion.Below != null)
             {
                 floorHeight = Mathf.Max(floorHeight, leftRegionBelowCeilHeight);
@@ -728,8 +734,8 @@ namespace Acknex
             {
                 ceilHeight = Mathf.Min(ceilHeight, rightRegionAboveFloorHeight);
             }
-            var liftedLeft = leftRegionAbove == null && leftRegion.AcknexObject.HasFlag("FLOOR_LIFTED");
-            var liftedRight = rightRegionAbove == null && rightRegion.AcknexObject.HasFlag("FLOOR_LIFTED");
+            var liftedLeft = leftRegionAbove == null && leftRegion.AcknexObject.HasFlag(PropertyName.FLOOR_LIFTED);
+            var liftedRight = rightRegionAbove == null && rightRegion.AcknexObject.HasFlag(PropertyName.FLOOR_LIFTED);
             var v0 = new Vector3(vertexA.Position.X, ceilHeight + (liftedLeft ? vertexA.Position.Z : 0), vertexA.Position.Y);
             var v1 = new Vector3(vertexB.Position.X, ceilHeight + (liftedLeft ? vertexB.Position.Z : 0), vertexB.Position.Y);
             var v2 = new Vector3(vertexB.Position.X, floorHeight + (liftedRight ? vertexB.Position.Z : 0), vertexB.Position.Y);
@@ -766,17 +772,17 @@ namespace Acknex
             _allUVs.Clear();
             _allTriangles.Clear();
             var contourVertices = World.Instance.ContourVertices;
-            var rightRegion = AcknexObject.GetAcknexObject("REGION1").Container as Region;
-            var leftRegion = AcknexObject.GetAcknexObject("REGION2").Container as Region;
-            var vertexA = contourVertices[AcknexObject.GetInteger("VERTEX1")];
-            var vertexB = contourVertices[AcknexObject.GetInteger("VERTEX2")];
+            var rightRegion = AcknexObject.GetAcknexObject(PropertyName.REGION1).Container as Region;
+            var leftRegion = AcknexObject.GetAcknexObject(PropertyName.REGION2).Container as Region;
+            var vertexA = contourVertices[AcknexObject.GetInteger(PropertyName.VERTEX1)];
+            var vertexB = contourVertices[AcknexObject.GetInteger(PropertyName.VERTEX2)];
             var xAxis = (new Vector3(vertexB.Position.X, 0f, vertexB.Position.Y) - new Vector3(vertexA.Position.X, 0f, vertexA.Position.Y)).normalized;
             _xAxis = xAxis;
-            //AcknexObject.SetFloat("X1", vertexA.Position.X);
-            //AcknexObject.SetFloat("Y1", vertexA.Position.Y);
+            //AcknexObject.SetFloat(ObjectProperty.X1, vertexA.Position.X);
+            //AcknexObject.SetFloat(ObjectProperty.Y1, vertexA.Position.Y);
             //AcknexObject.SetFloat("Z1", vertexA.Position.Z);
-            //AcknexObject.SetFloat("X2", vertexB.Position.X);
-            //AcknexObject.SetFloat("Y2", vertexB.Position.Y);
+            //AcknexObject.SetFloat(ObjectProperty.X2, vertexB.Position.X);
+            //AcknexObject.SetFloat(ObjectProperty.Y2, vertexB.Position.Y);
             //AcknexObject.SetFloat("Z2", vertexB.Position.Z);
             BuildWall(vertexA, vertexB, contourVertices, rightRegion, leftRegion);
             BuildWallMesh();
@@ -802,7 +808,7 @@ namespace Acknex
         {
             while (true)
             {
-                World.Instance.TriggerEvent("EACH_SEC", AcknexObject, AcknexObject, GetRegion());
+                World.Instance.TriggerEvent(PropertyName.EACH_SEC, AcknexObject, AcknexObject, GetRegion());
                 yield return World.Instance.WaitForSecond;
             }
         }
@@ -811,7 +817,7 @@ namespace Acknex
         {
             while (true)
             {
-                World.Instance.TriggerEvent("EACH_TICK", AcknexObject, AcknexObject, GetRegion());
+                World.Instance.TriggerEvent(PropertyName.EACH_TICK, AcknexObject, AcknexObject, GetRegion());
                 yield return null;
             }
         }

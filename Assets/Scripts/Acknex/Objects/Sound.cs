@@ -1,11 +1,17 @@
 ﻿using Acknex.Interfaces;
 using UnityEngine;
 using UnityEngine.Networking;
+using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
     public class Sound : IAcknexObjectContainer
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         public AudioClip AudioClip;
 
         public Sound()
@@ -35,10 +41,6 @@ namespace Acknex
             return null;
         }
 
-        
-        
-        
-
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
         }
@@ -53,7 +55,7 @@ namespace Acknex
 
         public void SetupTemplate()
         {
-            if (AcknexObject.TryGetString("FILENAME", out var filename))
+            if (AcknexObject.TryGetString(PropertyName.FILENAME, out var filename))
             {
                 var request = UnityWebRequestMultimedia.GetAudioClip(filename, AudioType.WAV);
                 var enumerator = request.SendWebRequest();
@@ -61,7 +63,6 @@ namespace Acknex
                 {
                 }
                 AudioClip = DownloadHandlerAudioClip.GetContent(request);
-                AudioClip.name = AcknexObject.Name;
             }
         }
 
@@ -69,7 +70,7 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }

@@ -1,6 +1,7 @@
 ﻿using Acknex.Interfaces;
 using System.Collections.Generic;
 using UnityEngine;
+using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
@@ -13,7 +14,7 @@ namespace Acknex
             {
                 return;
             }
-            if (!attachment.AcknexObject.TryGetAcknexObject("ATTACH", out var attach))
+            if (!attachment.AcknexObject.TryGetAcknexObject(PropertyName.ATTACH, out var attach))
             {
                 for (int i = 0; i < materials.Count; i++)
                 {
@@ -26,17 +27,17 @@ namespace Acknex
                 }
                 return;
             }
-            var posX = attachment.AcknexObject.GetFloat("POS_X");
-            var posY = attachment.AcknexObject.GetFloat("POS_Y");
+            var posX = attachment.AcknexObject.GetFloat(PropertyName.POS_X);
+            var posY = attachment.AcknexObject.GetFloat(PropertyName.POS_Y);
             positions.Add(new Vector2(posX, posY));
             attachment = (Texture)attach.Container;
             tempAttachments.Add(attachment);
-            while (attachment.AcknexObject.TryGetAcknexObject("ATTACH", out var child))
+            while (attachment.AcknexObject.TryGetAcknexObject(PropertyName.ATTACH, out var child))
             {
                 var childTexture = (Texture)child.Container;
                 tempAttachments.Add(childTexture);
-                posX += attachment.AcknexObject.GetFloat("POS_X");
-                posY += attachment.AcknexObject.GetFloat("POS_Y");
+                posX += attachment.AcknexObject.GetFloat(PropertyName.POS_X);
+                posY += attachment.AcknexObject.GetFloat(PropertyName.POS_Y);
                 positions.Add(new Vector2(posX, posY));
                 attachment = childTexture;
             }
@@ -51,7 +52,7 @@ namespace Acknex
             for (var i = 0; i < tempAttachments.Count; i++)
             {
                 attachment = tempAttachments[i];
-                var cycle = attachment.AcknexObject.GetInteger("CYCLE");
+                var cycle = attachment.AcknexObject.GetInteger(PropertyName.CYCLE);
                 var bitmap = attachment.GetBitmapAt(cycle);
                 Graphics.CopyTexture(bitmap.CropTexture.Texture, 0, attachmentsTexture, i);
                 Graphics.CopyTexture(bitmap.CropTexture.Palette, 0, palettesTexture, i);

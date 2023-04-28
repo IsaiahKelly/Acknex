@@ -7,6 +7,11 @@ namespace Acknex
 {
     public class View : MonoBehaviour, IAcknexObjectContainer
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         private AudioSource _audioSource;
 
         public LineRenderer LineRendererTemplate;
@@ -38,7 +43,7 @@ namespace Acknex
         {
             return null;
         }
-        
+
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
@@ -74,12 +79,12 @@ namespace Acknex
             if (MainView)
             {
                 //todo: check if fov is right
-                ViewCamera.fieldOfView = Mathf.InverseLerp(0.2f, 2.0f, World.Instance.GetSkillValue("PLAYER_ARC")) * 120f;
+                ViewCamera.fieldOfView = Mathf.InverseLerp(0.2f, 2.0f, World.Instance.GetSkillValue(SkillName.PLAYER_ARC)) * 120f;
                 var transformLocalPosition = transform.localPosition;
-                transformLocalPosition.y = World.Instance.GetSkillValue("PLAYER_SIZE");
+                transformLocalPosition.y = World.Instance.GetSkillValue(SkillName.PLAYER_SIZE);
                 transform.localPosition = transformLocalPosition;
                 var transformLocalRotation = transform.localRotation;
-                transformLocalRotation.eulerAngles = new Vector3(World.Instance.GetSkillValue("PLAYER_TILT") * Mathf.Rad2Deg, 0f, 0f);
+                transformLocalRotation.eulerAngles = new Vector3(World.Instance.GetSkillValue(SkillName.PLAYER_TILT) * Mathf.Rad2Deg, 0f, 0f);
                 transform.localRotation = transformLocalRotation;
                 Shader.SetGlobalFloat("_CAMERA_PITCH", Mathf.DeltaAngle(CameraExtensions.GetLastActiveCamera().transform.localEulerAngles.x, 0f));
             }
@@ -91,17 +96,17 @@ namespace Acknex
                     switch (container)
                     {
                         case Region _:
-                            World.Instance.SetSynonymObject("TOUCH_REG", container.AcknexObject);
+                            World.Instance.SetSynonymObject(SynonymName.TOUCH_REG, container.AcknexObject);
                             break;
                         case Thing _:
-                            World.Instance.SetSynonymObject("TOUCHED", container.AcknexObject);
+                            World.Instance.SetSynonymObject(SynonymName.TOUCHED, container.AcknexObject);
                             break;
                     }
                 }
             }
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }

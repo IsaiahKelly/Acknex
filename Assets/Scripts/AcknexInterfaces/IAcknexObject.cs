@@ -13,6 +13,11 @@ namespace Acknex.Interfaces
         string Name { get; set; }
 
         /// <summary>
+        /// Object name.
+        /// </summary>
+        int NameInt { get;  }
+
+        /// <summary>
         ///     Gets/Sets the object type.
         ///     <remarks>
         ///         The object type is set automatically by the IAcknexWorld implementation.
@@ -44,7 +49,7 @@ namespace Acknex.Interfaces
         ///     A callback used to get the object template.
         ///     Already implemented in all classes.
         /// </summary>
-        Func<string, IAcknexObject> GetTemplateCallback { get; }
+        Func<int, IAcknexObject> GetTemplateCallback { get; }
 
         /// <summary>
         ///     Gets/Sets a flag indicating whether any object property has changed, and the Unity representation has to be
@@ -55,52 +60,52 @@ namespace Acknex.Interfaces
         /// <summary>
         ///     Sets a float property value for all objects with the given name.
         /// </summary>
-        void SetFloatAll(string propertyName, float value);
+        void SetFloatAll(PropertyName propertyNameName, float value);
 
         /// <summary>
         ///     Sets an integer property value for all objects with the given name.
         /// </summary>
-        void SetIntegerAll(string propertyName, int value);
+        void SetIntegerAll(PropertyName propertyNameName, int value);
 
         /// <summary>
         ///     Sets a string property value for all objects with the given name.
         /// </summary>
-        void SetStringAll(string propertyName, string value);
+        void SetStringAll(PropertyName propertyNameName, string value);
 
         /// <summary>
         ///     Sets a typed by reference property value for all objects with the given name.
         /// </summary>
-        void SetObjectAll<T>(string propertyName, T value);
+        void SetObjectAll<T>(PropertyName propertyNameName, T value);
 
         /// <summary>
         ///     Sets a float property value to another IAcknexObject for all objects with the given name.
         /// </summary>
-        void SetAcknexObjectAll(string propertyName, IAcknexObject value);
+        void SetAcknexObjectAll(PropertyName propertyNameName, IAcknexObject value);
 
         /// <summary>
         ///     Sets a float property value.
         /// </summary>
-        void SetFloat(string propertyName, float value);
+        void SetFloat(PropertyName propertyNameName, float value);
 
         /// <summary>
         ///     Sets an integer property value.
         /// </summary>
-        void SetInteger(string propertyName, int value);
+        void SetInteger(PropertyName propertyNameName, int value);
 
         /// <summary>
         ///     Sets a string property value.
         /// </summary>
-        void SetString(string propertyName, string value);
+        void SetString(PropertyName propertyNameName, string value);
 
         /// <summary>
         ///     Sets a typed by reference property value.
         /// </summary>
-        void SetObject<T>(string propertyName, T value);
+        void SetObject<T>(PropertyName propertyNameName, T value);
 
         /// <summary>
         ///     Sets a float property value to another IAcknexObject.
         /// </summary>
-        void SetAcknexObject(string propertyName, IAcknexObject value);
+        void SetAcknexObject(PropertyName propertyNameName, IAcknexObject value);
 
         /// <summary>
         ///     Gets a float property value.
@@ -109,7 +114,7 @@ namespace Acknex.Interfaces
         ///         instance as well.
         ///     </remarks>
         /// </summary>
-        float GetFloat(string propertyName, bool fromTemplate = true);
+        float GetFloat(PropertyName propertyNameName, bool fromTemplate = true);
 
         /// <summary>
         ///     Gets an integer property value.
@@ -118,7 +123,7 @@ namespace Acknex.Interfaces
         ///         instance as well.
         ///     </remarks>
         /// </summary>
-        int GetInteger(string propertyName, bool fromTemplate = true);
+        int GetInteger(PropertyName propertyNameName, bool fromTemplate = true);
 
         /// <summary>
         ///     Gets a string property value.
@@ -127,7 +132,7 @@ namespace Acknex.Interfaces
         ///         instance as well.
         ///     </remarks>
         /// </summary>
-        string GetString(string propertyName, bool fromTemplate = true);
+        string GetString(PropertyName propertyNameName, bool fromTemplate = true);
 
         /// <summary>
         ///     Gets a typed reference property value.
@@ -136,7 +141,7 @@ namespace Acknex.Interfaces
         ///         instance as well.
         ///     </remarks>
         /// </summary>
-        T GetObject<T>(string propertyName, bool fromTemplate = true);
+        T GetObject<T>(PropertyName propertyNameName, bool fromTemplate = true);
 
         /// <summary>
         ///     Gets an IAcknexObject property value.
@@ -145,27 +150,145 @@ namespace Acknex.Interfaces
         ///         instance as well.
         ///     </remarks>
         /// </summary>
-        IAcknexObject GetAcknexObject(string propertyName, bool fromTemplate = true, bool setupInstance = true);
+        IAcknexObject GetAcknexObject(PropertyName propertyNameName, bool fromTemplate = true, bool setupInstance = true);
 
-        bool TryGetFloat(string propertyName, out float result, bool fromTemplate = true);
-        bool TryGetInteger(string propertyName, out int result, bool fromTemplate = true);
-        bool TryGetString(string propertyName, out string result, bool fromTemplate = true);
-        bool TryGetObject<T>(string propertyName, out T result, bool fromTemplate = true);
-        bool TryGetAcknexObject(string propertyName, out IAcknexObject result, bool fromTemplate = true);
+        bool TryGetFloat(PropertyName propertyNameName, out float result, bool fromTemplate = true);
+        bool TryGetInteger(PropertyName propertyNameName, out int result, bool fromTemplate = true);
+        bool TryGetString(PropertyName propertyNameName, out string result, bool fromTemplate = true);
+        bool TryGetObject<T>(PropertyName propertyNameName, out T result, bool fromTemplate = true);
+        bool TryGetAcknexObject(PropertyName propertyNameName, out IAcknexObject result, bool fromTemplate = true);
 
         /// <summary>
         ///     Returns whether the object contains the given flag.
         /// </summary>
-        bool HasFlag(string flag, bool fromTemplate = true);
+        bool HasFlag(PropertyName flag, bool fromTemplate = true);
 
         /// <summary>
         ///     Enables the given instance flag.
         /// </summary>
-        void AddFlag(string flag);
+        void AddFlag(PropertyName flag);
 
         /// <summary>
         ///     Disables the given instance flag.
         /// </summary>
-        void RemoveFlag(string flag);
+        void RemoveFlag(PropertyName flag);
+
+
+
+        /// <summary>
+        ///     Sets a float property value for all objects with the given name.
+        /// </summary>
+        void SetFloatAll(int propertyName, float value);
+
+        /// <summary>
+        ///     Sets an integer property value for all objects with the given name.
+        /// </summary>
+        void SetIntegerAll(int propertyName, int value);
+
+        /// <summary>
+        ///     Sets a string property value for all objects with the given name.
+        /// </summary>
+        void SetStringAll(int propertyName, string value);
+
+        /// <summary>
+        ///     Sets a typed by reference property value for all objects with the given name.
+        /// </summary>
+        void SetObjectAll<T>(int propertyName, T value);
+
+        /// <summary>
+        ///     Sets a float property value to another IAcknexObject for all objects with the given name.
+        /// </summary>
+        void SetAcknexObjectAll(int propertyName, IAcknexObject value);
+
+        /// <summary>
+        ///     Sets a float property value.
+        /// </summary>
+        void SetFloat(int propertyName, float value);
+
+        /// <summary>
+        ///     Sets an integer property value.
+        /// </summary>
+        void SetInteger(int propertyName, int value);
+
+        /// <summary>
+        ///     Sets a string property value.
+        /// </summary>
+        void SetString(int propertyName, string value);
+
+        /// <summary>
+        ///     Sets a typed by reference property value.
+        /// </summary>
+        void SetObject<T>(int propertyName, T value);
+
+        /// <summary>
+        ///     Sets a float property value to another IAcknexObject.
+        /// </summary>
+        void SetAcknexObject(int propertyName, IAcknexObject value);
+
+        /// <summary>
+        ///     Gets a float property value.
+        ///     <remarks>
+        ///         When passing <c>true</c> to `fromTemplate`, the value can come from the object template, and from the object
+        ///         instance as well.
+        ///     </remarks>
+        /// </summary>
+        float GetFloat(int propertyName, bool fromTemplate = true);
+
+        /// <summary>
+        ///     Gets an integer property value.
+        ///     <remarks>
+        ///         When passing <c>true</c> to `fromTemplate`, the value can come from the object template, and from the object
+        ///         instance as well.
+        ///     </remarks>
+        /// </summary>
+        int GetInteger(int propertyName, bool fromTemplate = true);
+
+        /// <summary>
+        ///     Gets a string property value.
+        ///     <remarks>
+        ///         When passing <c>true</c> to `fromTemplate`, the value can come from the object template, and from the object
+        ///         instance as well.
+        ///     </remarks>
+        /// </summary>
+        string GetString(int propertyName, bool fromTemplate = true);
+
+        /// <summary>
+        ///     Gets a typed reference property value.
+        ///     <remarks>
+        ///         When passing <c>true</c> to `fromTemplate`, the value can come from the object template, and from the object
+        ///         instance as well.
+        ///     </remarks>
+        /// </summary>
+        T GetObject<T>(int propertyName, bool fromTemplate = true);
+
+        /// <summary>
+        ///     Gets an IAcknexObject property value.
+        ///     <remarks>
+        ///         When passing <c>true</c> to `fromTemplate`, the value can come from the object template, and from the object
+        ///         instance as well.
+        ///     </remarks>
+        /// </summary>
+        IAcknexObject GetAcknexObject(int propertyName, bool fromTemplate = true, bool setupInstance = true);
+
+        bool TryGetFloat(int propertyName, out float result, bool fromTemplate = true);
+        bool TryGetInteger(int propertyName, out int result, bool fromTemplate = true);
+        bool TryGetString(int propertyName, out string result, bool fromTemplate = true);
+        bool TryGetObject<T>(int propertyName, out T result, bool fromTemplate = true);
+        bool TryGetAcknexObject(int propertyName, out IAcknexObject result, bool fromTemplate = true);
+
+        /// <summary>
+        ///     Returns whether the object contains the given flag.
+        /// </summary>
+        bool HasFlag(int flag, bool fromTemplate = true);
+
+        /// <summary>
+        ///     Enables the given instance flag.
+        /// </summary>
+        void AddFlag(int flag);
+
+        /// <summary>
+        ///     Disables the given instance flag.
+        /// </summary>
+        void RemoveFlag(int flag);
     }
 }

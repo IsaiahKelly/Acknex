@@ -28,7 +28,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Gets the engine object with the given `name`.
         /// </summary>
-        IAcknexObject GetObject(ObjectType type, string name);
+        IAcknexObject GetObject(ObjectType type, int name);
 
         /// <summary>
         /// Gets the game world singleton instance.
@@ -69,17 +69,22 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Updates a game skill by the name ´name` with the value `value`.
         /// </summary>
-        void UpdateSkillValue(string name, float value);
+        void UpdateSkillValue(int nameInt, float value);
 
         /// <summary>
         /// Gets the skill's by the name `name´ value.
         /// </summary>
-        float GetSkillValue(string name);
+        float GetSkillValue(int name);
 
         /// <summary>
-        /// Assign the synonym by name `synonymName` to the given object `target´.
+        /// Updates a game skill by the name ´name` with the value `value`.
         /// </summary>
-        void SetSynonymObject(string synonymName, IAcknexObject target);
+        void UpdateSkillValue(SkillName name, float value);
+
+        /// <summary>
+        /// Gets the skill's by the name `name´ value.
+        /// </summary>
+        float GetSkillValue(SkillName name);
 
         /// <summary>
         /// This method should be called when a new Way instance point is processed.
@@ -87,9 +92,25 @@ namespace Acknex.Interfaces
         void AddWayPoint(IAcknexObject way, float x, float y);
 
         /// <summary>
+        /// Assign the synonym by name `synonymName` to the given object `target´.
+        /// </summary>
+        void SetSynonymObject(SynonymName synonymName, IAcknexObject target);
+
+        /// <summary>
+        /// Assign the synonym by name `synonymName` to the given object `target´.
+        /// </summary>
+        void SetSynonymObject(int synonymName, IAcknexObject target);
+
+        /// <summary>
         /// Returns the object stored into the given synonym.
         /// </summary>
-        IAcknexObject GetSynonymObject(string synonymName, bool fromRuntime = false);
+        IAcknexObject GetSynonymObject(int synonymName, bool fromRuntime = false);
+
+        /// <summary>
+        /// Returns the object stored into the given synonym.
+        /// </summary>
+        IAcknexObject GetSynonymObject(SynonymName synonymName, bool fromRuntime = false);
+
 
         /// <summary>
         /// Gets/Sets the internal game resolution.
@@ -100,17 +121,17 @@ namespace Acknex.Interfaces
         /// Gets a registered Region index.
         /// This value must be passed to the objects created when processing an WMP file.
         /// </summary>
-        int GetRegionIndex(string value);
+        int GetRegionIndex(int value);
 
         /// <summary>
         /// Register an object property descriptor.
         /// </summary>
-        void AddObjectProperty(ObjectType objectType, PropertyType propertyType, string property);
+        void AddObjectProperty(ObjectType objectType, PropertyType propertyType, PropertyName propertyName);
 
         /// <summary>
         /// Gets the given object property type.
         /// </summary>
-        PropertyType GetPropertyType(ObjectType objectType, string property);
+        PropertyType GetPropertyType(ObjectType objectType, PropertyName propertyName);
 
         /// <summary>
         /// Fades the current palette to the given one.
@@ -145,12 +166,12 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Stores the keyboard input into the given string object.
         /// </summary>
-        void ReadInkey(string stringName);
+        void ReadInkey(IAcknexObject acknexObject);
 
         /// <summary>
         /// Calls the IEnumerator from the given action.
         /// </summary>
-        IEnumerator CallSynonymAction(string actionName, IAcknexObject MY, IAcknexObject THERE);
+        IEnumerator CallSynonymAction(int actionName, IAcknexObject MY, IAcknexObject THERE);
 
         /// <summary>
         /// Accelerates a value by the given amount.

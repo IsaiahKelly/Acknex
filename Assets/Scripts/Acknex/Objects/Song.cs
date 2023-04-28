@@ -1,11 +1,17 @@
 ﻿using Acknex.Interfaces;
 using UnityEngine;
 using UnityMidi;
+using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
     public class Song : IAcknexObjectContainer
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         public FileResource Resource;
 
         public Song()
@@ -55,7 +61,7 @@ namespace Acknex
 
         public void SetupTemplate()
         {
-            if (AcknexObject.TryGetString("FILENAME", out var filename))
+            if (AcknexObject.TryGetString(PropertyName.FILENAME, out var filename))
             {
                 Resource = new FileResource();
                 Resource.path = filename;
@@ -66,7 +72,7 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }

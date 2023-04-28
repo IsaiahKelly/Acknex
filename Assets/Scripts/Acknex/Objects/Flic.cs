@@ -5,6 +5,11 @@ namespace Acknex
 {
     public class Flic : IAcknexObjectContainer
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         public Flic()
         {
             AcknexObject.Container = this;
@@ -50,7 +55,7 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }

@@ -5,9 +5,8 @@ using AudioSynthesis.Bank;
 using AudioSynthesis.Midi;
 using LibTessDotNet;
 using Tests;
-using UnityEditor;
 using UnityEngine;
-using Utils;
+using PropertyName = Acknex.Interfaces.PropertyName;
 using Resolution = Acknex.Interfaces.Resolution;
 
 namespace Acknex
@@ -25,8 +24,8 @@ namespace Acknex
 
         public float Accelerate(float value, float amount)
         {
-            var timeCorr = GetSkillValue("TIME_CORR");
-            var result = (1f - timeCorr * GetSkillValue("FRICTION")) * value + timeCorr * amount / GetSkillValue("INERTIA");
+            var timeCorr = GetSkillValue(SkillName.TIME_CORR);
+            var result = (1f - timeCorr * GetSkillValue(SkillName.FRICTION)) * value + timeCorr * amount / GetSkillValue(SkillName.INERTIA);
             if (Mathf.Abs(result) < Mathf.Epsilon)
             {
                 result = 0f;
@@ -62,8 +61,7 @@ namespace Acknex
 
         public IAcknexObject CreateObjectInstance(ObjectType type, string name)
         {
-            name = string.Intern(name);
-            switch (type)
+                        switch (type)
             {
                 case ObjectType.Thing:
                 {
@@ -101,7 +99,6 @@ namespace Acknex
 
         public IAcknexObject CreateObjectTemplate(ObjectType type, string name)
         {
-            name = string.Intern(name);
             switch (type)
             {
                 case ObjectType.Action:
@@ -112,8 +109,8 @@ namespace Acknex
                 case ObjectType.Actor:
                 {
                     var actor = CreateActor(name);
-                    ActorsByName.Add(name, actor);
-                    AcknexObject.SetAcknexObject(name, actor.AcknexObject);
+                    ActorsByName.Add(actor.AcknexObject.NameInt, actor);
+                    AcknexObject.SetAcknexObject(actor.AcknexObject.NameInt, actor.AcknexObject);
                     return actor.AcknexObject;
                 }
                 case ObjectType.Bitmap:
@@ -124,8 +121,8 @@ namespace Acknex
                 case ObjectType.Region:
                 {
                     var region = CreateRegion(name);
-                    RegionsByName.Add(name, region);
-                    AcknexObject.SetAcknexObject(name, region.AcknexObject);
+                    RegionsByName.Add(region.AcknexObject.NameInt, region);
+                    AcknexObject.SetAcknexObject(region.AcknexObject.NameInt, region.AcknexObject);
                     if (OldAckVersion)
                     {
                         RegionsByIndex.Add(region);
@@ -150,22 +147,22 @@ namespace Acknex
                 case ObjectType.Thing:
                 {
                     var thing = CreateThing(name);
-                    ThingsByName.Add(name, thing);
-                    AcknexObject.SetAcknexObject(name, thing.AcknexObject);
+                    ThingsByName.Add(thing.AcknexObject.NameInt, thing);
+                    AcknexObject.SetAcknexObject(thing.AcknexObject.NameInt, thing.AcknexObject);
                     return thing.AcknexObject;
                 }
                 case ObjectType.Wall:
                 {
                     var wall = CreateWall(name);
-                    WallsByName.Add(name, wall);
-                    AcknexObject.SetAcknexObject(name, wall.AcknexObject);
+                    WallsByName.Add(wall.AcknexObject.NameInt, wall);
+                    AcknexObject.SetAcknexObject(wall.AcknexObject.NameInt, wall.AcknexObject);
                     return wall.AcknexObject;
                 }
                 case ObjectType.Way:
                 {
                     var way = CreateWay(name);
-                    WaysByName.Add(name, way);
-                    AcknexObject.SetAcknexObject(name, way.AcknexObject);
+                    WaysByName.Add(way.AcknexObject.NameInt, way);
+                    AcknexObject.SetAcknexObject(way.AcknexObject.NameInt, way.AcknexObject);
                     return way.AcknexObject;
                 }
                 case ObjectType.Overlay:
@@ -240,9 +237,12 @@ namespace Acknex
             {
                 PostSetupObjectInstance(acknexObject);
                 acknexObject.Container.SetupInstance();
-                var newPosition = new Vector3(GetSkillValue("PLAYER_X"), 0f, GetSkillValue("PLAYER_Y")) + Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(GetSkillValue("PLAYER_ANGLE")), 0f) * new Vector3(0f, 0f, acknexObject.GetFloat("DIST"));
-                acknexObject.SetFloat("X", newPosition.x);
-                acknexObject.SetFloat("Y", newPosition.z);
+                var newPosition =
+                    new Vector3(GetSkillValue(SkillName.PLAYER_X), 0f, GetSkillValue(SkillName.PLAYER_Y)) +
+                    Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(GetSkillValue(SkillName.PLAYER_ANGLE)),
+                        0f) * new Vector3(0f, 0f, acknexObject.GetFloat(PropertyName.DIST));
+                acknexObject.SetFloat(PropertyName.X, newPosition.x);
+                acknexObject.SetFloat(PropertyName.Y, newPosition.z);
                 ((IGraphicObject)acknexObject.Container).ResetTexture();
                 acknexObject.IsDirty = true;
 #if DEBUG_ENABLED
@@ -261,8 +261,8 @@ namespace Acknex
         {
             var origin = acknexObject.Container.GetCenter();
             //todo: shootSector
-            var shootFac = GetSkillValue("SHOOT_FAC");
-            var shootRange = GetSkillValue("SHOOT_RANGE");
+            var shootFac = GetSkillValue(SkillName.SHOOT_FAC);
+            var shootRange = GetSkillValue(SkillName.SHOOT_RANGE);
             var minDist = Mathf.Infinity;
             IAcknexObject minObject = null;
             void HandleMinDist(IAcknexObject hitAcknexObject)
@@ -279,10 +279,10 @@ namespace Acknex
             {
                 var hitPoint = hitAcknexObject.Container.GetCenter();
                 var distance = Vector3.Distance(hitPoint, origin);
-                UpdateSkillValue("HIT_DIST", distance);
-                UpdateSkillValue("RESULT", shootFac * (1.0f - distance / shootRange));
-                UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(hitPoint), AngleUtils.To2D(origin))));
-                TriggerEvent("IF_HIT", hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
+                UpdateSkillValue(SkillName.HIT_DIST, distance);
+                UpdateSkillValue(SkillName.RESULT, shootFac * (1.0f - distance / shootRange));
+                UpdateSkillValue(SkillName.SHOOT_ANGLE, AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(hitPoint), AngleUtils.To2D(origin))));
+                TriggerEvent(PropertyName.IF_HIT, hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
             }
 #if DEBUG_ENABLED
             DebugExtension.DebugWireSphere(origin, Color.black, shootRange);
@@ -302,7 +302,7 @@ namespace Acknex
                 }
                 else if (overlapResult.transform.TryGetComponent<Thing>(out var thing))
                 {
-                    if (!thing.AcknexObject.HasFlag("FRAGILE"))
+                    if (!thing.AcknexObject.HasFlag(PropertyName.FRAGILE))
                     {
                         continue;
                     }
@@ -312,7 +312,7 @@ namespace Acknex
                 {
                     if (overlapResult.transform.parent.TryGetComponent<Wall>(out var wall))
                     {
-                        if (!wall.AcknexObject.HasFlag("FRAGILE"))
+                        if (!wall.AcknexObject.HasFlag(PropertyName.FRAGILE))
                         {
                             continue;
                         }
@@ -320,7 +320,7 @@ namespace Acknex
                     }
                     else if (overlapResult.transform.parent.TryGetComponent<Region>(out var region))
                     {
-                        if (!region.AcknexObject.HasFlag("FRAGILE"))
+                        if (!region.AcknexObject.HasFlag(PropertyName.FRAGILE))
                         {
                             continue;
                         }
@@ -328,11 +328,11 @@ namespace Acknex
                     }
                 }
             }
-            UpdateSkillValue("HIT_DIST", 0f);
-            UpdateSkillValue("RESULT", 0f);
-            UpdateSkillValue("SHOOT_ANGLE", 0f);
-            SetSynonymObject("HIT", minObject);
-            UpdateSkillValue("HIT_MINDIST", minDist < Mathf.Infinity ? minDist : 0);
+            UpdateSkillValue(SkillName.HIT_DIST, 0f);
+            UpdateSkillValue(SkillName.RESULT, 0f);
+            UpdateSkillValue(SkillName.SHOOT_ANGLE, 0f);
+            SetSynonymObject(SynonymName.HIT, minObject);
+            UpdateSkillValue(SkillName.HIT_MINDIST, minDist < Mathf.Infinity ? minDist : 0);
             for (var i = 0; i < hitCount; i++)
             {
                 var overlapResult = _overlapResults[i];
@@ -346,7 +346,7 @@ namespace Acknex
                 }
                 else if (overlapResult.transform.TryGetComponent<Thing>(out var thing))
                 {
-                    if (!thing.AcknexObject.HasFlag("FRAGILE"))
+                    if (!thing.AcknexObject.HasFlag(PropertyName.FRAGILE))
                     {
                         continue;
                     }
@@ -356,7 +356,7 @@ namespace Acknex
                 {
                     if (overlapResult.transform.parent.TryGetComponent<Wall>(out var wall))
                     {
-                        if (!wall.AcknexObject.HasFlag("FRAGILE"))
+                        if (!wall.AcknexObject.HasFlag(PropertyName.FRAGILE))
                         {
                             continue;
                         }
@@ -364,7 +364,7 @@ namespace Acknex
                     }
                     else if (overlapResult.transform.parent.TryGetComponent<Region>(out var region))
                     {
-                        if (!region.AcknexObject.HasFlag("FRAGILE"))
+                        if (!region.AcknexObject.HasFlag(PropertyName.FRAGILE))
                         {
                             continue;
                         }
@@ -429,8 +429,8 @@ namespace Acknex
                         break;
                     }
                 }
-                UpdateSkillValue("SCREEN_WIDTH", referenceResolution.x);
-                UpdateSkillValue("SCREEN_HGT", referenceResolution.y);
+                UpdateSkillValue(SkillName.SCREEN_WIDTH, referenceResolution.x);
+                UpdateSkillValue(SkillName.SCREEN_HGT, referenceResolution.y);
                 CanvasView.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, referenceResolution.x);
                 CanvasView.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, referenceResolution.y);
                 referenceResolution.x *= 2f;
@@ -439,7 +439,7 @@ namespace Acknex
             }
         }
 
-        public IAcknexObject GetObject(ObjectType type, string name)
+        public IAcknexObject GetObject(ObjectType type, int name)
         {
             if (type == ObjectType.Player)
             {
@@ -452,7 +452,7 @@ namespace Acknex
             return null;
         }
 
-        public int GetRegionIndex(string name)
+        public int GetRegionIndex(int name)
         {
             if (RegionsByName.TryGetValue(name, out var region))
             {
@@ -472,7 +472,8 @@ namespace Acknex
             if (region != null)
             {
                 var regionName = region.AcknexObject.Name;
-                foreach (var instance in AllRegionsByName[regionName])
+                var nameInt = region.AcknexObject.NameInt;
+                foreach (var instance in AllRegionsByName[nameInt])
                 {
                     instance.Lift(dz);
                 }
@@ -519,85 +520,86 @@ namespace Acknex
             {
                 return;
             }
+            var nameInt = acknexObject.NameInt;
             switch (acknexObject.Container)
             {
                 case Wall wall:
                 {
                     var name = acknexObject.Name;
-                    if (!AllWallsByName.TryGetValue(name, out var list))
+                    if (!AllWallsByName.TryGetValue(nameInt, out var list))
                     {
                         list = new HashSet<Wall>();
-                        AllWallsByName.Add(name, list);
+                        AllWallsByName.Add(nameInt, list);
                     }
                     wall.AcknexObject.InstanceIndex = list.Count;
                     list.Add(wall);
                     if (list.Count == 1)
                     {
-                        AcknexObject.SetAcknexObject(name, wall.AcknexObject);
+                        AcknexObject.SetAcknexObject(nameInt, wall.AcknexObject);
                     }
                     break;
                 }
                 case Region region:
                 {
                     var name = acknexObject.Name;
-                    if (!AllRegionsByName.TryGetValue(name, out var list))
+                    if (!AllRegionsByName.TryGetValue(nameInt, out var list))
                     {
                         list = new HashSet<Region>();
-                        AllRegionsByName.Add(name, list);
+                        AllRegionsByName.Add(nameInt, list);
                     }
                     region.AcknexObject.InstanceIndex = list.Count;
                     list.Add(region);
                     if (list.Count == 1)
                     {
-                        AcknexObject.SetAcknexObject(name, region.AcknexObject);
+                        AcknexObject.SetAcknexObject(nameInt, region.AcknexObject);
                     }
                     break;
                 }
                 case Actor actor:
                 {
                     var name = acknexObject.Name;
-                    if (!AllActorsByName.TryGetValue(name, out var list))
+                    if (!AllActorsByName.TryGetValue(nameInt, out var list))
                     {
                         list = new HashSet<Actor>();
-                        AllActorsByName.Add(name, list);
+                        AllActorsByName.Add(nameInt, list);
                     }
                     actor.AcknexObject.InstanceIndex = list.Count;
                     list.Add(actor);
                     if (list.Count == 1)
                     {
-                        AcknexObject.SetAcknexObject(name, actor.AcknexObject);
+                        AcknexObject.SetAcknexObject(nameInt, actor.AcknexObject);
                     }
                     break;
                 }
                 case Thing thing:
                 {
                     var name = acknexObject.Name;
-                    if (!AllThingsByName.TryGetValue(name, out var list))
+                    if (!AllThingsByName.TryGetValue(nameInt, out var list))
                     {
                         list = new HashSet<Thing>();
-                        AllThingsByName.Add(name, list);
+                        AllThingsByName.Add(nameInt, list);
                     }
                     thing.AcknexObject.InstanceIndex = list.Count;
                     list.Add(thing);
                     if (list.Count == 1)
                     {
-                        AcknexObject.SetAcknexObject(name, thing.AcknexObject);
+                        AcknexObject.SetAcknexObject(nameInt, thing.AcknexObject);
                     }
                     break;
                 }
                 case Way way:
                 {
                     var name = acknexObject.Name;
-                    if (!AllWaysByName.TryGetValue(name, out var list))
+                    if (!AllWaysByName.TryGetValue(nameInt, out var list))
                     {
                         list = new HashSet<Way>();
-                        AllWaysByName.Add(name, list);
+                        AllWaysByName.Add(nameInt, list);
                     }
                     way.AcknexObject.InstanceIndex = list.Count;
                     list.Add(way);
                     if (list.Count == 1)
                     {
-                        AcknexObject.SetAcknexObject(name, way.AcknexObject);
+                        AcknexObject.SetAcknexObject(nameInt, way.AcknexObject);
                     }
                     break;
                 }
@@ -624,7 +626,7 @@ namespace Acknex
             }
         }
 
-        public void ReadInkey(string stringName)
+        public void ReadInkey(IAcknexObject acknexObject)
         {
         }
 
@@ -634,10 +636,11 @@ namespace Acknex
             if (region != null)
             {
                 var regionName = region.AcknexObject.Name;
-                foreach (var instance in AllRegionsByName[regionName])
+                var nameInt = region.AcknexObject.NameInt;
+                foreach (var instance in AllRegionsByName[nameInt])
                 {
                     Vector3 center;
-                    if (acknexObject.TryGetAcknexObject("GENIUS", out var genius))
+                    if (acknexObject.TryGetAcknexObject(PropertyName.GENIUS, out var genius))
                     {
                         center = genius.Container.GetCenter();
                     }
@@ -665,7 +668,8 @@ namespace Acknex
             if (region != null)
             {
                 var regionName = region.AcknexObject.Name;
-                foreach (var instance in AllRegionsByName[regionName])
+                var nameInt = region.AcknexObject.NameInt;
+                foreach (var instance in AllRegionsByName[nameInt])
                 {
                     instance.Shift(dx, dy);
                 }
@@ -678,8 +682,8 @@ namespace Acknex
             {
                 return;
             }
-            var shootX = GetSkillValue("SHOOT_X");
-            var shootY = GetSkillValue("SHOOT_Y");
+            var shootX = GetSkillValue(SkillName.SHOOT_X);
+            var shootY = GetSkillValue(SkillName.SHOOT_Y);
             Ray ray;
             if (acknexObject == null)
             {
@@ -693,8 +697,8 @@ namespace Acknex
                 ray = new Ray(View.Instance.ViewCamera.transform.position, (acknexObject.Container.GetCenter() - View.Instance.ViewCamera.transform.position).normalized);
             }
             //todo: shootSector
-            var shootFac = GetSkillValue("SHOOT_FAC");
-            var shootRange = GetSkillValue("SHOOT_RANGE");
+            var shootFac = GetSkillValue(SkillName.SHOOT_FAC);
+            var shootRange = GetSkillValue(SkillName.SHOOT_RANGE);
 
             void HandleHit(RaycastHit raycastResult, IAcknexObject hitAcknexObject)
             {
@@ -703,13 +707,13 @@ namespace Acknex
                     return;
                 }
                 var distance = acknexObject != null ? Vector3.Distance(acknexObject.Container.GetCenter(), raycastResult.point) : raycastResult.distance;
-                UpdateSkillValue("HIT_DIST", distance);
-                UpdateSkillValue("RESULT", shootFac * (1.0f - distance / shootRange));
-                UpdateSkillValue("SHOOT_ANGLE", AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(raycastResult.point), AngleUtils.To2D(ray.origin))));
-                SetSynonymObject("HIT", hitAcknexObject);
+                UpdateSkillValue(SkillName.HIT_DIST, distance);
+                UpdateSkillValue(SkillName.RESULT, shootFac * (1.0f - distance / shootRange));
+                UpdateSkillValue(SkillName.SHOOT_ANGLE, AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(raycastResult.point), AngleUtils.To2D(ray.origin))));
+                SetSynonymObject(SynonymName.HIT, hitAcknexObject);
                 if (acknexObject == null)
                 {
-                    TriggerEvent("IF_HIT", hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
+                    TriggerEvent(PropertyName.IF_HIT, hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
                 }
 #if DEBUG_ENABLED
                 var color = Color.magenta;
@@ -730,10 +734,10 @@ namespace Acknex
 #endif
             }
 
-            UpdateSkillValue("HIT_DIST", 0f);
-            UpdateSkillValue("RESULT", 0f);
-            UpdateSkillValue("SHOOT_ANGLE", 0f);
-            SetSynonymObject("HIT", null);
+            UpdateSkillValue(SkillName.HIT_DIST, 0f);
+            UpdateSkillValue(SkillName.RESULT, 0f);
+            UpdateSkillValue(SkillName.SHOOT_ANGLE, 0f);
+            SetSynonymObject(SynonymName.HIT, null);
             Array.Clear(_raycastResults, 0, MaxHits);
             Physics.RaycastNonAlloc(ray, _raycastResults, shootRange, WallsWaterRegionsAndSprites, QueryTriggerInteraction.Collide);
             Array.Sort(_raycastResults, (a, b) => a.distance.CompareTo(b.distance));
@@ -748,7 +752,7 @@ namespace Acknex
                 {
                     if (raycastResult.transform.parent.TryGetComponent<Wall>(out var wall))
                     {
-                        if (wall.AcknexObject.HasFlag("IMMATERIAL"))
+                        if (wall.AcknexObject.HasFlag(PropertyName.IMMATERIAL))
                         {
                             continue;
                         }
@@ -757,7 +761,7 @@ namespace Acknex
                     }
                     if (raycastResult.transform.parent.TryGetComponent<Region>(out var region))
                     {
-                        if (region.AcknexObject.HasFlag("IMMATERIAL"))
+                        if (region.AcknexObject.HasFlag(PropertyName.IMMATERIAL))
                         {
                             continue;
                         }
@@ -766,7 +770,7 @@ namespace Acknex
                     }
                     if (raycastResult.transform.parent.TryGetComponent<Thing>(out var thing))
                     {
-                        if (thing.AcknexObject.HasFlag("IMMATERIAL"))
+                        if (thing.AcknexObject.HasFlag(PropertyName.IMMATERIAL))
                         {
                             continue;
                         }
@@ -789,7 +793,7 @@ namespace Acknex
             CanvasWidthRatio = CanvasScaler.referenceResolution.x * (CanvasScaler.referenceResolution.x / Screen.width);
             Shader.SetGlobalInt("_AcknexUsePalettes", UsePalettes ? 1 : 0);
             AmbientLight.shadows = DrawShadows ? LightShadows.Hard : LightShadows.None;
-            AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat("LIGHT_ANGLE")), 0f) * Quaternion.Euler(45f, 0f, 0f);
+            AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat(PropertyName.LIGHT_ANGLE)), 0f) * Quaternion.Euler(45f, 0f, 0f);
             UpdateSkills();
         }
 
@@ -877,31 +881,31 @@ namespace Acknex
         {
             foreach (var item in _postResolve)
             {
-                var objectName = string.Intern(item.objectName);
+                var objectName = item.objectName;
+                var objectIntName = NameUtils.NameToInt(objectName, true);
                 if (item.list != null)
                 {
-                    if (AcknexObject.TryGetAcknexObject(objectName, out var acknexObject))
+                    if (AcknexObject.TryGetAcknexObject(objectIntName, out var acknexObject))
                     {
                         item.list.Add(acknexObject);
                     }
-                    else if (item.objectName == "NULL")
+                    else if (objectIntName == NameUtils.NULL)
                     {
                         item.list.Add(null);
                     }
                     else
                     {
                         //todo: this is hacky
-                        var propertyName = string.Intern($"_UNNAMED_{_unnamedStringCount++}");
+                        var propertyName = $"_UNNAMED_{_unnamedStringCount++}";
                         var str = AddString(propertyName, objectName);
                         item.list.Add(str);
                     }
                 }
                 else
                 {
-                    if (AcknexObject.TryGetAcknexObject(objectName, out var acknexObject))
+                    if (AcknexObject.TryGetAcknexObject(objectIntName, out var acknexObject))
                     {
-                        var propertyName = string.Intern(item.keyword);
-                        item.acknexObject.SetAcknexObject(propertyName, acknexObject);
+                        item.acknexObject.SetAcknexObject(item.keyword, acknexObject);
                     }
                 }
             }

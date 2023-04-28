@@ -1,10 +1,16 @@
 ﻿using Acknex.Interfaces;
 using UnityEngine;
+using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
     public class Palette : IAcknexObjectContainer
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         private Color[] _colors;
 
         public TextureAndPalette Texture;
@@ -50,7 +56,7 @@ namespace Acknex
 
         public void SetupTemplate()
         {
-            var filename = AcknexObject.GetString("PALFILE");
+            var filename = AcknexObject.GetString(PropertyName.PALFILE);
             Bitmap.CreateBitmapTexture(filename, 0, 0, 0, 0, out Texture, out _, true);
             if (Texture != null)
             {
@@ -62,7 +68,7 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }

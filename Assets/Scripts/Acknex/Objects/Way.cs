@@ -7,13 +7,18 @@ namespace Acknex
 {
     public class Way : MonoBehaviour, IAcknexObjectContainer
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         public List<Vector2> Points = new List<Vector2>();
 
         public List<Vector2> InstancePoints
         {
             get
             {
-                var firstInstance = World.Instance.AllWaysByName[AcknexObject.Name].First();
+                var firstInstance = World.Instance.AllWaysByName[AcknexObject.NameInt].First();
                 return firstInstance.Points;
             }
         }
@@ -72,7 +77,7 @@ namespace Acknex
             AcknexObject.IsDirty = false;
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             if (World.Instance.WaysByName.TryGetValue(name, out var definition))
             {

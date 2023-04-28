@@ -5,12 +5,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
 
     public class Model : IAcknexObjectContainer
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
 
@@ -19,7 +25,7 @@ namespace Acknex
         public GameObject GameObject => null;
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Model);
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }
@@ -194,7 +200,7 @@ namespace Acknex
 
         public void SetupTemplate()
         {
-            if (AcknexObject.TryGetString("FILENAME", out var filename))
+            if (AcknexObject.TryGetString(PropertyName.FILENAME, out var filename))
             {
                 LoadFromFile(filename);
             }

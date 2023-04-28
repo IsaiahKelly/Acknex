@@ -5,6 +5,11 @@ namespace Acknex
 {
     public class Skill : IAcknexObjectContainer
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         public Skill()
         {
             AcknexObject.Container = this;
@@ -52,7 +57,7 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }

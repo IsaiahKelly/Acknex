@@ -1,6 +1,7 @@
 ﻿using Acknex.Interfaces;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
@@ -15,8 +16,8 @@ namespace Acknex
                 return Vector3.one;
             }
             var value = new Vector3(
-                Mathf.Max(1, bitmap.Width) / Mathf.Max(1, textureObject.AcknexObject.GetFloat("SCALE_X")),
-                Mathf.Max(1, bitmap.Height) / Mathf.Max(1, textureObject.AcknexObject.GetFloat("SCALE_Y")),
+                Mathf.Max(1, bitmap.Width) / Mathf.Max(1, textureObject.AcknexObject.GetFloat(PropertyName.SCALE_X)),
+                Mathf.Max(1, bitmap.Height) / Mathf.Max(1, textureObject.AcknexObject.GetFloat(PropertyName.SCALE_Y)),
                 1f);
             return value;
         }

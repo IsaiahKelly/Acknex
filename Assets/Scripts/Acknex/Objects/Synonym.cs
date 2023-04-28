@@ -5,6 +5,11 @@ namespace Acknex
 {
     public class Synonym : IAcknexObjectContainer
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         public Synonym()
         {
             AcknexObject.Container = this;
@@ -56,7 +61,7 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }

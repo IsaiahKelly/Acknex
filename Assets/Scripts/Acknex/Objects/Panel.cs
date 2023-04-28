@@ -4,8 +4,13 @@ namespace Acknex
 {
     public class Panel : Overlay
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         public override IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Panel);
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }
@@ -14,22 +19,22 @@ namespace Acknex
         {
             //todo: better way
             if (
-                World.Instance.AcknexObject.GetAcknexObject("PANELS.1") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.2") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.3") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.4") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.5") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.6") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.7") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.8") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.9") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.10") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.11") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.12") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.13") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.14") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.15") == AcknexObject
-             || World.Instance.AcknexObject.GetAcknexObject("PANELS.16") == AcknexObject)
+                World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_1) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_2) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_3) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_4) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_5) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_6) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_7) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_8) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_9) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_10) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_11) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_12) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_13) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_14) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_15) == AcknexObject
+             || World.Instance.AcknexObject.GetAcknexObject(PropertyName.PANELS_16) == AcknexObject)
             {
                 OverlayGraphic.enabled = true;
             }
@@ -37,7 +42,7 @@ namespace Acknex
             {
                 OverlayGraphic.enabled = false;
             }
-            var overlaySprite = AcknexObject.GetAcknexObject("PAN_MAP")?.Container as Bitmap;
+            var overlaySprite = AcknexObject.GetAcknexObject(PropertyName.PAN_MAP)?.Container as Bitmap;
             Draw(overlaySprite);
         }
     }

@@ -2,22 +2,28 @@
 using Acknex.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
+using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
     public class Text : MaskableGraphic, IAcknexObjectContainer
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         private bool _hasToDisplay;
         private bool _lastHasToDisplay;
         private UIVertex[] _verts;
-        public Font Font => (Font)AcknexObject.GetAcknexObject("FONT").Container;
+        public Font Font => (Font)AcknexObject.GetAcknexObject(PropertyName.FONT).Container;
 
         public override Material material { get; set; }
-        
+
 
         public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Text);
 
-        
+
 
         public void Disable()
         {
@@ -39,7 +45,7 @@ namespace Acknex
             return null;
         }
 
-        
+
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
@@ -59,7 +65,7 @@ namespace Acknex
 
         public virtual void UpdateObject()
         {
-            if (World.Instance.AcknexObject.GetAcknexObject("MESSAGES.1") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.2") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.3") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.4") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.5") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.6") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.7") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.8") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.9") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.10") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.11") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.12") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.13") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.14") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.15") == AcknexObject || World.Instance.AcknexObject.GetAcknexObject("MESSAGES.16") == AcknexObject)
+            if (World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_1) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_2) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_3) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_4) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_5) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_6) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_7) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_8) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_9) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_10) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_11) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_12) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_13) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_14) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_15) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_16) == AcknexObject)
             {
                 _hasToDisplay = true;
             }
@@ -69,7 +75,7 @@ namespace Acknex
             }
             rectTransform.anchorMin = new Vector3(0f, 1f);
             rectTransform.anchorMax = new Vector3(0f, 1f);
-            rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat("POS_X"), -AcknexObject.GetFloat("POS_Y"), 0f);
+            rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat(PropertyName.POS_X), -AcknexObject.GetFloat(PropertyName.POS_Y), 0f);
             if (_hasToDisplay != _lastHasToDisplay || AcknexObject.IsDirty)
             {
                 SetAllDirty();
@@ -78,7 +84,7 @@ namespace Acknex
             _lastHasToDisplay = _hasToDisplay;
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }
@@ -112,8 +118,8 @@ namespace Acknex
             if (_hasToDisplay)
             {
                 materialForRendering.SetTexture("_MainTex", World.Instance.UsePalettes ? Font.GlyphsPalette : Font.GlyphsTexture);
-                var stringIndex = AcknexObject.GetInteger("INDEX") - 1;
-                if (!AcknexObject.TryGetObject<List<IAcknexObject>>("STRING", out var strings) || stringIndex < 0 || stringIndex >= strings.Count)
+                var stringIndex = AcknexObject.GetInteger(PropertyName.INDEX) - 1;
+                if (!AcknexObject.TryGetObject<List<IAcknexObject>>(PropertyName.STRING, out var strings) || stringIndex < 0 || stringIndex >= strings.Count)
                 {
                     return;
                 }
@@ -122,7 +128,7 @@ namespace Acknex
                 {
                     return;
                 }
-                var stringValue = str.GetString("VAL");
+                var stringValue = str.GetString(PropertyName.VAL);
                 if (stringValue == null)
                 {
                     return;
@@ -133,8 +139,8 @@ namespace Acknex
 
         protected void DrawText(VertexHelper vh, string stringValue)
         {
-            var charWidth = Font.AcknexObject.GetFloat("WIDTH");
-            var charHeight = Font.AcknexObject.GetFloat("HEIGHT");
+            var charWidth = Font.AcknexObject.GetFloat(PropertyName.WIDTH);
+            var charHeight = Font.AcknexObject.GetFloat(PropertyName.HEIGHT);
             var x = 0f;
             var y = -charHeight;
             for (var i = 0; i < stringValue.Length; i++)

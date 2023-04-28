@@ -1,5 +1,6 @@
 ﻿using Acknex.Interfaces;
 using UnityEngine;
+using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
@@ -8,7 +9,7 @@ namespace Acknex
         public AcknexString(string value)
         {
             AcknexObject.Container = this;
-            AcknexObject.SetString("VAL", value);
+            AcknexObject.SetString(PropertyName.VAL, value);
         }
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallbackActor, ObjectType.String);
@@ -51,7 +52,7 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetDefinitionCallbackActor(string name)
+        private static IAcknexObject GetDefinitionCallbackActor(int name)
         {
             return null;
         }

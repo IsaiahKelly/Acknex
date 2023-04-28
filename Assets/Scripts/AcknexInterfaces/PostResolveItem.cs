@@ -7,7 +7,7 @@ namespace Acknex.Interfaces
     {
         public IList<IAcknexObject> list;
         public IAcknexObject acknexObject;
-        public string keyword;
+        public PropertyName keyword;
         public string objectName;
     }
 }

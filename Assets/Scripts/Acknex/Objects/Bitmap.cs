@@ -5,11 +5,17 @@ using IlbmReaderTest;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
+using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
     public class Bitmap : IAcknexObjectContainer
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         //todo: move
         private Texture2DArray _skyboxPalette2DArray;
         private Texture2DArray _skyboxTexture2DArray;
@@ -22,13 +28,13 @@ namespace Acknex
             AcknexObject.Container = this;
         }
 
-        public float Width => AcknexObject.GetFloat("DX") != 0 ? AcknexObject.GetFloat("DX") : OriginalTexture != null ? OriginalTexture.Texture.width : 0;
-        public float Height => AcknexObject.GetFloat("DY") != 0 ? AcknexObject.GetFloat("DY") : OriginalTexture != null ? OriginalTexture.Texture.height : 0;
-        public float X => AcknexObject.GetFloat("X");
-        public float Y => AcknexObject.GetFloat("Y");
+        public float Width => AcknexObject.GetFloat(PropertyName.DX) != 0 ? AcknexObject.GetFloat(PropertyName.DX) : OriginalTexture != null ? OriginalTexture.Texture.width : 0;
+        public float Height => AcknexObject.GetFloat(PropertyName.DY) != 0 ? AcknexObject.GetFloat(PropertyName.DY) : OriginalTexture != null ? OriginalTexture.Texture.height : 0;
+        public float X => AcknexObject.GetFloat(PropertyName.X);
+        public float Y => AcknexObject.GetFloat(PropertyName.Y);
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Bitmap);
-        
+
 
         public void Disable()
         {
@@ -60,7 +66,7 @@ namespace Acknex
 
         public void SetupTemplate()
         {
-            var filename = AcknexObject.GetString("FILENAME");
+            var filename = AcknexObject.GetString(PropertyName.FILENAME);
             CreateBitmapTexture(filename, (int)X, (int)Y, (int)Width, (int)Height, out OriginalTexture, out CropTexture);
         }
 
@@ -68,7 +74,7 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }
@@ -143,7 +149,7 @@ namespace Acknex
             var transparent = false;
             CropTexture.Palette.wrapModeU = CropTexture.Texture.wrapModeU = TextureWrapMode.Repeat;
             CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Repeat;
-            var graphicObject = sourceAcknexObject?.Container as IGraphicObject; 
+            var graphicObject = sourceAcknexObject?.Container as IGraphicObject;
             if (sourceAcknexObject != null)
             {
                 if (sourceAcknexObject.Type == ObjectType.Actor || sourceAcknexObject.Type == ObjectType.Thing || sourceAcknexObject.Type == ObjectType.Overlay || sourceAcknexObject.Type == ObjectType.Panel)
@@ -151,11 +157,11 @@ namespace Acknex
                     CropTexture.Palette.wrapModeU = CropTexture.Texture.wrapModeU = TextureWrapMode.Clamp;
                     CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Clamp;
                 }
-                if (sourceAcknexObject.TryGetFloat("OFFSET_X", out var offsetXVal))
+                if (sourceAcknexObject.TryGetFloat(PropertyName.OFFSET_X, out var offsetXVal))
                 {
                     offsetX = offsetXVal;
                 }
-                if (sourceAcknexObject.TryGetFloat("OFFSET_Y", out var offsetYVal))
+                if (sourceAcknexObject.TryGetFloat(PropertyName.OFFSET_Y, out var offsetYVal))
                 {
                     offsetY = offsetYVal;
                 }
@@ -177,18 +183,18 @@ namespace Acknex
                             material.SetFloat("_V1H", wall.BottomUV.m13);
 
                         }
-                        if (wall.AcknexObject.HasFlag("FENCE"))
+                        if (wall.AcknexObject.HasFlag(PropertyName.FENCE))
                         {
                             material.SetInt("_FENCE", 1);
                             CropTexture.Palette.wrapModeV = CropTexture.Texture.wrapModeV = TextureWrapMode.Clamp;
                         }
-                        if (wall.AcknexObject.HasFlag("PORTCULLIS"))
+                        if (wall.AcknexObject.HasFlag(PropertyName.PORTCULLIS))
                         {
                             material.SetInt("_PORTCULLIS", 1);
                         }
                     }
                 }
-                transparent = sourceAcknexObject.HasFlag("TRANSPARENT");
+                transparent = sourceAcknexObject.HasFlag(PropertyName.TRANSPARENT);
                 if (graphicObject != null)
                 {
                     ambient *= graphicObject.GetAmbient();
@@ -198,32 +204,32 @@ namespace Acknex
             var radiance = 0f;
             if (texture != null)
             {
-                if (texture.AcknexObject.TryGetFloat("ALBEDO", out var textureAlbedo))
+                if (texture.AcknexObject.TryGetFloat(PropertyName.ALBEDO, out var textureAlbedo))
                 {
                     albedo = textureAlbedo;
                 }
-                if (texture.AcknexObject.TryGetFloat("RADIANCE", out var textureRadiance))
+                if (texture.AcknexObject.TryGetFloat(PropertyName.RADIANCE, out var textureRadiance))
                 {
                     radiance = textureRadiance;
                 }
-                if (texture.AcknexObject.TryGetFloat("AMBIENT", out var textureAmbient))
+                if (texture.AcknexObject.TryGetFloat(PropertyName.AMBIENT, out var textureAmbient))
                 {
                     ambient *= textureAmbient;
                 }
-                if (texture.AcknexObject.TryGetObject<List<float>>("OFFSET_X", out var offsetXList))
+                if (texture.AcknexObject.TryGetObject<List<float>>(PropertyName.OFFSET_X, out var offsetXList))
                 {
                     offsetX = offsetXList[index];
                 }
-                if (texture.AcknexObject.TryGetObject<List<float>>("OFFSET_Y", out var offsetYList))
+                if (texture.AcknexObject.TryGetObject<List<float>>(PropertyName.OFFSET_Y, out var offsetYList))
                 {
                     offsetY = offsetYList[index];
                 }
-                scaleX = texture.AcknexObject.GetFloat("SCALE_X");
-                scaleY = texture.AcknexObject.GetFloat("SCALE_Y");
+                scaleX = texture.AcknexObject.GetFloat(PropertyName.SCALE_X);
+                scaleY = texture.AcknexObject.GetFloat(PropertyName.SCALE_Y);
                 //todo: is there a better place to build that?
-                if (texture.AcknexObject.HasFlag("SKY"))
+                if (texture.AcknexObject.HasFlag(PropertyName.SKY))
                 {
-                    var sides = texture.AcknexObject.GetInteger("SIDES");
+                    var sides = texture.AcknexObject.GetInteger(PropertyName.SIDES);
                     if (_skyboxTexture2DArray == null)
                     {
                         var bitmapCount = texture.BMaps.Count;

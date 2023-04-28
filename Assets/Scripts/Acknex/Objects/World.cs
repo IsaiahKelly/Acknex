@@ -5,44 +5,49 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
 using UnityMidi;
-using WdlEngine;
+using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
     public partial class World : MonoBehaviour, IAcknexWorld
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         private readonly IDictionary<Texture, IList<Mesh>> _meshesPerTexture = new Dictionary<Texture, IList<Mesh>>();
-        public readonly IDictionary<string, Action> ActionsByName = new StringKeyDictionary<string, Action>();
-        public readonly IDictionary<string, Actor> ActorsByName = new StringKeyDictionary<string, Actor>();
-        public readonly IDictionary<string, HashSet<Actor>> AllActorsByName = new StringKeyDictionary<string, HashSet<Actor>>();
-        public readonly IDictionary<string, HashSet<Region>> AllRegionsByName = new StringKeyDictionary<string, HashSet<Region>>();
-        public readonly IDictionary<string, HashSet<Thing>> AllThingsByName = new StringKeyDictionary<string, HashSet<Thing>>();
-        public readonly IDictionary<string, HashSet<Wall>> AllWallsByName = new StringKeyDictionary<string, HashSet<Wall>>();
-        public readonly IDictionary<string, HashSet<Way>> AllWaysByName = new StringKeyDictionary<string, HashSet<Way>>();
-        public readonly IDictionary<string, Bitmap> BitmapsByName = new StringKeyDictionary<string, Bitmap>();
-        public readonly IDictionary<string, Digits> DigitsByName = new StringKeyDictionary<string, Digits>();
-        public readonly IDictionary<string, Flic> FlicsByName = new StringKeyDictionary<string, Flic>();
-        public readonly IDictionary<string, Font> FontsByName = new StringKeyDictionary<string, Font>();
-        public readonly IDictionary<string, Model> ModelsByName = new StringKeyDictionary<string, Model>();
-        public readonly IDictionary<string, Overlay> OverlaysByName = new StringKeyDictionary<string, Overlay>();
-        public readonly IDictionary<string, Palette> PalettesByName = new StringKeyDictionary<string, Palette>();
-        public readonly IDictionary<string, Panel> PanelsByName = new StringKeyDictionary<string, Panel>();
+        public readonly IDictionary<int, Action> ActionsByName = new Dictionary<int, Action>();
+        public readonly IDictionary<int, Actor> ActorsByName = new Dictionary<int, Actor>();
+        public readonly IDictionary<int, HashSet<Actor>> AllActorsByName = new Dictionary<int, HashSet<Actor>>();
+        public readonly IDictionary<int, HashSet<Region>> AllRegionsByName = new Dictionary<int, HashSet<Region>>();
+        public readonly IDictionary<int, HashSet<Thing>> AllThingsByName = new Dictionary<int, HashSet<Thing>>();
+        public readonly IDictionary<int, HashSet<Wall>> AllWallsByName = new Dictionary<int, HashSet<Wall>>();
+        public readonly IDictionary<int, HashSet<Way>> AllWaysByName = new Dictionary<int, HashSet<Way>>();
+        public readonly IDictionary<int, Bitmap> BitmapsByName = new Dictionary<int, Bitmap>();
+        public readonly IDictionary<int, Digits> DigitsByName = new Dictionary<int, Digits>();
+        public readonly IDictionary<int, Flic> FlicsByName = new Dictionary<int, Flic>();
+        public readonly IDictionary<int, Font> FontsByName = new Dictionary<int, Font>();
+        public readonly IDictionary<int, Model> ModelsByName = new Dictionary<int, Model>();
+        public readonly IDictionary<int, Overlay> OverlaysByName = new Dictionary<int, Overlay>();
+        public readonly IDictionary<int, Palette> PalettesByName = new Dictionary<int, Palette>();
+        public readonly IDictionary<int, Panel> PanelsByName = new Dictionary<int, Panel>();
+        public readonly IDictionary<int, Picture> PicturesByName = new Dictionary<int, Picture>();
+        public readonly IDictionary<int, Region> RegionsByName = new Dictionary<int, Region>();
+        public readonly IDictionary<int, Skill> SkillsByName = new Dictionary<int, Skill>();
+        public readonly IDictionary<int, Song> SongsByName = new Dictionary<int, Song>();
+        public readonly IDictionary<int, Sound> SoundsByName = new Dictionary<int, Sound>();
+        public readonly IDictionary<int, AcknexString> StringsByName = new Dictionary<int, AcknexString>();
+        public readonly IDictionary<int, Synonym> SynonymsByName = new Dictionary<int, Synonym>();
+        public readonly IDictionary<int, Text> TextsByName = new Dictionary<int, Text>();
+        public readonly IDictionary<int, Texture> TexturesByName = new Dictionary<int, Texture>();
+        public readonly IDictionary<int, Thing> ThingsByName = new Dictionary<int, Thing>();
+        public readonly IDictionary<int, Wall> WallsByName = new Dictionary<int, Wall>();
+        public readonly IDictionary<int, Way> WaysByName = new Dictionary<int, Way>();
+        public readonly IDictionary<string, TextureAndPalette> TextureCache = new Dictionary<string, TextureAndPalette>();
         public readonly List<string> Paths = new List<string>();
-        public readonly IDictionary<string, Picture> PicturesByName = new StringKeyDictionary<string, Picture>();
-        public readonly List<Region> RegionsByIndex = new List<Region>(1000);
-        public readonly IDictionary<string, Region> RegionsByName = new StringKeyDictionary<string, Region>();
-        public readonly IDictionary<string, Skill> SkillsByName = new StringKeyDictionary<string, Skill>();
-        public readonly IDictionary<string, Song> SongsByName = new StringKeyDictionary<string, Song>();
-        public readonly IDictionary<string, Sound> SoundsByName = new StringKeyDictionary<string, Sound>();
-        public readonly IDictionary<string, AcknexString> StringsByName = new StringKeyDictionary<string, AcknexString>();
-        public readonly IDictionary<string, Synonym> SynonymsByName = new StringKeyDictionary<string, Synonym>();
-        public readonly IDictionary<string, Text> TextsByName = new StringKeyDictionary<string, Text>();
-        public readonly IDictionary<string, TextureAndPalette> TextureCache = new StringKeyDictionary<string, TextureAndPalette>();
-        public readonly IDictionary<string, Texture> TexturesByName = new StringKeyDictionary<string, Texture>();
-        public readonly IDictionary<string, Thing> ThingsByName = new StringKeyDictionary<string, Thing>();
         public readonly List<Wall> Walls = new List<Wall>();
-        public readonly IDictionary<string, Wall> WallsByName = new StringKeyDictionary<string, Wall>();
-        public readonly IDictionary<string, Way> WaysByName = new StringKeyDictionary<string, Way>();
+        public readonly List<Region> RegionsByIndex = new List<Region>(1000);
 
         private bool _culled;
         private Texture2D _palette;
@@ -126,7 +131,7 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }
@@ -135,6 +140,7 @@ namespace Acknex
         {
             Instance = this;
             AcknexObject.Container = this;
+            AcknexObject.Name = "__WORLD__";
             _palette = new Texture2D(256, 1, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.None);
             _palette.filterMode = FilterMode.Point;
             _palettePixels = new Color[256];
@@ -154,12 +160,12 @@ namespace Acknex
             ContouredRegions = new ContouredRegions();
             ContourVertices = new List<ContourVertex>();
             RegionWalls = new RegionWalls();
-            if (UseWDLEngine)
-            {
-                var engine = new ScriptingEngine(this);
-                engine.ParseWdl(WDLPath);
-            }
-            else
+            //if (UseWDLEngine)
+            //{
+            //    var engine = new ScriptingEngine(this);
+            //    engine.ParseWdl(WDLPath);
+            //}
+            //else
             {
                 var baseDir = PathUtils.GetFileDirectory(WDLPath);
                 _textParser = new TextParser(this, baseDir, OldAckVersion);
@@ -193,7 +199,7 @@ namespace Acknex
             HoldString = AddString("HOLD", "HOLD");
             Node1String = AddString("NODE1", "NODE1");
             Node2String = AddString("NODE2", "NODE2");
-            AcknexObject.SetFloat("CLIP_DIST", 1000f);
+            AcknexObject.SetFloat(PropertyName.CLIP_DIST, 1000f);
         }
 
         private static IAcknexObject GetNullTemplateCallback(string name)
@@ -204,11 +210,6 @@ namespace Acknex
         private void Update()
         {
             UpdateObject();
-            if (GodMode)
-            {
-                UpdateSkillValue("AMMO", 9999999F);
-                UpdateSkillValue("PLAYER_HEALTH", 9999999F);
-            }
         }
 
         public void BuildRegionsAndWalls()
@@ -218,8 +219,8 @@ namespace Acknex
             {
                 foreach (var wall in kvp.Value)
                 {
-                    RegionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION1", true, false)).Add(wall);
-                    RegionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject("REGION2", true, false)).Add(wall);
+                    RegionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject(PropertyName.REGION1, true, false)).Add(wall);
+                    RegionWalls.GetWallsList(wall.AcknexObject.GetAcknexObject(PropertyName.REGION2, true, false)).Add(wall);
                 }
             }
             foreach (var kvp in RegionWalls)
@@ -236,7 +237,7 @@ namespace Acknex
                     }
                     var rightRegion = ContouredRegions.GetContouredRegion(kvp.Key);
                     var allContourVertices = rightRegion.GetNew();
-                    wall.ProcessWall(allContourVertices, wall, kvp, ref vertexCount, wall.AcknexObject.GetAcknexObject("REGION2", true, false) == kvp.Key);
+                    wall.ProcessWall(allContourVertices, wall, kvp, ref vertexCount, wall.AcknexObject.GetAcknexObject(PropertyName.REGION2, true, false) == kvp.Key);
                 }
             }
             foreach (var kvp in ContouredRegions)
@@ -249,7 +250,7 @@ namespace Acknex
 
         public Material BuildMaterial(IAcknexObject acknexObject)
         {
-            if (acknexObject?.Container is Texture textureObject && textureObject.AcknexObject.HasFlag("SKY"))
+            if (acknexObject?.Container is Texture textureObject && textureObject.AcknexObject.HasFlag(PropertyName.SKY))
             {
                 return _skyMaterial;
             }
@@ -263,7 +264,7 @@ namespace Acknex
             {
                 return indexOf;
             }
-            var template = region.AcknexObject.GetTemplateCallback(region.AcknexObject.Name);
+            var template = region.AcknexObject.GetTemplateCallback(region.AcknexObject.NameInt);
             if (template.Container is Region templateRegion)
             {
                 return RegionsByIndex.IndexOf(templateRegion);
@@ -282,75 +283,76 @@ namespace Acknex
 
         private void SetupCulling()
         {
-            _meshesPerTexture.Clear();
-            foreach (var walls in AllWallsByName.Values)
-            {
-                foreach (var wall in walls)
-                {
-                    if (wall.TextureObject.AcknexObject.GetInteger("CYCLES") > 1)
-                    {
-                        continue;
-                    }
-                    wall.DisableRender = true;
-                    if (!_meshesPerTexture.TryGetValue(wall.TextureObject, out var meshes))
-                    {
-                        meshes = new List<Mesh>();
-                        _meshesPerTexture.Add(wall.TextureObject, meshes);
-                    }
-                    meshes.Add(wall.Filter.sharedMesh);
-                    meshes.Add(wall.GapFilter.sharedMesh);
-                }
-            }
-            foreach (var regions in AllRegionsByName.Values)
-            {
-                foreach (var region in regions)
-                {
-                    if (region.CeilTexture.AcknexObject.GetInteger("CYCLES") <= 1)
-                    {
-                        if (!_meshesPerTexture.TryGetValue(region.CeilTexture, out var meshes))
-                        {
-                            meshes = new List<Mesh>();
-                            _meshesPerTexture.Add(region.CeilTexture, meshes);
-                        }
-                        meshes.Add(region.CeilMeshFilter.sharedMesh);
-                        region.DisableCeilRender = true;
-                    }
-                    if (region.FloorTexture.AcknexObject.GetInteger("CYCLES") <= 1)
-                    {
-                        if (region.FloorMeshFilter == null)
-                        {
-                            continue;
-                        }
-                        if (!_meshesPerTexture.TryGetValue(region.FloorTexture, out var meshes))
-                        {
-                            meshes = new List<Mesh>();
-                            _meshesPerTexture.Add(region.FloorTexture, meshes);
-                        }
-                        meshes.Add(region.FloorMeshFilter.sharedMesh);
-                        region.DisableFloorRender = true;
-                    }
-                }
-            }
-            foreach (var kvp in _meshesPerTexture)
-            {
-                var combinedMesh = new Mesh();
-                var combineInstances = new CombineInstance[kvp.Value.Count];
-                for (var i = 0; i < kvp.Value.Count; i++)
-                {
-                    combineInstances[i] = new CombineInstance();
-                    combineInstances[i].mesh = kvp.Value[i];
-                }
-                combinedMesh.CombineMeshes(combineInstances, true, false, false);
-                var groupGameObject = new GameObject(kvp.Key.AcknexObject.Name);
-                groupGameObject.transform.SetParent(transform, false);
-                groupGameObject.layer = IgnoreRaycastLayer.LayerIndex;
-                var meshFilter = groupGameObject.AddComponent<MeshFilter>();
-                meshFilter.sharedMesh = combinedMesh;
-                var meshRenderer = groupGameObject.AddComponent<MeshRenderer>();
-                meshRenderer.material = BuildMaterial(kvp.Key.AcknexObject);
-                var bitmap = kvp.Key.GetBitmapAt();
-                kvp.Key.UpdateFrame(bitmap, meshRenderer.materials, false, false, 0, kvp.Key.AcknexObject);
-            }
+            //todo: reimplement
+            //_meshesPerTexture.Clear();
+            //foreach (var walls in AllWallsByName.Values)
+            //{
+            //    foreach (var wall in walls)
+            //    {
+            //        if (wall.TextureObject.AcknexObject.GetInteger(ObjectProperty.CYCLES) > 1)
+            //        {
+            //            continue;
+            //        }
+            //        wall.DisableRender = true;
+            //        if (!_meshesPerTexture.TryGetValue(wall.TextureObject, out var meshes))
+            //        {
+            //            meshes = new List<Mesh>();
+            //            _meshesPerTexture.Add(wall.TextureObject, meshes);
+            //        }
+            //        meshes.Add(wall.Filter.sharedMesh);
+            //        meshes.Add(wall.GapFilter.sharedMesh);
+            //    }
+            //}
+            //foreach (var regions in AllRegionsByName.Values)
+            //{
+            //    foreach (var region in regions)
+            //    {
+            //        if (region.CeilTexture.AcknexObject.GetInteger(ObjectProperty.CYCLES) <= 1)
+            //        {
+            //            if (!_meshesPerTexture.TryGetValue(region.CeilTexture, out var meshes))
+            //            {
+            //                meshes = new List<Mesh>();
+            //                _meshesPerTexture.Add(region.CeilTexture, meshes);
+            //            }
+            //            meshes.Add(region.CeilMeshFilter.sharedMesh);
+            //            region.DisableCeilRender = true;
+            //        }
+            //        if (region.FloorTexture.AcknexObject.GetInteger(ObjectProperty.CYCLES) <= 1)
+            //        {
+            //            if (region.FloorMeshFilter == null)
+            //            {
+            //                continue;
+            //            }
+            //            if (!_meshesPerTexture.TryGetValue(region.FloorTexture, out var meshes))
+            //            {
+            //                meshes = new List<Mesh>();
+            //                _meshesPerTexture.Add(region.FloorTexture, meshes);
+            //            }
+            //            meshes.Add(region.FloorMeshFilter.sharedMesh);
+            //            region.DisableFloorRender = true;
+            //        }
+            //    }
+            //}
+            //foreach (var kvp in _meshesPerTexture)
+            //{
+            //    var combinedMesh = new Mesh();
+            //    var combineInstances = new CombineInstance[kvp.Value.Count];
+            //    for (var i = 0; i < kvp.Value.Count; i++)
+            //    {
+            //        combineInstances[i] = new CombineInstance();
+            //        combineInstances[i].mesh = kvp.Value[i];
+            //    }
+            //    combinedMesh.CombineMeshes(combineInstances, true, false, false);
+            //    var groupGameObject = new GameObject(kvp.Key.AcknexObject.Name);
+            //    groupGameObject.transform.SetParent(transform, false);
+            //    groupGameObject.layer = IgnoreRaycastLayer.LayerIndex;
+            //    var meshFilter = groupGameObject.AddComponent<MeshFilter>();
+            //    meshFilter.sharedMesh = combinedMesh;
+            //    var meshRenderer = groupGameObject.AddComponent<MeshRenderer>();
+            //    meshRenderer.material = BuildMaterial(kvp.Key.AcknexObject);
+            //    var bitmap = kvp.Key.GetBitmapAt();
+            //    kvp.Key.UpdateFrame(bitmap, meshRenderer.materials, false, false, 0, kvp.Key.AcknexObject);
+            //}
         }
     }
 }

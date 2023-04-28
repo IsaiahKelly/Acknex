@@ -6,6 +6,7 @@ using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
+using PropertyName = Acknex.Interfaces.PropertyName;
 #if DEBUG_ENABLED
 using Utils;
 #endif
@@ -14,6 +15,11 @@ namespace Acknex
 {
     public class Region : MonoBehaviour, IAcknexObjectContainer, IGraphicObject
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         private Dictionary<int, List<int>> _allTriangles;
         private List<Vector2> _allUVs;
         private List<Vector3> _allVertices;
@@ -55,7 +61,7 @@ namespace Acknex
         {
             get
             {
-                if (AcknexObject.TryGetAcknexObject("FLOOR_TEX", out var floorTextureObject))
+                if (AcknexObject.TryGetAcknexObject(PropertyName.FLOOR_TEX, out var floorTextureObject))
                 {
                     return floorTextureObject.Container as Texture;
                 }
@@ -67,7 +73,7 @@ namespace Acknex
         {
             get
             {
-                if (AcknexObject.TryGetAcknexObject("CEIL_TEX", out var ceilTextureObject))
+                if (AcknexObject.TryGetAcknexObject(PropertyName.CEIL_TEX, out var ceilTextureObject))
                 {
                     return ceilTextureObject.Container as Texture;
                 }
@@ -85,7 +91,7 @@ namespace Acknex
                 {
                     return _belowOverride;
                 }
-                var below = AcknexObject.GetAcknexObject("BELOW", true, false);
+                var below = AcknexObject.GetAcknexObject(PropertyName.BELOW, true, false);
                 if (below?.Container is Region region)
                 {
                     return region;
@@ -106,12 +112,12 @@ namespace Acknex
 
         public void Disable()
         {
-            AcknexObject.AddFlag("INVISIBLE");
+            AcknexObject.AddFlag(PropertyName.INVISIBLE);
         }
 
         public void Enable()
         {
-            AcknexObject.RemoveFlag("INVISIBLE");
+            AcknexObject.RemoveFlag(PropertyName.INVISIBLE);
         }
 
         public GameObject GameObject => gameObject;
@@ -139,8 +145,8 @@ namespace Acknex
         {
             get
             {
-                var floorHgt = AcknexObject.GetFloat("FLOOR_HGT");
-                var ceilHgt = AcknexObject.GetFloat("CEIL_HGT");
+                var floorHgt = AcknexObject.GetFloat(PropertyName.FLOOR_HGT);
+                var ceilHgt = AcknexObject.GetFloat(PropertyName.CEIL_HGT);
                 var differentHeight = Math.Abs(floorHgt - _lastFloorHgt) > Mathf.Epsilon || Math.Abs(ceilHgt - _lastCeilHgt) > Mathf.Epsilon;
                 _lastFloorHgt = floorHgt;
                 _lastCeilHgt = ceilHgt;
@@ -153,7 +159,7 @@ namespace Acknex
         {
             get
             {
-                var hasPlay = AcknexObject.HasFlag("PLAY");
+                var hasPlay = AcknexObject.HasFlag(PropertyName.PLAY);
                 var ambient = GetAmbient();
                 var ceilTexture = CeilTexture;
                 var floorTexture = FloorTexture;
@@ -194,10 +200,10 @@ namespace Acknex
 
         public float GetAmbient()
         {
-            var ambient = AcknexObject.GetFloat("AMBIENT");
-            //if (AcknexObject.HasFlag("HERE"))
+            var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
+            //if (AcknexObject.HasFlag(ObjectProperty.HERE))
             //{
-            //    ambient += World.Instance.GetSkillValue("PLAYER_LIGHT") * Mathf.InverseLerp(World.Instance.GetSkillValue("CLIP_DIST"), 0f, AcknexObject.GetFloat("DISTANCE"));
+            //    ambient += World.Instance.GetSkillValue("PLAYER_LIGHT") * Mathf.InverseLerp(World.Instance.GetSkillValue(ObjectProperty.CLIP_DIST), 0f, AcknexObject.GetFloat(ObjectProperty.DISTANCE));
             //}
             return ambient;
         }
@@ -278,13 +284,13 @@ namespace Acknex
                 {
                     StopCoroutine(_animateCeilCoroutine);
                 }
-                var hasPlay = AcknexObject.HasFlag("PLAY");
+                var hasPlay = AcknexObject.HasFlag(PropertyName.PLAY);
                 if (CeilTexture != null)
                 {
                     if (hasPlay)
                     {
-                        AcknexObject.AddFlag("ONESHOT");
-                        AcknexObject.RemoveFlag("PLAY");
+                        AcknexObject.AddFlag(PropertyName.ONESHOT);
+                        AcknexObject.RemoveFlag(PropertyName.PLAY);
                     }
                     _animateCeilCoroutine = StartCoroutine(AnimateCeil());
                 }
@@ -296,28 +302,28 @@ namespace Acknex
                 {
                     if (hasPlay)
                     {
-                        AcknexObject.AddFlag("ONESHOT");
-                        AcknexObject.RemoveFlag("PLAY");
+                        AcknexObject.AddFlag(PropertyName.ONESHOT);
+                        AcknexObject.RemoveFlag(PropertyName.PLAY);
                     }
                     _animateFloorCoroutine = StartCoroutine(AnimateFloor());
                 }
             }
             var center = GetCenter();
             var pos2D = new Vector2(center.x, center.z);
-            var playerPos2D = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
+            var playerPos2D = new Vector2(World.Instance.GetSkillValue(SkillName.PLAYER_X), World.Instance.GetSkillValue(SkillName.PLAYER_Y));
             var distance = Vector2.Distance(playerPos2D, pos2D);
-            if (!AcknexObject.HasFlag("LIBER") && distance > World.Instance.AcknexObject.GetFloat("CLIP_DIST"))
+            if (!AcknexObject.HasFlag(PropertyName.LIBER) && distance > World.Instance.AcknexObject.GetFloat(PropertyName.CLIP_DIST))
             {
                 return;
             }
-            AcknexObject.SetFloat("DISTANCE", distance);
+            AcknexObject.SetFloat(PropertyName.DISTANCE, distance);
             if (!AcknexObject.IsDirty)
             {
                 return;
             }
             AcknexObject.IsDirty = false;
             _audioSourceGameObject.transform.position = GetCenter();
-            if (AcknexObject.HasFlag("INVISIBLE"))
+            if (AcknexObject.HasFlag(PropertyName.INVISIBLE))
             {
                 _floorMeshRenderer.enabled = false;
                 _floorCollider.enabled = false;
@@ -351,15 +357,15 @@ namespace Acknex
             _ceilCollider.enabled = true;
             _floorMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
             _ceilMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
-            _floorCollider.gameObject.layer = AcknexObject.TryGetAcknexObject("IF_DIVE", out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
-            _ceilCollider.gameObject.layer = AcknexObject.TryGetAcknexObject("IF_ARISE", out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
+            _floorCollider.gameObject.layer = AcknexObject.TryGetAcknexObject(PropertyName.IF_DIVE, out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
+            _ceilCollider.gameObject.layer = AcknexObject.TryGetAcknexObject(PropertyName.IF_ARISE, out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
             if (CeilTexture != null)
             {
-                _ceilMeshRenderer.shadowCastingMode = CeilTexture.AcknexObject.HasFlag("SKY") ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
+                _ceilMeshRenderer.shadowCastingMode = CeilTexture.AcknexObject.HasFlag(PropertyName.SKY) ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             }
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             if (World.Instance.RegionsByName.TryGetValue(name, out var region))
             {
@@ -388,7 +394,7 @@ namespace Acknex
 
         private bool CeilTextureCanceled(Texture texture)
         {
-            return AcknexObject.HasFlag("INVISIBLE") || texture != CeilTexture;
+            return AcknexObject.HasFlag(PropertyName.INVISIBLE) || texture != CeilTexture;
         }
 
         private IEnumerator AnimateFloor()
@@ -406,7 +412,7 @@ namespace Acknex
 
         private bool FloorTextureCanceled(Texture texture)
         {
-            return AcknexObject.HasFlag("INVISIBLE") || texture != FloorTexture;
+            return AcknexObject.HasFlag(PropertyName.INVISIBLE) || texture != FloorTexture;
         }
 
         private void Update()
@@ -421,7 +427,7 @@ namespace Acknex
 
         private void UpdateEvents()
         {
-            World.Instance.TriggerEvent("DO", AcknexObject, AcknexObject, GetRegion());
+            World.Instance.TriggerEvent(PropertyName.DO, AcknexObject, AcknexObject, GetRegion());
         }
 
         public void BuildMeshes()
@@ -501,7 +507,7 @@ namespace Acknex
         {
             while (true)
             {
-                World.Instance.TriggerEvent("EACH_SEC", AcknexObject, AcknexObject, GetRegion());
+                World.Instance.TriggerEvent(PropertyName.EACH_SEC, AcknexObject, AcknexObject, GetRegion());
                 yield return World.Instance.WaitForSecond;
             }
         }
@@ -510,7 +516,7 @@ namespace Acknex
         {
             while (true)
             {
-                World.Instance.TriggerEvent("EACH_TICK", AcknexObject, AcknexObject, GetRegion());
+                World.Instance.TriggerEvent(PropertyName.EACH_TICK, AcknexObject, AcknexObject, GetRegion());
                 yield return null;
             }
         }
@@ -525,7 +531,7 @@ namespace Acknex
             _allVertices.Clear();
             _allUVs.Clear();
             _allTriangles.Clear();
-            if (Math.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT")) > Mathf.Epsilon)
+            if (Math.Abs(AcknexObject.GetFloat(PropertyName.CEIL_HGT) - AcknexObject.GetFloat(PropertyName.FLOOR_HGT)) > Mathf.Epsilon)
             {
                 BuildFloorOrCeil(ref meshIndex);
                 BuildFloorOrCeil(ref meshIndex, true);
@@ -574,7 +580,7 @@ namespace Acknex
             var floorVertices = new Vector3[tess.VertexCount];
             var ceilLift = GetCeilLift();
             var floorLift = GetFloorLift();
-            var height = ceil ? AcknexObject.GetFloat("CEIL_HGT") : AcknexObject.GetFloat("FLOOR_HGT");
+            var height = ceil ? AcknexObject.GetFloat(PropertyName.CEIL_HGT) : AcknexObject.GetFloat(PropertyName.FLOOR_HGT);
             var lifted = (ceil && ceilLift != 0) || (!ceil && floorLift != 0);
             for (var i = 0; i < tess.VertexCount; i++)
             {
@@ -611,15 +617,15 @@ namespace Acknex
 
         public int GetFloorLift()
         {
-            if (AcknexObject.HasFlag("FLOOR_LIFTED"))
+            if (AcknexObject.HasFlag(PropertyName.FLOOR_LIFTED))
             {
                 return 1;
             }
-            if (AcknexObject.HasFlag("FLOOR_DESCEND"))
+            if (AcknexObject.HasFlag(PropertyName.FLOOR_DESCEND))
             {
                 return -1;
             }
-            if (AcknexObject.HasFlag("FLOOR_ASCEND"))
+            if (AcknexObject.HasFlag(PropertyName.FLOOR_ASCEND))
             {
                 return 1;
             }
@@ -628,15 +634,15 @@ namespace Acknex
 
         public int GetCeilLift()
         {
-            if (AcknexObject.HasFlag("CEIL_LIFTED"))
+            if (AcknexObject.HasFlag(PropertyName.CEIL_LIFTED))
             {
                 return -1;
             }
-            if (AcknexObject.HasFlag("CEIL_ASCEND"))
+            if (AcknexObject.HasFlag(PropertyName.CEIL_ASCEND))
             {
                 return 1;
             }
-            if (AcknexObject.HasFlag("CEIL_DESCEND"))
+            if (AcknexObject.HasFlag(PropertyName.CEIL_DESCEND))
             {
                 return -1;
             }
@@ -663,7 +669,7 @@ namespace Acknex
 
             if (onCeil)
             {
-                var zCheck = height ?? currentRegion.AcknexObject.GetFloat("FLOOR_HGT");
+                var zCheck = height ?? currentRegion.AcknexObject.GetFloat(PropertyName.FLOOR_HGT);
                 var point = new Vector3(thingX, zCheck, thingY);
                 RaycastHit raycastHit;
                 if ((radius == 0f && Physics.Raycast(new Ray(point, Vector3.up), out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions)) || Physics.SphereCast(new Ray(point, Vector3.up), radius, out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
@@ -679,7 +685,7 @@ namespace Acknex
             }
             else
             {
-                var zCheck = height ?? currentRegion.AcknexObject.GetFloat("CEIL_HGT");
+                var zCheck = height ?? currentRegion.AcknexObject.GetFloat(PropertyName.CEIL_HGT);
                 var point = new Vector3(thingX, zCheck, thingY);
                 if (Physics.SphereCast(new Ray(point, Vector3.down), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
@@ -697,19 +703,19 @@ namespace Acknex
 
         public float GetDepth()
         {
-            return Mathf.Abs(AcknexObject.GetFloat("CEIL_HGT") - AcknexObject.GetFloat("FLOOR_HGT"));
+            return Mathf.Abs(AcknexObject.GetFloat(PropertyName.CEIL_HGT) - AcknexObject.GetFloat(PropertyName.FLOOR_HGT));
         }
 
         //todo: is this needed?
         public float GetRealCeilHeight()
         {
-            return AcknexObject.GetFloat("FLOOR_HGT") + GetDepth();
+            return AcknexObject.GetFloat(PropertyName.FLOOR_HGT) + GetDepth();
         }
 
         //todo:is this needed?
         public float GetRealFloorHeight()
         {
-            return AcknexObject.GetFloat("FLOOR_HGT");
+            return AcknexObject.GetFloat(PropertyName.FLOOR_HGT);
         }
 
         public void BuildBelowInstance(List<Region> createdRegions)
@@ -718,8 +724,8 @@ namespace Acknex
             {
                 var belowAcknexObject = (AcknexObject)Below.AcknexObject;
                 var newAcknexObject = new AcknexObject(GetTemplateCallback, ObjectType.Region);
-                newAcknexObject.ObjectProperties = new StringKeyDictionary<string, object>(belowAcknexObject.ObjectProperties);
-                newAcknexObject.NumberProperties = new StringKeyDictionary<string, float>(belowAcknexObject.NumberProperties);
+                newAcknexObject.ObjectProperties = new Dictionary<int, object>(belowAcknexObject.ObjectProperties);
+                newAcknexObject.NumberProperties = new Dictionary<int, float>(belowAcknexObject.NumberProperties);
                 newAcknexObject.Name = belowAcknexObject.Name;
                 var newRegion = Instantiate(Below.gameObject).GetComponent<Region>();
                 newRegion.Above = this;
@@ -737,10 +743,10 @@ namespace Acknex
 
         public void PlayRegionSound()
         {
-            var floorSound = FloorTexture.AcknexObject.GetAcknexObject("SOUND");
+            var floorSound = FloorTexture.AcknexObject.GetAcknexObject(PropertyName.SOUND);
             if (floorSound != null)
             {
-                World.Instance.PlaySound(floorSound, FloorTexture.AcknexObject.GetFloat("SVOL"), 0.5f, FloorTexture.AcknexObject.GetFloat("SDIST"), FloorTexture.AcknexObject.GetFloat("SVDIST"));
+                World.Instance.PlaySound(floorSound, FloorTexture.AcknexObject.GetFloat(PropertyName.SVOL), 0.5f, FloorTexture.AcknexObject.GetFloat(PropertyName.SDIST), FloorTexture.AcknexObject.GetFloat(PropertyName.SVDIST));
             }
         }
 

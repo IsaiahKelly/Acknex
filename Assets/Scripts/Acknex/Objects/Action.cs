@@ -11,6 +11,11 @@ namespace Acknex
     //TODO: missing keywords
     public class Action : IAcknexObjectContainer
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         private const string CallEnumerator = @"{{
             var enumerator = {0};
             while (enumerator.MoveNext())
@@ -49,6 +54,7 @@ namespace Acknex
         private int _varCounter;
         public StringBuilder CodeStringBuilder = new StringBuilder();
         public List<string> Tokens = new List<string>();
+        public string ActionName;
 
         public Action()
         {
@@ -95,7 +101,7 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }
@@ -511,7 +517,8 @@ namespace Acknex
         private void HandleCall(string labelOrStatement)
         {
             var action = labelOrStatement;
-            if (!World.Instance.SynonymsByName.ContainsKey(action))
+            var intName = NameUtils.NameToInt(action);
+            if (!World.Instance.SynonymsByName.ContainsKey(intName))
             {
                 CodeStringBuilder.AppendFormat(CallEnumerator, $"{Sanitize(action)}(MY, THERE)");
             }
@@ -688,7 +695,7 @@ namespace Acknex
 
         private (string property, PropertyType propertyType, ObjectType objectType, string source) GetValueAndType(string objectOrPropertyOrValue, string propertyAssignmentVariable = "propertyValue", bool outputGetter = true, PropertyType returnType = PropertyType.Null)
         {
-            objectOrPropertyOrValue = string.Intern(objectOrPropertyOrValue);
+            //objectOrPropertyOrValue = string.Intern(objectOrPropertyOrValue);
             propertyAssignmentVariable = Sanitize(objectOrPropertyOrValue);
             //propertyAssignmentVariable = Sanitize(propertyAssignmentVariable);
             propertyAssignmentVariable += $"_{_varCounter++}";
@@ -723,7 +730,8 @@ namespace Acknex
                 case ")":
                     return (objectOrPropertyOrValue, PropertyType.RightParen, ObjectType.World, propertyAssignmentVariable);
             }
-            if (World.Instance.SkillsByName.ContainsKey(objectOrPropertyOrValue))
+            var objectOrPropertyOrValueInt = NameUtils.NameToInt(objectOrPropertyOrValue);
+            if (World.Instance.SkillsByName.ContainsKey(objectOrPropertyOrValueInt))
             {
                 CodeStringBuilder.Append($"var {propertyAssignmentVariable} = _world.GetObject(ObjectType.Skill,\"").Append(objectOrPropertyOrValue).AppendLine("\");");
                 if (outputGetter)
@@ -754,75 +762,76 @@ namespace Acknex
             if (valueIndexOfDot > -1)
             {
                 var valueObjectName = objectOrPropertyOrValue.Substring(0, valueIndexOfDot);
+                var valueObjectNameInt = NameUtils.NameToInt(valueObjectName);
                 var objectAssignmentVariable = Sanitize(valueObjectName); //$"acknexObject_{_varCounter}";
                 objectAssignmentVariable += $"_{_varCounter++}";
                 HandleObject(valueObjectName, objectAssignmentVariable, true, out var innerObjectDeclaration);
                 var valueProperty = objectOrPropertyOrValue.Substring(valueIndexOfDot + 1);
-                if (World.Instance.SynonymsByName.ContainsKey(valueObjectName))
+                if (World.Instance.SynonymsByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Synonym, valueObjectName);
                 }
-                if (World.Instance.ActorsByName.ContainsKey(valueObjectName))
+                if (World.Instance.ActorsByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Actor);
                 }
-                if (World.Instance.ThingsByName.ContainsKey(valueObjectName))
+                if (World.Instance.ThingsByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Thing);
                 }
-                if (World.Instance.WallsByName.ContainsKey(valueObjectName))
+                if (World.Instance.WallsByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Wall);
                 }
-                if (World.Instance.RegionsByName.ContainsKey(valueObjectName))
+                if (World.Instance.RegionsByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Region);
                 }
-                if (World.Instance.WallsByName.ContainsKey(valueObjectName))
+                if (World.Instance.WallsByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Wall);
                 }
-                if (World.Instance.TexturesByName.ContainsKey(valueObjectName))
+                if (World.Instance.TexturesByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Texture);
                 }
-                if (World.Instance.BitmapsByName.ContainsKey(valueObjectName))
+                if (World.Instance.BitmapsByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Bitmap);
                 }
-                if (World.Instance.WaysByName.ContainsKey(valueObjectName))
+                if (World.Instance.WaysByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Way);
                 }
-                if (World.Instance.ActorsByName.ContainsKey(valueObjectName))
+                if (World.Instance.ActorsByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Actor);
                 }
-                if (World.Instance.SkillsByName.ContainsKey(valueObjectName))
+                if (World.Instance.SkillsByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Skill);
                 }
-                if (World.Instance.TextsByName.ContainsKey(valueObjectName))
+                if (World.Instance.TextsByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Text);
                 }
-                if (World.Instance.PanelsByName.ContainsKey(valueObjectName))
+                if (World.Instance.PanelsByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Panel);
                 }
-                if (World.Instance.SoundsByName.ContainsKey(valueObjectName))
+                if (World.Instance.SoundsByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Sound);
                 }
-                if (World.Instance.SongsByName.ContainsKey(valueObjectName))
+                if (World.Instance.SongsByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Song);
                 }
-                if (World.Instance.OverlaysByName.ContainsKey(valueObjectName))
+                if (World.Instance.OverlaysByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Overlay);
                 }
-                if (World.Instance.PalettesByName.ContainsKey(valueObjectName))
+                if (World.Instance.PalettesByName.ContainsKey(valueObjectNameInt))
                 {
                     return GetObjectPropertyValueAndType(objectAssignmentVariable, valueProperty, innerObjectDeclaration.source, outputGetter, ObjectType.Palette);
                 }
@@ -832,8 +841,7 @@ namespace Acknex
 
         private bool HandleObject(string objectName, string assignmentVariable, bool outputGetter, out (string property, PropertyType propertyType, ObjectType objectType, string source) valueAndType)
         {
-            objectName = string.Intern(objectName);
-
+            var objectNameInt = NameUtils.NameToInt(objectName);
             void HandleDroppedObjects()
             {
                 if (outputGetter)
@@ -849,7 +857,7 @@ namespace Acknex
                 }
             }
 
-            if (World.Instance.StringsByName.ContainsKey(objectName))
+            if (World.Instance.StringsByName.ContainsKey(objectNameInt))
             {
                 if (outputGetter)
                 {
@@ -858,7 +866,7 @@ namespace Acknex
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.String, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.SynonymsByName.ContainsKey(objectName))
+            if (World.Instance.SynonymsByName.ContainsKey(objectNameInt))
             {
                 if (outputGetter)
                 {
@@ -881,85 +889,85 @@ namespace Acknex
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Synonym, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.ActionsByName.ContainsKey(objectName))
+            if (World.Instance.ActionsByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Action, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.ActorsByName.ContainsKey(objectName))
+            if (World.Instance.ActorsByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Actor, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.ThingsByName.ContainsKey(objectName))
+            if (World.Instance.ThingsByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Thing, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.TexturesByName.ContainsKey(objectName))
+            if (World.Instance.TexturesByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Texture, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.WallsByName.ContainsKey(objectName))
+            if (World.Instance.WallsByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Wall, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.RegionsByName.ContainsKey(objectName))
+            if (World.Instance.RegionsByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Region, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.SkillsByName.ContainsKey(objectName))
+            if (World.Instance.SkillsByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Skill, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.TextsByName.ContainsKey(objectName))
+            if (World.Instance.TextsByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Text, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.PanelsByName.ContainsKey(objectName))
+            if (World.Instance.PanelsByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Panel, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.OverlaysByName.ContainsKey(objectName))
+            if (World.Instance.OverlaysByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Overlay, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.SoundsByName.ContainsKey(objectName))
+            if (World.Instance.SoundsByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Sound, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.SongsByName.ContainsKey(objectName))
+            if (World.Instance.SongsByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Song, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.WaysByName.ContainsKey(objectName))
+            if (World.Instance.WaysByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Way, "_world.AcknexObject");
                 return true;
             }
-            if (World.Instance.PalettesByName.ContainsKey(objectName))
+            if (World.Instance.PalettesByName.ContainsKey(objectNameInt))
             {
                 HandleDroppedObjects();
                 valueAndType = (outputGetter ? assignmentVariable : $"\"{assignmentVariable}\"", PropertyType.ObjectReference, ObjectType.Palette, "_world.AcknexObject");
@@ -969,35 +977,37 @@ namespace Acknex
             return false;
         }
 
-        private (string property, PropertyType propertyType, ObjectType objectType, string source) GetObjectPropertyValueAndType(string assignmentVariable, string property, string sourceObject, bool outputGetter, ObjectType objectType, string originalName = null)
+        private (string property, PropertyType propertyType, ObjectType objectType, string source) GetObjectPropertyValueAndType(string assignmentVariable, string propertyName, string sourceObject, bool outputGetter, ObjectType objectType, string originalName = null)
         {
+            var originalNameInt = NameUtils.NameToInt(originalName);
             if (objectType == ObjectType.Synonym && originalName != null)
             {
-                objectType = World.Instance.GetSynonymType(originalName);
+                objectType = World.Instance.GetSynonymType(originalNameInt);
             }
-            var propertyType = World.Instance.GetPropertyType(objectType, property);
+            var propertyNameInt = Mappings.MapProperty(propertyName);
+            var propertyType = World.Instance.GetPropertyType(objectType, propertyNameInt);
             if (propertyType == PropertyType.Unknown)
             {
-                CodeStringBuilder.Append("//Unknown Property Type: ").Append(objectType).Append(".").Append(property).AppendLine();
+                CodeStringBuilder.Append("//Unknown Property Type: ").Append(objectType).Append(".").Append(propertyName).AppendLine();
             }
             if (outputGetter)
             {
                 switch (propertyType)
                 {
                     case PropertyType.Float:
-                        CodeStringBuilder.Append($"var temp_{_varCounter} =").Append($"{(objectType == ObjectType.World ? "_world.AcknexObject" : assignmentVariable)}.GetFloat(\"").Append(property).AppendLine("\");");
+                        CodeStringBuilder.Append($"var temp_{_varCounter} =").Append($"{(objectType == ObjectType.World ? "_world.AcknexObject" : assignmentVariable)}.GetFloat(\"").Append(propertyName).AppendLine("\");");
                         break;
                     case PropertyType.Null:
                     case PropertyType.String:
-                        CodeStringBuilder.Append($"var temp_{_varCounter} =").Append($"{(objectType == ObjectType.World ? "_world.AcknexObject" : assignmentVariable)}.GetString(\"").Append(property).AppendLine("\");");
+                        CodeStringBuilder.Append($"var temp_{_varCounter} =").Append($"{(objectType == ObjectType.World ? "_world.AcknexObject" : assignmentVariable)}.GetString(\"").Append(propertyName).AppendLine("\");");
                         break;
                     case PropertyType.ActionReference:
                     case PropertyType.ObjectReference:
-                        CodeStringBuilder.Append($"var temp_{_varCounter} =").Append($"{(objectType == ObjectType.World ? "_world.AcknexObject" : assignmentVariable)}?.GetAcknexObject(\"").Append(property).AppendLine("\");");
+                        CodeStringBuilder.Append($"var temp_{_varCounter} =").Append($"{(objectType == ObjectType.World ? "_world.AcknexObject" : assignmentVariable)}?.GetAcknexObject(\"").Append(propertyName).AppendLine("\");");
                         break;
                     case PropertyType.ObjectReferenceList:
                         CodeStringBuilder.AppendLine($"IAcknexObject temp_{_varCounter};");
-                        CodeStringBuilder.Append($"var temp_{_varCounter}_array =").Append($"{(objectType == ObjectType.World ? "_world.AcknexObject" : assignmentVariable)}?.GetObject<List<IAcknexObject>>(\"").Append(property).AppendLine("\");");
+                        CodeStringBuilder.Append($"var temp_{_varCounter}_array =").Append($"{(objectType == ObjectType.World ? "_world.AcknexObject" : assignmentVariable)}?.GetObject<List<IAcknexObject>>(\"").Append(propertyName).AppendLine("\");");
                         CodeStringBuilder.AppendLine($"if (temp_{_varCounter}_array == null || temp_{_varCounter}_array.Count == 0) {{");
                         CodeStringBuilder.AppendLine($"  temp_{_varCounter} = null;");
                         CodeStringBuilder.AppendLine(" } else {");
@@ -1008,7 +1018,7 @@ namespace Acknex
                 }
                 return ($"temp_{_varCounter++}", propertyType, objectType, sourceObject);
             }
-            return objectType == ObjectType.World ? ($"\"{assignmentVariable}\"", propertyType, objectType, sourceObject) : ($"\"{property}\"", propertyType, objectType, assignmentVariable);
+            return objectType == ObjectType.World ? ($"\"{assignmentVariable}\"", propertyType, objectType, sourceObject) : ($"\"{propertyName}\"", propertyType, objectType, assignmentVariable);
         }
 
         private string Sanitize(string value)

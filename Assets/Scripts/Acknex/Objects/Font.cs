@@ -1,11 +1,17 @@
 ﻿using Acknex.Interfaces;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
+using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
     public class Font : IAcknexObjectContainer
     {
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         public TextureAndPalette Texture;
         public Texture2DArray GlyphsPalette;
         public Texture2DArray GlyphsTexture;
@@ -48,9 +54,9 @@ namespace Acknex
 
         public void SetupTemplate()
         {
-            var filename = AcknexObject.GetString("FILENAME");
-            var width = AcknexObject.GetInteger("WIDTH");
-            var height = AcknexObject.GetInteger("HEIGHT");
+            var filename = AcknexObject.GetString(PropertyName.FILENAME);
+            var width = AcknexObject.GetInteger(PropertyName.WIDTH);
+            var height = AcknexObject.GetInteger(PropertyName.HEIGHT);
             Bitmap.CreateBitmapTexture(filename, 0, 0, 0, 0, out Texture, out _);
             var rows = Texture.Texture.height / height;
             var cols = Texture.Texture.width / width;
@@ -88,7 +94,7 @@ namespace Acknex
 
         }
 
-        private static IAcknexObject GetTemplateCallback(string name)
+        private static IAcknexObject GetTemplateCallback(int name)
         {
             return null;
         }
