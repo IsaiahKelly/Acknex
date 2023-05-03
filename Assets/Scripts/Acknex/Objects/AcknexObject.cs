@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NameId = System.UInt32;
+using System;
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using UnityEngine;
@@ -19,23 +20,27 @@ namespace Acknex
             set
             {
                 _name = value;
-                _nameInt = NameUtils.NameToInt(_name, true);
+                _nameInt = NameUtils.ToNameId(_name, Type != ObjectType.Skill && Type != ObjectType.Synonym, Type == ObjectType.Skill, Type == ObjectType.Synonym);
             }
         }
 
-        private int _nameInt;
-        public int NameInt => _nameInt;
+        private NameId _nameInt;
+        public NameId NameId
+        {
+            get => _nameInt;
+            set => _nameInt = value;
+        }
 
-        public IDictionary<int, float> NumberProperties = new Dictionary<int, float>(EqualityComparer<int>.Default);
-        public IDictionary<int, object> ObjectProperties = new Dictionary<int, object>(EqualityComparer<int>.Default);
+        public IDictionary<NameId, float> NumberProperties = new Dictionary<NameId, float>();
+        public IDictionary<NameId, object> ObjectProperties = new Dictionary<NameId, object>();
 
-        public AcknexObject(Func<int, IAcknexObject> getTemplateCallback, ObjectType type)
+        public AcknexObject(Func<NameId, IAcknexObject> getTemplateCallback, ObjectType type)
         {
             GetTemplateCallback = getTemplateCallback;
             Type = type;
         }
 
-        public void AddFlag(int flag)
+        public void AddFlag(NameId flag)
         {
             SetFloat(flag, 1f);
         }
@@ -43,8 +48,8 @@ namespace Acknex
         public IAcknexObjectContainer Container { get; set; }
 
         public string DebugMessage { get; set; }
-        
-        public IAcknexObject GetAcknexObject(int propertyName, bool fromTemplate = true, bool setupInstance = true)
+
+        public IAcknexObject GetAcknexObject(NameId propertyName, bool fromTemplate = true, bool setupInstance = true)
         {
             var obj = GetObject<IAcknexObject>(propertyName, fromTemplate);
             if (setupInstance && obj != null && !obj.IsInstance)
@@ -63,15 +68,15 @@ namespace Acknex
             return obj;
         }
 
-        public float GetFloat(int propertyName, bool fromTemplate = true)
+        public float GetFloat(NameId propertyName, bool fromTemplate = true)
         {
-            if (NumberProperties.TryGetValue((int)propertyName, out var number))
+            if (NumberProperties.TryGetValue((NameId)propertyName, out var number))
             {
                 return number;
             }
             if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(NameInt);
+                var template = GetTemplateCallback(NameId);
                 if (template != null && template.TryGetFloat(propertyName, out var definitionNumber, false))
                 {
                     return definitionNumber;
@@ -80,15 +85,15 @@ namespace Acknex
             return default;
         }
 
-        public int GetInteger(int propertyName, bool fromTemplate = true)
+        public int GetInteger(NameId propertyName, bool fromTemplate = true)
         {
-            if (NumberProperties.TryGetValue((int)propertyName, out var number))
+            if (NumberProperties.TryGetValue(propertyName, out var number))
             {
                 return (int)number;
             }
             if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(NameInt);
+                var template = GetTemplateCallback(NameId);
                 if (template != null && template.TryGetInteger(propertyName, out var definitionNumber, false))
                 {
                     return definitionNumber;
@@ -97,15 +102,15 @@ namespace Acknex
             return default;
         }
 
-        public T GetObject<T>(int propertyName, bool fromTemplate = true)
+        public T GetObject<T>(NameId propertyName, bool fromTemplate = true)
         {
-            if (ObjectProperties.TryGetValue((int)propertyName, out var obj))
+            if (ObjectProperties.TryGetValue(propertyName, out var obj))
             {
                 return (T)obj;
             }
             if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(NameInt);
+                var template = GetTemplateCallback(NameId);
                 if (template != null && template.TryGetObject<T>(propertyName, out var definitionObj, false))
                 {
                     return definitionObj;
@@ -114,15 +119,15 @@ namespace Acknex
             return default;
         }
 
-        public string GetString(int propertyName, bool fromTemplate = true)
+        public string GetString(NameId propertyName, bool fromTemplate = true)
         {
-            if (ObjectProperties.TryGetValue((int)propertyName, out var obj))
+            if (ObjectProperties.TryGetValue(propertyName, out var obj))
             {
                 return obj?.ToString();
             }
-            if (fromTemplate && GetTemplateCallback != null )
+            if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(NameInt);
+                var template = GetTemplateCallback(NameId);
                 if (template != null && template.TryGetObject<string>(propertyName, out var definitionObj, false))
                 {
                     return definitionObj;
@@ -131,17 +136,17 @@ namespace Acknex
             return default;
         }
 
-        public Func<int, IAcknexObject> GetTemplateCallback { get; }
+        public Func<NameId, IAcknexObject> GetTemplateCallback { get; }
 
-        public bool HasFlag(int flag, bool fromTemplate = true)
+        public bool HasFlag(NameId flag, bool fromTemplate = true)
         {
-            if (NumberProperties.TryGetValue((int)flag, out var value))
+            if (NumberProperties.TryGetValue(flag, out var value))
             {
                 return value > 0f;
             }
             if (fromTemplate)
             {
-                var template = GetTemplateCallback(NameInt);
+                var template = GetTemplateCallback(NameId);
                 if (template != null)
                 {
                     return template.HasFlag(flag, false);
@@ -155,145 +160,145 @@ namespace Acknex
         public bool IsDirty { get; set; } = true;
         public void SetFloatAll(PropertyName propertyNameName, float value)
         {
-            SetFloatAll((int)propertyNameName, value);
+            SetFloatAll((NameId)propertyNameName, value);
         }
 
         public void SetIntegerAll(PropertyName propertyNameName, int value)
         {
-            SetIntegerAll((int)propertyNameName, value);
+            SetIntegerAll((NameId)propertyNameName, value);
         }
 
         public void SetStringAll(PropertyName propertyNameName, string value)
         {
-           SetStringAll((int)propertyNameName,value);
+            SetStringAll((NameId)propertyNameName, value);
         }
 
         public void SetObjectAll<T>(PropertyName propertyNameName, T value)
         {
-            SetObjectAll((int)propertyNameName, value);
+            SetObjectAll((NameId)propertyNameName, value);
         }
 
         public void SetAcknexObjectAll(PropertyName propertyNameName, IAcknexObject value)
         {
-           SetAcknexObjectAll((int)propertyNameName, value);
+            SetAcknexObjectAll((NameId)propertyNameName, value);
         }
 
         public void SetFloat(PropertyName propertyNameName, float value)
         {
-           SetFloat((int)propertyNameName, value);
+            SetFloat((NameId)propertyNameName, value);
         }
 
         public void SetInteger(PropertyName propertyNameName, int value)
         {
-           SetInteger((int)propertyNameName,value);
+            SetInteger((NameId)propertyNameName, value);
         }
 
         public void SetString(PropertyName propertyNameName, string value)
         {
-            SetString((int)propertyNameName, value);
+            SetString((NameId)propertyNameName, value);
         }
 
         public void SetObject<T>(PropertyName propertyNameName, T value)
         {
-            SetObject((int)propertyNameName,value);
+            SetObject((NameId)propertyNameName, value);
         }
 
         public void SetAcknexObject(PropertyName propertyNameName, IAcknexObject value)
         {
-            SetAcknexObject((int)propertyNameName,value);
+            SetAcknexObject((NameId)propertyNameName, value);
         }
 
         public float GetFloat(PropertyName propertyNameName, bool fromTemplate = true)
         {
-            return GetFloat((int)propertyNameName, fromTemplate);
+            return GetFloat((NameId)propertyNameName, fromTemplate);
         }
 
         public int GetInteger(PropertyName propertyNameName, bool fromTemplate = true)
         {
-            return GetInteger((int)propertyNameName, fromTemplate);
+            return GetInteger((NameId)propertyNameName, fromTemplate);
         }
 
         public string GetString(PropertyName propertyNameName, bool fromTemplate = true)
         {
-            return GetString((int)propertyNameName, fromTemplate);
+            return GetString((NameId)propertyNameName, fromTemplate);
         }
 
         public T GetObject<T>(PropertyName propertyNameName, bool fromTemplate = true)
         {
-            return GetObject<T>((int)propertyNameName, fromTemplate);
+            return GetObject<T>((NameId)propertyNameName, fromTemplate);
         }
 
         public IAcknexObject GetAcknexObject(PropertyName propertyNameName, bool fromTemplate = true, bool setupInstance = true)
         {
-            return GetAcknexObject((int)propertyNameName, fromTemplate, setupInstance);
+            return GetAcknexObject((NameId)propertyNameName, fromTemplate, setupInstance);
         }
 
         public bool TryGetFloat(PropertyName propertyNameName, out float result, bool fromTemplate = true)
         {
-            return TryGetFloat((int)propertyNameName, out result, fromTemplate);
+            return TryGetFloat((NameId)propertyNameName, out result, fromTemplate);
         }
 
         public bool TryGetInteger(PropertyName propertyNameName, out int result, bool fromTemplate = true)
         {
-            return TryGetInteger((int)propertyNameName, out result, fromTemplate);
+            return TryGetInteger((NameId)propertyNameName, out result, fromTemplate);
         }
 
         public bool TryGetString(PropertyName propertyNameName, out string result, bool fromTemplate = true)
         {
-            return TryGetString((int)propertyNameName, out result, fromTemplate);
+            return TryGetString((NameId)propertyNameName, out result, fromTemplate);
         }
 
         public bool TryGetObject<T>(PropertyName propertyNameName, out T result, bool fromTemplate = true)
         {
-            return TryGetObject((int)propertyNameName, out result, fromTemplate);
+            return TryGetObject((NameId)propertyNameName, out result, fromTemplate);
         }
 
         public bool TryGetAcknexObject(PropertyName propertyNameName, out IAcknexObject result, bool fromTemplate = true)
         {
-            return TryGetAcknexObject((int)propertyNameName, out result, fromTemplate);
+            return TryGetAcknexObject((NameId)propertyNameName, out result, fromTemplate);
         }
 
         public bool HasFlag(PropertyName flag, bool fromTemplate = true)
         {
-            return HasFlag((int)flag, fromTemplate);
+            return HasFlag((NameId)flag, fromTemplate);
         }
 
         public void AddFlag(PropertyName flag)
         {
-            AddFlag((int)flag);
+            AddFlag((NameId)flag);
         }
 
         public void RemoveFlag(PropertyName flag)
         {
-            RemoveFlag((int)flag);
+            RemoveFlag((NameId)flag);
         }
 
         public bool IsInstance { get; set; }
 
-        public void RemoveFlag(int flag)
+        public void RemoveFlag(NameId flag)
         {
             SetFloat(flag, 0f);
         }
 
-        public void SetAcknexObject(int propertyName, IAcknexObject value)
+        public void SetAcknexObject(NameId propertyName, IAcknexObject value)
         {
-            if (ObjectProperties.TryGetValue((int)propertyName, out var existingValue))
+            if (ObjectProperties.TryGetValue(propertyName, out var existingValue))
             {
                 IsDirty = existingValue != value;
 #if DEBUG_ENABLED
                 //DebugMessage = "Got dirty because setted object " + propertyName;
 #endif
             }
-            ObjectProperties[(int)propertyName] = value;
+            ObjectProperties[propertyName] = value;
         }
 
-        public void SetAcknexObjectAll(int propertyName, IAcknexObject value)
+        public void SetAcknexObjectAll(NameId propertyName, IAcknexObject value)
         {
             switch (Type)
             {
                 case ObjectType.Wall:
                     {
-                        var all = World.Instance.AllWallsByName[NameInt];
+                        var all = World.Instance.AllWallsByName[NameId];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetAcknexObject(propertyName, value);
@@ -302,7 +307,7 @@ namespace Acknex
                     }
                 case ObjectType.Region:
                     {
-                        var all = World.Instance.AllRegionsByName[NameInt];
+                        var all = World.Instance.AllRegionsByName[NameId];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetAcknexObject(propertyName, value);
@@ -311,7 +316,7 @@ namespace Acknex
                     }
                 case ObjectType.Thing:
                     {
-                        var all = World.Instance.AllThingsByName[NameInt];
+                        var all = World.Instance.AllThingsByName[NameId];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetAcknexObject(propertyName, value);
@@ -320,7 +325,7 @@ namespace Acknex
                     }
                 case ObjectType.Actor:
                     {
-                        var all = World.Instance.AllActorsByName[NameInt];
+                        var all = World.Instance.AllActorsByName[NameId];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetAcknexObject(propertyName, value);
@@ -330,20 +335,20 @@ namespace Acknex
             }
         }
 
-        public void SetFloat(int propertyName, float value)
+        public void SetFloat(NameId propertyName, float value)
         {
             if (Type == ObjectType.Skill)
             {
-                if (TryGetFloat((int)PropertyName.MAX, out var max))
+                if (TryGetFloat((NameId)PropertyName.MAX, out var max))
                 {
                     value = Mathf.Min(max, value);
                 }
-                if (TryGetFloat((int)PropertyName.MIN, out var min))
+                if (TryGetFloat((NameId)PropertyName.MIN, out var min))
                 {
                     value = Mathf.Max(min, value);
                 }
             }
-            if (NumberProperties.TryGetValue((int)propertyName, out var existingValue))
+            if (NumberProperties.TryGetValue((NameId)propertyName, out var existingValue))
             {
                 unsafe
                 {
@@ -366,16 +371,16 @@ namespace Acknex
 #endif
                 }
             }
-            NumberProperties[(int)propertyName] = value;
+            NumberProperties[(NameId)propertyName] = value;
         }
 
-        public void SetFloatAll(int propertyName, float value)
+        public void SetFloatAll(NameId propertyName, float value)
         {
             switch (Type)
             {
                 case ObjectType.Wall:
                     {
-                        var all = World.Instance.AllWallsByName[NameInt];
+                        var all = World.Instance.AllWallsByName[NameId];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetFloat(propertyName, value);
@@ -384,7 +389,7 @@ namespace Acknex
                     }
                 case ObjectType.Region:
                     {
-                        var all = World.Instance.AllRegionsByName[NameInt];
+                        var all = World.Instance.AllRegionsByName[NameId];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetFloat(propertyName, value);
@@ -393,7 +398,7 @@ namespace Acknex
                     }
                 case ObjectType.Thing:
                     {
-                        var all = World.Instance.AllThingsByName[NameInt];
+                        var all = World.Instance.AllThingsByName[NameId];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetFloat(propertyName, value);
@@ -402,7 +407,7 @@ namespace Acknex
                     }
                 case ObjectType.Actor:
                     {
-                        var all = World.Instance.AllActorsByName[NameInt];
+                        var all = World.Instance.AllActorsByName[NameId];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetFloat(propertyName, value);
@@ -412,17 +417,17 @@ namespace Acknex
             }
         }
 
-        public void SetInteger(int propertyName, int value)
+        public void SetInteger(NameId propertyName, int value)
         {
             SetFloat(propertyName, value);
         }
 
-        public void SetIntegerAll(int propertyName, int value)
+        public void SetIntegerAll(NameId propertyName, int value)
         {
             SetFloatAll(propertyName, value);
         }
 
-        public void SetObject<T>(int propertyName, T value)
+        public void SetObject<T>(NameId propertyName, T value)
         {
             ObjectProperties[propertyName] = value;
             if (ObjectProperties.TryGetValue(propertyName, out var existingValue))
@@ -447,13 +452,13 @@ namespace Acknex
             }
         }
 
-        public void SetObjectAll<T>(int propertyName, T value)
+        public void SetObjectAll<T>(NameId propertyName, T value)
         {
             switch (Type)
             {
                 case ObjectType.Wall:
                     {
-                        var all = World.Instance.AllWallsByName[NameInt];
+                        var all = World.Instance.AllWallsByName[NameId];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetObject(propertyName, value);
@@ -462,7 +467,7 @@ namespace Acknex
                     }
                 case ObjectType.Region:
                     {
-                        var all = World.Instance.AllRegionsByName[NameInt];
+                        var all = World.Instance.AllRegionsByName[NameId];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetObject(propertyName, value);
@@ -471,7 +476,7 @@ namespace Acknex
                     }
                 case ObjectType.Thing:
                     {
-                        var all = World.Instance.AllThingsByName[NameInt];
+                        var all = World.Instance.AllThingsByName[NameId];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetObject(propertyName, value);
@@ -480,7 +485,7 @@ namespace Acknex
                     }
                 case ObjectType.Actor:
                     {
-                        var all = World.Instance.AllActorsByName[NameInt];
+                        var all = World.Instance.AllActorsByName[NameId];
                         foreach (var item in all)
                         {
                             item.AcknexObject.SetObject(propertyName, value);
@@ -490,17 +495,17 @@ namespace Acknex
             }
         }
 
-        public void SetString(int propertyName, string value)
+        public void SetString(NameId propertyName, string value)
         {
             SetObject(propertyName, value);
         }
 
-        public void SetStringAll(int propertyName, string value)
+        public void SetStringAll(NameId propertyName, string value)
         {
             SetObjectAll(propertyName, value);
         }
 
-        public bool TryGetAcknexObject(int propertyName, out IAcknexObject result, bool fromTemplate = true)
+        public bool TryGetAcknexObject(NameId propertyName, out IAcknexObject result, bool fromTemplate = true)
         {
             if (TryGetObject<IAcknexObject>(propertyName, out var objResult, fromTemplate))
             {
@@ -511,16 +516,16 @@ namespace Acknex
             return false;
         }
 
-        public bool TryGetFloat(int propertyName, out float result, bool fromTemplate = true)
+        public bool TryGetFloat(NameId propertyName, out float result, bool fromTemplate = true)
         {
-            if (NumberProperties.TryGetValue((int)propertyName, out var number))
+            if (NumberProperties.TryGetValue(propertyName, out var number))
             {
                 result = number;
                 return true;
             }
             if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(NameInt);
+                var template = GetTemplateCallback(NameId);
                 if (template != null && template.TryGetFloat(propertyName, out var definitionNumber, false))
                 {
                     result = definitionNumber;
@@ -531,16 +536,16 @@ namespace Acknex
             return false;
         }
 
-        public bool TryGetInteger(int propertyName, out int result, bool fromTemplate = true)
+        public bool TryGetInteger(NameId propertyName, out int result, bool fromTemplate = true)
         {
-            if (NumberProperties.TryGetValue((int)propertyName, out var number))
+            if (NumberProperties.TryGetValue(propertyName, out var number))
             {
                 result = (int)number;
                 return true;
             }
             if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(NameInt);
+                var template = GetTemplateCallback(NameId);
                 if (template != null && template.TryGetInteger(propertyName, out var definitionNumber, false))
                 {
                     result = definitionNumber;
@@ -551,16 +556,16 @@ namespace Acknex
             return false;
         }
 
-        public bool TryGetObject<T>(int propertyName, out T result, bool fromTemplate = true)
+        public bool TryGetObject<T>(NameId propertyName, out T result, bool fromTemplate = true)
         {
-            if (ObjectProperties.TryGetValue((int)propertyName, out var obj))
+            if (ObjectProperties.TryGetValue(propertyName, out var obj))
             {
                 result = (T)obj;
                 return true;
             }
             if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(NameInt);
+                var template = GetTemplateCallback(NameId);
                 if (template != null && template.TryGetObject<T>(propertyName, out var definitionObj, false))
                 {
                     result = definitionObj;
@@ -571,16 +576,16 @@ namespace Acknex
             return false;
         }
 
-        public bool TryGetString(int propertyName, out string result, bool fromTemplate = true)
+        public bool TryGetString(NameId propertyName, out string result, bool fromTemplate = true)
         {
-            if (ObjectProperties.TryGetValue((int)propertyName, out var obj) && obj != null)
+            if (ObjectProperties.TryGetValue(propertyName, out var obj) && obj != null)
             {
                 result = obj.ToString();
                 return true;
             }
             if (fromTemplate && GetTemplateCallback != null)
             {
-                var template = GetTemplateCallback(NameInt);
+                var template = GetTemplateCallback(NameId);
                 if (template != null && template.TryGetObject<string>(propertyName, out var definitionObj, false))
                 {
                     result = definitionObj;

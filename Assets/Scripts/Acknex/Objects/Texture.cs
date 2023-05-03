@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NameId = System.UInt32;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Acknex.Interfaces;
@@ -100,16 +101,17 @@ namespace Acknex
             AcknexObject.IsDirty = false;
         }
 
-        private static IAcknexObject GetTemplateCallback(int name)
+        private static IAcknexObject GetTemplateCallback(NameId name)
         {
             return null;
         }
 
         public Bitmap GetBitmapAt(int index = 0)
         {
-            if (BMaps.Count > index)
+            var bMaps = BMaps;
+            if (bMaps.Count > index)
             {
-                var bmap = BMaps[index];
+                var bmap = bMaps[index];
                 if (bmap != null)
                 {
                     return bmap.Container as Bitmap;

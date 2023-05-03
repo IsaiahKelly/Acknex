@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NameId = System.UInt32;
+using System;
 using Acknex.Interfaces;
 using UnityEngine;
 using PropertyName = Acknex.Interfaces.PropertyName;
@@ -58,7 +59,6 @@ namespace Acknex
             CreateSkill(SkillName.MICKEY_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
             CreateSkill(SkillName.MOUSE_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
             CreateSkill(SkillName.MOUSE_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
-            CreateSkill(SkillName.MOUSE_ANGLE, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
             CreateSkill(SkillName.MOUSE_ANGLE, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
             CreateSkill(SkillName.TOUCH_DIST, 100, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
             CreateSkill(SkillName.TOUCH_STATE, 0, 0, 3); //todo <- can apply
@@ -409,24 +409,17 @@ namespace Acknex
             UpdateSkillValue(name, value ? 1 : 0);
         }
 
-        public void UpdateSkillValue(int name, bool value)
+        public void UpdateSkillValue(NameId name, bool value)
         {
             UpdateSkillValue(name, value ? 1 : 0);
         }
 
         public void UpdateSkillValue(SkillName name, float value)
         {
-            if (SkillsByName.TryGetValue((int)name, out var skill))
-            {
-                skill.AcknexObject.SetFloat(PropertyName.VAL, value);
-            }
-            else
-            {
-                throw new Exception("Unknown skill:" + name.ToString());
-            }
+            UpdateSkillValue((NameId)name, value);
         }
 
-        public void UpdateSkillValue(int name, float value)
+        public void UpdateSkillValue(NameId name, float value)
         {
             if (SkillsByName.TryGetValue(name, out var skill))
             {
@@ -440,10 +433,10 @@ namespace Acknex
 
         public float GetSkillValue(SkillName name)
         {
-            return GetSkillValue((int)name);
+            return GetSkillValue((NameId)name);
         }
 
-        public float GetSkillValue(int name)
+        public float GetSkillValue(NameId name)
         {
             return SkillsByName.TryGetValue(name, out var skill) ? skill.AcknexObject.GetFloat(PropertyName.VAL) : default;
         }

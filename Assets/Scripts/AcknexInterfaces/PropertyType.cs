@@ -1,4 +1,5 @@
-﻿namespace Acknex.Interfaces
+﻿using NameId = System.UInt32;
+namespace Acknex.Interfaces
 {
     /// <summary>
     /// Represents an object property type.

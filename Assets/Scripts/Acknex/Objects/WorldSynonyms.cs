@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NameId = System.UInt32;
+using System;
 using Acknex.Interfaces;
 
 namespace Acknex
@@ -7,10 +8,10 @@ namespace Acknex
     {
         public IAcknexObject GetSynonymObject(SynonymName synonymName, bool fromRuntime = false)
         {
-            return GetSynonymObject((int)synonymName, fromRuntime);
+            return GetSynonymObject((NameId)synonymName, fromRuntime);
         }
 
-        public IAcknexObject GetSynonymObject(int synonymName, bool fromRuntime = false)
+        public IAcknexObject GetSynonymObject(NameId synonymName, bool fromRuntime = false)
         {
             IAcknexObject value = null;
             if (SynonymsByName.TryGetValue(synonymName, out var synonym))
@@ -26,14 +27,14 @@ namespace Acknex
 
         public void SetSynonymObject(SynonymName synonymName, IAcknexObject target)
         {
-            SetSynonymObject((int)synonymName, target);
+            SetSynonymObject((NameId)synonymName, target);
         }
 
-        public void SetSynonymObject(int synonymName, IAcknexObject target)
+        public void SetSynonymObject(NameId synonymName, IAcknexObject target)
         {
             if (!SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
-                throw new Exception("Synonym [" + synonymName + "] not found");
+                throw new Exception($"Synonym [{synonymName}] not found");
             }
             synonym.AcknexObject.SetAcknexObject(PropertyName.VAL, target);
         }
@@ -50,7 +51,7 @@ namespace Acknex
             CreateSynonym(SynonymName.TOUCH_TEXT, "TEXT");
         }
 
-        public ObjectType GetSynonymType(int synonymName)
+        public ObjectType GetSynonymType(NameId synonymName)
         {
             var synonymType = SynonymsByName[synonymName].AcknexObject.GetString(PropertyName.TYPE);
             switch (synonymType)
@@ -76,7 +77,7 @@ namespace Acknex
                 case "ACTION":
                     return ObjectType.Action;
                 default:
-                    throw new Exception("Unknown synonym type:" + synonymType);
+                    throw new Exception($"Unknown synonym type:{synonymType}");
             }
         }
     }

@@ -1,41 +1,48 @@
-﻿using System;
-using System.Linq;
-
+﻿using NameId = System.UInt32;
 namespace Acknex.Interfaces
 {
     public static class NameUtils
     {
-        private static int _builtinNameCount;
-        public static int NULL;
+        private static NameId BuiltinNameCount = 1000u;
+        public static NameId NULL = 0u;
 
-        public static int NameToInt(string name, bool ignoreBuiltin = false)
+        public static NameId GetStringHashCode(string input)
         {
-            if (_builtinNameCount == 0)
+            NameId hash = 5381;
+            foreach (var c in input)
             {
-                _builtinNameCount = Enum.GetValues(typeof(PropertyName)).Cast<int>().Max() +
-                                   Enum.GetValues(typeof(SkillName)).Cast<int>().Max() +
-                                   Enum.GetValues(typeof(SynonymName)).Cast<int>().Max();
-                NULL = _builtinNameCount + "NULL".GetHashCode();
+                hash = ((hash << 5) + hash) + c;
             }
-            if (!ignoreBuiltin)
+            return hash;
+        }
+
+        public static NameId ToNameId(string name, bool canBeProperty = true, bool canBeSkill = true, bool canBeSynonym = true)
+        {
+            if (canBeSkill)
             {
-                var objectProperty = Mappings.MapProperty(name);
-                if (objectProperty != PropertyName.UNKNOWN)
-                {
-                    return (int)objectProperty;
-                }
                 var skillName = Mappings.MapSkill(name);
                 if (skillName != SkillName.UNKNOWN)
                 {
-                    return (int)skillName;
-                }
-                var synoynmName = Mappings.MapSynonym(name);
-                if (synoynmName != SynonymName.UNKNOWN)
-                {
-                    return (int)skillName;
+                    return (NameId)skillName;
                 }
             }
-            return _builtinNameCount + name.GetHashCode();
+            if (canBeSynonym)
+            {
+                var synonymName = Mappings.MapSynonym(name);
+                if (synonymName != SynonymName.UNKNOWN)
+                {
+                    return (NameId)synonymName;
+                }
+            }
+            if (canBeProperty)
+            {
+                var propertyName = Mappings.MapProperty(name);
+                if (propertyName != PropertyName.UNKNOWN)
+                {
+                    return (NameId)propertyName;
+                }
+            }
+            return BuiltinNameCount + GetStringHashCode(name);
         }
-    }
+}
 }

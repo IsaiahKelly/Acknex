@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NameId = System.UInt32;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -365,7 +366,7 @@ namespace Acknex
             }
         }
 
-        private static IAcknexObject GetTemplateCallback(int name)
+        private static IAcknexObject GetTemplateCallback(NameId name)
         {
             if (World.Instance.RegionsByName.TryGetValue(name, out var region))
             {
@@ -724,8 +725,8 @@ namespace Acknex
             {
                 var belowAcknexObject = (AcknexObject)Below.AcknexObject;
                 var newAcknexObject = new AcknexObject(GetTemplateCallback, ObjectType.Region);
-                newAcknexObject.ObjectProperties = new Dictionary<int, object>(belowAcknexObject.ObjectProperties, EqualityComparer<int>.Default);
-                newAcknexObject.NumberProperties = new Dictionary<int, float>(belowAcknexObject.NumberProperties, EqualityComparer<int>.Default);
+                newAcknexObject.ObjectProperties = new Dictionary<NameId, object>(belowAcknexObject.ObjectProperties);
+                newAcknexObject.NumberProperties = new Dictionary<NameId, float>(belowAcknexObject.NumberProperties);
                 newAcknexObject.Name = belowAcknexObject.Name;
                 var newRegion = Instantiate(Below.gameObject).GetComponent<Region>();
                 newRegion.Above = this;

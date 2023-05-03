@@ -1,4 +1,5 @@
-﻿namespace Acknex
+﻿using NameId = System.UInt32;
+namespace Acknex
 {
     public class WallWithSide
     {

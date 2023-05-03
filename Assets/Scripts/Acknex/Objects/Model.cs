@@ -1,4 +1,5 @@
-﻿using Acknex.Interfaces;
+﻿using NameId = System.UInt32;
+using Acknex.Interfaces;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Acknex
         public GameObject GameObject => null;
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Model);
-        private static IAcknexObject GetTemplateCallback(int name)
+        private static IAcknexObject GetTemplateCallback(NameId name)
         {
             return null;
         }

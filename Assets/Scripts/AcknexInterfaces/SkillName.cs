@@ -1,8 +1,9 @@
-﻿namespace Acknex.Interfaces
+﻿using NameId = System.UInt32;
+namespace Acknex.Interfaces
 {
     public enum SkillName
     {
-        UNKNOWN,
+        UNKNOWN = 350,
         SCREEN_WIDTH,
         SCREEN_HGT,
         SCREEN_X,

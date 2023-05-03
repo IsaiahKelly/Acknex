@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NameId = System.UInt32;
+using System.Collections.Generic;
 using Acknex.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
@@ -122,7 +123,7 @@ namespace Acknex
             OverlayGraphic.transform.SetSiblingIndex(AcknexObject.GetInteger(PropertyName.LAYER));
         }
 
-        private static IAcknexObject GetTemplateCallback(int name)
+        private static IAcknexObject GetTemplateCallback(NameId name)
         {
             return null;
         }

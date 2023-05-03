@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NameId = System.UInt32;
+using System;
 using UnityEngine;
 
 namespace Acknex.Interfaces

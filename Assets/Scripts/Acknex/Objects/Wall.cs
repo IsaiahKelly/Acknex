@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using NameId = System.UInt32;
+using System.Collections;
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using LibTessDotNet;
@@ -300,7 +301,7 @@ namespace Acknex
             }
         }
 
-        private static IAcknexObject GetTemplateCallback(int name)
+        private static IAcknexObject GetTemplateCallback(NameId name)
         {
             if (World.Instance.WallsByName.TryGetValue(name, out var wall))
             {

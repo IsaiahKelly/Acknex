@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NameId = System.UInt32;
+using System.Collections.Generic;
 using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
@@ -106,7 +107,7 @@ namespace Acknex
             }
         }
 
-        private static IAcknexObject GetTemplateCallback(int name)
+        private static IAcknexObject GetTemplateCallback(NameId name)
         {
             return null;
         }

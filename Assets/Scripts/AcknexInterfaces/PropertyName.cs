@@ -1,8 +1,9 @@
-﻿namespace Acknex.Interfaces
+﻿using NameId = System.UInt32;
+namespace Acknex.Interfaces
 {
     public enum PropertyName
     {
-        UNKNOWN,
+        UNKNOWN = 1,
         IF_LOAD,
         IF_START,
         EACH_TICK_1,

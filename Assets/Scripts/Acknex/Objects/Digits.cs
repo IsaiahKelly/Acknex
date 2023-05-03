@@ -1,4 +1,5 @@
-﻿using Acknex.Interfaces;
+﻿using NameId = System.UInt32;
+using Acknex.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 using PropertyName = Acknex.Interfaces.PropertyName;
@@ -14,7 +15,7 @@ namespace Acknex
 
         public override IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Digits);
         public Panel Panel;
-        private static IAcknexObject GetTemplateCallback(int name)
+        private static IAcknexObject GetTemplateCallback(NameId name)
         {
             return null;
         }

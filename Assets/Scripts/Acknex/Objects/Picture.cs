@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using NameId = System.UInt32;
+using System.Collections;
 using Acknex.Interfaces;
 using UnityEngine;
 using PropertyName = Acknex.Interfaces.PropertyName;
@@ -37,7 +38,7 @@ namespace Acknex
         public Texture TextureObject => AcknexObject.TryGetAcknexObject(PropertyName.TEXTURE, out var textureObject) ? textureObject?.Container as Texture : null;
         public override IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Picture);
 
-        private static IAcknexObject GetTemplateCallback(int name)
+        private static IAcknexObject GetTemplateCallback(NameId name)
         {
             return null;
         }

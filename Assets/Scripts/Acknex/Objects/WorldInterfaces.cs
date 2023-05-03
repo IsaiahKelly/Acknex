@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NameId = System.UInt32;
+using System;
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using AudioSynthesis.Bank;
@@ -109,8 +110,8 @@ namespace Acknex
                 case ObjectType.Actor:
                 {
                     var actor = CreateActor(name);
-                    ActorsByName.Add(actor.AcknexObject.NameInt, actor);
-                    AcknexObject.SetAcknexObject(actor.AcknexObject.NameInt, actor.AcknexObject);
+                    ActorsByName.Add(actor.AcknexObject.NameId, actor);
+                    AcknexObject.SetAcknexObject(actor.AcknexObject.NameId, actor.AcknexObject);
                     return actor.AcknexObject;
                 }
                 case ObjectType.Bitmap:
@@ -121,8 +122,8 @@ namespace Acknex
                 case ObjectType.Region:
                 {
                     var region = CreateRegion(name);
-                    RegionsByName.Add(region.AcknexObject.NameInt, region);
-                    AcknexObject.SetAcknexObject(region.AcknexObject.NameInt, region.AcknexObject);
+                    RegionsByName.Add(region.AcknexObject.NameId, region);
+                    AcknexObject.SetAcknexObject(region.AcknexObject.NameId, region.AcknexObject);
                     if (OldAckVersion)
                     {
                         RegionsByIndex.Add(region);
@@ -131,7 +132,8 @@ namespace Acknex
                 }
                 case ObjectType.Skill:
                 {
-                    var skill = CreateSkill(name, 0, Mathf.NegativeInfinity, Mathf.Infinity);
+                    //var nameInt = NameUtils.NameToInt(name, true);
+                    var skill = CreateSkill(name, /*nameInt,*/ 0f, Mathf.NegativeInfinity, Mathf.Infinity);
                     return skill.AcknexObject;
                 }
                 case ObjectType.Synonym:
@@ -147,22 +149,22 @@ namespace Acknex
                 case ObjectType.Thing:
                 {
                     var thing = CreateThing(name);
-                    ThingsByName.Add(thing.AcknexObject.NameInt, thing);
-                    AcknexObject.SetAcknexObject(thing.AcknexObject.NameInt, thing.AcknexObject);
+                    ThingsByName.Add(thing.AcknexObject.NameId, thing);
+                    AcknexObject.SetAcknexObject(thing.AcknexObject.NameId, thing.AcknexObject);
                     return thing.AcknexObject;
                 }
                 case ObjectType.Wall:
                 {
                     var wall = CreateWall(name);
-                    WallsByName.Add(wall.AcknexObject.NameInt, wall);
-                    AcknexObject.SetAcknexObject(wall.AcknexObject.NameInt, wall.AcknexObject);
+                    WallsByName.Add(wall.AcknexObject.NameId, wall);
+                    AcknexObject.SetAcknexObject(wall.AcknexObject.NameId, wall.AcknexObject);
                     return wall.AcknexObject;
                 }
                 case ObjectType.Way:
                 {
                     var way = CreateWay(name);
-                    WaysByName.Add(way.AcknexObject.NameInt, way);
-                    AcknexObject.SetAcknexObject(way.AcknexObject.NameInt, way.AcknexObject);
+                    WaysByName.Add(way.AcknexObject.NameId, way);
+                    AcknexObject.SetAcknexObject(way.AcknexObject.NameId, way.AcknexObject);
                     return way.AcknexObject;
                 }
                 case ObjectType.Overlay:
@@ -439,7 +441,7 @@ namespace Acknex
             }
         }
 
-        public IAcknexObject GetObject(ObjectType type, int name)
+        public IAcknexObject GetObject(ObjectType type, NameId name)
         {
             if (type == ObjectType.Player)
             {
@@ -452,7 +454,7 @@ namespace Acknex
             return null;
         }
 
-        public int GetRegionIndex(int name)
+        public int GetRegionIndex(NameId name)
         {
             if (RegionsByName.TryGetValue(name, out var region))
             {
@@ -472,7 +474,7 @@ namespace Acknex
             if (region != null)
             {
                 var regionName = region.AcknexObject.Name;
-                var nameInt = region.AcknexObject.NameInt;
+                var nameInt = region.AcknexObject.NameId;
                 foreach (var instance in AllRegionsByName[nameInt])
                 {
                     instance.Lift(dz);
@@ -520,7 +522,7 @@ namespace Acknex
             {
                 return;
             }
-            var nameInt = acknexObject.NameInt;
+            var nameInt = acknexObject.NameId;
             switch (acknexObject.Container)
             {
                 case Wall wall:
@@ -636,7 +638,7 @@ namespace Acknex
             if (region != null)
             {
                 var regionName = region.AcknexObject.Name;
-                var nameInt = region.AcknexObject.NameInt;
+                var nameInt = region.AcknexObject.NameId;
                 foreach (var instance in AllRegionsByName[nameInt])
                 {
                     Vector3 center;
@@ -668,7 +670,7 @@ namespace Acknex
             if (region != null)
             {
                 var regionName = region.AcknexObject.Name;
-                var nameInt = region.AcknexObject.NameInt;
+                var nameInt = region.AcknexObject.NameId;
                 foreach (var instance in AllRegionsByName[nameInt])
                 {
                     instance.Shift(dx, dy);
@@ -882,7 +884,7 @@ namespace Acknex
             foreach (var item in _postResolve)
             {
                 var objectName = item.objectName;
-                var objectIntName = NameUtils.NameToInt(objectName, true);
+                var objectIntName = NameUtils.ToNameId(objectName, true, false, false);
                 if (item.list != null)
                 {
                     if (AcknexObject.TryGetAcknexObject(objectIntName, out var acknexObject))

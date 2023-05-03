@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NameId = System.UInt32;
+using System.Collections.Generic;
 using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
@@ -17,33 +18,33 @@ namespace Acknex
         }
 
         private readonly IDictionary<Texture, IList<Mesh>> _meshesPerTexture = new Dictionary<Texture, IList<Mesh>>();
-        public readonly IDictionary<int, Action> ActionsByName = new Dictionary<int, Action>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Actor> ActorsByName = new Dictionary<int, Actor>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, HashSet<Actor>> AllActorsByName = new Dictionary<int, HashSet<Actor>>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, HashSet<Region>> AllRegionsByName = new Dictionary<int, HashSet<Region>>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, HashSet<Thing>> AllThingsByName = new Dictionary<int, HashSet<Thing>>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, HashSet<Wall>> AllWallsByName = new Dictionary<int, HashSet<Wall>>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, HashSet<Way>> AllWaysByName = new Dictionary<int, HashSet<Way>>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Bitmap> BitmapsByName = new Dictionary<int, Bitmap>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Digits> DigitsByName = new Dictionary<int, Digits>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Flic> FlicsByName = new Dictionary<int, Flic>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Font> FontsByName = new Dictionary<int, Font>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Model> ModelsByName = new Dictionary<int, Model>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Overlay> OverlaysByName = new Dictionary<int, Overlay>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Palette> PalettesByName = new Dictionary<int, Palette>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Panel> PanelsByName = new Dictionary<int, Panel>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Picture> PicturesByName = new Dictionary<int, Picture>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Region> RegionsByName = new Dictionary<int, Region>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Skill> SkillsByName = new Dictionary<int, Skill>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Song> SongsByName = new Dictionary<int, Song>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Sound> SoundsByName = new Dictionary<int, Sound>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, AcknexString> StringsByName = new Dictionary<int, AcknexString>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Synonym> SynonymsByName = new Dictionary<int, Synonym>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Text> TextsByName = new Dictionary<int, Text>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Texture> TexturesByName = new Dictionary<int, Texture>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Thing> ThingsByName = new Dictionary<int, Thing>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Wall> WallsByName = new Dictionary<int, Wall>(EqualityComparer<int>.Default);
-        public readonly IDictionary<int, Way> WaysByName = new Dictionary<int, Way>(EqualityComparer<int>.Default);
+        public readonly IDictionary<NameId, Action> ActionsByName = new Dictionary<NameId, Action>();
+        public readonly IDictionary<NameId, Actor> ActorsByName = new Dictionary<NameId, Actor>();
+        public readonly IDictionary<NameId, HashSet<Actor>> AllActorsByName = new Dictionary<NameId, HashSet<Actor>>();
+        public readonly IDictionary<NameId, HashSet<Region>> AllRegionsByName = new Dictionary<NameId, HashSet<Region>>();
+        public readonly IDictionary<NameId, HashSet<Thing>> AllThingsByName = new Dictionary<NameId, HashSet<Thing>>();
+        public readonly IDictionary<NameId, HashSet<Wall>> AllWallsByName = new Dictionary<NameId, HashSet<Wall>>();
+        public readonly IDictionary<NameId, HashSet<Way>> AllWaysByName = new Dictionary<NameId, HashSet<Way>>();
+        public readonly IDictionary<NameId, Bitmap> BitmapsByName = new Dictionary<NameId, Bitmap>();
+        public readonly IDictionary<NameId, Digits> DigitsByName = new Dictionary<NameId, Digits>();
+        public readonly IDictionary<NameId, Flic> FlicsByName = new Dictionary<NameId, Flic>();
+        public readonly IDictionary<NameId, Font> FontsByName = new Dictionary<NameId, Font>();
+        public readonly IDictionary<NameId, Model> ModelsByName = new Dictionary<NameId, Model>();
+        public readonly IDictionary<NameId, Overlay> OverlaysByName = new Dictionary<NameId, Overlay>();
+        public readonly IDictionary<NameId, Palette> PalettesByName = new Dictionary<NameId, Palette>();
+        public readonly IDictionary<NameId, Panel> PanelsByName = new Dictionary<NameId, Panel>();
+        public readonly IDictionary<NameId, Picture> PicturesByName = new Dictionary<NameId, Picture>();
+        public readonly IDictionary<NameId, Region> RegionsByName = new Dictionary<NameId, Region>();
+        public readonly IDictionary<NameId, Skill> SkillsByName = new Dictionary<NameId, Skill>();
+        public readonly IDictionary<NameId, Song> SongsByName = new Dictionary<NameId, Song>();
+        public readonly IDictionary<NameId, Sound> SoundsByName = new Dictionary<NameId, Sound>();
+        public readonly IDictionary<NameId, AcknexString> StringsByName = new Dictionary<NameId, AcknexString>();
+        public readonly IDictionary<NameId, Synonym> SynonymsByName = new Dictionary<NameId, Synonym>();
+        public readonly IDictionary<NameId, Text> TextsByName = new Dictionary<NameId, Text>();
+        public readonly IDictionary<NameId, Texture> TexturesByName = new Dictionary<NameId, Texture>();
+        public readonly IDictionary<NameId, Thing> ThingsByName = new Dictionary<NameId, Thing>();
+        public readonly IDictionary<NameId, Wall> WallsByName = new Dictionary<NameId, Wall>();
+        public readonly IDictionary<NameId, Way> WaysByName = new Dictionary<NameId, Way>();
         public readonly IDictionary<string, TextureAndPalette> TextureCache = new Dictionary<string, TextureAndPalette>();
         public readonly List<string> Paths = new List<string>();
         public readonly List<Wall> Walls = new List<Wall>();
@@ -131,7 +132,7 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetTemplateCallback(int name)
+        private static IAcknexObject GetTemplateCallback(NameId name)
         {
             return null;
         }
@@ -264,7 +265,7 @@ namespace Acknex
             {
                 return indexOf;
             }
-            var template = region.AcknexObject.GetTemplateCallback(region.AcknexObject.NameInt);
+            var template = region.AcknexObject.GetTemplateCallback(region.AcknexObject.NameId);
             if (template.Container is Region templateRegion)
             {
                 return RegionsByIndex.IndexOf(templateRegion);

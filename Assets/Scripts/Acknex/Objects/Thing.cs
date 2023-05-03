@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using NameId = System.UInt32;
+using System.Collections;
 using Acknex.Interfaces;
 using UnityEngine;
 using PropertyName = Acknex.Interfaces.PropertyName;
@@ -315,7 +316,7 @@ namespace Acknex
             }
         }
 
-        private static IAcknexObject GetTemplateCallback(int name)
+        private static IAcknexObject GetTemplateCallback(NameId name)
         {
             return World.Instance.ThingsByName.TryGetValue(name, out var definition) ? definition.AcknexObject : null;
         }

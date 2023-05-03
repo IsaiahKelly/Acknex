@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NameId = System.UInt32;
+using System.Collections.Generic;
 using System.Linq;
 using Acknex.Interfaces;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace Acknex
         {
             get
             {
-                var firstInstance = World.Instance.AllWaysByName[AcknexObject.NameInt].First();
+                var firstInstance = World.Instance.AllWaysByName[AcknexObject.NameId].First();
                 return firstInstance.Points;
             }
         }
@@ -77,7 +78,7 @@ namespace Acknex
             AcknexObject.IsDirty = false;
         }
 
-        private static IAcknexObject GetTemplateCallback(int name)
+        private static IAcknexObject GetTemplateCallback(NameId name)
         {
             if (World.Instance.WaysByName.TryGetValue(name, out var definition))
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NameId = System.UInt32;
+using System;
 using System.Collections;
 using Acknex.Interfaces;
 using UnityEngine;
@@ -60,7 +61,7 @@ namespace Acknex
             PropertyName.EACH_SEC_16,
         };
 
-        public IEnumerator CallSynonymAction(int synonymName, IAcknexObject MY, IAcknexObject THERE)
+        public IEnumerator CallSynonymAction(NameId synonymName, IAcknexObject MY, IAcknexObject THERE)
         {
             if (SynonymsByName.TryGetValue(synonymName, out var synonym))
             {
@@ -88,17 +89,17 @@ namespace Acknex
 
         public void TriggerEvent(PropertyName name, IAcknexObject source, IAcknexObject MY, IAcknexObject THERE)
         {
-            TriggerEvent((int)name, source, MY, THERE);
+            TriggerEvent((NameId)name, source, MY, THERE);
         }
 
-        public void TriggerEvent(int name, IAcknexObject source, IAcknexObject MY, IAcknexObject THERE)
+        public void TriggerEvent(NameId name, IAcknexObject source, IAcknexObject MY, IAcknexObject THERE)
         {
             if (_runtime == null)
             {
                 return;
             }
             var moveMode = GetSkillValue(SkillName.MOVE_MODE);
-            if (moveMode <= 0.5f && name == (int)PropertyName.EACH_TICK || moveMode <= 0f && !IsKeyboardEvent(name))
+            if (moveMode <= 0.5f && name == (NameId)PropertyName.EACH_TICK || moveMode <= 0f && !IsKeyboardEvent(name))
             {
                 return;
             }
@@ -108,87 +109,87 @@ namespace Acknex
             }
         }
 
-        private bool IsKeyboardEvent(int name)
+        private bool IsKeyboardEvent(NameId name)
         {
             switch (name)
             {
-                case (int)PropertyName.IF_ANYKEY:
-                case (int)PropertyName.IF_TAST:
-                case (int)PropertyName.IF_0:
-                case (int)PropertyName.IF_1:
-                case (int)PropertyName.IF_2:
-                case (int)PropertyName.IF_3:
-                case (int)PropertyName.IF_4:
-                case (int)PropertyName.IF_5:
-                case (int)PropertyName.IF_6:
-                case (int)PropertyName.IF_7:
-                case (int)PropertyName.IF_8:
-                case (int)PropertyName.IF_9:
-                case (int)PropertyName.IF_A:
-                case (int)PropertyName.IF_B:
-                case (int)PropertyName.IF_C:
-                case (int)PropertyName.IF_D:
-                case (int)PropertyName.IF_E:
-                case (int)PropertyName.IF_F:
-                case (int)PropertyName.IF_G:
-                case (int)PropertyName.IF_H:
-                case (int)PropertyName.IF_I:
-                case (int)PropertyName.IF_J:
-                case (int)PropertyName.IF_K:
-                case (int)PropertyName.IF_L:
-                case (int)PropertyName.IF_M:
-                case (int)PropertyName.IF_N:
-                case (int)PropertyName.IF_O:
-                case (int)PropertyName.IF_P:
-                case (int)PropertyName.IF_Q:
-                case (int)PropertyName.IF_R:
-                case (int)PropertyName.IF_S:
-                case (int)PropertyName.IF_T:
-                case (int)PropertyName.IF_U:
-                case (int)PropertyName.IF_V:
-                case (int)PropertyName.IF_X:
-                case (int)PropertyName.IF_Y:
-                case (int)PropertyName.IF_Z:
-                case (int)PropertyName.IF_W:
-                case (int)PropertyName.IF_ALT:
-                case (int)PropertyName.IF_BKSP:
-                case (int)PropertyName.IF_CAL:
-                case (int)PropertyName.IF_CAR:
-                case (int)PropertyName.IF_CTRL:
-                case (int)PropertyName.IF_DEL:
-                case (int)PropertyName.IF_END:
-                case (int)PropertyName.IF_ENTER:
-                case (int)PropertyName.IF_ESC:
-                case (int)PropertyName.IF_F1:
-                case (int)PropertyName.IF_F2:
-                case (int)PropertyName.IF_F3:
-                case (int)PropertyName.IF_F4:
-                case (int)PropertyName.IF_F5:
-                case (int)PropertyName.IF_F6:
-                case (int)PropertyName.IF_F7:
-                case (int)PropertyName.IF_F8:
-                case (int)PropertyName.IF_F9:
-                case (int)PropertyName.IF_F10:
-                case (int)PropertyName.IF_F11:
-                case (int)PropertyName.IF_F12:
-                case (int)PropertyName.IF_HOME:
-                case (int)PropertyName.IF_INS:
-                case (int)PropertyName.IF_LEFT:
-                case (int)PropertyName.IF_MIDDLE:
-                case (int)PropertyName.IF_RIGHT:
-                case (int)PropertyName.IF_PAUSE:
-                case (int)PropertyName.IF_PGDN:
-                case (int)PropertyName.IF_PGUP:
-                case (int)PropertyName.IF_SPACE:
-                case (int)PropertyName.IF_TAB:
-                case (int)PropertyName.IF_CUU:
-                case (int)PropertyName.IF_CUD:
-                case (int)PropertyName.IF_CUR:
-                case (int)PropertyName.IF_CUL:
-                case (int)PropertyName.IF_SHIFT:
-                case (int)PropertyName.IF_APO:
-                case (int)PropertyName.IF_MINUS:
-                case (int)PropertyName.IF_PLUS:
+                case (NameId)PropertyName.IF_ANYKEY:
+                case (NameId)PropertyName.IF_TAST:
+                case (NameId)PropertyName.IF_0:
+                case (NameId)PropertyName.IF_1:
+                case (NameId)PropertyName.IF_2:
+                case (NameId)PropertyName.IF_3:
+                case (NameId)PropertyName.IF_4:
+                case (NameId)PropertyName.IF_5:
+                case (NameId)PropertyName.IF_6:
+                case (NameId)PropertyName.IF_7:
+                case (NameId)PropertyName.IF_8:
+                case (NameId)PropertyName.IF_9:
+                case (NameId)PropertyName.IF_A:
+                case (NameId)PropertyName.IF_B:
+                case (NameId)PropertyName.IF_C:
+                case (NameId)PropertyName.IF_D:
+                case (NameId)PropertyName.IF_E:
+                case (NameId)PropertyName.IF_F:
+                case (NameId)PropertyName.IF_G:
+                case (NameId)PropertyName.IF_H:
+                case (NameId)PropertyName.IF_I:
+                case (NameId)PropertyName.IF_J:
+                case (NameId)PropertyName.IF_K:
+                case (NameId)PropertyName.IF_L:
+                case (NameId)PropertyName.IF_M:
+                case (NameId)PropertyName.IF_N:
+                case (NameId)PropertyName.IF_O:
+                case (NameId)PropertyName.IF_P:
+                case (NameId)PropertyName.IF_Q:
+                case (NameId)PropertyName.IF_R:
+                case (NameId)PropertyName.IF_S:
+                case (NameId)PropertyName.IF_T:
+                case (NameId)PropertyName.IF_U:
+                case (NameId)PropertyName.IF_V:
+                case (NameId)PropertyName.IF_X:
+                case (NameId)PropertyName.IF_Y:
+                case (NameId)PropertyName.IF_Z:
+                case (NameId)PropertyName.IF_W:
+                case (NameId)PropertyName.IF_ALT:
+                case (NameId)PropertyName.IF_BKSP:
+                case (NameId)PropertyName.IF_CAL:
+                case (NameId)PropertyName.IF_CAR:
+                case (NameId)PropertyName.IF_CTRL:
+                case (NameId)PropertyName.IF_DEL:
+                case (NameId)PropertyName.IF_END:
+                case (NameId)PropertyName.IF_ENTER:
+                case (NameId)PropertyName.IF_ESC:
+                case (NameId)PropertyName.IF_F1:
+                case (NameId)PropertyName.IF_F2:
+                case (NameId)PropertyName.IF_F3:
+                case (NameId)PropertyName.IF_F4:
+                case (NameId)PropertyName.IF_F5:
+                case (NameId)PropertyName.IF_F6:
+                case (NameId)PropertyName.IF_F7:
+                case (NameId)PropertyName.IF_F8:
+                case (NameId)PropertyName.IF_F9:
+                case (NameId)PropertyName.IF_F10:
+                case (NameId)PropertyName.IF_F11:
+                case (NameId)PropertyName.IF_F12:
+                case (NameId)PropertyName.IF_HOME:
+                case (NameId)PropertyName.IF_INS:
+                case (NameId)PropertyName.IF_LEFT:
+                case (NameId)PropertyName.IF_MIDDLE:
+                case (NameId)PropertyName.IF_RIGHT:
+                case (NameId)PropertyName.IF_PAUSE:
+                case (NameId)PropertyName.IF_PGDN:
+                case (NameId)PropertyName.IF_PGUP:
+                case (NameId)PropertyName.IF_SPACE:
+                case (NameId)PropertyName.IF_TAB:
+                case (NameId)PropertyName.IF_CUU:
+                case (NameId)PropertyName.IF_CUD:
+                case (NameId)PropertyName.IF_CUR:
+                case (NameId)PropertyName.IF_CUL:
+                case (NameId)PropertyName.IF_SHIFT:
+                case (NameId)PropertyName.IF_APO:
+                case (NameId)PropertyName.IF_MINUS:
+                case (NameId)PropertyName.IF_PLUS:
                     return true;
                 default:
                     return false;
@@ -197,10 +198,10 @@ namespace Acknex
 
         public void TriggerEventConditional(IAcknexObject acknexObject, PropertyName eventName, bool condition)
         {
-            TriggerEventConditional(acknexObject, (int)eventName, condition);
+            TriggerEventConditional(acknexObject, (NameId)eventName, condition);
         }
 
-        public void TriggerEventConditional(IAcknexObject acknexObject, int eventName, bool condition)
+        public void TriggerEventConditional(IAcknexObject acknexObject, NameId eventName, bool condition)
         {
             if (condition)
             {

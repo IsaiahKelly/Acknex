@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using NameId = System.UInt32;
+using System.IO;
 using System.Text;
 
 namespace Acknex
@@ -52,7 +53,7 @@ namespace Acknex
             sourceStringBuilder.Append(HeaderTemplate);
             foreach (var action in ActionsByName)
             {
-                sourceStringBuilder.AppendLine($"_callbacks.Add(\"{action.Key}\", {action.Key});");
+                sourceStringBuilder.AppendLine($"_callbacks.Add(\"{action.Value.AcknexObject.Name}\", {action.Value.AcknexObject.Name});");
             }
             sourceStringBuilder.AppendLine("    }");
             foreach (var action in ActionsByName)

@@ -897,7 +897,7 @@ MonoBehaviour:
   CanvasView: {fileID: 1520209880}
   CanvasWidthRatio: 0
   DebugSkills: 1
-  DisableCompilation: 0
+  DisableCompilation: 1
   DisableMaterials: 0
   DrawShadows: 0
   GodMode: 0

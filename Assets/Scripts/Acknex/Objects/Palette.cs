@@ -1,4 +1,5 @@
-﻿using Acknex.Interfaces;
+﻿using NameId = System.UInt32;
+using Acknex.Interfaces;
 using UnityEngine;
 using PropertyName = Acknex.Interfaces.PropertyName;
 
@@ -68,7 +69,7 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetTemplateCallback(int name)
+        private static IAcknexObject GetTemplateCallback(NameId name)
         {
             return null;
         }

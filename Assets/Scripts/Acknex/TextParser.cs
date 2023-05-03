@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NameId = System.UInt32;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -653,20 +654,20 @@ namespace Acknex
 
         private void ParseObjectReferenceList(string propertyName, IAcknexObject acknexObject, IEnumerator<string> tokens)
         {
-            var intName = NameUtils.NameToInt(propertyName);
-            if (!acknexObject.TryGetObject(intName, out List<IAcknexObject> list))
+            var intPropertyName = NameUtils.ToNameId(propertyName, true, false, false);
+            if (!acknexObject.TryGetObject(intPropertyName, out List<IAcknexObject> list))
             {
                 list = new List<IAcknexObject>();
-                acknexObject.SetObject(intName, list);
+                acknexObject.SetObject(intPropertyName, list);
             }
             var token = GetNextToken(tokens);
             while (token != ";")
             {
                 var postResolveItem = new PostResolveItem();
+                postResolveItem.acknexObject = acknexObject;
                 postResolveItem.list = list;
                 postResolveItem.objectName = token;
                 _world.AddPostResolve(postResolveItem);
-                //list.Add(token);
                 token = GetNextToken(tokens);
             }
         }
@@ -820,7 +821,7 @@ namespace Acknex
             else
             {
                 var regionName = GetNextToken(tokens);
-                var regionNameInt = NameUtils.NameToInt(regionName);
+                var regionNameInt = NameUtils.ToNameId(regionName, true, false, false);
                 acknexObject.SetAcknexObject(propertyNameName, World.Instance.RegionsByName[regionNameInt].AcknexObject);
             }
         }

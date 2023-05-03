@@ -1,4 +1,5 @@
-﻿using Acknex.Interfaces;
+﻿using NameId = System.UInt32;
+using Acknex.Interfaces;
 using System;
 using System.Collections;
 namespace Acknex.Interfaces
@@ -28,7 +29,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Gets the engine object with the given `name`.
         /// </summary>
-        IAcknexObject GetObject(ObjectType type, int name);
+        IAcknexObject GetObject(ObjectType type, NameId name);
 
         /// <summary>
         /// Gets the game world singleton instance.
@@ -69,12 +70,12 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Updates a game skill by the name ´name` with the value `value`.
         /// </summary>
-        void UpdateSkillValue(int nameInt, float value);
+        void UpdateSkillValue(NameId nameInt, float value);
 
         /// <summary>
         /// Gets the skill's by the name `name´ value.
         /// </summary>
-        float GetSkillValue(int name);
+        float GetSkillValue(NameId name);
 
         /// <summary>
         /// Updates a game skill by the name ´name` with the value `value`.
@@ -99,12 +100,12 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Assign the synonym by name `synonymName` to the given object `target´.
         /// </summary>
-        void SetSynonymObject(int synonymName, IAcknexObject target);
+        void SetSynonymObject(NameId synonymName, IAcknexObject target);
 
         /// <summary>
         /// Returns the object stored into the given synonym.
         /// </summary>
-        IAcknexObject GetSynonymObject(int synonymName, bool fromRuntime = false);
+        IAcknexObject GetSynonymObject(NameId synonymName, bool fromRuntime = false);
 
         /// <summary>
         /// Returns the object stored into the given synonym.
@@ -121,7 +122,7 @@ namespace Acknex.Interfaces
         /// Gets a registered Region index.
         /// This value must be passed to the objects created when processing an WMP file.
         /// </summary>
-        int GetRegionIndex(int value);
+        int GetRegionIndex(NameId value);
 
         /// <summary>
         /// Register an object property descriptor.
@@ -171,7 +172,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Calls the IEnumerator from the given action.
         /// </summary>
-        IEnumerator CallSynonymAction(int actionName, IAcknexObject MY, IAcknexObject THERE);
+        IEnumerator CallSynonymAction(NameId actionName, IAcknexObject MY, IAcknexObject THERE);
 
         /// <summary>
         /// Accelerates a value by the given amount.

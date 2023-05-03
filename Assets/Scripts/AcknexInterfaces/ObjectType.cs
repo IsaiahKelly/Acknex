@@ -1,10 +1,12 @@
-﻿namespace Acknex.Interfaces
+﻿using NameId = System.UInt32;
+namespace Acknex.Interfaces
 {
     /// <summary>
     /// Represents an engine object type.
     /// </summary>
     public enum ObjectType
     {
+        Unknown,
         Action,
         Actor,
         Bitmap,
@@ -30,6 +32,6 @@
         Model,
         Song,
         Digits,
-        Picture
+        Picture,
     }
 }

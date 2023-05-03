@@ -1,4 +1,5 @@
-﻿using Acknex.Interfaces;
+﻿using NameId = System.UInt32;
+using Acknex.Interfaces;
 using System.Collections.Generic;
 using UnityEngine;
 using PropertyName = Acknex.Interfaces.PropertyName;

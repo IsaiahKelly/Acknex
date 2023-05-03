@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using NameId = System.UInt32;
+using UnityEngine;
 
 namespace Acknex
 {

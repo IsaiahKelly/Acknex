@@ -1,4 +1,5 @@
-﻿using Acknex.Interfaces;
+﻿using NameId = System.UInt32;
+using Acknex.Interfaces;
 using UnityEngine;
 
 namespace Acknex
@@ -12,7 +13,7 @@ namespace Acknex
 
         public override IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetDefinitionCallbackActor, ObjectType.Actor);
 
-        private static IAcknexObject GetDefinitionCallbackActor(int name)
+        private static IAcknexObject GetDefinitionCallbackActor(NameId name)
         {
             if (World.Instance.ActorsByName.TryGetValue(name, out var definition))
             {
