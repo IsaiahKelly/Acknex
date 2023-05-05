@@ -56,5 +56,10 @@ namespace Acknex.Interfaces
         /// Plays the given sound on this object position.
         /// </summary>
         void PlaySoundLocated(IAcknexObject sound, float volume = 0.5f, float sDist = 100f, float svDist = 100f);
+
+        /// <summary>
+        /// Notifies a property has changed.
+        /// </summary>
+        void NotifyPropertyChanged(NameId propertyName);
     }
 }

@@ -46,6 +46,11 @@ namespace Acknex
         {
         }
 
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+            
+        }
+
         public void ResetTexture()
         {
         }

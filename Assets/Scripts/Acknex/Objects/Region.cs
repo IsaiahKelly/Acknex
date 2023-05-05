@@ -1,5 +1,4 @@
-﻿using NameId = System.UInt32;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +6,7 @@ using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
+using NameId = System.UInt32;
 using PropertyName = Acknex.Interfaces.PropertyName;
 #if DEBUG_ENABLED
 using Utils;
@@ -16,11 +16,6 @@ namespace Acknex
 {
     public class Region : MonoBehaviour, IAcknexObjectContainer, IGraphicObject
     {
-        public override string ToString()
-        {
-            return AcknexObject.ToString();
-        }
-
         private Dictionary<int, List<int>> _allTriangles;
         private List<Vector2> _allUVs;
         private List<Vector3> _allVertices;
@@ -45,11 +40,6 @@ namespace Acknex
         private Mesh _invertedCeilMesh;
         private MeshCollider _invertedFloorCollider;
         private Mesh _invertedFloorMesh;
-        private float _lastAmbient;
-        private float _lastCeilHgt;
-        private Texture _lastCeilTexture;
-        private float _lastFloorHgt;
-        private Texture _lastFloorTexture;
         private bool _materialsCreated;
 
         public AckTransform AckTransform;
@@ -123,6 +113,16 @@ namespace Acknex
 
         public GameObject GameObject => gameObject;
 
+        public float GetAmbient()
+        {
+            var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
+            //if (AcknexObject.HasFlag(ObjectProperty.HERE))
+            //{
+            //    ambient += World.Instance.GetSkillValue("PLAYER_LIGHT") * Mathf.InverseLerp(World.Instance.GetSkillValue(ObjectProperty.CLIP_DIST), 0f, AcknexObject.GetFloat(ObjectProperty.DISTANCE));
+            //}
+            return ambient;
+        }
+
         public Vector3 GetCenter()
         {
             var bounds = new Bounds();
@@ -142,35 +142,24 @@ namespace Acknex
             return AcknexObject;
         }
 
-        public bool IsGeometryDirty
-        {
-            get
-            {
-                var floorHgt = AcknexObject.GetFloat(PropertyName.FLOOR_HGT);
-                var ceilHgt = AcknexObject.GetFloat(PropertyName.CEIL_HGT);
-                var differentHeight = Math.Abs(floorHgt - _lastFloorHgt) > Mathf.Epsilon || Math.Abs(ceilHgt - _lastCeilHgt) > Mathf.Epsilon;
-                _lastFloorHgt = floorHgt;
-                _lastCeilHgt = ceilHgt;
-                return differentHeight;
-            }
-            set { }
-        }
+        public bool IsGeometryDirty { get; set; }
 
-        public bool IsTextureDirty
+        public bool IsTextureDirty { get; set; }  = true;
+
+        public void NotifyPropertyChanged(uint propertyName)
         {
-            get
+            switch (propertyName)
             {
-                var hasPlay = AcknexObject.HasFlag(PropertyName.PLAY);
-                var ambient = GetAmbient();
-                var ceilTexture = CeilTexture;
-                var floorTexture = FloorTexture;
-                var isTextureDirty = ambient != _lastAmbient || (ceilTexture != null && ceilTexture.AcknexObject.IsDirty) || ceilTexture != _lastCeilTexture || (floorTexture != null && floorTexture.AcknexObject.IsDirty) || floorTexture != _lastFloorTexture || hasPlay;
-                _lastAmbient = ambient;
-                _lastCeilTexture = ceilTexture;
-                _lastFloorTexture = floorTexture;
-                return isTextureDirty;
+                case (uint)PropertyName.TEXTURE:
+                case (uint)PropertyName.CEIL_TEX:
+                case (uint)PropertyName.FLOOR_TEX:
+                    IsTextureDirty = true;
+                    break;
+                case (uint)PropertyName.FLOOR_HGT:
+                case (uint)PropertyName.CEIL_HGT:
+                    IsGeometryDirty = true;
+                    break;
             }
-            set { }
         }
 
         public Vector4 OffsetScale { get; set; }
@@ -197,16 +186,6 @@ namespace Acknex
 
         public void ResetTexture()
         {
-        }
-
-        public float GetAmbient()
-        {
-            var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
-            //if (AcknexObject.HasFlag(ObjectProperty.HERE))
-            //{
-            //    ambient += World.Instance.GetSkillValue("PLAYER_LIGHT") * Mathf.InverseLerp(World.Instance.GetSkillValue(ObjectProperty.CLIP_DIST), 0f, AcknexObject.GetFloat(ObjectProperty.DISTANCE));
-            //}
-            return ambient;
         }
 
         public void SetupInstance()
@@ -278,6 +257,7 @@ namespace Acknex
                     wall.IsGeometryDirty = true;
                 }
                 UpdateAllMeshes();
+                IsGeometryDirty = false;
             }
             if (IsTextureDirty)
             {
@@ -308,6 +288,7 @@ namespace Acknex
                     }
                     _animateFloorCoroutine = StartCoroutine(AnimateFloor());
                 }
+                IsTextureDirty = false;
             }
             var center = GetCenter();
             var pos2D = new Vector2(center.x, center.z);
@@ -366,7 +347,12 @@ namespace Acknex
             }
         }
 
-        private static IAcknexObject GetTemplateCallback(NameId name)
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
+        private static IAcknexObject GetTemplateCallback(uint name)
         {
             if (World.Instance.RegionsByName.TryGetValue(name, out var region))
             {
@@ -725,8 +711,8 @@ namespace Acknex
             {
                 var belowAcknexObject = (AcknexObject)Below.AcknexObject;
                 var newAcknexObject = new AcknexObject(GetTemplateCallback, ObjectType.Region);
-                newAcknexObject.ObjectProperties = new Dictionary<NameId, object>(belowAcknexObject.ObjectProperties);
-                newAcknexObject.NumberProperties = new Dictionary<NameId, float>(belowAcknexObject.NumberProperties);
+                newAcknexObject.ObjectProperties = new Dictionary<uint, object>(belowAcknexObject.ObjectProperties);
+                newAcknexObject.NumberProperties = new Dictionary<uint, float>(belowAcknexObject.NumberProperties);
                 newAcknexObject.Name = belowAcknexObject.Name;
                 var newRegion = Instantiate(Below.gameObject).GetComponent<Region>();
                 newRegion.Above = this;

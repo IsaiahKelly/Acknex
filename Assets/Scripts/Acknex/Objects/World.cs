@@ -12,6 +12,10 @@ namespace Acknex
 {
     public partial class World : MonoBehaviour, IAcknexWorld
     {
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+
+        }
         public override string ToString()
         {
             return AcknexObject.ToString();

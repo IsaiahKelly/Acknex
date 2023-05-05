@@ -6,6 +6,10 @@ namespace Acknex
 {
     public class Flic : IAcknexObjectContainer
     {
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+
+        }
         public override string ToString()
         {
             return AcknexObject.ToString();

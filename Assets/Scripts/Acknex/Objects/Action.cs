@@ -12,6 +12,10 @@ namespace Acknex
     //TODO: missing keywords
     public class Action : IAcknexObjectContainer
     {
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+
+        }
         private const string CallEnumerator = @"{{
             var enumerator = {0};
             while (enumerator.MoveNext())

@@ -8,6 +8,10 @@ namespace Acknex
 {
     public class Way : MonoBehaviour, IAcknexObjectContainer
     {
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+
+        }
         public override string ToString()
         {
             return AcknexObject.ToString();

@@ -13,6 +13,10 @@ namespace Acknex
 
     public class Model : IAcknexObjectContainer
     {
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+
+        }
         public override string ToString()
         {
             return AcknexObject.ToString();

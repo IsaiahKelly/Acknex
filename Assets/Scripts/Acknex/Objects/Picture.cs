@@ -14,25 +14,6 @@ namespace Acknex
         }
 
         private Coroutine _animateCoroutine;
-        private int _lastSide = -1;
-        private Texture _lastTextureObject;
-
-        public override bool IsTextureDirty
-        {
-            get
-            {
-                var side = AcknexObject.GetInteger(PropertyName.SIDE);
-                var hasPlay = AcknexObject.HasFlag(PropertyName.PLAY);
-                var textureObject = TextureObject;
-                var isTextureDirty = side != _lastSide || textureObject != _lastTextureObject || hasPlay;
-                _lastSide = side;
-                _lastTextureObject = textureObject;
-                return isTextureDirty;
-            }
-            set
-            {
-            }
-        }
 
         public Panel Panel;
         public Texture TextureObject => AcknexObject.TryGetAcknexObject(PropertyName.TEXTURE, out var textureObject) ? textureObject?.Container as Texture : null;
@@ -93,6 +74,7 @@ namespace Acknex
                     }
                     _animateCoroutine = StartCoroutine(Animate(side));
                 }
+                IsTextureDirty = false;
             }
             OverlayGraphic.rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat(PropertyName.POS_X), -AcknexObject.GetFloat(PropertyName.POS_Y), 0f);
             if (CurrentBitmap != null)

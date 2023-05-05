@@ -8,6 +8,10 @@ namespace Acknex
 {
     public class Song : IAcknexObjectContainer
     {
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+
+        }
         public override string ToString()
         {
             return AcknexObject.ToString();

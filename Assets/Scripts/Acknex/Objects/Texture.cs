@@ -10,6 +10,10 @@ namespace Acknex
 {
     public class Texture : IAcknexObjectContainer
     {
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+
+        }
         public override string ToString()
         {
             return AcknexObject.ToString();

@@ -9,6 +9,10 @@ namespace Acknex
 {
     public class Text : MaskableGraphic, IAcknexObjectContainer
     {
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+
+        }
         public override string ToString()
         {
             return AcknexObject.ToString();

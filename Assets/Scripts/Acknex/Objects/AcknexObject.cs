@@ -285,11 +285,17 @@ namespace Acknex
             if (ObjectProperties.TryGetValue(propertyName, out var existingValue))
             {
                 IsDirty = existingValue != value;
+                if (IsDirty)
+                {
+                    Container.NotifyPropertyChanged(propertyName);
+                }
 #if DEBUG_ENABLED
                 //DebugMessage = "Got dirty because setted object " + propertyName;
 #endif
             }
             ObjectProperties[propertyName] = value;
+            IsDirty = true;
+            Container.NotifyPropertyChanged(propertyName);
         }
 
         public void SetAcknexObjectAll(NameId propertyName, IAcknexObject value)
@@ -354,9 +360,11 @@ namespace Acknex
                 {
                     if (*(int*)&existingValue != *(int*)&value)
                     {
+
+                        Container.NotifyPropertyChanged(propertyName);
                         IsDirty = true;
 #if DEBUG_ENABLED
-//                        DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
+//                      DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
 #endif
                     }
                 }
@@ -364,12 +372,10 @@ namespace Acknex
             else
             {
                 IsDirty = true;
-                if (IsDirty)
-                {
 #if DEBUG_ENABLED
  //                   DebugMessage = "Got dirty because new property " + propertyName + " is " + value;
 #endif
-                }
+                Container.NotifyPropertyChanged(propertyName);
             }
             NumberProperties[(NameId)propertyName] = value;
         }

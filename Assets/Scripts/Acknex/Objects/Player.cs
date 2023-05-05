@@ -7,6 +7,10 @@ namespace Acknex
 {
     public class Player : MonoBehaviour, IAcknexObjectContainer
     {
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+
+        }
         public override string ToString()
         {
             return AcknexObject.ToString();

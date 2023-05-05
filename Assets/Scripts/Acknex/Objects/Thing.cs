@@ -1,18 +1,13 @@
-﻿using NameId = System.UInt32;
-using System.Collections;
+﻿using System.Collections;
 using Acknex.Interfaces;
 using UnityEngine;
+using NameId = System.UInt32;
 using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
     public class Thing : MonoBehaviour, IAcknexObjectContainer, IGraphicObject
     {
-        public override string ToString()
-        {
-            return AcknexObject.ToString();
-        }
-
         private Coroutine _animateCoroutine;
         private GameObject _attached;
         private AudioSource _audioSource;
@@ -20,11 +15,7 @@ namespace Acknex
         private CharacterController _characterController;
         private CapsuleCollider _collider;
         private GameObject _innerGameObject;
-        private bool _lastGround;
-        private bool _lastInvisible;
-        private int _lastSide;
         private IAcknexObject _lastTarget;
-        private Texture _lastTextureObject;
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
         private Material[] _meshRendererMaterials;
@@ -33,6 +24,7 @@ namespace Acknex
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;
         private GameObject _triggerGameObject;
+        private bool _lastGround;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject(PropertyName.TEXTURE, out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -54,6 +46,13 @@ namespace Acknex
 
         public GameObject GameObject => gameObject;
 
+        public float GetAmbient()
+        {
+            var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
+            ambient *= ((IGraphicObject)GetRegion().Container).GetAmbient();
+            return ambient;
+        }
+
         public Vector3 GetCenter()
         {
             return transform.position + new Vector3(0f, _innerGameObject.transform.localScale.y * 0.5f, 0f);
@@ -67,20 +66,19 @@ namespace Acknex
 
         public bool IsGeometryDirty { get; set; }
 
-        public bool IsTextureDirty
+        public bool IsTextureDirty { get; set; } = true;
+
+        public void NotifyPropertyChanged(uint propertyName)
         {
-            get
+            switch (propertyName)
             {
-                var invisible = AcknexObject.HasFlag(PropertyName.INVISIBLE);
-                var side = AcknexObject.GetInteger(PropertyName.SIDE);
-                var textureObject = TextureObject;
-                var isTextureDirty = (!invisible && _lastInvisible) || side != _lastSide || textureObject != _lastTextureObject || AcknexObject.HasFlag(PropertyName.PLAY);
-                _lastTextureObject = TextureObject;
-                _lastSide = side;
-                _lastInvisible = invisible;
-                return isTextureDirty;
+                case (uint)PropertyName.SIDE:
+                case (uint)PropertyName.AMBIENT:
+                case (uint)PropertyName.PLAY:
+                case (uint)PropertyName.INVISIBLE:
+                    IsTextureDirty = true;
+                    break;
             }
-            set { }
         }
 
         public Vector4 OffsetScale { get; set; }
@@ -107,14 +105,7 @@ namespace Acknex
 
         public void ResetTexture()
         {
-            _lastTextureObject = null;
-        }
-
-        public float GetAmbient()
-        {
-            var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
-            ambient *= ((IGraphicObject)GetRegion().Container).GetAmbient();
-            return ambient;
+            IsTextureDirty = true;
         }
 
 
@@ -233,6 +224,7 @@ namespace Acknex
                     }
                     _animateCoroutine = StartCoroutine(Animate());
                 }
+                IsTextureDirty = false;
             }
             if (!AcknexObject.IsDirty)
             {
@@ -316,7 +308,12 @@ namespace Acknex
             }
         }
 
-        private static IAcknexObject GetTemplateCallback(NameId name)
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
+        private static IAcknexObject GetTemplateCallback(uint name)
         {
             return World.Instance.ThingsByName.TryGetValue(name, out var definition) ? definition.AcknexObject : null;
         }
@@ -446,7 +443,7 @@ namespace Acknex
             var waypoint = 1;
             AcknexObject.SetFloat(PropertyName.WAYPOINT, waypoint);
             var nextPoint = points[waypoint - 1];
-            for (; ; )
+            for (;;)
             {
                 AcknexObject.IsDirty = true;
                 if (World.Instance.GetSkillValue(SkillName.MOVE_MODE) <= 0.5f || AcknexObject.HasFlag(PropertyName.INVISIBLE) || AcknexObject.GetAcknexObject(PropertyName.TARGET) != _lastTarget)
@@ -473,7 +470,7 @@ namespace Acknex
         private IEnumerator MoveToVertex()
         {
             var targetPos = new Vector2(AcknexObject.GetFloat(PropertyName.TARGET_X), AcknexObject.GetFloat(PropertyName.TARGET_Y));
-            for (; ; )
+            for (;;)
             {
                 AcknexObject.IsDirty = true;
                 if (World.Instance.GetSkillValue(SkillName.MOVE_MODE) <= 0.5f || AcknexObject.HasFlag(PropertyName.INVISIBLE) || AcknexObject.GetAcknexObject(PropertyName.TARGET) != _lastTarget)
@@ -494,7 +491,7 @@ namespace Acknex
         private IEnumerator MoveToPlayer()
         {
             var currentRegion = GetRegion();
-            for (; ; )
+            for (;;)
             {
                 AcknexObject.IsDirty = true;
 #if DEBUG_ENABLED
@@ -538,7 +535,7 @@ namespace Acknex
         private IEnumerator MoveToAngle()
         {
             var currentRegion = GetRegion();
-            for (; ; )
+            for (;;)
             {
                 AcknexObject.IsDirty = true;
                 MoveToAngleStep();
@@ -608,10 +605,7 @@ namespace Acknex
             //{
             //    checkHeight = Region.MaxHeight;
             //}
-            var newRegionContainer = initial || AcknexObject.HasFlag(PropertyName.CAREFULLY)
-                ? Region.Locate(AcknexObject, regionContainer, GetColliderRadius(), thingX, thingY, ref thingZ, false,
-                    checkHeight)
-                : regionContainer;
+            var newRegionContainer = initial || AcknexObject.HasFlag(PropertyName.CAREFULLY) ? Region.Locate(AcknexObject, regionContainer, GetColliderRadius(), thingX, thingY, ref thingZ, false, checkHeight) : regionContainer;
             float height;
             if (ground)
             {
@@ -630,9 +624,7 @@ namespace Acknex
 
         private float GetColliderRadius()
         {
-            return _innerGameObject.transform.localScale.x * 0.5f * (AcknexObject.Type == ObjectType.Actor
-                ? World.Instance.GetSkillValue(SkillName.ACTOR_WIDTH)
-                : World.Instance.GetSkillValue(SkillName.THING_WIDTH));
+            return _innerGameObject.transform.localScale.x * 0.5f * (AcknexObject.Type == ObjectType.Actor ? World.Instance.GetSkillValue(SkillName.ACTOR_WIDTH) : World.Instance.GetSkillValue(SkillName.THING_WIDTH));
         }
 
         public void MoveToAngleStep()
@@ -677,10 +669,7 @@ namespace Acknex
         private bool WontDrop(Vector3 delta)
         {
             var finalPos = _characterController.transform.position + delta;
-            return !Physics.SphereCast(finalPos + new Vector3(0f, _characterController.radius, 0f),
-                       _characterController.radius, Vector3.down, out var raycastHit,
-                       World.Instance.WallsWaterRegionsAndThings) ||
-                   raycastHit.distance < World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB);
+            return !Physics.SphereCast(finalPos + new Vector3(0f, _characterController.radius, 0f), _characterController.radius, Vector3.down, out var raycastHit, World.Instance.WallsWaterRegionsAndThings) || raycastHit.distance < World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB);
         }
 
         public bool MoveToPointStep(Vector2 nextPoint, float? minDistance = null)

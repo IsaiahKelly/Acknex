@@ -8,6 +8,10 @@ namespace Acknex
 {
     public class View : MonoBehaviour, IAcknexObjectContainer
     {
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+
+        }
         public override string ToString()
         {
             return AcknexObject.ToString();
@@ -80,7 +84,7 @@ namespace Acknex
             if (MainView)
             {
                 //todo: check if fov is right
-                ViewCamera.fieldOfView = Mathf.InverseLerp(0.2f, 2.0f, World.Instance.GetSkillValue(SkillName.PLAYER_ARC)) * 120f;
+                ViewCamera.fieldOfView = CalculateFOV();
                 var transformLocalPosition = transform.localPosition;
                 transformLocalPosition.y = World.Instance.GetSkillValue(SkillName.PLAYER_SIZE);
                 transform.localPosition = transformLocalPosition;
@@ -105,6 +109,14 @@ namespace Acknex
                     }
                 }
             }
+        }
+
+        private float CalculateFOV()
+        {
+            var playerArc = World.Instance.GetSkillValue(SkillName.PLAYER_ARC);
+            var m = (120f - 0f) / (2.0f - 0.2f);
+            var b = 0f - m * 0.2f;
+            return m * playerArc + b;
         }
 
         private static IAcknexObject GetTemplateCallback(NameId name)

@@ -1,10 +1,10 @@
-﻿using NameId = System.UInt32;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
+using NameId = System.UInt32;
 using PropertyName = Acknex.Interfaces.PropertyName;
 #if DEBUG_ENABLED
 using Utils;
@@ -14,11 +14,6 @@ namespace Acknex
 {
     public class Wall : MonoBehaviour, IAcknexObjectContainer, IGraphicObject
     {
-        public override string ToString()
-        {
-            return AcknexObject.ToString();
-        }
-
         private readonly List<Vector4> _attachmentPos = new List<Vector4>();
         private readonly List<Texture> _tempAttachments = new List<Texture>();
         private Dictionary<WallPart, List<int>> _allTriangles;
@@ -44,11 +39,13 @@ namespace Acknex
         private Mesh _invertedMesh;
         private float _lastAmbient;
         private Texture _lastTextureObject;
+        private IAcknexObject _leftRegionInstance;
         private bool _materialsCreated;
         private Mesh _mesh;
         private MeshRenderer _meshRenderer;
         private Material[] _meshRendererMaterials;
         private Texture2DArray _paletteTextures;
+        private IAcknexObject _rightRegionInstance;
         private GameObject _vertexGameObjectA;
         private GameObject _vertexGameObjectB;
         private SphereCollider _vertexTriggerA;
@@ -64,8 +61,6 @@ namespace Acknex
         public bool Processed;
         public Matrix4x4 TopQuad;
         public Matrix4x4 TopUV;
-        private IAcknexObject _rightRegionInstance;
-        private IAcknexObject _leftRegionInstance;
 
         public MeshFilter Filter { get; set; }
         public MeshFilter GapFilter { get; set; }
@@ -89,6 +84,13 @@ namespace Acknex
 
         public GameObject GameObject => gameObject;
 
+        public float GetAmbient()
+        {
+            var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
+            ambient *= ((IGraphicObject)GetRegion().Container).GetAmbient();
+            return ambient;
+        }
+
         public Vector3 GetCenter()
         {
             if (HasGap)
@@ -105,21 +107,35 @@ namespace Acknex
 
         public bool IsGeometryDirty { get; set; }
 
+        public bool IsTextureDirty { get; set; } = true;
 
-        public bool IsTextureDirty
+        public void NotifyPropertyChanged(uint propertyName)
         {
-            get
+            switch (propertyName)
             {
-                var ambient = GetAmbient();
-                var textureObject = TextureObject;
-                var hasPlay = AcknexObject.HasFlag(PropertyName.PLAY);
-                var isTextureDirty = ambient != _lastAmbient || textureObject != _lastTextureObject || (textureObject != null && textureObject.AcknexObject.IsDirty) || hasPlay;
-                _lastAmbient = ambient;
-                _lastTextureObject = textureObject;
-                return isTextureDirty;
+                case (uint)PropertyName.SIDE:
+                case (uint)PropertyName.AMBIENT:
+                case (uint)PropertyName.PLAY:
+                case (uint)PropertyName.INVISIBLE:
+                    IsTextureDirty = true;
+                    break;
             }
-            set { }
         }
+
+        //public bool IsTextureDirty
+        //{
+        //    get
+        //    {
+        //        var ambient = GetAmbient();
+        //        var textureObject = TextureObject;
+        //        var hasPlay = AcknexObject.HasFlag(PropertyName.PLAY);
+        //        var isTextureDirty = ambient != _lastAmbient || textureObject != _lastTextureObject || (textureObject != null && textureObject.AcknexObject.IsDirty) || hasPlay;
+        //        _lastAmbient = ambient;
+        //        _lastTextureObject = textureObject;
+        //        return isTextureDirty;
+        //    }
+        //    set { }
+        //}
 
         public Vector4 OffsetScale { get; set; }
 
@@ -145,13 +161,6 @@ namespace Acknex
 
         public void ResetTexture()
         {
-        }
-
-        public float GetAmbient()
-        {
-            var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
-            ambient *= ((IGraphicObject)GetRegion().Container).GetAmbient();
-            return ambient;
         }
 
         public void SetupInstance()
@@ -237,6 +246,7 @@ namespace Acknex
                     }
                     _animateCoroutine = StartCoroutine(Animate());
                 }
+                IsTextureDirty = false;
             }
             var center = GetCenter();
             var pos2D = new Vector2(center.x, center.z);
@@ -301,7 +311,12 @@ namespace Acknex
             }
         }
 
-        private static IAcknexObject GetTemplateCallback(NameId name)
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
+        private static IAcknexObject GetTemplateCallback(uint name)
         {
             if (World.Instance.WallsByName.TryGetValue(name, out var wall))
             {
