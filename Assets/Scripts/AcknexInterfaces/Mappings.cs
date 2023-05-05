@@ -6,9 +6,14 @@ namespace Acknex.Interfaces
 {
     public static class Mappings
     {
+        public static string SanitizeName(string name)
+        {
+            return name?.Replace(".", "_");
+        }
+
         public static PropertyName MapProperty(string name)
         {
-            name = name.Replace(".", "_");
+            name = SanitizeName(name);
             if (Enum.TryParse<PropertyName>(name, out var objectProperty))
             {
                 return objectProperty;
@@ -19,7 +24,7 @@ namespace Acknex.Interfaces
 
         public static SkillName MapSkill(string name)
         {
-            name = name.Replace(".", "_");
+            name = SanitizeName(name);
             if (Enum.TryParse<SkillName>(name, out var skillName))
             {
                 return skillName;
@@ -30,7 +35,7 @@ namespace Acknex.Interfaces
 
         public static SynonymName MapSynonym(string name)
         {
-            name = name.Replace(".", "_");
+            name = SanitizeName(name);
             if (Enum.TryParse<SynonymName>(name, out var synonymName))
             {
                 return synonymName;

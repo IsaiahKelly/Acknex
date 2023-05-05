@@ -8,6 +8,10 @@ namespace Acknex.Interfaces
 
         public static NameId GetStringHashCode(string input)
         {
+            if (input == null)
+            {
+                return NULL;
+            }
             NameId hash = 5381;
             foreach (var c in input)
             {
@@ -18,6 +22,10 @@ namespace Acknex.Interfaces
 
         public static NameId ToNameId(string name, bool canBeProperty = true, bool canBeSkill = true, bool canBeSynonym = true)
         {
+            if (float.TryParse(name, out _))
+            {
+                return NULL;
+            }
             if (canBeSkill)
             {
                 var skillName = Mappings.MapSkill(name);

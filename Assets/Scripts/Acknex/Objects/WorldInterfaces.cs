@@ -447,7 +447,7 @@ namespace Acknex
             {
                 return Player.Instance.AcknexObject;
             }
-            if (name != null && AcknexObject.TryGetAcknexObject(name, out var acknexObject))
+            if (name != NameUtils.NULL && AcknexObject.TryGetAcknexObject(name, out var acknexObject))
             {
                 return acknexObject;
             }

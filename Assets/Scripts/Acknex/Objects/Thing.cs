@@ -74,11 +74,11 @@ namespace Acknex
                 var invisible = AcknexObject.HasFlag(PropertyName.INVISIBLE);
                 var side = AcknexObject.GetInteger(PropertyName.SIDE);
                 var textureObject = TextureObject;
-                var IsTextureDirty = (!invisible && invisible != _lastInvisible) || side != _lastSide || textureObject != _lastTextureObject || AcknexObject.HasFlag(PropertyName.PLAY);
+                var isTextureDirty = (!invisible && _lastInvisible) || side != _lastSide || textureObject != _lastTextureObject || AcknexObject.HasFlag(PropertyName.PLAY);
                 _lastTextureObject = TextureObject;
                 _lastSide = side;
                 _lastInvisible = invisible;
-                return IsTextureDirty;
+                return isTextureDirty;
             }
             set { }
         }

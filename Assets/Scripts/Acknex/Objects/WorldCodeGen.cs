@@ -13,6 +13,7 @@ namespace Acknex
         using System.Collections.Generic;
         using UnityEngine;
         using Random = UnityEngine.Random;
+        using PropertyName = Acknex.Interfaces.PropertyName;
         namespace Tests {
             public class Game : IAcknexRuntime {
                 private IAcknexWorld _world;
