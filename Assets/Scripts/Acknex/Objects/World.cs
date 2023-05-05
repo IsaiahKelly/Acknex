@@ -294,7 +294,7 @@ namespace Acknex
             //{
             //    foreach (var wall in walls)
             //    {
-            //        if (wall.TextureObject.AcknexObject.GetInteger(ObjectProperty.CYCLES) > 1)
+            //        if (wall.TextureObject.AcknexObject.GetInteger(PropertyName.CYCLES) > 1)
             //        {
             //            continue;
             //        }
@@ -312,7 +312,7 @@ namespace Acknex
             //{
             //    foreach (var region in regions)
             //    {
-            //        if (region.CeilTexture.AcknexObject.GetInteger(ObjectProperty.CYCLES) <= 1)
+            //        if (region.CeilTexture.AcknexObject.GetInteger(PropertyName.CYCLES) <= 1)
             //        {
             //            if (!_meshesPerTexture.TryGetValue(region.CeilTexture, out var meshes))
             //            {
@@ -322,7 +322,7 @@ namespace Acknex
             //            meshes.Add(region.CeilMeshFilter.sharedMesh);
             //            region.DisableCeilRender = true;
             //        }
-            //        if (region.FloorTexture.AcknexObject.GetInteger(ObjectProperty.CYCLES) <= 1)
+            //        if (region.FloorTexture.AcknexObject.GetInteger(PropertyName.CYCLES) <= 1)
             //        {
             //            if (region.FloorMeshFilter == null)
             //            {

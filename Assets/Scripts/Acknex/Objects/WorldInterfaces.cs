@@ -7,6 +7,7 @@ using AudioSynthesis.Midi;
 using LibTessDotNet;
 using Tests;
 using UnityEngine;
+using Utils;
 using PropertyName = Acknex.Interfaces.PropertyName;
 using Resolution = Acknex.Interfaces.Resolution;
 

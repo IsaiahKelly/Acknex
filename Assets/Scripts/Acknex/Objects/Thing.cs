@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Acknex.Interfaces;
 using UnityEngine;
+using Utils;
 using NameId = System.UInt32;
 using PropertyName = Acknex.Interfaces.PropertyName;
 
@@ -77,6 +78,9 @@ namespace Acknex
                 case (uint)PropertyName.PLAY:
                 case (uint)PropertyName.INVISIBLE:
                     IsTextureDirty = true;
+                    break;
+                case (uint)PropertyName.DISTANCE:
+                    AcknexObject.IsDirty = false;
                     break;
             }
         }
@@ -186,7 +190,7 @@ namespace Acknex
             //}
             //else
             //{
-            //    var angle = AcknexObject.GetFloat(ObjectProperty.ANGLE);
+            //    var angle = AcknexObject.GetFloat(PropertyName.ANGLE);
             //    var eulerAngles = transform.eulerAngles;
             //    eulerAngles.y = AngleUtils.ConvertAcknexToUnityAngle(angle);
             //    transform.eulerAngles = eulerAngles;
@@ -228,14 +232,8 @@ namespace Acknex
             }
             if (!AcknexObject.IsDirty)
             {
-#if DEBUG_ENABLED
-                DebugExtension.DebugWireSphere(transform.position, Color.red);
-#endif
                 return;
             }
-#if DEBUG_ENABLED
-            DebugExtension.DebugWireSphere(transform.position, Color.green);
-#endif
             AcknexObject.IsDirty = false;
             _centerGameObject.transform.position = GetCenter();
             //todo: this block should only run on carefully flagged
@@ -358,10 +356,10 @@ namespace Acknex
 
         private void OnControllerColliderHit(ControllerColliderHit controllerColliderHit)
         {
-            //var movingVertically = Mathf.Abs(AcknexObject.GetFloat(ObjectProperty.VSPEED)) > 0.1f;
-            //var movingHorizontally = !Mathf.Approximately(AcknexObject.GetFloat(ObjectProperty.SPEED), 0f);
+            //var movingVertically = Mathf.Abs(AcknexObject.GetFloat(PropertyName.VSPEED)) > 0.1f;
+            //var movingHorizontally = !Mathf.Approximately(AcknexObject.GetFloat(PropertyName.SPEED), 0f);
             //var region = GetRegion().Container as Region;
-            //var height = AcknexObject.GetFloat(ObjectProperty.HEIGHT);
+            //var height = AcknexObject.GetFloat(PropertyName.HEIGHT);
             //var hittingUpOrDown = height < region.GetRealFloorHeight() || height > region.GetRealCeilHeight();
             //if (/*(movingVertically && hittingUpOrDown) ||*/ (movingHorizontally && !hittingUpOrDown))
             //{
@@ -387,11 +385,16 @@ namespace Acknex
 #if DEBUG_ENABLED
             Gizmos.color = AcknexObject.IsDirty ? Color.green : Color.red;
             Gizmos.DrawSphere(transform.position, 1f);
-            if (DebugMarked)
+            if (IsTextureDirty)
             {
-                var quaternion = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat(ObjectProperty.ANGLE)), 0f);
-                DebugExtension.DebugArrow(transform.position, quaternion * Vector3.forward, Color.cyan, 30F);
+                Gizmos.color = Color.blue;
+                Gizmos.DrawSphere(transform.position + new Vector3(0f,1f,0f), 1f);
             }
+            //            if (DebugMarked)
+            //            {
+            //                var quaternion = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat(PropertyName.ANGLE)), 0f);
+            //                DebugExtension.DebugArrow(transform.position, quaternion * Vector3.forward, Color.cyan, 30F);
+            //            }
 #endif
         }
 
@@ -399,10 +402,10 @@ namespace Acknex
         {
 #if DEBUG_ENABLED
             Gizmos.color = Color.cyan;
-            Gizmos.DrawLine(transform.position, new Vector3(AcknexObject.GetFloat(ObjectProperty.TARGET_X), 0f, AcknexObject.GetFloat(ObjectProperty.TARGET_Y)));
+            Gizmos.DrawLine(transform.position, new Vector3(AcknexObject.GetFloat(PropertyName.TARGET_X), 0f, AcknexObject.GetFloat(PropertyName.TARGET_Y)));
             Gizmos.color = AcknexObject.IsDirty ? Color.green : Color.red;
             Gizmos.DrawSphere(transform.position, 1f);
-            var quaternion = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat(ObjectProperty.ANGLE)), 0f);
+            var quaternion = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat(PropertyName.ANGLE)), 0f);
             DebugExtension.DrawArrow(transform.position, quaternion * Vector3.forward, Color.cyan);
 #endif
         }
@@ -519,13 +522,13 @@ namespace Acknex
             //for (; ; )
             //{
             //    AcknexObject.IsDirty = true;
-            //    var pos = new Vector2(AcknexObject.GetFloat(ObjectProperty.X), AcknexObject.GetFloat("y"));
+            //    var pos = new Vector2(AcknexObject.GetFloat(PropertyName.X), AcknexObject.GetFloat("y"));
             //    var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
             //    var targetPos = pos + (pos - playerPos).normalized * 1000f;
             //    Debug.DrawLine(pos, targetPos, Color.yellow, 10f);
             //    if (MoveToPointStep(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
             //    {
-            //        AcknexObject.SetAcknexObject(ObjectProperty.TARGET, null);
+            //        AcknexObject.SetAcknexObject(PropertyName.TARGET, null);
             //        yield break;
             //    }
             //    yield return null;
@@ -645,7 +648,7 @@ namespace Acknex
             var delta = new Vector3(MathUtils.Cos(angle), 0f, MathUtils.Sin(angle)) * speed * timeCorr;
             delta.y = AcknexObject.GetFloat(PropertyName.VSPEED) /** timeCorr*/;
             var initialPosition = transform.position;
-            //if (AcknexObject.HasFlag(ObjectProperty.PASSABLE))
+            //if (AcknexObject.HasFlag(PropertyName.PASSABLE))
             //{
             //    transform.Translate(delta, Space.World);
             //}
@@ -657,7 +660,7 @@ namespace Acknex
             //}
             //}
 #if DEBUG_ENABLED
-            DebugExtension.DebugArrow(new Vector3(AcknexObject.GetFloat(ObjectProperty.X), 0f, AcknexObject.GetFloat(ObjectProperty.Y)), delta, Color.magenta, 10f);
+            DebugExtension.DebugArrow(new Vector3(AcknexObject.GetFloat(PropertyName.X), 0f, AcknexObject.GetFloat(PropertyName.Y)), delta, Color.magenta, 10f);
 #endif
             var height = AcknexObject.GetFloat(PropertyName.HEIGHT);
             delta = transform.position - initialPosition;
@@ -679,7 +682,7 @@ namespace Acknex
             {
                 return false;
             }
-            //if (AcknexObject.HasFlag(ObjectProperty.INVISIBLE))
+            //if (AcknexObject.HasFlag(PropertyName.INVISIBLE))
             //{
             //    return true;
             //}
@@ -699,7 +702,7 @@ namespace Acknex
             var delta = new Vector3(newPos.x - pos.x, 0f, newPos.y - pos.y);
             delta.y = AcknexObject.GetFloat(PropertyName.VSPEED) /** timeCorr */;
             var initialPosition = transform.position;
-            if ( /*AcknexObject.HasFlag(ObjectProperty.PASSABLE) || */AcknexObject.GetAcknexObject(PropertyName.TARGET).Type == ObjectType.Way)
+            if ( /*AcknexObject.HasFlag(PropertyName.PASSABLE) || */AcknexObject.GetAcknexObject(PropertyName.TARGET).Type == ObjectType.Way)
             {
                 transform.Translate(delta, Space.World);
             }

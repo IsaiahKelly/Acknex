@@ -119,6 +119,9 @@ namespace Acknex
                 case (uint)PropertyName.INVISIBLE:
                     IsTextureDirty = true;
                     break;
+                case (uint)PropertyName.DISTANCE:
+                    AcknexObject.IsDirty = false;
+                    break;
             }
         }
 
@@ -362,6 +365,16 @@ namespace Acknex
 #if DEBUG_ENABLED
             Gizmos.color = AcknexObject.IsDirty ? Color.green : Color.red;
             Gizmos.DrawSphere(GetCenter(), 1f);
+            if (IsTextureDirty)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawSphere(GetCenter() + new Vector3(0f, 1f, 0f), 1f);
+            }
+            if (IsGeometryDirty)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawSphere(GetCenter() + new Vector3(0f, 2f, 0f), 1f);
+            }
 #endif
         }
 
@@ -794,11 +807,11 @@ namespace Acknex
             var vertexB = contourVertices[AcknexObject.GetInteger(PropertyName.VERTEX2)];
             var xAxis = (new Vector3(vertexB.Position.X, 0f, vertexB.Position.Y) - new Vector3(vertexA.Position.X, 0f, vertexA.Position.Y)).normalized;
             _xAxis = xAxis;
-            //AcknexObject.SetFloat(ObjectProperty.X1, vertexA.Position.X);
-            //AcknexObject.SetFloat(ObjectProperty.Y1, vertexA.Position.Y);
+            //AcknexObject.SetFloat(PropertyName.X1, vertexA.Position.X);
+            //AcknexObject.SetFloat(PropertyName.Y1, vertexA.Position.Y);
             //AcknexObject.SetFloat("Z1", vertexA.Position.Z);
-            //AcknexObject.SetFloat(ObjectProperty.X2, vertexB.Position.X);
-            //AcknexObject.SetFloat(ObjectProperty.Y2, vertexB.Position.Y);
+            //AcknexObject.SetFloat(PropertyName.X2, vertexB.Position.X);
+            //AcknexObject.SetFloat(PropertyName.Y2, vertexB.Position.Y);
             //AcknexObject.SetFloat("Z2", vertexB.Position.Z);
             BuildWall(vertexA, vertexB, contourVertices, rightRegion, leftRegion);
             BuildWallMesh();

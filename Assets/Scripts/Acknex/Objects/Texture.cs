@@ -202,7 +202,7 @@ namespace Acknex
             return false;
             //todo: reimplement
             //modelObject = null;
-            //return AcknexObject.TryGetString(ObjectProperty.MODEL, out var model) && World.Instance.ModelsByName.TryGetValue(model, out modelObject);
+            //return AcknexObject.TryGetString(PropertyName.MODEL, out var model) && World.Instance.ModelsByName.TryGetValue(model, out modelObject);
         }
 
         public void UpdateFrame(Bitmap bitmap, IList<Material> materials, bool scaleTexture, bool mirror = false, int frameIndex = 0, IAcknexObject sourceAcknexObject = null)

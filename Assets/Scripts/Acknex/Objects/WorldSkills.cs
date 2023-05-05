@@ -151,7 +151,7 @@ namespace Acknex
             CreateSkill(SkillName.FORCE_TILT, 0, -1f, 1f);
             CreateSkill(SkillName.FORCE_UP, 0, -1f, 1f);
 
-            //CreateSkill(ObjectProperty.KEY_ANYKEY, Input.anyKeyDown);
+            //CreateSkill(PropertyName.KEY_ANYKEY, Input.anyKeyDown);
             CreateSkill(SkillName.KEY_0, 0, 0, 1);
             CreateSkill(SkillName.KEY_1, 0, 0, 1);
             CreateSkill(SkillName.KEY_2, 0, 0, 1);

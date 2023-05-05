@@ -116,9 +116,9 @@ namespace Acknex
         public float GetAmbient()
         {
             var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
-            //if (AcknexObject.HasFlag(ObjectProperty.HERE))
+            //if (AcknexObject.HasFlag(PropertyName.HERE))
             //{
-            //    ambient += World.Instance.GetSkillValue("PLAYER_LIGHT") * Mathf.InverseLerp(World.Instance.GetSkillValue(ObjectProperty.CLIP_DIST), 0f, AcknexObject.GetFloat(ObjectProperty.DISTANCE));
+            //    ambient += World.Instance.GetSkillValue("PLAYER_LIGHT") * Mathf.InverseLerp(World.Instance.GetSkillValue(PropertyName.CLIP_DIST), 0f, AcknexObject.GetFloat(PropertyName.DISTANCE));
             //}
             return ambient;
         }
@@ -158,6 +158,9 @@ namespace Acknex
                 case (uint)PropertyName.FLOOR_HGT:
                 case (uint)PropertyName.CEIL_HGT:
                     IsGeometryDirty = true;
+                    break;
+                case (uint)PropertyName.DISTANCE:
+                    AcknexObject.IsDirty = false;
                     break;
             }
         }

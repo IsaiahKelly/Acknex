@@ -174,7 +174,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.World, PropertyType.ObjectReference, PropertyName.LAYERS_16);
             AddObjectProperty(ObjectType.World, PropertyType.Float, PropertyName.CLIP_DIST);
 
-            //AddObjectProperty(ObjectType.Thing, PropertyType.String, ObjectProperty.NAME);
+            //AddObjectProperty(ObjectType.Thing, PropertyType.String, PropertyName.NAME);
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, PropertyName.AMBIENT);
             AddObjectProperty(ObjectType.Thing, PropertyType.ObjectReference, PropertyName.TEXTURE);
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, PropertyName.HEIGHT);
@@ -209,7 +209,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, PropertyName.ANGLE);
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, PropertyName.X);
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, PropertyName.Y);
-            //AddObjectProperty(ObjectType.Thing, PropertyType.Float, ObjectProperty.Z);
+            //AddObjectProperty(ObjectType.Thing, PropertyType.Float, PropertyName.Z);
             AddObjectProperty(ObjectType.Thing, PropertyType.ObjectReference, PropertyName.REGION);
             AddObjectProperty(ObjectType.Thing, PropertyType.ObjectReference, PropertyName.TARGET);
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, PropertyName.FLOOR_HGT);
@@ -237,7 +237,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Thing, PropertyType.ActionReference, PropertyName.DO);
             AddObjectProperty(ObjectType.Thing, PropertyType.Float, PropertyName.LIBER);
 
-            //AddObjectProperty(ObjectType.Overlay, PropertyType.String, ObjectProperty.NAME);
+            //AddObjectProperty(ObjectType.Overlay, PropertyType.String, PropertyName.NAME);
             AddObjectProperty(ObjectType.Overlay, PropertyType.Float, PropertyName.LAYER);
             AddObjectProperty(ObjectType.Overlay, PropertyType.Float, PropertyName.POS_X);
             AddObjectProperty(ObjectType.Overlay, PropertyType.Float, PropertyName.POS_Y);
@@ -248,19 +248,19 @@ namespace Acknex
             AddObjectProperty(ObjectType.Overlay, PropertyType.ObjectReference, PropertyName.OVLYS);
             AddObjectProperty(ObjectType.Overlay, PropertyType.ObjectReference, PropertyName.MSPRITE);
 
-            //AddObjectProperty(ObjectType.Synonym, PropertyType.String, ObjectProperty.NAME);
+            //AddObjectProperty(ObjectType.Synonym, PropertyType.String, PropertyName.NAME);
             AddObjectProperty(ObjectType.Synonym, PropertyType.String, PropertyName.TYPE);
             AddObjectProperty(ObjectType.Synonym, PropertyType.ObjectReference, PropertyName.DEFAULT);
 
 
-            //AddObjectProperty(ObjectType.Skill, PropertyType.String, ObjectProperty.NAME);
+            //AddObjectProperty(ObjectType.Skill, PropertyType.String, PropertyName.NAME);
             AddObjectProperty(ObjectType.Skill, PropertyType.Float, PropertyName.VAL);
             AddObjectProperty(ObjectType.Skill, PropertyType.Float, PropertyName.MIN);
             AddObjectProperty(ObjectType.Skill, PropertyType.Float, PropertyName.MAX);
             AddObjectProperty(ObjectType.Skill, PropertyType.String, PropertyName.TYPE);
 
 
-            //AddObjectProperty(ObjectType.Region, PropertyType.String, ObjectProperty.NAME);
+            //AddObjectProperty(ObjectType.Region, PropertyType.String, PropertyName.NAME);
             AddObjectProperty(ObjectType.Region, PropertyType.Float, PropertyName.AMBIENT);
             AddObjectProperty(ObjectType.Region, PropertyType.Float, PropertyName.FLOOR_HGT);
             AddObjectProperty(ObjectType.Region, PropertyType.Float, PropertyName.CEIL_HGT);
@@ -322,7 +322,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, PropertyName.TEXTURE15);
             AddObjectProperty(ObjectType.Region, PropertyType.ObjectReference, PropertyName.TEXTURE16);
 
-            //AddObjectProperty(ObjectType.Wall, PropertyType.String, ObjectProperty.NAME);
+            //AddObjectProperty(ObjectType.Wall, PropertyType.String, PropertyName.NAME);
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, PropertyName.AMBIENT);
             AddObjectProperty(ObjectType.Wall, PropertyType.ObjectReference, PropertyName.TEXTURE);
             AddObjectProperty(ObjectType.Wall, PropertyType.Flags, PropertyName.FLAGS);
@@ -363,7 +363,7 @@ namespace Acknex
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, PropertyName.INVISIBLE);
             AddObjectProperty(ObjectType.Wall, PropertyType.ActionReference, PropertyName.DO);
 
-            //AddObjectProperty(ObjectType.Texture, PropertyType.String, ObjectProperty.NAME);
+            //AddObjectProperty(ObjectType.Texture, PropertyType.String, PropertyName.NAME);
             AddObjectProperty(ObjectType.Texture, PropertyType.ScaleXY, PropertyName.SCALE_XY);
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, PropertyName.SCALE_X);
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, PropertyName.SCALE_Y);
