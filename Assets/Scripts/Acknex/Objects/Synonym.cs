@@ -44,13 +44,7 @@ namespace Acknex
             return null;
         }
 
-        
-
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
-        }
-
-        public void ResetTexture()
         {
         }
 

@@ -73,6 +73,7 @@ namespace Acknex
         {
             switch (propertyName)
             {
+                case (uint)PropertyName.TEXTURE:
                 case (uint)PropertyName.SIDE:
                 case (uint)PropertyName.AMBIENT:
                 case (uint)PropertyName.PLAY:
@@ -111,7 +112,6 @@ namespace Acknex
         {
             IsTextureDirty = true;
         }
-
 
         public void SetupInstance()
         {

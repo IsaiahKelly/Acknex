@@ -144,13 +144,12 @@ namespace Acknex
 
         public bool IsGeometryDirty { get; set; }
 
-        public bool IsTextureDirty { get; set; }  = true;
+        public bool IsTextureDirty { get; set; } = true;
 
         public void NotifyPropertyChanged(uint propertyName)
         {
             switch (propertyName)
             {
-                case (uint)PropertyName.TEXTURE:
                 case (uint)PropertyName.CEIL_TEX:
                 case (uint)PropertyName.FLOOR_TEX:
                     IsTextureDirty = true;
@@ -189,6 +188,7 @@ namespace Acknex
 
         public void ResetTexture()
         {
+            IsTextureDirty = true;
         }
 
         public void SetupInstance()

@@ -1,22 +1,13 @@
-﻿using NameId = System.UInt32;
-using Acknex.Interfaces;
+﻿using Acknex.Interfaces;
 using UnityEngine;
 using UnityMidi;
+using NameId = System.UInt32;
 using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
     public class Song : IAcknexObjectContainer
     {
-        public void NotifyPropertyChanged(uint propertyName)
-        {
-
-        }
-        public override string ToString()
-        {
-            return AcknexObject.ToString();
-        }
-
         public FileResource Resource;
 
         public Song()
@@ -46,18 +37,15 @@ namespace Acknex
             return null;
         }
 
-        
-        
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+        }
 
-        
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
         }
 
-        public void ResetTexture()
-        {
-        }
 
         public void SetupInstance()
         {
@@ -77,7 +65,12 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetTemplateCallback(NameId name)
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
+        private static IAcknexObject GetTemplateCallback(uint name)
         {
             return null;
         }

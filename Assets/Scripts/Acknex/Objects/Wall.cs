@@ -113,6 +113,7 @@ namespace Acknex
         {
             switch (propertyName)
             {
+                case (uint)PropertyName.TEXTURE:
                 case (uint)PropertyName.SIDE:
                 case (uint)PropertyName.AMBIENT:
                 case (uint)PropertyName.PLAY:
@@ -164,6 +165,7 @@ namespace Acknex
 
         public void ResetTexture()
         {
+            IsTextureDirty = true;
         }
 
         public void SetupInstance()
@@ -182,6 +184,7 @@ namespace Acknex
             _gameObject.transform.SetParent(transform, false);
             _meshRenderer = _gameObject.AddComponent<MeshRenderer>();
             _collider = _gameObject.AddComponent<MeshCollider>();
+            _collider.enabled = false;
             _invertedCollider = _gameObject.AddComponent<MeshCollider>();
             _invertedCollider.enabled = false;
             Filter = _gameObject.AddComponent<MeshFilter>();
@@ -191,6 +194,7 @@ namespace Acknex
             _gapGameObject.transform.SetParent(transform, false);
             _gapMeshRenderer = _gapGameObject.AddComponent<MeshRenderer>();
             _gapCollider = _gapGameObject.AddComponent<MeshCollider>();
+            _gapCollider.enabled = false;
             _gapInvertedCollider = _gapGameObject.AddComponent<MeshCollider>();
             _gapInvertedCollider.enabled = false;
             GapFilter = _gapGameObject.AddComponent<MeshFilter>();

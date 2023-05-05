@@ -1,58 +1,49 @@
-﻿using NameId = System.UInt32;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
 using UnityMidi;
+using NameId = System.UInt32;
 using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
     public partial class World : MonoBehaviour, IAcknexWorld
     {
-        public void NotifyPropertyChanged(uint propertyName)
-        {
-
-        }
-        public override string ToString()
-        {
-            return AcknexObject.ToString();
-        }
-
         private readonly IDictionary<Texture, IList<Mesh>> _meshesPerTexture = new Dictionary<Texture, IList<Mesh>>();
-        public readonly IDictionary<NameId, Action> ActionsByName = new Dictionary<NameId, Action>();
-        public readonly IDictionary<NameId, Actor> ActorsByName = new Dictionary<NameId, Actor>();
-        public readonly IDictionary<NameId, HashSet<Actor>> AllActorsByName = new Dictionary<NameId, HashSet<Actor>>();
-        public readonly IDictionary<NameId, HashSet<Region>> AllRegionsByName = new Dictionary<NameId, HashSet<Region>>();
-        public readonly IDictionary<NameId, HashSet<Thing>> AllThingsByName = new Dictionary<NameId, HashSet<Thing>>();
-        public readonly IDictionary<NameId, HashSet<Wall>> AllWallsByName = new Dictionary<NameId, HashSet<Wall>>();
-        public readonly IDictionary<NameId, HashSet<Way>> AllWaysByName = new Dictionary<NameId, HashSet<Way>>();
-        public readonly IDictionary<NameId, Bitmap> BitmapsByName = new Dictionary<NameId, Bitmap>();
-        public readonly IDictionary<NameId, Digits> DigitsByName = new Dictionary<NameId, Digits>();
-        public readonly IDictionary<NameId, Flic> FlicsByName = new Dictionary<NameId, Flic>();
-        public readonly IDictionary<NameId, Font> FontsByName = new Dictionary<NameId, Font>();
-        public readonly IDictionary<NameId, Model> ModelsByName = new Dictionary<NameId, Model>();
-        public readonly IDictionary<NameId, Overlay> OverlaysByName = new Dictionary<NameId, Overlay>();
-        public readonly IDictionary<NameId, Palette> PalettesByName = new Dictionary<NameId, Palette>();
-        public readonly IDictionary<NameId, Panel> PanelsByName = new Dictionary<NameId, Panel>();
-        public readonly IDictionary<NameId, Picture> PicturesByName = new Dictionary<NameId, Picture>();
-        public readonly IDictionary<NameId, Region> RegionsByName = new Dictionary<NameId, Region>();
-        public readonly IDictionary<NameId, Skill> SkillsByName = new Dictionary<NameId, Skill>();
-        public readonly IDictionary<NameId, Song> SongsByName = new Dictionary<NameId, Song>();
-        public readonly IDictionary<NameId, Sound> SoundsByName = new Dictionary<NameId, Sound>();
-        public readonly IDictionary<NameId, AcknexString> StringsByName = new Dictionary<NameId, AcknexString>();
-        public readonly IDictionary<NameId, Synonym> SynonymsByName = new Dictionary<NameId, Synonym>();
-        public readonly IDictionary<NameId, Text> TextsByName = new Dictionary<NameId, Text>();
-        public readonly IDictionary<NameId, Texture> TexturesByName = new Dictionary<NameId, Texture>();
-        public readonly IDictionary<NameId, Thing> ThingsByName = new Dictionary<NameId, Thing>();
-        public readonly IDictionary<NameId, Wall> WallsByName = new Dictionary<NameId, Wall>();
-        public readonly IDictionary<NameId, Way> WaysByName = new Dictionary<NameId, Way>();
-        public readonly IDictionary<string, TextureAndPalette> TextureCache = new Dictionary<string, TextureAndPalette>();
+        public readonly IDictionary<uint, Action> ActionsByName = new Dictionary<uint, Action>();
+        public readonly IDictionary<uint, Actor> ActorsByName = new Dictionary<uint, Actor>();
+        public readonly IDictionary<uint, HashSet<Actor>> AllActorsByName = new Dictionary<uint, HashSet<Actor>>();
+        public readonly IDictionary<uint, HashSet<Region>> AllRegionsByName = new Dictionary<uint, HashSet<Region>>();
+        public readonly IDictionary<uint, HashSet<Thing>> AllThingsByName = new Dictionary<uint, HashSet<Thing>>();
+        public readonly IDictionary<uint, HashSet<Wall>> AllWallsByName = new Dictionary<uint, HashSet<Wall>>();
+        public readonly IDictionary<uint, HashSet<Way>> AllWaysByName = new Dictionary<uint, HashSet<Way>>();
+        public readonly IDictionary<uint, Bitmap> BitmapsByName = new Dictionary<uint, Bitmap>();
+        public readonly IDictionary<uint, Digits> DigitsByName = new Dictionary<uint, Digits>();
+        public readonly IDictionary<uint, Flic> FlicsByName = new Dictionary<uint, Flic>();
+        public readonly IDictionary<uint, Font> FontsByName = new Dictionary<uint, Font>();
+        public readonly IDictionary<uint, Model> ModelsByName = new Dictionary<uint, Model>();
+        public readonly IDictionary<uint, Overlay> OverlaysByName = new Dictionary<uint, Overlay>();
+        public readonly IDictionary<uint, Palette> PalettesByName = new Dictionary<uint, Palette>();
+        public readonly IDictionary<uint, Panel> PanelsByName = new Dictionary<uint, Panel>();
         public readonly List<string> Paths = new List<string>();
-        public readonly List<Wall> Walls = new List<Wall>();
+        public readonly IDictionary<uint, Picture> PicturesByName = new Dictionary<uint, Picture>();
         public readonly List<Region> RegionsByIndex = new List<Region>(1000);
+        public readonly IDictionary<uint, Region> RegionsByName = new Dictionary<uint, Region>();
+        public readonly IDictionary<uint, Skill> SkillsByName = new Dictionary<uint, Skill>();
+        public readonly IDictionary<uint, Song> SongsByName = new Dictionary<uint, Song>();
+        public readonly IDictionary<uint, Sound> SoundsByName = new Dictionary<uint, Sound>();
+        public readonly IDictionary<uint, AcknexString> StringsByName = new Dictionary<uint, AcknexString>();
+        public readonly IDictionary<uint, Synonym> SynonymsByName = new Dictionary<uint, Synonym>();
+        public readonly IDictionary<uint, Text> TextsByName = new Dictionary<uint, Text>();
+        public readonly IDictionary<string, TextureAndPalette> TextureCache = new Dictionary<string, TextureAndPalette>();
+        public readonly IDictionary<uint, Texture> TexturesByName = new Dictionary<uint, Texture>();
+        public readonly IDictionary<uint, Thing> ThingsByName = new Dictionary<uint, Thing>();
+        public readonly List<Wall> Walls = new List<Wall>();
+        public readonly IDictionary<uint, Wall> WallsByName = new Dictionary<uint, Wall>();
+        public readonly IDictionary<uint, Way> WaysByName = new Dictionary<uint, Way>();
 
         private bool _culled;
         private Texture2D _palette;
@@ -60,9 +51,6 @@ namespace Acknex
         private Material _skyMaterial;
         private Material _surfacesMaterial;
         private TextParser _textParser;
-
-        public SingleUnityLayer WallsLayer;
-        public SingleUnityLayer RegionsLayer;
         public Light AmbientLight;
         public AudioSource AudioSource;
         public bool BilinearFilter = true;
@@ -89,6 +77,7 @@ namespace Acknex
         public IAcknexObject Node2String;
         public Texture2D NullTexture;
         public bool OldAckVersion;
+        public SingleUnityLayer RegionsLayer;
         public RegionWalls RegionWalls;
         public IAcknexObject RepelString;
         public string SourceGenerationPath;
@@ -101,6 +90,9 @@ namespace Acknex
         public bool UseWDLEngine;
         public IAcknexObject VertexString;
         public float Volume = 1f;
+
+        public SingleUnityLayer WallsLayer;
+
         //public SingleUnityLayer WallsAndRegionsLayer;
         public LayerMask WallsWaterAndRegions;
         public LayerMask WallsWaterRegionsAndSprites;
@@ -124,11 +116,11 @@ namespace Acknex
             return null;
         }
 
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        public void NotifyPropertyChanged(uint propertyName)
         {
         }
 
-        public void ResetTexture()
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
         }
 
@@ -136,7 +128,12 @@ namespace Acknex
         {
         }
 
-        private static IAcknexObject GetTemplateCallback(NameId name)
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
+        private static IAcknexObject GetTemplateCallback(uint name)
         {
             return null;
         }

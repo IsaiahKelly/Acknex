@@ -50,11 +50,7 @@ namespace Acknex
         {
             
         }
-
-        public void ResetTexture()
-        {
-        }
-
+       
         public void SetupInstance()
         {
         }

@@ -1,24 +1,15 @@
-﻿using NameId = System.UInt32;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using UnityEngine;
+using NameId = System.UInt32;
 using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
     public class Texture : IAcknexObjectContainer
     {
-        public void NotifyPropertyChanged(uint propertyName)
-        {
-
-        }
-        public override string ToString()
-        {
-            return AcknexObject.ToString();
-        }
-
         private List<WaitForSeconds> _textureObjectDelay;
 
         public Texture()
@@ -70,16 +61,11 @@ namespace Acknex
             return null;
         }
 
-
-
-
-
-
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        public void NotifyPropertyChanged(uint propertyName)
         {
         }
 
-        public void ResetTexture()
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
         }
 
@@ -105,7 +91,12 @@ namespace Acknex
             AcknexObject.IsDirty = false;
         }
 
-        private static IAcknexObject GetTemplateCallback(NameId name)
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
+        private static IAcknexObject GetTemplateCallback(uint name)
         {
             return null;
         }

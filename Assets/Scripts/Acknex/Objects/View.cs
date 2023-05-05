@@ -1,22 +1,13 @@
-﻿using NameId = System.UInt32;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
+using NameId = System.UInt32;
 
 namespace Acknex
 {
     public class View : MonoBehaviour, IAcknexObjectContainer
     {
-        public void NotifyPropertyChanged(uint propertyName)
-        {
-
-        }
-        public override string ToString()
-        {
-            return AcknexObject.ToString();
-        }
-
         private AudioSource _audioSource;
 
         public LineRenderer LineRendererTemplate;
@@ -49,6 +40,10 @@ namespace Acknex
             return null;
         }
 
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+        }
+
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
@@ -65,10 +60,6 @@ namespace Acknex
             _audioSource.maxDistance = Mathf.Max(sDist, svDist);
             _audioSource.volume = volume;
             _audioSource.Play();
-        }
-
-        public void ResetTexture()
-        {
         }
 
         public void SetupInstance()
@@ -111,6 +102,11 @@ namespace Acknex
             }
         }
 
+        public override string ToString()
+        {
+            return AcknexObject.ToString();
+        }
+
         private float CalculateFOV()
         {
             var playerArc = World.Instance.GetSkillValue(SkillName.PLAYER_ARC);
@@ -119,7 +115,7 @@ namespace Acknex
             return m * playerArc + b;
         }
 
-        private static IAcknexObject GetTemplateCallback(NameId name)
+        private static IAcknexObject GetTemplateCallback(uint name)
         {
             return null;
         }
