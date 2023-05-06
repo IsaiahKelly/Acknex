@@ -13,7 +13,7 @@ namespace Acknex
             return AcknexObject.ToString();
         }
 
-        private Coroutine _animateCoroutine;
+        private IEnumerator _animateCoroutine;
 
         public Panel Panel;
         public Texture TextureObject => AcknexObject.TryGetAcknexObject(PropertyName.TEXTURE, out var textureObject) ? textureObject?.Container as Texture : null;

@@ -885,10 +885,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b52af5bca98fed4c9690969a13ed559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WallsLayer:
-    m_LayerIndex: 12
-  RegionsLayer:
-    m_LayerIndex: 13
   AmbientLight: {fileID: 705507994}
   AudioSource: {fileID: 1477033083}
   BilinearFilter: 0
@@ -896,7 +892,7 @@ MonoBehaviour:
   CanvasScaler: {fileID: 1116186325}
   CanvasView: {fileID: 1520209880}
   CanvasWidthRatio: 0
-  DebugSkills: 1
+  DebugSkills: 0
   DisableCompilation: 0
   DisableMaterials: 0
   DrawShadows: 0
@@ -908,6 +904,8 @@ MonoBehaviour:
   MouseMultiplier: 0.1
   NullTexture: {fileID: 2800000, guid: da40acbc9325ea9438512fe4fee1f7fc, type: 3}
   OldAckVersion: 0
+  RegionsLayer:
+    m_LayerIndex: 13
   SourceGenerationPath: Assets\Scripts\Tests\game.cs.new
   Sprites:
     m_LayerIndex: 11
@@ -919,6 +917,8 @@ MonoBehaviour:
   UsePalettes: 1
   UseWDLEngine: 0
   Volume: 1
+  WallsLayer:
+    m_LayerIndex: 12
   WallsWaterAndRegions:
     serializedVersion: 2
     m_Bits: 12304
@@ -931,6 +931,7 @@ MonoBehaviour:
   WaterLayer:
     m_LayerIndex: 4
   WDLPath: C:\games\acknex\varginha2\CONTATO.WDL
+  DebugCoroutines: 0
 --- !u!114 &1246573633
 MonoBehaviour:
   m_ObjectHideFlags: 0

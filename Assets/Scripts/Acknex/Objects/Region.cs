@@ -19,8 +19,8 @@ namespace Acknex
         private Dictionary<int, List<int>> _allTriangles;
         private List<Vector2> _allUVs;
         private List<Vector3> _allVertices;
-        private Coroutine _animateCeilCoroutine;
-        private Coroutine _animateFloorCoroutine;
+        private IEnumerator _animateCeilCoroutine;
+        private IEnumerator _animateFloorCoroutine;
         private AudioSource _audioSource;
         private GameObject _audioSourceGameObject;
         private Region _belowOverride;

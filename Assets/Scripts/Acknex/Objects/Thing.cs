@@ -9,7 +9,7 @@ namespace Acknex
 {
     public class Thing : MonoBehaviour, IAcknexObjectContainer, IGraphicObject
     {
-        private Coroutine _animateCoroutine;
+        private IEnumerator _animateCoroutine;
         private AudioSource _audioSource;
         private GameObject _centerGameObject;
         private CharacterController _characterController;
@@ -19,7 +19,7 @@ namespace Acknex
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
         private Material[] _meshRendererMaterials;
-        private Coroutine _movingCoroutine;
+        private IEnumerator _movingCoroutine;
         private MeshCollider _spriteCollider;
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;

@@ -46,7 +46,7 @@ namespace Acknex
         public readonly List<Wall> Walls = new List<Wall>();
         public readonly IDictionary<uint, Wall> WallsByName = new Dictionary<uint, Wall>();
         public readonly IDictionary<uint, Way> WaysByName = new Dictionary<uint, Way>();
-        public Dictionary<Coroutine, string> ActiveCoroutines = new Dictionary<Coroutine, string>();
+        public Dictionary<IEnumerator, string> ActiveCoroutines = new Dictionary<IEnumerator, string>();
         private bool _culled;
         private Texture2D _palette;
         private Color[] _palettePixels;
@@ -103,28 +103,28 @@ namespace Acknex
         public string WDLPath;
         public bool DebugCoroutines;
 
-        public Coroutine StartManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator)
+        public IEnumerator StartManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator)
         {
             behaviour = behaviour ?? this;
-            var coroutine = behaviour.StartCoroutine(enumerator);
+            behaviour.StartCoroutine(enumerator);
             if (DebugCoroutines)
             {
-                if (coroutine == null)
+                if (enumerator == null)
                 {
                     return null;
                 }
-                ActiveCoroutines.Add(coroutine, behaviour.name + "::" + enumerator.ToString());
+                ActiveCoroutines.Add(enumerator, behaviour.name + "::" + enumerator.ToString());
             }
-            return coroutine;
+            return enumerator;
         }
 
-        public void StopManagedCoroutine(MonoBehaviour behaviour, Coroutine coroutine)
+        public void StopManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator)
         {
             behaviour = behaviour ?? this;
-            behaviour.StopCoroutine(coroutine);
+            behaviour.StopCoroutine(enumerator);
             if (DebugCoroutines)
             {
-                ActiveCoroutines.Remove(coroutine);
+                ActiveCoroutines.Remove(enumerator);
             }
         }
 
@@ -137,17 +137,30 @@ namespace Acknex
                 return;
             }
             var rect = new Rect(0f, 0f, 320f, Screen.height);
+            var count = 0;
+            foreach (var coroutine in ActiveCoroutines)
+            {
+                if (coroutine.Key.Current == null)
+                {
+                    continue;
+                }
+                count++;
+            }
             GUI.Window(0, rect, delegate
             {
                 _scrollPos = GUILayout.BeginScrollView(_scrollPos);
                 GUILayout.BeginVertical();
                 foreach (var coroutine in ActiveCoroutines)
                 {
+                    if (coroutine.Key.Current == null)
+                    {
+                        continue;
+                    }
                     GUILayout.Label(coroutine.Value);
                 }
                 GUILayout.EndVertical();
                 GUILayout.EndScrollView();
-            }, "Coroutines:" + ActiveCoroutines.Count);
+            }, "Coroutines:" + count);
         }
 
         public static World Instance { get; private set; }

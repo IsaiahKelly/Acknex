@@ -208,7 +208,7 @@ namespace Acknex.Interfaces
         /// </summary>
         void AddPostResolve(PostResolveItem postResolveItem);
 
-        Coroutine StartManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator);
-        void StopManagedCoroutine(MonoBehaviour behaviour, Coroutine coroutine);
+        IEnumerator StartManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator);
+        void StopManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator);
     }
 }

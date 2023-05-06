@@ -19,7 +19,7 @@ namespace Acknex
         private Dictionary<WallPart, List<int>> _allTriangles;
         private List<Vector2> _allUVs;
         private List<Vector3> _allVertices;
-        private Coroutine _animateCoroutine;
+        private IEnumerator _animateCoroutine;
         private GameObject _attached;
         private Texture2DArray _attachmentsTexture;
         private AudioSource _audioSource;
