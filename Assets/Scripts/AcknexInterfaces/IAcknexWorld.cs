@@ -2,6 +2,8 @@
 using Acknex.Interfaces;
 using System;
 using System.Collections;
+using UnityEngine;
+
 namespace Acknex.Interfaces
 {
     /// <summary>
@@ -205,5 +207,8 @@ namespace Acknex.Interfaces
         /// Register an object to be post-processed.
         /// </summary>
         void AddPostResolve(PostResolveItem postResolveItem);
+
+        Coroutine StartManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator);
+        void StopManagedCoroutine(MonoBehaviour behaviour, Coroutine coroutine);
     }
 }

@@ -161,7 +161,6 @@ namespace Acknex
             {
                 return;
             }
-            //todo: reimplement
             GUI.Window(0, new Rect(0f, 0f, 320f, Screen.height), delegate
             {
                 GUILayout.BeginVertical();

@@ -63,7 +63,7 @@ namespace Acknex
             {
                 if (_animateCoroutine != null)
                 {
-                    StopCoroutine(_animateCoroutine);
+                    World.Instance.StopManagedCoroutine(this, _animateCoroutine);
                 }
                 if (TextureObject != null)
                 {
@@ -72,7 +72,7 @@ namespace Acknex
                         AcknexObject.AddFlag(PropertyName.ONESHOT);
                         AcknexObject.RemoveFlag(PropertyName.PLAY);
                     }
-                    _animateCoroutine = StartCoroutine(Animate(side));
+                    _animateCoroutine = World.Instance.StartManagedCoroutine(this, Animate(side));
                 }
                 IsTextureDirty = false;
             }

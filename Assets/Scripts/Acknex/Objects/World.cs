@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Acknex.Interfaces;
 using LibTessDotNet;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
@@ -44,7 +46,7 @@ namespace Acknex
         public readonly List<Wall> Walls = new List<Wall>();
         public readonly IDictionary<uint, Wall> WallsByName = new Dictionary<uint, Wall>();
         public readonly IDictionary<uint, Way> WaysByName = new Dictionary<uint, Way>();
-
+        public Dictionary<Coroutine, string> ActiveCoroutines = new Dictionary<Coroutine, string>();
         private bool _culled;
         private Texture2D _palette;
         private Color[] _palettePixels;
@@ -99,6 +101,54 @@ namespace Acknex
         public LayerMask WallsWaterRegionsAndThings;
         public SingleUnityLayer WaterLayer;
         public string WDLPath;
+        public bool DebugCoroutines;
+
+        public Coroutine StartManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator)
+        {
+            behaviour = behaviour ?? this;
+            var coroutine = behaviour.StartCoroutine(enumerator);
+            if (DebugCoroutines)
+            {
+                if (coroutine == null)
+                {
+                    return null;
+                }
+                ActiveCoroutines.Add(coroutine, behaviour.name + "::" + enumerator.ToString());
+            }
+            return coroutine;
+        }
+
+        public void StopManagedCoroutine(MonoBehaviour behaviour, Coroutine coroutine)
+        {
+            behaviour = behaviour ?? this;
+            behaviour.StopCoroutine(coroutine);
+            if (DebugCoroutines)
+            {
+                ActiveCoroutines.Remove(coroutine);
+            }
+        }
+
+        private Vector2 _scrollPos;
+
+        private void OnGUI()
+        {
+            if (!DebugCoroutines)
+            {
+                return;
+            }
+            var rect = new Rect(0f, 0f, 320f, Screen.height);
+            GUI.Window(0, rect, delegate
+            {
+                _scrollPos = GUILayout.BeginScrollView(_scrollPos);
+                GUILayout.BeginVertical();
+                foreach (var coroutine in ActiveCoroutines)
+                {
+                    GUILayout.Label(coroutine.Value);
+                }
+                GUILayout.EndVertical();
+                GUILayout.EndScrollView();
+            }, "Coroutines:" + ActiveCoroutines.Count);
+        }
 
         public static World Instance { get; private set; }
 
@@ -153,7 +203,10 @@ namespace Acknex
 
         private void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            if (!DebugCoroutines)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
             AudioListener.volume = Volume;
             CreateDefaultObjects();
             CreateDefaultSynonyms();

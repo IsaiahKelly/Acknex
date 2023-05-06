@@ -126,21 +126,6 @@ namespace Acknex
             }
         }
 
-        //public bool IsTextureDirty
-        //{
-        //    get
-        //    {
-        //        var ambient = GetAmbient();
-        //        var textureObject = TextureObject;
-        //        var hasPlay = AcknexObject.HasFlag(PropertyName.PLAY);
-        //        var isTextureDirty = ambient != _lastAmbient || textureObject != _lastTextureObject || (textureObject != null && textureObject.AcknexObject.IsDirty) || hasPlay;
-        //        _lastAmbient = ambient;
-        //        _lastTextureObject = textureObject;
-        //        return isTextureDirty;
-        //    }
-        //    set { }
-        //}
-
         public Vector4 OffsetScale { get; set; }
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
@@ -223,8 +208,8 @@ namespace Acknex
             _audioSource.playOnAwake = false;
             _audioSource.spatialBlend = 1f;
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
-            StartCoroutine(TriggerTickEvents());
-            StartCoroutine(TriggerSecEvents());
+            World.Instance.StartManagedCoroutine(this, TriggerTickEvents());
+            World.Instance.StartManagedCoroutine(this, TriggerSecEvents());
         }
 
         public void SetupTemplate()
@@ -242,7 +227,7 @@ namespace Acknex
             {
                 if (_animateCoroutine != null)
                 {
-                    StopCoroutine(_animateCoroutine);
+                    World.Instance.StopManagedCoroutine(this, _animateCoroutine);
                 }
                 if (TextureObject != null)
                 {
@@ -251,7 +236,7 @@ namespace Acknex
                         AcknexObject.AddFlag(PropertyName.ONESHOT);
                         AcknexObject.RemoveFlag(PropertyName.PLAY);
                     }
-                    _animateCoroutine = StartCoroutine(Animate());
+                    _animateCoroutine = World.Instance.StartManagedCoroutine(this, Animate());
                 }
                 IsTextureDirty = false;
             }

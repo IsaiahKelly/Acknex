@@ -377,14 +377,15 @@ namespace Tests
             }
             {
                 var enumerator = REGIO_ARISE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             CONT:
             var SHOTSECCOUNT_22 = _world.GetObject(ObjectType.Skill, 733093231);
@@ -493,14 +494,15 @@ namespace Tests
             PLAYER_RESULT_10.SetFloat(231, 2f);
             {
                 var enumerator = HITPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -677,14 +679,15 @@ namespace Tests
             {
                 {
                     var enumerator = VANISHFORGOOD(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -875,14 +878,15 @@ namespace Tests
         {
             {
                 var enumerator = FOLLOWANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var PI_0 = _world.GetObject(ObjectType.Skill, 577);
             var PI_0_val = PI_0.GetFloat(PropertyName.VAL);
@@ -972,14 +976,15 @@ namespace Tests
             MY_5.SetFloat(194, temp_3 + 0.524f);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -993,14 +998,15 @@ namespace Tests
             MY_5.SetFloat(194, temp_3 + -0.524f);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -1142,14 +1148,15 @@ namespace Tests
             _world.SetSynonymObject(3892409159, END01STR_12);
             {
                 var enumerator = SHOWPDAGAMEOVER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -1538,14 +1545,15 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject(108, MENUDOWN_22);
             {
                 var enumerator = HIDEWEAPON(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var CHOOSESUBMENU_24 = _world.AcknexObject.GetAcknexObject(2424356781);
             _world.AcknexObject.SetAcknexObject(81, CHOOSESUBMENU_24);
@@ -1557,14 +1565,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, HLP01STR_32);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -1639,14 +1648,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, HLP01STR_48);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -1721,14 +1731,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, HLP01STR_48);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -1760,14 +1771,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, HLP01STR_24);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -1789,14 +1801,15 @@ namespace Tests
             }
             {
                 var enumerator = SET_BLUE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             goto CONT;
             NOWATER:
@@ -1805,14 +1818,15 @@ namespace Tests
             CONT:
             {
                 var enumerator = SHOWWEAPON(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MOVE_MODE_21 = _world.GetObject(ObjectType.Skill, 362);
             MOVE_MODE_21.SetFloat(231, 1f);
@@ -2157,14 +2171,15 @@ namespace Tests
             {
                 {
                     var enumerator = SAVEERRORMESSAGE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -2243,14 +2258,15 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject(81, null);
             {
                 var enumerator = HIDEMENU(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MOVE_MODE_9 = _world.GetObject(ObjectType.Skill, 362);
             MOVE_MODE_9.SetFloat(231, 0f);
@@ -2288,14 +2304,15 @@ namespace Tests
             {
                 {
                     var enumerator = SHOWSOUNDVOLUMEMENU(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -2305,14 +2322,15 @@ namespace Tests
             {
                 {
                     var enumerator = SHOWSAVEMENU(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -2322,14 +2340,15 @@ namespace Tests
             {
                 {
                     var enumerator = SHOWLOADMENU(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -2339,14 +2358,15 @@ namespace Tests
             {
                 {
                     var enumerator = ASKFOREXIT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -2391,14 +2411,15 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject(66, null);
             {
                 var enumerator = HIDEMENU(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -2422,14 +2443,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, HLP02STR_19);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -2464,14 +2486,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, LOAD08STR_28);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var PLAYER_HEALTH_31 = _world.GetObject(ObjectType.Skill, 1469755439);
             PLAYER_HEALTH_31.SetFloat(231, 100f);
@@ -2495,14 +2518,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, LOAD_STRING_41);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var startTime = Time.time;
@@ -2525,14 +2549,15 @@ namespace Tests
             MY_5.SetAcknexObject(190, EXPLOSIONSMOKE_3);
             {
                 var enumerator = FLASHREGION(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -2594,14 +2619,15 @@ namespace Tests
             }
             {
                 var enumerator = EXPLODEMISSILE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -2611,14 +2637,15 @@ namespace Tests
         {
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var EXPLOSIONSTART_0 = _world.AcknexObject.GetAcknexObject(277686876);
             var MY_2 = MY;
@@ -2669,14 +2696,15 @@ namespace Tests
             }
             {
                 var enumerator = HITPLAYERDELAY(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             CONT:
             var MY_42 = MY;
@@ -2743,14 +2771,15 @@ namespace Tests
             }
             {
                 var enumerator = VANISHSTOP(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -2772,14 +2801,15 @@ namespace Tests
             MY_14.SetFloat(213, 0f);
             {
                 var enumerator = FLASHREGION(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -2912,14 +2942,15 @@ namespace Tests
         {
             {
                 var enumerator = CHOOSEPARTICLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var PARTICLE_1 = _world.GetSynonymObject(2704244193);
             if (PARTICLE_1 == null)
@@ -3082,14 +3113,15 @@ namespace Tests
             {
                 {
                     var enumerator = VANISHSTOP(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
             }
             //Unknown keyword: 
@@ -3115,27 +3147,29 @@ namespace Tests
             PLAYER_RESULT_9.SetFloat(231, 10f * (UnityEngine.Random.value + 0.5f));
             {
                 var enumerator = FLASHPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var QGUN04SND_18 = _world.AcknexObject.GetAcknexObject(2622058161);
             _world.PlaySound(QGUN04SND_18, 0.7f, null);
             {
                 var enumerator = VANISHSTOP(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -3157,14 +3191,15 @@ namespace Tests
             MY_12.SetFloat(173, 0f);
             {
                 var enumerator = IMPLODEPARTICLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -3424,14 +3459,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, GET11STR_10);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -3455,14 +3491,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, GET10STR_10);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -3480,14 +3517,15 @@ namespace Tests
             {
                 {
                     var enumerator = SELECTMP5(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
             }
             var WEAPONSEL_8 = _world.GetObject(ObjectType.Skill, 2181903739);
@@ -3499,14 +3537,15 @@ namespace Tests
             }
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_13 = MY;
             MY_13.SetFloat(204, 1f);
@@ -3514,14 +3553,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, GET02STR_14);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -3539,26 +3579,28 @@ namespace Tests
             {
                 {
                     var enumerator = SELECTSTINGER(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
             }
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_9 = MY;
             MY_9.SetFloat(204, 1f);
@@ -3566,14 +3608,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, GET08STR_10);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -3591,26 +3634,28 @@ namespace Tests
             {
                 {
                     var enumerator = SELECTQUANTUM(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
             }
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_9 = MY;
             MY_9.SetFloat(204, 1f);
@@ -3618,14 +3663,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, GET09STR_10);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -3637,14 +3683,15 @@ namespace Tests
             AMMO_MP5_2.SetFloat(231, AMMO_MP5_1_val + 30f);
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_5 = MY;
             MY_5.SetFloat(204, 1f);
@@ -3654,14 +3701,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, GET01STR_8);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -3677,14 +3725,15 @@ namespace Tests
             AMMO_GRANADE_4.SetFloat(231, AMMO_GRANADE_3_val + 1f);
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_7 = MY;
             MY_7.SetFloat(204, 1f);
@@ -3694,14 +3743,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, GET05STR_10);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -3715,14 +3765,15 @@ namespace Tests
             AMMO_STINGER_2.SetFloat(231, AMMO_STINGER_1_val + 10f);
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_5 = MY;
             MY_5.SetFloat(204, 1f);
@@ -3732,14 +3783,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, GET06STR_8);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -3753,14 +3805,15 @@ namespace Tests
             AMMO_QUANTUM_2.SetFloat(231, AMMO_QUANTUM_1_val + 1f);
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_5 = MY;
             MY_5.SetFloat(204, 1f);
@@ -3770,14 +3823,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, GET07STR_8);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -4347,14 +4401,15 @@ namespace Tests
             MOVING_1.SetFloat(231, MODE_GEHEN_0_val);
             {
                 var enumerator = SET_MOVING(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -4445,14 +4500,15 @@ namespace Tests
             }
             {
                 var enumerator = SET_WALKING(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             goto START;
             NO_SWIM:
@@ -4472,14 +4528,15 @@ namespace Tests
             }
             {
                 var enumerator = SET_SWIMMING(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             goto START;
             NO_WATER:
@@ -4743,14 +4800,15 @@ namespace Tests
             {
                 {
                     var enumerator = HITPLAYER(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
             }
             var FALLING_HEIGHT_249 = _world.GetObject(ObjectType.Skill, 4024852386);
@@ -5265,14 +5323,15 @@ namespace Tests
             {
                 {
                     var enumerator = SET_WALKING(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -5284,14 +5343,15 @@ namespace Tests
             {
                 {
                     var enumerator = SET_SWIMMING(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -5303,14 +5363,15 @@ namespace Tests
             {
                 {
                     var enumerator = SET_DIVING(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -5350,14 +5411,15 @@ namespace Tests
             _world.PlaySound(FWT01SND_0, 0.8f, null);
             {
                 var enumerator = SET_SWIMMING(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -5365,14 +5427,15 @@ namespace Tests
         {
             {
                 var enumerator = SET_WALKING(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -5382,14 +5445,15 @@ namespace Tests
             _world.PlaySound(PLAYERINSPSND_0, 0.8f, null);
             {
                 var enumerator = RESET_BLUE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -5435,25 +5499,27 @@ namespace Tests
             PLAYER_LIGHT_28.SetFloat(231, PLAYER_LIGHT_27_val + 0.2f);
             {
                 var enumerator = _world.CallSynonymAction(1342576697, MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = SET_DIVING(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -5497,36 +5563,39 @@ namespace Tests
             PLAYER_LIGHT_26.SetFloat(231, PLAYER_LIGHT_25_val + -0.2f);
             {
                 var enumerator = _world.CallSynonymAction(1917066007, MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = SET_SWIMMING(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = DIVE_UP(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -5728,14 +5797,15 @@ namespace Tests
             }
             {
                 var enumerator = SET_BLUE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var PLAYER_ARC_17 = _world.GetObject(ObjectType.Skill, 436);
             PLAYER_ARC_17.SetFloat(231, 1.3f);
@@ -5881,14 +5951,15 @@ namespace Tests
             {
                 {
                     var enumerator = SET_BLUE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
             }
             _world.AcknexObject.SetAcknexObject(11, null);
@@ -5909,14 +5980,15 @@ namespace Tests
             }
             {
                 var enumerator = HITPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -5941,14 +6013,15 @@ namespace Tests
             _world.PlaySound(DEATH00SND_9, 1f, null);
             {
                 var enumerator = SET_DEATH(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var DEATHCOUNTER_12 = _world.GetObject(ObjectType.Skill, 3779069139);
             DEATHCOUNTER_12.SetFloat(231, 0f);
@@ -6011,14 +6084,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, HLP06STR_6);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var GOD_MODE_9 = _world.GetObject(ObjectType.Skill, 1756335307);
             GOD_MODE_9.SetFloat(231, 0f);
@@ -6028,14 +6102,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, HLP05STR_10);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var GOD_MODE_13 = _world.GetObject(ObjectType.Skill, 1756335307);
             GOD_MODE_13.SetFloat(231, 1f);
@@ -6067,14 +6142,15 @@ namespace Tests
             KEY4_39.SetFloat(231, 1f);
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -6150,14 +6226,15 @@ namespace Tests
             AMMO_12.SetFloat(231, AMMO_14_val - TOUGHNESS_16_val);
             {
                 var enumerator = DECAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var AMMO_18 = _world.GetObject(ObjectType.Skill, 2088896983);
             var AMMO_18_val = AMMO_18.GetFloat(PropertyName.VAL);
@@ -6310,14 +6387,15 @@ namespace Tests
             CONTHIT:
             {
                 var enumerator = CASTBLOOD(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_TARGET_104 = _world.GetSynonymObject(2013386137);
             MY_TARGET_104.SetFloat(175, 1f);
@@ -6418,14 +6496,15 @@ namespace Tests
             {
                 {
                     var enumerator = FIRE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -6467,14 +6546,15 @@ namespace Tests
             }
             {
                 var enumerator = DECAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var AMMO_26 = _world.GetObject(ObjectType.Skill, 2088896983);
             var AMMO_26_val = AMMO_26.GetFloat(PropertyName.VAL);
@@ -6550,14 +6630,15 @@ namespace Tests
             {
                 {
                     var enumerator = CASTBLOOD(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
             }
             SHOOT2:
@@ -6580,14 +6661,15 @@ namespace Tests
             {
                 {
                     var enumerator = CASTBLOOD(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
             }
             SHOOT3:
@@ -6612,14 +6694,15 @@ namespace Tests
             {
                 {
                     var enumerator = CASTBLOOD(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
             }
             NOHIT:
@@ -6719,27 +6802,29 @@ namespace Tests
             {
                 {
                     var enumerator = SELECTNONE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
             {
                 var enumerator = CHOOSEGRANADE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var GRANADE_3 = _world.GetSynonymObject(556898879);
             if (GRANADE_3 == null)
@@ -6896,14 +6981,15 @@ namespace Tests
             AMMO_128.SetFloat(231, AMMO_127_val + -1f);
             {
                 var enumerator = DECAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var startTime = Time.time;
@@ -6936,14 +7022,15 @@ namespace Tests
             GUNFIRING_147.SetFloat(231, 0f);
             {
                 var enumerator = SELECTNONE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             MOREGRANADES:
@@ -6977,14 +7064,15 @@ namespace Tests
         {
             {
                 var enumerator = CHOOSEMISSILE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MISSILE_1 = _world.GetSynonymObject(3680056099);
             if (MISSILE_1 == null)
@@ -7018,14 +7106,15 @@ namespace Tests
             AMMO_16.SetFloat(231, AMMO_15_val + -1f);
             {
                 var enumerator = DECAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var AMMO_18 = _world.GetObject(ObjectType.Skill, 2088896983);
             var AMMO_18_val = AMMO_18.GetFloat(PropertyName.VAL);
@@ -7284,14 +7373,15 @@ namespace Tests
         {
             {
                 var enumerator = CHOOSEPARTICLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var PARTICLE_1 = _world.GetSynonymObject(2704244193);
             if (PARTICLE_1 == null)
@@ -7325,14 +7415,15 @@ namespace Tests
             AMMO_16.SetFloat(231, AMMO_15_val + -1f);
             {
                 var enumerator = DECAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var AMMO_18 = _world.GetObject(ObjectType.Skill, 2088896983);
             var AMMO_18_val = AMMO_18.GetFloat(PropertyName.VAL);
@@ -7959,25 +8050,27 @@ namespace Tests
             NOGUN:
             {
                 var enumerator = TARGETOFF(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MAP_MODE_32 = _world.GetObject(ObjectType.Skill, 380);
             MAP_MODE_32.SetFloat(231, 0f);
@@ -7993,14 +8086,15 @@ namespace Tests
             MY_GUN_43.SetFloat(204, 0f);
             {
                 var enumerator = LOWER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING:
             {
@@ -8058,14 +8152,15 @@ namespace Tests
             {
                 {
                     var enumerator = SELECTNONE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -8079,14 +8174,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, WRN04STR_6);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             HASGOT:
@@ -8131,25 +8227,27 @@ namespace Tests
             NOGUN:
             {
                 var enumerator = TARGETOFF(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MAP_MODE_40 = _world.GetObject(ObjectType.Skill, 380);
             MAP_MODE_40.SetFloat(231, 0f);
@@ -8165,14 +8263,15 @@ namespace Tests
             MY_GUN_52.SetFloat(204, 0f);
             {
                 var enumerator = LOWER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING:
             {
@@ -8196,14 +8295,15 @@ namespace Tests
             MY_GUN_62.SetFloat(204, 0f);
             {
                 var enumerator = RAISE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING1:
             {
@@ -8283,14 +8383,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, WRN03STR_6);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             HASGOT:
@@ -8333,25 +8434,27 @@ namespace Tests
             NOGUN:
             {
                 var enumerator = TARGETON(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MAP_MODE_36 = _world.GetObject(ObjectType.Skill, 380);
             MAP_MODE_36.SetFloat(231, 0f);
@@ -8365,14 +8468,15 @@ namespace Tests
             MY_GUN_44.SetFloat(204, 0f);
             {
                 var enumerator = LOWER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING:
             {
@@ -8396,14 +8500,15 @@ namespace Tests
             MY_GUN_54.SetFloat(204, 0f);
             {
                 var enumerator = RAISE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING1:
             {
@@ -8475,14 +8580,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, WRN03STR_6);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             HASGOT:
@@ -8527,25 +8633,27 @@ namespace Tests
             NOGUN:
             {
                 var enumerator = TARGETON(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MAP_MODE_40 = _world.GetObject(ObjectType.Skill, 380);
             MAP_MODE_40.SetFloat(231, 0f);
@@ -8559,14 +8667,15 @@ namespace Tests
             MY_GUN_48.SetFloat(204, 0f);
             {
                 var enumerator = LOWER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING:
             {
@@ -8590,14 +8699,15 @@ namespace Tests
             MY_GUN_58.SetFloat(204, 0f);
             {
                 var enumerator = RAISE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING1:
             {
@@ -8669,14 +8779,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, WRN03STR_6);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             HASGOT:
@@ -8727,25 +8838,27 @@ namespace Tests
             NOGUN:
             {
                 var enumerator = TARGETOFF(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MAP_MODE_42 = _world.GetObject(ObjectType.Skill, 380);
             MAP_MODE_42.SetFloat(231, 0f);
@@ -8759,14 +8872,15 @@ namespace Tests
             MY_GUN_50.SetFloat(204, 0f);
             {
                 var enumerator = LOWER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING:
             {
@@ -8790,14 +8904,15 @@ namespace Tests
             MY_GUN_60.SetFloat(204, 0f);
             {
                 var enumerator = RAISE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING1:
             {
@@ -8870,14 +8985,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, WRN03STR_6);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             HASGOT:
@@ -8922,27 +9038,29 @@ namespace Tests
             NOGUN:
             {
                 var enumerator = TARGETON(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var WEAPONSEL_40 = _world.GetObject(ObjectType.Skill, 2181903739);
             WEAPONSEL_40.SetFloat(231, 4f);
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MAP_MODE_42 = _world.GetObject(ObjectType.Skill, 380);
             MAP_MODE_42.SetFloat(231, 0f);
@@ -8956,14 +9074,15 @@ namespace Tests
             MY_GUN_50.SetFloat(204, 0f);
             {
                 var enumerator = LOWER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING:
             {
@@ -8987,14 +9106,15 @@ namespace Tests
             MY_GUN_60.SetFloat(204, 0f);
             {
                 var enumerator = RAISE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING1:
             {
@@ -9066,14 +9186,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, WRN03STR_6);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             HASGOT:
@@ -9118,27 +9239,29 @@ namespace Tests
             NOGUN:
             {
                 var enumerator = TARGETON(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var WEAPONSEL_40 = _world.GetObject(ObjectType.Skill, 2181903739);
             WEAPONSEL_40.SetFloat(231, 5f);
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MAP_MODE_42 = _world.GetObject(ObjectType.Skill, 380);
             MAP_MODE_42.SetFloat(231, 0f);
@@ -9152,14 +9275,15 @@ namespace Tests
             MY_GUN_50.SetFloat(204, 0f);
             {
                 var enumerator = LOWER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING:
             {
@@ -9183,14 +9307,15 @@ namespace Tests
             MY_GUN_60.SetFloat(204, 0f);
             {
                 var enumerator = RAISE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING1:
             {
@@ -9316,14 +9441,15 @@ namespace Tests
         {
             {
                 var enumerator = SELECTNONE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING0:
             {
@@ -9347,27 +9473,29 @@ namespace Tests
             }
             {
                 var enumerator = HIDEWEAPON(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var WEAPONSEL_7 = _world.GetObject(ObjectType.Skill, 2181903739);
             WEAPONSEL_7.SetFloat(231, 1f);
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MAP_MODE_9 = _world.GetObject(ObjectType.Skill, 380);
             MAP_MODE_9.SetFloat(231, 0f);
@@ -9390,14 +9518,15 @@ namespace Tests
             MY_GUN_26.SetFloat(204, 0f);
             {
                 var enumerator = RAISE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING2:
             {
@@ -9436,14 +9565,15 @@ namespace Tests
             _world.FadePal(BLACK_49, 0.4f);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var RENDER_MODE_52 = _world.GetObject(ObjectType.Skill, 361);
             RENDER_MODE_52.SetFloat(231, 1f);
@@ -9466,14 +9596,15 @@ namespace Tests
             _world.PlaySound(ALARM03SND_0, 0.7f, null);
             {
                 var enumerator = SELECTNONE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING0:
             {
@@ -9497,27 +9628,29 @@ namespace Tests
             }
             {
                 var enumerator = HIDEWEAPON(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var WEAPONSEL_9 = _world.GetObject(ObjectType.Skill, 2181903739);
             WEAPONSEL_9.SetFloat(231, 1f);
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MAP_MODE_11 = _world.GetObject(ObjectType.Skill, 380);
             MAP_MODE_11.SetFloat(231, 0f);
@@ -9539,14 +9672,15 @@ namespace Tests
             MY_GUN_26.SetFloat(204, 0f);
             {
                 var enumerator = RAISE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             WAITING2:
             {
@@ -9586,14 +9720,15 @@ namespace Tests
             _world.FadePal(BLACK_51, 0.4f);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var RENDER_MODE_54 = _world.GetObject(ObjectType.Skill, 361);
             RENDER_MODE_54.SetFloat(231, 1f);
@@ -9635,60 +9770,65 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject(145, null);
             {
                 var enumerator = SELECTNONE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var BLANKSTR_24 = _world.AcknexObject.GetAcknexObject(3695414798);
             _world.SetSynonymObject(361798934, BLANKSTR_24);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = SHOWWEAPON(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = SELECTNONE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = ENDOFLEVEL(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -9741,14 +9881,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, GET03STR_7);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -9766,14 +9907,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, GET04STR_7);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -9783,14 +9925,15 @@ namespace Tests
         {
             {
                 var enumerator = PICKUPMP5(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -9815,14 +9958,15 @@ namespace Tests
             }
             {
                 var enumerator = SHOWPDABRIEFING(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             _world.AcknexObject.SetAcknexObject(22, null);
             //Unknown keyword: 
@@ -9838,14 +9982,15 @@ namespace Tests
             {
                 {
                     var enumerator = DRKLLISTEN(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -9866,27 +10011,29 @@ namespace Tests
             {
                 {
                     var enumerator = TURNRIGHT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
             {
                 var enumerator = TURNLEFT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -9968,14 +10115,15 @@ namespace Tests
             MY_29.SetAcknexObject(199, BULLET_27);
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -9996,25 +10144,27 @@ namespace Tests
             MY_14.SetFloat(213, 0f);
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_17 = MY;
             var temp_18 = MY_17.GetFloat(181);
@@ -10022,27 +10172,29 @@ namespace Tests
             {
                 {
                     var enumerator = DRKLWAIT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
             {
                 var enumerator = DRKLFOLLOWATTACK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -10069,14 +10221,15 @@ namespace Tests
             MY_20.SetFloat(213, 0f);
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_23 = MY;
             var temp_24 = MY_23.GetFloat(176);
@@ -10122,14 +10275,15 @@ namespace Tests
             MY_64.SetFloat(173, temp_62 + -2f);
             {
                 var enumerator = DRKLWANDER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             HIDDING:
@@ -10217,14 +10371,15 @@ namespace Tests
             {
                 {
                     var enumerator = DRKLWANDER(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -10241,14 +10396,15 @@ namespace Tests
             }
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_6 = MY;
             var temp_7 = MY_6.GetFloat(181);
@@ -10317,14 +10473,15 @@ namespace Tests
             {
                 {
                     var enumerator = DRKLFOLLOWATTACK(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -10446,25 +10603,27 @@ namespace Tests
             MY_26.SetAcknexObject(199, BULLET_24);
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = FOLLOWANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -10515,14 +10674,15 @@ namespace Tests
             MY_14.SetFloat(213, 0f);
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_17 = MY;
             MY_17.SetFloat(176, 4f);
@@ -10538,14 +10698,15 @@ namespace Tests
             MY_29.SetAcknexObject(199, BULLET_27);
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -10646,14 +10807,15 @@ namespace Tests
             {
                 {
                     var enumerator = BEAMREACT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -10748,14 +10910,15 @@ namespace Tests
             {
                 {
                     var enumerator = DRKLIMPLODE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -10810,14 +10973,15 @@ namespace Tests
             {
                 {
                     var enumerator = DRKLHIDE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -10827,14 +10991,15 @@ namespace Tests
             {
                 {
                     var enumerator = DRKLFOLLOWATTACK(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -10844,28 +11009,30 @@ namespace Tests
             MY_116.SetFloat(173, 10f);
             {
                 var enumerator = DRKLDIE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             yield break;
             OBSTACLE:
             {
                 var enumerator = DRKLTURN(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -10875,14 +11042,15 @@ namespace Tests
         {
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_2 = MY;
             MY_2.SetFloat(213, 0f);
@@ -10894,14 +11062,15 @@ namespace Tests
             MY_11.SetAcknexObject(189, null);
             {
                 var enumerator = DRKLTALK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var SHOT_SOUND_ON_13 = _world.GetObject(ObjectType.Skill, 3372273679);
             var SHOT_SOUND_ON_13_val = SHOT_SOUND_ON_13.GetFloat(PropertyName.VAL);
@@ -10911,26 +11080,28 @@ namespace Tests
             }
             {
                 var enumerator = DRKLLOOKFOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             CONT:
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_16 = MY;
             var temp_17 = MY_16.GetFloat(181);
@@ -10952,14 +11123,15 @@ namespace Tests
             CONT1:
             {
                 var enumerator = DRKLFOLLOWATTACK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -10969,14 +11141,15 @@ namespace Tests
         {
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_2 = MY;
             MY_2.SetFloat(213, 0f);
@@ -10999,14 +11172,15 @@ namespace Tests
             MY_21.SetAcknexObject(199, BULLET_19);
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_23 = MY;
             var MY_25 = MY;
@@ -11025,14 +11199,15 @@ namespace Tests
         {
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_2 = MY;
             var temp_3 = MY_2.GetFloat(173);
@@ -11040,14 +11215,15 @@ namespace Tests
             {
                 {
                     var enumerator = DRKLDIE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -11061,14 +11237,15 @@ namespace Tests
             MY_15.SetAcknexObject(189, null);
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_18 = MY;
             var temp_19 = MY_18.GetFloat(181);
@@ -11086,14 +11263,15 @@ namespace Tests
             }
             {
                 var enumerator = DRKLWAIT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             PLAYERSEEN:
@@ -11137,14 +11315,15 @@ namespace Tests
             {
                 {
                     var enumerator = DRKLJUMP(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -11163,38 +11342,41 @@ namespace Tests
             PLAYER_RESULT_85.SetFloat(231, DRKLSHOOTFACTOR_87_val * (1f + UnityEngine.Random.value));
             {
                 var enumerator = HITPLAYERDELAY(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = DRKLSHOOT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             ATTACK:
             {
                 var enumerator = DRKLFOLLOWATTACK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -11227,14 +11409,15 @@ namespace Tests
             {
                 {
                     var enumerator = TROPLISTEN(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -11255,27 +11438,29 @@ namespace Tests
             {
                 {
                     var enumerator = TURNRIGHT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
             {
                 var enumerator = TURNLEFT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -11309,14 +11494,15 @@ namespace Tests
             MY_29.SetAcknexObject(199, BULLET_27);
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_31 = MY;
             var MY_33 = MY;
@@ -11326,14 +11512,15 @@ namespace Tests
             MY_31.SetFloat(194, temp_37 + UnityEngine.Random.value - 0.5f);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var startTime = Time.time;
@@ -11345,14 +11532,15 @@ namespace Tests
             }
             {
                 var enumerator = FOLLOWANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_45 = MY;
             var temp_46 = MY_45.GetFloat(173);
@@ -11362,14 +11550,15 @@ namespace Tests
             }
             {
                 var enumerator = TROPWAIT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -11453,25 +11642,27 @@ namespace Tests
             MY_35.SetAcknexObject(199, BULLET_33);
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -11507,25 +11698,27 @@ namespace Tests
             MY_32.SetAcknexObject(199, BULLET_30);
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -11560,14 +11753,15 @@ namespace Tests
             MY_27.SetFloat(176, 4f);
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_29 = MY;
             var MY_31 = MY;
@@ -11587,25 +11781,27 @@ namespace Tests
             MY_55.SetAcknexObject(199, BULLET_53);
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var startTime = Time.time;
@@ -11627,27 +11823,29 @@ namespace Tests
             MY_66.SetFloat(173, temp_64 + -2f);
             {
                 var enumerator = TROPFOLLOWATTACK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             HIDDING:
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_68 = MY;
             var MY_70 = MY;
@@ -11667,14 +11865,15 @@ namespace Tests
             MY_94.SetAcknexObject(199, BULLET_92);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -11745,14 +11944,15 @@ namespace Tests
             {
                 {
                     var enumerator = TROPWANDER(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -11849,14 +12049,15 @@ namespace Tests
             }
             {
                 var enumerator = TROPBACKOFF(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -11882,14 +12083,15 @@ namespace Tests
             {
                 {
                     var enumerator = TROPFOLLOWATTACK(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -11966,36 +12168,39 @@ namespace Tests
             MY_26.SetFloat(168, 0.4f);
             {
                 var enumerator = FOLLOWANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -12029,36 +12234,39 @@ namespace Tests
             MY_29.SetAcknexObject(199, BULLET_27);
             {
                 var enumerator = FOLLOWANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -12092,36 +12300,39 @@ namespace Tests
             MY_29.SetAcknexObject(199, BULLET_27);
             {
                 var enumerator = FOLLOWANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -12152,25 +12363,27 @@ namespace Tests
             MY_26.SetFloat(168, 0f);
             {
                 var enumerator = FOLLOWANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = TROPSHOUT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -12201,14 +12414,15 @@ namespace Tests
             MY_26.SetFloat(168, 0f);
             {
                 var enumerator = FOLLOWANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var SHOOT_SECTOR_28 = _world.GetObject(ObjectType.Skill, 440);
             SHOOT_SECTOR_28.SetFloat(231, 2f);
@@ -12234,27 +12448,29 @@ namespace Tests
             PLAYER_RESULT_39.SetFloat(231, RESULT_38_val);
             {
                 var enumerator = HITPLAYERDELAY(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             MISS:
             {
                 var enumerator = TROPFOLLOWATTACK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -12288,14 +12504,15 @@ namespace Tests
             MY_29.SetFloat(168, 0.4f);
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_31 = MY;
             var MY_33 = MY;
@@ -12308,25 +12525,27 @@ namespace Tests
             MY_48.SetAcknexObject(199, BULLET_46);
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -12401,14 +12620,15 @@ namespace Tests
             {
                 {
                     var enumerator = TROPDROPKEY(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
             }
             var MY_21 = MY;
@@ -12463,14 +12683,15 @@ namespace Tests
             {
                 {
                     var enumerator = BEAMREACT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -12502,14 +12723,15 @@ namespace Tests
             {
                 {
                     var enumerator = TROPDROPKEY(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
             }
             //Unknown keyword: 
@@ -12578,14 +12800,15 @@ namespace Tests
             {
                 {
                     var enumerator = TROPIMPLODE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -12676,14 +12899,15 @@ namespace Tests
             {
                 {
                     var enumerator = TROPHIDE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -12693,14 +12917,15 @@ namespace Tests
             {
                 {
                     var enumerator = TROPFOLLOWATTACK(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -12710,28 +12935,30 @@ namespace Tests
             MY_149.SetFloat(173, 10f);
             {
                 var enumerator = TROPDIE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             yield break;
             OBSTACLE:
             {
                 var enumerator = TROPTURN(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -12771,14 +12998,15 @@ namespace Tests
         {
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_2 = MY;
             var temp_3 = MY_2.GetFloat(182);
@@ -12794,26 +13022,28 @@ namespace Tests
             }
             {
                 var enumerator = TROPLOOKFOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             CONT:
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_8 = MY;
             var temp_9 = MY_8.GetFloat(181);
@@ -12833,14 +13063,15 @@ namespace Tests
             {
                 {
                     var enumerator = TROPFOLLOWWARNING(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -12850,14 +13081,15 @@ namespace Tests
             MY_18.SetFloat(182, 1f);
             {
                 var enumerator = TROPTALK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_21 = MY;
             var temp_22 = MY_21.GetFloat(202);
@@ -12865,14 +13097,15 @@ namespace Tests
             {
                 {
                     var enumerator = TROPFOLLOWATTACK(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -12883,14 +13116,15 @@ namespace Tests
         {
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_1 = MY;
             var MY_3 = MY;
@@ -12900,14 +13134,15 @@ namespace Tests
             MY_1.SetFloat(194, temp_7 + (UnityEngine.Random.value - 0.5f) * 2f);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_18 = MY;
             var temp_19 = MY_18.GetFloat(205);
@@ -12917,14 +13152,15 @@ namespace Tests
             }
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_22 = MY;
             var temp_23 = MY_22.GetFloat(181);
@@ -12950,14 +13186,15 @@ namespace Tests
         {
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -12965,14 +13202,15 @@ namespace Tests
         {
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_2 = MY;
             var temp_3 = MY_2.GetFloat(173);
@@ -12980,14 +13218,15 @@ namespace Tests
             {
                 {
                     var enumerator = TROPDIE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -12997,14 +13236,15 @@ namespace Tests
             {
                 {
                     var enumerator = TROPWAIT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -13016,25 +13256,27 @@ namespace Tests
             }
             {
                 var enumerator = FOLLOWANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_14 = MY;
             var temp_15 = MY_14.GetFloat(181);
@@ -13051,40 +13293,43 @@ namespace Tests
             {
                 {
                     var enumerator = TROPAIM(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
             {
                 var enumerator = TROPSHOOT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             ATTACK:
             {
                 var enumerator = TROPFOLLOWATTACK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -13094,14 +13339,15 @@ namespace Tests
         {
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var GUN_ON_1 = _world.GetObject(ObjectType.Skill, 3014382675);
             var GUN_ON_1_val = GUN_ON_1.GetFloat(PropertyName.VAL);
@@ -13109,14 +13355,15 @@ namespace Tests
             {
                 {
                     var enumerator = TROPFOLLOWATTACK(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -13130,14 +13377,15 @@ namespace Tests
             MY_8.SetAcknexObject(190, null);
             {
                 var enumerator = TROPWARNING(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             CONT:
@@ -13147,27 +13395,29 @@ namespace Tests
             {
                 {
                     var enumerator = TROPWAIT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
             {
                 var enumerator = FOLLOWANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -13255,14 +13505,15 @@ namespace Tests
             AMMO_MP5_2.SetFloat(231, AMMO_MP5_1_val + 30f);
             {
                 var enumerator = SHOWAMMO(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_5 = MY;
             MY_5.SetAcknexObject(192, null);
@@ -13272,14 +13523,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, GET01STR_8);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -13305,14 +13557,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, GET10STR_10);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -13403,14 +13656,15 @@ namespace Tests
             {
                 {
                     var enumerator = LNCHLISTEN(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -13431,27 +13685,29 @@ namespace Tests
             {
                 {
                     var enumerator = TURNRIGHT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
             {
                 var enumerator = TURNLEFT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -13485,14 +13741,15 @@ namespace Tests
             MY_29.SetAcknexObject(199, BULLET_27);
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_31 = MY;
             var MY_33 = MY;
@@ -13502,14 +13759,15 @@ namespace Tests
             MY_31.SetFloat(194, temp_37 + UnityEngine.Random.value - 0.5f);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var startTime = Time.time;
@@ -13527,25 +13785,27 @@ namespace Tests
             }
             {
                 var enumerator = LNCHWANDER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var startTime = Time.time;
@@ -13563,14 +13823,15 @@ namespace Tests
             }
             {
                 var enumerator = LNCHFOLLOWATTACK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -13638,14 +13899,15 @@ namespace Tests
             MY_32.SetAcknexObject(199, BULLET_30);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -13679,14 +13941,15 @@ namespace Tests
             MY_29.SetAcknexObject(199, BULLET_27);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -13731,14 +13994,15 @@ namespace Tests
             MY_49.SetAcknexObject(199, BULLET_47);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var startTime = Time.time;
@@ -13754,14 +14018,15 @@ namespace Tests
             {
                 {
                     var enumerator = LNCHWANDER(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -13807,14 +14072,15 @@ namespace Tests
             {
                 {
                     var enumerator = LNCHWANDER(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -13908,14 +14174,15 @@ namespace Tests
             MY_29.SetAcknexObject(199, FOLLOW_27);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -13949,14 +14216,15 @@ namespace Tests
             MY_29.SetAcknexObject(199, FOLLOW_27);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -13990,14 +14258,15 @@ namespace Tests
             MY_29.SetAcknexObject(199, FOLLOW_27);
             {
                 var enumerator = LNCHSHOUT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -14019,14 +14288,15 @@ namespace Tests
             MY_17.SetFloat(219, 0f);
             {
                 var enumerator = CHOOSEMISSILE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MISSILE_19 = _world.GetSynonymObject(3680056099);
             if (MISSILE_19 == null)
@@ -14042,28 +14312,30 @@ namespace Tests
             MY_28.SetFloat(168, 0f);
             {
                 var enumerator = FOLLOWANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var FOLLOW_29 = _world.AcknexObject.GetAcknexObject(2968039200);
             var MY_31 = MY;
             MY_31.SetAcknexObject(199, FOLLOW_29);
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_34 = MY;
             var temp_35 = MY_34.GetFloat(181);
@@ -14143,14 +14415,15 @@ namespace Tests
             MISS:
             {
                 var enumerator = LNCHFOLLOWATTACK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -14187,14 +14460,15 @@ namespace Tests
             MY_32.SetAcknexObject(199, REPEL_30);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -14247,14 +14521,15 @@ namespace Tests
             {
                 {
                     var enumerator = LNCHDROPKEY(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
             }
             var MY_21 = MY;
@@ -14309,14 +14584,15 @@ namespace Tests
             {
                 {
                     var enumerator = BEAMREACT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -14348,14 +14624,15 @@ namespace Tests
             {
                 {
                     var enumerator = LNCHDROPKEY(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
             }
             //Unknown keyword: 
@@ -14424,14 +14701,15 @@ namespace Tests
             {
                 {
                     var enumerator = LNCHIMPLODE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -14505,14 +14783,15 @@ namespace Tests
             {
                 {
                     var enumerator = LNCHHIDE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -14522,14 +14801,15 @@ namespace Tests
             {
                 {
                     var enumerator = LNCHFOLLOWATTACK(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -14539,28 +14819,30 @@ namespace Tests
             MY_128.SetFloat(173, 10f);
             {
                 var enumerator = LNCHDIE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             yield break;
             OBSTACLE:
             {
                 var enumerator = LNCHTURN(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -14600,14 +14882,15 @@ namespace Tests
         {
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var SHOT_SOUND_ON_1 = _world.GetObject(ObjectType.Skill, 3372273679);
             var SHOT_SOUND_ON_1_val = SHOT_SOUND_ON_1.GetFloat(PropertyName.VAL);
@@ -14617,26 +14900,28 @@ namespace Tests
             }
             {
                 var enumerator = LNCHLOOKFOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             CONT:
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_4 = MY;
             var temp_5 = MY_4.GetFloat(181);
@@ -14662,25 +14947,27 @@ namespace Tests
             MY_14.SetFloat(182, 1f);
             {
                 var enumerator = LNCHTALK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = LNCHFOLLOWATTACK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -14696,14 +14983,15 @@ namespace Tests
             }
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_5 = MY;
             var MY_7 = MY;
@@ -14718,14 +15006,15 @@ namespace Tests
             MY_25.SetAcknexObject(199, BULLET_23);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             STOP:
@@ -14740,14 +15029,15 @@ namespace Tests
         {
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -14755,14 +15045,15 @@ namespace Tests
         {
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_2 = MY;
             var temp_3 = MY_2.GetFloat(173);
@@ -14770,14 +15061,15 @@ namespace Tests
             {
                 {
                     var enumerator = LNCHDIE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -14787,27 +15079,29 @@ namespace Tests
             {
                 {
                     var enumerator = LNCHBACKOFF(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_10 = MY;
             var temp_11 = MY_10.GetFloat(181);
@@ -14822,27 +15116,29 @@ namespace Tests
             SHOTSECCOUNT_15.SetFloat(231, 0f);
             {
                 var enumerator = LNCHAIM(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             ATTACK:
             {
                 var enumerator = LNCHFOLLOWATTACK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -14898,14 +15194,15 @@ namespace Tests
             {
                 {
                     var enumerator = REPTLISTEN(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -14926,27 +15223,29 @@ namespace Tests
             {
                 {
                     var enumerator = TURNRIGHT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
             {
                 var enumerator = TURNLEFT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -15026,14 +15325,15 @@ namespace Tests
             MY_11.SetAcknexObject(209, REPTHIT_9);
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_14 = MY;
             var temp_15 = MY_14.GetFloat(181);
@@ -15041,27 +15341,29 @@ namespace Tests
             {
                 {
                     var enumerator = REPTWAIT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
             {
                 var enumerator = REPTFOLLOWATTACK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -15087,14 +15389,15 @@ namespace Tests
             MY_20.SetFloat(176, 4f);
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_22 = MY;
             var MY_24 = MY;
@@ -15132,14 +15435,15 @@ namespace Tests
             MY_59.SetFloat(173, temp_57 + -2f);
             {
                 var enumerator = REPTWANDER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -15180,14 +15484,15 @@ namespace Tests
             {
                 {
                     var enumerator = REPTWANDER(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -15204,14 +15509,15 @@ namespace Tests
             }
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_6 = MY;
             var temp_7 = MY_6.GetFloat(181);
@@ -15222,14 +15528,15 @@ namespace Tests
             BLOODSMELL:
             {
                 var enumerator = REPTTALK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -15521,14 +15828,15 @@ namespace Tests
             {
                 {
                     var enumerator = BEAMREACT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -15590,14 +15898,15 @@ namespace Tests
             {
                 {
                     var enumerator = REPTIMPLODE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -15649,14 +15958,15 @@ namespace Tests
             _world.PlaySound(REPT02SND_47, 0.7f, MY_49);
             {
                 var enumerator = REPTHIDE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             DIE:
@@ -15664,39 +15974,42 @@ namespace Tests
             MY_52.SetFloat(173, 10f);
             {
                 var enumerator = REPTDIE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             yield break;
             OBSTACLE:
             {
                 var enumerator = REPTTALK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = REPTTURN(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -15706,14 +16019,15 @@ namespace Tests
         {
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_2 = MY;
             MY_2.SetFloat(213, 0f);
@@ -15725,14 +16039,15 @@ namespace Tests
             MY_11.SetAcknexObject(189, null);
             {
                 var enumerator = REPTTALK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var SHOT_SOUND_ON_13 = _world.GetObject(ObjectType.Skill, 3372273679);
             var SHOT_SOUND_ON_13_val = SHOT_SOUND_ON_13.GetFloat(PropertyName.VAL);
@@ -15742,26 +16057,28 @@ namespace Tests
             }
             {
                 var enumerator = REPTLOOKFOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             CONT:
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_16 = MY;
             var temp_17 = MY_16.GetFloat(181);
@@ -15783,14 +16100,15 @@ namespace Tests
             CONT1:
             {
                 var enumerator = REPTFOLLOWATTACK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -15800,14 +16118,15 @@ namespace Tests
         {
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_2 = MY;
             MY_2.SetFloat(213, 0f);
@@ -15841,14 +16160,15 @@ namespace Tests
         {
             {
                 var enumerator = LOCATEACTOR(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_2 = MY;
             var temp_3 = MY_2.GetFloat(173);
@@ -15856,14 +16176,15 @@ namespace Tests
             {
                 {
                     var enumerator = REPTDIE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -15877,14 +16198,15 @@ namespace Tests
             MY_15.SetAcknexObject(189, null);
             {
                 var enumerator = LOOKPLAYER(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_18 = MY;
             var temp_19 = MY_18.GetFloat(181);
@@ -15902,14 +16224,15 @@ namespace Tests
             }
             {
                 var enumerator = REPTWAIT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             PLAYERSEEN:
@@ -15924,27 +16247,29 @@ namespace Tests
             }
             {
                 var enumerator = REPTSHOOT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             ATTACK:
             {
                 var enumerator = REPTFOLLOWATTACK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -15990,27 +16315,29 @@ namespace Tests
             {
                 {
                     var enumerator = TURNRIGHT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
             {
                 var enumerator = TURNLEFT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -16077,14 +16404,15 @@ namespace Tests
             MY_29.SetAcknexObject(199, BULLET_27);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_32 = MY;
             MY_32.SetFloat(176, 1f);
@@ -16109,14 +16437,15 @@ namespace Tests
             MY_17.SetAcknexObject(209, NURSHIT_15);
             {
                 var enumerator = NURSSCREAM(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_19 = MY;
             var MY_21 = MY;
@@ -16136,14 +16465,15 @@ namespace Tests
             MY_43.SetAcknexObject(199, BULLET_41);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_46 = MY;
             MY_46.SetFloat(176, 4f);
@@ -16161,14 +16491,15 @@ namespace Tests
             {
                 {
                     var enumerator = NURSWANDER(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -16187,14 +16518,15 @@ namespace Tests
             MY_11.SetAcknexObject(190, null);
             {
                 var enumerator = INNOCENTKILLED(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var NURS9TEX_12 = _world.AcknexObject.GetAcknexObject(3424517151);
             var MY_14 = MY;
@@ -16284,14 +16616,15 @@ namespace Tests
             {
                 {
                     var enumerator = BEAMREACT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -16381,14 +16714,15 @@ namespace Tests
             {
                 {
                     var enumerator = NURSIMPLODE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -16441,14 +16775,15 @@ namespace Tests
             MY_97.SetAcknexObject(164, NURSE_TEX_95);
             {
                 var enumerator = NURSHIDE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             DIE:
@@ -16456,14 +16791,15 @@ namespace Tests
             MY_100.SetFloat(173, 10f);
             {
                 var enumerator = NURSDIE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             yield break;
@@ -16483,14 +16819,15 @@ namespace Tests
             JUMP:
             {
                 var enumerator = NURSTURN(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -16506,14 +16843,15 @@ namespace Tests
             }
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_5 = MY;
             var MY_7 = MY;
@@ -16523,14 +16861,15 @@ namespace Tests
             MY_5.SetFloat(194, temp_11 + UnityEngine.Random.value - 0.5f);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             CONT:
@@ -16548,14 +16887,15 @@ namespace Tests
             }
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_25 = MY;
             var MY_27 = MY;
@@ -16584,38 +16924,41 @@ namespace Tests
             }
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             HIDE:
             {
                 var enumerator = NURSSCREAM(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = NURSHIDE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -16724,27 +17067,29 @@ namespace Tests
             {
                 {
                     var enumerator = TURNRIGHT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
             {
                 var enumerator = TURNLEFT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -16811,14 +17156,15 @@ namespace Tests
             MY_29.SetAcknexObject(199, BULLET_27);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_32 = MY;
             MY_32.SetFloat(176, 1f);
@@ -16843,14 +17189,15 @@ namespace Tests
             MY_17.SetAcknexObject(209, DOCTHIT_15);
             {
                 var enumerator = DOCTSCREAM(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_19 = MY;
             var MY_21 = MY;
@@ -16870,14 +17217,15 @@ namespace Tests
             MY_43.SetAcknexObject(199, BULLET_41);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_46 = MY;
             MY_46.SetFloat(176, 4f);
@@ -16895,14 +17243,15 @@ namespace Tests
             {
                 {
                     var enumerator = DOCTWANDER(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -16921,14 +17270,15 @@ namespace Tests
             MY_11.SetAcknexObject(190, null);
             {
                 var enumerator = INNOCENTKILLED(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var DOCT9TEX_12 = _world.AcknexObject.GetAcknexObject(2697131489);
             var MY_14 = MY;
@@ -17018,14 +17368,15 @@ namespace Tests
             {
                 {
                     var enumerator = BEAMREACT(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -17115,14 +17466,15 @@ namespace Tests
             {
                 {
                     var enumerator = DOCTIMPLODE(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -17175,14 +17527,15 @@ namespace Tests
             MY_97.SetAcknexObject(164, DOCTE_TEX_95);
             {
                 var enumerator = DOCTHIDE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             DIE:
@@ -17190,14 +17543,15 @@ namespace Tests
             MY_100.SetFloat(173, 10f);
             {
                 var enumerator = DOCTDIE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             yield break;
@@ -17217,14 +17571,15 @@ namespace Tests
             JUMP:
             {
                 var enumerator = DOCTTURN(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -17240,14 +17595,15 @@ namespace Tests
             }
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_5 = MY;
             var MY_7 = MY;
@@ -17257,14 +17613,15 @@ namespace Tests
             MY_5.SetFloat(194, temp_11 + UnityEngine.Random.value - 0.5f);
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             CONT:
@@ -17282,14 +17639,15 @@ namespace Tests
             }
             {
                 var enumerator = REPELANGLE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_25 = MY;
             var MY_27 = MY;
@@ -17318,38 +17676,41 @@ namespace Tests
             }
             {
                 var enumerator = PROBE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             HIDE:
             {
                 var enumerator = DOCTSCREAM(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = DOCTHIDE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -17469,14 +17830,15 @@ namespace Tests
         {
             {
                 var enumerator = TROPTALK(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var MY_2 = MY;
             var temp_3 = MY_2.GetFloat(171);
@@ -17551,14 +17913,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, WRN22STR_3);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }//Unknown keyword: 
             yield break;
         }
@@ -17577,14 +17940,15 @@ namespace Tests
             {
                 {
                     var enumerator = OPENDOOR1(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -17594,14 +17958,15 @@ namespace Tests
             {
                 {
                     var enumerator = OPENDOOR2(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -17611,14 +17976,15 @@ namespace Tests
             {
                 {
                     var enumerator = OPENHATCH(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -17628,14 +17994,15 @@ namespace Tests
             {
                 {
                     var enumerator = OPENMJ3(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -17645,14 +18012,15 @@ namespace Tests
             {
                 {
                     var enumerator = NOTOPEN(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -17662,14 +18030,15 @@ namespace Tests
             {
                 {
                     var enumerator = OPENHATCHA(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -17679,14 +18048,15 @@ namespace Tests
             {
                 {
                     var enumerator = OPENHATCHB(MY, THERE);
-                    while (enumerator.MoveNext())
-                    {
-                        var current = enumerator.Current;
-                        if (current != null)
-                        {
-                            yield return current;
-                        }
-                    }
+                    _world.StartManagedCoroutine(null, enumerator);
+                    //while (enumerator.MoveNext())
+                    //{
+                    //    var current = enumerator.Current;
+                    //    if (current != null)
+                    //    {
+                    //        yield return current;
+                    //    }
+                    //}
                 }
                 yield break;
             }
@@ -17774,14 +18144,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, WRN15STR_23);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             var LOCK01WALL_27 = _world.AcknexObject.GetAcknexObject(828472871);
@@ -17817,14 +18188,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, WRN23STR_29);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             var LOCK02WALL_33 = _world.AcknexObject.GetAcknexObject(829658792);
@@ -17968,14 +18340,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, WRN15STR_27);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -18020,14 +18393,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, WRN18STR_0);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -18080,14 +18454,15 @@ namespace Tests
             _world.AcknexObject.SetAcknexObject(160, PNLMSKOVL_35);
             {
                 var enumerator = SET_WALKING(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var DROPPED_39 = _world.GetObject(ObjectType.Skill, 994153403);
             DROPPED_39.SetFloat(231, 0f);
@@ -18137,25 +18512,27 @@ namespace Tests
             GOLCOUNTER_83.SetFloat(231, 0f);
             {
                 var enumerator = STARTASSAULT(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             {
                 var enumerator = FADEIN(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             yield break;
             //Unknown keyword: 
@@ -18311,14 +18688,15 @@ namespace Tests
             _world.SetSynonymObject(361798934, WRN17STR_157);
             {
                 var enumerator = DISPLAYMESSAGE(MY, THERE);
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current;
-                    if (current != null)
-                    {
-                        yield return current;
-                    }
-                }
+                _world.StartManagedCoroutine(null, enumerator);
+                //while (enumerator.MoveNext())
+                //{
+                //    var current = enumerator.Current;
+                //    if (current != null)
+                //    {
+                //        yield return current;
+                //    }
+                //}
             }
             var SHOT_SOUND_ON_160 = _world.GetObject(ObjectType.Skill, 3372273679);
             SHOT_SOUND_ON_160.SetFloat(231, 1f);

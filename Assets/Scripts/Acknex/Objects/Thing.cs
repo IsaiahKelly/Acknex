@@ -10,7 +10,6 @@ namespace Acknex
     public class Thing : MonoBehaviour, IAcknexObjectContainer, IGraphicObject
     {
         private Coroutine _animateCoroutine;
-        private GameObject _attached;
         private AudioSource _audioSource;
         private GameObject _centerGameObject;
         private CharacterController _characterController;
@@ -156,8 +155,8 @@ namespace Acknex
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
             _centerGameObject.layer = World.Instance.IgnoreRaycastLayer.LayerIndex;
             _centerGameObject.transform.SetParent(transform, false);
-            StartCoroutine(TriggerTickEvents());
-            StartCoroutine(TriggerSecEvents());
+            World.Instance.StartManagedCoroutine(this, TriggerTickEvents());
+            World.Instance.StartManagedCoroutine(this, TriggerSecEvents());
         }
 
         public void SetupTemplate()
@@ -217,7 +216,7 @@ namespace Acknex
             {
                 if (_animateCoroutine != null)
                 {
-                    StopCoroutine(_animateCoroutine);
+                    World.Instance.StopManagedCoroutine(this, _animateCoroutine);
                 }
                 if (TextureObject != null)
                 {
@@ -226,7 +225,7 @@ namespace Acknex
                         AcknexObject.AddFlag(PropertyName.ONESHOT);
                         AcknexObject.RemoveFlag(PropertyName.PLAY);
                     }
-                    _animateCoroutine = StartCoroutine(Animate());
+                    _animateCoroutine = World.Instance.StartManagedCoroutine(this, Animate());
                 }
                 IsTextureDirty = false;
             }
@@ -277,29 +276,29 @@ namespace Acknex
                     _lastTarget = target;
                     if (_movingCoroutine != null)
                     {
-                        StopCoroutine(_movingCoroutine);
+                        World.Instance.StopManagedCoroutine(this, _movingCoroutine);
                     }
                     if (target != null)
                     {
                         if (target == World.Instance.FollowString)
                         {
-                            _movingCoroutine = StartCoroutine(MoveToPlayer());
+                            _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveToPlayer());
                         }
                         else if (target == World.Instance.RepelString)
                         {
-                            _movingCoroutine = StartCoroutine(MoveAwayFromPlayer());
+                            _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveAwayFromPlayer());
                         }
                         else if (target == World.Instance.VertexString)
                         {
-                            _movingCoroutine = StartCoroutine(MoveToVertex());
+                            _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveToVertex());
                         }
                         else if (target == World.Instance.MoveString || target == World.Instance.BulletString)
                         {
-                            _movingCoroutine = StartCoroutine(MoveToAngle());
+                            _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveToAngle());
                         }
                         else if (target.Container is Way way)
                         {
-                            _movingCoroutine = StartCoroutine(MoveToWay(way));
+                            _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveToWay(way));
                         }
                     }
                 }

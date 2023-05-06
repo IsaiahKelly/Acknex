@@ -238,8 +238,8 @@ namespace Acknex
             _audioSource.playOnAwake = false;
             _audioSource.spatialBlend = 1f;
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
-            StartCoroutine(TriggerTickEvents());
-            StartCoroutine(TriggerSecEvents());
+            World.Instance.StartManagedCoroutine(this, TriggerTickEvents());
+            World.Instance.StartManagedCoroutine(this, TriggerSecEvents());
         }
 
 
@@ -266,7 +266,7 @@ namespace Acknex
             {
                 if (_animateCeilCoroutine != null)
                 {
-                    StopCoroutine(_animateCeilCoroutine);
+                    World.Instance.StopManagedCoroutine(this, _animateCeilCoroutine);
                 }
                 var hasPlay = AcknexObject.HasFlag(PropertyName.PLAY);
                 if (CeilTexture != null)
@@ -276,11 +276,11 @@ namespace Acknex
                         AcknexObject.AddFlag(PropertyName.ONESHOT);
                         AcknexObject.RemoveFlag(PropertyName.PLAY);
                     }
-                    _animateCeilCoroutine = StartCoroutine(AnimateCeil());
+                    _animateCeilCoroutine = World.Instance.StartManagedCoroutine(this, AnimateCeil());
                 }
                 if (_animateFloorCoroutine != null)
                 {
-                    StopCoroutine(_animateFloorCoroutine);
+                    World.Instance.StopManagedCoroutine(this, _animateFloorCoroutine);
                 }
                 if (FloorTexture != null)
                 {
@@ -289,7 +289,7 @@ namespace Acknex
                         AcknexObject.AddFlag(PropertyName.ONESHOT);
                         AcknexObject.RemoveFlag(PropertyName.PLAY);
                     }
-                    _animateFloorCoroutine = StartCoroutine(AnimateFloor());
+                    _animateFloorCoroutine = World.Instance.StartManagedCoroutine(this, AnimateFloor());
                 }
                 IsTextureDirty = false;
             }

@@ -103,9 +103,9 @@ namespace Acknex
             {
                 return;
             }
-            if (source.TryGetAcknexObject(name, out var acknexObject) && acknexObject != null && acknexObject.Name != null)
+            if (source.TryGetAcknexObject(name, out var acknexObject) && acknexObject?.Name != null)
             {
-                StartCoroutine(_runtime.CallAction(acknexObject.Name, MY, THERE));
+                StartManagedCoroutine(this, _runtime.CallAction(acknexObject.Name, MY, THERE));
             }
         }
 
@@ -236,9 +236,9 @@ namespace Acknex
         private void IfStart()
         {
             TriggerEvent(PropertyName.IF_START, AcknexObject, null, null);
-            StartCoroutine(TriggerTickEvents(AcknexObject));
-            StartCoroutine(TriggerSecEvents(AcknexObject));
-            StartCoroutine(UpdateEvents());
+            StartManagedCoroutine(this, TriggerTickEvents(AcknexObject));
+            StartManagedCoroutine(this, TriggerSecEvents(AcknexObject));
+            StartManagedCoroutine(this, UpdateEvents());
         }
 
         private void SetupEvents()

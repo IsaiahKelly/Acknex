@@ -18,14 +18,15 @@ namespace Acknex
         }
         private const string CallEnumerator = @"{{
             var enumerator = {0};
-            while (enumerator.MoveNext())
-            {{
-                var current = enumerator.Current;
-                if (current != null)
-                {{
-                    yield return current;
-                }}
-            }}
+            _world.StartManagedCoroutine(null, enumerator);
+            //while (enumerator.MoveNext())
+            //{{
+            //    var current = enumerator.Current;
+            //    if (current != null)
+            //    {{
+            //        yield return current;
+            //    }}
+            //}}
         }}";
 
         private const string WaitTicks = @"{{
