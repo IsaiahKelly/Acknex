@@ -34,6 +34,8 @@ namespace Acknex
         public IDictionary<NameId, float> NumberProperties = new Dictionary<NameId, float>();
         public IDictionary<NameId, object> ObjectProperties = new Dictionary<NameId, object>();
 
+        public bool NoDirtyFlag { get; set; }
+
         public AcknexObject(Func<NameId, IAcknexObject> getTemplateCallback, ObjectType type)
         {
             GetTemplateCallback = getTemplateCallback;
@@ -284,9 +286,10 @@ namespace Acknex
         {
             if (ObjectProperties.TryGetValue(propertyName, out var existingValue))
             {
-                IsDirty = existingValue != value;
+                var isDirty = existingValue != value;
+                IsDirty = !NoDirtyFlag && isDirty;
                 ObjectProperties[propertyName] = value;
-                if (IsDirty)
+                if (isDirty)
                 {
                     Container.NotifyPropertyChanged(propertyName);
 #if DEBUG_ENABLED
@@ -300,7 +303,10 @@ namespace Acknex
 #if DEBUG_ENABLED
                 DebugMessage = "Got dirty because setted object " + propertyName;
 #endif
-                IsDirty = true;
+                if (!NoDirtyFlag)
+                {
+                    IsDirty = true;
+                }
                 Container.NotifyPropertyChanged(propertyName);
             }
         }
@@ -369,7 +375,10 @@ namespace Acknex
                     {
 
                         NumberProperties[(NameId)propertyName] = value;
-                        IsDirty = true;
+                        if (!NoDirtyFlag)
+                        {
+                            IsDirty = true;
+                        }
                         Container.NotifyPropertyChanged(propertyName);
 #if DEBUG_ENABLED
                         DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
@@ -384,11 +393,14 @@ namespace Acknex
             else
             {
                 NumberProperties[(NameId)propertyName] = value;
-                IsDirty = true;
+                if (!NoDirtyFlag)
+                {
+                    IsDirty = true;
+                }
 #if DEBUG_ENABLED
                 DebugMessage = "Got dirty because new property " + propertyName + " is " + value;
 #endif
-                Container.NotifyPropertyChanged(propertyName);
+                    Container.NotifyPropertyChanged(propertyName);
             }
         }
 
@@ -452,21 +464,27 @@ namespace Acknex
             {
                 if (existingValue != (object)value)
                 {
-                    IsDirty = true;
+                    if (!NoDirtyFlag)
+                    {
+                        IsDirty = true;
+                    }
 #if DEBUG_ENABLED
                     DebugMessage = "Got dirty because property " + propertyName + " was " + existingValue + " and now is " + value;
 #endif
+                    }
                 }
-            }
             else
             {
-                IsDirty = true;
+                if (!NoDirtyFlag)
+                {
+                    IsDirty = true;
+                }
+#if DEBUG_ENABLED
                 if (IsDirty)
                 {
-#if DEBUG_ENABLED
                     DebugMessage = "Got dirty because new property " + propertyName + " is " + value;
+            }
 #endif
-                }
             }
         }
 

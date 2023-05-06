@@ -291,5 +291,7 @@ namespace Acknex.Interfaces
         ///     Disables the given instance flag.
         /// </summary>
         void RemoveFlag(NameId flag);
-    }
+
+        bool NoDirtyFlag { get; set; }
+}
 }

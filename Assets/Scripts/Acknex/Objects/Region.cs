@@ -158,9 +158,6 @@ namespace Acknex
                 case (uint)PropertyName.CEIL_HGT:
                     IsGeometryDirty = true;
                     break;
-                case (uint)PropertyName.DISTANCE:
-                    AcknexObject.IsDirty = false;
-                    break;
             }
         }
 
@@ -301,7 +298,9 @@ namespace Acknex
             {
                 return;
             }
+            AcknexObject.NoDirtyFlag = true;
             AcknexObject.SetFloat(PropertyName.DISTANCE, distance);
+            AcknexObject.NoDirtyFlag = false;
             if (!AcknexObject.IsDirty)
             {
                 return;

@@ -1,6 +1,9 @@
-﻿using NameId = System.UInt32;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using NameId = System.UInt32;
 using System.IO;
 using System.Text;
+using Acknex.Interfaces;
 
 namespace Acknex
 {
@@ -52,17 +55,17 @@ namespace Acknex
         {
             var sourceStringBuilder = new StringBuilder();
             sourceStringBuilder.Append(HeaderTemplate);
-            foreach (var action in ActionsByName)
+            foreach (var kvp in ActionsByName)
             {
-                sourceStringBuilder.AppendLine($"_callbacks.Add(\"{action.Value.AcknexObject.Name}\", {action.Value.AcknexObject.Name});");
+                sourceStringBuilder.AppendLine($"_callbacks.Add(\"{kvp.Value.AcknexObject.Name}\", {kvp.Value.AcknexObject.Name});");
             }
             sourceStringBuilder.AppendLine("    }");
-            foreach (var action in ActionsByName)
+            foreach (var kvp in ActionsByName)
             {
-                action.Value.WriteHeader();
-                action.Value.ParseAllStatements();
-                action.Value.WriteFooter();
-                sourceStringBuilder.Append(action.Value.CodeStringBuilder);
+                kvp.Value.WriteHeader();
+                kvp.Value.ParseAllStatements();
+                kvp.Value.WriteFooter();
+                sourceStringBuilder.Append(kvp.Value.CodeStringBuilder);
             }
             sourceStringBuilder.AppendLine("    }");
             sourceStringBuilder.AppendLine("}");
