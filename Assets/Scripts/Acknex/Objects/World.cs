@@ -102,6 +102,7 @@ namespace Acknex
         public SingleUnityLayer WaterLayer;
         public string WDLPath;
         public bool DebugCoroutines;
+        public bool CustomStateMachines;
 
         public IEnumerator StartManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator)
         {

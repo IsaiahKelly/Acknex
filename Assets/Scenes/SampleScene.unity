@@ -932,6 +932,7 @@ MonoBehaviour:
     m_LayerIndex: 4
   WDLPath: C:\games\acknex\varginha2\CONTATO.WDL
   DebugCoroutines: 0
+  CustomStateMachines: 1
 --- !u!114 &1246573633
 MonoBehaviour:
   m_ObjectHideFlags: 0

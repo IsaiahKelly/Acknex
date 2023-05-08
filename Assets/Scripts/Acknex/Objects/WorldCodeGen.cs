@@ -19,12 +19,15 @@ namespace Acknex
         using PropertyName = Acknex.Interfaces.PropertyName;
         namespace Tests {
             public class Game : IAcknexRuntime {
+                public static WaitForEndOfFrame WaitForEndOfFrame = new WaitForEndOfFrame();
                 private IAcknexWorld _world;
-                private WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
-                private Dictionary<string, Func<IAcknexObject, IAcknexObject, IEnumerator>> _callbacks = new Dictionary<string, Func<IAcknexObject, IAcknexObject, IEnumerator>>();
                 public void SetWorld(IAcknexWorld world) {
                     _world = world;
                 }
+        ";
+
+        private const string MethodCallTemplate = @"
+                private Dictionary<string, Func<IAcknexObject, IAcknexObject, IEnumerator>> _callbacks = new Dictionary<string, Func<IAcknexObject, IAcknexObject, IEnumerator>>();
                 public IEnumerator CallAction(string name, IAcknexObject MY, IAcknexObject THERE)
                 {
                     reset:
@@ -34,7 +37,7 @@ namespace Acknex
                             var next = true;
                             while (next) {
                                 try {
-                                    enumerator.MoveNext();
+                                    next = enumerator.MoveNext();
                                 }
                                 catch (Exception e) {
                                     Debug.LogError(""ACK Runtime Error:"" + e + ""("" + Environment.StackTrace + "")"");
@@ -47,17 +50,49 @@ namespace Acknex
                         }
                     }
                     yield break;
-                }
-                public Game() {
-        ";
+        }";
+
+        private const string CustomMethodCallTemplate = @"
+                private Dictionary<string, ICompiledAction> _callbacks = new Dictionary<string, ICompiledAction>();
+                public IEnumerator CallAction(string name, IAcknexObject MY, IAcknexObject THERE)
+                {
+                    reset:
+                    if (name != null) {
+                        if (_callbacks.TryGetValue(name, out var callback)) {
+                            var enumerator = callback;
+                            enumerator.Reset();
+                            enumerator.MY = MY;
+                            enumerator.THERE = THERE;
+                            enumerator._world = _world;
+                            var next = true;
+                            while (next) {
+                                try {
+                                    next = enumerator.MoveNext();
+                                }
+                                catch (Exception e) {
+                                    Debug.LogError(""ACK Runtime Error:"" + e + ""("" + Environment.StackTrace + "")"");
+                                    goto reset;
+                                }
+                                if (next) {
+                                    yield return enumerator.Current;
+                                }
+                            }
+                        }
+                    }
+                    yield break;
+        }";
 
         private void ConvertActionsToCS()
         {
             var sourceStringBuilder = new StringBuilder();
             sourceStringBuilder.Append(HeaderTemplate);
+            sourceStringBuilder.Append(CustomStateMachines ? CustomMethodCallTemplate : MethodCallTemplate);
+            sourceStringBuilder.Append("public Game() {");
             foreach (var kvp in ActionsByName)
             {
-                sourceStringBuilder.AppendLine($"_callbacks.Add(\"{kvp.Value.AcknexObject.Name}\", {kvp.Value.AcknexObject.Name});");
+                sourceStringBuilder.AppendLine(CustomStateMachines
+                    ? $"_callbacks.Add(\"{kvp.Value.AcknexObject.Name}\", new {kvp.Value.AcknexObject.Name}());"
+                    : $"_callbacks.Add(\"{kvp.Value.AcknexObject.Name}\", {kvp.Value.AcknexObject.Name});");
             }
             sourceStringBuilder.AppendLine("    }");
             foreach (var kvp in ActionsByName)
