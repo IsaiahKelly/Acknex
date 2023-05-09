@@ -8,6 +8,8 @@ namespace Acknex.Interfaces
     /// </summary>
     public interface IAcknexObject
     {
+        bool DebugMarked { get; set; }
+
         /// <summary>
         /// Object name.
         /// </summary>

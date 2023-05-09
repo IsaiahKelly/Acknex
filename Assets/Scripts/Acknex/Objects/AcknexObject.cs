@@ -9,6 +9,9 @@ namespace Acknex
 {
     public class AcknexObject : IAcknexObject
     {
+        [field: SerializeField]
+        public bool DebugMarked { get; set; }
+
         private string _name;
 
         public string Name

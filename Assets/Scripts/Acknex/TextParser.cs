@@ -5,29 +5,12 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using Acknex.Interfaces;
-using JetBrains.Annotations;
 using UnityEngine;
 using PropertyName = Acknex.Interfaces.PropertyName;
 using Resolution = Acknex.Interfaces.Resolution;
 
 namespace Acknex
 {
-    public class LineBinaryReader : BinaryReader
-    {
-        public int LineCount = 1;
-
-        public LineBinaryReader([NotNull] Stream input) : base(input)
-        {
-        }
-
-        public LineBinaryReader([NotNull] Stream input, [NotNull] Encoding encoding) : base(input, encoding)
-        {
-        }
-
-        public LineBinaryReader(Stream input, Encoding encoding, bool leaveOpen) : base(input, encoding, leaveOpen)
-        {
-        }
-    }
 
     public class TextParser
     {
@@ -151,7 +134,7 @@ namespace Acknex
                 if (read == '"')
                 {
                     _tokenStringBuilder.Clear();
-                    for(; ; )
+                    for (; ; )
                     {
                         read = binaryReader.Read();
                         if (read == -1)
@@ -164,7 +147,6 @@ namespace Acknex
                         }
                         _tokenStringBuilder.Append((char)read);
                     };
-                    //_tokenStringBuilder.Append('"');
                     yield return _tokenStringBuilder.ToString();
                     continue;
                 }
@@ -213,6 +195,7 @@ namespace Acknex
                     ReadUntilCanContinue(ref keyword, tokens);
                     if (_openObject != null && keyword == "}")
                     {
+                        _openObject.NoDirtyFlag = false;
                         _openObject = null;
                         continue;
                     }
@@ -320,6 +303,7 @@ namespace Acknex
                                 case "PANEL":
                                     {
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Panel, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
                                         CheckCurlyOpen(tokens);
                                         break;
                                     }
@@ -332,31 +316,36 @@ namespace Acknex
                                 case "ACTION":
                                     {
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Action, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
                                         CheckCurlyOpen(tokens);
-                                        var action = (Action)_openObject.Container;
+                                        //var action = (Action)_openObject.Container;
                                         continue;
                                     }
                                 case "SYNONYM":
                                     {
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Synonym, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
                                         CheckCurlyOpen(tokens);
                                         break;
                                     }
                                 case "SKILL":
                                     {
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Skill, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
                                         CheckCurlyOpen(tokens);
                                         break;
                                     }
                                 case "REGION":
                                     {
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Region, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
                                         CheckCurlyOpen(tokens);
                                         break;
                                     }
                                 case "WALL":
                                     {
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Wall, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
                                         CheckCurlyOpen(tokens);
                                         continue;
                                     }
@@ -366,6 +355,7 @@ namespace Acknex
                                         var name = GetNextToken(tokens);
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Bitmap, name);
                                         _openObject.SetString(PropertyName.FILENAME, ParseDir(GetNextToken(tokens), tokens));
+                                        _openObject.NoDirtyFlag = true;
                                         var token = GetNextToken(tokens);
                                         if (token != ";")
                                         {
@@ -390,6 +380,7 @@ namespace Acknex
                                         {
                                             CheckSemiColon(tokens);
                                         }
+                                        _openObject.NoDirtyFlag = false;
                                         _openObject = null;
                                         break;
                                     }
@@ -404,72 +395,91 @@ namespace Acknex
                                 case "TEXTURE":
                                     {
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Texture, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
                                         CheckCurlyOpen(tokens);
                                         break;
                                     }
                                 case "WAY":
                                     {
-                                        var way = _world.CreateObjectTemplate(ObjectType.Way, GetNextToken(tokens));
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Way, GetNextToken(tokens));
                                         CheckSemiColon(tokens);
+                                        _openObject = null;
                                         break;
                                     }
                                 case "THING":
                                     {
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Thing, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
                                         CheckCurlyOpen(tokens);
                                         break;
                                     }
                                 case "ACTOR":
                                     {
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Actor, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
                                         CheckCurlyOpen(tokens);
                                         break;
                                     }
                                 case "OVERLAY":
                                     {
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Overlay, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
                                         CheckCurlyOpen(tokens);
                                         break;
                                     }
                                 case "PALETTE":
                                     {
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Palette, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
                                         CheckCurlyOpen(tokens);
                                         break;
                                     }
                                 case "FONT":
                                     {
-                                        var font = _world.CreateObjectTemplate(ObjectType.Font, GetNextToken(tokens));
-                                        font.SetString(PropertyName.FILENAME, ParseDir(GetNextToken(tokens), tokens));
-                                        font.SetFloat(PropertyName.WIDTH, ParseFloat(tokens));
-                                        font.SetFloat(PropertyName.HEIGHT, ParseFloat(tokens));
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Font, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
+                                        _openObject.SetString(PropertyName.FILENAME, ParseDir(GetNextToken(tokens), tokens));
+                                        _openObject.SetFloat(PropertyName.WIDTH, ParseFloat(tokens));
+                                        _openObject.SetFloat(PropertyName.HEIGHT, ParseFloat(tokens));
                                         CheckSemiColon(tokens);
+                                        _openObject.NoDirtyFlag = false;
+                                        _openObject = null;
                                         break;
                                     }
                                 case "MODEL":
                                     {
-                                        var model = _world.CreateObjectTemplate(ObjectType.Model, GetNextToken(tokens));
-                                        model.SetString(PropertyName.FILENAME, ParseDir(GetNextToken(tokens), tokens));
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Model, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
+                                        _openObject.SetString(PropertyName.FILENAME, ParseDir(GetNextToken(tokens), tokens));
                                         CheckSemiColon(tokens);
+                                        _openObject.NoDirtyFlag = false;
+                                        _openObject = null;
                                         break;
                                     }
                                 case "SOUND":
                                     {
-                                        var sound = _world.CreateObjectTemplate(ObjectType.Sound, GetNextToken(tokens));
-                                        sound.SetString(PropertyName.FILENAME, ParseDir(GetNextToken(tokens), tokens));
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Sound, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
+                                        _openObject.SetString(PropertyName.FILENAME, ParseDir(GetNextToken(tokens), tokens));
                                         CheckSemiColon(tokens);
+                                        _openObject.NoDirtyFlag = false;
+                                        _openObject = null;
                                         break;
                                     }
                                 case "MUSIC":
                                     {
-                                        var music = _world.CreateObjectTemplate(ObjectType.Song, GetNextToken(tokens));
-                                        music.SetString(PropertyName.FILENAME, ParseDir(GetNextToken(tokens), tokens));
+                                        _openObject = _world.CreateObjectTemplate(ObjectType.Song, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
+                                        _openObject.SetString(PropertyName.FILENAME, ParseDir(GetNextToken(tokens), tokens));
                                         CheckSemiColon(tokens);
+                                        _openObject.NoDirtyFlag = false;
+                                        _openObject = null;
                                         break;
                                     }
                                 case "TEXT":
                                     {
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Text, GetNextToken(tokens));
+                                        _openObject.NoDirtyFlag = true;
                                         CheckCurlyOpen(tokens);
                                         break;
                                     }

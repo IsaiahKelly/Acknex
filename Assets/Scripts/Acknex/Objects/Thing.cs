@@ -258,47 +258,50 @@ namespace Acknex
             _collider.center = _characterController.center = new Vector3(0f, _innerGameObject.transform.localPosition.y + _innerGameObject.transform.localScale.y * 0.5f, 0f);
             _collider.height = _characterController.height = _innerGameObject.transform.localScale.y;
             _collider.radius = _characterController.radius = GetColliderRadius();
+            var target = AcknexObject.GetAcknexObject(PropertyName.TARGET);
             if (AcknexObject.HasFlag(PropertyName.PASSABLE))
             {
-                _spriteCollider.enabled = _collider.enabled /* = _characterController.enabled*/ = false;
+                _spriteCollider.enabled = _collider.enabled = false;
+                if (target == null)
+                {
+                    _characterController.enabled = false;
+                }
             }
             else
             {
-                _spriteCollider.enabled = _collider.enabled /* = _characterController.enabled*/ = true;
+                _spriteCollider.enabled = _collider.enabled = _characterController.enabled = true;
             }
             _triggerCollider.center = _collider.center;
             _triggerCollider.radius = AcknexObject.GetFloat(PropertyName.DIST);
-            if (AcknexObject.TryGetAcknexObject(PropertyName.TARGET, out var target))
+            if (target != _lastTarget)
             {
-                if (target != _lastTarget)
+                _lastTarget = target;
+                if (_movingCoroutine != null)
                 {
-                    _lastTarget = target;
-                    if (_movingCoroutine != null)
+                    World.Instance.StopManagedCoroutine(this, _movingCoroutine);
+                }
+                if (target != null)
+                {
+                    _characterController.enabled = true;
+                    if (target == World.Instance.FollowString)
                     {
-                        World.Instance.StopManagedCoroutine(this, _movingCoroutine);
+                        _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveToPlayer());
                     }
-                    if (target != null)
+                    else if (target == World.Instance.RepelString)
                     {
-                        if (target == World.Instance.FollowString)
-                        {
-                            _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveToPlayer());
-                        }
-                        else if (target == World.Instance.RepelString)
-                        {
-                            _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveAwayFromPlayer());
-                        }
-                        else if (target == World.Instance.VertexString)
-                        {
-                            _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveToVertex());
-                        }
-                        else if (target == World.Instance.MoveString || target == World.Instance.BulletString)
-                        {
-                            _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveToAngle());
-                        }
-                        else if (target.Container is Way way)
-                        {
-                            _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveToWay(way));
-                        }
+                        _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveAwayFromPlayer());
+                    }
+                    else if (target == World.Instance.VertexString)
+                    {
+                        _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveToVertex());
+                    }
+                    else if (target == World.Instance.MoveString || target == World.Instance.BulletString)
+                    {
+                        _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveToAngle());
+                    }
+                    else if (target.Container is Way way)
+                    {
+                        _movingCoroutine = World.Instance.StartManagedCoroutine(this, MoveToWay(way));
                     }
                 }
             }
@@ -444,7 +447,7 @@ namespace Acknex
             var waypoint = 1;
             AcknexObject.SetFloat(PropertyName.WAYPOINT, waypoint);
             var nextPoint = points[waypoint - 1];
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 if (World.Instance.GetSkillValue(SkillName.MOVE_MODE) <= 0.5f || AcknexObject.HasFlag(PropertyName.INVISIBLE) || AcknexObject.GetAcknexObject(PropertyName.TARGET) != _lastTarget)
@@ -471,7 +474,7 @@ namespace Acknex
         private IEnumerator MoveToVertex()
         {
             var targetPos = new Vector2(AcknexObject.GetFloat(PropertyName.TARGET_X), AcknexObject.GetFloat(PropertyName.TARGET_Y));
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 if (World.Instance.GetSkillValue(SkillName.MOVE_MODE) <= 0.5f || AcknexObject.HasFlag(PropertyName.INVISIBLE) || AcknexObject.GetAcknexObject(PropertyName.TARGET) != _lastTarget)
@@ -492,7 +495,7 @@ namespace Acknex
         private IEnumerator MoveToPlayer()
         {
             var currentRegion = GetRegion();
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
 #if DEBUG_ENABLED
@@ -536,7 +539,7 @@ namespace Acknex
         private IEnumerator MoveToAngle()
         {
             var currentRegion = GetRegion();
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 MoveToAngleStep();

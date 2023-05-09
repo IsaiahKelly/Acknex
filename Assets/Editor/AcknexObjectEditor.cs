@@ -65,13 +65,27 @@ public class AcknexObjectEditor : Editor
             }
         }
         base.OnInspectorGUI();
+
         if (target is IAcknexObjectContainer container)
         {
+            if (GUILayout.Button("Force Dirty"))
+            {
+                container.AcknexObject.IsDirty = true;
+            }
+            container.AcknexObject.DebugMarked = EditorGUILayout.Toggle("Debug Marked", container.AcknexObject.DebugMarked);
             EditorGUILayout.TextField("Debug", container.AcknexObject.DebugMessage);
             EditorGUILayout.Toggle("Is Instance", container.AcknexObject.IsInstance);
             EditorGUILayout.Toggle("Is Dirty", container.AcknexObject.IsDirty);
             if (container is IGraphicObject graphicObject)
             {
+                if (GUILayout.Button("Force Geometry Dirty"))
+                {
+                    graphicObject.IsGeometryDirty = true;
+                }
+                if (GUILayout.Button("Force Texture Dirty"))
+                {
+                    graphicObject.IsTextureDirty = true;
+                }
                 EditorGUILayout.Toggle("Is Texture Dirty", graphicObject.IsTextureDirty);
                 EditorGUILayout.Toggle("Is Geometry Dirty", graphicObject.IsGeometryDirty);
                 EditorGUILayout.FloatField("Ambient", graphicObject.GetAmbient());

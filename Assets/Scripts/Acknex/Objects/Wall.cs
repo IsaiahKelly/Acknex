@@ -14,6 +14,7 @@ namespace Acknex
 {
     public class Wall : MonoBehaviour, IAcknexObjectContainer, IGraphicObject
     {
+        public int MeshRebuildCount;
         private readonly List<Vector4> _attachmentPos = new List<Vector4>();
         private readonly List<Texture> _tempAttachments = new List<Texture>();
         private Dictionary<WallPart, List<int>> _allTriangles;
@@ -165,6 +166,7 @@ namespace Acknex
             _gameObject = new GameObject("Wall") { layer = World.Instance.WallsLayer.LayerIndex };
             _gameObject.transform.SetParent(transform, false);
             _meshRenderer = _gameObject.AddComponent<MeshRenderer>();
+            _meshRendererMaterials = _meshRenderer.materials;
             _collider = _gameObject.AddComponent<MeshCollider>();
             _collider.enabled = false;
             _invertedCollider = _gameObject.AddComponent<MeshCollider>();
@@ -175,6 +177,7 @@ namespace Acknex
             _gapGameObject = new GameObject("Gap") { layer = World.Instance.WallsLayer.LayerIndex };
             _gapGameObject.transform.SetParent(transform, false);
             _gapMeshRenderer = _gapGameObject.AddComponent<MeshRenderer>();
+            _gapMeshRendererMaterials = _gapMeshRenderer.materials;
             _gapCollider = _gapGameObject.AddComponent<MeshCollider>();
             _gapCollider.enabled = false;
             _gapInvertedCollider = _gapGameObject.AddComponent<MeshCollider>();
@@ -470,7 +473,6 @@ namespace Acknex
         {
             var region1 = AcknexObject.GetAcknexObject(PropertyName.REGION1);
             var region2 = AcknexObject.GetAcknexObject(PropertyName.REGION2);
-            HasGap = region1.Name == region2.Name && region1.GetFloat(PropertyName.CEIL_HGT) == region2.GetFloat(PropertyName.CEIL_HGT) && region1.GetFloat(PropertyName.FLOOR_HGT) == region2.GetFloat(PropertyName.FLOOR_HGT);
             if (_allTriangles.TryGetValue(WallPart.FloorAndCeil, out var triangles))
             {
                 //if (triangles.Count > 0)
@@ -574,11 +576,11 @@ namespace Acknex
             var leftRegionAboveFloorHeight = leftRegionAbove == null ? 0f : leftRegionAbove.AcknexObject.GetFloat(PropertyName.FLOOR_HGT);
             var rightRegionAboveFloorHeight = rightRegionAbove == null ? 0f : rightRegionAbove.AcknexObject.GetFloat(PropertyName.FLOOR_HGT);
             //todo: checking by the flag here is wrong
-            if (AcknexObject.HasFlag(PropertyName.FENCE))
-            {
-                BuildFence(rightRegionAbove, leftRegionAbove, leftRegion, leftRegionBelowCeilHeight, rightRegion, rightRegionBelowCeilHeight, leftRegionAboveFloorHeight, rightRegionAboveFloorHeight, vertexA, vertexB);
-            }
-            else
+            //if (AcknexObject.HasFlag(PropertyName.FENCE))
+            //{
+            //    BuildFence(rightRegionAbove, leftRegionAbove, leftRegion, leftRegionBelowCeilHeight, rightRegion, rightRegionBelowCeilHeight, leftRegionAboveFloorHeight, rightRegionAboveFloorHeight, vertexA, vertexB);
+            //}
+            //else
             {
                 //if (leftRegionAbove != null || rightRegionAbove != null)
                 {
@@ -759,7 +761,7 @@ namespace Acknex
             var v3 = new Vector3(vertexA.Position.X, floorHeight + (liftedRight ? vertexA.Position.Z : 0), vertexA.Position.Y);
             //if (Mathf.Abs(v2.y - v0.y) > Mathf.Epsilon || Mathf.Abs(v3.y - v1.y) > Mathf.Epsilon)
             {
-                MeshUtils.AddQuad(0, 1, 2, 3, _allTriangles, WallPart.FloorAndCeil, _allVertices.Count);
+                MeshUtils.AddQuad(0, 1, 2, 3, _allTriangles, HasGap ? WallPart.Gap : WallPart.FloorAndCeil, _allVertices.Count);
                 _allVertices.Add(v0); //a
                 _allVertices.Add(v1); //b
                 _allVertices.Add(v2); //c
@@ -785,6 +787,7 @@ namespace Acknex
 
         public void UpdateAllMeshes()
         {
+            MeshRebuildCount++;
             _allVertices.Clear();
             _allUVs.Clear();
             _allTriangles.Clear();
@@ -801,6 +804,11 @@ namespace Acknex
             //AcknexObject.SetFloat(PropertyName.X2, vertexB.Position.X);
             //AcknexObject.SetFloat(PropertyName.Y2, vertexB.Position.Y);
             //AcknexObject.SetFloat("Z2", vertexB.Position.Z);
+            HasGap =
+                AcknexObject.HasFlag(PropertyName.FENCE) || (
+                rightRegion.AcknexObject.NameId == leftRegion.AcknexObject.NameId &&
+                rightRegion.AcknexObject.GetFloat(PropertyName.CEIL_HGT) == leftRegion.AcknexObject.GetFloat(PropertyName.CEIL_HGT) &&
+                rightRegion.AcknexObject.GetFloat(PropertyName.FLOOR_HGT) == leftRegion.AcknexObject.GetFloat(PropertyName.FLOOR_HGT));
             BuildWall(vertexA, vertexB, contourVertices, rightRegion, leftRegion);
             BuildWallMesh();
         }
