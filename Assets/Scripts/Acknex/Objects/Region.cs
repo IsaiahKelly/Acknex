@@ -647,6 +647,11 @@ namespace Acknex
         {
             bool GetValue(RaycastHit raycastHit, ref float outThingZ, out Region outRegion)
             {
+                if (!onCeil && raycastHit.transform.gameObject.layer == World.Instance.WaterLayer.LayerIndex &&
+                    Physics.Raycast(raycastHit.point, Vector3.down, out raycastHit, Mathf.Infinity, World.Instance.WallsAndRegions))
+                {
+                    
+                }
                 if (raycastHit.transform.parent != null && raycastHit.transform.parent.TryGetComponent(out outRegion))
                 {
                     outThingZ = raycastHit.point.y;

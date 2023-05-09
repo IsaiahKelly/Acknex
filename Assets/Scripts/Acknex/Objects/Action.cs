@@ -612,16 +612,18 @@ namespace Acknex
             else
             {
                 string actionGetter;
-                if (World.Instance.CustomStateMachines)
-                {
-                    actionGetter = $"_world.CallSynonymAction({nameId}, MY, THERE)";
-                    MethodBodyStringBuilder.AppendFormat(CustomCallCoroutine, actionGetter);
-                }
-                else
-                {
-                    actionGetter = $"_world.CallSynonymAction({nameId}, MY, THERE)";
-                    MethodBodyStringBuilder.AppendFormat(CallCoroutine, actionGetter);
-                }
+                actionGetter = $"_world.CallSynonymAction({nameId}, MY, THERE)";
+                MethodBodyStringBuilder.AppendFormat(CallCoroutine, actionGetter);
+                //if (World.Instance.CustomStateMachines)
+                //{
+                //    actionGetter = $"_world.CallSynonymAction({nameId}, MY, THERE)";
+                //    MethodBodyStringBuilder.AppendFormat(CallCoroutine, actionGetter);
+                //}
+                //else
+                //{
+                //    actionGetter = $"_world.CallSynonymAction({nameId}, MY, THERE)";
+                //    MethodBodyStringBuilder.AppendFormat(CallCoroutine, actionGetter);
+                //}
             }
         }
 

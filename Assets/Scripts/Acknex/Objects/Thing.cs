@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using Acknex.Interfaces;
 using UnityEngine;
-using Utils;
 using NameId = System.UInt32;
 using PropertyName = Acknex.Interfaces.PropertyName;
 
@@ -15,6 +14,7 @@ namespace Acknex
         private CharacterController _characterController;
         private CapsuleCollider _collider;
         private GameObject _innerGameObject;
+        private bool _lastGround;
         private IAcknexObject _lastTarget;
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
@@ -24,7 +24,6 @@ namespace Acknex
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;
         private GameObject _triggerGameObject;
-        private bool _lastGround;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject(PropertyName.TEXTURE, out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -138,7 +137,14 @@ namespace Acknex
             var thingX = AcknexObject.GetFloat(PropertyName.X);
             var thingY = AcknexObject.GetFloat(PropertyName.Y);
             var thingZ = AcknexObject.GetFloat(PropertyName.HEIGHT);
-            Locate(thingX, thingY, ref thingZ, true);
+            if (AcknexObject.HasFlag(PropertyName.CANDELABER))
+            {
+                StickToTheCeiling(thingX, thingY, ref thingZ, true);
+            }
+            else
+            {
+                Locate(thingX, thingY, ref thingZ, true);
+            }
             transform.position = new Vector3(thingX, thingZ, thingY);
             _triggerCollisionCallback.OnTriggerEnterCallback += OnTriggerEnterCallback;
             _triggerCollisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
@@ -447,7 +453,7 @@ namespace Acknex
             var waypoint = 1;
             AcknexObject.SetFloat(PropertyName.WAYPOINT, waypoint);
             var nextPoint = points[waypoint - 1];
-            for (; ; )
+            for (;;)
             {
                 AcknexObject.IsDirty = true;
                 if (World.Instance.GetSkillValue(SkillName.MOVE_MODE) <= 0.5f || AcknexObject.HasFlag(PropertyName.INVISIBLE) || AcknexObject.GetAcknexObject(PropertyName.TARGET) != _lastTarget)
@@ -474,7 +480,7 @@ namespace Acknex
         private IEnumerator MoveToVertex()
         {
             var targetPos = new Vector2(AcknexObject.GetFloat(PropertyName.TARGET_X), AcknexObject.GetFloat(PropertyName.TARGET_Y));
-            for (; ; )
+            for (;;)
             {
                 AcknexObject.IsDirty = true;
                 if (World.Instance.GetSkillValue(SkillName.MOVE_MODE) <= 0.5f || AcknexObject.HasFlag(PropertyName.INVISIBLE) || AcknexObject.GetAcknexObject(PropertyName.TARGET) != _lastTarget)
@@ -495,7 +501,7 @@ namespace Acknex
         private IEnumerator MoveToPlayer()
         {
             var currentRegion = GetRegion();
-            for (; ; )
+            for (;;)
             {
                 AcknexObject.IsDirty = true;
 #if DEBUG_ENABLED
@@ -539,7 +545,7 @@ namespace Acknex
         private IEnumerator MoveToAngle()
         {
             var currentRegion = GetRegion();
-            for (; ; )
+            for (;;)
             {
                 AcknexObject.IsDirty = true;
                 MoveToAngleStep();
@@ -572,21 +578,20 @@ namespace Acknex
             World.Instance.TriggerEvent(PropertyName.DO, AcknexObject, AcknexObject, GetRegion());
         }
 
-        //todo: reimplement
-        public void StickToTheCeiling(float thingX, float thingY, ref float thingZ, bool initial = false)
+        public void  StickToTheCeiling(float thingX, float thingY, ref float thingZ, bool initial = false)
         {
-            return;
-            var region = GetRegion();
-            var regionContainer = region?.Container as Region;
-            var checkHeight = regionContainer == null ? 0f : regionContainer.GetRealFloorHeight();
-            var newRegionContainer = Region.Locate(AcknexObject, regionContainer, _innerGameObject.transform.localScale.x * 0.5f, thingX, thingY, ref thingZ, true, checkHeight);
-            thingZ -= _innerGameObject.transform.localScale.y; //todo: right?
-            AcknexObject.SetFloat(PropertyName.Z, thingZ);
-            AcknexObject.SetAcknexObject(PropertyName.REGION, newRegionContainer.AcknexObject);
+            Locate(thingX, thingY, ref thingZ, initial, true);
+            //var region = GetRegion();
+            //var regionContainer = region?.Container as Region;
+            //var checkHeight = regionContainer == null ? 0f : regionContainer.GetRealFloorHeight();
+            //var newRegionContainer = Region.Locate(AcknexObject, regionContainer, _innerGameObject.transform.localScale.x * 0.5f, thingX, thingY, ref thingZ, true, checkHeight);
+            //thingZ -= _innerGameObject.transform.localScale.y; //todo: right?
+            //AcknexObject.SetFloat(PropertyName.Z, thingZ);
+            //AcknexObject.SetAcknexObject(PropertyName.REGION, newRegionContainer.AcknexObject);
         }
 
         //todo: A Thing with MASTER set, can trigger IF_LEAVE and IF_ENTER events
-        public void Locate(float thingX, float thingY, ref float thingZ, bool initial = false)
+        public void Locate(float thingX, float thingY, ref float thingZ, bool initial = false, bool onCeil = false)
         {
             var ground = AcknexObject.HasFlag(PropertyName.GROUND);
             var region = GetRegion();
@@ -594,7 +599,7 @@ namespace Acknex
             if (initial && ground)
             {
                 regionContainer = regionContainer.GetRegionWithCeilingAbove(thingZ);
-                region = regionContainer.AcknexObject;
+                //region = regionContainer.AcknexObject;
             }
             float checkHeight;
             //if (regionContainer != null)
@@ -603,13 +608,19 @@ namespace Acknex
                 {
                     thingZ = regionContainer.GetRealFloorHeight() + thingZ; //from relative to absolute
                 }
-                checkHeight = thingZ + World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB);
+                checkHeight = onCeil ? regionContainer.GetRealFloorHeight() : thingZ + World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB);
             }
             //else
             //{
             //    checkHeight = Region.MaxHeight;
             //}
-            var newRegionContainer = initial || AcknexObject.HasFlag(PropertyName.CAREFULLY) ? Region.Locate(AcknexObject, regionContainer, GetColliderRadius(), thingX, thingY, ref thingZ, false, checkHeight) : regionContainer;
+            var newRegionContainer = initial || AcknexObject.HasFlag(PropertyName.CAREFULLY)
+                ? Region.Locate(AcknexObject, regionContainer, GetColliderRadius(), thingX, thingY, ref thingZ, onCeil, checkHeight)
+                : regionContainer;
+            if (onCeil)
+            {
+                thingZ -= _innerGameObject.transform.localScale.y; //todo: right?;
+            }
             float height;
             if (ground)
             {

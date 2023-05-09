@@ -336,7 +336,9 @@ namespace Acknex.Interfaces
         DIAPHANOUS,
         BEHIND,
         SHADOW,
-        SLOOP
+        SLOOP,
+        Z1,
+        Z2,
     };
 
 }

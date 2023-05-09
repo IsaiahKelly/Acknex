@@ -354,8 +354,10 @@ namespace Acknex
             AddObjectProperty(ObjectType.Wall, PropertyType.ActionReference, PropertyName.IF_HIT);
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, PropertyName.X1);
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, PropertyName.Y1);
+            AddObjectProperty(ObjectType.Wall, PropertyType.Float, PropertyName.Z1);
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, PropertyName.X2);
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, PropertyName.Y2);
+            AddObjectProperty(ObjectType.Wall, PropertyType.Float, PropertyName.Z2);
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, PropertyName.IMPASSABLE);
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, PropertyName.PLAY);
             AddObjectProperty(ObjectType.Wall, PropertyType.Float, PropertyName.VISIBLE);

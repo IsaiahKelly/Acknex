@@ -523,86 +523,86 @@ namespace Acknex
             {
                 return;
             }
-            var nameInt = acknexObject.NameId;
+            var nameId = acknexObject.NameId;
             switch (acknexObject.Container)
             {
                 case Wall wall:
                 {
-                    var name = acknexObject.Name;
-                    if (!AllWallsByName.TryGetValue(nameInt, out var list))
+                    //var name = acknexObject.Name;
+                    if (!AllWallsByName.TryGetValue(nameId, out var list))
                     {
                         list = new HashSet<Wall>();
-                        AllWallsByName.Add(nameInt, list);
+                        AllWallsByName.Add(nameId, list);
                     }
                     wall.AcknexObject.InstanceIndex = list.Count;
                     list.Add(wall);
                     if (list.Count == 1)
                     {
-                        AcknexObject.SetAcknexObject(nameInt, wall.AcknexObject);
+                        AcknexObject.SetAcknexObject(nameId, wall.AcknexObject);
                     }
                     break;
                 }
                 case Region region:
                 {
-                    var name = acknexObject.Name;
-                    if (!AllRegionsByName.TryGetValue(nameInt, out var list))
+                    //var name = acknexObject.Name;
+                    if (!AllRegionsByName.TryGetValue(nameId, out var list))
                     {
                         list = new HashSet<Region>();
-                        AllRegionsByName.Add(nameInt, list);
+                        AllRegionsByName.Add(nameId, list);
                     }
                     region.AcknexObject.InstanceIndex = list.Count;
                     list.Add(region);
                     if (list.Count == 1)
                     {
-                        AcknexObject.SetAcknexObject(nameInt, region.AcknexObject);
+                        AcknexObject.SetAcknexObject(nameId, region.AcknexObject);
                     }
                     break;
                 }
                 case Actor actor:
                 {
-                    var name = acknexObject.Name;
-                    if (!AllActorsByName.TryGetValue(nameInt, out var list))
+                    //var name = acknexObject.Name;
+                    if (!AllActorsByName.TryGetValue(nameId, out var list))
                     {
                         list = new HashSet<Actor>();
-                        AllActorsByName.Add(nameInt, list);
+                        AllActorsByName.Add(nameId, list);
                     }
                     actor.AcknexObject.InstanceIndex = list.Count;
                     list.Add(actor);
                     if (list.Count == 1)
                     {
-                        AcknexObject.SetAcknexObject(nameInt, actor.AcknexObject);
+                        AcknexObject.SetAcknexObject(nameId, actor.AcknexObject);
                     }
                     break;
                 }
                 case Thing thing:
                 {
-                    var name = acknexObject.Name;
-                    if (!AllThingsByName.TryGetValue(nameInt, out var list))
+                    //var name = acknexObject.Name;
+                    if (!AllThingsByName.TryGetValue(nameId, out var list))
                     {
                         list = new HashSet<Thing>();
-                        AllThingsByName.Add(nameInt, list);
+                        AllThingsByName.Add(nameId, list);
                     }
                     thing.AcknexObject.InstanceIndex = list.Count;
                     list.Add(thing);
                     if (list.Count == 1)
                     {
-                        AcknexObject.SetAcknexObject(nameInt, thing.AcknexObject);
+                        AcknexObject.SetAcknexObject(nameId, thing.AcknexObject);
                     }
                     break;
                 }
                 case Way way:
                 {
-                    var name = acknexObject.Name;
-                    if (!AllWaysByName.TryGetValue(nameInt, out var list))
+                    //var name = acknexObject.Name;
+                    if (!AllWaysByName.TryGetValue(nameId, out var list))
                     {
                         list = new HashSet<Way>();
-                        AllWaysByName.Add(nameInt, list);
+                        AllWaysByName.Add(nameId, list);
                     }
                     way.AcknexObject.InstanceIndex = list.Count;
                     list.Add(way);
                     if (list.Count == 1)
                     {
-                        AcknexObject.SetAcknexObject(nameInt, way.AcknexObject);
+                        AcknexObject.SetAcknexObject(nameId, way.AcknexObject);
                     }
                     break;
                 }
@@ -638,7 +638,7 @@ namespace Acknex
             var region = acknexObject.Container as Region;
             if (region != null)
             {
-                var regionName = region.AcknexObject.Name;
+                //var regionName = region.AcknexObject.Name;
                 var nameInt = region.AcknexObject.NameId;
                 foreach (var instance in AllRegionsByName[nameInt])
                 {
@@ -670,7 +670,7 @@ namespace Acknex
             var region = acknexObject.Container as Region;
             if (region != null)
             {
-                var regionName = region.AcknexObject.Name;
+                //var regionName = region.AcknexObject.Name;
                 var nameInt = region.AcknexObject.NameId;
                 foreach (var instance in AllRegionsByName[nameInt])
                 {

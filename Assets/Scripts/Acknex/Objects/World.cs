@@ -99,6 +99,7 @@ namespace Acknex
         public LayerMask WallsWaterAndRegions;
         public LayerMask WallsWaterRegionsAndSprites;
         public LayerMask WallsWaterRegionsAndThings;
+        public LayerMask WallsAndRegions;
         public SingleUnityLayer WaterLayer;
         public string WDLPath;
         public bool DebugCoroutines;

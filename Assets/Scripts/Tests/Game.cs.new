@@ -8877,10 +8877,6 @@ PLAYER_LIGHT_28 = _world.GetObject(ObjectType.Skill,418);
 PLAYER_LIGHT_28.SetFloat(231,PLAYER_LIGHT_27_val + 0.2f);
 {
             var enumerator = _world.CallSynonymAction(1342576697, MY, THERE);
-            var compiledAction = (ICompiledAction)enumerator;
-            compiledAction.MY = MY;
-            compiledAction.THERE = THERE;
-            compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
             var enumerator = new SET_DIVING();
@@ -8977,10 +8973,6 @@ PLAYER_LIGHT_26 = _world.GetObject(ObjectType.Skill,418);
 PLAYER_LIGHT_26.SetFloat(231,PLAYER_LIGHT_25_val + -0.2f);
 {
             var enumerator = _world.CallSynonymAction(1917066007, MY, THERE);
-            var compiledAction = (ICompiledAction)enumerator;
-            compiledAction.MY = MY;
-            compiledAction.THERE = THERE;
-            compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
             var enumerator = new SET_SWIMMING();

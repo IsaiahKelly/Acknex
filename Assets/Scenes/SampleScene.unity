@@ -427,6 +427,7 @@ GameObject:
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
   - component: {fileID: 963194231}
+  - component: {fileID: 963194232}
   m_Layer: 8
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -671,6 +672,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &963194232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4c2e0dae125fc49921713f206d2e91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1093945318
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,7 +906,7 @@ MonoBehaviour:
   CanvasView: {fileID: 1520209880}
   CanvasWidthRatio: 0
   DebugSkills: 0
-  DisableCompilation: 0
+  DisableCompilation: 1
   DisableMaterials: 0
   DrawShadows: 0
   GodMode: 0
@@ -928,6 +941,9 @@ MonoBehaviour:
   WallsWaterRegionsAndThings:
     serializedVersion: 2
     m_Bits: 12816
+  WallsAndRegions:
+    serializedVersion: 2
+    m_Bits: 12288
   WaterLayer:
     m_LayerIndex: 4
   WDLPath: C:\games\acknex\varginha2\CONTATO.WDL
