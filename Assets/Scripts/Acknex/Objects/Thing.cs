@@ -370,11 +370,16 @@ namespace Acknex
             //var hittingUpOrDown = height < region.GetRealFloorHeight() || height > region.GetRealCeilHeight();
             //if (/*(movingVertically && hittingUpOrDown) ||*/ (movingHorizontally && !hittingUpOrDown))
             //{
-            OnCollisionEnter(null);
+            ProcessCollision(controllerColliderHit.collider);
             //}
         }
 
         private void OnCollisionEnter(Collision collision)
+        {
+            //ProcessCollision(collision.collider);
+        }
+
+        private void ProcessCollision(Collider collider)
         {
             var hasToTrigger = AcknexObject.HasFlag(PropertyName.SENSITIVE) || (AcknexObject.HasFlag(PropertyName.CAREFULLY) && AcknexObject.GetAcknexObject(PropertyName.TARGET) == World.Instance.BulletString);
             if (hasToTrigger)
@@ -453,7 +458,7 @@ namespace Acknex
             var waypoint = 1;
             AcknexObject.SetFloat(PropertyName.WAYPOINT, waypoint);
             var nextPoint = points[waypoint - 1];
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 if (World.Instance.GetSkillValue(SkillName.MOVE_MODE) <= 0.5f || AcknexObject.HasFlag(PropertyName.INVISIBLE) || AcknexObject.GetAcknexObject(PropertyName.TARGET) != _lastTarget)
@@ -480,7 +485,7 @@ namespace Acknex
         private IEnumerator MoveToVertex()
         {
             var targetPos = new Vector2(AcknexObject.GetFloat(PropertyName.TARGET_X), AcknexObject.GetFloat(PropertyName.TARGET_Y));
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 if (World.Instance.GetSkillValue(SkillName.MOVE_MODE) <= 0.5f || AcknexObject.HasFlag(PropertyName.INVISIBLE) || AcknexObject.GetAcknexObject(PropertyName.TARGET) != _lastTarget)
@@ -501,7 +506,7 @@ namespace Acknex
         private IEnumerator MoveToPlayer()
         {
             var currentRegion = GetRegion();
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
 #if DEBUG_ENABLED
@@ -545,7 +550,7 @@ namespace Acknex
         private IEnumerator MoveToAngle()
         {
             var currentRegion = GetRegion();
-            for (;;)
+            for (; ; )
             {
                 AcknexObject.IsDirty = true;
                 MoveToAngleStep();
@@ -578,7 +583,7 @@ namespace Acknex
             World.Instance.TriggerEvent(PropertyName.DO, AcknexObject, AcknexObject, GetRegion());
         }
 
-        public void  StickToTheCeiling(float thingX, float thingY, ref float thingZ, bool initial = false)
+        public void StickToTheCeiling(float thingX, float thingY, ref float thingZ, bool initial = false)
         {
             Locate(thingX, thingY, ref thingZ, initial, true);
             //var region = GetRegion();

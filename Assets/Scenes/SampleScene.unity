@@ -905,6 +905,8 @@ MonoBehaviour:
   CanvasScaler: {fileID: 1116186325}
   CanvasView: {fileID: 1520209880}
   CanvasWidthRatio: 0
+  CustomStateMachines: 1
+  DebugCoroutines: 0
   DebugSkills: 0
   DisableCompilation: 1
   DisableMaterials: 0
@@ -917,6 +919,8 @@ MonoBehaviour:
   MouseMultiplier: 0.1
   NullTexture: {fileID: 2800000, guid: da40acbc9325ea9438512fe4fee1f7fc, type: 3}
   OldAckVersion: 0
+  RegionOffsetLayer:
+    m_LayerIndex: 14
   RegionsLayer:
     m_LayerIndex: 13
   SourceGenerationPath: Assets\Scripts\Tests\game.cs.new
@@ -930,6 +934,9 @@ MonoBehaviour:
   UsePalettes: 1
   UseWDLEngine: 0
   Volume: 1
+  WallsAndRegions:
+    serializedVersion: 2
+    m_Bits: 12288
   WallsLayer:
     m_LayerIndex: 12
   WallsWaterAndRegions:
@@ -941,14 +948,10 @@ MonoBehaviour:
   WallsWaterRegionsAndThings:
     serializedVersion: 2
     m_Bits: 12816
-  WallsAndRegions:
-    serializedVersion: 2
-    m_Bits: 12288
   WaterLayer:
     m_LayerIndex: 4
   WDLPath: C:\games\acknex\varginha2\CONTATO.WDL
-  DebugCoroutines: 0
-  CustomStateMachines: 1
+  TestOffset: -0.1
 --- !u!114 &1246573633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1310,13 +1313,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 3
+  m_Height: 4.6
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.01
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.5, z: 0}
+  m_Center: {x: 0, y: 2.3, z: 0}
 --- !u!1 &1520209879
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,13 @@
                 public void SetWorld(IAcknexWorld world) {
                     _world = world;
                 }
+                private static bool CheckEquals(float a, float b) {
+                    return Mathf.Abs(a - b) <= 0.05;
+                }
+                private static bool CheckEquals(IAcknexObject a, IAcknexObject b)
+                {
+                    return  a == b;
+                }
         
                 private Dictionary<string, ICompiledAction> _callbacks = new Dictionary<string, ICompiledAction>();
                 public IEnumerator CallAction(string name, IAcknexObject MY, IAcknexObject THERE)
@@ -165,6 +172,8 @@ _callbacks.Add("SHOWPDAGAMEOVER", new SHOWPDAGAMEOVER());
 _callbacks.Add("PDAMESSAGEOFF", new PDAMESSAGEOFF());
 _callbacks.Add("REPEATMUSIC", new REPEATMUSIC());
 _callbacks.Add("SETSOUNDVOL", new SETSOUNDVOL());
+_callbacks.Add("MOUSE_TOGGLE", new MOUSE_TOGGLE());
+_callbacks.Add("SCAN_OBJ", new SCAN_OBJ());
 _callbacks.Add("PICKKEY1", new PICKKEY1());
 _callbacks.Add("PICKKEY2", new PICKKEY2());
 _callbacks.Add("PICKUPLOCALMP5", new PICKUPLOCALMP5());
@@ -399,13 +408,13 @@ GODCOUNTER_14.SetFloat(231,GODCOUNTER_13_val + -1f);
 WATER:
 UNDERWATER_16 = _world.GetObject(ObjectType.Skill,1369167822);
 UNDERWATER_16_val = UNDERWATER_16.GetFloat(PropertyName.VAL);
-if (UNDERWATER_16_val == 0f)
+if (CheckEquals(UNDERWATER_16_val , 0f))
 {
 goto CONT;
 }
 HERE_19 = _world.GetSynonymObject(703);
 temp_20 =HERE_19?.GetAcknexObject(234);
-if (temp_20 == null)
+if (CheckEquals(temp_20 , null))
 {
 goto CONT;
 }
@@ -473,7 +482,7 @@ if (temp_46_array == null || temp_46_array.Count == 0) {
 temp_46_index =PANELTEXT_45.GetInteger(PropertyName.INDEX);
   temp_46 = temp_46_array[temp_46_index-1];
 }
-if (temp_46 == BLANKSTR_43)
+if (CheckEquals(temp_46 , BLANKSTR_43))
 {
 goto NULLMESSAGE;
 }
@@ -700,7 +709,7 @@ public class LOCATEACTOR : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(213);
-if (temp_3 == 0f)
+if (CheckEquals(temp_3 , 0f))
 {
 goto CONT;
 }
@@ -722,7 +731,7 @@ temp_18 =MY_17?.GetAcknexObject(198);
 _world.SetSynonymObject(2468751347,temp_18);
 WATER_REGION_22 = _world.GetSynonymObject(2468751347);
 temp_23 =WATER_REGION_22?.GetAcknexObject(242);
-if (temp_23 == null)
+if (CheckEquals(temp_23 , null))
 {
 return false;
 }
@@ -805,7 +814,7 @@ MY_27 = MY;
 _world.Shoot(MY_27, MY, THERE);
 HIT_DIST_29 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_29_val = HIT_DIST_29.GetFloat(PropertyName.VAL);
-if (HIT_DIST_29_val == 0f)
+if (CheckEquals(HIT_DIST_29_val , 0f))
 {
 goto NOTVISIBLE;
 }
@@ -816,7 +825,7 @@ return false;
 MAYBEVISIBLE:
 MY_35 = MY;
 temp_36 =MY_35.GetFloat(205);
-if (temp_36 == 1f)
+if (CheckEquals(temp_36 , 1f))
 {
 goto ISVISIBLE;
 }
@@ -880,7 +889,7 @@ return false;
 }
 MY_6 = MY;
 temp_7 =MY_6.GetFloat(213);
-if (temp_7 == 0f)
+if (CheckEquals(temp_7 , 0f))
 {
 goto CONT;
 }
@@ -895,7 +904,7 @@ temp_13 =MY_12?.GetAcknexObject(198);
 _world.SetSynonymObject(2468751347,temp_13);
 WATER_REGION_17 = _world.GetSynonymObject(2468751347);
 temp_18 =WATER_REGION_17?.GetAcknexObject(242);
-if (temp_18 == null)
+if (CheckEquals(temp_18 , null))
 {
 goto PROBELOOP;
 }
@@ -904,7 +913,7 @@ MY_21.SetFloat(165,-2.5f);
 PROBELOOP:
 WATER_REGION_24 = _world.GetSynonymObject(2468751347);
 temp_25 =WATER_REGION_24.GetFloat(182);
-if (temp_25 == 1f)
+if (CheckEquals(temp_25 , 1f))
 {
 {
             var enumerator = new VANISHFORGOOD();
@@ -1316,7 +1325,7 @@ public class ACTORJUMP : ICompiledAction {
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(169);
 MY_5 = MY;
-MY_5.SetFloat(169,temp_3 + (-0.1f * TimeUtils.TicksToTime(1)));
+MY_5.SetFloat(169,temp_3 + (-0.1f * _world.GetSkillValue(SkillName.TIME_CORR)));
 MY_7 = MY;
 temp_8 =MY_7.GetFloat(200);
 MY_10 = MY;
@@ -1531,14 +1540,14 @@ public class SHOWAMMO : ICompiledAction {
      }
 WEAPONSEL_1 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_1_val = WEAPONSEL_1.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_1_val == 1f)
+if (CheckEquals(WEAPONSEL_1_val , 1f))
 {
 AMMO_3 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_3.SetFloat(231,0f);
 }
 WEAPONSEL_5 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_5_val = WEAPONSEL_5.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_5_val == 2f)
+if (CheckEquals(WEAPONSEL_5_val , 2f))
 {
 AMMO_MP5_6 = _world.GetObject(ObjectType.Skill,1494668136);
 AMMO_MP5_6_val = AMMO_MP5_6.GetFloat(PropertyName.VAL);
@@ -1547,7 +1556,7 @@ AMMO_7.SetFloat(231,AMMO_MP5_6_val);
 }
 WEAPONSEL_9 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_9_val = WEAPONSEL_9.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_9_val == 3f)
+if (CheckEquals(WEAPONSEL_9_val , 3f))
 {
 AMMO_GRANADE_10 = _world.GetObject(ObjectType.Skill,3603202376);
 AMMO_GRANADE_10_val = AMMO_GRANADE_10.GetFloat(PropertyName.VAL);
@@ -1556,7 +1565,7 @@ AMMO_11.SetFloat(231,AMMO_GRANADE_10_val);
 }
 WEAPONSEL_13 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_13_val = WEAPONSEL_13.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_13_val == 4f)
+if (CheckEquals(WEAPONSEL_13_val , 4f))
 {
 AMMO_STINGER_14 = _world.GetObject(ObjectType.Skill,2008713554);
 AMMO_STINGER_14_val = AMMO_STINGER_14.GetFloat(PropertyName.VAL);
@@ -1565,7 +1574,7 @@ AMMO_15.SetFloat(231,AMMO_STINGER_14_val);
 }
 WEAPONSEL_17 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_17_val = WEAPONSEL_17.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_17_val == 5f)
+if (CheckEquals(WEAPONSEL_17_val , 5f))
 {
 AMMO_QUANTUM_18 = _world.GetObject(ObjectType.Skill,3750407617);
 AMMO_QUANTUM_18_val = AMMO_QUANTUM_18.GetFloat(PropertyName.VAL);
@@ -1620,14 +1629,14 @@ public class DECAMMO : ICompiledAction {
      }
 WEAPONSEL_1 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_1_val = WEAPONSEL_1.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_1_val == 1f)
+if (CheckEquals(WEAPONSEL_1_val , 1f))
 {
 AMMO_3 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_3.SetFloat(231,0f);
 }
 WEAPONSEL_5 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_5_val = WEAPONSEL_5.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_5_val == 2f)
+if (CheckEquals(WEAPONSEL_5_val , 2f))
 {
 AMMO_6 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_6_val = AMMO_6.GetFloat(PropertyName.VAL);
@@ -1636,7 +1645,7 @@ AMMO_MP5_7.SetFloat(231,AMMO_6_val);
 }
 WEAPONSEL_9 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_9_val = WEAPONSEL_9.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_9_val == 3f)
+if (CheckEquals(WEAPONSEL_9_val , 3f))
 {
 AMMO_10 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_10_val = AMMO_10.GetFloat(PropertyName.VAL);
@@ -1645,7 +1654,7 @@ AMMO_GRANADE_11.SetFloat(231,AMMO_10_val);
 }
 WEAPONSEL_13 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_13_val = WEAPONSEL_13.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_13_val == 4f)
+if (CheckEquals(WEAPONSEL_13_val , 4f))
 {
 AMMO_14 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_14_val = AMMO_14.GetFloat(PropertyName.VAL);
@@ -1654,7 +1663,7 @@ AMMO_STINGER_15.SetFloat(231,AMMO_14_val);
 }
 WEAPONSEL_17 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_17_val = WEAPONSEL_17.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_17_val == 5f)
+if (CheckEquals(WEAPONSEL_17_val , 5f))
 {
 AMMO_18 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_18_val = AMMO_18.GetFloat(PropertyName.VAL);
@@ -1794,7 +1803,7 @@ public class DRILLHOLE : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(175);
-if (temp_3 == 0f)
+if (CheckEquals(temp_3 , 0f))
 {
 return false;
 }
@@ -1825,7 +1834,7 @@ DISTY_40 = _world.GetObject(ObjectType.Skill,217512506);
 DISTY_40.SetFloat(231,temp_39);
 MY_43 = MY;
 temp_44 =MY_43?.GetAcknexObject(166);
-if (temp_44 != null)
+if (!CheckEquals(temp_44 , null))
 {
 goto SECOND;
 }
@@ -1857,7 +1866,7 @@ temp_69 =MY_68?.GetAcknexObject(166);
 _world.SetSynonymObject(3254537347,temp_69);
 MY_TEX_73 = _world.GetSynonymObject(3254537347);
 temp_74 =MY_TEX_73?.GetAcknexObject(166);
-if (temp_74 != null)
+if (!CheckEquals(temp_74 , null))
 {
 goto THIRD;
 }
@@ -1888,7 +1897,7 @@ temp_99 =MY_TEX_98?.GetAcknexObject(166);
 _world.SetSynonymObject(3254537347,temp_99);
 MY_TEX_103 = _world.GetSynonymObject(3254537347);
 temp_104 =MY_TEX_103?.GetAcknexObject(166);
-if (temp_104 != null)
+if (!CheckEquals(temp_104 , null))
 {
 goto FOURTH;
 }
@@ -1919,7 +1928,7 @@ temp_129 =MY_TEX_128?.GetAcknexObject(166);
 _world.SetSynonymObject(3254537347,temp_129);
 MY_TEX_133 = _world.GetSynonymObject(3254537347);
 temp_134 =MY_TEX_133?.GetAcknexObject(166);
-if (temp_134 != null)
+if (!CheckEquals(temp_134 , null))
 {
 goto FIFTH;
 }
@@ -1950,7 +1959,7 @@ temp_159 =MY_TEX_158?.GetAcknexObject(166);
 _world.SetSynonymObject(3254537347,temp_159);
 MY_TEX_163 = _world.GetSynonymObject(3254537347);
 temp_164 =MY_TEX_163?.GetAcknexObject(166);
-if (temp_164 != null)
+if (!CheckEquals(temp_164 , null))
 {
 goto SIXTH;
 }
@@ -1981,7 +1990,7 @@ temp_189 =MY_TEX_188?.GetAcknexObject(166);
 _world.SetSynonymObject(3254537347,temp_189);
 MY_TEX_193 = _world.GetSynonymObject(3254537347);
 temp_194 =MY_TEX_193?.GetAcknexObject(166);
-if (temp_194 != null)
+if (!CheckEquals(temp_194 , null))
 {
 goto SEVENTH;
 }
@@ -2012,7 +2021,7 @@ temp_219 =MY_TEX_218?.GetAcknexObject(166);
 _world.SetSynonymObject(3254537347,temp_219);
 MY_TEX_223 = _world.GetSynonymObject(3254537347);
 temp_224 =MY_TEX_223?.GetAcknexObject(166);
-if (temp_224 != null)
+if (!CheckEquals(temp_224 , null))
 {
 goto EIGHTH;
 }
@@ -2043,7 +2052,7 @@ temp_249 =MY_TEX_248?.GetAcknexObject(166);
 _world.SetSynonymObject(3254537347,temp_249);
 MY_TEX_253 = _world.GetSynonymObject(3254537347);
 temp_254 =MY_TEX_253?.GetAcknexObject(166);
-if (temp_254 != null)
+if (!CheckEquals(temp_254 , null))
 {
 goto NINETH;
 }
@@ -2074,7 +2083,7 @@ temp_279 =MY_TEX_278?.GetAcknexObject(166);
 _world.SetSynonymObject(3254537347,temp_279);
 MY_TEX_283 = _world.GetSynonymObject(3254537347);
 temp_284 =MY_TEX_283?.GetAcknexObject(166);
-if (temp_284 != null)
+if (!CheckEquals(temp_284 , null))
 {
 goto TENTH;
 }
@@ -2105,7 +2114,7 @@ temp_309 =MY_TEX_308?.GetAcknexObject(166);
 _world.SetSynonymObject(3254537347,temp_309);
 MY_TEX_313 = _world.GetSynonymObject(3254537347);
 temp_314 =MY_TEX_313?.GetAcknexObject(166);
-if (temp_314 != null)
+if (!CheckEquals(temp_314 , null))
 {
 goto LAST;
 }
@@ -2379,13 +2388,13 @@ WAITING:
             Current = null;
         
 temp_3 =_world.AcknexObject?.GetAcknexObject(40);
-if (temp_3 == null)
+if (CheckEquals(temp_3 , null))
 {
 goto WAITING;
 }
 GUNFIRING_5 = _world.GetObject(ObjectType.Skill,3478808598);
 GUNFIRING_5_val = GUNFIRING_5.GetFloat(PropertyName.VAL);
-if (GUNFIRING_5_val == 1f)
+if (CheckEquals(GUNFIRING_5_val , 1f))
 {
 goto WAITING;
 }
@@ -2804,7 +2813,7 @@ _world.AcknexObject.SetAcknexObject(107,null);
 _world.AcknexObject.SetAcknexObject(108,null);
 UNDERWATER_17 = _world.GetObject(ObjectType.Skill,1369167822);
 UNDERWATER_17_val = UNDERWATER_17.GetFloat(PropertyName.VAL);
-if (UNDERWATER_17_val == 0f)
+if (CheckEquals(UNDERWATER_17_val , 0f))
 {
 goto NOWATER;
 }
@@ -3424,28 +3433,28 @@ MOVE_MODE_21 = _world.GetObject(ObjectType.Skill,362);
 MOVE_MODE_21.SetFloat(231,0f);
 SUBMENUITEM_23 = _world.GetObject(ObjectType.Skill,325927899);
 SUBMENUITEM_23_val = SUBMENUITEM_23.GetFloat(PropertyName.VAL);
-if (SUBMENUITEM_23_val == 1f)
+if (CheckEquals(SUBMENUITEM_23_val , 1f))
 {
 SAVEDGAME01_24 = _world.AcknexObject.GetAcknexObject(462276091);
 _world.ReadInkey(SAVEDGAME01_24);
 }
 SUBMENUITEM_26 = _world.GetObject(ObjectType.Skill,325927899);
 SUBMENUITEM_26_val = SUBMENUITEM_26.GetFloat(PropertyName.VAL);
-if (SUBMENUITEM_26_val == 2f)
+if (CheckEquals(SUBMENUITEM_26_val , 2f))
 {
 SAVEDGAME02_27 = _world.AcknexObject.GetAcknexObject(462276092);
 _world.ReadInkey(SAVEDGAME02_27);
 }
 SUBMENUITEM_29 = _world.GetObject(ObjectType.Skill,325927899);
 SUBMENUITEM_29_val = SUBMENUITEM_29.GetFloat(PropertyName.VAL);
-if (SUBMENUITEM_29_val == 3f)
+if (CheckEquals(SUBMENUITEM_29_val , 3f))
 {
 SAVEDGAME03_30 = _world.AcknexObject.GetAcknexObject(462276093);
 _world.ReadInkey(SAVEDGAME03_30);
 }
 SUBMENUITEM_32 = _world.GetObject(ObjectType.Skill,325927899);
 SUBMENUITEM_32_val = SUBMENUITEM_32.GetFloat(PropertyName.VAL);
-if (SUBMENUITEM_32_val == 4f)
+if (CheckEquals(SUBMENUITEM_32_val , 4f))
 {
 SAVEDGAME04_33 = _world.AcknexObject.GetAcknexObject(462276094);
 _world.ReadInkey(SAVEDGAME04_33);
@@ -3677,7 +3686,7 @@ return false;
 _world.AcknexObject.SetAcknexObject(81,null);
 MENUITEM_7 = _world.GetObject(ObjectType.Skill,118534065);
 MENUITEM_7_val = MENUITEM_7.GetFloat(PropertyName.VAL);
-if (MENUITEM_7_val == 1f)
+if (CheckEquals(MENUITEM_7_val , 1f))
 {
 {
             var enumerator = new SHOWSOUNDVOLUMEMENU();
@@ -3690,7 +3699,7 @@ if (MENUITEM_7_val == 1f)
 }
 MENUITEM_9 = _world.GetObject(ObjectType.Skill,118534065);
 MENUITEM_9_val = MENUITEM_9.GetFloat(PropertyName.VAL);
-if (MENUITEM_9_val == 2f)
+if (CheckEquals(MENUITEM_9_val , 2f))
 {
 {
             var enumerator = new SHOWSAVEMENU();
@@ -3703,7 +3712,7 @@ if (MENUITEM_9_val == 2f)
 }
 MENUITEM_11 = _world.GetObject(ObjectType.Skill,118534065);
 MENUITEM_11_val = MENUITEM_11.GetFloat(PropertyName.VAL);
-if (MENUITEM_11_val == 3f)
+if (CheckEquals(MENUITEM_11_val , 3f))
 {
 {
             var enumerator = new SHOWLOADMENU();
@@ -3716,7 +3725,7 @@ if (MENUITEM_11_val == 3f)
 }
 MENUITEM_13 = _world.GetObject(ObjectType.Skill,118534065);
 MENUITEM_13_val = MENUITEM_13.GetFloat(PropertyName.VAL);
-if (MENUITEM_13_val == 4f)
+if (CheckEquals(MENUITEM_13_val , 4f))
 {
 {
             var enumerator = new ASKFOREXIT();
@@ -3957,7 +3966,7 @@ _world.AcknexObject.SetAcknexObject(145,MENUPANEL_20);
 PLEASEWAITTEXT_23 = _world.AcknexObject.GetAcknexObject(1780034721);
 _world.AcknexObject.SetAcknexObject(129,PLEASEWAITTEXT_23);
 LEVEL_STRING_27 = _world.GetSynonymObject(270057211);
-if (LEVEL_STRING_27 != null)
+if (!CheckEquals(LEVEL_STRING_27 , null))
 {
 goto CONT;
 }
@@ -4157,7 +4166,7 @@ public class EXPLODETARGET : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2?.GetAcknexObject(199);
-if (temp_3 == null)
+if (CheckEquals(temp_3 , null))
 {
 return false;
 }
@@ -4277,7 +4286,7 @@ MY_28 = MY;
 _world.Explode(MY_28, MY, THERE);
 HIT_DIST_30 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_30_val = HIT_DIST_30.GetFloat(PropertyName.VAL);
-if (HIT_DIST_30_val == 0f)
+if (CheckEquals(HIT_DIST_30_val , 0f))
 {
 goto CONT;
 }
@@ -4293,7 +4302,7 @@ MY_37 = MY;
 _world.Shoot(MY_37, MY, THERE);
 HIT_DIST_39 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_39_val = HIT_DIST_39.GetFloat(PropertyName.VAL);
-if (HIT_DIST_39_val == 0f)
+if (CheckEquals(HIT_DIST_39_val , 0f))
 {
 goto CONT;
 }
@@ -4394,7 +4403,7 @@ MISSILECOUNTER_2 = _world.GetObject(ObjectType.Skill,3933088227);
 MISSILECOUNTER_2.SetFloat(231,MISSILECOUNTER_1_val + 1f);
 MISSILECOUNTER_4 = _world.GetObject(ObjectType.Skill,3933088227);
 MISSILECOUNTER_4_val = MISSILECOUNTER_4.GetFloat(PropertyName.VAL);
-if (MISSILECOUNTER_4_val == 16f)
+if (CheckEquals(MISSILECOUNTER_4_val , 16f))
 {
 MY_7 = MY;
 MY_7.SetFloat(206,0f);
@@ -4418,7 +4427,7 @@ MISSILECOUNTER_16 = _world.GetObject(ObjectType.Skill,3933088227);
 MISSILECOUNTER_16.SetFloat(231,0f);
 MY_19 = MY;
 temp_20 =MY_19.GetFloat(205);
-if (temp_20 == 1f)
+if (CheckEquals(temp_20 , 1f))
 {
 return false;
 }
@@ -4601,7 +4610,7 @@ _world.SetSynonymObject(3704223598,MY_3);
 FOLLOW_5 = _world.AcknexObject.GetAcknexObject(2968039200);
 MY_7 = MY;
 temp_8 =MY_7?.GetAcknexObject(199);
-if (temp_8 != FOLLOW_5)
+if (!CheckEquals(temp_8 , FOLLOW_5))
 {
 EXPLOSION_ON_10 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_10.SetFloat(231,2f);
@@ -4616,7 +4625,7 @@ MY_18 = MY;
 MY_18.SetFloat(204,1f);
 MY_21 = MY;
 temp_22 =MY_21.GetFloat(205);
-if (temp_22 == 1f)
+if (CheckEquals(temp_22 , 1f))
 {
 RENDER_MODE_24 = _world.GetObject(ObjectType.Skill,361);
 RENDER_MODE_24.SetFloat(231,1f);
@@ -4685,7 +4694,7 @@ _world.SetSynonymObject(3704223598,MY_6);
 FOLLOW_8 = _world.AcknexObject.GetAcknexObject(2968039200);
 MY_10 = MY;
 temp_11 =MY_10?.GetAcknexObject(199);
-if (temp_11 != FOLLOW_8)
+if (!CheckEquals(temp_11 , FOLLOW_8))
 {
 EXPLOSION_ON_13 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_13.SetFloat(231,2f);
@@ -4783,13 +4792,13 @@ public class BEAMREACT : ICompiledAction {
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }PARTICLE_1 = _world.GetSynonymObject(2704244193);
-if (PARTICLE_1 == null)
+if (CheckEquals(PARTICLE_1 , null))
 {
 return false;
 }
 DISTX_3 = _world.GetObject(ObjectType.Skill,217512505);
 DISTX_3_val = DISTX_3.GetFloat(PropertyName.VAL);
-if (DISTX_3_val != 0f)
+if (!CheckEquals(DISTX_3_val , 0f))
 {
 PARTICLE_5 = _world.GetSynonymObject(2704244193);
 PARTICLE_7 = _world.GetSynonymObject(2704244193);
@@ -4909,18 +4918,18 @@ MY_4 = MY;
 _world.Explode(MY_4, MY, THERE);
 HIT_MINDIST_6 = _world.GetObject(ObjectType.Skill,445);
 HIT_MINDIST_6_val = HIT_MINDIST_6.GetFloat(PropertyName.VAL);
-if (HIT_MINDIST_6_val == 0f)
+if (CheckEquals(HIT_MINDIST_6_val , 0f))
 {
 goto VANISH;
 }
 HIT_9 = _world.GetSynonymObject(704);
 temp_10 =HIT_9.GetFloat(205);
-if (temp_10 == 0f)
+if (CheckEquals(temp_10 , 0f))
 {
 return false;
 }
 HIT_12 = _world.GetSynonymObject(704);
-if (HIT_12 == null)
+if (CheckEquals(HIT_12 , null))
 {
 return false;
 }
@@ -4961,7 +4970,7 @@ temp_59 =MY_58.GetFloat(200);
 DISTZ_51.SetFloat(231,temp_55-temp_59);
 DISTX_61 = _world.GetObject(ObjectType.Skill,217512505);
 DISTX_61_val = DISTX_61.GetFloat(PropertyName.VAL);
-if (DISTX_61_val != 0f)
+if (!CheckEquals(DISTX_61_val , 0f))
 {
 MY_63 = MY;
 MY_65 = MY;
@@ -4987,13 +4996,13 @@ return false;
 VANISH:
 MY_85 = MY;
 temp_86 =MY_85.GetFloat(213);
-if (temp_86 == 0f)
+if (CheckEquals(temp_86 , 0f))
 {
 //Unknown keyword: LOCATE
 }
 MY_89 = MY;
 temp_90 =MY_89.GetFloat(205);
-if (temp_90 == 0f)
+if (CheckEquals(temp_90 , 0f))
 {
 {
             var enumerator = new VANISHSTOP();
@@ -5203,7 +5212,7 @@ public class CHOOSEGRANADE : ICompiledAction {
      }
 GRAN1ACT_2 = _world.AcknexObject.GetAcknexObject(1197183582);
 temp_3 =GRAN1ACT_2.GetFloat(204);
-if (temp_3 != 1f)
+if (!CheckEquals(temp_3 , 1f))
 {
 goto GRANADE1;
 }
@@ -5213,7 +5222,7 @@ return false;
 GRANADE1:
 GRAN11ACT_8 = _world.AcknexObject.GetAcknexObject(851742895);
 temp_9 =GRAN11ACT_8.GetFloat(204);
-if (temp_9 != 1f)
+if (!CheckEquals(temp_9 , 1f))
 {
 goto GRANADE2;
 }
@@ -5223,7 +5232,7 @@ return false;
 GRANADE2:
 GRAN12ACT_14 = _world.AcknexObject.GetAcknexObject(851778832);
 temp_15 =GRAN12ACT_14.GetFloat(204);
-if (temp_15 != 1f)
+if (!CheckEquals(temp_15 , 1f))
 {
 goto GRANADE3;
 }
@@ -5233,7 +5242,7 @@ return false;
 GRANADE3:
 GRAN13ACT_20 = _world.AcknexObject.GetAcknexObject(851814769);
 temp_21 =GRAN13ACT_20.GetFloat(204);
-if (temp_21 != 1f)
+if (!CheckEquals(temp_21 , 1f))
 {
 goto GRANADE4;
 }
@@ -5243,7 +5252,7 @@ return false;
 GRANADE4:
 GRAN14ACT_26 = _world.AcknexObject.GetAcknexObject(851850706);
 temp_27 =GRAN14ACT_26.GetFloat(204);
-if (temp_27 != 1f)
+if (!CheckEquals(temp_27 , 1f))
 {
 goto REFUSE;
 }
@@ -5292,7 +5301,7 @@ public class CHOOSEMISSILE : ICompiledAction {
      }
 MISS1ACT_2 = _world.AcknexObject.GetAcknexObject(1181860530);
 temp_3 =MISS1ACT_2.GetFloat(204);
-if (temp_3 != 1f)
+if (!CheckEquals(temp_3 , 1f))
 {
 goto MISSILE1;
 }
@@ -5302,7 +5311,7 @@ return false;
 MISSILE1:
 MISS11ACT_8 = _world.AcknexObject.GetAcknexObject(346082179);
 temp_9 =MISS11ACT_8.GetFloat(204);
-if (temp_9 != 1f)
+if (!CheckEquals(temp_9 , 1f))
 {
 goto MISSILE2;
 }
@@ -5312,7 +5321,7 @@ return false;
 MISSILE2:
 MISS12ACT_14 = _world.AcknexObject.GetAcknexObject(346118116);
 temp_15 =MISS12ACT_14.GetFloat(204);
-if (temp_15 != 1f)
+if (!CheckEquals(temp_15 , 1f))
 {
 goto MISSILE3;
 }
@@ -5322,7 +5331,7 @@ return false;
 MISSILE3:
 MISS13ACT_20 = _world.AcknexObject.GetAcknexObject(346154053);
 temp_21 =MISS13ACT_20.GetFloat(204);
-if (temp_21 != 1f)
+if (!CheckEquals(temp_21 , 1f))
 {
 goto MISSILE4;
 }
@@ -5332,7 +5341,7 @@ return false;
 MISSILE4:
 MISS14ACT_26 = _world.AcknexObject.GetAcknexObject(346189990);
 temp_27 =MISS14ACT_26.GetFloat(204);
-if (temp_27 != 1f)
+if (!CheckEquals(temp_27 , 1f))
 {
 goto REFUSE;
 }
@@ -5381,7 +5390,7 @@ public class CHOOSEPARTICLE : ICompiledAction {
      }
 PARTICLEACT_2 = _world.AcknexObject.GetAcknexObject(162694329);
 temp_3 =PARTICLEACT_2.GetFloat(204);
-if (temp_3 != 1f)
+if (!CheckEquals(temp_3 , 1f))
 {
 goto PARTICLE1;
 }
@@ -5391,7 +5400,7 @@ return false;
 PARTICLE1:
 PARTICLE1ACT_8 = _world.AcknexObject.GetAcknexObject(1073335914);
 temp_9 =PARTICLE1ACT_8.GetFloat(204);
-if (temp_9 != 1f)
+if (!CheckEquals(temp_9 , 1f))
 {
 goto PARTICLE2;
 }
@@ -5401,7 +5410,7 @@ return false;
 PARTICLE2:
 PARTICLE2ACT_14 = _world.AcknexObject.GetAcknexObject(1073371851);
 temp_15 =PARTICLE2ACT_14.GetFloat(204);
-if (temp_15 != 1f)
+if (!CheckEquals(temp_15 , 1f))
 {
 goto PARTICLE3;
 }
@@ -5411,7 +5420,7 @@ return false;
 PARTICLE3:
 PARTICLE3ACT_20 = _world.AcknexObject.GetAcknexObject(1073407788);
 temp_21 =PARTICLE3ACT_20.GetFloat(204);
-if (temp_21 != 1f)
+if (!CheckEquals(temp_21 , 1f))
 {
 goto PARTICLE4;
 }
@@ -5421,7 +5430,7 @@ return false;
 PARTICLE4:
 PARTICLE4ACT_26 = _world.AcknexObject.GetAcknexObject(1073443725);
 temp_27 =PARTICLE4ACT_26.GetFloat(204);
-if (temp_27 != 1f)
+if (!CheckEquals(temp_27 , 1f))
 {
 goto REFUSE;
 }
@@ -5470,7 +5479,7 @@ public class CASTBLOOD : ICompiledAction {
      }
 BLOOD1ACT_2 = _world.AcknexObject.GetAcknexObject(2619845414);
 temp_3 =BLOOD1ACT_2.GetFloat(204);
-if (temp_3 != 1f)
+if (!CheckEquals(temp_3 , 1f))
 {
 goto BLOOD2;
 }
@@ -5480,7 +5489,7 @@ goto CAST;
 BLOOD2:
 BLOOD2ACT_8 = _world.AcknexObject.GetAcknexObject(2619881351);
 temp_9 =BLOOD2ACT_8.GetFloat(204);
-if (temp_9 != 1f)
+if (!CheckEquals(temp_9 , 1f))
 {
 goto BLOOD3;
 }
@@ -5490,7 +5499,7 @@ goto CAST;
 BLOOD3:
 BLOOD3ACT_14 = _world.AcknexObject.GetAcknexObject(2619917288);
 temp_15 =BLOOD3ACT_14.GetFloat(204);
-if (temp_15 != 1f)
+if (!CheckEquals(temp_15 , 1f))
 {
 goto BLOOD4;
 }
@@ -5500,7 +5509,7 @@ goto CAST;
 BLOOD4:
 BLOOD4ACT_20 = _world.AcknexObject.GetAcknexObject(2619953225);
 temp_21 =BLOOD4ACT_20.GetFloat(204);
-if (temp_21 != 1f)
+if (!CheckEquals(temp_21 , 1f))
 {
 goto REFUSE;
 }
@@ -6119,7 +6128,7 @@ public class FLASHREGION : ICompiledAction {
      }
 LUP_1 = _world.GetObject(ObjectType.Skill,193463646);
 LUP_1_val = LUP_1.GetFloat(PropertyName.VAL);
-if (LUP_1_val != 0f)
+if (!CheckEquals(LUP_1_val , 0f))
 {
 goto IMPL1;
 }
@@ -6142,7 +6151,7 @@ goto GO;
 IMPL1:
 LUP1_18 = _world.GetObject(ObjectType.Skill,2089301071);
 LUP1_18_val = LUP1_18.GetFloat(PropertyName.VAL);
-if (LUP1_18_val != 0f)
+if (!CheckEquals(LUP1_18_val , 0f))
 {
 goto IMPL2;
 }
@@ -6165,7 +6174,7 @@ goto GO;
 IMPL2:
 LUP2_35 = _world.GetObject(ObjectType.Skill,2089301072);
 LUP2_35_val = LUP2_35.GetFloat(PropertyName.VAL);
-if (LUP2_35_val != 0f)
+if (!CheckEquals(LUP2_35_val , 0f))
 {
 goto IMPL3;
 }
@@ -6188,7 +6197,7 @@ goto GO;
 IMPL3:
 LUP3_52 = _world.GetObject(ObjectType.Skill,2089301073);
 LUP3_52_val = LUP3_52.GetFloat(PropertyName.VAL);
-if (LUP3_52_val != 0f)
+if (!CheckEquals(LUP3_52_val , 0f))
 {
 goto IMPL4;
 }
@@ -6211,7 +6220,7 @@ goto GO;
 IMPL4:
 LUP4_69 = _world.GetObject(ObjectType.Skill,2089301074);
 LUP4_69_val = LUP4_69.GetFloat(PropertyName.VAL);
-if (LUP4_69_val != 0f)
+if (!CheckEquals(LUP4_69_val , 0f))
 {
 return false;
 }
@@ -6232,7 +6241,7 @@ LUP4_84 = _world.GetObject(ObjectType.Skill,2089301074);
 LUP4_84.SetFloat(231,0.04f);
 GO:
 temp_88 =_world.AcknexObject?.GetAcknexObject(12);
-if (temp_88 == null)
+if (CheckEquals(temp_88 , null))
 {
 IMPLODELIGHT_89 = _world.AcknexObject.GetAcknexObject(1148133871);
 _world.AcknexObject.SetAcknexObject(12,IMPLODELIGHT_89);
@@ -6329,7 +6338,7 @@ public class IMPLODELIGHT : ICompiledAction {
      }
 LUP_1 = _world.GetObject(ObjectType.Skill,193463646);
 LUP_1_val = LUP_1.GetFloat(PropertyName.VAL);
-if (LUP_1_val == 0f)
+if (CheckEquals(LUP_1_val , 0f))
 {
 goto LIGHT1;
 }
@@ -6370,7 +6379,7 @@ LUP_22.SetFloat(231,0f);
 LIGHT1:
 LUP1_24 = _world.GetObject(ObjectType.Skill,2089301071);
 LUP1_24_val = LUP1_24.GetFloat(PropertyName.VAL);
-if (LUP1_24_val == 0f)
+if (CheckEquals(LUP1_24_val , 0f))
 {
 goto LIGHT2;
 }
@@ -6411,7 +6420,7 @@ LUP1_45.SetFloat(231,0f);
 LIGHT2:
 LUP2_47 = _world.GetObject(ObjectType.Skill,2089301072);
 LUP2_47_val = LUP2_47.GetFloat(PropertyName.VAL);
-if (LUP2_47_val == 0f)
+if (CheckEquals(LUP2_47_val , 0f))
 {
 goto LIGHT3;
 }
@@ -6452,7 +6461,7 @@ LUP2_68.SetFloat(231,0f);
 LIGHT3:
 LUP3_70 = _world.GetObject(ObjectType.Skill,2089301073);
 LUP3_70_val = LUP3_70.GetFloat(PropertyName.VAL);
-if (LUP3_70_val == 0f)
+if (CheckEquals(LUP3_70_val , 0f))
 {
 goto LIGHT4;
 }
@@ -6493,7 +6502,7 @@ LUP3_91.SetFloat(231,0f);
 LIGHT4:
 LUP4_93 = _world.GetObject(ObjectType.Skill,2089301074);
 LUP4_93_val = LUP4_93.GetFloat(PropertyName.VAL);
-if (LUP4_93_val == 0f)
+if (CheckEquals(LUP4_93_val , 0f))
 {
 goto CHECKEND;
 }
@@ -6536,7 +6545,7 @@ CHECKENDFLAG_116 = _world.GetObject(ObjectType.Skill,4017501180);
 CHECKENDFLAG_116.SetFloat(231,0f);
 LUP_118 = _world.GetObject(ObjectType.Skill,193463646);
 LUP_118_val = LUP_118.GetFloat(PropertyName.VAL);
-if (LUP_118_val != 0f)
+if (!CheckEquals(LUP_118_val , 0f))
 {
 CHECKENDFLAG_120 = _world.GetObject(ObjectType.Skill,4017501180);
 CHECKENDFLAG_120_val = CHECKENDFLAG_120.GetFloat(PropertyName.VAL);
@@ -6545,7 +6554,7 @@ CHECKENDFLAG_121.SetFloat(231,CHECKENDFLAG_120_val + 1f);
 }
 LUP1_123 = _world.GetObject(ObjectType.Skill,2089301071);
 LUP1_123_val = LUP1_123.GetFloat(PropertyName.VAL);
-if (LUP1_123_val != 0f)
+if (!CheckEquals(LUP1_123_val , 0f))
 {
 CHECKENDFLAG_125 = _world.GetObject(ObjectType.Skill,4017501180);
 CHECKENDFLAG_125_val = CHECKENDFLAG_125.GetFloat(PropertyName.VAL);
@@ -6554,7 +6563,7 @@ CHECKENDFLAG_126.SetFloat(231,CHECKENDFLAG_125_val + 1f);
 }
 LUP2_128 = _world.GetObject(ObjectType.Skill,2089301072);
 LUP2_128_val = LUP2_128.GetFloat(PropertyName.VAL);
-if (LUP2_128_val != 0f)
+if (!CheckEquals(LUP2_128_val , 0f))
 {
 CHECKENDFLAG_130 = _world.GetObject(ObjectType.Skill,4017501180);
 CHECKENDFLAG_130_val = CHECKENDFLAG_130.GetFloat(PropertyName.VAL);
@@ -6563,7 +6572,7 @@ CHECKENDFLAG_131.SetFloat(231,CHECKENDFLAG_130_val + 1f);
 }
 LUP3_133 = _world.GetObject(ObjectType.Skill,2089301073);
 LUP3_133_val = LUP3_133.GetFloat(PropertyName.VAL);
-if (LUP3_133_val != 0f)
+if (!CheckEquals(LUP3_133_val , 0f))
 {
 CHECKENDFLAG_135 = _world.GetObject(ObjectType.Skill,4017501180);
 CHECKENDFLAG_135_val = CHECKENDFLAG_135.GetFloat(PropertyName.VAL);
@@ -6572,7 +6581,7 @@ CHECKENDFLAG_136.SetFloat(231,CHECKENDFLAG_135_val + 1f);
 }
 LUP4_138 = _world.GetObject(ObjectType.Skill,2089301074);
 LUP4_138_val = LUP4_138.GetFloat(PropertyName.VAL);
-if (LUP4_138_val != 0f)
+if (!CheckEquals(LUP4_138_val , 0f))
 {
 CHECKENDFLAG_140 = _world.GetObject(ObjectType.Skill,4017501180);
 CHECKENDFLAG_140_val = CHECKENDFLAG_140.GetFloat(PropertyName.VAL);
@@ -6581,7 +6590,7 @@ CHECKENDFLAG_141.SetFloat(231,CHECKENDFLAG_140_val + 1f);
 }
 CHECKENDFLAG_143 = _world.GetObject(ObjectType.Skill,4017501180);
 CHECKENDFLAG_143_val = CHECKENDFLAG_143.GetFloat(PropertyName.VAL);
-if (CHECKENDFLAG_143_val == 0f)
+if (CheckEquals(CHECKENDFLAG_143_val , 0f))
 {
 _world.AcknexObject.SetAcknexObject(12,null);
 }
@@ -6750,7 +6759,7 @@ MY_11 = MY;
 _world.PlaySound(GRAN02SND_9,0.7f,MY_11);
 MY_14 = MY;
 temp_15 =MY_14.GetFloat(173);
-if (temp_15 == 0f)
+if (CheckEquals(temp_15 , 0f))
 {
 goto YWALL;
 }
@@ -6841,14 +6850,14 @@ MY_5.SetFloat(174,temp_11-TWO_PI_13_val);
 BOUNCED:
 MY_16 = MY;
 temp_17 =MY_16.GetFloat(213);
-if (temp_17 == 0f)
+if (CheckEquals(temp_17 , 0f))
 {
 goto COAST;
 }
 MY_20 = MY;
 temp_21 =MY_20.GetFloat(169);
 MY_23 = MY;
-MY_23.SetFloat(169,temp_21 + (-0.15f * TimeUtils.TicksToTime(1)));
+MY_23.SetFloat(169,temp_21 + (-0.15f * _world.GetSkillValue(SkillName.TIME_CORR)));
 MY_25 = MY;
 temp_26 =MY_25.GetFloat(200);
 MY_28 = MY;
@@ -6862,7 +6871,7 @@ temp_32 =MY_31?.GetAcknexObject(198);
 _world.SetSynonymObject(2468751347,temp_32);
 WATER_REGION_36 = _world.GetSynonymObject(2468751347);
 temp_37 =WATER_REGION_36?.GetAcknexObject(242);
-if (temp_37 == null)
+if (CheckEquals(temp_37 , null))
 {
 goto CONT;
 }
@@ -6999,7 +7008,7 @@ public class EXPLOSIONTIMER : ICompiledAction {
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(177);
 MY_5 = MY;
-MY_5.SetFloat(177,temp_3 + (-1f * TimeUtils.TicksToTime(1)));
+MY_5.SetFloat(177,temp_3 + (-1f * _world.GetSkillValue(SkillName.TIME_CORR)));
 MY_8 = MY;
 temp_9 =MY_8.GetFloat(177);
 if (temp_9 > 0f)
@@ -7084,7 +7093,7 @@ MODE_GEHEN_0 = _world.GetObject(ObjectType.Skill,3270985304);
 MODE_GEHEN_0_val = MODE_GEHEN_0.GetFloat(PropertyName.VAL);
 MOVING_1 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_1_val = MOVING_1.GetFloat(PropertyName.VAL);
-if (MOVING_1_val == MODE_GEHEN_0_val)
+if (CheckEquals(MOVING_1_val , MODE_GEHEN_0_val))
 {
 PLAYER_SIZE_2 = _world.GetObject(ObjectType.Skill,422);
 PLAYER_SIZE_3 = _world.GetObject(ObjectType.Skill,422);
@@ -7099,7 +7108,7 @@ MODE_SCHWIMMEN_9 = _world.GetObject(ObjectType.Skill,3755117404);
 MODE_SCHWIMMEN_9_val = MODE_SCHWIMMEN_9.GetFloat(PropertyName.VAL);
 MOVING_10 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_10_val = MOVING_10.GetFloat(PropertyName.VAL);
-if (MOVING_10_val == MODE_SCHWIMMEN_9_val)
+if (CheckEquals(MOVING_10_val , MODE_SCHWIMMEN_9_val))
 {
 PLAYER_SIZE_11 = _world.GetObject(ObjectType.Skill,422);
 PLAYER_SIZE_12 = _world.GetObject(ObjectType.Skill,422);
@@ -7112,7 +7121,7 @@ MODE_TAUCHEN_18 = _world.GetObject(ObjectType.Skill,1042033433);
 MODE_TAUCHEN_18_val = MODE_TAUCHEN_18.GetFloat(PropertyName.VAL);
 MOVING_19 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_19_val = MOVING_19.GetFloat(PropertyName.VAL);
-if (MOVING_19_val == MODE_TAUCHEN_18_val)
+if (CheckEquals(MOVING_19_val , MODE_TAUCHEN_18_val))
 {
 PLAYER_SIZE_20 = _world.GetObject(ObjectType.Skill,422);
 PLAYER_SIZE_21 = _world.GetObject(ObjectType.Skill,422);
@@ -7123,7 +7132,7 @@ MODE_DEATH_23 = _world.GetObject(ObjectType.Skill,3267420407);
 MODE_DEATH_23_val = MODE_DEATH_23.GetFloat(PropertyName.VAL);
 MOVING_24 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_24_val = MOVING_24.GetFloat(PropertyName.VAL);
-if (MOVING_24_val == MODE_DEATH_23_val)
+if (CheckEquals(MOVING_24_val , MODE_DEATH_23_val))
 {
 PLAYER_SIZE_25 = _world.GetObject(ObjectType.Skill,422);
 PLAYER_SIZE_26 = _world.GetObject(ObjectType.Skill,422);
@@ -7136,7 +7145,7 @@ MODE_GEHEN_30 = _world.GetObject(ObjectType.Skill,3270985304);
 MODE_GEHEN_30_val = MODE_GEHEN_30.GetFloat(PropertyName.VAL);
 MOVING_31 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_31_val = MOVING_31.GetFloat(PropertyName.VAL);
-if (MOVING_31_val == MODE_GEHEN_30_val)
+if (CheckEquals(MOVING_31_val , MODE_GEHEN_30_val))
 {
 PLAYER_SIZE_32 = _world.GetObject(ObjectType.Skill,422);
 PLAYER_SIZE_33 = _world.GetObject(ObjectType.Skill,422);
@@ -7152,7 +7161,7 @@ MODE_SCHWIMMEN_37 = _world.GetObject(ObjectType.Skill,3755117404);
 MODE_SCHWIMMEN_37_val = MODE_SCHWIMMEN_37.GetFloat(PropertyName.VAL);
 MOVING_38 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_38_val = MOVING_38.GetFloat(PropertyName.VAL);
-if (MOVING_38_val != MODE_SCHWIMMEN_37_val)
+if (!CheckEquals(MOVING_38_val , MODE_SCHWIMMEN_37_val))
 {
 goto NO_SWIM;
 }
@@ -7175,7 +7184,7 @@ MODE_GEHEN_41 = _world.GetObject(ObjectType.Skill,3270985304);
 MODE_GEHEN_41_val = MODE_GEHEN_41.GetFloat(PropertyName.VAL);
 MOVING_42 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_42_val = MOVING_42.GetFloat(PropertyName.VAL);
-if (MOVING_42_val != MODE_GEHEN_41_val)
+if (!CheckEquals(MOVING_42_val , MODE_GEHEN_41_val))
 {
 goto NO_WATER;
 }
@@ -7196,7 +7205,7 @@ goto NO_WATER;
 NO_WATER:
 MOUSE_MIDDLE_46 = _world.GetObject(ObjectType.Skill,472);
 MOUSE_MIDDLE_46_val = MOUSE_MIDDLE_46.GetFloat(PropertyName.VAL);
-if (MOUSE_MIDDLE_46_val == 0f)
+if (CheckEquals(MOUSE_MIDDLE_46_val , 0f))
 {
 goto NO_MOUSE;
 }
@@ -7210,7 +7219,7 @@ FORCEFORWARD_50 = _world.GetObject(ObjectType.Skill,590185617);
 FORCEFORWARD_50.SetFloat(231,FORCE_AHEAD_49_val);
 KEY_SHIFT_52 = _world.GetObject(ObjectType.Skill,554);
 KEY_SHIFT_52_val = KEY_SHIFT_52.GetFloat(PropertyName.VAL);
-if (KEY_SHIFT_52_val == 1f)
+if (CheckEquals(KEY_SHIFT_52_val , 1f))
 {
 FORCE_AHEAD_53 = _world.GetObject(ObjectType.Skill,480);
 FORCE_AHEAD_54 = _world.GetObject(ObjectType.Skill,480);
@@ -7236,14 +7245,14 @@ FORCEROTATION_63 = _world.GetObject(ObjectType.Skill,2669285644);
 FORCEROTATION_63.SetFloat(231,FORCE_ROT_62_val);
 MOUSE_RIGHT_65 = _world.GetObject(ObjectType.Skill,473);
 MOUSE_RIGHT_65_val = MOUSE_RIGHT_65.GetFloat(PropertyName.VAL);
-if (MOUSE_RIGHT_65_val == 1f)
+if (CheckEquals(MOUSE_RIGHT_65_val , 1f))
 {
 FORCEFORWARD_67 = _world.GetObject(ObjectType.Skill,590185617);
 FORCEFORWARD_67.SetFloat(231,2f);
 }
 KEY_ALT_69 = _world.GetObject(ObjectType.Skill,522);
 KEY_ALT_69_val = KEY_ALT_69.GetFloat(PropertyName.VAL);
-if (KEY_ALT_69_val != 1f)
+if (!CheckEquals(KEY_ALT_69_val , 1f))
 {
 goto NOALT;
 }
@@ -7332,7 +7341,7 @@ MODE_GEHEN_145 = _world.GetObject(ObjectType.Skill,3270985304);
 MODE_GEHEN_145_val = MODE_GEHEN_145.GetFloat(PropertyName.VAL);
 MOVING_146 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_146_val = MOVING_146.GetFloat(PropertyName.VAL);
-if (MOVING_146_val != MODE_GEHEN_145_val)
+if (!CheckEquals(MOVING_146_val , MODE_GEHEN_145_val))
 {
 FRICTION_148 = _world.GetObject(ObjectType.Skill,437);
 FRICTION_148.SetFloat(231,0.85f);
@@ -7407,13 +7416,13 @@ PLAYER_HGT_211_val = PLAYER_HGT_211.GetFloat(PropertyName.VAL);
 FORCE_205.SetFloat(231,FORCE_207_val-0.2f*PLAYER_HGT_211_val);
 FALLING_HEIGHT_213 = _world.GetObject(ObjectType.Skill,4024852386);
 FALLING_HEIGHT_213_val = FALLING_HEIGHT_213.GetFloat(PropertyName.VAL);
-if (FALLING_HEIGHT_213_val == 0f)
+if (CheckEquals(FALLING_HEIGHT_213_val , 0f))
 {
 goto AIRBORNE;
 }
 HERE_216 = _world.GetSynonymObject(703);
 temp_217 =HERE_216?.GetAcknexObject(242);
-if (temp_217 == null)
+if (CheckEquals(temp_217 , null))
 {
 goto FELL;
 }
@@ -7477,13 +7486,13 @@ goto AIRBORNE2;
 }
 HERE_257 = _world.GetSynonymObject(703);
 temp_258 =HERE_257?.GetAcknexObject(243);
-if (temp_258 != null)
+if (!CheckEquals(temp_258 , null))
 {
 goto AIRBORNE2;
 }
 HERE_261 = _world.GetSynonymObject(703);
 temp_262 =HERE_261?.GetAcknexObject(242);
-if (temp_262 != null)
+if (!CheckEquals(temp_262 , null))
 {
 goto AIRBORNE2;
 }
@@ -7516,7 +7525,7 @@ MODE_SCHWIMMEN_276 = _world.GetObject(ObjectType.Skill,3755117404);
 MODE_SCHWIMMEN_276_val = MODE_SCHWIMMEN_276.GetFloat(PropertyName.VAL);
 MOVING_277 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_277_val = MOVING_277.GetFloat(PropertyName.VAL);
-if (MOVING_277_val == MODE_SCHWIMMEN_276_val)
+if (CheckEquals(MOVING_277_val , MODE_SCHWIMMEN_276_val))
 {
 goto DUCK;
 }
@@ -7550,7 +7559,7 @@ MODE_GEHEN_292 = _world.GetObject(ObjectType.Skill,3270985304);
 MODE_GEHEN_292_val = MODE_GEHEN_292.GetFloat(PropertyName.VAL);
 MOVING_293 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_293_val = MOVING_293.GetFloat(PropertyName.VAL);
-if (MOVING_293_val != MODE_GEHEN_292_val)
+if (!CheckEquals(MOVING_293_val , MODE_GEHEN_292_val))
 {
 goto NO_JUMP;
 }
@@ -7641,7 +7650,7 @@ PLAYER_VY_338_val = PLAYER_VY_338.GetFloat(PropertyName.VAL);
 PLAYER_SPEED_SQR_330.SetFloat(231,PLAYER_VX_332_val*PLAYER_VX_334_val+PLAYER_VY_336_val*PLAYER_VY_338_val);
 TILT_DECREASE_340 = _world.GetObject(ObjectType.Skill,3051803237);
 TILT_DECREASE_340_val = TILT_DECREASE_340.GetFloat(PropertyName.VAL);
-if (TILT_DECREASE_340_val != 1f)
+if (!CheckEquals(TILT_DECREASE_340_val , 1f))
 {
 goto CALC_TILT;
 }
@@ -7670,7 +7679,7 @@ goto DECR_TILT;
 }
 PLAYER_VZ_348 = _world.GetObject(ObjectType.Skill,433);
 PLAYER_VZ_348_val = PLAYER_VZ_348.GetFloat(PropertyName.VAL);
-if (PLAYER_VZ_348_val != 0f)
+if (!CheckEquals(PLAYER_VZ_348_val , 0f))
 {
 goto DECR_TILT;
 }
@@ -7726,7 +7735,7 @@ MODE_SCHWIMMEN_385 = _world.GetObject(ObjectType.Skill,3755117404);
 MODE_SCHWIMMEN_385_val = MODE_SCHWIMMEN_385.GetFloat(PropertyName.VAL);
 MOVING_386 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_386_val = MOVING_386.GetFloat(PropertyName.VAL);
-if (MOVING_386_val == MODE_SCHWIMMEN_385_val)
+if (CheckEquals(MOVING_386_val , MODE_SCHWIMMEN_385_val))
 {
 PLAYER_TILT_387 = _world.GetObject(ObjectType.Skill,435);
 PLAYER_TILT_388 = _world.GetObject(ObjectType.Skill,435);
@@ -7741,7 +7750,7 @@ MODE_TAUCHEN_394 = _world.GetObject(ObjectType.Skill,1042033433);
 MODE_TAUCHEN_394_val = MODE_TAUCHEN_394.GetFloat(PropertyName.VAL);
 MOVING_395 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_395_val = MOVING_395.GetFloat(PropertyName.VAL);
-if (MOVING_395_val == MODE_TAUCHEN_394_val)
+if (CheckEquals(MOVING_395_val , MODE_TAUCHEN_394_val))
 {
 goto NO_HTILT;
 }
@@ -7753,7 +7762,7 @@ goto NO_HTILT;
 }
 TILT_DECREASE_399 = _world.GetObject(ObjectType.Skill,3051803237);
 TILT_DECREASE_399_val = TILT_DECREASE_399.GetFloat(PropertyName.VAL);
-if (TILT_DECREASE_399_val == 1f)
+if (CheckEquals(TILT_DECREASE_399_val , 1f))
 {
 goto NO_HTILT;
 }
@@ -7773,7 +7782,7 @@ PLAYER_TILT_402.SetFloat(231,PLAYER_TILT_404_val+0.03f*(PLAYER_HGT_409_val+0.3f)
 NO_HTILT:
 RICHTER_414 = _world.GetObject(ObjectType.Skill,1528103070);
 RICHTER_414_val = RICHTER_414.GetFloat(PropertyName.VAL);
-if (RICHTER_414_val == 0f)
+if (CheckEquals(RICHTER_414_val , 0f))
 {
 goto NO_QUAKE;
 }
@@ -8568,7 +8577,7 @@ public class SET_MOVING : ICompiledAction {
      }
 MOVING_1 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_1_val = MOVING_1.GetFloat(PropertyName.VAL);
-if (MOVING_1_val == 0f)
+if (CheckEquals(MOVING_1_val , 0f))
 {
 return false;
 }
@@ -8576,7 +8585,7 @@ MODE_GEHEN_2 = _world.GetObject(ObjectType.Skill,3270985304);
 MODE_GEHEN_2_val = MODE_GEHEN_2.GetFloat(PropertyName.VAL);
 MOVING_3 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_3_val = MOVING_3.GetFloat(PropertyName.VAL);
-if (MOVING_3_val == MODE_GEHEN_2_val)
+if (CheckEquals(MOVING_3_val , MODE_GEHEN_2_val))
 {
 {
             var enumerator = new SET_WALKING();
@@ -8591,7 +8600,7 @@ MODE_SCHWIMMEN_4 = _world.GetObject(ObjectType.Skill,3755117404);
 MODE_SCHWIMMEN_4_val = MODE_SCHWIMMEN_4.GetFloat(PropertyName.VAL);
 MOVING_5 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_5_val = MOVING_5.GetFloat(PropertyName.VAL);
-if (MOVING_5_val == MODE_SCHWIMMEN_4_val)
+if (CheckEquals(MOVING_5_val , MODE_SCHWIMMEN_4_val))
 {
 {
             var enumerator = new SET_SWIMMING();
@@ -8606,7 +8615,7 @@ MODE_TAUCHEN_6 = _world.GetObject(ObjectType.Skill,1042033433);
 MODE_TAUCHEN_6_val = MODE_TAUCHEN_6.GetFloat(PropertyName.VAL);
 MOVING_7 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_7_val = MOVING_7.GetFloat(PropertyName.VAL);
-if (MOVING_7_val == MODE_TAUCHEN_6_val)
+if (CheckEquals(MOVING_7_val , MODE_TAUCHEN_6_val))
 {
 {
             var enumerator = new SET_DIVING();
@@ -8839,7 +8848,7 @@ public class REGIO_DIVE : ICompiledAction {
      }
 UNDERWATER_1 = _world.GetObject(ObjectType.Skill,1369167822);
 UNDERWATER_1_val = UNDERWATER_1.GetFloat(PropertyName.VAL);
-if (UNDERWATER_1_val == 1f)
+if (CheckEquals(UNDERWATER_1_val , 1f))
 {
 return false;
 }
@@ -8937,7 +8946,7 @@ public class REGIO_ARISE : ICompiledAction {
      }
 UNDERWATER_1 = _world.GetObject(ObjectType.Skill,1369167822);
 UNDERWATER_1_val = UNDERWATER_1.GetFloat(PropertyName.VAL);
-if (UNDERWATER_1_val == 0f)
+if (CheckEquals(UNDERWATER_1_val , 0f))
 {
 return false;
 }
@@ -9041,7 +9050,7 @@ MODE_DEATH_0 = _world.GetObject(ObjectType.Skill,3267420407);
 MODE_DEATH_0_val = MODE_DEATH_0.GetFloat(PropertyName.VAL);
 MOVING_1 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_1_val = MOVING_1.GetFloat(PropertyName.VAL);
-if (MOVING_1_val == MODE_DEATH_0_val)
+if (CheckEquals(MOVING_1_val , MODE_DEATH_0_val))
 {
 return false;
 }
@@ -9061,7 +9070,7 @@ TOUGHNESS_11_val = TOUGHNESS_11.GetFloat(PropertyName.VAL);
 HITSERIOUSNESS_4.SetFloat(231,PLAYER_RESULT_6_val*-5f*TOUGHNESS_11_val);
 PLAYER_ARMOUR_13 = _world.GetObject(ObjectType.Skill,1211659215);
 PLAYER_ARMOUR_13_val = PLAYER_ARMOUR_13.GetFloat(PropertyName.VAL);
-if (PLAYER_ARMOUR_13_val == 0f)
+if (CheckEquals(PLAYER_ARMOUR_13_val , 0f))
 {
 goto CONT;
 }
@@ -9102,7 +9111,7 @@ PLAYER_HEALTH_50 = _world.GetObject(ObjectType.Skill,1469755439);
 PLAYER_HEALTH_50.SetFloat(231,PLAYER_HEALTH_49_val + HITSERIOUSNESS_48_val);
 PLAYER_HIT_52 = _world.GetObject(ObjectType.Skill,1956124350);
 PLAYER_HIT_52_val = PLAYER_HIT_52.GetFloat(PropertyName.VAL);
-if (PLAYER_HIT_52_val != 0f)
+if (!CheckEquals(PLAYER_HIT_52_val , 0f))
 {
 return false;
 }
@@ -9153,7 +9162,7 @@ _world.PlaySound(HIT04SND_85,0.8f, null);
 CONT2:
 KILLPLAYER_87 = _world.AcknexObject.GetAcknexObject(1513684550);
 temp_90 =_world.AcknexObject?.GetAcknexObject(11);
-if (temp_90 != KILLPLAYER_87)
+if (!CheckEquals(temp_90 , KILLPLAYER_87))
 {
 REDOUT_91 = _world.AcknexObject.GetAcknexObject(3425520672);
 _world.AcknexObject.SetAcknexObject(11,REDOUT_91);
@@ -9345,7 +9354,7 @@ return false;
 }
 UNDERWATER_15 = _world.GetObject(ObjectType.Skill,1369167822);
 UNDERWATER_15_val = UNDERWATER_15.GetFloat(PropertyName.VAL);
-if (UNDERWATER_15_val == 0f)
+if (CheckEquals(UNDERWATER_15_val , 0f))
 {
 goto NOWATER;
 }
@@ -9424,7 +9433,7 @@ TOUGHNESS_12_val = TOUGHNESS_12.GetFloat(PropertyName.VAL);
 HITSERIOUSNESS_2.SetFloat(231,PLAYER_RESULT_4_val*-5f*(0.5f+TOUGHNESS_12_val/2f));
 PLAYER_ARMOUR_17 = _world.GetObject(ObjectType.Skill,1211659215);
 PLAYER_ARMOUR_17_val = PLAYER_ARMOUR_17.GetFloat(PropertyName.VAL);
-if (PLAYER_ARMOUR_17_val == 0f)
+if (CheckEquals(PLAYER_ARMOUR_17_val , 0f))
 {
 goto CONT;
 }
@@ -9449,7 +9458,7 @@ PLAYER_HEALTH_28 = _world.GetObject(ObjectType.Skill,1469755439);
 PLAYER_HEALTH_28.SetFloat(231,PLAYER_HEALTH_27_val + HITSERIOUSNESS_26_val);
 PLAYER_HIT_30 = _world.GetObject(ObjectType.Skill,1956124350);
 PLAYER_HIT_30_val = PLAYER_HIT_30.GetFloat(PropertyName.VAL);
-if (PLAYER_HIT_30_val != 0f)
+if (!CheckEquals(PLAYER_HIT_30_val , 0f))
 {
 return false;
 }
@@ -9623,7 +9632,7 @@ return false;
 }
 UNDERWATER_12 = _world.GetObject(ObjectType.Skill,1369167822);
 UNDERWATER_12_val = UNDERWATER_12.GetFloat(PropertyName.VAL);
-if (UNDERWATER_12_val != 0f)
+if (!CheckEquals(UNDERWATER_12_val , 0f))
 {
 {
             var enumerator = new SET_BLUE();
@@ -9724,7 +9733,7 @@ MODE_DEATH_0 = _world.GetObject(ObjectType.Skill,3267420407);
 MODE_DEATH_0_val = MODE_DEATH_0.GetFloat(PropertyName.VAL);
 MOVING_1 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_1_val = MOVING_1.GetFloat(PropertyName.VAL);
-if (MOVING_1_val == MODE_DEATH_0_val)
+if (CheckEquals(MOVING_1_val , MODE_DEATH_0_val))
 {
 goto DEATH;
 }
@@ -10115,7 +10124,7 @@ MP5_02OVL_7 = _world.AcknexObject.GetAcknexObject(2701596785);
 _world.AcknexObject.SetAcknexObject(158,MP5_02OVL_7);
 AMMO_11 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_11_val = AMMO_11.GetFloat(PropertyName.VAL);
-if (AMMO_11_val == 0f)
+if (CheckEquals(AMMO_11_val , 0f))
 {
 goto NOAMMO;
 }
@@ -10200,13 +10209,13 @@ SHOOT_Y_56.SetFloat(231,SVANGLE_55_val);
 _world.Shoot(null, MY, THERE);
 HIT_DIST_58 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_58_val = HIT_DIST_58.GetFloat(PropertyName.VAL);
-if (HIT_DIST_58_val == 0f)
+if (CheckEquals(HIT_DIST_58_val , 0f))
 {
 goto SHOOT2;
 }
 HIT_61 = _world.GetSynonymObject(704);
 temp_62 =HIT_61.GetFloat(208);
-if (temp_62 == 1f)
+if (CheckEquals(temp_62 , 1f))
 {
 goto CONTHIT;
 }
@@ -10216,7 +10225,7 @@ SHOOT_X_64.SetFloat(231,0f);
 _world.Shoot(null, MY, THERE);
 HIT_DIST_66 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_66_val = HIT_DIST_66.GetFloat(PropertyName.VAL);
-if (HIT_DIST_66_val == 0f)
+if (CheckEquals(HIT_DIST_66_val , 0f))
 {
 goto SHOOT3;
 }
@@ -10226,7 +10235,7 @@ MY_TARGET_71 = _world.GetSynonymObject(2013386137);
 MY_TARGET_71.SetFloat(175,1f);
 HIT_74 = _world.GetSynonymObject(704);
 temp_75 =HIT_74.GetFloat(208);
-if (temp_75 == 1f)
+if (CheckEquals(temp_75 , 1f))
 {
 goto CONTHIT;
 }
@@ -10238,13 +10247,13 @@ SHOOT_X_77.SetFloat(231,DSHOOTXMINUS_76_val);
 _world.Shoot(null, MY, THERE);
 HIT_DIST_79 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_79_val = HIT_DIST_79.GetFloat(PropertyName.VAL);
-if (HIT_DIST_79_val == 0f)
+if (CheckEquals(HIT_DIST_79_val , 0f))
 {
 goto SHOOT4;
 }
 HIT_82 = _world.GetSynonymObject(704);
 temp_83 =HIT_82.GetFloat(208);
-if (temp_83 == 1f)
+if (CheckEquals(temp_83 , 1f))
 {
 goto CONTHIT;
 }
@@ -10258,13 +10267,13 @@ SHOOT_Y_87.SetFloat(231,DSHOOTYPLUS_86_val);
 _world.Shoot(null, MY, THERE);
 HIT_DIST_89 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_89_val = HIT_DIST_89.GetFloat(PropertyName.VAL);
-if (HIT_DIST_89_val == 0f)
+if (CheckEquals(HIT_DIST_89_val , 0f))
 {
 goto SHOOT5;
 }
 HIT_92 = _world.GetSynonymObject(704);
 temp_93 =HIT_92.GetFloat(208);
-if (temp_93 == 1f)
+if (CheckEquals(temp_93 , 1f))
 {
 goto CONTHIT;
 }
@@ -10276,13 +10285,13 @@ SHOOT_Y_95.SetFloat(231,DSHOOTYMINUS_94_val);
 _world.Shoot(null, MY, THERE);
 HIT_DIST_97 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_97_val = HIT_DIST_97.GetFloat(PropertyName.VAL);
-if (HIT_DIST_97_val == 0f)
+if (CheckEquals(HIT_DIST_97_val , 0f))
 {
 goto NOHIT;
 }
 HIT_100 = _world.GetSynonymObject(704);
 temp_101 =HIT_100.GetFloat(208);
-if (temp_101 != 1f)
+if (!CheckEquals(temp_101 , 1f))
 {
 goto NOHIT;
 }
@@ -10328,19 +10337,19 @@ PLAYER_LIGHT_111.SetFloat(231,PLAYER_LIGHT_110_val + -0.5f);
         
 WEAPONSEL_114 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_114_val = WEAPONSEL_114.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_114_val != 2f)
+if (!CheckEquals(WEAPONSEL_114_val , 2f))
 {
 goto FINISH;
 }
 MOUSE_LEFT_116 = _world.GetObject(ObjectType.Skill,471);
 MOUSE_LEFT_116_val = MOUSE_LEFT_116.GetFloat(PropertyName.VAL);
-if (MOUSE_LEFT_116_val == 1f)
+if (CheckEquals(MOUSE_LEFT_116_val , 1f))
 {
 goto FIRE;
 }
 KEY_CTRL_118 = _world.GetObject(ObjectType.Skill,526);
 KEY_CTRL_118_val = KEY_CTRL_118.GetFloat(PropertyName.VAL);
-if (KEY_CTRL_118_val == 1f)
+if (CheckEquals(KEY_CTRL_118_val , 1f))
 {
 goto FIRE;
 }
@@ -10577,7 +10586,7 @@ MP5_02OVL_9 = _world.AcknexObject.GetAcknexObject(2701596785);
 _world.AcknexObject.SetAcknexObject(158,MP5_02OVL_9);
 AMMO_13 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_13_val = AMMO_13.GetFloat(PropertyName.VAL);
-if (AMMO_13_val == 0f)
+if (CheckEquals(AMMO_13_val , 0f))
 {
 goto NOAMMO;
 }
@@ -10667,7 +10676,7 @@ SHOOT_Y_64.SetFloat(231,0f);
 _world.Shoot(null, MY, THERE);
 HIT_DIST_66 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_66_val = HIT_DIST_66.GetFloat(PropertyName.VAL);
-if (HIT_DIST_66_val == 0f)
+if (CheckEquals(HIT_DIST_66_val , 0f))
 {
 goto SHOOT2;
 }
@@ -10677,7 +10686,7 @@ MY_TARGET_71 = _world.GetSynonymObject(2013386137);
 MY_TARGET_71.SetFloat(175,1f);
 HIT_74 = _world.GetSynonymObject(704);
 temp_75 =HIT_74.GetFloat(208);
-if (temp_75 == 1f)
+if (CheckEquals(temp_75 , 1f))
 {
 {
             var enumerator = new CASTBLOOD();
@@ -10693,7 +10702,7 @@ SHOOT_X_77.SetFloat(231,0f);
 _world.Shoot(null, MY, THERE);
 HIT_DIST_79 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_79_val = HIT_DIST_79.GetFloat(PropertyName.VAL);
-if (HIT_DIST_79_val == 0f)
+if (CheckEquals(HIT_DIST_79_val , 0f))
 {
 goto SHOOT3;
 }
@@ -10703,7 +10712,7 @@ MY_TARGET_84 = _world.GetSynonymObject(2013386137);
 MY_TARGET_84.SetFloat(175,1f);
 HIT_87 = _world.GetSynonymObject(704);
 temp_88 =HIT_87.GetFloat(208);
-if (temp_88 == 1f)
+if (CheckEquals(temp_88 , 1f))
 {
 {
             var enumerator = new CASTBLOOD();
@@ -10721,7 +10730,7 @@ SHOOT_X_90.SetFloat(231,DSHOOTXMINUS_89_val);
 _world.Shoot(null, MY, THERE);
 HIT_DIST_92 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_92_val = HIT_DIST_92.GetFloat(PropertyName.VAL);
-if (HIT_DIST_92_val == 0f)
+if (CheckEquals(HIT_DIST_92_val , 0f))
 {
 goto NOHIT;
 }
@@ -10731,7 +10740,7 @@ MY_TARGET_97 = _world.GetSynonymObject(2013386137);
 MY_TARGET_97.SetFloat(175,1f);
 HIT_100 = _world.GetSynonymObject(704);
 temp_101 =HIT_100.GetFloat(208);
-if (temp_101 == 1f)
+if (CheckEquals(temp_101 , 1f))
 {
 {
             var enumerator = new CASTBLOOD();
@@ -10773,19 +10782,19 @@ PLAYER_LIGHT_108.SetFloat(231,PLAYER_LIGHT_107_val + -0.7f);
         
 WEAPONSEL_111 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_111_val = WEAPONSEL_111.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_111_val != 2f)
+if (!CheckEquals(WEAPONSEL_111_val , 2f))
 {
 goto FINISH;
 }
 MOUSE_LEFT_113 = _world.GetObject(ObjectType.Skill,471);
 MOUSE_LEFT_113_val = MOUSE_LEFT_113.GetFloat(PropertyName.VAL);
-if (MOUSE_LEFT_113_val == 1f)
+if (CheckEquals(MOUSE_LEFT_113_val , 1f))
 {
 goto FIRE;
 }
 KEY_CTRL_115 = _world.GetObject(ObjectType.Skill,526);
 KEY_CTRL_115_val = KEY_CTRL_115.GetFloat(PropertyName.VAL);
-if (KEY_CTRL_115_val == 1f)
+if (CheckEquals(KEY_CTRL_115_val , 1f))
 {
 goto FIRE;
 }
@@ -10987,7 +10996,7 @@ public class THROW : ICompiledAction {
      }
 AMMO_1 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_1_val = AMMO_1.GetFloat(PropertyName.VAL);
-if (AMMO_1_val == 0f)
+if (CheckEquals(AMMO_1_val , 0f))
 {
 {
             var enumerator = new SELECTNONE();
@@ -11006,7 +11015,7 @@ if (AMMO_1_val == 0f)
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }GRANADE_3 = _world.GetSynonymObject(556898879);
-if (GRANADE_3 == null)
+if (CheckEquals(GRANADE_3 , null))
 {
 return false;
 }
@@ -11208,7 +11217,7 @@ AMMO_128.SetFloat(231,AMMO_127_val + -1f);
 GRAN2TEX_130 = _world.AcknexObject.GetAcknexObject(1197240280);
 GRANADE_132 = _world.GetSynonymObject(556898879);
 temp_133 =GRANADE_132?.GetAcknexObject(164);
-if (temp_133 == GRAN2TEX_130)
+if (CheckEquals(temp_133 , GRAN2TEX_130))
 {
 GRAN1TEX_134 = _world.AcknexObject.GetAcknexObject(1197204343);
 GRANADE_136 = _world.GetSynonymObject(556898879);
@@ -11251,7 +11260,7 @@ GRAN00OVL_149 = _world.AcknexObject.GetAcknexObject(850536902);
 _world.AcknexObject.SetAcknexObject(158,GRAN00OVL_149);
 WEAPONSEL_153 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_153_val = WEAPONSEL_153.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_153_val != 3f)
+if (!CheckEquals(WEAPONSEL_153_val , 3f))
 {
 goto FINISH;
 }
@@ -11405,7 +11414,7 @@ public class LAUNCH : ICompiledAction {
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }MISSILE_1 = _world.GetSynonymObject(3680056099);
-if (MISSILE_1 == null)
+if (CheckEquals(MISSILE_1 , null))
 {
 return false;
 }
@@ -11430,7 +11439,7 @@ STNG01OVL_9 = _world.AcknexObject.GetAcknexObject(1500292443);
 _world.AcknexObject.SetAcknexObject(158,STNG01OVL_9);
 AMMO_13 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_13_val = AMMO_13.GetFloat(PropertyName.VAL);
-if (AMMO_13_val == 0f)
+if (CheckEquals(AMMO_13_val , 0f))
 {
 goto NOAMMO;
 }
@@ -11570,7 +11579,7 @@ SHOOT_Y_132.SetFloat(231,SVANGLE_131_val);
 _world.Shoot(null, MY, THERE);
 HIT_DIST_134 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_134_val = HIT_DIST_134.GetFloat(PropertyName.VAL);
-if (HIT_DIST_134_val == 0f)
+if (CheckEquals(HIT_DIST_134_val , 0f))
 {
 goto HITWALL;
 }
@@ -11578,13 +11587,13 @@ HIT_135 = _world.GetSynonymObject(704);
 _world.SetSynonymObject(2013386137,HIT_135);
 HIT_139 = _world.GetSynonymObject(704);
 temp_140 =HIT_139.GetFloat(208);
-if (temp_140 != 1f)
+if (!CheckEquals(temp_140 , 1f))
 {
 goto HITWALL;
 }
 HIT_143 = _world.GetSynonymObject(704);
 temp_144 =HIT_143.GetFloat(202);
-if (temp_144 != 0f)
+if (!CheckEquals(temp_144 , 0f))
 {
 MISSILE_146 = _world.GetSynonymObject(3680056099);
 MISSILE_148 = _world.GetSynonymObject(3680056099);
@@ -11636,7 +11645,7 @@ PLAYER_LIGHT_185.SetFloat(231,PLAYER_LIGHT_184_val + -0.7f);
 MISS2TEX_187 = _world.AcknexObject.GetAcknexObject(1181917228);
 MISSILE_189 = _world.GetSynonymObject(3680056099);
 temp_190 =MISSILE_189?.GetAcknexObject(164);
-if (temp_190 == MISS2TEX_187)
+if (CheckEquals(temp_190 , MISS2TEX_187))
 {
 MISS1TEX_191 = _world.AcknexObject.GetAcknexObject(1181881291);
 MISSILE_193 = _world.GetSynonymObject(3680056099);
@@ -11704,7 +11713,7 @@ _world.AcknexObject.SetAcknexObject(158,STNG00OVL_215);
 CONT:
 WEAPONSEL_219 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_219_val = WEAPONSEL_219.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_219_val != 4f)
+if (!CheckEquals(WEAPONSEL_219_val , 4f))
 {
 goto FINISH;
 }
@@ -11902,7 +11911,7 @@ public class BEAM : ICompiledAction {
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }PARTICLE_1 = _world.GetSynonymObject(2704244193);
-if (PARTICLE_1 == null)
+if (CheckEquals(PARTICLE_1 , null))
 {
 return false;
 }
@@ -11927,7 +11936,7 @@ QGUN01OVL_9 = _world.AcknexObject.GetAcknexObject(2621946266);
 _world.AcknexObject.SetAcknexObject(158,QGUN01OVL_9);
 AMMO_13 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_13_val = AMMO_13.GetFloat(PropertyName.VAL);
-if (AMMO_13_val == 0f)
+if (CheckEquals(AMMO_13_val , 0f))
 {
 goto NOAMMO;
 }
@@ -12044,7 +12053,7 @@ SHOOT_Y_121.SetFloat(231,0f);
 _world.Shoot(null, MY, THERE);
 HIT_DIST_123 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_123_val = HIT_DIST_123.GetFloat(PropertyName.VAL);
-if (HIT_DIST_123_val == 0f)
+if (CheckEquals(HIT_DIST_123_val , 0f))
 {
 goto HITWALL;
 }
@@ -12053,7 +12062,7 @@ PARTICLE_126 = _world.GetSynonymObject(2704244193);
 PARTICLE_126.SetAcknexObject(199,HIT_124);
 HIT_129 = _world.GetSynonymObject(704);
 temp_130 =HIT_129.GetFloat(202);
-if (temp_130 != 0f)
+if (!CheckEquals(temp_130 , 0f))
 {
 PARTICLE_132 = _world.GetSynonymObject(2704244193);
 PARTICLE_134 = _world.GetSynonymObject(2704244193);
@@ -12155,7 +12164,7 @@ _world.AcknexObject.SetAcknexObject(158,QGUN00OVL_196);
 CONT:
 WEAPONSEL_200 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_200_val = WEAPONSEL_200.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_200_val != 5f)
+if (!CheckEquals(WEAPONSEL_200_val , 5f))
 {
 goto FINISH;
 }
@@ -13108,18 +13117,18 @@ WAITFIRE:
         
 GUNFIRING_24 = _world.GetObject(ObjectType.Skill,3478808598);
 GUNFIRING_24_val = GUNFIRING_24.GetFloat(PropertyName.VAL);
-if (GUNFIRING_24_val != 0f)
+if (!CheckEquals(GUNFIRING_24_val , 0f))
 {
 goto WAITFIRE;
 }
 MY_GUN_26 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_26 == null)
+if (CheckEquals(MY_GUN_26 , null))
 {
 goto NOGUN;
 }
 MY_GUN_29 = _world.GetSynonymObject(3254523708);
 temp_30 =MY_GUN_29.GetFloat(204);
-if (temp_30 != 1f)
+if (!CheckEquals(temp_30 , 1f))
 {
 goto WAITFIRE;
 }
@@ -13144,7 +13153,7 @@ PDATEXT_35 = _world.AcknexObject.GetAcknexObject(3042501159);
 PDATEXT_35.SetFloat(205,0f);
 _world.AcknexObject.SetAcknexObject(158,null);
 MY_GUN_40 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_40 == null)
+if (CheckEquals(MY_GUN_40 , null))
 {
 goto CONT;
 }
@@ -13277,7 +13286,7 @@ if (MAP_MODE_3_val > 0f)
 }
 HAS_PDA_5 = _world.GetObject(ObjectType.Skill,1205039005);
 HAS_PDA_5_val = HAS_PDA_5.GetFloat(PropertyName.VAL);
-if (HAS_PDA_5_val != 0f)
+if (!CheckEquals(HAS_PDA_5_val , 0f))
 {
 goto HASGOT;
 }
@@ -13319,18 +13328,18 @@ WAITFIRE:
         
 GUNFIRING_32 = _world.GetObject(ObjectType.Skill,3478808598);
 GUNFIRING_32_val = GUNFIRING_32.GetFloat(PropertyName.VAL);
-if (GUNFIRING_32_val != 0f)
+if (!CheckEquals(GUNFIRING_32_val , 0f))
 {
 goto WAITFIRE;
 }
 MY_GUN_34 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_34 == null)
+if (CheckEquals(MY_GUN_34 , null))
 {
 goto NOGUN;
 }
 MY_GUN_37 = _world.GetSynonymObject(3254523708);
 temp_38 =MY_GUN_37.GetFloat(204);
-if (temp_38 != 1f)
+if (!CheckEquals(temp_38 , 1f))
 {
 goto WAITFIRE;
 }
@@ -13355,7 +13364,7 @@ _world.AcknexObject.SetAcknexObject(158,null);
 _world.AcknexObject.SetAcknexObject(78,null);
 _world.AcknexObject.SetAcknexObject(97,null);
 MY_GUN_49 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_49 == null)
+if (CheckEquals(MY_GUN_49 , null))
 {
 goto CONT;
 }
@@ -13537,13 +13546,13 @@ return false;
 }
 WEAPONSEL_3 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_3_val = WEAPONSEL_3.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_3_val == 2f)
+if (CheckEquals(WEAPONSEL_3_val , 2f))
 {
 goto HASGOT;
 }
 HAS_MP5_5 = _world.GetObject(ObjectType.Skill,1205036122);
 HAS_MP5_5_val = HAS_MP5_5.GetFloat(PropertyName.VAL);
-if (HAS_MP5_5_val != 0f)
+if (!CheckEquals(HAS_MP5_5_val , 0f))
 {
 goto HASGOT;
 }
@@ -13583,18 +13592,18 @@ WAITFIRE:
         
 GUNFIRING_28 = _world.GetObject(ObjectType.Skill,3478808598);
 GUNFIRING_28_val = GUNFIRING_28.GetFloat(PropertyName.VAL);
-if (GUNFIRING_28_val != 0f)
+if (!CheckEquals(GUNFIRING_28_val , 0f))
 {
 goto WAITFIRE;
 }
 MY_GUN_30 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_30 == null)
+if (CheckEquals(MY_GUN_30 , null))
 {
 goto NOGUN;
 }
 MY_GUN_33 = _world.GetSynonymObject(3254523708);
 temp_34 =MY_GUN_33.GetFloat(204);
-if (temp_34 != 1f)
+if (!CheckEquals(temp_34 , 1f))
 {
 goto WAITFIRE;
 }
@@ -13617,7 +13626,7 @@ NOGUN:
 MAP_MODE_36.SetFloat(231,0f);
 _world.AcknexObject.SetAcknexObject(158,null);
 MY_GUN_41 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_41 == null)
+if (CheckEquals(MY_GUN_41 , null))
 {
 goto CONT;
 }
@@ -13787,13 +13796,13 @@ return false;
 }
 WEAPONSEL_3 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_3_val = WEAPONSEL_3.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_3_val == 2f)
+if (CheckEquals(WEAPONSEL_3_val , 2f))
 {
 goto HASGOT;
 }
 HAS_MP5_5 = _world.GetObject(ObjectType.Skill,1205036122);
 HAS_MP5_5_val = HAS_MP5_5.GetFloat(PropertyName.VAL);
-if (HAS_MP5_5_val != 0f)
+if (!CheckEquals(HAS_MP5_5_val , 0f))
 {
 goto HASGOT;
 }
@@ -13835,18 +13844,18 @@ WAITFIRE:
         
 GUNFIRING_32 = _world.GetObject(ObjectType.Skill,3478808598);
 GUNFIRING_32_val = GUNFIRING_32.GetFloat(PropertyName.VAL);
-if (GUNFIRING_32_val != 0f)
+if (!CheckEquals(GUNFIRING_32_val , 0f))
 {
 goto WAITFIRE;
 }
 MY_GUN_34 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_34 == null)
+if (CheckEquals(MY_GUN_34 , null))
 {
 goto NOGUN;
 }
 MY_GUN_37 = _world.GetSynonymObject(3254523708);
 temp_38 =MY_GUN_37.GetFloat(204);
-if (temp_38 != 1f)
+if (!CheckEquals(temp_38 , 1f))
 {
 goto WAITFIRE;
 }
@@ -13869,7 +13878,7 @@ NOGUN:
 MAP_MODE_40.SetFloat(231,0f);
 _world.AcknexObject.SetAcknexObject(158,null);
 MY_GUN_45 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_45 == null)
+if (CheckEquals(MY_GUN_45 , null))
 {
 goto CONT;
 }
@@ -14039,13 +14048,13 @@ return false;
 }
 WEAPONSEL_3 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_3_val = WEAPONSEL_3.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_3_val == 3f)
+if (CheckEquals(WEAPONSEL_3_val , 3f))
 {
 return false;
 }
 HAS_GRANADE_5 = _world.GetObject(ObjectType.Skill,40123194);
 HAS_GRANADE_5_val = HAS_GRANADE_5.GetFloat(PropertyName.VAL);
-if (HAS_GRANADE_5_val != 0f)
+if (!CheckEquals(HAS_GRANADE_5_val , 0f))
 {
 goto HASGOT;
 }
@@ -14087,7 +14096,7 @@ WAITFIRE:
         
 GUNFIRING_32 = _world.GetObject(ObjectType.Skill,3478808598);
 GUNFIRING_32_val = GUNFIRING_32.GetFloat(PropertyName.VAL);
-if (GUNFIRING_32_val != 0f)
+if (!CheckEquals(GUNFIRING_32_val , 0f))
 {
 goto WAITFIRE;
 }
@@ -14098,13 +14107,13 @@ if (AMMO_GRANADE_34_val < 1f)
 goto EXITGRANADE;
 }
 MY_GUN_36 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_36 == null)
+if (CheckEquals(MY_GUN_36 , null))
 {
 goto NOGUN;
 }
 MY_GUN_39 = _world.GetSynonymObject(3254523708);
 temp_40 =MY_GUN_39.GetFloat(204);
-if (temp_40 != 1f)
+if (!CheckEquals(temp_40 , 1f))
 {
 goto WAITFIRE;
 }
@@ -14127,7 +14136,7 @@ NOGUN:
 MAP_MODE_42.SetFloat(231,0f);
 _world.AcknexObject.SetAcknexObject(158,null);
 MY_GUN_47 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_47 == null)
+if (CheckEquals(MY_GUN_47 , null))
 {
 goto CONT;
 }
@@ -14300,13 +14309,13 @@ return false;
 }
 WEAPONSEL_3 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_3_val = WEAPONSEL_3.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_3_val == 4f)
+if (CheckEquals(WEAPONSEL_3_val , 4f))
 {
 return false;
 }
 HAS_STINGER_5 = _world.GetObject(ObjectType.Skill,2740601668);
 HAS_STINGER_5_val = HAS_STINGER_5.GetFloat(PropertyName.VAL);
-if (HAS_STINGER_5_val != 0f)
+if (!CheckEquals(HAS_STINGER_5_val , 0f))
 {
 goto HASGOT;
 }
@@ -14348,18 +14357,18 @@ WAITFIRE:
         
 GUNFIRING_32 = _world.GetObject(ObjectType.Skill,3478808598);
 GUNFIRING_32_val = GUNFIRING_32.GetFloat(PropertyName.VAL);
-if (GUNFIRING_32_val != 0f)
+if (!CheckEquals(GUNFIRING_32_val , 0f))
 {
 goto WAITFIRE;
 }
 MY_GUN_34 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_34 == null)
+if (CheckEquals(MY_GUN_34 , null))
 {
 goto NOGUN;
 }
 MY_GUN_37 = _world.GetSynonymObject(3254523708);
 temp_38 =MY_GUN_37.GetFloat(204);
-if (temp_38 != 1f)
+if (!CheckEquals(temp_38 , 1f))
 {
 goto WAITFIRE;
 }
@@ -14384,7 +14393,7 @@ WEAPONSEL_40.SetFloat(231,4f);
 MAP_MODE_42.SetFloat(231,0f);
 _world.AcknexObject.SetAcknexObject(158,null);
 MY_GUN_47 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_47 == null)
+if (CheckEquals(MY_GUN_47 , null))
 {
 goto CONT;
 }
@@ -14555,13 +14564,13 @@ return false;
 }
 WEAPONSEL_3 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_3_val = WEAPONSEL_3.GetFloat(PropertyName.VAL);
-if (WEAPONSEL_3_val == 5f)
+if (CheckEquals(WEAPONSEL_3_val , 5f))
 {
 return false;
 }
 HAS_QUANTUM_5 = _world.GetObject(ObjectType.Skill,187328435);
 HAS_QUANTUM_5_val = HAS_QUANTUM_5.GetFloat(PropertyName.VAL);
-if (HAS_QUANTUM_5_val != 0f)
+if (!CheckEquals(HAS_QUANTUM_5_val , 0f))
 {
 goto HASGOT;
 }
@@ -14603,18 +14612,18 @@ WAITFIRE:
         
 GUNFIRING_32 = _world.GetObject(ObjectType.Skill,3478808598);
 GUNFIRING_32_val = GUNFIRING_32.GetFloat(PropertyName.VAL);
-if (GUNFIRING_32_val != 0f)
+if (!CheckEquals(GUNFIRING_32_val , 0f))
 {
 goto WAITFIRE;
 }
 MY_GUN_34 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_34 == null)
+if (CheckEquals(MY_GUN_34 , null))
 {
 goto NOGUN;
 }
 MY_GUN_37 = _world.GetSynonymObject(3254523708);
 temp_38 =MY_GUN_37.GetFloat(204);
-if (temp_38 != 1f)
+if (!CheckEquals(temp_38 , 1f))
 {
 goto WAITFIRE;
 }
@@ -14639,7 +14648,7 @@ WEAPONSEL_40.SetFloat(231,5f);
 MAP_MODE_42.SetFloat(231,0f);
 _world.AcknexObject.SetAcknexObject(158,null);
 MY_GUN_47 = _world.GetSynonymObject(3254523708);
-if (MY_GUN_47 == null)
+if (CheckEquals(MY_GUN_47 , null))
 {
 goto CONT;
 }
@@ -14973,13 +14982,13 @@ public class SHOWPDABRIEFING : ICompiledAction {
             Current = null;
         
 temp_3 =_world.AcknexObject?.GetAcknexObject(40);
-if (temp_3 == null)
+if (CheckEquals(temp_3 , null))
 {
 goto WAITING0;
 }
 GUNFIRING_5 = _world.GetObject(ObjectType.Skill,3478808598);
 GUNFIRING_5_val = GUNFIRING_5.GetFloat(PropertyName.VAL);
-if (GUNFIRING_5_val == 1f)
+if (CheckEquals(GUNFIRING_5_val , 1f))
 {
 goto WAITING0;
 }
@@ -15175,13 +15184,13 @@ _world.PlaySound(ALARM03SND_0,0.7f, null);
             Current = null;
         
 temp_5 =_world.AcknexObject?.GetAcknexObject(40);
-if (temp_5 == null)
+if (CheckEquals(temp_5 , null))
 {
 goto WAITING0;
 }
 GUNFIRING_7 = _world.GetObject(ObjectType.Skill,3478808598);
 GUNFIRING_7_val = GUNFIRING_7.GetFloat(PropertyName.VAL);
-if (GUNFIRING_7_val == 1f)
+if (CheckEquals(GUNFIRING_7_val , 1f))
 {
 goto WAITING0;
 }
@@ -15441,7 +15450,7 @@ public class REPEATMUSIC : ICompiledAction {
      }
 SECCOUNTER_1 = _world.GetObject(ObjectType.Skill,2748572712);
 SECCOUNTER_1_val = SECCOUNTER_1.GetFloat(PropertyName.VAL);
-if (SECCOUNTER_1_val == 0f)
+if (CheckEquals(SECCOUNTER_1_val , 0f))
 {
 //Unknown keyword: PLAY_CD
 }
@@ -15508,6 +15517,62 @@ IAcknexObject SOUND_VOL_1;
 IAcknexObject CDAUDIO_VOL_BUFFER_2;
 float CDAUDIO_VOL_BUFFER_2_val;
 IAcknexObject CDAUDIO_VOL_3;
+}
+public class MOUSE_TOGGLE : ICompiledAction {
+  private int _cursor;
+  public IAcknexObject MY {get; set;}
+  public IAcknexObject THERE {get; set;}
+  public IAcknexWorld _world {get; set;}
+  public object Current { get; set; }
+  public void Reset() {
+      _cursor = 0;
+  }
+ public MOUSE_TOGGLE() {
+  }
+ public MOUSE_TOGGLE(IAcknexObject MY, IAcknexObject THERE, IAcknexWorld world) {
+      this.MY = MY;
+      this.THERE = THERE;
+      this._world = world;
+  }
+  public bool MoveNext() {
+     switch (_cursor){
+     }
+MOUSE_MODE_0 = _world.GetObject(ObjectType.Skill,388);
+MOUSE_MODE_1 = _world.GetObject(ObjectType.Skill,388);
+MOUSE_MODE_1_val = MOUSE_MODE_1.GetFloat(PropertyName.VAL);
+MOUSE_MODE_0.SetFloat(231,MOUSE_MODE_1_val + 2f);
+//Unknown keyword: IF
+return false;
+//Unknown keyword: 
+      return false;
+  }
+IAcknexObject MOUSE_MODE_0;
+IAcknexObject MOUSE_MODE_1;
+float MOUSE_MODE_1_val;
+}
+public class SCAN_OBJ : ICompiledAction {
+  private int _cursor;
+  public IAcknexObject MY {get; set;}
+  public IAcknexObject THERE {get; set;}
+  public IAcknexWorld _world {get; set;}
+  public object Current { get; set; }
+  public void Reset() {
+      _cursor = 0;
+  }
+ public SCAN_OBJ() {
+  }
+ public SCAN_OBJ(IAcknexObject MY, IAcknexObject THERE, IAcknexWorld world) {
+      this.MY = MY;
+      this.THERE = THERE;
+      this._world = world;
+  }
+  public bool MoveNext() {
+     switch (_cursor){
+     }
+//Unknown keyword: IF
+//Unknown keyword: 
+      return false;
+  }
 }
 public class PICKKEY1 : ICompiledAction {
   private int _cursor;
@@ -15646,7 +15711,7 @@ public class ENDPHASE : ICompiledAction {
      }
 ENDPHASE_0 = _world.AcknexObject.GetAcknexObject(1109344053);
 temp_3 =_world.AcknexObject?.GetAcknexObject(22);
-if (temp_3 == ENDPHASE_0)
+if (CheckEquals(temp_3 , ENDPHASE_0))
 {
 goto CONT;
 }
@@ -15782,13 +15847,13 @@ public class DRKLWAIT : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(176);
-if (temp_3 != 4f)
+if (!CheckEquals(temp_3 , 4f))
 {
 goto CONT;
 }
 MY_6 = MY;
 temp_7 =MY_6.GetFloat(205);
-if (temp_7 != 1f)
+if (!CheckEquals(temp_7 , 1f))
 {
 goto CONT;
 }
@@ -15964,7 +16029,7 @@ MY_14.SetFloat(213,0f);
             _world.StartManagedCoroutine(null, enumerator);
         }MY_17 = MY;
 temp_18 =MY_17.GetFloat(181);
-if (temp_18 == 0f)
+if (CheckEquals(temp_18 , 0f))
 {
 {
             var enumerator = new DRKLWAIT();
@@ -16042,7 +16107,7 @@ MY_20.SetFloat(213,0f);
             _world.StartManagedCoroutine(null, enumerator);
         }MY_23 = MY;
 temp_24 =MY_23.GetFloat(176);
-if (temp_24 == 4f)
+if (CheckEquals(temp_24 , 4f))
 {
 goto HIDDING;
 }
@@ -16180,13 +16245,13 @@ public class DRKLLISTEN : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(176);
-if (temp_3 != 4f)
+if (!CheckEquals(temp_3 , 4f))
 {
 goto CONT;
 }
 MY_6 = MY;
 temp_7 =MY_6.GetFloat(205);
-if (temp_7 != 1f)
+if (!CheckEquals(temp_7 , 1f))
 {
 goto CONT;
 }
@@ -16200,7 +16265,7 @@ goto CONT1;
 }
 MY_14 = MY;
 temp_15 =MY_14.GetFloat(182);
-if (temp_15 == 0f)
+if (CheckEquals(temp_15 , 0f))
 {
 goto CONT1;
 }
@@ -16301,7 +16366,7 @@ public class DRKLJUMP : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(182);
-if (temp_3 == 1f)
+if (CheckEquals(temp_3 , 1f))
 {
 goto BLOODSMELL;
 }
@@ -16314,7 +16379,7 @@ goto BLOODSMELL;
             _world.StartManagedCoroutine(null, enumerator);
         }MY_6 = MY;
 temp_7 =MY_6.GetFloat(181);
-if (temp_7 == 0f)
+if (CheckEquals(temp_7 , 0f))
 {
 return false;
 }
@@ -16396,13 +16461,13 @@ public class DRKLLOOKFOR : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(176);
-if (temp_3 == 10f)
+if (CheckEquals(temp_3 , 10f))
 {
 return false;
 }
 MY_6 = MY;
 temp_7 =MY_6.GetFloat(176);
-if (temp_7 == 4f)
+if (CheckEquals(temp_7 , 4f))
 {
 return false;
 }
@@ -16414,7 +16479,7 @@ return false;
 }
 MY_14 = MY;
 temp_15 =MY_14.GetFloat(182);
-if (temp_15 == 1f)
+if (CheckEquals(temp_15 , 1f))
 {
 {
             var enumerator = new DRKLFOLLOWATTACK();
@@ -16428,7 +16493,7 @@ if (temp_15 == 1f)
 FOLLOW_16 = _world.AcknexObject.GetAcknexObject(2968039200);
 MY_18 = MY;
 temp_19 =MY_18?.GetAcknexObject(199);
-if (temp_19 == FOLLOW_16)
+if (CheckEquals(temp_19 , FOLLOW_16))
 {
 return false;
 }
@@ -17092,13 +17157,13 @@ public class DRKLHIT : ICompiledAction {
      }
 SHOOT_FAC_1 = _world.GetObject(ObjectType.Skill,441);
 SHOOT_FAC_1_val = SHOOT_FAC_1.GetFloat(PropertyName.VAL);
-if (SHOOT_FAC_1_val == 0f)
+if (CheckEquals(SHOOT_FAC_1_val , 0f))
 {
 goto OBSTACLE;
 }
 MY_2 = MY;
 HIT_3 = _world.GetSynonymObject(704);
-if (HIT_3 != MY_2)
+if (!CheckEquals(HIT_3 , MY_2))
 {
 goto EXPLOSION;
 }
@@ -17107,7 +17172,7 @@ goto CONT;
 EXPLOSION:
 EXPLOSION_ON_7 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_7_val = EXPLOSION_ON_7.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_7_val == 0f)
+if (CheckEquals(EXPLOSION_ON_7_val , 0f))
 {
 goto OBSTACLE;
 }
@@ -17144,13 +17209,13 @@ goto OBSTACLE;
 HIT:
 EXPLOSION_ON_54 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_54_val = EXPLOSION_ON_54.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_54_val != 2f)
+if (!CheckEquals(EXPLOSION_ON_54_val , 2f))
 {
 goto CONT;
 }
 MY_57 = MY;
 temp_58 =MY_57.GetFloat(205);
-if (temp_58 == 1f)
+if (CheckEquals(temp_58 , 1f))
 {
 {
             var enumerator = new DRKLIMPLODE();
@@ -17225,7 +17290,7 @@ if (temp_109 > 4f)
 }
 MY_112 = MY;
 temp_113 =MY_112.GetFloat(176);
-if (temp_113 != 4f)
+if (!CheckEquals(temp_113 , 4f))
 {
 {
             var enumerator = new DRKLFOLLOWATTACK();
@@ -17366,7 +17431,7 @@ MY_11.SetAcknexObject(189,null);
             _world.StartManagedCoroutine(null, enumerator);
         }SHOT_SOUND_ON_13 = _world.GetObject(ObjectType.Skill,3372273679);
 SHOT_SOUND_ON_13_val = SHOT_SOUND_ON_13.GetFloat(PropertyName.VAL);
-if (SHOT_SOUND_ON_13_val == 0f)
+if (CheckEquals(SHOT_SOUND_ON_13_val , 0f))
 {
 goto CONT;
 }
@@ -17387,13 +17452,13 @@ goto CONT;
             _world.StartManagedCoroutine(null, enumerator);
         }MY_16 = MY;
 temp_17 =MY_16.GetFloat(181);
-if (temp_17 == 0f)
+if (CheckEquals(temp_17 , 0f))
 {
 return false;
 }
 MY_20 = MY;
 temp_21 =MY_20.GetFloat(182);
-if (temp_21 == 1f)
+if (CheckEquals(temp_21 , 1f))
 {
 goto CONT1;
 }
@@ -17464,7 +17529,7 @@ MY_11 = MY;
 MY_11.SetAcknexObject(189,null);
 MY_14 = MY;
 temp_15 =MY_14.GetFloat(205);
-if (temp_15 == 0f)
+if (CheckEquals(temp_15 , 0f))
 {
 goto STOP;
 }
@@ -17565,7 +17630,7 @@ MY_15.SetAcknexObject(189,null);
             _world.StartManagedCoroutine(null, enumerator);
         }MY_18 = MY;
 temp_19 =MY_18.GetFloat(181);
-if (temp_19 == 0f)
+if (CheckEquals(temp_19 , 0f))
 {
 goto CONTFLAG2;
 }
@@ -17573,7 +17638,7 @@ goto PLAYERSEEN;
 CONTFLAG2:
 MY_22 = MY;
 temp_23 =MY_22.GetFloat(182);
-if (temp_23 == 1f)
+if (CheckEquals(temp_23 , 1f))
 {
 goto ATTACK;
 }
@@ -17987,13 +18052,13 @@ public class TROPWAIT : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(176);
-if (temp_3 != 4f)
+if (!CheckEquals(temp_3 , 4f))
 {
 goto CONT;
 }
 MY_6 = MY;
 temp_7 =MY_6.GetFloat(205);
-if (temp_7 != 1f)
+if (!CheckEquals(temp_7 , 1f))
 {
 goto CONT;
 }
@@ -18250,7 +18315,7 @@ MY_20 = MY;
 MY_20.SetFloat(219,0f);
 MY_23 = MY;
 temp_24 =MY_23.GetFloat(176);
-if (temp_24 == 4f)
+if (CheckEquals(temp_24 , 4f))
 {
 goto HIDDING;
 }
@@ -18423,13 +18488,13 @@ public class TROPLISTEN : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(176);
-if (temp_3 != 4f)
+if (!CheckEquals(temp_3 , 4f))
 {
 goto CONT;
 }
 MY_6 = MY;
 temp_7 =MY_6.GetFloat(205);
-if (temp_7 != 1f)
+if (!CheckEquals(temp_7 , 1f))
 {
 goto CONT;
 }
@@ -18443,7 +18508,7 @@ goto CONT1;
 }
 MY_14 = MY;
 temp_15 =MY_14.GetFloat(182);
-if (temp_15 == 0f)
+if (CheckEquals(temp_15 , 0f))
 {
 goto CONT1;
 }
@@ -18711,7 +18776,7 @@ public class TROPLOOKFOR : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(176);
-if (temp_3 == 10f)
+if (CheckEquals(temp_3 , 10f))
 {
 return false;
 }
@@ -18723,7 +18788,7 @@ return false;
 }
 MY_10 = MY;
 temp_11 =MY_10.GetFloat(182);
-if (temp_11 == 1f)
+if (CheckEquals(temp_11 , 1f))
 {
 {
             var enumerator = new TROPFOLLOWATTACK();
@@ -18737,7 +18802,7 @@ if (temp_11 == 1f)
 FOLLOW_12 = _world.AcknexObject.GetAcknexObject(2968039200);
 MY_14 = MY;
 temp_15 =MY_14?.GetAcknexObject(199);
-if (temp_15 == FOLLOW_12)
+if (CheckEquals(temp_15 , FOLLOW_12))
 {
 return false;
 }
@@ -19188,7 +19253,7 @@ MY_35 = MY;
 _world.Shoot(MY_35, MY, THERE);
 HIT_DIST_37 = _world.GetObject(ObjectType.Skill,444);
 HIT_DIST_37_val = HIT_DIST_37.GetFloat(PropertyName.VAL);
-if (HIT_DIST_37_val == 0f)
+if (CheckEquals(HIT_DIST_37_val , 0f))
 {
 goto MISS;
 }
@@ -19459,7 +19524,7 @@ MY_14 = MY;
 MY_14.SetAcknexObject(190,TROPDEAD_12);
 MY_17 = MY;
 temp_18 =MY_17.GetFloat(184);
-if (temp_18 != 0f)
+if (!CheckEquals(temp_18 , 0f))
 {
 {
             var enumerator = new TROPDROPKEY();
@@ -19583,7 +19648,7 @@ MY_83 = MY;
 MY_83.SetAcknexObject(199,null);
 MY_86 = MY;
 temp_87 =MY_86.GetFloat(184);
-if (temp_87 != 0f)
+if (!CheckEquals(temp_87 , 0f))
 {
 {
             var enumerator = new TROPDROPKEY();
@@ -19665,19 +19730,19 @@ public class TROPHIT : ICompiledAction {
      }
 SHOOT_FAC_1 = _world.GetObject(ObjectType.Skill,441);
 SHOOT_FAC_1_val = SHOOT_FAC_1.GetFloat(PropertyName.VAL);
-if (SHOOT_FAC_1_val == 0f)
+if (CheckEquals(SHOOT_FAC_1_val , 0f))
 {
 goto OBSTACLE;
 }
 MY_2 = MY;
 HIT_3 = _world.GetSynonymObject(704);
-if (HIT_3 == MY_2)
+if (CheckEquals(HIT_3 , MY_2))
 {
 goto CONT;
 }
 EXPLOSION_ON_5 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_5_val = EXPLOSION_ON_5.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_5_val == 0f)
+if (CheckEquals(EXPLOSION_ON_5_val , 0f))
 {
 goto OBSTACLE;
 }
@@ -19714,13 +19779,13 @@ goto OBSTACLE;
 HIT:
 EXPLOSION_ON_52 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_52_val = EXPLOSION_ON_52.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_52_val != 2f)
+if (!CheckEquals(EXPLOSION_ON_52_val , 2f))
 {
 goto GRANADE;
 }
 MY_55 = MY;
 temp_56 =MY_55.GetFloat(205);
-if (temp_56 == 1f)
+if (CheckEquals(temp_56 , 1f))
 {
 {
             var enumerator = new TROPIMPLODE();
@@ -19831,7 +19896,7 @@ if (temp_142 > 4f)
 }
 MY_145 = MY;
 temp_146 =MY_145.GetFloat(176);
-if (temp_146 != 4f)
+if (!CheckEquals(temp_146 , 4f))
 {
 {
             var enumerator = new TROPFOLLOWATTACK();
@@ -20042,13 +20107,13 @@ public class CYCLETROPATTACK : ICompiledAction {
             _world.StartManagedCoroutine(null, enumerator);
         }MY_2 = MY;
 temp_3 =MY_2.GetFloat(182);
-if (temp_3 != 0f)
+if (!CheckEquals(temp_3 , 0f))
 {
 goto ATTACK;
 }
 SHOT_SOUND_ON_5 = _world.GetObject(ObjectType.Skill,3372273679);
 SHOT_SOUND_ON_5_val = SHOT_SOUND_ON_5.GetFloat(PropertyName.VAL);
-if (SHOT_SOUND_ON_5_val == 0f)
+if (CheckEquals(SHOT_SOUND_ON_5_val , 0f))
 {
 goto CONT;
 }
@@ -20069,13 +20134,13 @@ goto CONT;
             _world.StartManagedCoroutine(null, enumerator);
         }MY_8 = MY;
 temp_9 =MY_8.GetFloat(181);
-if (temp_9 == 0f)
+if (CheckEquals(temp_9 , 0f))
 {
 return false;
 }
 GUN_ON_11 = _world.GetObject(ObjectType.Skill,3014382675);
 GUN_ON_11_val = GUN_ON_11.GetFloat(PropertyName.VAL);
-if (GUN_ON_11_val != 0f)
+if (!CheckEquals(GUN_ON_11_val , 0f))
 {
 goto ATTACK;
 }
@@ -20174,7 +20239,7 @@ MY_1.SetFloat(194,temp_7+(UnityEngine.Random.value-0.5f)*2f);
             _world.StartManagedCoroutine(null, enumerator);
         }MY_18 = MY;
 temp_19 =MY_18.GetFloat(205);
-if (temp_19 == 1f)
+if (CheckEquals(temp_19 , 1f))
 {
 return false;
 }
@@ -20187,7 +20252,7 @@ return false;
             _world.StartManagedCoroutine(null, enumerator);
         }MY_22 = MY;
 temp_23 =MY_22.GetFloat(181);
-if (temp_23 == 0f)
+if (CheckEquals(temp_23 , 0f))
 {
 goto STOP;
 }
@@ -20324,7 +20389,7 @@ goto ATTACK;
             _world.StartManagedCoroutine(null, enumerator);
         }MY_14 = MY;
 temp_15 =MY_14.GetFloat(181);
-if (temp_15 == 0f)
+if (CheckEquals(temp_15 , 0f))
 {
 goto ATTACK;
 }
@@ -20403,7 +20468,7 @@ public class CYCLETROPWARNING : ICompiledAction {
             _world.StartManagedCoroutine(null, enumerator);
         }GUN_ON_1 = _world.GetObject(ObjectType.Skill,3014382675);
 GUN_ON_1_val = GUN_ON_1.GetFloat(PropertyName.VAL);
-if (GUN_ON_1_val != 0f)
+if (!CheckEquals(GUN_ON_1_val , 0f))
 {
 {
             var enumerator = new TROPFOLLOWATTACK();
@@ -20731,19 +20796,19 @@ public class HUMMERHIT : ICompiledAction {
      }
 SHOOT_FAC_1 = _world.GetObject(ObjectType.Skill,441);
 SHOOT_FAC_1_val = SHOOT_FAC_1.GetFloat(PropertyName.VAL);
-if (SHOOT_FAC_1_val == 0f)
+if (CheckEquals(SHOOT_FAC_1_val , 0f))
 {
 return false;
 }
 MY_2 = MY;
 HIT_3 = _world.GetSynonymObject(704);
-if (HIT_3 == MY_2)
+if (CheckEquals(HIT_3 , MY_2))
 {
 goto HIT;
 }
 EXPLOSION_ON_5 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_5_val = EXPLOSION_ON_5.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_5_val == 0f)
+if (CheckEquals(EXPLOSION_ON_5_val , 0f))
 {
 return false;
 }
@@ -21520,7 +21585,7 @@ public class LNCHLOOKFOR : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(176);
-if (temp_3 == 10f)
+if (CheckEquals(temp_3 , 10f))
 {
 return false;
 }
@@ -21533,7 +21598,7 @@ return false;
 FOLLOW_8 = _world.AcknexObject.GetAcknexObject(2968039200);
 MY_10 = MY;
 temp_11 =MY_10?.GetAcknexObject(199);
-if (temp_11 == FOLLOW_8)
+if (CheckEquals(temp_11 , FOLLOW_8))
 {
 return false;
 }
@@ -21848,7 +21913,7 @@ MY_17.SetFloat(219,0f);
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }MISSILE_19 = _world.GetSynonymObject(3680056099);
-if (MISSILE_19 == null)
+if (CheckEquals(MISSILE_19 , null))
 {
 return false;
 }
@@ -21878,7 +21943,7 @@ MY_31.SetAcknexObject(199,FOLLOW_29);
             _world.StartManagedCoroutine(null, enumerator);
         }MY_34 = MY;
 temp_35 =MY_34.GetFloat(181);
-if (temp_35 == 0f)
+if (CheckEquals(temp_35 , 0f))
 {
 goto MISS;
 }
@@ -21898,7 +21963,7 @@ MISSILE_51 = _world.GetSynonymObject(3680056099);
 MISSILE_51.SetFloat(169,0.1f);
 MY_54 = MY;
 temp_55 =MY_54.GetFloat(202);
-if (temp_55 != 0f)
+if (!CheckEquals(temp_55 , 0f))
 {
 MISSILE_57 = _world.GetSynonymObject(3680056099);
 MISSILE_59 = _world.GetSynonymObject(3680056099);
@@ -22192,7 +22257,7 @@ MY_14 = MY;
 MY_14.SetAcknexObject(190,LNCHDEAD_12);
 MY_17 = MY;
 temp_18 =MY_17.GetFloat(184);
-if (temp_18 != 0f)
+if (!CheckEquals(temp_18 , 0f))
 {
 {
             var enumerator = new LNCHDROPKEY();
@@ -22316,7 +22381,7 @@ MY_83 = MY;
 MY_83.SetAcknexObject(199,null);
 MY_86 = MY;
 temp_87 =MY_86.GetFloat(184);
-if (temp_87 != 0f)
+if (!CheckEquals(temp_87 , 0f))
 {
 {
             var enumerator = new LNCHDROPKEY();
@@ -22398,19 +22463,19 @@ public class LNCHHIT : ICompiledAction {
      }
 SHOOT_FAC_1 = _world.GetObject(ObjectType.Skill,441);
 SHOOT_FAC_1_val = SHOOT_FAC_1.GetFloat(PropertyName.VAL);
-if (SHOOT_FAC_1_val == 0f)
+if (CheckEquals(SHOOT_FAC_1_val , 0f))
 {
 goto OBSTACLE;
 }
 MY_2 = MY;
 HIT_3 = _world.GetSynonymObject(704);
-if (HIT_3 == MY_2)
+if (CheckEquals(HIT_3 , MY_2))
 {
 goto HIT;
 }
 EXPLOSION_ON_5 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_5_val = EXPLOSION_ON_5.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_5_val == 0f)
+if (CheckEquals(EXPLOSION_ON_5_val , 0f))
 {
 goto OBSTACLE;
 }
@@ -22447,13 +22512,13 @@ goto OBSTACLE;
 HIT:
 EXPLOSION_ON_52 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_52_val = EXPLOSION_ON_52.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_52_val != 2f)
+if (!CheckEquals(EXPLOSION_ON_52_val , 2f))
 {
 goto CONT;
 }
 MY_55 = MY;
 temp_56 =MY_55.GetFloat(205);
-if (temp_56 == 1f)
+if (CheckEquals(temp_56 , 1f))
 {
 {
             var enumerator = new LNCHIMPLODE();
@@ -22547,7 +22612,7 @@ if (temp_121 > 4f)
 }
 MY_124 = MY;
 temp_125 =MY_124.GetFloat(176);
-if (temp_125 != 4f)
+if (!CheckEquals(temp_125 , 4f))
 {
 {
             var enumerator = new LNCHFOLLOWATTACK();
@@ -22747,7 +22812,7 @@ public class CYCLELNCHATTACK : ICompiledAction {
             _world.StartManagedCoroutine(null, enumerator);
         }SHOT_SOUND_ON_1 = _world.GetObject(ObjectType.Skill,3372273679);
 SHOT_SOUND_ON_1_val = SHOT_SOUND_ON_1.GetFloat(PropertyName.VAL);
-if (SHOT_SOUND_ON_1_val == 0f)
+if (CheckEquals(SHOT_SOUND_ON_1_val , 0f))
 {
 goto CONT;
 }
@@ -22768,19 +22833,19 @@ goto CONT;
             _world.StartManagedCoroutine(null, enumerator);
         }MY_4 = MY;
 temp_5 =MY_4.GetFloat(181);
-if (temp_5 == 0f)
+if (CheckEquals(temp_5 , 0f))
 {
 return false;
 }
 MY_8 = MY;
 temp_9 =MY_8.GetFloat(182);
-if (temp_9 != 0f)
+if (!CheckEquals(temp_9 , 0f))
 {
 goto ATTACK;
 }
 GUN_ON_11 = _world.GetObject(ObjectType.Skill,3014382675);
 GUN_ON_11_val = GUN_ON_11.GetFloat(PropertyName.VAL);
-if (GUN_ON_11_val != 0f)
+if (!CheckEquals(GUN_ON_11_val , 0f))
 {
 goto ATTACK;
 }
@@ -22837,7 +22902,7 @@ public class CYCLELNCHHIDE : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(205);
-if (temp_3 == 0f)
+if (CheckEquals(temp_3 , 0f))
 {
 goto STOP;
 }
@@ -22979,7 +23044,7 @@ if (temp_7 < 25f)
             _world.StartManagedCoroutine(null, enumerator);
         }MY_10 = MY;
 temp_11 =MY_10.GetFloat(181);
-if (temp_11 == 0f)
+if (CheckEquals(temp_11 , 0f))
 {
 goto ATTACK;
 }
@@ -23348,7 +23413,7 @@ MY_11.SetAcknexObject(209,REPTHIT_9);
             _world.StartManagedCoroutine(null, enumerator);
         }MY_14 = MY;
 temp_15 =MY_14.GetFloat(181);
-if (temp_15 == 0f)
+if (CheckEquals(temp_15 , 0f))
 {
 {
             var enumerator = new REPTWAIT();
@@ -23604,7 +23669,7 @@ public class REPTJUMP : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(182);
-if (temp_3 == 1f)
+if (CheckEquals(temp_3 , 1f))
 {
 goto BLOODSMELL;
 }
@@ -23617,7 +23682,7 @@ goto BLOODSMELL;
             _world.StartManagedCoroutine(null, enumerator);
         }MY_6 = MY;
 temp_7 =MY_6.GetFloat(181);
-if (temp_7 == 0f)
+if (CheckEquals(temp_7 , 0f))
 {
 return false;
 }
@@ -23659,13 +23724,13 @@ public class REPTLOOKFOR : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(176);
-if (temp_3 == 0f)
+if (CheckEquals(temp_3 , 0f))
 {
 return false;
 }
 MY_6 = MY;
 temp_7 =MY_6.GetFloat(176);
-if (temp_7 == 4f)
+if (CheckEquals(temp_7 , 4f))
 {
 return false;
 }
@@ -23677,14 +23742,14 @@ return false;
 }
 MY_14 = MY;
 temp_15 =MY_14.GetFloat(176);
-if (temp_15 == 10f)
+if (CheckEquals(temp_15 , 10f))
 {
 return false;
 }
 FOLLOW_16 = _world.AcknexObject.GetAcknexObject(2968039200);
 MY_18 = MY;
 temp_19 =MY_18?.GetAcknexObject(199);
-if (temp_19 == FOLLOW_16)
+if (CheckEquals(temp_19 , FOLLOW_16))
 {
 return false;
 }
@@ -24298,32 +24363,32 @@ public class REPTHIT : ICompiledAction {
      }
 SHOOT_FAC_1 = _world.GetObject(ObjectType.Skill,441);
 SHOOT_FAC_1_val = SHOOT_FAC_1.GetFloat(PropertyName.VAL);
-if (SHOOT_FAC_1_val == 0f)
+if (CheckEquals(SHOOT_FAC_1_val , 0f))
 {
 goto OBSTACLE;
 }
 MY_2 = MY;
 HIT_3 = _world.GetSynonymObject(704);
-if (HIT_3 == MY_2)
+if (CheckEquals(HIT_3 , MY_2))
 {
 goto HIT;
 }
 EXPLOSION_ON_5 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_5_val = EXPLOSION_ON_5.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_5_val == 0f)
+if (CheckEquals(EXPLOSION_ON_5_val , 0f))
 {
 goto OBSTACLE;
 }
 HIT:
 EXPLOSION_ON_7 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_7_val = EXPLOSION_ON_7.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_7_val != 2f)
+if (!CheckEquals(EXPLOSION_ON_7_val , 2f))
 {
 goto CONT;
 }
 MY_10 = MY;
 temp_11 =MY_10.GetFloat(205);
-if (temp_11 == 1f)
+if (CheckEquals(temp_11 , 1f))
 {
 {
             var enumerator = new REPTIMPLODE();
@@ -24500,7 +24565,7 @@ MY_11.SetAcknexObject(189,null);
             _world.StartManagedCoroutine(null, enumerator);
         }SHOT_SOUND_ON_13 = _world.GetObject(ObjectType.Skill,3372273679);
 SHOT_SOUND_ON_13_val = SHOT_SOUND_ON_13.GetFloat(PropertyName.VAL);
-if (SHOT_SOUND_ON_13_val == 0f)
+if (CheckEquals(SHOT_SOUND_ON_13_val , 0f))
 {
 goto CONT;
 }
@@ -24521,13 +24586,13 @@ goto CONT;
             _world.StartManagedCoroutine(null, enumerator);
         }MY_16 = MY;
 temp_17 =MY_16.GetFloat(181);
-if (temp_17 == 0f)
+if (CheckEquals(temp_17 , 0f))
 {
 return false;
 }
 MY_20 = MY;
 temp_21 =MY_20.GetFloat(182);
-if (temp_21 == 1f)
+if (CheckEquals(temp_21 , 1f))
 {
 goto CONT1;
 }
@@ -24598,7 +24663,7 @@ MY_11 = MY;
 MY_11.SetAcknexObject(189,null);
 MY_14 = MY;
 temp_15 =MY_14.GetFloat(205);
-if (temp_15 == 0f)
+if (CheckEquals(temp_15 , 0f))
 {
 goto STOP;
 }
@@ -24684,7 +24749,7 @@ MY_15.SetAcknexObject(189,null);
             _world.StartManagedCoroutine(null, enumerator);
         }MY_18 = MY;
 temp_19 =MY_18.GetFloat(181);
-if (temp_19 == 0f)
+if (CheckEquals(temp_19 , 0f))
 {
 goto CONTFLAG2;
 }
@@ -24692,7 +24757,7 @@ goto PLAYERSEEN;
 CONTFLAG2:
 MY_22 = MY;
 temp_23 =MY_22.GetFloat(182);
-if (temp_23 == 1f)
+if (CheckEquals(temp_23 , 1f))
 {
 goto ATTACK;
 }
@@ -25396,19 +25461,19 @@ public class NURSHIT : ICompiledAction {
      }
 SHOOT_FAC_1 = _world.GetObject(ObjectType.Skill,441);
 SHOOT_FAC_1_val = SHOOT_FAC_1.GetFloat(PropertyName.VAL);
-if (SHOOT_FAC_1_val == 0f)
+if (CheckEquals(SHOOT_FAC_1_val , 0f))
 {
 goto OBSTACLE;
 }
 MY_2 = MY;
 HIT_3 = _world.GetSynonymObject(704);
-if (HIT_3 == MY_2)
+if (CheckEquals(HIT_3 , MY_2))
 {
 goto HIT;
 }
 EXPLOSION_ON_5 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_5_val = EXPLOSION_ON_5.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_5_val == 0f)
+if (CheckEquals(EXPLOSION_ON_5_val , 0f))
 {
 goto OBSTACLE;
 }
@@ -25445,13 +25510,13 @@ goto OBSTACLE;
 HIT:
 EXPLOSION_ON_52 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_52_val = EXPLOSION_ON_52.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_52_val != 2f)
+if (!CheckEquals(EXPLOSION_ON_52_val , 2f))
 {
 goto CONT;
 }
 MY_55 = MY;
 temp_56 =MY_55.GetFloat(205);
-if (temp_56 == 1f)
+if (CheckEquals(temp_56 , 1f))
 {
 {
             var enumerator = new NURSIMPLODE();
@@ -25536,7 +25601,7 @@ return false;
 OBSTACLE:
 MY_103 = MY;
 temp_104 =MY_103.GetFloat(176);
-if (temp_104 != 1f)
+if (!CheckEquals(temp_104 , 1f))
 {
 goto JUMP;
 }
@@ -25641,7 +25706,7 @@ public class NURSCYCLE : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(176);
-if (temp_3 != 4f)
+if (!CheckEquals(temp_3 , 4f))
 {
 goto CONT;
 }
@@ -25675,7 +25740,7 @@ goto CONT1;
 }
 MY_22 = MY;
 temp_23 =MY_22.GetFloat(168);
-if (temp_23 == 0f)
+if (CheckEquals(temp_23 , 0f))
 {
 goto CONT1;
 }
@@ -25695,19 +25760,19 @@ MY_25.SetFloat(194,temp_31+UnityEngine.Random.value-0.5f);
 CONT1:
 GUN_ON_37 = _world.GetObject(ObjectType.Skill,3014382675);
 GUN_ON_37_val = GUN_ON_37.GetFloat(PropertyName.VAL);
-if (GUN_ON_37_val != 0f)
+if (!CheckEquals(GUN_ON_37_val , 0f))
 {
 goto HIDE;
 }
 SHOT_SOUND_ON_39 = _world.GetObject(ObjectType.Skill,3372273679);
 SHOT_SOUND_ON_39_val = SHOT_SOUND_ON_39.GetFloat(PropertyName.VAL);
-if (SHOT_SOUND_ON_39_val != 0f)
+if (!CheckEquals(SHOT_SOUND_ON_39_val , 0f))
 {
 goto HIDE;
 }
 EXPLOSION_ON_41 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_41_val = EXPLOSION_ON_41.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_41_val != 0f)
+if (!CheckEquals(EXPLOSION_ON_41_val , 0f))
 {
 goto HIDE;
 }
@@ -25825,19 +25890,19 @@ public class NURSTALK : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(205);
-if (temp_3 != 1f)
+if (!CheckEquals(temp_3 , 1f))
 {
 return false;
 }
 MY_6 = MY;
 temp_7 =MY_6.GetFloat(176);
-if (temp_7 == 4f)
+if (CheckEquals(temp_7 , 4f))
 {
 return false;
 }
 TALKNURS_9 = _world.GetObject(ObjectType.Skill,1134038113);
 TALKNURS_9_val = TALKNURS_9.GetFloat(PropertyName.VAL);
-if (TALKNURS_9_val != 0f)
+if (!CheckEquals(TALKNURS_9_val , 0f))
 {
 return false;
 }
@@ -26522,19 +26587,19 @@ public class DOCTHIT : ICompiledAction {
      }
 SHOOT_FAC_1 = _world.GetObject(ObjectType.Skill,441);
 SHOOT_FAC_1_val = SHOOT_FAC_1.GetFloat(PropertyName.VAL);
-if (SHOOT_FAC_1_val == 0f)
+if (CheckEquals(SHOOT_FAC_1_val , 0f))
 {
 goto OBSTACLE;
 }
 MY_2 = MY;
 HIT_3 = _world.GetSynonymObject(704);
-if (HIT_3 == MY_2)
+if (CheckEquals(HIT_3 , MY_2))
 {
 goto HIT;
 }
 EXPLOSION_ON_5 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_5_val = EXPLOSION_ON_5.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_5_val == 0f)
+if (CheckEquals(EXPLOSION_ON_5_val , 0f))
 {
 goto OBSTACLE;
 }
@@ -26571,13 +26636,13 @@ goto OBSTACLE;
 HIT:
 EXPLOSION_ON_52 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_52_val = EXPLOSION_ON_52.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_52_val != 2f)
+if (!CheckEquals(EXPLOSION_ON_52_val , 2f))
 {
 goto CONT;
 }
 MY_55 = MY;
 temp_56 =MY_55.GetFloat(205);
-if (temp_56 == 1f)
+if (CheckEquals(temp_56 , 1f))
 {
 {
             var enumerator = new DOCTIMPLODE();
@@ -26662,7 +26727,7 @@ return false;
 OBSTACLE:
 MY_103 = MY;
 temp_104 =MY_103.GetFloat(176);
-if (temp_104 != 1f)
+if (!CheckEquals(temp_104 , 1f))
 {
 goto JUMP;
 }
@@ -26767,7 +26832,7 @@ public class DOCTCYCLE : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(176);
-if (temp_3 != 4f)
+if (!CheckEquals(temp_3 , 4f))
 {
 goto CONT;
 }
@@ -26801,7 +26866,7 @@ goto CONT1;
 }
 MY_22 = MY;
 temp_23 =MY_22.GetFloat(168);
-if (temp_23 == 0f)
+if (CheckEquals(temp_23 , 0f))
 {
 goto CONT1;
 }
@@ -26821,19 +26886,19 @@ MY_25.SetFloat(194,temp_31+UnityEngine.Random.value-0.5f);
 CONT1:
 GUN_ON_37 = _world.GetObject(ObjectType.Skill,3014382675);
 GUN_ON_37_val = GUN_ON_37.GetFloat(PropertyName.VAL);
-if (GUN_ON_37_val != 0f)
+if (!CheckEquals(GUN_ON_37_val , 0f))
 {
 goto HIDE;
 }
 SHOT_SOUND_ON_39 = _world.GetObject(ObjectType.Skill,3372273679);
 SHOT_SOUND_ON_39_val = SHOT_SOUND_ON_39.GetFloat(PropertyName.VAL);
-if (SHOT_SOUND_ON_39_val != 0f)
+if (!CheckEquals(SHOT_SOUND_ON_39_val , 0f))
 {
 goto HIDE;
 }
 EXPLOSION_ON_41 = _world.GetObject(ObjectType.Skill,3352630890);
 EXPLOSION_ON_41_val = EXPLOSION_ON_41.GetFloat(PropertyName.VAL);
-if (EXPLOSION_ON_41_val != 0f)
+if (!CheckEquals(EXPLOSION_ON_41_val , 0f))
 {
 goto HIDE;
 }
@@ -26940,19 +27005,19 @@ public class DOCTTALK : ICompiledAction {
      }
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(205);
-if (temp_3 != 1f)
+if (!CheckEquals(temp_3 , 1f))
 {
 return false;
 }
 MY_6 = MY;
 temp_7 =MY_6.GetFloat(176);
-if (temp_7 == 4f)
+if (CheckEquals(temp_7 , 4f))
 {
 return false;
 }
 TALKDOCT_9 = _world.GetObject(ObjectType.Skill,1133671715);
 TALKDOCT_9_val = TALKDOCT_9.GetFloat(PropertyName.VAL);
-if (TALKDOCT_9_val != 0f)
+if (!CheckEquals(TALKDOCT_9_val , 0f))
 {
 return false;
 }
@@ -27144,7 +27209,7 @@ public class WAYGUARD2 : ICompiledAction {
             _world.StartManagedCoroutine(null, enumerator);
         }MY_2 = MY;
 temp_3 =MY_2.GetFloat(171);
-if (temp_3 != 4f)
+if (!CheckEquals(temp_3 , 4f))
 {
 return false;
 }
@@ -27195,13 +27260,13 @@ public class DROPTROOPS2 : ICompiledAction {
      }
 DROPPED_1 = _world.GetObject(ObjectType.Skill,994153403);
 DROPPED_1_val = DROPPED_1.GetFloat(PropertyName.VAL);
-if (DROPPED_1_val == 1f)
+if (CheckEquals(DROPPED_1_val , 1f))
 {
 return false;
 }
 MY_4 = MY;
 temp_5 =MY_4.GetFloat(171);
-if (temp_5 != 13f)
+if (!CheckEquals(temp_5 , 13f))
 {
 return false;
 }
@@ -27344,7 +27409,7 @@ public class SELECTOR : ICompiledAction {
      }
 TOUCHKEY_1 = _world.GetObject(ObjectType.Skill,2377224729);
 TOUCHKEY_1_val = TOUCHKEY_1.GetFloat(PropertyName.VAL);
-if (TOUCHKEY_1_val == 1f)
+if (CheckEquals(TOUCHKEY_1_val , 1f))
 {
 {
             var enumerator = new OPENDOOR1();
@@ -27357,7 +27422,7 @@ if (TOUCHKEY_1_val == 1f)
 }
 TOUCHKEY_3 = _world.GetObject(ObjectType.Skill,2377224729);
 TOUCHKEY_3_val = TOUCHKEY_3.GetFloat(PropertyName.VAL);
-if (TOUCHKEY_3_val == 2f)
+if (CheckEquals(TOUCHKEY_3_val , 2f))
 {
 {
             var enumerator = new OPENDOOR2();
@@ -27370,7 +27435,7 @@ if (TOUCHKEY_3_val == 2f)
 }
 TOUCHKEY_5 = _world.GetObject(ObjectType.Skill,2377224729);
 TOUCHKEY_5_val = TOUCHKEY_5.GetFloat(PropertyName.VAL);
-if (TOUCHKEY_5_val == 4f)
+if (CheckEquals(TOUCHKEY_5_val , 4f))
 {
 {
             var enumerator = new OPENHATCH();
@@ -27383,7 +27448,7 @@ if (TOUCHKEY_5_val == 4f)
 }
 TOUCHKEY_7 = _world.GetObject(ObjectType.Skill,2377224729);
 TOUCHKEY_7_val = TOUCHKEY_7.GetFloat(PropertyName.VAL);
-if (TOUCHKEY_7_val == 5f)
+if (CheckEquals(TOUCHKEY_7_val , 5f))
 {
 {
             var enumerator = new OPENMJ3();
@@ -27396,7 +27461,7 @@ if (TOUCHKEY_7_val == 5f)
 }
 TOUCHKEY_9 = _world.GetObject(ObjectType.Skill,2377224729);
 TOUCHKEY_9_val = TOUCHKEY_9.GetFloat(PropertyName.VAL);
-if (TOUCHKEY_9_val == 6f)
+if (CheckEquals(TOUCHKEY_9_val , 6f))
 {
 {
             var enumerator = new NOTOPEN();
@@ -27409,7 +27474,7 @@ if (TOUCHKEY_9_val == 6f)
 }
 TOUCHKEY_11 = _world.GetObject(ObjectType.Skill,2377224729);
 TOUCHKEY_11_val = TOUCHKEY_11.GetFloat(PropertyName.VAL);
-if (TOUCHKEY_11_val == 7f)
+if (CheckEquals(TOUCHKEY_11_val , 7f))
 {
 {
             var enumerator = new OPENHATCHA();
@@ -27422,7 +27487,7 @@ if (TOUCHKEY_11_val == 7f)
 }
 TOUCHKEY_13 = _world.GetObject(ObjectType.Skill,2377224729);
 TOUCHKEY_13_val = TOUCHKEY_13.GetFloat(PropertyName.VAL);
-if (TOUCHKEY_13_val == 8f)
+if (CheckEquals(TOUCHKEY_13_val , 8f))
 {
 {
             var enumerator = new OPENHATCHB();

@@ -554,10 +554,10 @@ namespace Acknex
                                 switch (keyword)
                                 {
                                     case "IF_EQUAL":
-                                        MethodBodyStringBuilder.Append("if (").Append(lhs.property).Append(" == ").Append(rhs.property).AppendLine(")");
+                                        MethodBodyStringBuilder.Append("if (CheckEquals(").Append(lhs.property).Append(" , ").Append(rhs.property).AppendLine("))");
                                         break;
                                     case "IF_NEQUAL":
-                                        MethodBodyStringBuilder.Append("if (").Append(lhs.property).Append(" != ").Append(rhs.property).AppendLine(")");
+                                        MethodBodyStringBuilder.Append("if (!CheckEquals(").Append(lhs.property).Append(" , ").Append(rhs.property).AppendLine("))");
                                         break;
                                     case "IF_BELOW":
                                         MethodBodyStringBuilder.Append("if (").Append(lhs.property).Append(" < ").Append(rhs.property).AppendLine(")");
@@ -767,7 +767,7 @@ namespace Acknex
                 case PropertyType.Float:
                     if (mode == "ADDT")
                     {
-                        MethodBodyStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsPropertyNameId).Append(",").Append(lhsGetter.property).Append(" + (").Append(rhs.property).AppendLine(" * TimeUtils.TicksToTime(1)));");
+                        MethodBodyStringBuilder.Append($"{lhsSetter.source}.SetFloat(").Append(lhsPropertyNameId).Append(",").Append(lhsGetter.property).Append(" + (").Append(rhs.property).AppendLine(" * _world.GetSkillValue(SkillName.TIME_CORR)));");
                     }
                     else if (mode == "ACCEL")
                     {

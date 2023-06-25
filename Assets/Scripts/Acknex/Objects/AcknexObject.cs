@@ -357,8 +357,16 @@ namespace Acknex
             }
         }
 
+        private static float Truncate(float value, int digits)
+        {
+            double mult = Math.Pow(10.0f, digits);
+            double result = Math.Truncate(mult * value) / mult;
+            return (float)result;
+        }
+
         public void SetFloat(NameId propertyName, float value)
         {
+            //value = Truncate(value, 3);
             if (Type == ObjectType.Skill)
             {
                 if (TryGetFloat((NameId)PropertyName.MAX, out var max))

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using LibTessDotNet;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
@@ -46,13 +45,15 @@ namespace Acknex
         public readonly List<Wall> Walls = new List<Wall>();
         public readonly IDictionary<uint, Wall> WallsByName = new Dictionary<uint, Wall>();
         public readonly IDictionary<uint, Way> WaysByName = new Dictionary<uint, Way>();
-        public Dictionary<IEnumerator, string> ActiveCoroutines = new Dictionary<IEnumerator, string>();
         private bool _culled;
         private Texture2D _palette;
         private Color[] _palettePixels;
+
+        private Vector2 _scrollPos;
         private Material _skyMaterial;
         private Material _surfacesMaterial;
         private TextParser _textParser;
+        public Dictionary<IEnumerator, string> ActiveCoroutines = new Dictionary<IEnumerator, string>();
         public Light AmbientLight;
         public AudioSource AudioSource;
         public bool BilinearFilter = true;
@@ -63,6 +64,8 @@ namespace Acknex
         public float CanvasWidthRatio;
         private ContouredRegions ContouredRegions;
         public List<ContourVertex> ContourVertices;
+        public bool CustomStateMachines;
+        public bool DebugCoroutines;
         public bool DebugSkills;
         public bool DisableCompilation;
         public bool DisableMaterials;
@@ -79,6 +82,7 @@ namespace Acknex
         public IAcknexObject Node2String;
         public Texture2D NullTexture;
         public bool OldAckVersion;
+        public SingleUnityLayer RegionOffsetLayer;
         public SingleUnityLayer RegionsLayer;
         public RegionWalls RegionWalls;
         public IAcknexObject RepelString;
@@ -92,6 +96,7 @@ namespace Acknex
         public bool UseWDLEngine;
         public IAcknexObject VertexString;
         public float Volume = 1f;
+        public LayerMask WallsAndRegions;
 
         public SingleUnityLayer WallsLayer;
 
@@ -99,11 +104,37 @@ namespace Acknex
         public LayerMask WallsWaterAndRegions;
         public LayerMask WallsWaterRegionsAndSprites;
         public LayerMask WallsWaterRegionsAndThings;
-        public LayerMask WallsAndRegions;
         public SingleUnityLayer WaterLayer;
         public string WDLPath;
-        public bool DebugCoroutines;
-        public bool CustomStateMachines;
+        public float TestOffset = -0.05f;
+
+        public static World Instance { get; private set; }
+
+        public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.World);
+
+        public GameObject GameObject => gameObject;
+
+        public Vector3 GetCenter()
+        {
+            return default;
+        }
+
+        public IAcknexObject GetRegion()
+        {
+            return null;
+        }
+
+        public void NotifyPropertyChanged(uint propertyName)
+        {
+        }
+
+        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
+        {
+        }
+
+        public void SetupInstance()
+        {
+        }
 
         public IEnumerator StartManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator)
         {
@@ -115,7 +146,7 @@ namespace Acknex
                 {
                     return null;
                 }
-                ActiveCoroutines.Add(enumerator, behaviour.name + "::" + enumerator.ToString());
+                ActiveCoroutines.Add(enumerator, behaviour.name + "::" + enumerator);
             }
             return enumerator;
         }
@@ -129,8 +160,6 @@ namespace Acknex
                 ActiveCoroutines.Remove(enumerator);
             }
         }
-
-        private Vector2 _scrollPos;
 
         private void OnGUI()
         {
@@ -163,34 +192,6 @@ namespace Acknex
                 GUILayout.EndVertical();
                 GUILayout.EndScrollView();
             }, "Coroutines:" + count);
-        }
-
-        public static World Instance { get; private set; }
-
-        public virtual IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.World);
-
-        public GameObject GameObject => gameObject;
-
-        public Vector3 GetCenter()
-        {
-            return default;
-        }
-
-        public IAcknexObject GetRegion()
-        {
-            return null;
-        }
-
-        public void NotifyPropertyChanged(uint propertyName)
-        {
-        }
-
-        public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
-        {
-        }
-
-        public void SetupInstance()
-        {
         }
 
         public override string ToString()

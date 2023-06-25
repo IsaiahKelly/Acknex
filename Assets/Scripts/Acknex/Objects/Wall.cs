@@ -278,9 +278,9 @@ namespace Acknex
             {
                 return;
             }
-            AcknexObject.NoDirtyFlag = true;
-            AcknexObject.SetFloat(PropertyName.DISTANCE, distance);
-            AcknexObject.NoDirtyFlag = false;
+            //AcknexObject.NoDirtyFlag = true;
+            //AcknexObject.SetFloat(PropertyName.DISTANCE, distance);
+            //AcknexObject.NoDirtyFlag = false;
             if (!AcknexObject.IsDirty)
             {
                 return;

@@ -24,6 +24,13 @@ namespace Acknex
                 public void SetWorld(IAcknexWorld world) {
                     _world = world;
                 }
+                private static bool CheckEquals(float a, float b) {
+                    return Mathf.Abs(a - b) <= 0.05;
+                }
+                private static bool CheckEquals(IAcknexObject a, IAcknexObject b)
+                {
+                    return  a == b;
+                }
         ";
 
         private const string MethodCallTemplate = @"

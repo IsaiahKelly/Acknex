@@ -1,6 +1,7 @@
 ﻿using NameId = System.UInt32;
 using Acknex.Interfaces;
 using UnityEngine;
+using Utils;
 using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
@@ -62,28 +63,30 @@ namespace Acknex
             var playerX = World.Instance.GetSkillValue(SkillName.PLAYER_X);
             var playerY = World.Instance.GetSkillValue(SkillName.PLAYER_Y);
             var playerZ = World.Instance.GetSkillValue(SkillName.PLAYER_Z);
-            World.Instance.UpdateSkillValue(SkillName.LAST_PLAYER_X, playerX);
-            World.Instance.UpdateSkillValue(SkillName.LAST_PLAYER_Y, playerY);
-            World.Instance.UpdateSkillValue(SkillName.LAST_PLAYER_Z, playerZ);
             var playerHgt = World.Instance.GetSkillValue(SkillName.PLAYER_HGT);
             var playerAngle = World.Instance.GetSkillValue(SkillName.PLAYER_ANGLE);
             var floorHgt = World.Instance.GetSkillValue(SkillName.FLOOR_HGT);
             var playerFootZ = floorHgt + playerHgt;
             var unityPlayerAngle = AngleUtils.ConvertAcknexToUnityAngle(playerAngle);
-            _characterController.transform.rotation = Quaternion.Euler(0f, unityPlayerAngle, 0f);
-            var initialPosition = _characterController.transform.position = new Vector3(playerX, playerFootZ, playerY);
+            var initialPosition = new Vector3(playerX, playerFootZ, playerY);
             var playerWidth = World.Instance.GetSkillValue(SkillName.PLAYER_WIDTH);
+            _characterController.enabled = false;
+            _characterController.transform.rotation = Quaternion.Euler(0f, unityPlayerAngle, 0f);
+            _characterController.transform.position = initialPosition;
             _characterController.radius = playerWidth;
+            _characterController.enabled = true;
             //todo: _characterController.skinWidth = playerWidth * 0.1f;
             var playerSize = World.Instance.GetSkillValue(SkillName.PLAYER_SIZE);
             _characterController.height = playerSize;
             var playerMove = new Vector3(World.Instance.GetSkillValue(SkillName.PLAYER_VX), 0f, World.Instance.GetSkillValue(SkillName.PLAYER_VY)) * World.Instance.GetSkillValue(SkillName.TIME_CORR);
             playerMove.y = World.Instance.GetSkillValue(SkillName.PLAYER_VZ);
             var desiredPosition = initialPosition + playerMove;
-            var stepSize = Mathf.Min(playerSize, World.Instance.GetSkillValue(SkillName.PLAYER_CLIMB));
+            var playerClimb = World.Instance.GetSkillValue(SkillName.PLAYER_CLIMB);
+            var stepSize = Mathf.Min(playerSize, playerClimb);
             var checkPosition = new Vector3(desiredPosition.x, desiredPosition.y + playerSize - playerWidth, desiredPosition.z);
             if (Physics.SphereCast(checkPosition, playerWidth, Vector3.up, out var raycastHit, Mathf.Infinity, World.Instance.RegionsLayer.Mask))
             {
+                //DebugExtension.DebugCapsule(checkPosition, checkPosition + Vector3.up * raycastHit.distance, Color.magenta, 1f);
                 stepSize = Mathf.Min(stepSize, raycastHit.distance);
             }
             _characterController.stepOffset = stepSize;
@@ -93,15 +96,17 @@ namespace Acknex
             _characterController.Move(playerMove);
             var delta = _characterController.transform.position - initialPosition;
             var deltaXZ = new Vector3(delta.x, 0f, delta.z);
-            if (playerHgt <= 0.1f && deltaXZ.magnitude > Mathf.Epsilon)
+            var deltaXZMagnitude = deltaXZ.magnitude;
+            if (playerHgt <= 0.1f && deltaXZMagnitude > Mathf.Epsilon)
             {
-                var period = deltaXZ.magnitude / World.Instance.GetSkillValue(SkillName.WALK_PERIOD) * 2f;
+                var period = deltaXZMagnitude / World.Instance.GetSkillValue(SkillName.WALK_PERIOD) * 2f;
                 _walkTime += period;
                 var walk = Mathf.Sin(_walkTime * Mathf.PI);
                 World.Instance.UpdateSkillValue(SkillName.WALK, walk);
                 if (!_soundTriggered && walk >= 0.5f)
                 {
-                    ((Region)GetRegion().Container).PlayRegionSound();
+                    var container = (Region)GetRegion().Container;
+                    container.PlayRegionSound();
                     _soundTriggered = true;
                 }
                 if (_soundTriggered && walk < 0.5f)
@@ -117,16 +122,19 @@ namespace Acknex
             playerAngle = Mathf.Repeat(playerAngle + World.Instance.GetSkillValue(SkillName.PLAYER_VROT), Mathf.PI * 2f);
             playerX = _characterController.transform.position.x;
             playerY = _characterController.transform.position.z;
-            //playerZ = _characterController.transform.position.y + playerSize;// - _characterController.skinWidth;
+            playerZ = _characterController.transform.position.y + playerSize;// - _characterController.skinWidth;
             //todo: real calc?
             var playerSpeed = (Quaternion.Inverse(View.Instance.transform.rotation) * _characterController.velocity).z * 0.1f;
             //playerSpeed = Mathf.Abs(playerSpeed) > 0.01f ? Mathf.Sign(playerSpeed) : 0f;
-            playerFootZ = _characterController.transform.position.y;
-            Locate(playerX, playerY, playerFootZ, playerSize, false);
+            //playerFootZ = _characterController.transform.position.y;
+            Locate(playerX, playerY, playerZ, false);
             World.Instance.UpdateSkillValue(SkillName.PLAYER_SPEED, playerSpeed);
             World.Instance.UpdateSkillValue(SkillName.PLAYER_SIN, MathUtils.Sin(playerAngle));
             World.Instance.UpdateSkillValue(SkillName.PLAYER_COS, MathUtils.Cos(playerAngle));
             World.Instance.UpdateSkillValue(SkillName.PLAYER_ANGLE, playerAngle);
+            World.Instance.UpdateSkillValue(SkillName.LAST_PLAYER_X, playerX);
+            World.Instance.UpdateSkillValue(SkillName.LAST_PLAYER_Y, playerY);
+            World.Instance.UpdateSkillValue(SkillName.LAST_PLAYER_Z, playerZ);
         }
 
         private void OnControllerColliderHit(ControllerColliderHit controllerColliderHit)
@@ -151,8 +159,7 @@ namespace Acknex
         {
             var playerX = World.Instance.GetSkillValue(SkillName.PLAYER_X);
             var playerY = World.Instance.GetSkillValue(SkillName.PLAYER_Y);
-            var playerSize = World.Instance.GetSkillValue(SkillName.PLAYER_SIZE);
-            Locate(playerX, playerY, 0f, playerSize);
+            Locate(playerX, playerY);
         }
 
         private void OnGUI()
@@ -194,27 +201,36 @@ namespace Acknex
             }, "Debug");
         }
 
-        private void Locate(float playerX, float playerY, float playerFootZ, float playerSize, bool initial = true)
+        private void Locate(float playerX, float playerY, float playerZ = 0, bool initial = true)
         {
             var region = GetRegion();
             var regionContainer = (Region)region.Container;
+            float depth;
             if (regionContainer.Below != null && region.TryGetAcknexObject(PropertyName.IF_DIVE, out _))
             {
-                World.Instance.UpdateSkillValue(SkillName.PLAYER_DEPTH, regionContainer.Below.GetDepth());
+                depth = regionContainer.Below.GetDepth();
             }
             else
             {
-                World.Instance.UpdateSkillValue(SkillName.PLAYER_DEPTH, 0f);
+                depth = 0;
             }
-            var ceilBasePoint = initial ? regionContainer.GetRealCeilHeight() : playerFootZ + World.Instance.GetSkillValue(SkillName.PLAYER_CLIMB);
-            var floorBasePoint = initial ? regionContainer.GetRealFloorHeight() : playerFootZ;
-            var playerWidth = World.Instance.GetSkillValue(SkillName.PLAYER_WIDTH);
-            var floorHgt = playerFootZ;
+            World.Instance.UpdateSkillValue(SkillName.PLAYER_DEPTH, depth);
+            if (playerZ == 0f)
+            {
+                playerZ = World.Instance.GetSkillValue(SkillName.PLAYER_Z);
+            }
+            var playerHgt = World.Instance.GetSkillValue(SkillName.PLAYER_HGT);
+            var playerClimb = World.Instance.GetSkillValue(SkillName.PLAYER_CLIMB);
+            var ceilBasePoint = initial ? regionContainer.GetRealCeilHeight() : playerZ;
+            //var floorBasePoint = initial ? regionContainer.GetRealFloorHeight() : playerHgt;
+            var playerSize = World.Instance.GetSkillValue(SkillName.PLAYER_SIZE);
+            //var playerWidth = World.Instance.GetSkillValue(SkillName.PLAYER_WIDTH);
+            var floorHgt = regionContainer.GetRealFloorHeight() + playerHgt;
             var newRegion = Region.Locate(AcknexObject, regionContainer, 0f, playerX, playerY, ref floorHgt, false, ceilBasePoint);
-            var ceilHgt = floorHgt;
-            Region.Locate(AcknexObject, regionContainer, 0f, playerX, playerY, ref ceilHgt, true, floorBasePoint);
+            //var ceilHgt = floorHgt;
+            //Region.Locate(AcknexObject, regionContainer, 0f, playerX, playerY, ref ceilHgt, true, floorBasePoint);
             World.Instance.UpdateSkillValue(SkillName.FLOOR_HGT, floorHgt);
-            World.Instance.UpdateSkillValue(SkillName.CEIL_HGT, ceilHgt);
+            //World.Instance.UpdateSkillValue(SkillName.CEIL_HGT, ceilHgt);
             if (initial || newRegion != regionContainer)
             {
                 regionContainer.AcknexObject.RemoveFlag(PropertyName.HERE);
@@ -235,15 +251,24 @@ namespace Acknex
                     World.Instance.TriggerEvent(PropertyName.IF_DIVE, newRegion.Above.AcknexObject, null, newRegion.Above.AcknexObject);
                 }
             }
-            var playerHgt = playerFootZ - floorHgt; //todo:  - _characterController.skinWidth;
-            if (playerHgt < 0.1f)
+            if (initial)
             {
-                playerHgt = 0f;
+                playerZ = floorHgt + playerSize;
             }
+            //else
+            //{
+            //var playerHgtOffset = _characterController.transform.position.y + playerSize - playerZ;
+            //playerZ += playerHgtOffset;
+            //}
+            playerHgt = playerZ - playerSize - floorHgt; //todo:  - _characterController.skinWidth;
+            //if (Mathf.Abs(playerHgt) < 0.1f)
+            //{
+            //    playerHgt = 0f;
+            //}
             World.Instance.UpdateSkillValue(SkillName.PLAYER_HGT, playerHgt);
             World.Instance.UpdateSkillValue(SkillName.PLAYER_X, playerX);
             World.Instance.UpdateSkillValue(SkillName.PLAYER_Y, playerY);
-            World.Instance.UpdateSkillValue(SkillName.PLAYER_Z, floorHgt + playerSize);
+            World.Instance.UpdateSkillValue(SkillName.PLAYER_Z, playerZ);
         }
 
         private void Awake()
