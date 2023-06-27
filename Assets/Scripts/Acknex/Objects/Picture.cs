@@ -2,6 +2,7 @@
 using System.Collections;
 using Acknex.Interfaces;
 using UnityEngine;
+using UnityEngine.UI;
 using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
@@ -74,6 +75,7 @@ namespace Acknex
                     }
                     _animateCoroutine = World.Instance.StartManagedCoroutine(this, Animate(side));
                 }
+                OverlayGraphic.SetAllDirty();
                 IsTextureDirty = false;
             }
             OverlayGraphic.rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat(PropertyName.POS_X), -AcknexObject.GetFloat(PropertyName.POS_Y), 0f);

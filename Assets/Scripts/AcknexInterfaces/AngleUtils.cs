@@ -25,9 +25,9 @@ namespace Acknex.Interfaces
             //return Mathf.Repeat(Mathf.Deg2Rad * (degrees + 180f), 360f); //VARGINHA
         }
 
-        public static float ConvertAcknexToUnityAngle(float radians)
+        public static float ConvertAcknexToUnityAngle(float radians, bool light = false)
         {
-            return Mathf.Repeat((Mathf.Rad2Deg * radians) + 90f, 360f);
+            return light ? Mathf.Repeat(Mathf.Rad2Deg * radians , 360f) : Mathf.Repeat((Mathf.Rad2Deg * radians) + 90f, 360f);
             //return Mathf.Repeat(Mathf.Rad2Deg * radians + 90f, 360f); VRDEMO, SKAPH
             //return Mathf.Repeat(Mathf.Rad2Deg * radians - 180f, 360f); //VARGINHA
         }

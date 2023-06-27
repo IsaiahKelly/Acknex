@@ -20,6 +20,7 @@ namespace Acknex
         private CharacterController _characterController;
         private bool _soundTriggered;
         private float _walkTime;
+        private float _waterHeight;
 
         public static Player Instance { get; private set; }
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Player);
@@ -70,26 +71,32 @@ namespace Acknex
             var unityPlayerAngle = AngleUtils.ConvertAcknexToUnityAngle(playerAngle);
             var initialPosition = new Vector3(playerX, playerFootZ, playerY);
             var playerWidth = World.Instance.GetSkillValue(SkillName.PLAYER_WIDTH);
-            _characterController.enabled = false;
             _characterController.transform.rotation = Quaternion.Euler(0f, unityPlayerAngle, 0f);
             _characterController.transform.position = initialPosition;
             _characterController.radius = playerWidth;
-            _characterController.enabled = true;
             //todo: _characterController.skinWidth = playerWidth * 0.1f;
             var playerSize = World.Instance.GetSkillValue(SkillName.PLAYER_SIZE);
             _characterController.height = playerSize;
             var playerMove = new Vector3(World.Instance.GetSkillValue(SkillName.PLAYER_VX), 0f, World.Instance.GetSkillValue(SkillName.PLAYER_VY)) * World.Instance.GetSkillValue(SkillName.TIME_CORR);
             playerMove.y = World.Instance.GetSkillValue(SkillName.PLAYER_VZ);
-            var desiredPosition = initialPosition + playerMove;
-            var playerClimb = World.Instance.GetSkillValue(SkillName.PLAYER_CLIMB);
-            var stepSize = Mathf.Min(playerSize, playerClimb);
-            var checkPosition = new Vector3(desiredPosition.x, desiredPosition.y + playerSize - playerWidth, desiredPosition.z);
-            if (Physics.SphereCast(checkPosition, playerWidth, Vector3.up, out var raycastHit, Mathf.Infinity, World.Instance.RegionsLayer.Mask))
-            {
-                //DebugExtension.DebugCapsule(checkPosition, checkPosition + Vector3.up * raycastHit.distance, Color.magenta, 1f);
-                stepSize = Mathf.Min(stepSize, raycastHit.distance);
-            }
-            _characterController.stepOffset = stepSize;
+            //var desiredPosition = initialPosition + playerMove;
+            //var playerClimb = World.Instance.GetSkillValue(SkillName.PLAYER_CLIMB);
+            //var stepSize = Mathf.Min(playerSize, playerClimb);
+            //var checkPosition = new Vector3(desiredPosition.x, desiredPosition.y + playerSize - playerWidth, desiredPosition.z);
+            //var block = false;
+            //if (Physics.SphereCast(checkPosition, playerWidth, Vector3.up, out var raycastHit, Mathf.Infinity, World.Instance.RegionsLayer.Mask))
+            //{
+            //    World.Instance.UpdateSkillValue(SkillName.CEIL_HGT, raycastHit.distance + playerWidth);
+            //    //DebugExtension.DebugCapsule(checkPosition, checkPosition + Vector3.up * raycastHit.distance, Color.magenta, 1f);
+            //    var gap = raycastHit.distance - _characterController.skinWidth;
+            //    if (gap < stepSize)
+            //    {
+            //        stepSize = 0.3f;
+            //        block = true;
+            //    }
+            //}
+            //DebugExtension.DebugLocalCube(transform.localToWorldMatrix * Matrix4x4.Translate(new Vector3(0f, stepSize * 0.5f, 0f)), new Vector3(playerSize, stepSize, playerSize), block ? Color.red: Color.yellow);
+            //_characterController.stepOffset = stepSize;
             var characterControllerCenter = _characterController.center;
             characterControllerCenter.y = _characterController.height * 0.5f;
             _characterController.center = characterControllerCenter;
@@ -126,7 +133,6 @@ namespace Acknex
             //todo: real calc?
             var playerSpeed = (Quaternion.Inverse(View.Instance.transform.rotation) * _characterController.velocity).z * 0.1f;
             //playerSpeed = Mathf.Abs(playerSpeed) > 0.01f ? Mathf.Sign(playerSpeed) : 0f;
-            //playerFootZ = _characterController.transform.position.y;
             Locate(playerX, playerY, playerZ, false);
             World.Instance.UpdateSkillValue(SkillName.PLAYER_SPEED, playerSpeed);
             World.Instance.UpdateSkillValue(SkillName.PLAYER_SIN, MathUtils.Sin(playerAngle));
@@ -160,6 +166,7 @@ namespace Acknex
             var playerX = World.Instance.GetSkillValue(SkillName.PLAYER_X);
             var playerY = World.Instance.GetSkillValue(SkillName.PLAYER_Y);
             Locate(playerX, playerY);
+            //_characterController.hasModifiableContacts = true;
         }
 
         private void OnGUI()
@@ -206,7 +213,7 @@ namespace Acknex
             var region = GetRegion();
             var regionContainer = (Region)region.Container;
             float depth;
-            if (regionContainer.Below != null && region.TryGetAcknexObject(PropertyName.IF_DIVE, out _))
+            if (regionContainer.Below != null && regionContainer.IsWater)
             {
                 depth = regionContainer.Below.GetDepth();
             }
@@ -227,6 +234,10 @@ namespace Acknex
             //var playerWidth = World.Instance.GetSkillValue(SkillName.PLAYER_WIDTH);
             var floorHgt = regionContainer.GetRealFloorHeight() + playerHgt;
             var newRegion = Region.Locate(AcknexObject, regionContainer, 0f, playerX, playerY, ref floorHgt, false, ceilBasePoint);
+            if (newRegion.IsWater)
+            {
+                _waterHeight = regionContainer.GetRealCeilHeight();
+            }
             //var ceilHgt = floorHgt;
             //Region.Locate(AcknexObject, regionContainer, 0f, playerX, playerY, ref ceilHgt, true, floorBasePoint);
             World.Instance.UpdateSkillValue(SkillName.FLOOR_HGT, floorHgt);
@@ -240,7 +251,7 @@ namespace Acknex
                 if (!initial)
                 {
                     World.Instance.TriggerEvent(PropertyName.IF_LEAVE, regionContainer.AcknexObject, null, regionContainer.AcknexObject);
-                    if (floorHgt > regionContainer.GetRealCeilHeight())
+                    if (floorHgt > _waterHeight)
                     {
                         World.Instance.TriggerEvent(PropertyName.IF_ARISE, regionContainer.AcknexObject, null, regionContainer.AcknexObject);
                     }

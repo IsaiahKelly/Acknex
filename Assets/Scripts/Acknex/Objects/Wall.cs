@@ -62,6 +62,7 @@ namespace Acknex
         public bool Processed;
         public Matrix4x4 TopQuad;
         public Matrix4x4 TopUV;
+        private bool _triggered;
 
         public MeshFilter Filter { get; set; }
         public MeshFilter GapFilter { get; set; }
@@ -88,6 +89,7 @@ namespace Acknex
         public float GetAmbient()
         {
             var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
+            ambient += World.Instance.AcknexObject.GetFloat(PropertyName.AMBIENT);
             ambient *= ((IGraphicObject)GetRegion().Container).GetAmbient();
             return ambient;
         }
@@ -374,14 +376,6 @@ namespace Acknex
             return AcknexObject.HasFlag(PropertyName.INVISIBLE) || texture != TextureObject;
         }
 
-        private void OnWallTriggerExit(Collider collider)
-        {
-            if (collider.TryGetComponent<Player>(out var player))
-            {
-                World.Instance.TriggerEvent(PropertyName.IF_FAR, AcknexObject, player.AcknexObject, player.GetRegion());
-            }
-        }
-
         private void OnDrawGizmos()
         {
 #if DEBUG_ENABLED
@@ -402,14 +396,33 @@ namespace Acknex
 
         private void OnWallTriggerEnter(Collider collider)
         {
+            if (_triggered)
+            {
+                return;
+            }
+            _triggered = true; 
             if (collider.TryGetComponent<Player>(out var player))
             {
                 World.Instance.TriggerEvent(PropertyName.IF_NEAR, AcknexObject, player.AcknexObject, player.GetRegion());
             }
         }
 
+        private void OnWallTriggerExit(Collider collider)
+        {
+            if (!_triggered)
+            {
+                return;
+            }
+            _triggered = false;
+            if (collider.TryGetComponent<Player>(out var player))
+            {
+                World.Instance.TriggerEvent(PropertyName.IF_FAR, AcknexObject, player.AcknexObject, player.GetRegion());
+            }
+        }
+
         private void Update()
         {
+          
             if (!AcknexObject.IsInstance)
             {
                 return;

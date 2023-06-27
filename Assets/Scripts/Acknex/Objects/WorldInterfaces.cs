@@ -709,7 +709,7 @@ namespace Acknex
                 {
                     return;
                 }
-                var distance = acknexObject != null ? Vector3.Distance(acknexObject.Container.GetCenter(), raycastResult.point) : raycastResult.distance;
+                var distance = acknexObject != null ? Vector3.Distance(acknexObject.Container.GetCenter(), ray.origin) : raycastResult.distance;
                 UpdateSkillValue(SkillName.HIT_DIST, distance);
                 UpdateSkillValue(SkillName.RESULT, shootFac * (1.0f - distance / shootRange));
                 UpdateSkillValue(SkillName.SHOOT_ANGLE, AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(raycastResult.point), AngleUtils.To2D(ray.origin))));
@@ -796,7 +796,7 @@ namespace Acknex
             CanvasWidthRatio = CanvasScaler.referenceResolution.x * (CanvasScaler.referenceResolution.x / Screen.width);
             Shader.SetGlobalInt("_AcknexUsePalettes", UsePalettes ? 1 : 0);
             AmbientLight.shadows = DrawShadows ? LightShadows.Hard : LightShadows.None;
-            AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat(PropertyName.LIGHT_ANGLE)), 0f) * Quaternion.Euler(45f, 0f, 0f);
+            AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat(PropertyName.LIGHT_ANGLE), true), 0f) * Quaternion.Euler(45f, 0f, 0f);
             UpdateSkills();
         }
 

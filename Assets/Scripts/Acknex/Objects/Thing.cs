@@ -24,6 +24,7 @@ namespace Acknex
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;
         private GameObject _triggerGameObject;
+        private bool _positionSet;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject(PropertyName.TEXTURE, out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -48,6 +49,7 @@ namespace Acknex
         public float GetAmbient()
         {
             var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
+            ambient += World.Instance.AcknexObject.GetFloat(PropertyName.AMBIENT);
             ambient *= ((IGraphicObject)GetRegion().Container).GetAmbient();
             return ambient;
         }
@@ -85,7 +87,7 @@ namespace Acknex
 
         public void PlaySoundLocated(IAcknexObject sound, float volume, float sDist = 100f, float svDist = 100f)
         {
-            if (!(sound?.Container is Sound soundContainer))
+            if (sound?.Container is not Sound soundContainer)
             {
                 return;
             }
@@ -125,7 +127,9 @@ namespace Acknex
             _innerGameObject.layer = World.Instance.Sprites.LayerIndex;
             _characterController = gameObject.AddComponent<CharacterController>();
             _characterController.detectCollisions = false;
+            //_characterController.hasModifiableContacts = true;
             _collider = gameObject.AddComponent<CapsuleCollider>();
+            //_collider.hasModifiableContacts = true;
             _spriteCollider = _innerGameObject.AddComponent<MeshCollider>();
             _spriteCollider.sharedMesh = _meshFilter.mesh;
             _triggerGameObject = new GameObject("Trigger");
@@ -134,18 +138,6 @@ namespace Acknex
             _triggerCollider = _triggerGameObject.AddComponent<SphereCollider>();
             _triggerCollider.isTrigger = true;
             _triggerCollisionCallback = _triggerGameObject.AddComponent<CollisionCallback>();
-            var thingX = AcknexObject.GetFloat(PropertyName.X);
-            var thingY = AcknexObject.GetFloat(PropertyName.Y);
-            var thingZ = AcknexObject.GetFloat(PropertyName.HEIGHT);
-            if (AcknexObject.HasFlag(PropertyName.CANDELABER))
-            {
-                StickToTheCeiling(thingX, thingY, ref thingZ, true);
-            }
-            else
-            {
-                Locate(thingX, thingY, ref thingZ, true);
-            }
-            transform.position = new Vector3(thingX, thingZ, thingY);
             _triggerCollisionCallback.OnTriggerEnterCallback += OnTriggerEnterCallback;
             _triggerCollisionCallback.OnTriggerExitCallback += OnTriggerExitCallback;
             _centerGameObject = new GameObject("Center");
@@ -171,16 +163,19 @@ namespace Acknex
             var thingX = AcknexObject.GetFloat(PropertyName.X);
             var thingY = AcknexObject.GetFloat(PropertyName.Y);
             var thingZ = AcknexObject.GetFloat(PropertyName.HEIGHT);
-            var pos2D = new Vector2(thingX, thingY);
-            var playerPos2D = new Vector2(World.Instance.GetSkillValue(SkillName.PLAYER_X), World.Instance.GetSkillValue(SkillName.PLAYER_Y));
-            var distance = Vector2.Distance(playerPos2D, pos2D);
-            if (!AcknexObject.HasFlag(PropertyName.LIBER) && distance > World.Instance.AcknexObject.GetFloat(PropertyName.CLIP_DIST))
+            if (_positionSet)
             {
-                return;
+                var pos2D = new Vector2(thingX, thingY);
+                var playerPos2D = new Vector2(World.Instance.GetSkillValue(SkillName.PLAYER_X), World.Instance.GetSkillValue(SkillName.PLAYER_Y));
+                var distance = Vector2.Distance(playerPos2D, pos2D);
+                if (!AcknexObject.HasFlag(PropertyName.LIBER) && distance > World.Instance.AcknexObject.GetFloat(PropertyName.CLIP_DIST))
+                {
+                    return;
+                }
+                AcknexObject.NoDirtyFlag = true;
+                AcknexObject.SetFloat(PropertyName.DISTANCE, distance);
+                AcknexObject.NoDirtyFlag = false;
             }
-            AcknexObject.NoDirtyFlag = true;
-            AcknexObject.SetFloat(PropertyName.DISTANCE, distance);
-            AcknexObject.NoDirtyFlag = false;
             //if (TextureObject == null || !TextureObject.HasModel(out _))
             //{
             var camera = CameraExtensions.GetLastActiveCamera();
@@ -234,6 +229,22 @@ namespace Acknex
                 }
                 IsTextureDirty = false;
             }
+            //if (!_positionSet)
+            //{
+            //    var thingX = AcknexObject.GetFloat(PropertyName.X);
+            //    var thingY = AcknexObject.GetFloat(PropertyName.Y);
+            //    var thingZ = AcknexObject.GetFloat(PropertyName.HEIGHT);
+            //    if (AcknexObject.HasFlag(PropertyName.CANDELABER))
+            //    {
+            //        StickToTheCeiling(thingX, thingY, ref thingZ, true);
+            //    }
+            //    else
+            //    {
+            //        Locate(thingX, thingY, ref thingZ, true);
+            //    }
+            //    transform.position = new Vector3(thingX, thingZ, thingY);
+            //    _positionSet = true;
+            //}
             if (!AcknexObject.IsDirty)
             {
                 return;
@@ -243,13 +254,14 @@ namespace Acknex
             //todo: this block should only run on carefully flagged
             if (AcknexObject.HasFlag(PropertyName.CANDELABER))
             {
-                StickToTheCeiling(thingX, thingY, ref thingZ);
+                StickToTheCeiling(thingX, thingY, ref thingZ, !_positionSet);
             }
             else
             {
-                Locate(thingX, thingY, ref thingZ);
+                Locate(thingX, thingY, ref thingZ, !_positionSet);
             }
             transform.position = new Vector3(thingX, thingZ, thingY);
+            _positionSet = true;
             AcknexObject.SetFloat(PropertyName.VISIBLE, AcknexObject.GetFloat(PropertyName.INVISIBLE) > 0f ? 0f : 1f);
             var invisible = AcknexObject.HasFlag(PropertyName.INVISIBLE);
             if (invisible)
@@ -264,6 +276,8 @@ namespace Acknex
             _collider.center = _characterController.center = new Vector3(0f, _innerGameObject.transform.localPosition.y + _innerGameObject.transform.localScale.y * 0.5f, 0f);
             _collider.height = _characterController.height = _innerGameObject.transform.localScale.y;
             _collider.radius = _characterController.radius = GetColliderRadius();
+            var carefully = AcknexObject.HasFlag(PropertyName.CAREFULLY);
+            //_characterController.includeLayers = carefully ? World.Instance.WallsWaterRegionsOffsetAndThings : default;
             var target = AcknexObject.GetAcknexObject(PropertyName.TARGET);
             if (AcknexObject.HasFlag(PropertyName.PASSABLE))
             {
@@ -370,7 +384,7 @@ namespace Acknex
             //var hittingUpOrDown = height < region.GetRealFloorHeight() || height > region.GetRealCeilHeight();
             //if (/*(movingVertically && hittingUpOrDown) ||*/ (movingHorizontally && !hittingUpOrDown))
             //{
-            ProcessCollision(controllerColliderHit.collider);
+            ProcessCollision(controllerColliderHit);
             //}
         }
 
@@ -379,9 +393,13 @@ namespace Acknex
             //ProcessCollision(collision.collider);
         }
 
-        private void ProcessCollision(Collider collider)
+        private void ProcessCollision(ControllerColliderHit controllerColliderHit)
         {
-            var hasToTrigger = AcknexObject.HasFlag(PropertyName.SENSITIVE) || (AcknexObject.HasFlag(PropertyName.CAREFULLY) && AcknexObject.GetAcknexObject(PropertyName.TARGET) == World.Instance.BulletString);
+            //var hasToTrigger = AcknexObject.HasFlag(PropertyName.SENSITIVE) || (AcknexObject.HasFlag(PropertyName.CAREFULLY) && AcknexObject.GetAcknexObject(PropertyName.TARGET) == World.Instance.BulletString);
+            var target = AcknexObject.GetAcknexObject(PropertyName.TARGET);
+            var carefully = AcknexObject.HasFlag(PropertyName.CAREFULLY);
+            var sensitive = AcknexObject.HasFlag(PropertyName.SENSITIVE);
+            var hasToTrigger = carefully && sensitive || target == World.Instance.BulletString && carefully && (controllerColliderHit.gameObject.layer == World.Instance.WallsLayer.LayerIndex || controllerColliderHit.gameObject.layer == World.Instance.ThingsAndActorsLayer.LayerIndex);
             if (hasToTrigger)
             {
                 World.Instance.UpdateSkillValue(SkillName.HIT_DIST, 0f);
@@ -608,35 +626,50 @@ namespace Acknex
             }
             float checkHeight;
             //if (regionContainer != null)
+            //{
+            if (!ground)
             {
-                if (!ground)
-                {
-                    thingZ = regionContainer.GetRealFloorHeight() + thingZ; //from relative to absolute
-                }
-                checkHeight = onCeil ? regionContainer.GetRealFloorHeight() : thingZ + World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB);
+                thingZ = regionContainer.GetRealFloorHeight() + thingZ; //from relative to absolute
             }
+            checkHeight = onCeil ? regionContainer.GetRealFloorHeight() : thingZ + World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB);
+            //}
             //else
             //{
             //    checkHeight = Region.MaxHeight;
             //}
+            var spriteHeight = _innerGameObject.transform.localScale.y;
             var newRegionContainer = initial || AcknexObject.HasFlag(PropertyName.CAREFULLY)
                 ? Region.Locate(AcknexObject, regionContainer, GetColliderRadius(), thingX, thingY, ref thingZ, onCeil, checkHeight)
                 : regionContainer;
             if (onCeil)
             {
-                thingZ -= _innerGameObject.transform.localScale.y; //todo: right?;
+                thingZ -= spriteHeight;
             }
             float height;
-            if (ground)
+            if (!onCeil)
             {
-                thingZ = height = AcknexObject.GetFloat(PropertyName.HEIGHT); //thingZ; //absolute
+                if (ground)
+                {
+                    height = thingZ = AcknexObject.GetFloat(PropertyName.HEIGHT); //thingZ; //absolute
+                }
+                else
+                {
+                    height = thingZ - newRegionContainer.GetRealFloorHeight(); //from absolute to relative
+                }
             }
             else
             {
-                height = thingZ - newRegionContainer.GetRealFloorHeight(); //from absolute to relative
+                if (ground)
+                {
+                    height = thingZ = AcknexObject.GetFloat(PropertyName.HEIGHT); //thingZ; //absolute
+                }
+                else
+                {
+                    height = thingZ - newRegionContainer.GetRealFloorHeight() + spriteHeight; //from absolute to relative
+                }
             }
-            AcknexObject.SetFloat(PropertyName.HEIGHT, height);
             AcknexObject.SetAcknexObject(PropertyName.REGION, newRegionContainer.AcknexObject);
+            AcknexObject.SetFloat(PropertyName.HEIGHT, height);
             AcknexObject.SetFloat(PropertyName.FLOOR_HGT, newRegionContainer.AcknexObject.GetFloat(PropertyName.FLOOR_HGT));
             AcknexObject.SetFloat(PropertyName.CEIL_HGT, newRegionContainer.AcknexObject.GetFloat(PropertyName.CEIL_HGT));
             _lastGround = ground;
@@ -725,7 +758,7 @@ namespace Acknex
             }
             else
             {
-                if (WontDrop(delta))
+                //if (WontDrop(delta))
                 {
                     _characterController.Move(delta);
                 }
@@ -744,7 +777,7 @@ namespace Acknex
 
         public bool HitPixel(Vector2 textureCoord, Vector3 hitPoint)
         {
-            var acknexObject = (AcknexObject)AcknexObject;
+            // var acknexObject = (AcknexObject)AcknexObject;
             if (CurrentBitmap?.CropTexture != null)
             {
                 var texelSize = new Vector4(1f / CurrentBitmap.Width, 1f / CurrentBitmap.Height, CurrentBitmap.Width, CurrentBitmap.Height);

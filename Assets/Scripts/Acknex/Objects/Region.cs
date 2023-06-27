@@ -112,18 +112,25 @@ namespace Acknex
         {
             AcknexObject.RemoveFlag(PropertyName.INVISIBLE);
         }
+        public bool IsUnderwater => AcknexObject.TryGetAcknexObject(PropertyName.IF_ARISE, out _);
+        public bool IsWater => AcknexObject.TryGetAcknexObject(PropertyName.IF_DIVE, out _);
 
         public GameObject GameObject => gameObject;
 
         public float GetAmbient()
         {
             var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
+            if (IsUnderwater)
+            {
+                ambient += 1f;
+            }
             //if (AcknexObject.HasFlag(PropertyName.HERE))
             //{
             //    ambient += World.Instance.GetSkillValue("PLAYER_LIGHT") * Mathf.InverseLerp(World.Instance.GetSkillValue(PropertyName.CLIP_DIST), 0f, AcknexObject.GetFloat(PropertyName.DISTANCE));
             //}
             return ambient;
         }
+
 
         public Vector3 GetCenter()
         {
@@ -351,9 +358,9 @@ namespace Acknex
             _ceilCollider.enabled = true;
             _floorMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
             _ceilMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
-            _floorOffsetMeshCollider.gameObject.layer = AcknexObject.TryGetAcknexObject(PropertyName.IF_DIVE, out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionOffsetLayer.LayerIndex;
-            _floorCollider.gameObject.layer = AcknexObject.TryGetAcknexObject(PropertyName.IF_DIVE, out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
-            _ceilCollider.gameObject.layer = AcknexObject.TryGetAcknexObject(PropertyName.IF_ARISE, out _) ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
+            _floorOffsetMeshCollider.gameObject.layer = IsWater ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionOffsetLayer.LayerIndex;
+            _floorCollider.gameObject.layer = IsWater ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
+            _ceilCollider.gameObject.layer = IsUnderwater ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
             if (CeilTexture != null)
             {
                 _ceilMeshRenderer.shadowCastingMode = CeilTexture.AcknexObject.HasFlag(PropertyName.SKY) ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;

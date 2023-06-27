@@ -42,7 +42,7 @@ namespace Acknex
                 {
                     var len = AcknexObject.GetFloat(PropertyName.LEN);
                     var skillValue = skill.GetInteger(PropertyName.VAL).ToString($"D{len}");
-                    DrawText(vh, skillValue);
+                    DrawText(vh, skillValue, true);
                 }
             }
         }

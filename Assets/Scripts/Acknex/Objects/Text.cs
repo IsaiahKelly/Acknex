@@ -7,8 +7,10 @@ using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
-    public class Text : MaskableGraphic, IAcknexObjectContainer
+    [RequireComponent(typeof(CanvasRenderer))]
+    public class Text : Graphic, IAcknexObjectContainer
     {
+
         public void NotifyPropertyChanged(uint propertyName)
         {
 
@@ -94,6 +96,8 @@ namespace Acknex
         {
             base.Awake();
             AcknexObject.Container = this;
+            useLegacyMeshGeneration = false;
+            GetComponent<CanvasRenderer>().cullTransparentMesh = false;
         }
 
         protected override void Start()
@@ -138,12 +142,13 @@ namespace Acknex
             }
         }
 
-        protected void DrawText(VertexHelper vh, string stringValue)
+        protected void DrawText(VertexHelper vh, string stringValue, bool isDigit = false)
         {
             var charWidth = Font.AcknexObject.GetFloat(PropertyName.WIDTH);
             var charHeight = Font.AcknexObject.GetFloat(PropertyName.HEIGHT);
             var x = 0f;
             var y = -charHeight;
+            var foundDigit = false;
             for (var i = 0; i < stringValue.Length; i++)
             {
                 var c = stringValue[i];
@@ -160,6 +165,20 @@ namespace Acknex
                     x = 0f;
                 }
                 var cUV = new Vector2(c, 0f);
+                if (isDigit)
+                {
+                    if (c == '0' && i < stringValue.Length - 1)
+                    {
+                        if (!foundDigit)
+                        {
+                            cUV = new Vector2(32, 0f);
+                        }
+                    }
+                    else
+                    {
+                        foundDigit = true;
+                    }
+                }
                 _verts[0] = new UIVertex { position = new Vector3(x, y), uv0 = new Vector2(0, 0), uv1 = cUV };
                 _verts[1] = new UIVertex { position = new Vector3(x, y + charHeight), uv0 = new Vector2(0, 1), uv1 = cUV };
                 _verts[2] = new UIVertex { position = new Vector3(x + charWidth, y + charHeight), uv0 = new Vector2(1, 1), uv1 = cUV };

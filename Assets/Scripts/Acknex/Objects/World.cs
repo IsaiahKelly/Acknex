@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using LibTessDotNet;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
@@ -104,6 +105,7 @@ namespace Acknex
         public LayerMask WallsWaterAndRegions;
         public LayerMask WallsWaterRegionsAndSprites;
         public LayerMask WallsWaterRegionsAndThings;
+        public LayerMask WallsWaterRegionsOffsetAndThings;
         public SingleUnityLayer WaterLayer;
         public string WDLPath;
         public float TestOffset = -0.05f;
@@ -257,6 +259,17 @@ namespace Acknex
                 }
             }
             SetupEvents();
+            SetupPhysics();
+        }
+
+        private void SetupPhysics()
+        {
+            //Physics.ContactModifyEvent += PhysicsOnContactModifyEvent;
+        }
+
+        private void PhysicsOnContactModifyEvent(PhysicsScene physicsScene, NativeArray<ModifiableContactPair> modifiableContactPairs)
+        {
+          
         }
 
         private void CreateDefaultObjects()
