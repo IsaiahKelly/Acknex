@@ -8,4 +8,9 @@ Alien Anarchy (The Varginha Incident, Incidente em Varginha) copyright Perceptum
 Acknex game engine copyright Conitec Datasystems.
 
 Discord server:
+
 https://discord.gg/CthKP95G
+
+Want to help the project? Donations link:
+
+https://www.paypal.com/donate/?hosted_button_id=MHJH72GYQCYGW
