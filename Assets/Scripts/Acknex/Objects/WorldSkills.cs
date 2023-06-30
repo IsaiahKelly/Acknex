@@ -15,134 +15,134 @@ namespace Acknex
         {
             CreateSkill(SkillName.SCREEN_WIDTH, 320, 0, 320);
             CreateSkill(SkillName.SCREEN_HGT, 400, 0, 400);
-            CreateSkill(SkillName.SCREEN_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.SCREEN_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.ASPECT, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.EYE_DIST, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.SKY_OFFS_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.SKY_OFFS_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MOTION_BLUR, 0, 0, 1); //todo
-            CreateSkill(SkillName.BLUR_MODE, 0, 0, 1); //todo
-            CreateSkill(SkillName.RENDER_MODE, 0.5f, 0, 2); //todo
-            CreateSkill(SkillName.MOVE_MODE, 1, -0.5f, 1f); //todo
-            CreateSkill(SkillName.CLIPPING, 0, 0, 1); //todo
-            CreateSkill(SkillName.LOAD_MODE, 0, 0, 1); //todo
-            CreateSkill(SkillName.THING_DIST, 1, 0, 1); //todo
-            CreateSkill(SkillName.ACTOR_DIST, 1, 0, 1); //todo
-            CreateSkill(SkillName.MAP_OFFSX, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MAP_OFFSY, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MAP_CENTERX, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MAP_CENTERY, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MAP_MAXX, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MAP_MINX, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MAP_MAXY, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MAP_MINY, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MAP_EDGE_X1, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MAP_EDGE_X2, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MAP_EDGE_Y1, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MAP_EDGE_Y2, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MAP_SCALE, 0.9f, 0, 1); //todo
-            CreateSkill(SkillName.MAP_MODE, 0, 0, 1); //todo
-            CreateSkill(SkillName.MAP_LAYER, 0, 0, 16); //todo
-            CreateSkill(SkillName.MAP_ROT, 0, 0, 1); //todo
-            CreateSkill(SkillName.COLOR_PLAYER, 7, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.COLOR_ACTORS, 3, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.COLOR_THINGS, 13, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.COLOR_WALLS, 244, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.COLOR_BORDER, 244, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MOUSE_MODE, 0, 0, 2); //todo
-            CreateSkill(SkillName.TOUCH_MODE, 1, 0, 1); //todo
-            CreateSkill(SkillName.MOUSE_MOVING, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MOUSE_CALM, 3, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
-            CreateSkill(SkillName.MOUSE_TIME, 4, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
-            CreateSkill(SkillName.MICKEY_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
-            CreateSkill(SkillName.MICKEY_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
-            CreateSkill(SkillName.MOUSE_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
-            CreateSkill(SkillName.MOUSE_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
-            CreateSkill(SkillName.MOUSE_ANGLE, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
-            CreateSkill(SkillName.TOUCH_DIST, 100, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
-            CreateSkill(SkillName.TOUCH_STATE, 0, 0, 3); //todo <- can apply
-            CreateSkill(SkillName.JOYSTICK_X, 0, -255, 255); //todo <- can apply
-            CreateSkill(SkillName.JOYSTICK_Y, 0, -255, 255); //todo <- can apply
-            CreateSkill(SkillName.STR_LEN, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
-            CreateSkill(SkillName.LINES, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
-            CreateSkill(SkillName.SIZE_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply
-            CreateSkill(SkillName.SOUND_VOL, 0.5f, 0, 1); //todo <- can apply
-            CreateSkill(SkillName.MUSIC_VOL, 0.5f, 0, 1); //todo <- can apply
-            CreateSkill(SkillName.CDAUDIO_VOL, 0.5f, 0, 1); //todo <- can apply
-            CreateSkill(SkillName.CHANNEL, 0, -1, 7); //todo
-            CreateSkill(SkillName.CHANNEL_0, 0, 0, 2); //todo
-            CreateSkill(SkillName.CHANNEL_1, 0, 0, 2); //todo
-            CreateSkill(SkillName.CHANNEL_2, 0, 0, 2); //todo
-            CreateSkill(SkillName.CHANNEL_3, 0, 0, 2); //todo
-            CreateSkill(SkillName.CHANNEL_4, 0, 0, 2); //todo
-            CreateSkill(SkillName.CHANNEL_5, 0, 0, 2); //todo
-            CreateSkill(SkillName.CHANNEL_6, 0, 0, 2); //todo
-            CreateSkill(SkillName.CHANNEL_7, 0, 0, 2); //todo
-            CreateSkill(SkillName.AMBIENT, 0, -1, 1); //todo
-            CreateSkill(SkillName.PLAYER_LIGHT, 1, 0, 1); //todo
-            CreateSkill(SkillName.LIGHT_DIST, 10, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.DARK_DIST, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.PLAYER_WIDTH, 1.2f, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply IMPORTANT, collider radius
-            CreateSkill(SkillName.PLAYER_SIZE, 3, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply IMPORTANT, eyes height
-            CreateSkill(SkillName.PLAYER_CLIMB, 1.5f, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply IMPORTANT, step size
-            CreateSkill(SkillName.WALK_PERIOD, 4, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply, bounciness move (blob move)
-            CreateSkill(SkillName.WALK_TIME, 4, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply, bounciness move
-            CreateSkill(SkillName.WAVE_PERIOD, 16, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- can apply, bounciness move
-            CreateSkill(SkillName.WALK, 0, -1, 1); //todo
-            CreateSkill(SkillName.WAVE, 0, -1, 1); //todo
-            CreateSkill(SkillName.PSOUND_VOL, 1, 0, 2); //todo
+            CreateSkill(SkillName.SCREEN_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.SCREEN_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.ASPECT, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.EYE_DIST, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.SKY_OFFS_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.SKY_OFFS_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MOTION_BLUR, 0, 0, 1); 
+            CreateSkill(SkillName.BLUR_MODE, 0, 0, 1); 
+            CreateSkill(SkillName.RENDER_MODE, 0.5f, 0, 2); 
+            CreateSkill(SkillName.MOVE_MODE, 1, -0.5f, 1f); 
+            CreateSkill(SkillName.CLIPPING, 0, 0, 1); 
+            CreateSkill(SkillName.LOAD_MODE, 0, 0, 1); 
+            CreateSkill(SkillName.THING_DIST, 1, 0, 1); 
+            CreateSkill(SkillName.ACTOR_DIST, 1, 0, 1); 
+            CreateSkill(SkillName.MAP_OFFSX, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MAP_OFFSY, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MAP_CENTERX, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MAP_CENTERY, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MAP_MAXX, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MAP_MINX, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MAP_MAXY, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MAP_MINY, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MAP_EDGE_X1, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MAP_EDGE_X2, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MAP_EDGE_Y1, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MAP_EDGE_Y2, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MAP_SCALE, 0.9f, 0, 1); 
+            CreateSkill(SkillName.MAP_MODE, 0, 0, 1); 
+            CreateSkill(SkillName.MAP_LAYER, 0, 0, 16); 
+            CreateSkill(SkillName.MAP_ROT, 0, 0, 1); 
+            CreateSkill(SkillName.COLOR_PLAYER, 7, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.COLOR_ACTORS, 3, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.COLOR_THINGS, 13, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.COLOR_WALLS, 244, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.COLOR_BORDER, 244, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MOUSE_MODE, 0, 0, 2); 
+            CreateSkill(SkillName.TOUCH_MODE, 1, 0, 1); 
+            CreateSkill(SkillName.MOUSE_MOVING, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MOUSE_CALM, 3, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MOUSE_TIME, 4, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MICKEY_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MICKEY_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MOUSE_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MOUSE_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MOUSE_ANGLE, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.TOUCH_DIST, 100, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.TOUCH_STATE, 0, 0, 3); 
+            CreateSkill(SkillName.JOYSTICK_X, 0, -255, 255); 
+            CreateSkill(SkillName.JOYSTICK_Y, 0, -255, 255); 
+            CreateSkill(SkillName.STR_LEN, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.LINES, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.SIZE_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.SOUND_VOL, 0.5f, 0, 1); 
+            CreateSkill(SkillName.MUSIC_VOL, 0.5f, 0, 1); 
+            CreateSkill(SkillName.CDAUDIO_VOL, 0.5f, 0, 1); 
+            CreateSkill(SkillName.CHANNEL, 0, -1, 7); 
+            CreateSkill(SkillName.CHANNEL_0, 0, 0, 2); 
+            CreateSkill(SkillName.CHANNEL_1, 0, 0, 2); 
+            CreateSkill(SkillName.CHANNEL_2, 0, 0, 2); 
+            CreateSkill(SkillName.CHANNEL_3, 0, 0, 2); 
+            CreateSkill(SkillName.CHANNEL_4, 0, 0, 2); 
+            CreateSkill(SkillName.CHANNEL_5, 0, 0, 2); 
+            CreateSkill(SkillName.CHANNEL_6, 0, 0, 2); 
+            CreateSkill(SkillName.CHANNEL_7, 0, 0, 2); 
+            CreateSkill(SkillName.AMBIENT, 0, -1, 1); 
+            CreateSkill(SkillName.PLAYER_LIGHT, 1, 0, 1); 
+            CreateSkill(SkillName.LIGHT_DIST, 10, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.DARK_DIST, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_WIDTH, 1.2f, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_SIZE, 3, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_CLIMB, 1.5f, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.WALK_PERIOD, 4, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.WALK_TIME, 4, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.WAVE_PERIOD, 16, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.WALK, 0, -1, 1); 
+            CreateSkill(SkillName.WAVE, 0, -1, 1); 
+            CreateSkill(SkillName.PSOUND_VOL, 1, 0, 2); 
             CreateSkill(SkillName.PSOUND_TONE, 1, 0, 4); //
-            CreateSkill(SkillName.PLAYER_VX, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- steering? IMPORTANT
-            CreateSkill(SkillName.PLAYER_VY, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- steering? IMPORTANT
-            CreateSkill(SkillName.PLAYER_VZ, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- jump? IMPORTANT
-            CreateSkill(SkillName.PLAYER_VROT, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- something about rotation IMPORTANT
-            CreateSkill(SkillName.PLAYER_TILT, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- something about rotation IMPORTANT
-            CreateSkill(SkillName.PLAYER_ARC, 1, 0.2f, 2.0f); //todo <- FOV, IMPORTANT. 1.0 = 60 degrees
-            CreateSkill(SkillName.FRICTION, 0.5f, 0.0f, 1.0f); //todo <- move friction IMPORTANT
-            CreateSkill(SkillName.INERTIA, 1f, 0.0f, 0); //todo <- move inertia IMPORTANT
-            CreateSkill(SkillName.SHOOT_RANGE, 500f, 0.0f, 0); //todo <- shoot distance IMPORTANT
-            CreateSkill(SkillName.SHOOT_SECTOR, Mathf.PI * 2f, 0.0f, 0); //todo
-            CreateSkill(SkillName.SHOOT_FAC, 1, 0, 1); //todo <- shoot strength
-            CreateSkill(SkillName.SHOOT_X, 0, 0, 1); //todo <- shoot deviation
-            CreateSkill(SkillName.SHOOT_Y, 0, 0, 1); //todo <- shoot deviation
-            CreateSkill(SkillName.HIT_DIST, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- last shoot dist
-            CreateSkill(SkillName.HIT_MINDIST, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- explosion dist
-            CreateSkill(SkillName.RESULT, 0, 0, 1); //todo <- hit power
-            CreateSkill(SkillName.SHOOT_ANGLE, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- shoot angle relative to 
-            CreateSkill(SkillName.HIT_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- hit x pixel point relative to upper left texture
-            CreateSkill(SkillName.HIT_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- hit x pixel point relative to upper left texture
-            CreateSkill(SkillName.SKIP_FRAMES, 5, Mathf.NegativeInfinity, Mathf.Infinity); //todo 
-            CreateSkill(SkillName.ACTOR_CLIMB, 1, Mathf.NegativeInfinity, Mathf.Infinity); //todo 
-            CreateSkill(SkillName.ACTOR_WIDTH, 1, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- width multiplier for collision detection IMPORTANT
-            CreateSkill(SkillName.THING_WIDTH, 1, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- width multiplier for collision detection IMPORTANT
-            CreateSkill(SkillName.ACTOR_IMPACT_VX, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.ACTOR_IMPACT_VY, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.ACTOR_IMPACT_VZ, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.ACTOR_FLOOR_HGT, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- height of the floor actor is in IMPORTANT
-            CreateSkill(SkillName.ACTOR_CEIL_HGT, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- height of the floor actor is in IMPORTANT
-            CreateSkill(SkillName.PLAYER_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player pos IMPORTANT
-            CreateSkill(SkillName.PLAYER_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player pos IMPORTANT
-            CreateSkill(SkillName.PLAYER_Z, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player pos IMPORTANT
-            CreateSkill(SkillName.PLAYER_ANGLE, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player angle IMPORTANT
-            CreateSkill(SkillName.PLAYER_SIN, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player angle sin IMPORTANT
-            CreateSkill(SkillName.PLAYER_COS, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player angle cos IMPORTANT
-            CreateSkill(SkillName.PLAYER_SPEED, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player speed IMPORTANT
+            CreateSkill(SkillName.PLAYER_VX, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_VY, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_VZ, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_VROT, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_TILT, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_ARC, 1, 0.2f, 2.0f); 
+            CreateSkill(SkillName.FRICTION, 0.5f, 0.0f, 1.0f); 
+            CreateSkill(SkillName.INERTIA, 1f, 0.0f, 0); 
+            CreateSkill(SkillName.SHOOT_RANGE, 500f, 0.0f, 0); 
+            CreateSkill(SkillName.SHOOT_SECTOR, Mathf.PI * 2f, 0.0f, 0); 
+            CreateSkill(SkillName.SHOOT_FAC, 1, Mathf.NegativeInfinity, Mathf.Infinity); //todo: this is clamped to 0-1 in the manual, but IV uses higher values
+            CreateSkill(SkillName.SHOOT_X, 0, 0, 1); 
+            CreateSkill(SkillName.SHOOT_Y, 0, 0, 1); 
+            CreateSkill(SkillName.HIT_DIST, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.HIT_MINDIST, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.RESULT, 0, 0, 1); 
+            CreateSkill(SkillName.SHOOT_ANGLE, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.HIT_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.HIT_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.SKIP_FRAMES, 5, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.ACTOR_CLIMB, 1, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.ACTOR_WIDTH, 1, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.THING_WIDTH, 1, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.ACTOR_IMPACT_VX, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.ACTOR_IMPACT_VY, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.ACTOR_IMPACT_VZ, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.ACTOR_FLOOR_HGT, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.ACTOR_CEIL_HGT, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_Z, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_ANGLE, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_SIN, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_COS, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_SPEED, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
 
-            //todo: some missing here?
-            CreateSkill(SkillName.PLAYER_DEPTH, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player depth inside water IMPORTANT
-            CreateSkill(SkillName.PLAYER_LAST_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player last pos IMPORTANT
-            CreateSkill(SkillName.PLAYER_LAST_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- player last pos IMPORTANT
-            CreateSkill(SkillName.TICKS, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- ticks IMPORTANT
-            CreateSkill(SkillName.SECS, 0, Mathf.NegativeInfinity, Mathf.Infinity); //todo <- time in seconds IMPORTANT
-            CreateSkill(SkillName.MOUSE_LEFT, 0, 0, 1); //todo <-  mouse button down IMPORTANT
-            CreateSkill(SkillName.MOUSE_MIDDLE, 0, 0, 1); //todo <-  mouse button down IMPORTANT
-            CreateSkill(SkillName.MOUSE_RIGHT, 0, 0, 1); //todo <-  mouse button down IMPORTANT
-            CreateSkill(SkillName.KEY_ANY, 0, 0, 1); //todo <- key down IMPORTANT
-            CreateSkill(SkillName.KEY_SENSE, 0.7f, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.SHIFT_SENSE, 2f, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.MOUSE_SENSE, 1f, Mathf.NegativeInfinity, Mathf.Infinity); //todo
-            CreateSkill(SkillName.JOY_SENSE, 1f, Mathf.NegativeInfinity, Mathf.Infinity); //todo
+            
+            CreateSkill(SkillName.PLAYER_DEPTH, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_LAST_X, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.PLAYER_LAST_Y, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.TICKS, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.SECS, 0, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MOUSE_LEFT, 0, 0, 1); 
+            CreateSkill(SkillName.MOUSE_MIDDLE, 0, 0, 1); 
+            CreateSkill(SkillName.MOUSE_RIGHT, 0, 0, 1); 
+            CreateSkill(SkillName.KEY_ANY, 0, 0, 1); 
+            CreateSkill(SkillName.KEY_SENSE, 0.7f, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.SHIFT_SENSE, 2f, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.MOUSE_SENSE, 1f, Mathf.NegativeInfinity, Mathf.Infinity); 
+            CreateSkill(SkillName.JOY_SENSE, 1f, Mathf.NegativeInfinity, Mathf.Infinity); 
 
             CreateSkill(SkillName.PLAYER_HGT, 0, Mathf.NegativeInfinity, Mathf.Infinity);
             CreateSkill(SkillName.FORCE_AHEAD, 0, -1f, 1f);
@@ -295,7 +295,7 @@ namespace Acknex
             UpdateSkillValue(SkillName.MICKEY_Y, deltaMousePosition.y);
             UpdateSkillValue(SkillName.MOUSE_X, mousePosition.x);
             UpdateSkillValue(SkillName.MOUSE_Y, mousePosition.y);
-            //todo: I guess mouse middle and right are shifted
+            
             UpdateSkillValue(SkillName.MOUSE_LEFT, Input.GetMouseButton(0));
             UpdateSkillValue(SkillName.MOUSE_MIDDLE, Input.GetMouseButton(1));
             UpdateSkillValue(SkillName.MOUSE_RIGHT, Input.GetMouseButton(2));

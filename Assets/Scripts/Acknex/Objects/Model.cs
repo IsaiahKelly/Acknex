@@ -1,7 +1,6 @@
 ﻿using NameId = System.UInt32;
 using Acknex.Interfaces;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -10,7 +9,6 @@ using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
 {
-
     public class Model : IAcknexObjectContainer
     {
         public void NotifyPropertyChanged(uint propertyName)
@@ -26,7 +24,7 @@ namespace Acknex
         {
 
         }
-        
+
         public GameObject GameObject => null;
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Model);
@@ -35,9 +33,10 @@ namespace Acknex
             return null;
         }
 
-        public Mesh Mesh;
-        public Material Material;
-        public Texture2D Texture2D;
+        public Mesh Mesh { get; private set; }
+        public Texture2D Texture2D { get; private set; }
+        public Texture2D PaletteTexture2D { get; private set; }
+        public Bitmap Bitmap { get; private set; }
 
         private struct mdl_skin_t
         {
@@ -75,10 +74,10 @@ namespace Acknex
 
         private static Color32[] FlipPixelsVertically(Color32[] frameData, int width, int height)
         {
-            Color32[] data = new Color32[frameData.Length];
-            for (int firstLine = 0; firstLine < height; firstLine++)
+            var data = new Color32[frameData.Length];
+            for (var firstLine = 0; firstLine < height; firstLine++)
             {
-                int lastLine = height - firstLine - 1;
+                var lastLine = height - firstLine - 1;
                 Array.Copy(frameData, firstLine * width, data, lastLine * width, width);
             }
             return data;
@@ -102,7 +101,7 @@ namespace Acknex
                 var translate = ReadVector3(binaryReader);
                 var boundingRadius = binaryReader.ReadSingle();
                 var eyePosition = ReadVector3(binaryReader);
-                int num_skins = binaryReader.ReadInt32();
+                var num_skins = binaryReader.ReadInt32();
                 var skinWidth = binaryReader.ReadInt32();
                 var skinHeight = binaryReader.ReadInt32();
                 var num_verts = binaryReader.ReadInt32();
@@ -186,22 +185,32 @@ namespace Acknex
                 Mesh.SetVertices(meshVertices);
                 Mesh.SetUVs(0, meshTexcoords);
                 Mesh.SetTriangles(meshTris, 0);
+                Mesh.RecalculateNormals();
                 Mesh.UploadMeshData(true);
-                Material = new Material(Shader.Find("Acknex/Surface"));
                 var skin = new Color32[skinWidth * skinHeight];
                 for (var i = 0; i < skin.Length; ++i)
                 {
-                    skin[i][0] = MDLColorMap.Colormap[skins[0].data[i],0];
-                    skin[i][1] = MDLColorMap.Colormap[skins[0].data[i],1];
-                    skin[i][2] = MDLColorMap.Colormap[skins[0].data[i],2];
+                    skin[i][0] = MDLColorMap.Colormap[skins[0].data[i], 0];
+                    skin[i][1] = MDLColorMap.Colormap[skins[0].data[i], 1];
+                    skin[i][2] = MDLColorMap.Colormap[skins[0].data[i], 2];
                     skin[i][3] = 255;
                 }
                 skin = FlipPixelsVertically(skin, skinWidth, skinHeight);
                 Texture2D = new Texture2D(skinWidth, skinHeight, UnityEngine.Experimental.Rendering.GraphicsFormat.R8G8B8A8_UNorm, UnityEngine.Experimental.Rendering.TextureCreationFlags.MipChain);
                 Texture2D.SetPixels32(skin, 0);
                 Texture2D.Apply(true, true);
+                PaletteTexture2D = new Texture2D(skinWidth, skinHeight, UnityEngine.Experimental.Rendering.GraphicsFormat.R8_UNorm, UnityEngine.Experimental.Rendering.TextureCreationFlags.None);
+                PaletteTexture2D.LoadRawTextureData(skins[0].data);
+                PaletteTexture2D.Apply(true, true);
+                Bitmap = new Bitmap();
+                Bitmap.AcknexObject.SetFloat(PropertyName.X, 0f);
+                Bitmap.AcknexObject.SetFloat(PropertyName.Y, 0f);
+                Bitmap.AcknexObject.SetFloat(PropertyName.WIDTH, skinWidth);
+                Bitmap.AcknexObject.SetFloat(PropertyName.HEIGHT, skinHeight);
+                Bitmap.OriginalTexture = Bitmap.CropTexture = new TextureAndPalette(Texture2D, PaletteTexture2D);
             }
         }
+
 
         public void SetupTemplate()
         {
@@ -213,7 +222,7 @@ namespace Acknex
 
         public void SetupInstance()
         {
-            
+
         }
 
         public Vector3 GetCenter()
@@ -241,17 +250,17 @@ namespace Acknex
 
         public void UpdateObject()
         {
-            
+
         }
 
         public void Enable()
         {
-            
+
         }
 
         public void Disable()
         {
-            
+
         }
 
         public Model()

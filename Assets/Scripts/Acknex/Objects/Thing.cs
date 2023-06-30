@@ -19,12 +19,16 @@ namespace Acknex
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
         private Material[] _meshRendererMaterials;
+        private Material[] _modelMaterials;
         private IEnumerator _movingCoroutine;
         private MeshCollider _spriteCollider;
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;
         private GameObject _triggerGameObject;
         private bool _positionSet;
+        private GameObject _modelGameObject;
+        private MeshFilter _modelMeshFilter;
+        private MeshRenderer _modelMeshRenderer;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject(PropertyName.TEXTURE, out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -150,6 +154,14 @@ namespace Acknex
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
             _centerGameObject.layer = World.Instance.IgnoreRaycastLayer.LayerIndex;
             _centerGameObject.transform.SetParent(transform, false);
+            _modelGameObject = new GameObject("Model");
+            _modelGameObject.transform.SetParent(transform, false);
+            _modelMeshRenderer = _modelGameObject.AddComponent<MeshRenderer>();
+            _modelMeshRenderer.material = new Material(Shader.Find("Acknex/Model"));
+            _modelMaterials = _modelMeshRenderer.materials;
+            _modelMeshFilter = _modelGameObject.AddComponent<MeshFilter>();
+            _modelMeshFilter.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+            _modelMeshFilter.transform.localScale = Vector3.one * (1f / 16f);
             World.Instance.StartManagedCoroutine(this, TriggerTickEvents());
             World.Instance.StartManagedCoroutine(this, TriggerSecEvents());
         }
@@ -176,24 +188,24 @@ namespace Acknex
                 AcknexObject.SetFloat(PropertyName.DISTANCE, distance);
                 AcknexObject.NoDirtyFlag = false;
             }
-            //if (TextureObject == null || !TextureObject.HasModel(out _))
-            //{
-            var camera = CameraExtensions.GetLastActiveCamera();
-            if (camera == null)
+            if (TextureObject == null || !TextureObject.HasModel(out _))
             {
-                return;
+                var camera = CameraExtensions.GetLastActiveCamera();
+                if (camera == null)
+                {
+                    return;
+                }
+                var eulerAngles = transform.eulerAngles;
+                eulerAngles.y = camera.transform.eulerAngles.y;
+                transform.eulerAngles = eulerAngles;
             }
-            var eulerAngles = transform.eulerAngles;
-            eulerAngles.y = camera.transform.eulerAngles.y;
-            transform.eulerAngles = eulerAngles;
-            //}
-            //else
-            //{
-            //    var angle = AcknexObject.GetFloat(PropertyName.ANGLE);
-            //    var eulerAngles = transform.eulerAngles;
-            //    eulerAngles.y = AngleUtils.ConvertAcknexToUnityAngle(angle);
-            //    transform.eulerAngles = eulerAngles;
-            //}
+            else
+            {
+                var angle = AcknexObject.GetFloat(PropertyName.ANGLE);
+                var eulerAngles = transform.eulerAngles;
+                eulerAngles.y = AngleUtils.ConvertAcknexToUnityAngle(angle);
+                transform.eulerAngles = eulerAngles;
+            }
             var sides = Mathf.Max(1, TextureObject.AcknexObject.GetInteger(PropertyName.SIDES));
             var activeCamera = CameraExtensions.GetLastActiveCamera();
             int side;
@@ -229,22 +241,6 @@ namespace Acknex
                 }
                 IsTextureDirty = false;
             }
-            //if (!_positionSet)
-            //{
-            //    var thingX = AcknexObject.GetFloat(PropertyName.X);
-            //    var thingY = AcknexObject.GetFloat(PropertyName.Y);
-            //    var thingZ = AcknexObject.GetFloat(PropertyName.HEIGHT);
-            //    if (AcknexObject.HasFlag(PropertyName.CANDELABER))
-            //    {
-            //        StickToTheCeiling(thingX, thingY, ref thingZ, true);
-            //    }
-            //    else
-            //    {
-            //        Locate(thingX, thingY, ref thingZ, true);
-            //    }
-            //    transform.position = new Vector3(thingX, thingZ, thingY);
-            //    _positionSet = true;
-            //}
             if (!AcknexObject.IsDirty)
             {
                 return;
@@ -377,20 +373,12 @@ namespace Acknex
 
         private void OnControllerColliderHit(ControllerColliderHit controllerColliderHit)
         {
-            //var movingVertically = Mathf.Abs(AcknexObject.GetFloat(PropertyName.VSPEED)) > 0.1f;
-            //var movingHorizontally = !Mathf.Approximately(AcknexObject.GetFloat(PropertyName.SPEED), 0f);
-            //var region = GetRegion().Container as Region;
-            //var height = AcknexObject.GetFloat(PropertyName.HEIGHT);
-            //var hittingUpOrDown = height < region.GetRealFloorHeight() || height > region.GetRealCeilHeight();
-            //if (/*(movingVertically && hittingUpOrDown) ||*/ (movingHorizontally && !hittingUpOrDown))
-            //{
             ProcessCollision(controllerColliderHit);
-            //}
         }
 
         private void OnCollisionEnter(Collision collision)
         {
-            //ProcessCollision(collision.collider);
+
         }
 
         private void ProcessCollision(ControllerColliderHit controllerColliderHit)
@@ -443,7 +431,12 @@ namespace Acknex
         private IEnumerator Animate()
         {
             var side = AcknexObject.GetInteger(PropertyName.SIDE);
-            var enumerator = TextureObject.AnimateTexture(TextureCanceled, false, _meshRendererMaterials, _meshFilter, _innerGameObject, AcknexObject, GetRegion(), side);
+            var hasModel = TextureObject.AcknexObject.TryGetAcknexObject(PropertyName.MODEL, out var model);
+            if (hasModel)
+            {
+                _modelMeshFilter.mesh = ((Model)model.Container).Mesh;
+            }
+            var enumerator = TextureObject.AnimateTexture(TextureCanceled, false, hasModel ? _modelMaterials : _meshRendererMaterials, hasModel ? _modelMeshRenderer : _meshRenderer, hasModel ? _modelMeshFilter : _meshFilter, _innerGameObject, AcknexObject, GetRegion(), side);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
@@ -604,13 +597,6 @@ namespace Acknex
         public void StickToTheCeiling(float thingX, float thingY, ref float thingZ, bool initial = false)
         {
             Locate(thingX, thingY, ref thingZ, initial, true);
-            //var region = GetRegion();
-            //var regionContainer = region?.Container as Region;
-            //var checkHeight = regionContainer == null ? 0f : regionContainer.GetRealFloorHeight();
-            //var newRegionContainer = Region.Locate(AcknexObject, regionContainer, _innerGameObject.transform.localScale.x * 0.5f, thingX, thingY, ref thingZ, true, checkHeight);
-            //thingZ -= _innerGameObject.transform.localScale.y; //todo: right?
-            //AcknexObject.SetFloat(PropertyName.Z, thingZ);
-            //AcknexObject.SetAcknexObject(PropertyName.REGION, newRegionContainer.AcknexObject);
         }
 
         //todo: A Thing with MASTER set, can trigger IF_LEAVE and IF_ENTER events

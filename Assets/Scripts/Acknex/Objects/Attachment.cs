@@ -8,53 +8,75 @@ namespace Acknex
 {
     public static class Attachment
     {
-        public static void ProcessAttachments(List<Texture> tempAttachments, ref Texture2DArray attachmentsTexture, ref Texture2DArray palettesTexture, List<Vector4> positions, Texture attachment, IList<Material> materials)
+        public const int MaxAttachments = 255;
+
+        public static int ProcessAttachments(
+            Texture[] tempAttachments,
+            ref Texture2DArray attachmentsTexture,
+            ref Texture2DArray palettesTexture, 
+            Vector4[] positions,
+            Texture texture,
+            IList<Material> materials)
         {
-            tempAttachments.Clear();
+            var attachmentCount = 0;
+            var isDirty = false;
+            var textureAcknexObject = texture.AcknexObject;
+            while (textureAcknexObject.TryGetAcknexObject(PropertyName.ATTACH, out var attachAcknexObject))
+            {
+                isDirty |= textureAcknexObject.IsDirty;
+                textureAcknexObject = attachAcknexObject;
+            }
+            if (!isDirty)
+            {
+                return attachmentCount;
+            }
             if (materials == null)
             {
-                return;
+                return attachmentCount;
             }
-            if (!attachment.AcknexObject.TryGetAcknexObject(PropertyName.ATTACH, out var attach))
+            if (!texture.AcknexObject.TryGetAcknexObject(PropertyName.ATTACH, out var attach))
             {
-                for (int i = 0; i < materials.Count; i++)
+                for (var i = 0; i < materials.Count; i++)
                 {
-                    Material material = materials[i];
+                    var material = materials[i];
                     if (material == null)
                     {
-                        return;
+                        return attachmentCount;
                     }
-                    material.SetInt("_ATTACH_COUNT", 0);
+                    material.SetInt("_attachCount", 0);
                 }
-                return;
+                return attachmentCount;
             }
-            var posX = attachment.AcknexObject.GetFloat(PropertyName.POS_X);
-            var posY = attachment.AcknexObject.GetFloat(PropertyName.POS_Y);
-            positions.Add(new Vector2(posX, posY));
-            attachment = (Texture)attach.Container;
-            tempAttachments.Add(attachment);
-            while (attachment.AcknexObject.TryGetAcknexObject(PropertyName.ATTACH, out var child))
+            var posX = attach.GetFloat(PropertyName.POS_X);
+            var posY = attach.GetFloat(PropertyName.POS_Y);
+            var scaleX = attach.GetFloat(PropertyName.SCALE_X);
+            var scaleY = attach.GetFloat(PropertyName.SCALE_Y);
+            positions[attachmentCount] = new Vector4(posX, posY, scaleX, scaleY);
+            texture = (Texture)attach.Container;
+            tempAttachments[attachmentCount++] = texture;
+            while (texture.AcknexObject.TryGetAcknexObject(PropertyName.ATTACH, out var child))
             {
                 var childTexture = (Texture)child.Container;
-                tempAttachments.Add(childTexture);
-                posX += attachment.AcknexObject.GetFloat(PropertyName.POS_X);
-                posY += attachment.AcknexObject.GetFloat(PropertyName.POS_Y);
-                positions.Add(new Vector2(posX, posY));
-                attachment = childTexture;
+                posX += texture.AcknexObject.GetFloat(PropertyName.POS_X);
+                posY += texture.AcknexObject.GetFloat(PropertyName.POS_Y);
+                scaleX = texture.AcknexObject.GetFloat(PropertyName.SCALE_X);
+                scaleY = texture.AcknexObject.GetFloat(PropertyName.SCALE_Y);
+                positions[attachmentCount] = (new Vector4(posX, posY, scaleX, scaleY));
+                tempAttachments[attachmentCount++] = (childTexture);
+                texture = childTexture;
             }
             if (attachmentsTexture == null || palettesTexture == null)
             {
-                var bitmap = attachment.GetBitmapAt(0);
-                attachmentsTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, tempAttachments.Count, bitmap.CropTexture.Texture.format, bitmap.CropTexture.Texture.mipmapCount > 1);
-                palettesTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, tempAttachments.Count, bitmap.CropTexture.Palette.format, bitmap.CropTexture.Palette.mipmapCount > 1);
+                var bitmap = texture.GetBitmapAt(0);
+                attachmentsTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, MaxAttachments, bitmap.CropTexture.Texture.format, bitmap.CropTexture.Texture.mipmapCount > 1);
+                palettesTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, MaxAttachments, bitmap.CropTexture.Palette.format, bitmap.CropTexture.Palette.mipmapCount > 1);
                 attachmentsTexture.filterMode = palettesTexture.filterMode = World.Instance.UsePalettes ? FilterMode.Point : (World.Instance.BilinearFilter ? FilterMode.Bilinear : FilterMode.Point);
             }
-            positions.Clear();
-            for (var i = 0; i < tempAttachments.Count; i++)
+            for (var i = 0; i < attachmentCount; i++)
             {
-                attachment = tempAttachments[i];
-                var cycle = attachment.AcknexObject.GetInteger(PropertyName.CYCLE);
-                var bitmap = attachment.GetBitmapAt(cycle);
+                texture = tempAttachments[i];
+                var cycle = texture.AcknexObject.GetInteger(PropertyName.CYCLE);
+                var bitmap = texture.GetBitmapAt(cycle);
                 Graphics.CopyTexture(bitmap.CropTexture.Texture, 0, attachmentsTexture, i);
                 Graphics.CopyTexture(bitmap.CropTexture.Palette, 0, palettesTexture, i);
             }
@@ -66,10 +88,11 @@ namespace Acknex
                 if (material != null)
                 {
                     material.SetTexture("_ATTACH", World.Instance.UsePalettes ? palettesTexture : attachmentsTexture);
-                    material.SetInt("_ATTACH_COUNT", tempAttachments.Count);
-                    material.SetVectorArray("_ATTACH_POS", positions);
+                    material.SetInt("_attachCount", attachmentCount);
+                    material.SetVectorArray("_attachPos", positions);
                 }
             }
+            return attachmentCount;
         }
     }
 }

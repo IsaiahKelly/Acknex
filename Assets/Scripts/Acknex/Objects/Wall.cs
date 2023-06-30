@@ -14,8 +14,8 @@ namespace Acknex
 {
     public class Wall : MonoBehaviour, IAcknexObjectContainer, IGraphicObject
     {
-        private readonly List<Vector4> _attachmentPos = new List<Vector4>();
-        private readonly List<Texture> _tempAttachments = new List<Texture>();
+        private readonly Vector4[] _attachmentPos = new Vector4[Attachment.MaxAttachments];
+        private readonly Texture[] _tempAttachments = new Texture[Attachment.MaxAttachments];
         private Dictionary<WallPart, List<int>> _allTriangles;
         private List<Vector2> _allUVs;
         private List<Vector3> _allVertices;
@@ -63,6 +63,7 @@ namespace Acknex
         public Matrix4x4 TopQuad;
         public Matrix4x4 TopUV;
         private bool _triggered;
+        private int _attachmentCount;
 
         public MeshFilter Filter { get; set; }
         public MeshFilter GapFilter { get; set; }
@@ -276,6 +277,7 @@ namespace Acknex
             var pos2D = new Vector2(center.x, center.z);
             var playerPos2D = new Vector2(World.Instance.GetSkillValue(SkillName.PLAYER_X), World.Instance.GetSkillValue(SkillName.PLAYER_Y));
             var distance = Vector2.Distance(playerPos2D, pos2D);
+            ProcessAttachments();
             if (!AcknexObject.HasFlag(PropertyName.LIBER) && distance > World.Instance.AcknexObject.GetFloat(PropertyName.CLIP_DIST))
             {
                 return;
@@ -363,11 +365,16 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = TextureObject.AnimateTexture(TextureCanceled, true, HasGap ? _gapMeshRendererMaterials : _meshRendererMaterials, HasGap ? GapFilter : Filter, null, AcknexObject, AcknexObject);
-            while (enumerator.MoveNext())
+            var enumerator = TextureObject.AnimateTexture(TextureCanceled, true, HasGap ? _gapMeshRendererMaterials : _meshRendererMaterials, null, HasGap ? GapFilter : Filter, null, AcknexObject, AcknexObject);
+            yield return enumerator;
+        }
+
+        private void ProcessAttachments()
+        {
+            var newAttachmentCount = Attachment.ProcessAttachments(_tempAttachments, ref _attachmentsTexture, ref _paletteTextures, _attachmentPos, TextureObject, HasGap ? _gapMeshRendererMaterials : _meshRendererMaterials);
+            if (newAttachmentCount > 0)
             {
-                Attachment.ProcessAttachments(_tempAttachments, ref _attachmentsTexture, ref _paletteTextures, _attachmentPos, TextureObject, HasGap ? _gapMeshRendererMaterials : _meshRendererMaterials);
-                yield return enumerator.Current;
+                _attachmentCount = newAttachmentCount;
             }
         }
 
@@ -400,7 +407,7 @@ namespace Acknex
             {
                 return;
             }
-            _triggered = true; 
+            _triggered = true;
             if (collider.TryGetComponent<Player>(out var player))
             {
                 World.Instance.TriggerEvent(PropertyName.IF_NEAR, AcknexObject, player.AcknexObject, player.GetRegion());
@@ -422,7 +429,7 @@ namespace Acknex
 
         private void Update()
         {
-          
+
             if (!AcknexObject.IsInstance)
             {
                 return;

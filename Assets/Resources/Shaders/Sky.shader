@@ -6,12 +6,13 @@
         _BMAPS("_BMAPS", 2DArray) = "white" {}
         _SIDES("_SIDES", Int) = 1
         _SKY_OFFS_Y("_OFFSETY", Float) = 0.2
+        _ZWrite("_ZWrite", Int) = 1
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
         LOD 100
-        //ZWrite Off
+        ZWrite[_ZWrite]
         //ZTest LEqual
 
         Pass

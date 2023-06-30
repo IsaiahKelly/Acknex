@@ -116,7 +116,7 @@ namespace Acknex
         }
 
         //todo: SLOOP
-        public IEnumerator AnimateTexture(Func<Texture, bool> canceled, bool scaleTexture, IList<Material> materials, MeshFilter meshFilter, GameObject sourceGameObject, IAcknexObject MY, IAcknexObject THERE, int side = 0)
+        public IEnumerator AnimateTexture(Func<Texture, bool> canceled, bool scaleTexture, IList<Material> materials, MeshRenderer meshRenderer, MeshFilter meshFilter, GameObject sourceGameObject, IAcknexObject MY, IAcknexObject THERE, int side = 0)
         {
             var cycles = Mathf.Max(1, AcknexObject.GetInteger(PropertyName.CYCLES));
             var mirror = AcknexObject.GetObject<List<float>>(PropertyName.MIRROR);
@@ -146,7 +146,7 @@ namespace Acknex
                     }
                 }
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : World.Instance.WaitForTick;
-                UpdateAngleFrameScale(scaleTexture, cycles, side, cycle, mirror, currentDelay, materials, meshFilter, sourceGameObject, MY);
+                UpdateAngleFrameScale(scaleTexture, cycles, side, cycle, mirror, currentDelay, materials, meshRenderer, meshFilter, sourceGameObject, MY);
                 yield return currentDelay;
                 cycle++;
                 if (cycle >= cycles)
@@ -161,17 +161,19 @@ namespace Acknex
             }
         }
 
-        public void UpdateAngleFrameScale(bool scaleTexture, int cycles, int side, int animFrame, IList<float> mirror, WaitForSeconds delay, IList<Material> materials, MeshFilter meshFilter, GameObject sourceGameObject, IAcknexObject sourceAcknexObject /*, Transform sourceTransform*/)
+        public void UpdateAngleFrameScale(bool scaleTexture, int cycles, int side, int animFrame, IList<float> mirror, WaitForSeconds delay, IList<Material> materials, MeshRenderer meshRenderer, MeshFilter meshFilter, GameObject sourceGameObject, IAcknexObject sourceAcknexObject /*, Transform sourceTransform*/)
         {
-            //if (HasModel(out var modelObject))
-            //{
-            //    meshRenderer.material = modelObject.Material;
-            //    meshRenderer.material.mainTexture = modelObject.Texture2D;
-            //    meshFilter.mesh = modelObject.Mesh;
-            //    thingGameObject.transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
-            //    transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-            //}
-            //else
+            if (HasModel(out var modelObject))
+            {
+                var model = (Model)modelObject.Container;
+                var frame = 0;
+                if (materials != null && model.Bitmap != null)
+                {
+                    meshFilter.transform.localPosition = new Vector3(0f, -meshRenderer.bounds.min.y, 0f);
+                    UpdateFrame(model.Bitmap, materials, scaleTexture, mirror != null && mirror[side] > 0, frame, sourceAcknexObject);
+                }
+            }
+            else
             {
                 var angleFrame = side * cycles;
                 var frame = angleFrame + animFrame;
@@ -187,13 +189,9 @@ namespace Acknex
             }
         }
 
-        public bool HasModel(out Model modelObject)
+        public bool HasModel(out IAcknexObject modelObject)
         {
-            modelObject = null;
-            return false;
-            //todo: reimplement
-            //modelObject = null;
-            //return AcknexObject.TryGetString(PropertyName.MODEL, out var model) && World.Instance.ModelsByName.TryGetValue(model, out modelObject);
+            return AcknexObject.TryGetAcknexObject(PropertyName.MODEL, out modelObject);
         }
 
         public void UpdateFrame(Bitmap bitmap, IList<Material> materials, bool scaleTexture, bool mirror = false, int frameIndex = 0, IAcknexObject sourceAcknexObject = null)

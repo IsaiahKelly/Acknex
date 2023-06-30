@@ -108,6 +108,11 @@ namespace Acknex
                     }
                 }
             }
+            CreateBitmapTexture(textureAndPalette, x, y, width, height, out cropTexture, paletteOnly);
+        }
+
+        public static void CreateBitmapTexture(TextureAndPalette textureAndPalette, int x, int y, int width, int height, out TextureAndPalette cropTexture, bool paletteOnly = false)
+        {
             if (textureAndPalette != null && textureAndPalette.Texture != null)
             {
                 if (width == 0)
@@ -119,7 +124,7 @@ namespace Acknex
                     height = textureAndPalette.Texture.height;
                 }
             }
-            if (!paletteOnly && textureAndPalette != null && width > 0f && height > 0f)
+            if (!paletteOnly && textureAndPalette?.Texture != null && width > 0f && height > 0f)
             {
                 var bitmapTexture2D = new Texture2D(width, height, textureAndPalette.Texture.graphicsFormat, TextureCreationFlags.MipChain);
                 TextureUtils.CopyTextureCPU(textureAndPalette.Texture, bitmapTexture2D, true, false, x, y, width, height);
@@ -134,7 +139,6 @@ namespace Acknex
                 cropTexture = null;
             }
         }
-
 
         public void UpdateMaterial(IList<Material> materials, Texture texture, int index, bool mirror, IAcknexObject sourceAcknexObject)
         {
@@ -175,7 +179,6 @@ namespace Acknex
                     for (var i = 0; i < materials.Count; i++)
                     {
                         var material = materials[i];
-
                         if (wall.HasGap)
                         {
 
@@ -259,10 +262,10 @@ namespace Acknex
                     //todo: SKY_OFFS_Y
                 }
             }
-            var x0 = mirror ? 0 + Width : 0;
+            var x0 = mirror ? Width : 0;
             var y0 = 0;
-            var x1 = mirror ? 0 : 0 + Width;
-            var y1 = 0 + Height;
+            var x1 = mirror ? 0 : Width;
+            var y1 = Height;
             var cullMode = transparent ? CullMode.Off : CullMode.Back;
             for (var i = 0; i < materials.Count; i++)
             {

@@ -32,7 +32,7 @@ namespace Acknex
 
         private IEnumerator Animate(int side = 0)
         {
-            var enumerator = TextureObject.AnimateTexture(TextureCanceled, false, Materials, null, null, AcknexObject, null, side);
+            var enumerator = TextureObject.AnimateTexture(TextureCanceled, false, Materials, null, null,null, AcknexObject, null, side);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;

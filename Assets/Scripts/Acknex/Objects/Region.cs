@@ -392,7 +392,7 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = CeilTexture.AnimateTexture(CeilTextureCanceled, true, _ceilMeshRendererMaterials, CeilMeshFilter, null, AcknexObject, AcknexObject);
+            var enumerator = CeilTexture.AnimateTexture(CeilTextureCanceled, true, _ceilMeshRendererMaterials, null, CeilMeshFilter, null, AcknexObject, AcknexObject);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
@@ -410,7 +410,7 @@ namespace Acknex
             {
                 yield return null;
             }
-            var enumerator = FloorTexture.AnimateTexture(FloorTextureCanceled, true, _floorMeshRendererMaterials, FloorMeshFilter, null, AcknexObject, AcknexObject);
+            var enumerator = FloorTexture.AnimateTexture(FloorTextureCanceled, true, _floorMeshRendererMaterials, null, FloorMeshFilter, null, AcknexObject, AcknexObject);
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current;
@@ -495,7 +495,7 @@ namespace Acknex
             CeilMeshFilter.sharedMesh = _ceilMesh;
             if (!_materialsCreated)
             {
-                _ceilMaterial = World.Instance.BuildMaterial(ceilTexture.AcknexObject);
+                _ceilMaterial = World.Instance.BuildMaterial(ceilTexture.AcknexObject, true);
                 _ceilMeshRenderer.sharedMaterial = _ceilMaterial;
             }
             _ceilMeshRendererMaterials = _ceilMeshRenderer.materials;
@@ -748,12 +748,12 @@ namespace Acknex
             }
         }
 
-        public void PlayRegionSound()
+        public void PlayRegionSound(bool ceil = false)
         {
-            var floorSound = FloorTexture.AcknexObject.GetAcknexObject(PropertyName.SOUND);
-            if (floorSound != null)
+            var sound = ceil ? CeilTexture.AcknexObject.GetAcknexObject(PropertyName.SOUND) :  FloorTexture.AcknexObject.GetAcknexObject(PropertyName.SOUND);
+            if (sound != null)
             {
-                World.Instance.PlaySound(floorSound, FloorTexture.AcknexObject.GetFloat(PropertyName.SVOL), 0.5f, FloorTexture.AcknexObject.GetFloat(PropertyName.SDIST), FloorTexture.AcknexObject.GetFloat(PropertyName.SVDIST));
+                World.Instance.PlaySound(sound, FloorTexture.AcknexObject.GetFloat(PropertyName.SVOL), 0.5f, FloorTexture.AcknexObject.GetFloat(PropertyName.SDIST), FloorTexture.AcknexObject.GetFloat(PropertyName.SVDIST));
             }
         }
 

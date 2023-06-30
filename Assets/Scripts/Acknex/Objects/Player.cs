@@ -76,11 +76,11 @@ namespace Acknex
             _characterController.radius = playerWidth;
             //todo: _characterController.skinWidth = playerWidth * 0.1f;
             var playerSize = World.Instance.GetSkillValue(SkillName.PLAYER_SIZE);
-            _characterController.height = playerSize;
+            var playerClimb = World.Instance.GetSkillValue(SkillName.PLAYER_CLIMB);
+            _characterController.height = playerSize - playerClimb;
             var playerMove = new Vector3(World.Instance.GetSkillValue(SkillName.PLAYER_VX), 0f, World.Instance.GetSkillValue(SkillName.PLAYER_VY)) * World.Instance.GetSkillValue(SkillName.TIME_CORR);
             playerMove.y = World.Instance.GetSkillValue(SkillName.PLAYER_VZ);
             //var desiredPosition = initialPosition + playerMove;
-            //var playerClimb = World.Instance.GetSkillValue(SkillName.PLAYER_CLIMB);
             //var stepSize = Mathf.Min(playerSize, playerClimb);
             //var checkPosition = new Vector3(desiredPosition.x, desiredPosition.y + playerSize - playerWidth, desiredPosition.z);
             //var block = false;
@@ -98,22 +98,38 @@ namespace Acknex
             //DebugExtension.DebugLocalCube(transform.localToWorldMatrix * Matrix4x4.Translate(new Vector3(0f, stepSize * 0.5f, 0f)), new Vector3(playerSize, stepSize, playerSize), block ? Color.red: Color.yellow);
             //_characterController.stepOffset = stepSize;
             var characterControllerCenter = _characterController.center;
-            characterControllerCenter.y = _characterController.height * 0.5f;
+            //if (playerHgt < 0f)
+            //{
+            //    characterControllerCenter.y = (_characterController.height * 0.5f) - playerHgt;
+            //}
+            //else
+            //{
+            //    characterControllerCenter.y = _characterController.height * 0.5f;
+            //}
+            characterControllerCenter.y = _characterController.height * 0.5f + playerClimb;
             _characterController.center = characterControllerCenter;
             _characterController.Move(playerMove);
             var delta = _characterController.transform.position - initialPosition;
             var deltaXZ = new Vector3(delta.x, 0f, delta.z);
             var deltaXZMagnitude = deltaXZ.magnitude;
-            if (playerHgt <= 0.1f && deltaXZMagnitude > Mathf.Epsilon)
+            var regionContainer = ((Region)GetRegion().Container);
+            if (regionContainer.IsUnderwater || playerHgt <= 0.1f && deltaXZMagnitude > Mathf.Epsilon)
             {
-                var period = deltaXZMagnitude / World.Instance.GetSkillValue(SkillName.WALK_PERIOD) * 2f;
-                _walkTime += period;
+                if (regionContainer.IsUnderwater)
+                {
+                    _walkTime += Time.deltaTime;
+                }
+                else
+                {
+                    var period = deltaXZMagnitude / World.Instance.GetSkillValue(SkillName.WALK_PERIOD) * 2f;
+                    _walkTime += period;
+                }
                 var walk = Mathf.Sin(_walkTime * Mathf.PI);
                 World.Instance.UpdateSkillValue(SkillName.WALK, walk);
                 if (!_soundTriggered && walk >= 0.5f)
                 {
                     var container = (Region)GetRegion().Container;
-                    container.PlayRegionSound();
+                    container.PlayRegionSound(regionContainer.IsUnderwater);
                     _soundTriggered = true;
                 }
                 if (_soundTriggered && walk < 0.5f)

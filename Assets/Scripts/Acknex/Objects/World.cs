@@ -52,6 +52,7 @@ namespace Acknex
 
         private Vector2 _scrollPos;
         private Material _skyMaterial;
+        private Material _skyMaterialRegion;
         private Material _surfacesMaterial;
         private TextParser _textParser;
         public Dictionary<IEnumerator, string> ActiveCoroutines = new Dictionary<IEnumerator, string>();
@@ -216,6 +217,8 @@ namespace Acknex
             _palettePixels = new Color[256];
             _surfacesMaterial = new Material(Shader.Find("Acknex/Surface"));
             _skyMaterial = new Material(Shader.Find("Acknex/Sky"));
+            _skyMaterialRegion = new Material(Shader.Find("Acknex/Sky"));
+            _skyMaterialRegion.SetInt("_ZWrite", 0);
             Shader.SetGlobalTexture("_AcknexPalette", _palette);
         }
 
@@ -332,11 +335,11 @@ namespace Acknex
             }
         }
 
-        public Material BuildMaterial(IAcknexObject acknexObject)
+        public Material BuildMaterial(IAcknexObject acknexObject, bool isRegion = false)
         {
             if (acknexObject?.Container is Texture textureObject && textureObject.AcknexObject.HasFlag(PropertyName.SKY))
             {
-                return _skyMaterial;
+                return isRegion ? _skyMaterialRegion : _skyMaterial;
             }
             return _surfacesMaterial;
         }

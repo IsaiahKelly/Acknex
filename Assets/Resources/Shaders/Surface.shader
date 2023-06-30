@@ -20,13 +20,16 @@
 		_PORTCULLIS("_PORTCULLIS", Int) = 0
 		_TRANSPARENT("_TRANSPARENT", Int) = 0
 		_CullMode("_CullMode", Int) = 0
-
+		_attachCount("_attachCount", Int) = 0
+		_ATTACH("_ATTACH", 2DArray) = "" {}
+		_TESTX("_TESTX", Float) = 1
+		_TESTY("_TESTY", Float) = 1
 	}
-		SubShader
+	SubShader
 		{
 			Tags { "RenderType" = "Opaque" "ForceNoShadowCasting" = "True" }
 
-			Cull [_CullMode]
+			Cull[_CullMode]
 			LOD 100
 
 			CGPROGRAM
@@ -41,6 +44,7 @@
 			struct Input
 			{
 				float2 uv_MainTex;
+				float3 worldPos;
 			};
 
 			UNITY_INSTANCING_BUFFER_START(Props)
@@ -53,10 +57,13 @@
 				v.normal *= dot(viewDir, worldNorm) > 0 ? -1 : 1;
 			}
 
-			int _ATTACH_COUNT;
-			float4 _ATTACH_POS[256];
+			int _attachCount;
+			float4 _attachPos[256];
 			UNITY_DECLARE_TEX2DARRAY(_ATTACH);
 			float4 _ATTACH_TexelSize;
+
+			float _TESTX;
+			float _TESTY;
 
 			void surf(Input IN, inout SurfaceOutput o)
 			{
@@ -76,9 +83,19 @@
 				uv *= _MainTex_TexelSize.xy;
 				fixed4 c = tex2D(_MainTex, uv);
 				ApplyPalette(c);
+				float2 attachUV;
 				[loop]
-				for (int i = 0; i < _ATTACH_COUNT; i++) {
-					fixed4 ac = UNITY_SAMPLE_TEX2DARRAY(_ATTACH, float3(uv, i));
+				for (int i = 0; i < _attachCount; i++) {
+					float4 attachData = _attachPos[i];
+					float2 pos = attachData.xy;
+					float2 size = attachData.zw;
+					attachUV += uv;
+					attachUV += float2(-pos.x, pos.y) * _MainTex_TexelSize.xy;
+					attachUV /= float2(_TESTX, _TESTY);
+					if (any(attachUV < 0.0) || any(attachUV > 1.0)) {
+						continue;
+					}
+					fixed4 ac = UNITY_SAMPLE_TEX2DARRAY(_ATTACH, float3(attachUV, i));
 					ApplyPalette(ac);
 					c = AlphaBlend(c, ac);
 				}
