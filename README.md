@@ -11,4 +11,4 @@ Discord server:
 https://discord.gg/CthKP95G
 
 Want to help the project? Donations link:
-https://www.paypal.com/donate/?hosted_button_id=MHJH72GYQCYGW
+[https://www.paypal.com/donate/?hosted_button_id=MHJH72GYQCYGW](https://ko-fi.com/ricardoreis)https://ko-fi.com/ricardoreis
