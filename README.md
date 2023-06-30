@@ -1,4 +1,4 @@
-# Acknex
+# Acknex Engine Unity Port
 
 ![image](https://user-images.githubusercontent.com/12863984/231927991-b1590e47-61f5-4a88-a2c7-51ec3f489164.png)
 
@@ -9,3 +9,6 @@ Acknex game engine copyright Conitec Datasystems.
 
 Discord server:
 https://discord.gg/CthKP95G
+
+Want to help the project? Donations link:
+https://www.paypal.com/donate/?hosted_button_id=MHJH72GYQCYGW
