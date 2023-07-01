@@ -47,8 +47,8 @@ namespace Acknex
         public bool DisableCeilRender;
         public bool DisableFloorRender;
         public HashSet<Wall> Walls = new HashSet<Wall>();
-        private MeshCollider _floorOffsetMeshCollider;
-        private GameObject _floorOffsetGameObject;
+        //private MeshCollider _floorOffsetMeshCollider;
+        //private GameObject _floorOffsetGameObject;
 
         public Texture FloorTexture
         {
@@ -218,12 +218,11 @@ namespace Acknex
             _floorGameObject = new GameObject("Floor");
             _floorGameObject.transform.SetParent(transform, false);
             _floorGameObject.layer = World.Instance.RegionsLayer.LayerIndex;
-            _floorOffsetGameObject = new GameObject("Offset");
-            _floorOffsetGameObject.layer = World.Instance.RegionOffsetLayer.LayerIndex;
-            _floorOffsetGameObject.transform.SetParent(_floorGameObject.transform, false);
-            //var playerClimb = World.Instance.GetSkillValue(SkillName.PLAYER_CLIMB);
-            _floorOffsetGameObject.transform.localPosition = new Vector3(0f, World.Instance.TestOffset/*-playerClimb * 0.5f*/, 0f);
-            _floorOffsetMeshCollider = _floorOffsetGameObject.AddComponent<MeshCollider>();
+            //_floorOffsetGameObject = new GameObject("Offset");
+            //_floorOffsetGameObject.layer = World.Instance.RegionOffsetLayer.LayerIndex;
+            //_floorOffsetGameObject.transform.SetParent(_floorGameObject.transform, false);
+            //_floorOffsetGameObject.transform.localPosition = new Vector3(0f, World.Instance.TestOffset/*-playerClimb * 0.5f*/, 0f);
+            //_floorOffsetMeshCollider = _floorOffsetGameObject.AddComponent<MeshCollider>();
             _ceilGameObject = new GameObject("Ceil");
             _ceilGameObject.transform.SetParent(transform, false);
             _ceilGameObject.layer = World.Instance.RegionsLayer.LayerIndex;
@@ -325,10 +324,9 @@ namespace Acknex
             if (AcknexObject.HasFlag(PropertyName.INVISIBLE))
             {
                 _floorMeshRenderer.enabled = false;
-                _floorCollider.enabled = false;
-                _floorOffsetMeshCollider.enabled = false;
                 _ceilMeshRenderer.enabled = false;
-                _ceilCollider.enabled = false;
+                _invertedFloorCollider.enabled = _floorCollider.enabled = false;
+                _invertedCeilCollider.enabled = _ceilCollider.enabled = false;
                 return;
             }
             if (AckTransform.Degrees != 0f)
@@ -352,13 +350,11 @@ namespace Acknex
                 AckTransform.DZ = 0f;
             }
             _floorMeshRenderer.enabled = !DisableFloorRender;
-            _floorCollider.enabled = true;
-            _floorOffsetMeshCollider.enabled = true;
             _ceilMeshRenderer.enabled = !DisableCeilRender;
-            _ceilCollider.enabled = true;
+            _invertedFloorCollider.enabled = _floorCollider.enabled = true;
+            _invertedCeilCollider.enabled = _ceilCollider.enabled = true;
             _floorMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
             _ceilMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
-            _floorOffsetMeshCollider.gameObject.layer = IsWater ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionOffsetLayer.LayerIndex;
             _floorCollider.gameObject.layer = IsWater ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
             _ceilCollider.gameObject.layer = IsUnderwater ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
             if (CeilTexture != null)
@@ -471,7 +467,9 @@ namespace Acknex
                 material.mainTexture = World.Instance.NullTexture;
                 material.SetInt("_TRANSPARENT", 1);
             }
-            _floorOffsetMeshCollider.sharedMesh = _floorCollider.sharedMesh = _floorMesh;
+            //_floorOffsetMeshCollider.sharedMesh =_floorMesh
+            _floorCollider.sharedMesh = _floorMesh;
+            _floorCollider.enabled = false;
             _invertedFloorCollider.sharedMesh = _invertedFloorMesh;
             _invertedFloorCollider.enabled = false;
             _ceilMesh.Clear();
@@ -505,6 +503,7 @@ namespace Acknex
                 material.SetInt("_TRANSPARENT", 1);
             }
             _ceilCollider.sharedMesh = _ceilMesh;
+            _ceilCollider.enabled = false;
             _invertedCeilCollider.sharedMesh = _invertedCeilMesh;
             _invertedCeilCollider.enabled = false;
             _materialsCreated = true;
@@ -694,7 +693,7 @@ namespace Acknex
             {
                 var zCheck = height ?? currentRegion.AcknexObject.GetFloat(PropertyName.CEIL_HGT);
                 var point = new Vector3(thingX, zCheck, thingY);
-                if (Physics.SphereCast(new Ray(point, Vector3.down), radius, out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
+                if ((radius == 0f && Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions)) || Physics.SphereCast(new Ray(point, Vector3.down), radius, out  raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, ref thingHgt, out var outRegion))
                     {

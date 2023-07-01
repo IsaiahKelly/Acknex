@@ -69,8 +69,9 @@ namespace Acknex
             {
                 var bitmap = texture.GetBitmapAt(0);
                 attachmentsTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, MaxAttachments, bitmap.CropTexture.Texture.format, bitmap.CropTexture.Texture.mipmapCount > 1);
+                attachmentsTexture.filterMode =  World.Instance.UsePalettes ? FilterMode.Point : World.Instance.BilinearFilter ? FilterMode.Bilinear : FilterMode.Point;
                 palettesTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, MaxAttachments, bitmap.CropTexture.Palette.format, bitmap.CropTexture.Palette.mipmapCount > 1);
-                attachmentsTexture.filterMode = palettesTexture.filterMode = World.Instance.UsePalettes ? FilterMode.Point : (World.Instance.BilinearFilter ? FilterMode.Bilinear : FilterMode.Point);
+                palettesTexture.filterMode = FilterMode.Point;
             }
             for (var i = 0; i < attachmentCount; i++)
             {

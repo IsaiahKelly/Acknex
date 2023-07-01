@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Acknex.Interfaces;
 using LibTessDotNet;
@@ -84,12 +85,13 @@ namespace Acknex
         public IAcknexObject Node2String;
         public Texture2D NullTexture;
         public bool OldAckVersion;
-        public SingleUnityLayer RegionOffsetLayer;
+        //[Obsolete()]
+        //public SingleUnityLayer RegionOffsetLayer;
         public SingleUnityLayer RegionsLayer;
         public RegionWalls RegionWalls;
         public IAcknexObject RepelString;
         public string SourceGenerationPath;
-        public SingleUnityLayer Sprites;
+        public SingleUnityLayer SpritesLayer;
         public IAcknexObject StickString;
         public float TestTimeScale = 1f;
         public SingleUnityLayer ThingsAndActorsLayer;
@@ -106,7 +108,8 @@ namespace Acknex
         public LayerMask WallsWaterAndRegions;
         public LayerMask WallsWaterRegionsAndSprites;
         public LayerMask WallsWaterRegionsAndThings;
-        public LayerMask WallsWaterRegionsOffsetAndThings;
+        //[Obsolete()]
+        //public LayerMask WallsWaterRegionsOffsetAndThings;
         public SingleUnityLayer WaterLayer;
         public string WDLPath;
         public float TestOffset = -0.05f;
@@ -272,7 +275,7 @@ namespace Acknex
 
         private void PhysicsOnContactModifyEvent(PhysicsScene physicsScene, NativeArray<ModifiableContactPair> modifiableContactPairs)
         {
-          
+
         }
 
         private void CreateDefaultObjects()

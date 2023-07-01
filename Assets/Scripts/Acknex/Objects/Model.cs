@@ -165,16 +165,14 @@ namespace Acknex
                         var vertex = frames[0].vertices[vertexIndex];
                         var s = (float)texcoords[vertexIndex].s;
                         var t = (float)texcoords[vertexIndex].t;
-                        if (triangle.facesfront == 1 && texcoords[vertexIndex].onseam == 1)
-                        {
-                            s += skinWidth * 0.5f;
-                        }
-                        s = (s + 0.5f) / skinWidth;
+                        var onSeam = texcoords[vertexIndex].onseam;
+                        var facesFront = triangle.facesfront;
+                        s = (s + (onSeam > 0 && facesFront < 1 ? skinWidth * 0.5f : 0.0f) + 0.5f) / skinWidth;
                         t = (t + 0.5f) / skinHeight;
                         meshTexcoords.Add(new Vector2(s, t));
-                        var x = (scale[0] * vertex.v[0]) + translate[0];
-                        var y = (scale[1] * vertex.v[1]) + translate[1];
-                        var z = (scale[2] * vertex.v[2]) + translate[2];
+                        var x = scale[0] * vertex.v[0] + translate[0];
+                        var y = scale[1] * vertex.v[1] + translate[1];
+                        var z = scale[2] * vertex.v[2] + translate[2];
                         meshVertices.Add(new Vector3(x, y, z));
                     }
                     meshTris.Add(meshTris.Count);
@@ -199,9 +197,11 @@ namespace Acknex
                 Texture2D = new Texture2D(skinWidth, skinHeight, UnityEngine.Experimental.Rendering.GraphicsFormat.R8G8B8A8_UNorm, UnityEngine.Experimental.Rendering.TextureCreationFlags.MipChain);
                 Texture2D.SetPixels32(skin, 0);
                 Texture2D.Apply(true, true);
+                Texture2D.filterMode = World.Instance.UsePalettes ? FilterMode.Point : World.Instance.BilinearFilter ? FilterMode.Bilinear : FilterMode.Point;
                 PaletteTexture2D = new Texture2D(skinWidth, skinHeight, UnityEngine.Experimental.Rendering.GraphicsFormat.R8_UNorm, UnityEngine.Experimental.Rendering.TextureCreationFlags.None);
                 PaletteTexture2D.LoadRawTextureData(skins[0].data);
                 PaletteTexture2D.Apply(true, true);
+                PaletteTexture2D.filterMode = FilterMode.Point;
                 Bitmap = new Bitmap();
                 Bitmap.AcknexObject.SetFloat(PropertyName.X, 0f);
                 Bitmap.AcknexObject.SetFloat(PropertyName.Y, 0f);
