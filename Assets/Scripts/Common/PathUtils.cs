@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System;
 
-namespace Acknex
+namespace Common
 {
     public static class PathUtils
     {

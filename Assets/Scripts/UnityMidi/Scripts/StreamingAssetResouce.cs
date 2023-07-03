@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.IO;
 using AudioSynthesis;
+using Common;
 
 namespace UnityMidi
 {
@@ -31,7 +32,7 @@ namespace UnityMidi
 
         public Stream OpenResourceForRead()
         {
-            return File.OpenRead(Path.Combine(Application.streamingAssetsPath, streamingAssetPath));
+            return FileManager.OpenRead(Path.Combine(Application.streamingAssetsPath, streamingAssetPath));
         }
 
         public Stream OpenResourceForWrite()

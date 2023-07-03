@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Common;
 using UnityEngine;
 using PropertyName = Acknex.Interfaces.PropertyName;
 
@@ -89,7 +90,7 @@ namespace Acknex
             {
                 return;
             }
-            using (var binaryReader = new BinaryReader(File.OpenRead(filename)))
+            using (var binaryReader = new BinaryReader(FileManager.OpenRead(filename)))
             {
                 var ident = binaryReader.ReadInt32();
                 var version = binaryReader.ReadInt32();

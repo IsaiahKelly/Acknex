@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Acknex.Interfaces;
+using Common;
 using LibTessDotNet;
 using Unity.Collections;
 using UnityEngine;
@@ -108,6 +109,7 @@ namespace Acknex
         public LayerMask WallsWaterRegionsAndSprites;
         public LayerMask WallsWaterRegionsAndThings;
 
+        public string WRSPath;
         public string WDLPath;
 
         public static World Instance { get; private set; }
@@ -226,6 +228,10 @@ namespace Acknex
             if (!DebugCoroutines)
             {
                 Cursor.lockState = CursorLockMode.Locked;
+            }
+            if (WRSPath != null)
+            {
+                FileManager.WRSFilename = WRSPath;
             }
             AudioListener.volume = Volume;
             CreateDefaultObjects();

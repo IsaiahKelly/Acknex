@@ -118,7 +118,7 @@ namespace Acknex
                 {
                     OverlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, overlaySprite.Width);
                     OverlayGraphic.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, overlaySprite.Height);
-                    overlaySprite.UpdateMaterial(Materials, null, 0, false, null);
+                    overlaySprite.UpdateMaterial(Materials, null, 0, false, AcknexObject);
                     AcknexObject.SetFloat(PropertyName.SIZE_X, overlaySprite.Width);
                     AcknexObject.SetFloat(PropertyName.SIZE_Y, overlaySprite.Height);
                     IsTextureDirty = false;

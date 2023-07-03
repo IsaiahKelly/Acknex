@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace Acknex
+namespace Common
 {
     public class BigEndianBinaryReader : BinaryReader
     {

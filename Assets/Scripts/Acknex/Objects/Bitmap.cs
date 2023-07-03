@@ -210,8 +210,10 @@ namespace Acknex
             }
             var albedo = 0f;
             var radiance = 0f;
+            var diaphanous = false;
             if (texture != null)
             {
+                diaphanous = texture.AcknexObject.HasFlag(PropertyName.DIAPHANOUS);
                 if (texture.AcknexObject.TryGetFloat(PropertyName.ALBEDO, out var textureAlbedo))
                 {
                     albedo = textureAlbedo;
@@ -282,6 +284,7 @@ namespace Acknex
                 material.SetFloat("_ALBEDO", albedo);
                 material.SetFloat("_RADIANCE", radiance);
                 material.SetInt("_TRANSPARENT", transparent ? 1 : 0);
+                material.SetInt("_DIAPHANOUS", diaphanous ? 1 : 0);
                 material.SetInt("_CullMode", (int)cullMode);
                 material.mainTexture = World.Instance.UsePalettes ? CropTexture.Palette : CropTexture.Texture;
             }

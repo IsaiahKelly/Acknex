@@ -142,7 +142,7 @@ namespace Acknex
                     sound = AcknexObject.GetAcknexObject(PropertyName.SOUND);
                     if (sound != null && ((scycles == null && cycle == 0) || (scycles != null && scycles[cycle] > 0f)))
                     {
-                        World.Instance.PlaySound(sound, AcknexObject.GetFloat(PropertyName.SVOL), MY, AcknexObject.GetFloat(PropertyName.DIST), AcknexObject.GetFloat(PropertyName.SVDIST));
+                        World.Instance.PlaySound(sound, AcknexObject.GetFloat(PropertyName.SVOL), MY, AcknexObject.GetFloat(PropertyName.SDIST), AcknexObject.GetFloat(PropertyName.SVDIST));
                     }
                 }
                 var currentDelay = _textureObjectDelay != null && _textureObjectDelay.Count > cycle ? _textureObjectDelay[cycle] : World.Instance.WaitForTick;

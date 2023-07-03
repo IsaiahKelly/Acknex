@@ -14,6 +14,7 @@
         _V1H("_V1H", Float) = 0.0
         _CLAMPX("_CLAMPX", Float) = 0
         _CLAMPY("_CLAMPY", Float) = 0
+        _DIAPHANOUS("_DIAPHANOUS", Int) = 0
     }
     SubShader
     {
@@ -49,7 +50,7 @@
             fixed4 c = tex2D(_MainTex, uv);
             ApplyPalette(c);
             o.Albedo = c.rgb;
-            o.Alpha = c.a;
+            o.Alpha = c.a < 0.5 ? c.a : (_DIAPHANOUS ? 0.5 : c.a);
         }
         ENDCG
     }

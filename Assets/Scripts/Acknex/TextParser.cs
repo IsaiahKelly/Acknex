@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using Acknex.Interfaces;
+using Common;
 using UnityEngine;
 using PropertyName = Acknex.Interfaces.PropertyName;
 using Resolution = Acknex.Interfaces.Resolution;
@@ -181,7 +182,7 @@ namespace Acknex
             {
                 return;
             }
-            var binaryReader = new LineBinaryReader(File.OpenRead(wdlFilename), Encoding.ASCII, true);
+            var binaryReader = new LineBinaryReader(FileManager.OpenRead(wdlFilename), Encoding.ASCII, true);
             {
                 for (; ; )
                 {
@@ -735,7 +736,7 @@ namespace Acknex
             {
                 return;
             }
-            var binaryReader = new LineBinaryReader(File.OpenRead(wmpFilename), Encoding.ASCII, true);
+            var binaryReader = new LineBinaryReader(FileManager.OpenRead(wmpFilename), Encoding.ASCII, true);
             {
                 for (; ; )
                 {
