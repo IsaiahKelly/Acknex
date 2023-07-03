@@ -217,12 +217,24 @@ namespace Acknex
             if (sides > 1 && activeCamera != null)
             {
                 var halfStep = 180f / sides;
-                var cameraToThingDirection = Quaternion.LookRotation(AngleUtils.To2D(activeCamera.transform.position - GetCenter()).normalized, Vector3.up) * Vector3.forward;
+                //for (var i = 0; i < sides; i++)
+                //{
+                //    Debug.DrawRay(GetCenter(), Quaternion.Euler(0f, (i * halfStep * 2f) - halfStep, 0f) * Vector3.forward * 2f, Color.cyan);
+                //}
+                var thingToCameraDirection = AngleUtils.To2D(activeCamera.transform.position - GetCenter()).normalized;
+                //DebugExtension.DebugArrow(GetCenter(), thingToCameraDirection * 2f, Color.magenta);
                 var thingAngle = AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat(PropertyName.ANGLE));
                 var thingDirection = Quaternion.Euler(0f, thingAngle, 0f) * Vector3.forward;
-                var angle = Mathf.Repeat(AngleUtils.Angle(thingDirection, cameraToThingDirection) + halfStep, 360f);
-                var normalizedAngle = angle / 360f;
-                side = Mathf.RoundToInt(Mathf.Lerp(0, sides - 1, normalizedAngle));
+                //DebugExtension.DebugArrow(GetCenter(), thingDirection * 2f, Color.blue);
+                var angle = Vector3.SignedAngle(thingToCameraDirection, thingDirection, Vector3.up);
+                var normalizedAngle = (angle + 360f) % 360f;
+                var spanSize = 360 / sides;
+                var span = Mathf.FloorToInt((normalizedAngle + spanSize / 2f) / spanSize % sides);
+                //if (AcknexObject.DebugMarked)
+                //{
+                //    Debug.Log(angle + ":" + span);
+                //}
+                side =  span % sides;
             }
             else
             {
