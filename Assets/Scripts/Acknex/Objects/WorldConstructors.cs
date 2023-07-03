@@ -63,7 +63,7 @@ namespace Acknex
                 throw new Exception("Expected: name");
             }
             var newGameObject = new GameObject(name);
-            newGameObject.layer = RegionsLayer.LayerIndex;
+            newGameObject.layer = RegionFloorLayer.LayerIndex;
             newGameObject.transform.SetParent(transform, false);
             var region = newGameObject.AddComponent<Region>();
             region.AcknexObject.Type = ObjectType.Region;

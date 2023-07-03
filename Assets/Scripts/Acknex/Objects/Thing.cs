@@ -277,9 +277,11 @@ namespace Acknex
             //var height = _innerGameObject.transform.localPosition.y + _innerGameObject.transform.localScale.y * 0.5f;
             //_collider.center = _characterController.center = new Vector3(0f, height, 0f);
             var actorClimb = World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB);
-            _collider.height = _characterController.height = _innerGameObject.transform.localScale.y - actorClimb;
-            _collider.center = _characterController.center = new Vector3(0f, _characterController.height * 0.5f + actorClimb, 0f);
-            _collider.radius = _characterController.radius = GetColliderRadius();
+            var actorRadius = GetColliderRadius();
+            var possibleClimb = Mathf.Min(actorRadius, actorClimb);
+            _collider.height = _characterController.height = _innerGameObject.transform.localScale.y - possibleClimb;
+            _collider.center = _characterController.center = new Vector3(0f, _characterController.height * 0.5f + possibleClimb, 0f);
+            _collider.radius = _characterController.radius = actorRadius;
             //var carefully = AcknexObject.HasFlag(PropertyName.CAREFULLY);
             //_characterController.includeLayers = carefully ? World.Instance.WallsWaterRegionsOffsetAndThings : default;
             var target = AcknexObject.GetAcknexObject(PropertyName.TARGET);
@@ -688,7 +690,7 @@ namespace Acknex
             var angle = AcknexObject.GetFloat(PropertyName.ANGLE);
             var timeCorr = World.Instance.GetSkillValue(SkillName.TIME_CORR);
             var delta = new Vector3(MathUtils.Cos(angle), 0f, MathUtils.Sin(angle)) * speed * timeCorr;
-            delta.y = AcknexObject.GetFloat(PropertyName.VSPEED) /** timeCorr*/;
+            delta.y = AcknexObject.GetFloat(PropertyName.VSPEED) * World.Instance.TestTimeScale * Time.deltaTime;
             //if (AcknexObject.HasFlag(PropertyName.PASSABLE))
             //{
             //    transform.Translate(delta, Space.World);
@@ -715,6 +717,11 @@ namespace Acknex
 
         private bool WontDrop(Vector3 delta)
         {
+            if (AcknexObject.HasFlag(PropertyName.GROUND))
+            {
+                return true;
+            }
+            delta.y = 0f;
             var actorClimb = World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB);
             var finalPos = _characterController.transform.position + delta + new Vector3(0f, actorClimb, 0f);// + new Vector3(0f, World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB), 0f);
             Physics.Raycast(finalPos, Vector3.down, out var raycastHit, World.Instance.WallsWaterAndRegions);
@@ -755,7 +762,7 @@ namespace Acknex
             var timeCorr = World.Instance.GetSkillValue(SkillName.TIME_CORR);
             var newPos = Vector2.MoveTowards(pos, nextPoint, speed * timeCorr);
             var delta = new Vector3(newPos.x - pos.x, 0f, newPos.y - pos.y);
-            delta.y = AcknexObject.GetFloat(PropertyName.VSPEED) /** timeCorr */;
+            delta.y = AcknexObject.GetFloat(PropertyName.VSPEED) * World.Instance.TestTimeScale * Time.deltaTime;
             var initialPosition = transform.position;
             if ( /*AcknexObject.HasFlag(PropertyName.PASSABLE) || */AcknexObject.GetAcknexObject(PropertyName.TARGET).Type == ObjectType.Way)
             {

@@ -466,7 +466,7 @@ Camera:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 3
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -941,50 +941,44 @@ MonoBehaviour:
   DisableCompilation: 1
   DisableMaterials: 0
   DrawShadows: 0
-  GodMode: 0
-  IgnoreRaycastLayer:
-    m_LayerIndex: 2
   MeshBatch: 0
   MidiPlayer: {fileID: 1246573634}
   MouseMultiplier: 0.1
   NullTexture: {fileID: 2800000, guid: da40acbc9325ea9438512fe4fee1f7fc, type: 3}
   OldAckVersion: 0
-  RegionOffsetLayer:
-    m_LayerIndex: 14
-  RegionsLayer:
+  TestTimeScale: 100
+  UsePalettes: 1
+  UseWDLEngine: 0
+  Volume: 1
+  IgnoreRaycastLayer:
+    m_LayerIndex: 2
+  RegionFloorLayer:
     m_LayerIndex: 13
-  SourceGenerationPath: Assets\Scripts\Tests\game.cs.new
+  RegionCeilLayer:
+    m_LayerIndex: 14
   SpritesLayer:
     m_LayerIndex: 11
-  TestTimeScale: 1
   ThingsAndActorsLayer:
     m_LayerIndex: 9
   TriggersLayer:
     m_LayerIndex: 10
-  UsePalettes: 1
-  UseWDLEngine: 0
-  Volume: 1
-  WallsAndRegions:
-    serializedVersion: 2
-    m_Bits: 12288
   WallsLayer:
     m_LayerIndex: 12
-  WallsWaterAndRegions:
-    serializedVersion: 2
-    m_Bits: 12304
-  WallsWaterRegionsAndSprites:
-    serializedVersion: 2
-    m_Bits: 14352
-  WallsWaterRegionsAndThings:
-    serializedVersion: 2
-    m_Bits: 12816
-  WallsWaterRegionsOffsetAndThings:
-    serializedVersion: 2
-    m_Bits: 21008
   WaterLayer:
     m_LayerIndex: 4
+  WallsAndRegions:
+    serializedVersion: 2
+    m_Bits: 28672
+  WallsWaterAndRegions:
+    serializedVersion: 2
+    m_Bits: 28688
+  WallsWaterRegionsAndSprites:
+    serializedVersion: 2
+    m_Bits: 30736
+  WallsWaterRegionsAndThings:
+    serializedVersion: 2
+    m_Bits: 29200
   WDLPath: C:\games\acknex\varginha2\CONTATO.WDL
-  TestOffset: -0.1
 --- !u!114 &1246573633
 MonoBehaviour:
   m_ObjectHideFlags: 0

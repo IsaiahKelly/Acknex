@@ -29,6 +29,10 @@ int _FENCE;
 int _PORTCULLIS;
 int _TRANSPARENT;
 
+float _PLAYER_Z;
+float _FLOOR_HGT;
+float _CEIL_HGT;
+
 void ApplyPalette(inout float4 color)
 {
 	if (_AcknexUsePalettes) {

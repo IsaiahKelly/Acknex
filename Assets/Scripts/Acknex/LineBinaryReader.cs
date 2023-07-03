@@ -19,5 +19,15 @@ namespace Acknex
         public LineBinaryReader(Stream input, Encoding encoding, bool leaveOpen) : base(input, encoding, leaveOpen)
         {
         }
+
+        public override int Read()
+        {
+            var read = base.Read();
+            if ((char)read == '\n')
+            {
+                LineCount++;
+            }
+            return read;
+        }
     }
 }

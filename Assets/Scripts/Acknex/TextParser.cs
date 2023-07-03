@@ -55,7 +55,6 @@ namespace Acknex
                 switch (read)
                 {
                     case '\n':
-                        binaryReader.LineCount++;
                         return true;
                     case '\0':
                     case '\r':
@@ -96,6 +95,10 @@ namespace Acknex
             while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length)
             {
                 var read = binaryReader.Read();
+                if ((char)read == '\n')
+                {
+                    binaryReader.LineCount++;
+                }
                 if (read == -1)
                 {
                     yield break;
@@ -246,7 +249,7 @@ namespace Acknex
                                 if (!handled)
                                 {
                                     var property = Mappings.MapProperty(keyword);
-                                    var propertyType = _world.GetPropertyType(_openObject.Type, property);
+                                    var propertyType = _world.GetPropertyType(_openObject.Type, property, wdlFilename, binaryReader.LineCount);
                                     if (!HandleProperty(_openObject, tokens, keyword, propertyType, binaryReader, wdlFilename))
                                     {
                                         while (keyword != ";" && keyword != null)
@@ -490,7 +493,7 @@ namespace Acknex
                                 default:
                                     {
                                         var property = Mappings.MapProperty(keyword);
-                                        var propertyType = _world.GetPropertyType(ObjectType.World, property);
+                                        var propertyType = _world.GetPropertyType(ObjectType.World, property, wdlFilename, binaryReader.LineCount);
                                         if (!HandleProperty(_world.AcknexObject, tokens, keyword, propertyType, binaryReader, wdlFilename))
                                         {
                                             while (keyword != ";" && keyword != null)

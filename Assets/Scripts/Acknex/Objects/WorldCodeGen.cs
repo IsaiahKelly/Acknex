@@ -4,6 +4,7 @@ using NameId = System.UInt32;
 using System.IO;
 using System.Text;
 using Acknex.Interfaces;
+using UnityEngine;
 
 namespace Acknex
 {
@@ -111,7 +112,7 @@ namespace Acknex
             }
             sourceStringBuilder.AppendLine("    }");
             sourceStringBuilder.AppendLine("}");
-            File.WriteAllText(SourceGenerationPath, sourceStringBuilder.ToString());
+            File.WriteAllText(Application.dataPath + "/Scripts/Tests/Game.cs.new", sourceStringBuilder.ToString());
         }
     }
 }

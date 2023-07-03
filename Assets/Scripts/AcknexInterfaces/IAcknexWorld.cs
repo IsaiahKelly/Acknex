@@ -134,7 +134,7 @@ namespace Acknex.Interfaces
         /// <summary>
         /// Gets the given object property type.
         /// </summary>
-        PropertyType GetPropertyType(ObjectType objectType, PropertyName propertyName);
+        PropertyType GetPropertyType(ObjectType objectType, PropertyName propertyName, string filename = null, int line = 0);
 
         /// <summary>
         /// Fades the current palette to the given one.

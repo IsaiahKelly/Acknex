@@ -47,25 +47,25 @@ namespace Acknex
         public readonly List<Wall> Walls = new List<Wall>();
         public readonly IDictionary<uint, Wall> WallsByName = new Dictionary<uint, Wall>();
         public readonly IDictionary<uint, Way> WaysByName = new Dictionary<uint, Way>();
+
         private bool _culled;
         private Texture2D _palette;
         private Color[] _palettePixels;
-
         private Vector2 _scrollPos;
         private Material _skyMaterial;
         private Material _skyMaterialRegion;
         private Material _surfacesMaterial;
         private TextParser _textParser;
+        private ContouredRegions _contouredRegions;
+
         public Dictionary<IEnumerator, string> ActiveCoroutines = new Dictionary<IEnumerator, string>();
         public Light AmbientLight;
         public AudioSource AudioSource;
         public bool BilinearFilter = true;
-        public IAcknexObject BulletString;
         public Canvas Canvas;
         public CanvasScaler CanvasScaler;
         public RectTransform CanvasView;
         public float CanvasWidthRatio;
-        private ContouredRegions ContouredRegions;
         public List<ContourVertex> ContourVertices;
         public bool CustomStateMachines;
         public bool DebugCoroutines;
@@ -73,46 +73,42 @@ namespace Acknex
         public bool DisableCompilation;
         public bool DisableMaterials;
         public bool DrawShadows;
-        public IAcknexObject FollowString;
-        public bool GodMode;
-        public IAcknexObject HoldString;
-        public SingleUnityLayer IgnoreRaycastLayer;
         public bool MeshBatch;
         public MidiPlayer MidiPlayer;
         public float MouseMultiplier = 0.1f;
+        public Texture2D NullTexture;
+        public bool OldAckVersion;
+        public RegionWalls RegionWalls;
+        public float TestTimeScale = 1f;
+        public bool UsePalettes;
+        public bool UseWDLEngine;
+        public float Volume = 1f;
+
+        public IAcknexObject BulletString;
+        public IAcknexObject FollowString;
+        public IAcknexObject HoldString;
         public IAcknexObject MoveString;
         public IAcknexObject Node1String;
         public IAcknexObject Node2String;
-        public Texture2D NullTexture;
-        public bool OldAckVersion;
-        //[Obsolete()]
-        //public SingleUnityLayer RegionOffsetLayer;
-        public SingleUnityLayer RegionsLayer;
-        public RegionWalls RegionWalls;
         public IAcknexObject RepelString;
-        public string SourceGenerationPath;
-        public SingleUnityLayer SpritesLayer;
         public IAcknexObject StickString;
-        public float TestTimeScale = 1f;
+        public IAcknexObject VertexString;
+
+        public SingleUnityLayer IgnoreRaycastLayer;
+        public SingleUnityLayer RegionFloorLayer;
+        public SingleUnityLayer RegionCeilLayer;
+        public SingleUnityLayer SpritesLayer;
         public SingleUnityLayer ThingsAndActorsLayer;
         public SingleUnityLayer TriggersLayer;
-        public bool UsePalettes;
-        public bool UseWDLEngine;
-        public IAcknexObject VertexString;
-        public float Volume = 1f;
-        public LayerMask WallsAndRegions;
-
         public SingleUnityLayer WallsLayer;
+        public SingleUnityLayer WaterLayer;
 
-        //public SingleUnityLayer WallsAndRegionsLayer;
+        public LayerMask WallsAndRegions;
         public LayerMask WallsWaterAndRegions;
         public LayerMask WallsWaterRegionsAndSprites;
         public LayerMask WallsWaterRegionsAndThings;
-        //[Obsolete()]
-        //public LayerMask WallsWaterRegionsOffsetAndThings;
-        public SingleUnityLayer WaterLayer;
+
         public string WDLPath;
-        public float TestOffset = -0.05f;
 
         public static World Instance { get; private set; }
 
@@ -159,7 +155,7 @@ namespace Acknex
 
         public void StopManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator)
         {
-            behaviour = behaviour ?? this;
+            behaviour ??= this;
             behaviour.StopCoroutine(enumerator);
             if (DebugCoroutines)
             {
@@ -236,7 +232,7 @@ namespace Acknex
             CreateDefaultSynonyms();
             CreateDefaultSkills();
             CreatePropertyDescriptors();
-            ContouredRegions = new ContouredRegions();
+            _contouredRegions = new ContouredRegions();
             ContourVertices = new List<ContourVertex>();
             RegionWalls = new RegionWalls();
             //if (UseWDLEngine)
@@ -325,12 +321,12 @@ namespace Acknex
                     {
                         continue;
                     }
-                    var rightRegion = ContouredRegions.GetContouredRegion(kvp.Key);
+                    var rightRegion = _contouredRegions.GetContouredRegion(kvp.Key);
                     var allContourVertices = rightRegion.GetNew();
                     wall.ProcessWall(allContourVertices, wall, kvp, ref vertexCount, wall.AcknexObject.GetAcknexObject(PropertyName.REGION2, true, false) == kvp.Key);
                 }
             }
-            foreach (var kvp in ContouredRegions)
+            foreach (var kvp in _contouredRegions)
             {
                 var region = (Region)kvp.Key.Container;
                 var contouredRegion = kvp.Value;

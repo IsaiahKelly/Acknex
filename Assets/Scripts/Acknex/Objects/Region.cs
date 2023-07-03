@@ -166,6 +166,7 @@ namespace Acknex
                 case (uint)PropertyName.FLOOR_HGT:
                 case (uint)PropertyName.CEIL_HGT:
                     IsGeometryDirty = true;
+                    IsTextureDirty = true;
                     break;
             }
         }
@@ -217,7 +218,7 @@ namespace Acknex
             _invertedFloorMesh = new Mesh();
             _floorGameObject = new GameObject("Floor");
             _floorGameObject.transform.SetParent(transform, false);
-            _floorGameObject.layer = World.Instance.RegionsLayer.LayerIndex;
+            _floorGameObject.layer = World.Instance.RegionFloorLayer.LayerIndex;
             //_floorOffsetGameObject = new GameObject("Offset");
             //_floorOffsetGameObject.layer = World.Instance.RegionOffsetLayer.LayerIndex;
             //_floorOffsetGameObject.transform.SetParent(_floorGameObject.transform, false);
@@ -225,7 +226,7 @@ namespace Acknex
             //_floorOffsetMeshCollider = _floorOffsetGameObject.AddComponent<MeshCollider>();
             _ceilGameObject = new GameObject("Ceil");
             _ceilGameObject.transform.SetParent(transform, false);
-            _ceilGameObject.layer = World.Instance.RegionsLayer.LayerIndex;
+            _ceilGameObject.layer = World.Instance.RegionFloorLayer.LayerIndex;
             _ceilMeshRenderer = _ceilGameObject.AddComponent<MeshRenderer>();
             CeilMeshFilter = _ceilGameObject.AddComponent<MeshFilter>();
             _ceilCollider = _ceilGameObject.AddComponent<MeshCollider>();
@@ -352,11 +353,11 @@ namespace Acknex
             _floorMeshRenderer.enabled = !DisableFloorRender;
             _ceilMeshRenderer.enabled = !DisableCeilRender;
             _invertedFloorCollider.enabled = _floorCollider.enabled = true;
-            _invertedCeilCollider.enabled = _ceilCollider.enabled = true;
+            _invertedCeilCollider.enabled =  _ceilCollider.enabled = true;
             _floorMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
             _ceilMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
-            _floorCollider.gameObject.layer = IsWater ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
-            _ceilCollider.gameObject.layer = IsUnderwater ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionsLayer.LayerIndex;
+            _floorCollider.gameObject.layer = IsWater ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionFloorLayer.LayerIndex;
+            _ceilCollider.gameObject.layer = IsUnderwater ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionCeilLayer.LayerIndex;
             if (CeilTexture != null)
             {
                 _ceilMeshRenderer.shadowCastingMode = CeilTexture.AcknexObject.HasFlag(PropertyName.SKY) ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;

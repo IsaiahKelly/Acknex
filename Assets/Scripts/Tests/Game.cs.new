@@ -152,6 +152,7 @@ _callbacks.Add("SETDKEY", new SETDKEY());
 _callbacks.Add("FIRE", new FIRE());
 _callbacks.Add("BURST", new BURST());
 _callbacks.Add("THROW", new THROW());
+_callbacks.Add("BIPO", new BIPO());
 _callbacks.Add("LAUNCH", new LAUNCH());
 _callbacks.Add("BEAM", new BEAM());
 _callbacks.Add("RAISE", new RAISE());
@@ -11375,6 +11376,46 @@ IAcknexObject THROW_154;
 IAcknexObject THROW_156;
 IAcknexObject GUNFIRING_159;
 }
+public class BIPO : ICompiledAction {
+  private int _cursor;
+  public IAcknexObject MY {get; set;}
+  public IAcknexObject THERE {get; set;}
+  public IAcknexWorld _world {get; set;}
+  public object Current { get; set; }
+  public void Reset() {
+      _cursor = 0;
+  }
+ public BIPO() {
+  }
+ public BIPO(IAcknexObject MY, IAcknexObject THERE, IAcknexWorld world) {
+      this.MY = MY;
+      this.THERE = THERE;
+      this._world = world;
+  }
+  public bool MoveNext() {
+     switch (_cursor){
+            case 1:
+                goto _coroutine1;
+     }
+//Unknown keyword: BEEP
+
+            startTime1 = Time.time;
+            endTime1 = startTime1 + TimeUtils.TicksToTime((int)1f);
+            _cursor = 1;
+            _coroutine1:
+            while (Time.time  < endTime1)
+            {
+                Current = Game.WaitForEndOfFrame;
+                return true;
+            }
+            Current = null;
+        
+//Unknown keyword: 
+      return false;
+  }
+float startTime1;
+float endTime1;
+}
 public class LAUNCH : ICompiledAction {
   private int _cursor;
   public IAcknexObject MY {get; set;}
@@ -11564,72 +11605,75 @@ MISSILE_119 = _world.GetSynonymObject(3680056099);
 MISSILE_119.SetFloat(214,1f);
 MISSILE_122 = _world.GetSynonymObject(3680056099);
 MISSILE_122.SetFloat(204,0f);
-SHOOT_SECTOR_124 = _world.GetObject(ObjectType.Skill,440);
-SHOOT_SECTOR_124.SetFloat(231,6.283f);
-SHOOT_RANGE_126 = _world.GetObject(ObjectType.Skill,439);
-SHOOT_RANGE_126.SetFloat(231,200f);
-SHOOT_FAC_128 = _world.GetObject(ObjectType.Skill,441);
-SHOOT_FAC_128.SetFloat(231,0f);
-SHOOT_X_130 = _world.GetObject(ObjectType.Skill,442);
-SHOOT_X_130.SetFloat(231,0f);
-SVANGLE_131 = _world.GetObject(ObjectType.Skill,3326160989);
-SVANGLE_131_val = SVANGLE_131.GetFloat(PropertyName.VAL);
-SHOOT_Y_132 = _world.GetObject(ObjectType.Skill,443);
-SHOOT_Y_132.SetFloat(231,SVANGLE_131_val);
+BIPO_123 = _world.AcknexObject.GetAcknexObject(2088928663);
+MISSILE_125 = _world.GetSynonymObject(3680056099);
+MISSILE_125.SetAcknexObject(209,BIPO_123);
+SHOOT_SECTOR_127 = _world.GetObject(ObjectType.Skill,440);
+SHOOT_SECTOR_127.SetFloat(231,6.283f);
+SHOOT_RANGE_129 = _world.GetObject(ObjectType.Skill,439);
+SHOOT_RANGE_129.SetFloat(231,10f);
+SHOOT_FAC_131 = _world.GetObject(ObjectType.Skill,441);
+SHOOT_FAC_131.SetFloat(231,0f);
+SHOOT_X_133 = _world.GetObject(ObjectType.Skill,442);
+SHOOT_X_133.SetFloat(231,0f);
+SVANGLE_134 = _world.GetObject(ObjectType.Skill,3326160989);
+SVANGLE_134_val = SVANGLE_134.GetFloat(PropertyName.VAL);
+SHOOT_Y_135 = _world.GetObject(ObjectType.Skill,443);
+SHOOT_Y_135.SetFloat(231,SVANGLE_134_val);
 _world.Shoot(null, MY, THERE);
-HIT_DIST_134 = _world.GetObject(ObjectType.Skill,444);
-HIT_DIST_134_val = HIT_DIST_134.GetFloat(PropertyName.VAL);
-if (CheckEquals(HIT_DIST_134_val , 0f))
+HIT_DIST_137 = _world.GetObject(ObjectType.Skill,444);
+HIT_DIST_137_val = HIT_DIST_137.GetFloat(PropertyName.VAL);
+if (CheckEquals(HIT_DIST_137_val , 0f))
 {
 goto HITWALL;
 }
-HIT_135 = _world.GetSynonymObject(704);
-_world.SetSynonymObject(2013386137,HIT_135);
-HIT_139 = _world.GetSynonymObject(704);
-temp_140 =HIT_139.GetFloat(208);
-if (!CheckEquals(temp_140 , 1f))
+HIT_138 = _world.GetSynonymObject(704);
+_world.SetSynonymObject(2013386137,HIT_138);
+HIT_142 = _world.GetSynonymObject(704);
+temp_143 =HIT_142.GetFloat(208);
+if (!CheckEquals(temp_143 , 1f))
 {
 goto HITWALL;
 }
-HIT_143 = _world.GetSynonymObject(704);
-temp_144 =HIT_143.GetFloat(202);
-if (!CheckEquals(temp_144 , 0f))
+HIT_146 = _world.GetSynonymObject(704);
+temp_147 =HIT_146.GetFloat(202);
+if (!CheckEquals(temp_147 , 0f))
 {
-MISSILE_146 = _world.GetSynonymObject(3680056099);
-MISSILE_148 = _world.GetSynonymObject(3680056099);
-temp_149 =MISSILE_148.GetFloat(169);
-HIT_152 = _world.GetSynonymObject(704);
-temp_153 =HIT_152.GetFloat(200);
-FLOOR_HGT_155 = _world.GetObject(ObjectType.Skill,567);
-FLOOR_HGT_155_val = FLOOR_HGT_155.GetFloat(PropertyName.VAL);
-HIT_159 = _world.GetSynonymObject(704);
-temp_160 =HIT_159.GetFloat(202);
-MISSILE_146.SetFloat(169,(temp_153-FLOOR_HGT_155_val)/temp_160);
+MISSILE_149 = _world.GetSynonymObject(3680056099);
+MISSILE_151 = _world.GetSynonymObject(3680056099);
+temp_152 =MISSILE_151.GetFloat(169);
+HIT_155 = _world.GetSynonymObject(704);
+temp_156 =HIT_155.GetFloat(200);
+FLOOR_HGT_158 = _world.GetObject(ObjectType.Skill,567);
+FLOOR_HGT_158_val = FLOOR_HGT_158.GetFloat(PropertyName.VAL);
+HIT_162 = _world.GetSynonymObject(704);
+temp_163 =HIT_162.GetFloat(202);
+MISSILE_149.SetFloat(169,(temp_156-FLOOR_HGT_158_val)/temp_163);
 }
-MISSILE_163 = _world.GetSynonymObject(3680056099);
-temp_164 =MISSILE_163.GetFloat(169);
-if (temp_164 < 0f)
-{
 MISSILE_166 = _world.GetSynonymObject(3680056099);
-MISSILE_168 = _world.GetSynonymObject(3680056099);
-temp_169 =MISSILE_168.GetFloat(169);
-MISSILE_172 = _world.GetSynonymObject(3680056099);
-temp_173 =MISSILE_172.GetFloat(169);
-MISSILE_166.SetFloat(169,-temp_173);
+temp_167 =MISSILE_166.GetFloat(169);
+if (temp_167 < 0f)
+{
+MISSILE_169 = _world.GetSynonymObject(3680056099);
+MISSILE_171 = _world.GetSynonymObject(3680056099);
+temp_172 =MISSILE_171.GetFloat(169);
+MISSILE_175 = _world.GetSynonymObject(3680056099);
+temp_176 =MISSILE_175.GetFloat(169);
+MISSILE_169.SetFloat(169,-temp_176);
 }
 goto CONTHIT;
 HITWALL:
-MISSILE_175 = _world.GetSynonymObject(3680056099);
-MISSILE_177 = _world.GetSynonymObject(3680056099);
-temp_178 =MISSILE_177.GetFloat(169);
-PLAYER_TILT_180 = _world.GetObject(ObjectType.Skill,435);
-PLAYER_TILT_180_val = PLAYER_TILT_180.GetFloat(PropertyName.VAL);
-MISSILE_175.SetFloat(169,-PLAYER_TILT_180_val/1.4f);
+MISSILE_178 = _world.GetSynonymObject(3680056099);
+MISSILE_180 = _world.GetSynonymObject(3680056099);
+temp_181 =MISSILE_180.GetFloat(169);
+PLAYER_TILT_183 = _world.GetObject(ObjectType.Skill,435);
+PLAYER_TILT_183_val = PLAYER_TILT_183.GetFloat(PropertyName.VAL);
+MISSILE_178.SetFloat(169,-PLAYER_TILT_183_val/1.4f);
 CONTHIT:
-PLAYER_LIGHT_184 = _world.GetObject(ObjectType.Skill,418);
-PLAYER_LIGHT_184_val = PLAYER_LIGHT_184.GetFloat(PropertyName.VAL);
-PLAYER_LIGHT_185 = _world.GetObject(ObjectType.Skill,418);
-PLAYER_LIGHT_185.SetFloat(231,PLAYER_LIGHT_184_val + -0.7f);
+PLAYER_LIGHT_187 = _world.GetObject(ObjectType.Skill,418);
+PLAYER_LIGHT_187_val = PLAYER_LIGHT_187.GetFloat(PropertyName.VAL);
+PLAYER_LIGHT_188 = _world.GetObject(ObjectType.Skill,418);
+PLAYER_LIGHT_188.SetFloat(231,PLAYER_LIGHT_187_val + -0.7f);
 
             startTime3 = Time.time;
             endTime3 = startTime3 + TimeUtils.TicksToTime((int)2f);
@@ -11642,14 +11686,14 @@ PLAYER_LIGHT_185.SetFloat(231,PLAYER_LIGHT_184_val + -0.7f);
             }
             Current = null;
         
-MISS2TEX_187 = _world.AcknexObject.GetAcknexObject(1181917228);
-MISSILE_189 = _world.GetSynonymObject(3680056099);
-temp_190 =MISSILE_189?.GetAcknexObject(164);
-if (CheckEquals(temp_190 , MISS2TEX_187))
+MISS2TEX_190 = _world.AcknexObject.GetAcknexObject(1181917228);
+MISSILE_192 = _world.GetSynonymObject(3680056099);
+temp_193 =MISSILE_192?.GetAcknexObject(164);
+if (CheckEquals(temp_193 , MISS2TEX_190))
 {
-MISS1TEX_191 = _world.AcknexObject.GetAcknexObject(1181881291);
-MISSILE_193 = _world.GetSynonymObject(3680056099);
-MISSILE_193.SetAcknexObject(164,MISS1TEX_191);
+MISS1TEX_194 = _world.AcknexObject.GetAcknexObject(1181881291);
+MISSILE_196 = _world.GetSynonymObject(3680056099);
+MISSILE_196.SetAcknexObject(164,MISS1TEX_194);
 }
 
             startTime4 = Time.time;
@@ -11664,8 +11708,8 @@ MISSILE_193.SetAcknexObject(164,MISS1TEX_191);
             Current = null;
         
 //Unknown keyword: LOCATE
-STNG01OVL_195 = _world.AcknexObject.GetAcknexObject(1500292443);
-_world.AcknexObject.SetAcknexObject(158,STNG01OVL_195);
+STNG01OVL_198 = _world.AcknexObject.GetAcknexObject(1500292443);
+_world.AcknexObject.SetAcknexObject(158,STNG01OVL_198);
 
             startTime5 = Time.time;
             endTime5 = startTime5 + TimeUtils.TicksToTime((int)2f);
@@ -11678,24 +11722,24 @@ _world.AcknexObject.SetAcknexObject(158,STNG01OVL_195);
             }
             Current = null;
         
-STNG00OVL_199 = _world.AcknexObject.GetAcknexObject(1500256506);
-_world.AcknexObject.SetAcknexObject(158,STNG00OVL_199);
+STNG00OVL_202 = _world.AcknexObject.GetAcknexObject(1500256506);
+_world.AcknexObject.SetAcknexObject(158,STNG00OVL_202);
 goto CONT;
 NOAMMO:
-WRN02STR_202 = _world.AcknexObject.GetAcknexObject(665709727);
-PANELTEXT_204 = _world.AcknexObject.GetAcknexObject(1886906754);
-PANELTEXT_204_array = PANELTEXT_204.GetObject<List<IAcknexObject>>(293);
-PANELTEXT_204_index = PANELTEXT_204.GetInteger(PropertyName.INDEX);
-PANELTEXT_204_array[PANELTEXT_204_index-1] = WRN02STR_202;
-PANELTEXT_204.IsDirty = true;
-PANELTEXT_205 = _world.AcknexObject.GetAcknexObject(1886906754);
-_world.AcknexObject.SetAcknexObject(127,PANELTEXT_205);
-MSGSECCOUNT_209 = _world.GetObject(ObjectType.Skill,2688150552);
-MSGSECCOUNT_209.SetFloat(231,0f);
-STNG03SND_210 = _world.AcknexObject.GetAcknexObject(1500368401);
-_world.PlaySound(STNG03SND_210,1f, null);
-GUN_ON_213 = _world.GetObject(ObjectType.Skill,3014382675);
-GUN_ON_213.SetFloat(231,0f);
+WRN02STR_205 = _world.AcknexObject.GetAcknexObject(665709727);
+PANELTEXT_207 = _world.AcknexObject.GetAcknexObject(1886906754);
+PANELTEXT_207_array = PANELTEXT_207.GetObject<List<IAcknexObject>>(293);
+PANELTEXT_207_index = PANELTEXT_207.GetInteger(PropertyName.INDEX);
+PANELTEXT_207_array[PANELTEXT_207_index-1] = WRN02STR_205;
+PANELTEXT_207.IsDirty = true;
+PANELTEXT_208 = _world.AcknexObject.GetAcknexObject(1886906754);
+_world.AcknexObject.SetAcknexObject(127,PANELTEXT_208);
+MSGSECCOUNT_212 = _world.GetObject(ObjectType.Skill,2688150552);
+MSGSECCOUNT_212.SetFloat(231,0f);
+STNG03SND_213 = _world.AcknexObject.GetAcknexObject(1500368401);
+_world.PlaySound(STNG03SND_213,1f, null);
+GUN_ON_216 = _world.GetObject(ObjectType.Skill,3014382675);
+GUN_ON_216.SetFloat(231,0f);
 
             startTime6 = Time.time;
             endTime6 = startTime6 + TimeUtils.TicksToTime((int)2f);
@@ -11708,22 +11752,22 @@ GUN_ON_213.SetFloat(231,0f);
             }
             Current = null;
         
-STNG00OVL_215 = _world.AcknexObject.GetAcknexObject(1500256506);
-_world.AcknexObject.SetAcknexObject(158,STNG00OVL_215);
+STNG00OVL_218 = _world.AcknexObject.GetAcknexObject(1500256506);
+_world.AcknexObject.SetAcknexObject(158,STNG00OVL_218);
 CONT:
-WEAPONSEL_219 = _world.GetObject(ObjectType.Skill,2181903739);
-WEAPONSEL_219_val = WEAPONSEL_219.GetFloat(PropertyName.VAL);
-if (!CheckEquals(WEAPONSEL_219_val , 4f))
+WEAPONSEL_222 = _world.GetObject(ObjectType.Skill,2181903739);
+WEAPONSEL_222_val = WEAPONSEL_222.GetFloat(PropertyName.VAL);
+if (!CheckEquals(WEAPONSEL_222_val , 4f))
 {
 goto FINISH;
 }
-LAUNCH_220 = _world.AcknexObject.GetAcknexObject(3186573864);
-_world.AcknexObject.SetAcknexObject(78,LAUNCH_220);
-LAUNCH_222 = _world.AcknexObject.GetAcknexObject(3186573864);
-_world.AcknexObject.SetAcknexObject(97,LAUNCH_222);
+LAUNCH_223 = _world.AcknexObject.GetAcknexObject(3186573864);
+_world.AcknexObject.SetAcknexObject(78,LAUNCH_223);
+LAUNCH_225 = _world.AcknexObject.GetAcknexObject(3186573864);
+_world.AcknexObject.SetAcknexObject(97,LAUNCH_225);
 FINISH:
-GUNFIRING_225 = _world.GetObject(ObjectType.Skill,3478808598);
-GUNFIRING_225.SetFloat(231,0f);
+GUNFIRING_228 = _world.GetObject(ObjectType.Skill,3478808598);
+GUNFIRING_228.SetFloat(231,0f);
 //Unknown keyword: 
       return false;
   }
@@ -11808,73 +11852,75 @@ IAcknexObject MISSILE_113;
 IAcknexObject MISSILE_116;
 IAcknexObject MISSILE_119;
 IAcknexObject MISSILE_122;
-IAcknexObject SHOOT_SECTOR_124;
-IAcknexObject SHOOT_RANGE_126;
-IAcknexObject SHOOT_FAC_128;
-IAcknexObject SHOOT_X_130;
-IAcknexObject SVANGLE_131;
-float SVANGLE_131_val;
-IAcknexObject SHOOT_Y_132;
-IAcknexObject HIT_DIST_134;
-float HIT_DIST_134_val;
-IAcknexObject HIT_135;
-IAcknexObject HIT_139;
-float temp_140;
-IAcknexObject HIT_143;
-float temp_144;
-IAcknexObject MISSILE_146;
-IAcknexObject MISSILE_148;
-float temp_149;
-IAcknexObject HIT_152;
-float temp_153;
-IAcknexObject FLOOR_HGT_155;
-float FLOOR_HGT_155_val;
-IAcknexObject HIT_159;
-float temp_160;
-IAcknexObject MISSILE_163;
-float temp_164;
+IAcknexObject BIPO_123;
+IAcknexObject MISSILE_125;
+IAcknexObject SHOOT_SECTOR_127;
+IAcknexObject SHOOT_RANGE_129;
+IAcknexObject SHOOT_FAC_131;
+IAcknexObject SHOOT_X_133;
+IAcknexObject SVANGLE_134;
+float SVANGLE_134_val;
+IAcknexObject SHOOT_Y_135;
+IAcknexObject HIT_DIST_137;
+float HIT_DIST_137_val;
+IAcknexObject HIT_138;
+IAcknexObject HIT_142;
+float temp_143;
+IAcknexObject HIT_146;
+float temp_147;
+IAcknexObject MISSILE_149;
+IAcknexObject MISSILE_151;
+float temp_152;
+IAcknexObject HIT_155;
+float temp_156;
+IAcknexObject FLOOR_HGT_158;
+float FLOOR_HGT_158_val;
+IAcknexObject HIT_162;
+float temp_163;
 IAcknexObject MISSILE_166;
-IAcknexObject MISSILE_168;
-float temp_169;
-IAcknexObject MISSILE_172;
-float temp_173;
+float temp_167;
+IAcknexObject MISSILE_169;
+IAcknexObject MISSILE_171;
+float temp_172;
 IAcknexObject MISSILE_175;
-IAcknexObject MISSILE_177;
-float temp_178;
-IAcknexObject PLAYER_TILT_180;
-float PLAYER_TILT_180_val;
-IAcknexObject PLAYER_LIGHT_184;
-float PLAYER_LIGHT_184_val;
-IAcknexObject PLAYER_LIGHT_185;
+float temp_176;
+IAcknexObject MISSILE_178;
+IAcknexObject MISSILE_180;
+float temp_181;
+IAcknexObject PLAYER_TILT_183;
+float PLAYER_TILT_183_val;
+IAcknexObject PLAYER_LIGHT_187;
+float PLAYER_LIGHT_187_val;
+IAcknexObject PLAYER_LIGHT_188;
 float startTime3;
 float endTime3;
-IAcknexObject MISS2TEX_187;
-IAcknexObject MISSILE_189;
-IAcknexObject temp_190;
-IAcknexObject MISS1TEX_191;
-IAcknexObject MISSILE_193;
+IAcknexObject MISS2TEX_190;
+IAcknexObject MISSILE_192;
+IAcknexObject temp_193;
+IAcknexObject MISS1TEX_194;
+IAcknexObject MISSILE_196;
 float startTime4;
 float endTime4;
-IAcknexObject STNG01OVL_195;
+IAcknexObject STNG01OVL_198;
 float startTime5;
 float endTime5;
-IAcknexObject STNG00OVL_199;
-IAcknexObject WRN02STR_202;
-IAcknexObject PANELTEXT_204;
-List<IAcknexObject> PANELTEXT_204_array;
-int PANELTEXT_204_index;
-IAcknexObject PANELTEXT_205;
-IAcknexObject MSGSECCOUNT_209;
-IAcknexObject STNG03SND_210;
-IAcknexObject GUN_ON_213;
+IAcknexObject STNG00OVL_202;
+IAcknexObject WRN02STR_205;
+IAcknexObject PANELTEXT_207;
+List<IAcknexObject> PANELTEXT_207_array;
+int PANELTEXT_207_index;
+IAcknexObject PANELTEXT_208;
+IAcknexObject MSGSECCOUNT_212;
+IAcknexObject STNG03SND_213;
+IAcknexObject GUN_ON_216;
 float startTime6;
 float endTime6;
-IAcknexObject STNG00OVL_215;
-IAcknexObject WEAPONSEL_219;
-float WEAPONSEL_219_val;
-IAcknexObject LAUNCH_220;
-IAcknexObject LAUNCH_222;
-IAcknexObject GUNFIRING_225;
+IAcknexObject STNG00OVL_218;
+IAcknexObject WEAPONSEL_222;
+float WEAPONSEL_222_val;
+IAcknexObject LAUNCH_223;
+IAcknexObject LAUNCH_225;
+IAcknexObject GUNFIRING_228;
 }
 public class BEAM : ICompiledAction {
   private int _cursor;

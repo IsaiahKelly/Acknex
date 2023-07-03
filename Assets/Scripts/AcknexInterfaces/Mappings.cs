@@ -18,7 +18,7 @@ namespace Acknex.Interfaces
             {
                 return objectProperty;
             }
-            Debug.LogWarning("Unknown property type: " + name);
+           // Debug.LogWarning("Unknown property type: " + name);
             return  PropertyName.UNKNOWN;
         }
 
@@ -29,7 +29,7 @@ namespace Acknex.Interfaces
             {
                 return skillName;
             }
-            Debug.LogWarning("Unknown skill: " + name);
+            //Debug.LogWarning("Unknown skill: " + name);
             return SkillName.UNKNOWN;
         }
 
@@ -40,7 +40,7 @@ namespace Acknex.Interfaces
             {
                 return synonymName;
             }
-            Debug.LogWarning("Unknown synonym: " + name);
+            //Debug.LogWarning("Unknown synonym: " + name);
             return SynonymName.UNKNOWN;
         }
     }

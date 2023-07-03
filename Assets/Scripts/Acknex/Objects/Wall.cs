@@ -221,6 +221,8 @@ namespace Acknex
             _vertexTriggerA = _vertexGameObjectA.AddComponent<SphereCollider>();
             _vertexTriggerA.isTrigger = true;
             _collisionCallbackA = _vertexGameObjectA.AddComponent<CollisionCallback>();
+            _collisionCallbackA.OnCollisionEnterCallback += OnWallColliderEnter;
+            _collisionCallbackA.OnCollisionExitCallback += OnWallColliderExit;
             _collisionCallbackA.OnTriggerEnterCallback += OnWallTriggerEnter;
             _collisionCallbackA.OnTriggerExitCallback += OnWallTriggerExit;
             _vertexGameObjectB = new GameObject("VertexB");
@@ -229,6 +231,8 @@ namespace Acknex
             _vertexTriggerB = _vertexGameObjectB.AddComponent<SphereCollider>();
             _vertexTriggerB.isTrigger = true;
             _collisionCallbackB = _vertexGameObjectB.AddComponent<CollisionCallback>();
+            _collisionCallbackB.OnCollisionEnterCallback += OnWallColliderEnter;
+            _collisionCallbackB.OnCollisionExitCallback += OnWallColliderExit;
             _collisionCallbackB.OnTriggerEnterCallback += OnWallTriggerEnter;
             _collisionCallbackB.OnTriggerExitCallback += OnWallTriggerExit;
             _audioSourceGameObject = new GameObject("AudioSource");
@@ -401,6 +405,25 @@ namespace Acknex
 #endif
         }
 
+
+        private void OnWallColliderExit(Collision collision)
+        {
+
+        }
+
+        private void OnWallColliderEnter(Collision collision)
+        {
+            ProcessCollision(collision.transform);
+        }
+
+        public void ProcessCollision(Transform collisionTransform)
+        {
+            if (AcknexObject.GetFloat(PropertyName.DIST) <= 0f && collisionTransform.TryGetComponent<Player>(out var player))
+            {
+                World.Instance.TriggerEvent(PropertyName.IF_NEAR, AcknexObject, player.AcknexObject, player.GetRegion());
+            }
+        }
+
         private void OnWallTriggerEnter(Collider collider)
         {
             if (_triggered)
@@ -408,7 +431,7 @@ namespace Acknex
                 return;
             }
             _triggered = true;
-            if (collider.TryGetComponent<Player>(out var player))
+            if (AcknexObject.GetFloat(PropertyName.DIST) > 0f && collider.TryGetComponent<Player>(out var player))
             {
                 World.Instance.TriggerEvent(PropertyName.IF_NEAR, AcknexObject, player.AcknexObject, player.GetRegion());
             }

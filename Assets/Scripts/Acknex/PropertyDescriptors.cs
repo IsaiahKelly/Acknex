@@ -458,7 +458,7 @@ namespace Acknex
             dictionary.Add(propertyName, propertyType);
         }
 
-        public PropertyType GetPropertyType(ObjectType objectType, PropertyName propertyName)
+        public PropertyType GetPropertyType(ObjectType objectType, PropertyName propertyName, string filename = null, int line = 0)
         {
             if (PropertyDescriptors.TryGetValue(objectType, out var dictionary))
             {
@@ -467,7 +467,7 @@ namespace Acknex
                     return propertyType;
                 }
             }
-            Debug.LogWarning($"<color=#FFFF00>Uknown property type: [{objectType}.{propertyName}]</color>");
+            Debug.LogWarning($"<color=#FFFF00>Uknown property type: [{objectType}.{propertyName} at {filename}:{line}]</color>");
             return PropertyType.Unknown;
         }
     }

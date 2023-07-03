@@ -32,6 +32,7 @@
         struct Input
         {
             float2 uv_MainTex;
+            float3 worldPos;
         };
 
         UNITY_INSTANCING_BUFFER_START(Props)

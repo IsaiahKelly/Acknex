@@ -18,8 +18,8 @@ TagManager:
   - Triggers
   - Sprites
   - Walls
-  - Regions
-  - NOT USED
+  - RegionFloor
+  - RegionCeil
   - 
   - 
   - 
