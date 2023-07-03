@@ -95,10 +95,6 @@ namespace Acknex
             while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length)
             {
                 var read = binaryReader.Read();
-                if ((char)read == '\n')
-                {
-                    binaryReader.LineCount++;
-                }
                 if (read == -1)
                 {
                     yield break;
