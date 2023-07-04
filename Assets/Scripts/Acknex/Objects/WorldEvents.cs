@@ -296,7 +296,6 @@ namespace Acknex
                 TriggerEventConditional(AcknexObject, PropertyName.IF_CAL, Input.GetKeyDown(KeyCode.Comma));
                 TriggerEventConditional(AcknexObject, PropertyName.IF_CAR, Input.GetKeyDown(KeyCode.Period));
                 TriggerEventConditional(AcknexObject, PropertyName.IF_CTRL, Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl));
-                //TriggerEventConditional(AcknexObject, "IF_DEL,Input.GetKeyDown(KeyCode.Delete));
                 TriggerEventConditional(AcknexObject, PropertyName.IF_END, Input.GetKeyDown(KeyCode.End));
                 TriggerEventConditional(AcknexObject, PropertyName.IF_ENTER, Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return));
                 TriggerEventConditional(AcknexObject, PropertyName.IF_ESC, Input.GetKeyDown(KeyCode.Escape));

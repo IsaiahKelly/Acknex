@@ -10,6 +10,7 @@ using UnityEngine;
 using Utils;
 using PropertyName = Acknex.Interfaces.PropertyName;
 using Resolution = Acknex.Interfaces.Resolution;
+using UnityEngine.EventSystems;
 
 namespace Acknex
 {
@@ -263,7 +264,6 @@ namespace Acknex
         public void Explode(IAcknexObject acknexObject, IAcknexObject MY, IAcknexObject THERE)
         {
             var origin = acknexObject.Container.GetCenter();
-            //todo: shootSector
             var shootFac = GetSkillValue(SkillName.SHOOT_FAC);
             var shootRange = GetSkillValue(SkillName.SHOOT_RANGE);
             var minDist = Mathf.Infinity;
@@ -291,7 +291,7 @@ namespace Acknex
             DebugExtension.DebugWireSphere(origin, Color.black, shootRange);
 #endif
             Array.Clear(_overlapResults, 0, MaxHits);
-            var hitCount = Physics.OverlapSphereNonAlloc(origin, shootRange, _overlapResults, WallsWaterRegionsAndThings);
+            var hitCount = Physics.OverlapSphereNonAlloc(origin, shootRange, _overlapResults, WallsWaterPlayerRegionsAndThings);
             for (var i = 0; i < hitCount; i++)
             {
                 var overlapResult = _overlapResults[i];
@@ -699,21 +699,39 @@ namespace Acknex
             {
                 ray = new Ray(View.Instance.ViewCamera.transform.position, (acknexObject.Container.GetCenter() - View.Instance.ViewCamera.transform.position).normalized);
             }
-            //todo: shootSector
             var shootFac = GetSkillValue(SkillName.SHOOT_FAC);
             var shootRange = GetSkillValue(SkillName.SHOOT_RANGE);
-
+            var shootSector = GetSkillValue(SkillName.SHOOT_SECTOR);
             void HandleHit(RaycastHit raycastResult, IAcknexObject hitAcknexObject)
             {
                 if (acknexObject != null && hitAcknexObject != acknexObject)
                 {
                     return;
                 }
+                if (acknexObject != null && acknexObject.Container is Thing thing)
+                {
+                    var rayDir2D = -ray.direction;
+                    rayDir2D.y = 0f;
+                    var thingRotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(acknexObject.GetFloat(PropertyName.ANGLE)), 0f);
+                    var thingForward = thingRotation * Vector3.forward;
+                    var angle = Vector3.SignedAngle(rayDir2D, thingForward, Vector3.up);
+                    //var a = thingRotation * Quaternion.Euler(0f, shootSector * 0.5f * Mathf.Rad2Deg, 0f) * Vector3.forward * 10f;
+                    //var b = thingRotation * Quaternion.Euler(0f, -shootSector * 0.5f * Mathf.Rad2Deg, 0f) * Vector3.forward * 10f;
+                    //DebugExtension.DebugArrow(thing.GetCenter(), a, Color.blue, 10f);
+                    //DebugExtension.DebugArrow(thing.GetCenter(), b, Color.blue, 10f);
+                    if (Mathf.Abs(angle) > shootSector * 0.5f * Mathf.Rad2Deg)
+                    {
+                        //DebugExtension.DebugArrow(thing.GetCenter(), rayDir2D * 10f , Color.red, 10f);
+                        return;
+                    }
+                    //DebugExtension.DebugArrow(thing.GetCenter(), rayDir2D  *10f, Color.green, 10f);
+                }
                 var distance = acknexObject != null ? Vector3.Distance(acknexObject.Container.GetCenter(), ray.origin) : raycastResult.distance;
                 UpdateSkillValue(SkillName.HIT_DIST, distance);
                 UpdateSkillValue(SkillName.RESULT, shootFac * (1.0f - distance / shootRange));
                 UpdateSkillValue(SkillName.SHOOT_ANGLE, AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(raycastResult.point), AngleUtils.To2D(ray.origin))));
                 SetSynonymObject(SynonymName.HIT, hitAcknexObject);
+                //Debug.DrawLine(ray.origin, raycastResult.point, Color.green, 5f);
                 if (acknexObject == null)
                 {
                     TriggerEvent(PropertyName.IF_HIT, hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
@@ -736,7 +754,7 @@ namespace Acknex
                 DebugExtension.DebugPoint(raycastResult.point, color, 1f, 1f);
 #endif
             }
-
+            //DebugExtension.DebugArrow(ray.origin, ray.direction * 10f, Color.red, 5f);
             UpdateSkillValue(SkillName.HIT_DIST, 0f);
             UpdateSkillValue(SkillName.RESULT, 0f);
             UpdateSkillValue(SkillName.SHOOT_ANGLE, 0f);
@@ -755,7 +773,7 @@ namespace Acknex
                 {
                     if (raycastResult.transform.parent.TryGetComponent<Wall>(out var wall))
                     {
-                        if (wall.AcknexObject.HasFlag(PropertyName.IMMATERIAL))
+                        if (wall.AcknexObject != acknexObject && wall.AcknexObject.HasFlag(PropertyName.IMMATERIAL))
                         {
                             continue;
                         }
@@ -764,7 +782,7 @@ namespace Acknex
                     }
                     if (raycastResult.transform.parent.TryGetComponent<Region>(out var region))
                     {
-                        if (region.AcknexObject.HasFlag(PropertyName.IMMATERIAL))
+                        if (region.AcknexObject != acknexObject && region.AcknexObject.HasFlag(PropertyName.IMMATERIAL))
                         {
                             continue;
                         }
@@ -773,7 +791,7 @@ namespace Acknex
                     }
                     if (raycastResult.transform.parent.TryGetComponent<Thing>(out var thing))
                     {
-                        if (thing.AcknexObject.HasFlag(PropertyName.IMMATERIAL))
+                        if (thing.AcknexObject != acknexObject && thing.AcknexObject.HasFlag(PropertyName.IMMATERIAL))
                         {
                             continue;
                         }

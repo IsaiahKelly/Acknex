@@ -80,7 +80,7 @@ namespace Acknex
         public Texture2D NullTexture;
         public bool OldAckVersion;
         public RegionWalls RegionWalls;
-        public float TestTimeScale = 1f;
+        public float TimeScale = 100f;
         public bool UsePalettes;
         public bool UseWDLEngine;
         public float Volume = 1f;
@@ -108,6 +108,9 @@ namespace Acknex
         public LayerMask WallsWaterAndRegions;
         public LayerMask WallsWaterRegionsAndSprites;
         public LayerMask WallsWaterRegionsAndThings;
+        public LayerMask WallsWaterPlayerRegionsAndThings;
+        public LayerMask PlayerMask;
+        public LayerMask ThingsAndActorsMask;
 
         public string WRSPath;
         public string WDLPath;

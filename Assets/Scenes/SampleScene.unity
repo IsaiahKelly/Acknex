@@ -978,6 +978,15 @@ MonoBehaviour:
   WallsWaterRegionsAndThings:
     serializedVersion: 2
     m_Bits: 29200
+  WallsWaterPlayerRegionsAndThings:
+    serializedVersion: 2
+    m_Bits: 29456
+  PlayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  ThingsAndActorsMask:
+    serializedVersion: 2
+    m_Bits: 512
   WRSPath: 
   WDLPath: C:\games\acknex\varginha2\CONTATO.WDL
 --- !u!114 &1246573633

@@ -82,7 +82,7 @@ namespace Acknex
             var possibleClimb = Mathf.Min(playerWidth, playerClimb);
             _characterController.height = Mathf.Max(0f, playerSize - possibleClimb);
             var playerMove = new Vector3(World.Instance.GetSkillValue(SkillName.PLAYER_VX), 0f, World.Instance.GetSkillValue(SkillName.PLAYER_VY)) * World.Instance.GetSkillValue(SkillName.TIME_CORR);
-            playerMove.y = World.Instance.GetSkillValue(SkillName.PLAYER_VZ) * Time.deltaTime * World.Instance.TestTimeScale;
+            playerMove.y = World.Instance.GetSkillValue(SkillName.PLAYER_VZ) * Time.deltaTime * World.Instance.TimeScale;
             var characterControllerCenter = _characterController.center;
             characterControllerCenter.y = _characterController.height * 0.5f + possibleClimb;
             _characterController.center = characterControllerCenter;

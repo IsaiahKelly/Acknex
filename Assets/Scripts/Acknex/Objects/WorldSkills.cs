@@ -310,7 +310,7 @@ namespace Acknex
                 UpdateSkillValue(SkillName.FORCE_AHEAD, Input.GetAxis("Vertical") * keySense);
                 UpdateSkillValue(SkillName.FORCE_STRAFE, -Input.GetAxis("Horizontal") * keySense);
                 UpdateSkillValue(SkillName.FORCE_ROT, mouseX * keySense);
-                UpdateSkillValue(SkillName.FORCE_TILT, (GetSkillValue(SkillName.FORCE_TILT) - (mouseY * MouseMultiplier * keySense)));
+                UpdateSkillValue(SkillName.FORCE_TILT, GetSkillValue(SkillName.FORCE_TILT) - mouseY * MouseMultiplier * keySense);
                 UpdateSkillValue(SkillName.FORCE_UP, (Input.GetButton("Jump") ? 1 : Input.GetButton("Crouch") ? -1 : 0) * keySense);
             }
             else

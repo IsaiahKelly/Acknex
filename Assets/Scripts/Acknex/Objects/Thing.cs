@@ -13,7 +13,7 @@ namespace Acknex
         private AudioSource _audioSource;
         private GameObject _centerGameObject;
         private CharacterController _characterController;
-        private CapsuleCollider _collider;
+        //private CapsuleCollider _collider;
         private GameObject _innerGameObject;
         private bool _lastGround;
         private IAcknexObject _lastTarget;
@@ -135,7 +135,7 @@ namespace Acknex
             _characterController.detectCollisions = false;
             _characterController.stepOffset = 0f;
             //_characterController.hasModifiableContacts = true;
-            _collider = gameObject.AddComponent<CapsuleCollider>();
+            //_collider = gameObject.AddComponent<CapsuleCollider>();
             //_collider.hasModifiableContacts = true;
             _spriteCollider = _innerGameObject.AddComponent<MeshCollider>();
             _spriteCollider.sharedMesh = _meshFilter.mesh;
@@ -280,7 +280,7 @@ namespace Acknex
             if (invisible)
             {
                 _meshRenderer.enabled = false;
-                _triggerCollider.enabled = _collider.enabled = _characterController.enabled = false;
+                _triggerCollider.enabled = /*_collider.enabled =*/ _characterController.enabled = false;
                 return;
             }
             _characterController.enabled = true;
@@ -291,26 +291,28 @@ namespace Acknex
             var actorClimb = World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB);
             var actorRadius = GetColliderRadius();
             var possibleClimb = Mathf.Min(actorRadius, actorClimb);
-            _collider.height = _characterController.height = _innerGameObject.transform.localScale.y - possibleClimb;
-            _collider.center = _characterController.center = new Vector3(0f, _characterController.height * 0.5f + possibleClimb, 0f);
-            _collider.radius = _characterController.radius = actorRadius;
+            /*_collider.height = */_characterController.height = _innerGameObject.transform.localScale.y - possibleClimb;
+            /*_collider.center = */_characterController.center = new Vector3(0f, _characterController.height * 0.5f + possibleClimb, 0f);
+            /*_collider.radius = */_characterController.radius = actorRadius;
             //var carefully = AcknexObject.HasFlag(PropertyName.CAREFULLY);
             //_characterController.includeLayers = carefully ? World.Instance.WallsWaterRegionsOffsetAndThings : default;
-            var target = AcknexObject.GetAcknexObject(PropertyName.TARGET);
             if (AcknexObject.HasFlag(PropertyName.PASSABLE))
             {
-                _spriteCollider.enabled = _collider.enabled = false;
-                if (target == null)
-                {
-                    _characterController.enabled = false;
-                }
+                //_spriteCollider.enabled = _collider.enabled = false;
+                _characterController.includeLayers = 0;
+                //if (target == null)
+                //{
+                //    _characterController.enabled = false;
+                //}
             }
             else
             {
-                _spriteCollider.enabled = _collider.enabled = _characterController.enabled = true;
+                _characterController.includeLayers = World.Instance.PlayerMask;
+                /*_spriteCollider.enabled = _collider.enabled = _characterController.enabled =true;*/
             }
-            _triggerCollider.center = _collider.center;
+            _triggerCollider.center = _characterController.center;
             _triggerCollider.radius = AcknexObject.GetFloat(PropertyName.DIST);
+            var target = AcknexObject.GetAcknexObject(PropertyName.TARGET);
             if (target != _lastTarget)
             {
                 _lastTarget = target;
@@ -702,7 +704,7 @@ namespace Acknex
             var angle = AcknexObject.GetFloat(PropertyName.ANGLE);
             var timeCorr = World.Instance.GetSkillValue(SkillName.TIME_CORR);
             var delta = new Vector3(MathUtils.Cos(angle), 0f, MathUtils.Sin(angle)) * speed * timeCorr;
-            delta.y = AcknexObject.GetFloat(PropertyName.VSPEED) * World.Instance.TestTimeScale * Time.deltaTime;
+            delta.y = AcknexObject.GetFloat(PropertyName.VSPEED) * World.Instance.TimeScale * Time.deltaTime;
             //if (AcknexObject.HasFlag(PropertyName.PASSABLE))
             //{
             //    transform.Translate(delta, Space.World);
@@ -774,7 +776,7 @@ namespace Acknex
             var timeCorr = World.Instance.GetSkillValue(SkillName.TIME_CORR);
             var newPos = Vector2.MoveTowards(pos, nextPoint, speed * timeCorr);
             var delta = new Vector3(newPos.x - pos.x, 0f, newPos.y - pos.y);
-            delta.y = AcknexObject.GetFloat(PropertyName.VSPEED) * World.Instance.TestTimeScale * Time.deltaTime;
+            delta.y = AcknexObject.GetFloat(PropertyName.VSPEED) * World.Instance.TimeScale * Time.deltaTime;
             var initialPosition = transform.position;
             if ( /*AcknexObject.HasFlag(PropertyName.PASSABLE) || */AcknexObject.GetAcknexObject(PropertyName.TARGET).Type == ObjectType.Way)
             {
