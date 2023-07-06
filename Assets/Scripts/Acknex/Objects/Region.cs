@@ -6,7 +6,6 @@ using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
-using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
 using NameId = System.UInt32;
 using PropertyName = Acknex.Interfaces.PropertyName;
 #if DEBUG_ENABLED
