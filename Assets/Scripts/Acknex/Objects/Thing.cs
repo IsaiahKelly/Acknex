@@ -647,7 +647,7 @@ namespace Acknex
             //}
             var spriteHeight = _innerGameObject.transform.localScale.y;
             var newRegionContainer = initial || AcknexObject.HasFlag(PropertyName.CAREFULLY)
-                ? Region.Locate(AcknexObject, regionContainer, 0f, thingX, thingY, ref thingZ, onCeil, checkHeight)
+                ? Region.Locate(AcknexObject, regionContainer, 0f, spriteHeight, thingX, thingY, ref thingZ, onCeil, checkHeight)
                 : regionContainer;
             if (onCeil)
             {

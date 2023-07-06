@@ -938,15 +938,14 @@ MonoBehaviour:
   CustomStateMachines: 1
   DebugCoroutines: 0
   DebugSkills: 0
-  DisableCompilation: 1
+  DisableCompilation: 0
   DisableMaterials: 0
   DrawShadows: 0
   MeshBatch: 0
   MidiPlayer: {fileID: 1246573634}
-  MouseMultiplier: 0.1
   NullTexture: {fileID: 2800000, guid: da40acbc9325ea9438512fe4fee1f7fc, type: 3}
   OldAckVersion: 0
-  TestTimeScale: 100
+  TimeScale: 100
   UsePalettes: 0
   UseWDLEngine: 0
   Volume: 1
@@ -987,6 +986,10 @@ MonoBehaviour:
   ThingsAndActorsMask:
     serializedVersion: 2
     m_Bits: 512
+  MouseHack: 0
+  MouseAcceleration: 0
+  MouseMultiplier: 0.1
+  MouseSmoothTime: 10
   WRSPath: 
   WDLPath: C:\games\acknex\varginha2\CONTATO.WDL
 --- !u!114 &1246573633

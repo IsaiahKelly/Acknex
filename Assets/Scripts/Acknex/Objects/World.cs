@@ -76,7 +76,6 @@ namespace Acknex
         public bool DrawShadows;
         public bool MeshBatch;
         public MidiPlayer MidiPlayer;
-        public float MouseMultiplier = 0.1f;
         public Texture2D NullTexture;
         public bool OldAckVersion;
         public RegionWalls RegionWalls;
@@ -111,6 +110,11 @@ namespace Acknex
         public LayerMask WallsWaterPlayerRegionsAndThings;
         public LayerMask PlayerMask;
         public LayerMask ThingsAndActorsMask;
+
+        public bool MouseHack = true;
+        public bool MouseAcceleration = true;
+        public float MouseMultiplier = 0.1f;
+        public float MouseSmoothTime = 5f;
 
         public string WRSPath;
         public string WDLPath;
@@ -244,17 +248,9 @@ namespace Acknex
             _contouredRegions = new ContouredRegions();
             ContourVertices = new List<ContourVertex>();
             RegionWalls = new RegionWalls();
-            //if (UseWDLEngine)
-            //{
-            //    var engine = new ScriptingEngine(this);
-            //    engine.ParseWdl(WDLPath);
-            //}
-            //else
-            {
-                var baseDir = PathUtils.GetFileDirectory(WDLPath);
-                _textParser = new TextParser(this, baseDir, OldAckVersion);
-                _textParser.ParseInitialWDL(WDLPath);
-            }
+            var baseDir = PathUtils.GetFileDirectory(WDLPath);
+            _textParser = new TextParser(this, baseDir, OldAckVersion);
+            _textParser.ParseInitialWDL(WDLPath);
             if (!BilinearFilter)
             {
                 foreach (var texture in TextureCache.Values)

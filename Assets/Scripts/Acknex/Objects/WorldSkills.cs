@@ -10,6 +10,9 @@ namespace Acknex
     public partial class World
     {
         private Vector3 _lastMousePosition;
+        private float _targetPlayerAngle;
+        private float _targetPlayerTilt;
+        private bool _started;
 
         private void CreateDefaultSkills()
         {
@@ -309,9 +312,38 @@ namespace Acknex
                 var keySense = GetSkillValue(SkillName.KEY_SENSE);
                 UpdateSkillValue(SkillName.FORCE_AHEAD, Input.GetAxis("Vertical") * keySense);
                 UpdateSkillValue(SkillName.FORCE_STRAFE, -Input.GetAxis("Horizontal") * keySense);
-                UpdateSkillValue(SkillName.FORCE_ROT, mouseX * keySense);
-                UpdateSkillValue(SkillName.FORCE_TILT, GetSkillValue(SkillName.FORCE_TILT) - mouseY * MouseMultiplier * keySense);
                 UpdateSkillValue(SkillName.FORCE_UP, (Input.GetButton("Jump") ? 1 : Input.GetButton("Crouch") ? -1 : 0) * keySense);
+                if (MouseHack)
+                {
+                    UpdateSkillValue(SkillName.FORCE_ROT, 0f);
+                    UpdateSkillValue(SkillName.FORCE_TILT, 0f);
+                    var playerAngle = GetSkillValue(SkillName.PLAYER_ANGLE);
+                    var playerTilt = GetSkillValue(SkillName.PLAYER_TILT);
+                    if (MouseHack && !_started)
+                    {
+                        _targetPlayerAngle = playerAngle;
+                        _targetPlayerTilt = playerTilt;
+                        _started = true;
+                    }
+                    if (MouseAcceleration)
+                    {
+                        var tiltSkill = GetObject(ObjectType.Skill, (uint)SkillName.PLAYER_TILT);
+                        _targetPlayerAngle = Mathf.LerpAngle(_targetPlayerAngle, _targetPlayerAngle + mouseX * MouseMultiplier * keySense, 1f);
+                        _targetPlayerTilt = Mathf.Clamp(_targetPlayerTilt - mouseY * MouseMultiplier * keySense, tiltSkill.GetFloat(PropertyName.MIN), tiltSkill.GetFloat(PropertyName.MAX));
+                        UpdateSkillValue(SkillName.PLAYER_ANGLE, Mathf.Lerp(playerAngle, _targetPlayerAngle, Time.deltaTime * MouseSmoothTime));
+                        UpdateSkillValue(SkillName.PLAYER_TILT, Mathf.Lerp(playerTilt, _targetPlayerTilt, Time.deltaTime * MouseSmoothTime));
+                    }
+                    else
+                    {
+                        UpdateSkillValue(SkillName.PLAYER_ANGLE, playerAngle + mouseX * MouseMultiplier * keySense);
+                        UpdateSkillValue(SkillName.PLAYER_TILT, playerTilt - mouseY * MouseMultiplier * keySense);
+                    }
+                }
+                else
+                {
+                    UpdateSkillValue(SkillName.FORCE_ROT, mouseX * keySense);
+                    UpdateSkillValue(SkillName.FORCE_TILT, GetSkillValue(SkillName.FORCE_TILT) - mouseY * MouseMultiplier * keySense);
+                }
             }
             else
             {
@@ -401,7 +433,7 @@ namespace Acknex
             UpdateSkillValue(SkillName.KEY_SHIFT, Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
             UpdateSkillValue(SkillName.KEY_APO, Input.GetKey(KeyCode.Quote));
             UpdateSkillValue(SkillName.KEY_MINUS, Input.GetKey(KeyCode.Minus) || Input.GetKey(KeyCode.KeypadMinus));
-            UpdateSkillValue(SkillName.KEY_PLUS, Input.GetKey(KeyCode.Plus) || Input.GetKey(KeyCode.KeypadPlus));
+            UpdateSkillValue(SkillName.KEY_PLUS, Input.GetKey(KeyCode.Plus) || Input.GetKey(KeyCode.KeypadPlus));      
         }
 
         public void UpdateSkillValue(SkillName name, bool value)

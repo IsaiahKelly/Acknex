@@ -560,10 +560,10 @@ namespace Acknex
                                         MethodBodyStringBuilder.Append("if (!CheckEquals(").Append(lhs.property).Append(" , ").Append(rhs.property).AppendLine("))");
                                         break;
                                     case "IF_BELOW":
-                                        MethodBodyStringBuilder.Append("if (").Append(lhs.property).Append(" < ").Append(rhs.property).AppendLine(")");
+                                        MethodBodyStringBuilder.Append("if (MathUtils.CheckLower(").Append(lhs.property).Append(" , ").Append(rhs.property).AppendLine("))");
                                         break;
                                     default:
-                                        MethodBodyStringBuilder.Append("if (").Append(lhs.property).Append(" > ").Append(rhs.property).AppendLine(")");
+                                        MethodBodyStringBuilder.Append("if (MathUtils.CheckGreater(").Append(lhs.property).Append(" , ").Append(rhs.property).AppendLine("))");
                                         break;
                                 }
                                 MethodBodyStringBuilder.AppendLine("{");

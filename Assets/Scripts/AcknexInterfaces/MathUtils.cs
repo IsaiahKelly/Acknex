@@ -5,36 +5,48 @@ namespace Acknex.Interfaces
 {
     public static class MathUtils
     {
+        private const float PrecisionTreshold = 0.05f;
+
+        public static bool CheckEquals(float a, float b)
+        {
+            return Mathf.Abs(a - b) <= PrecisionTreshold;
+        }
+
+        public static bool CheckLower(float a, float b)
+        {
+            return a < b;
+            //return a < b + PrecisionTreshold;
+        }
+
+        public static bool CheckGreater(float a, float b)
+        {
+            return a > b;
+            //return a + PrecisionTreshold > b;
+        }
+
         public static float Atan2(Vector2 dir)
         {
             return (Mathf.Atan2(dir.y, dir.x) - Mathf.PI * 0.5f) * -1f;
-            //return Mathf.Atan2(dir.x, dir.y);
         }
 
         public static float Sin(float radians)
         {
-            return Mathf.Sin(radians*-1f);
-            //return -Mathf.Cos(radians); //VRDEMO, SKAPH
-            //return -Mathf.Sin(radians); //VARGINHA
+            return Mathf.Sin(radians * -1f);
         }
 
         public static float Cos(float radians)
         {
-            return Mathf.Cos(radians*-1f);
-            //return -Mathf.Sin(radians);  //VRDEMO, SKAPH
-            //return Mathf.Cos(radians);  //VARGINHA
+            return Mathf.Cos(radians * -1f);
         }
 
         public static float Acos(float radians)
         {
             return Mathf.Acos(radians * -1f);
-            //return -Mathf.Acos(radians);
         }
 
         public static float Asin(float radians)
         {
             return Mathf.Asin(radians * -1f);
-            //return -Mathf.Asin(value);
         }
 
         public static float Log(float value)
@@ -76,6 +88,5 @@ namespace Acknex.Interfaces
         {
             return Mathf.Abs(value);
         }
-
     }
 }

@@ -6,6 +6,7 @@ using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
 using NameId = System.UInt32;
 using PropertyName = Acknex.Interfaces.PropertyName;
 #if DEBUG_ENABLED
@@ -326,8 +327,8 @@ namespace Acknex
             {
                 _floorMeshRenderer.enabled = false;
                 _ceilMeshRenderer.enabled = false;
-                _invertedFloorCollider.enabled = _floorCollider.enabled = false;
-                _invertedCeilCollider.enabled = _ceilCollider.enabled = false;
+                /*_invertedFloorCollider.enabled =*/ _floorCollider.enabled = false;
+                /*_invertedCeilCollider.enabled =*/  _ceilCollider.enabled = false;
                 return;
             }
             if (AckTransform.Degrees != 0f)
@@ -352,8 +353,8 @@ namespace Acknex
             }
             _floorMeshRenderer.enabled = !DisableFloorRender;
             _ceilMeshRenderer.enabled = !DisableCeilRender;
-            _invertedFloorCollider.enabled = _floorCollider.enabled = true;
-            _invertedCeilCollider.enabled =  _ceilCollider.enabled = true;
+            /*_invertedFloorCollider.enabled =*/ _floorCollider.enabled = true;
+            /*_invertedCeilCollider.enabled = */ _ceilCollider.enabled = true;
             _floorMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
             _ceilMeshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
             _floorCollider.gameObject.layer = IsWater ? World.Instance.WaterLayer.LayerIndex : World.Instance.RegionFloorLayer.LayerIndex;
@@ -661,8 +662,13 @@ namespace Acknex
             return position;
         }
 
-        public static Region Locate(IAcknexObject acknexObject, Region currentRegion, float radius, float thingX, float thingY, ref float thingHgt, bool onCeil = false, float? height = null)
+        public static Region Locate(IAcknexObject acknexObject, Region currentRegion, float width, float size, float thingX, float thingY, ref float thingHgt, bool onCeil = false, float? height = null)
         {
+            bool CyllinderCast(Ray ray, out RaycastHit raycastHit, float maxDistance, LayerMask layerMask)
+            {
+                return Physics.BoxCast(ray.origin + new Vector3(0f, 0.1f, 0f), new Vector3(width, 0.1f, width), ray.direction, out raycastHit, Quaternion.identity, maxDistance, layerMask);
+            }
+
             bool GetValue(RaycastHit raycastHit, ref float outThingZ, out Region outRegion)
             {
                 if (raycastHit.transform.parent != null && raycastHit.transform.parent.TryGetComponent(out outRegion))
@@ -679,7 +685,10 @@ namespace Acknex
                 var zCheck = height ?? currentRegion.AcknexObject.GetFloat(PropertyName.FLOOR_HGT);
                 var point = new Vector3(thingX, zCheck, thingY);
                 RaycastHit raycastHit;
-                if ((radius == 0f && Physics.Raycast(new Ray(point, Vector3.up), out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions)) || Physics.SphereCast(new Ray(point, Vector3.up), radius, out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
+                if ((
+                        width == 0f && Physics.Raycast(new Ray(point, Vector3.up), out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions)) ||
+                        width != 0f && CyllinderCast(new Ray(point, Vector3.up), out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))    
+                //Physics.SphereCast(new Ray(point, Vector3.up), radius, out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, ref thingHgt, out var outRegion))
                     {
@@ -694,7 +703,10 @@ namespace Acknex
             {
                 var zCheck = height ?? currentRegion.AcknexObject.GetFloat(PropertyName.CEIL_HGT);
                 var point = new Vector3(thingX, zCheck, thingY);
-                if ((radius == 0f && Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions)) || Physics.SphereCast(new Ray(point, Vector3.down), radius, out  raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
+                if ((
+                        width == 0f && Physics.Raycast(new Ray(point, Vector3.down), out var raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions)) ||
+                        width != 0f && CyllinderCast(new Ray(point, Vector3.down), out raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))    
+                //Physics.SphereCast(new Ray(point, Vector3.down), radius, out  raycastHit, Mathf.Infinity, World.Instance.WallsWaterAndRegions))
                 {
                     if (GetValue(raycastHit, ref thingHgt, out var outRegion))
                     {

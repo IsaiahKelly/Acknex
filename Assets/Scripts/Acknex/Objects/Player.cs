@@ -17,10 +17,17 @@ namespace Acknex
             return AcknexObject.ToString();
         }
 
+        public bool CyllinderCast(Ray ray, out RaycastHit raycastHit, float maxDistance, LayerMask layerMask)
+        {
+            return Physics.BoxCast(ray.origin + new Vector3(0f, 0.1f, 0f), new Vector3(_characterController.radius, 0.1f, _characterController.radius), ray.direction, out raycastHit, Quaternion.identity, maxDistance, layerMask);
+            //_cyllinderCollider.includeLayers = layerMask;
+            //return _cyllinderRigidbody.SweepTest(ray.direction, out raycastHit, maxDistance);
+        }
+
         private CharacterController _characterController;
         private bool _soundTriggered;
         private float _walkTime;
-        private float _waterHeight;
+        private bool _diving;
 
         public static Player Instance { get; private set; }
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.Player);
@@ -58,8 +65,6 @@ namespace Acknex
         public void SetupTemplate()
         {
         }
-
-        private Collider[] _results = new Collider[255];
 
         public void UpdateObject()
         {
@@ -180,6 +185,7 @@ namespace Acknex
                 GUILayout.Label($"PLAYER_Y:{World.Instance.GetSkillValue(SkillName.PLAYER_Y)}");
                 GUILayout.Label($"PLAYER_Z:{World.Instance.GetSkillValue(SkillName.PLAYER_Z)}");
                 GUILayout.Label($"PLAYER_HGT:{World.Instance.GetSkillValue(SkillName.PLAYER_HGT)}");
+                GUILayout.Label($"PLAYER_DEPTH:{World.Instance.GetSkillValue(SkillName.PLAYER_DEPTH)}");
                 GUILayout.Label($"PLAYER_SIZE:{World.Instance.GetSkillValue(SkillName.PLAYER_SIZE)}");
                 GUILayout.Label($"PLAYER_VROT:{World.Instance.GetSkillValue(SkillName.PLAYER_VROT)}");
                 GUILayout.Label($"PLAYER_SIN:{World.Instance.GetSkillValue(SkillName.PLAYER_SIN)}");
@@ -188,83 +194,73 @@ namespace Acknex
                 GUILayout.Label($"PLAYER_LIGHT:{World.Instance.GetSkillValue(SkillName.PLAYER_LIGHT)}");
                 GUILayout.Label($"CEIL_HGT:{World.Instance.GetSkillValue(SkillName.CEIL_HGT)}");
                 GUILayout.Label($"FLOOR_HGT:{World.Instance.GetSkillValue(SkillName.FLOOR_HGT)}");
-                GUILayout.Label($"PLAYER_DEPTH:{World.Instance.GetSkillValue(SkillName.PLAYER_DEPTH)}");
-                GUILayout.Label($"MOVE_MODE:{World.Instance.GetSkillValue(SkillName.MOVE_MODE)}");
                 var region = AcknexObject.GetAcknexObject(PropertyName.REGION);
-                GUILayout.Label($"RGN:{region?.Name}");
+                GUILayout.Label($"HERE:{region?.Name}");
+                GUILayout.Label($"MOVE_MODE:{World.Instance.GetSkillValue(SkillName.MOVE_MODE)}");
+                GUILayout.Label($"MOVING:{World.Instance.GetSkillValue(3242343005)}");
+                GUILayout.Label($"DIVING:{_diving}");
                 if (World.Instance.UsePalettes)
                 {
                     var rect = GUILayoutUtility.GetRect(256, 256, 32, 32);
                     GUI.DrawTexture(rect, Shader.GetGlobalTexture("_AcknexPalette"), ScaleMode.StretchToFill, false);
                 }
+                //if (World.Instance.GetSkillValue(3242343005) == 2f)
+                //{
+                //    Debug.Break();
+                //}
                 GUILayout.EndVertical();
             }, "Debug");
         }
 
         private void Locate(float playerX, float playerY, float playerZ = 0, bool initial = true)
         {
-            var region = GetRegion();
-            var regionContainer = (Region)region.Container;
-            float depth;
-            if (regionContainer.Below != null && regionContainer.IsWater)
+            var curRegion = (Region)GetRegion().Container;
+            if (playerZ == 0f)
             {
-                depth = regionContainer.Below.GetDepth();
+                playerZ = World.Instance.GetSkillValue(SkillName.PLAYER_Z);
+            }
+            var playerHgt = World.Instance.GetSkillValue(SkillName.PLAYER_HGT);
+            var ceilBasePoint = initial ? curRegion.GetRealCeilHeight() : playerZ;
+            var playerSize = World.Instance.GetSkillValue(SkillName.PLAYER_SIZE);
+            var playerWidth = World.Instance.GetSkillValue(SkillName.PLAYER_WIDTH);
+            var floorHgt = curRegion.GetRealFloorHeight() + playerHgt;
+            var newRegion = Region.Locate(AcknexObject, curRegion, playerWidth, playerSize, playerX, playerY, ref floorHgt, false, ceilBasePoint);
+            var ceilHgt = floorHgt;
+            Region.Locate(AcknexObject, curRegion, playerWidth, playerSize, playerX, playerY, ref ceilHgt, true, floorHgt);
+            float depth;
+            if (newRegion.Below != null && newRegion.IsWater)
+            {
+                depth = newRegion.Below.GetDepth();
             }
             else
             {
                 depth = 0;
             }
             World.Instance.UpdateSkillValue(SkillName.PLAYER_DEPTH, depth);
-            if (playerZ == 0f)
-            {
-                playerZ = World.Instance.GetSkillValue(SkillName.PLAYER_Z);
-            }
-            var playerHgt = World.Instance.GetSkillValue(SkillName.PLAYER_HGT);
-            //var playerClimb = World.Instance.GetSkillValue(SkillName.PLAYER_CLIMB);
-            var ceilBasePoint = initial ? regionContainer.GetRealCeilHeight() : playerZ;
-            //var floorBasePoint = initial ? regionContainer.GetRealFloorHeight() : playerHgt;
-            var playerSize = World.Instance.GetSkillValue(SkillName.PLAYER_SIZE);
-            var playerWidth = World.Instance.GetSkillValue(SkillName.PLAYER_WIDTH);
-            var floorHgt = regionContainer.GetRealFloorHeight() + playerHgt;
-            var newRegion = Region.Locate(AcknexObject, regionContainer, playerWidth, playerX, playerY, ref floorHgt, false, ceilBasePoint);
-            var ceilHgt = floorHgt;
-            Region.Locate(AcknexObject, regionContainer, playerWidth, playerX, playerY, ref ceilHgt, true, floorHgt);
-            if (initial || newRegion != regionContainer)
-            {
-                regionContainer.AcknexObject.RemoveFlag(PropertyName.HERE);
-                newRegion.AcknexObject.AddFlag(PropertyName.HERE);
-                World.Instance.SetSynonymObject(SynonymName.HERE, newRegion.AcknexObject);
-                AcknexObject.SetAcknexObject(PropertyName.REGION, newRegion.AcknexObject);
-                if (!initial)
-                {
-                    World.Instance.TriggerEvent(PropertyName.IF_LEAVE, regionContainer.AcknexObject, null, regionContainer.AcknexObject);
-                    if (floorHgt > _waterHeight)
-                    {
-                        World.Instance.TriggerEvent(PropertyName.IF_ARISE, regionContainer.AcknexObject, null, regionContainer.AcknexObject);
-                    }
-                }
-                World.Instance.TriggerEvent(PropertyName.IF_ENTER, newRegion.AcknexObject, null, newRegion.AcknexObject);
-                if (newRegion.Above != null && floorHgt < newRegion.Above.GetRealFloorHeight())
-                {
-                    World.Instance.TriggerEvent(PropertyName.IF_DIVE, newRegion.Above.AcknexObject, null, newRegion.Above.AcknexObject);
-                    _waterHeight = regionContainer.GetRealCeilHeight();
-                }
-            }
-            //playerSize = Mathf.Min(playerSize, ceilHgt - playerZ);
             if (initial)
             {
                 playerZ = floorHgt + playerSize;
             }
-            //else
-            //{
-            //var playerHgtOffset = _characterController.transform.position.y + playerSize - playerZ;
-            //playerZ += playerHgtOffset;
-            //}
-            playerHgt = playerZ - playerSize - floorHgt; //todo:  - _characterController.skinWidth;
-            //if (Mathf.Abs(playerHgt) < 0.1f)
-            //{
-            //    playerHgt = 0f;
-            //}
+            playerHgt = playerZ - playerSize - floorHgt;
+            if (!_diving && playerZ < curRegion.GetRealFloorHeight() && curRegion.AcknexObject.TryGetAcknexObject(PropertyName.IF_DIVE, out _))
+            {
+                World.Instance.TriggerEvent(PropertyName.IF_DIVE, curRegion.AcknexObject, null, curRegion.AcknexObject);
+                _diving = true;
+            }
+            if (_diving && playerZ > curRegion.GetRealCeilHeight() && curRegion.AcknexObject.TryGetAcknexObject(PropertyName.IF_ARISE, out _))
+            {
+                World.Instance.TriggerEvent(PropertyName.IF_ARISE, curRegion.AcknexObject, null, curRegion.AcknexObject);
+                _diving = false;
+            }
+            if (initial || newRegion != curRegion)
+            {
+                curRegion.AcknexObject.RemoveFlag(PropertyName.HERE);
+                newRegion.AcknexObject.AddFlag(PropertyName.HERE);
+                AcknexObject.SetAcknexObject(PropertyName.REGION, newRegion.AcknexObject);
+                World.Instance.SetSynonymObject(SynonymName.HERE, newRegion.AcknexObject);
+                World.Instance.TriggerEvent(PropertyName.IF_LEAVE, curRegion.AcknexObject, null, curRegion.AcknexObject);
+                World.Instance.TriggerEvent(PropertyName.IF_ENTER, newRegion.AcknexObject, null, newRegion.AcknexObject);
+            }
             World.Instance.UpdateSkillValue(SkillName.PLAYER_HGT, playerHgt);
             World.Instance.UpdateSkillValue(SkillName.PLAYER_X, playerX);
             World.Instance.UpdateSkillValue(SkillName.PLAYER_Y, playerY);
@@ -272,9 +268,6 @@ namespace Acknex
             World.Instance.UpdateSkillValue(SkillName.FLOOR_HGT, floorHgt);
             World.Instance.UpdateSkillValue(SkillName.CEIL_HGT, ceilHgt);
             World.Instance.UpdateSkillValue(SkillName.PLAYER_SIZE, playerSize);
-            //Shader.SetGlobalFloat("_PLAYER_Z", playerZ);
-            //Shader.SetGlobalFloat("_FLOOR_HGT", floorHgt);
-            //Shader.SetGlobalFloat("_CEIL_HGT", ceilHgt);
         }
 
         private void Awake()

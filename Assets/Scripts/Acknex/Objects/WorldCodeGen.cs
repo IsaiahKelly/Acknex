@@ -26,7 +26,7 @@ namespace Acknex
                     _world = world;
                 }
                 private static bool CheckEquals(float a, float b) {
-                    return Mathf.Abs(a - b) <= 0.05;
+                    return MathUtils.CheckEquals(a, b);
                 }
                 private static bool CheckEquals(IAcknexObject a, IAcknexObject b)
                 {
