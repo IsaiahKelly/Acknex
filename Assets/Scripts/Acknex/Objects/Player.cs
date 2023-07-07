@@ -1,6 +1,5 @@
 ﻿using NameId = System.UInt32;
 using Acknex.Interfaces;
-using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
 using Utils;
 using PropertyName = Acknex.Interfaces.PropertyName;
