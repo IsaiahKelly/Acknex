@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Acknex.Interfaces;
 using Common;
 using LibTessDotNet;
@@ -10,6 +11,7 @@ using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
 using UnityMidi;
 using NameId = System.UInt32;
+using Object = UnityEngine.Object;
 using PropertyName = Acknex.Interfaces.PropertyName;
 
 namespace Acknex
@@ -17,6 +19,7 @@ namespace Acknex
     public partial class World : MonoBehaviour, IAcknexWorld
     {
         private readonly IDictionary<Texture, IList<Mesh>> _meshesPerTexture = new Dictionary<Texture, IList<Mesh>>();
+        public readonly HashSet<UnityEngine.Object> CreatedObjects = new HashSet<Object>();
         public readonly IDictionary<uint, Action> ActionsByName = new Dictionary<uint, Action>();
         public readonly IDictionary<uint, Actor> ActorsByName = new Dictionary<uint, Actor>();
         public readonly IDictionary<uint, HashSet<Actor>> AllActorsByName = new Dictionary<uint, HashSet<Actor>>();
@@ -58,6 +61,7 @@ namespace Acknex
         private Material _surfacesMaterial;
         private TextParser _textParser;
         private ContouredRegions _contouredRegions;
+        private string _currentDirectory;
 
         public Dictionary<IEnumerator, string> ActiveCoroutines = new Dictionary<IEnumerator, string>();
         public Light AmbientLight;
@@ -81,7 +85,6 @@ namespace Acknex
         public RegionWalls RegionWalls;
         public float TimeScale = 100f;
         public bool UsePalettes;
-        public bool UseWDLEngine;
         public float Volume = 1f;
 
         public IAcknexObject BulletString;
@@ -116,8 +119,9 @@ namespace Acknex
         public float MouseMultiplier = 0.1f;
         public float MouseSmoothTime = 5f;
 
-        public string WRSPath;
-        public string WDLPath;
+        public string BaseDirectory;
+        public string WRSFilename;
+        public string WDLFilename;
 
         public static World Instance { get; private set; }
 
@@ -172,6 +176,11 @@ namespace Acknex
             }
         }
 
+        private void OnDestroy()
+        {
+
+        }
+
         private void OnGUI()
         {
             if (!DebugCoroutines)
@@ -220,6 +229,7 @@ namespace Acknex
             Instance = this;
             AcknexObject.Container = this;
             AcknexObject.Name = "__WORLD__";
+            _textParser = new TextParser(this, BaseDirectory, OldAckVersion);
             _palette = new Texture2D(256, 1, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.None);
             _palette.filterMode = FilterMode.Point;
             _palettePixels = new Color[256];
@@ -227,7 +237,11 @@ namespace Acknex
             _skyMaterial = new Material(Shader.Find("Acknex/Sky"));
             _skyMaterialRegion = new Material(Shader.Find("Acknex/Sky"));
             _skyMaterialRegion.SetInt("_ZWrite", 0);
+            _contouredRegions = new ContouredRegions();
+            ContourVertices = new List<ContourVertex>();
+            RegionWalls = new RegionWalls();
             Shader.SetGlobalTexture("_AcknexPalette", _palette);
+            FileManager.BaseDirectory = BaseDirectory;
         }
 
         private void Start()
@@ -236,21 +250,30 @@ namespace Acknex
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
-            if (WRSPath != null)
-            {
-                FileManager.WRSFilename = WRSPath;
-            }
             AudioListener.volume = Volume;
+            CreatePropertyDescriptors();
+            LoadLevel(WDLFilename, WRSFilename);
+        }
+
+        public void LoadLevel(string wdlFilename, string wrsFilename)
+        {
+            if (!string.IsNullOrEmpty(WRSFilename))
+            {
+                FileManager.WRSFilename = wrsFilename;
+            }
+            UnloadLevel();
             CreateDefaultObjects();
             CreateDefaultSynonyms();
             CreateDefaultSkills();
-            CreatePropertyDescriptors();
-            _contouredRegions = new ContouredRegions();
-            ContourVertices = new List<ContourVertex>();
-            RegionWalls = new RegionWalls();
-            var baseDir = PathUtils.GetFileDirectory(WDLPath);
-            _textParser = new TextParser(this, baseDir, OldAckVersion);
-            _textParser.ParseInitialWDL(WDLPath);
+            _textParser.ParseInitialWDL(wdlFilename);
+            SetupTextures();
+            SetupEvents();
+            SetupPhysics();
+            Player.Instance.Reset();
+        }
+
+        private void SetupTextures()
+        {
             if (!BilinearFilter)
             {
                 foreach (var texture in TextureCache.Values)
@@ -265,8 +288,72 @@ namespace Acknex
                     }
                 }
             }
-            SetupEvents();
-            SetupPhysics();
+        }
+
+        public void UnloadLevel()
+        {
+            _contouredRegions.Clear();
+            ContourVertices.Clear();
+            RegionWalls.Clear();
+            _meshesPerTexture.Clear();
+            ActionsByName.Clear();
+            ActorsByName.Clear();
+            AllActorsByName.Clear();
+            AllRegionsByName.Clear();
+            AllThingsByName.Clear();
+            AllWallsByName.Clear();
+            AllWaysByName.Clear();
+            BitmapsByName.Clear();
+            DigitsByName.Clear();
+            FlicsByName.Clear();
+            FontsByName.Clear();
+            ModelsByName.Clear();
+            OverlaysByName.Clear();
+            PalettesByName.Clear();
+            PanelsByName.Clear();
+            Paths.Clear();
+            PicturesByName.Clear();
+            RegionsByIndex.Clear();
+            RegionsByName.Clear();
+            SkillsByName.Clear();
+            SongsByName.Clear();
+            SoundsByName.Clear();
+            StringsByName.Clear();
+            SynonymsByName.Clear();
+            TextsByName.Clear();
+            TextureCache.Clear();
+            TexturesByName.Clear();
+            ThingsByName.Clear();
+            Walls.Clear();
+            WallsByName.Clear();
+            WaysByName.Clear();
+            foreach (var createdObject in CreatedObjects)
+            {
+                Destroy(createdObject);
+            }
+            CreatedObjects.Clear();
+            var acknexObjectImpl = (AcknexObject)AcknexObject;
+            foreach (var kvp in acknexObjectImpl.ObjectProperties)
+            {
+                if (kvp.Value is IAcknexObject acknexObject)
+                {
+                    acknexObject.Destroy();
+                }
+            }
+            acknexObjectImpl.ObjectProperties.Clear();
+            acknexObjectImpl.NumberProperties.Clear();
+            foreach (Transform child in transform)
+            {
+                if (child == Player.Instance.transform)
+                {
+                    continue;
+                }
+                Destroy(child.gameObject);
+            }
+            foreach (Transform child in CanvasView)
+            {
+                Destroy(child.gameObject);
+            }
         }
 
         private void SetupPhysics()
@@ -274,10 +361,10 @@ namespace Acknex
             //Physics.ContactModifyEvent += PhysicsOnContactModifyEvent;
         }
 
-        private void PhysicsOnContactModifyEvent(PhysicsScene physicsScene, NativeArray<ModifiableContactPair> modifiableContactPairs)
-        {
-
-        }
+        //private void PhysicsOnContactModifyEvent(PhysicsScene physicsScene, NativeArray<ModifiableContactPair> modifiableContactPairs)
+        //{
+        //
+        //}
 
         private void CreateDefaultObjects()
         {
@@ -427,6 +514,7 @@ namespace Acknex
             //foreach (var kvp in _meshesPerTexture)
             //{
             //    var combinedMesh = new Mesh();
+            //    World.Instance.CreatedObjects.Add(combinedMesh);
             //    var combineInstances = new CombineInstance[kvp.Value.Count];
             //    for (var i = 0; i < kvp.Value.Count; i++)
             //    {
@@ -444,6 +532,11 @@ namespace Acknex
             //    var bitmap = kvp.Key.GetBitmapAt();
             //    kvp.Key.UpdateFrame(bitmap, meshRenderer.materials, false, false, 0, kvp.Key.AcknexObject);
             //}
+        }
+
+        public IAcknexRuntime GetRuntime()
+        {
+            return _runtime;
         }
     }
 }

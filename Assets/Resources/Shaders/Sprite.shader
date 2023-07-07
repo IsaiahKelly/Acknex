@@ -50,6 +50,7 @@
             fixed4 c = tex2D(_MainTex, uv);
             ApplyPalette(c);
             o.Albedo = c.rgb;
+            clipPlanes(o.Albedo, IN.worldPos);
             o.Alpha = c.a < 0.5 ? c.a : (_DIAPHANOUS ? 0.5 : c.a);
         }
         ENDCG

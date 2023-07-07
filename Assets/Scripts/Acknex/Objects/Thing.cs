@@ -737,17 +737,11 @@ namespace Acknex
             }
             delta.y = 0f;
             var actorClimb = World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB);
-            var finalPos = _characterController.transform.position + delta + new Vector3(0f, actorClimb, 0f);// + new Vector3(0f, World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB), 0f);
-            Physics.Raycast(finalPos, Vector3.down, out var raycastHit, World.Instance.WallsWaterAndRegions);
-            //Debug.DrawRay(finalPos, Vector3.down * (World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB) + 0.1f), Color.cyan, 3f);
-            if (raycastHit.collider.gameObject.layer != World.Instance.WaterLayer.LayerIndex && raycastHit.distance < actorClimb * 2f)
+            var finalPos = _characterController.transform.position + delta + new Vector3(0f, actorClimb, 0f);
+            if (Physics.Raycast(finalPos, Vector3.down, out var raycastHit, World.Instance.WallsWaterAndRegions) && raycastHit.collider.gameObject.layer != World.Instance.WaterLayer.LayerIndex && raycastHit.distance < actorClimb * 2f)
             {
-                //Debug.DrawRay(finalPos, Vector3.down * raycastHit.distance, Color.green, 3f);
-                //Debug.Log($"<color=\"green\">{AcknexObject.Name}:{raycastHit.distance}</color>");
                 return true;
             }
-            //Debug.DrawRay(finalPos, Vector3.down * raycastHit.distance, Color.red, 3f);
-            //Debug.Log($"<color=\"red\">{AcknexObject.Name}:{raycastHit.distance}</color>");
             return false;
         }
 

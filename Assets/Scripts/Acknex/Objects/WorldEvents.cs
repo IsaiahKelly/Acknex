@@ -243,7 +243,6 @@ namespace Acknex
 
         private void SetupEvents()
         {
-            //Invoke("IfStart", 1f/60f);
             WaitForSecond = new WaitForSeconds(1f);
             WaitForTick = new WaitForSeconds(TimeUtils.TicksToTime(1));
             IfStart();

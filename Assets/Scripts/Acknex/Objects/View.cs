@@ -10,9 +10,9 @@ namespace Acknex
     {
         private AudioSource _audioSource;
 
-        public LineRenderer LineRendererTemplate;
+        //public LineRenderer LineRendererTemplate;
+        //public Transform LinesCanvas;
 
-        public Transform LinesCanvas;
         public bool MainView;
         public static View Instance { get; private set; }
 
@@ -124,13 +124,13 @@ namespace Acknex
         {
             Instance = this;
             AcknexObject.Container = this;
+            _audioSource = GetComponent<AudioSource>();
         }
 
         private void Start()
         {
             ViewCamera = GetComponent<Camera>();
             ViewCamera.transparencySortMode = TransparencySortMode.Perspective;
-            _audioSource = GetComponent<AudioSource>();
         }
 
         private void Update()
@@ -138,17 +138,18 @@ namespace Acknex
             UpdateObject();
         }
 
+        //todo: reimplement, not used in the demo
         public void AddMapRegion(Region region, IList<ContourVertex> vertices)
         {
-            var positions = new Vector3[vertices.Count];
-            for (var i = 0; i < positions.Length; i++)
-            {
-                positions[i] = new Vector3(vertices[i].Position.X, 0f, vertices[i].Position.Y);
-            }
-            var newLineRenderer = Instantiate(LineRendererTemplate, LinesCanvas, false);
-            newLineRenderer.transform.localPosition = Vector3.zero;
-            newLineRenderer.positionCount = vertices.Count;
-            newLineRenderer.SetPositions(positions);
+            //var positions = new Vector3[vertices.Count];
+            //for (var i = 0; i < positions.Length; i++)
+            //{
+            //    positions[i] = new Vector3(vertices[i].Position.X, 0f, vertices[i].Position.Y);
+            //}
+            //var newLineRenderer = Instantiate(LineRendererTemplate, LinesCanvas, false);
+            //newLineRenderer.transform.localPosition = Vector3.zero;
+            //newLineRenderer.positionCount = vertices.Count;
+            //newLineRenderer.SetPositions(positions);
         }
     }
 }

@@ -100,6 +100,7 @@
 					c = AlphaBlend(c, ac);
 				}
 				o.Albedo = c.rgb;
+				clipPlanes(o.Albedo, IN.worldPos);
 				o.Alpha = c.a;
 				if (_TRANSPARENT && o.Alpha < 0.5) {
 					discard;

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Acknex.Interfaces;
+using Common;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using Color = System.Drawing.Color;
@@ -16,7 +17,7 @@ namespace IlbmReaderTest
 
         public TextureAndPalette Read(string fileName, bool paletteOnly)
         {
-            var fileContent = File.ReadAllBytes(fileName);
+            var fileContent = FileManager.ReadAllBytes(fileName);
             var topLevelIterator = new IffChunkIterator(fileContent);
             var iffFile = new IffFile();
 

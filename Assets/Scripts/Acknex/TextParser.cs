@@ -12,11 +12,8 @@ using Resolution = Acknex.Interfaces.Resolution;
 
 namespace Acknex
 {
-
     public class TextParser
     {
-        private readonly string _baseDir;
-
         private readonly HashSet<string> _definitions = new HashSet<string>();
         private readonly Stack<bool> _directivesStack = new Stack<bool>();
         private readonly bool _oldAckVersion;
@@ -24,6 +21,8 @@ namespace Acknex
         private readonly IAcknexWorld _world;
         private string _mapFile;
         private IAcknexObject _openObject;
+        private int _internalCount;
+        private readonly string _baseDir;
 
         public TextParser(IAcknexWorld world, string baseDir, bool oldAckVersion)
         {
@@ -174,11 +173,9 @@ namespace Acknex
             }
         }
 
-        private int _internalCount;
-
         public void ParseWDL(string wdlFilename)
         {
-            if (!File.Exists(wdlFilename))
+            if (!FileManager.Exists(wdlFilename))
             {
                 return;
             }
@@ -516,7 +513,13 @@ namespace Acknex
             }
             if (!canContinue)
             {
-                while (keyword != "DEFINE" && keyword != "UNDEF" && keyword != "IFDEF" && keyword != "IFNDEF" && keyword != "IFELSE" && keyword != "ENDIF")
+                while (keyword != "DEFINE" && 
+                       keyword != "UNDEF" && 
+                       keyword != "IFDEF" && 
+                       keyword != "IFNDEF" &&
+                       keyword != "IFELSE" && 
+                       keyword != "ENDIF"
+                       )
                 {
                     keyword = GetNextToken(tokens);
                 }
@@ -711,7 +714,6 @@ namespace Acknex
 
         private string ParseDir(string token, IEnumerator<string> tokens)
         {
-            //token = token.Substring(1, token.Length - 2);
             if (token != "<")
             {
                 throw new Exception("Expected: <");
@@ -719,20 +721,20 @@ namespace Acknex
             token = GetNextToken(tokens);
             if (token != ">")
             {
-                var filename = $"{_baseDir}/{token}";
+                var filename = token;
                 token = GetNextToken(tokens);
                 if (token != ">")
                 {
                     throw new Exception("Expected: >");
                 }
-                return Path.GetFullPath(filename);
+                return filename;
             }
             return null;
         }
 
-        public void ParseWMP(string wmpFilename)
+        public void ParseWMP(string wdlFilename, string wmpFilename)
         {
-            if (!File.Exists(wmpFilename))
+            if (!FileManager.Exists(wmpFilename))
             {
                 return;
             }
@@ -817,7 +819,7 @@ namespace Acknex
                             }
                     }
                 }
-                _world.PostSetupWMP();
+                _world.PostSetupWMP(wdlFilename);
             }
         }
 
@@ -836,11 +838,11 @@ namespace Acknex
             }
         }
 
-        public void ParseInitialWDL(string wdlPath)
+        public void ParseInitialWDL(string wdlFilename)
         {
-            ParseWDL(wdlPath);
+            ParseWDL(wdlFilename);
             //todo: this must be called as a command
-            ParseWMP(_mapFile);
+            ParseWMP(wdlFilename, _mapFile);
         }
     }
 }

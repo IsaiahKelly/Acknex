@@ -152,6 +152,7 @@ namespace Acknex
                     }
                 }
                 Mesh = new Mesh();
+                World.Instance.CreatedObjects.Add(Mesh);
                 Mesh.subMeshCount = 1;
                 Mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt16;
                 var meshVertices = new List<Vector3>();
@@ -185,7 +186,7 @@ namespace Acknex
                 Mesh.SetUVs(0, meshTexcoords);
                 Mesh.SetTriangles(meshTris, 0);
                 Mesh.RecalculateNormals();
-                Mesh.UploadMeshData(true);
+                Mesh.UploadMeshData(false);
                 var skin = new Color32[skinWidth * skinHeight];
                 for (var i = 0; i < skin.Length; ++i)
                 {
@@ -196,10 +197,12 @@ namespace Acknex
                 }
                 skin = FlipPixelsVertically(skin, skinWidth, skinHeight);
                 Texture2D = new Texture2D(skinWidth, skinHeight, UnityEngine.Experimental.Rendering.GraphicsFormat.R8G8B8A8_UNorm, UnityEngine.Experimental.Rendering.TextureCreationFlags.MipChain);
+                World.Instance.CreatedObjects.Add(Texture2D);
                 Texture2D.SetPixels32(skin, 0);
                 Texture2D.Apply(true, true);
                 Texture2D.filterMode = World.Instance.UsePalettes ? FilterMode.Point : World.Instance.BilinearFilter ? FilterMode.Bilinear : FilterMode.Point;
                 PaletteTexture2D = new Texture2D(skinWidth, skinHeight, UnityEngine.Experimental.Rendering.GraphicsFormat.R8_UNorm, UnityEngine.Experimental.Rendering.TextureCreationFlags.None);
+                World.Instance.CreatedObjects.Add(PaletteTexture2D);
                 PaletteTexture2D.LoadRawTextureData(skins[0].data);
                 PaletteTexture2D.Apply(true, true);
                 PaletteTexture2D.filterMode = FilterMode.Point;

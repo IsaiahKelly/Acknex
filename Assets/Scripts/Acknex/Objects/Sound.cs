@@ -59,12 +59,13 @@ namespace Acknex
         {
             if (AcknexObject.TryGetString(PropertyName.FILENAME, out var filename))
             {
-                var request = UnityWebRequestMultimedia.GetAudioClip(filename, AudioType.WAV);
+                var request = UnityWebRequestMultimedia.GetAudioClip($"{World.Instance.BaseDirectory}/{filename}", AudioType.WAV);
                 var enumerator = request.SendWebRequest();
                 while (!enumerator.isDone)
                 {
                 }
                 AudioClip = DownloadHandlerAudioClip.GetContent(request);
+                World.Instance.CreatedObjects.Add(AudioClip);
             }
         }
 

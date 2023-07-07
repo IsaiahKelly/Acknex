@@ -72,6 +72,7 @@
                 fixed4 col = UNITY_SAMPLE_TEX2DARRAY(_BMAPS, float3(u, v, textureIndex));
                 ApplyPalette(col);
                 UNITY_APPLY_FOG(i.fogCoord, col);
+                clipPlanes(col.xyz, i.worldPos);
                 return col;
             }
             ENDCG

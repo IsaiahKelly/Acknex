@@ -8,16 +8,17 @@ namespace Common
     public static class FileManager
     {
         public static string WRSFilename;
+        public static string BaseDirectory;
 
         public static Stream OpenRead(string filename)
         {
-            return string.IsNullOrEmpty(WRSFilename) ? File.OpenRead(filename) : ReadFile(filename);
+            return string.IsNullOrEmpty(WRSFilename) ? File.OpenRead($"{BaseDirectory}/{filename}") : ReadFile(filename);
         }
 
-        public static MemoryStream ReadFile(string filename)
+        private static MemoryStream ReadFile(string filename)
         {
             var shortFilename = FilenameConverter.ConvertToShortPath(filename);
-            using (var binaryReader = new BigEndianBinaryReader(File.OpenRead(WRSFilename)))
+            using (var binaryReader = new BigEndianBinaryReader(File.OpenRead($"{BaseDirectory}/{WRSFilename}")))
             {
                 var nameBuffer = new byte[13];
                 var asize = binaryReader.BaseStream.Length;
@@ -44,6 +45,23 @@ namespace Common
                 } while (offset < asize);
             }
             return null;
+        }
+
+        public static bool Exists(string filename)
+        {
+            if (string.IsNullOrEmpty(WRSFilename))
+            {
+                return File.Exists($"{BaseDirectory}/{filename}");
+            }
+            return true;
+        }
+
+        public static byte[] ReadAllBytes(string fileName)
+        {
+            using (var stream = ReadFile(fileName))
+            {
+                return stream.ToArray();
+            }
         }
     }
 }

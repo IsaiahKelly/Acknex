@@ -1,7 +1,9 @@
 {
     "name": "DmitryBrant",
+    "rootNamespace": "",
     "references": [
-        "GUID:b03a6117684b44d49a7b83c68fc8ad25"
+        "GUID:b03a6117684b44d49a7b83c68fc8ad25",
+        "GUID:924b025207d39dd46a2dea3b44fa4111"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

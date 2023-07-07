@@ -28,12 +28,11 @@ int _CLAMPY;
 int _FENCE;
 int _PORTCULLIS;
 int _TRANSPARENT;
-
-float _PLAYER_Z;
-float _FLOOR_HGT;
-float _CEIL_HGT;
-
 int _DIAPHANOUS;
+
+float _PLAYERZ;
+float _FLOORHGT;
+float _CEILHGT;
 
 void ApplyPalette(inout float4 color)
 {
@@ -58,6 +57,16 @@ void EmulatePalette(inout float4 color) {
 		}
 	}
 	color = matchColor;
+}
+
+void clipPlanes(inout float3 c, float3 worldPos)
+{
+	if (_PLAYERZ <= _FLOORHGT + 0.5) {
+		c *= smoothstep(_FLOORHGT, _FLOORHGT + 0.5, worldPos.y);
+	}
+	if (_PLAYERZ >= _CEILHGT - 0.5) {
+		c *= smoothstep(_CEILHGT, _CEILHGT - 0.5, worldPos.y);
+	}
 }
 
 float4 AlphaBlend(float4 underlying, float4 overlying) {

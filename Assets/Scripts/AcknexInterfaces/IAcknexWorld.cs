@@ -39,9 +39,14 @@ namespace Acknex.Interfaces
         IAcknexObject GetWorld();
 
         /// <summary>
+        /// Gets the runtime class game is using.
+        /// </summary>
+        IAcknexRuntime GetRuntime();
+
+        /// <summary>
         /// This method should be called when any parser ends processing a WMP file.
         /// </summary>
-        void PostSetupWMP();
+        void PostSetupWMP(string wdlPath);
 
         /// <summary>
         /// This method should be called when any WMP vertex is processed.
@@ -210,5 +215,12 @@ namespace Acknex.Interfaces
 
         IEnumerator StartManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator);
         void StopManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator);
+
+        /// <summary>
+        /// Loads a new level.
+        /// </summary>
+        /// <param name="wdlFilename">WDL path, inside or outside the optional WRS file.</param>
+        /// <param name="wrsFilename">Optional WRS path.</param>
+        void LoadLevel(string wdlFilename, string wrsFilename = null);
     }
 }

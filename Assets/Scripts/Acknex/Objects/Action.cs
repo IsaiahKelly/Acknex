@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Acknex.Interfaces;
@@ -220,6 +221,7 @@ namespace Acknex
                             _skips[i] = new Tuple<string, float>(skip.Item1, count);
                         }
                     }
+                    Debug.Log(keyword);
                     switch (keyword)
                     {
                         case "}":
@@ -416,6 +418,31 @@ namespace Acknex
                                 ReadUntilSemiColon();
                                 break;
                             }
+                        case "LEVEL":
+                            {
+                                //TODO: this is hacky, as there is no way to pass a string directly here, or I'm just to tired to remember
+                                var filename = labelOrStatement == "<" ? GetNextToken() : labelOrStatement;
+                                var next = GetValue();
+                                if (next == "<")
+                                {
+                                    next = GetValue();
+                                }
+                                if (next == ">")
+                                {
+                                    next = GetValue();
+                                }
+                                if (next != ";")
+                                {
+                                    MethodBodyStringBuilder.Append("_world.LoadLevel(\"").Append(filename).Append("\",\"").Append(next).AppendLine("\");");
+                                }
+                                else
+                                {
+                                    MethodBodyStringBuilder.Append("_world.LoadLevel(\"").Append(filename).AppendLine("\");");
+                                }
+                                HandleIfStack();
+                                ReadUntilSemiColon();
+                                break;
+                            }
                         case "PLAY_SONG":
                             {
                                 var volume = GetValue();
@@ -554,10 +581,10 @@ namespace Acknex
                                 switch (keyword)
                                 {
                                     case "IF_EQUAL":
-                                        MethodBodyStringBuilder.Append("if (CheckEquals(").Append(lhs.property).Append(" , ").Append(rhs.property).AppendLine("))");
+                                        MethodBodyStringBuilder.Append("if (Game.CheckEquals(").Append(lhs.property).Append(" , ").Append(rhs.property).AppendLine("))");
                                         break;
                                     case "IF_NEQUAL":
-                                        MethodBodyStringBuilder.Append("if (!CheckEquals(").Append(lhs.property).Append(" , ").Append(rhs.property).AppendLine("))");
+                                        MethodBodyStringBuilder.Append("if (!Game.CheckEquals(").Append(lhs.property).Append(" , ").Append(rhs.property).AppendLine("))");
                                         break;
                                     case "IF_BELOW":
                                         MethodBodyStringBuilder.Append("if (MathUtils.CheckLower(").Append(lhs.property).Append(" , ").Append(rhs.property).AppendLine("))");
@@ -832,6 +859,10 @@ namespace Acknex
                     return (objectOrPropertyOrValue, PropertyType.LeftParen, ObjectType.World, propertyAssignmentVariable);
                 case ")":
                     return (objectOrPropertyOrValue, PropertyType.RightParen, ObjectType.World, propertyAssignmentVariable);
+            }
+            if (objectOrPropertyOrValue.StartsWith("<") && objectOrPropertyOrValue.EndsWith(">"))
+            {
+                return (objectOrPropertyOrValue.Substring(1, objectOrPropertyOrValue.Length - 2), PropertyType.Filename, ObjectType.Internal, null);
             }
             var nameId = NameUtils.ToNameId(objectOrPropertyOrValue, true, true, false);
             if (World.Instance.SkillsByName.ContainsKey(nameId))

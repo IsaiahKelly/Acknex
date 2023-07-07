@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Acknex.Interfaces;
+using Common;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using Object = UnityEngine.Object;
@@ -38,7 +39,7 @@ namespace DmitryBrant.ImageFormats
         /// <returns>Bitmap that contains the image that was read.</returns>
         public static TextureAndPalette Load(string fileName, bool useCgaPalette = false, bool paletteOnly = false)
         {
-            using (var f = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var f = FileManager.OpenRead(fileName))
             {
                 return Load(f, useCgaPalette, paletteOnly);
             }

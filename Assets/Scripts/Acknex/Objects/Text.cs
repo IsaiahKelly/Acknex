@@ -68,7 +68,9 @@ namespace Acknex
 
         public virtual void UpdateObject()
         {
-            if (World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_1) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_2) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_3) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_4) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_5) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_6) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_7) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_8) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_9) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_10) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_11) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_12) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_13) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_14) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_15) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_16) == AcknexObject)
+            if (
+                AcknexObject.HasFlag(PropertyName.VISIBLE) && AcknexObject.HasFlag(PropertyName.LAYER) ||
+                World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_1) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_2) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_3) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_4) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_5) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_6) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_7) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_8) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_9) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_10) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_11) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_12) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_13) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_14) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_15) == AcknexObject || World.Instance.AcknexObject.GetAcknexObject(PropertyName.MESSAGES_16) == AcknexObject)
             {
                 _hasToDisplay = true;
             }
@@ -76,6 +78,7 @@ namespace Acknex
             {
                 _hasToDisplay = false;
             }
+            transform.SetSiblingIndex(AcknexObject.GetInteger(PropertyName.LAYER));
             rectTransform.anchorMin = new Vector3(0f, 1f);
             rectTransform.anchorMax = new Vector3(0f, 1f);
             rectTransform.anchoredPosition = new Vector3(AcknexObject.GetFloat(PropertyName.POS_X), -AcknexObject.GetFloat(PropertyName.POS_Y), 0f);

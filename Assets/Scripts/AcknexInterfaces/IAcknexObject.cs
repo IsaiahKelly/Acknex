@@ -295,5 +295,10 @@ namespace Acknex.Interfaces
         void RemoveFlag(NameId flag);
 
         bool NoDirtyFlag { get; set; }
-}
+
+        /// <summary>
+        /// Destroys this object.
+        /// </summary>
+        void Destroy();
+    }
 }

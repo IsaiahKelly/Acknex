@@ -1,5 +1,6 @@
 ﻿using NameId = System.UInt32;
 using Acknex.Interfaces;
+using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
 using Utils;
 using PropertyName = Acknex.Interfaces.PropertyName;
@@ -162,6 +163,15 @@ namespace Acknex
 
         private void Start()
         {
+            Reset();
+        }
+
+        public void Reset()
+        {
+            if (World.Instance.GetRuntime() == null)
+            {
+                return;
+            }
             var playerX = World.Instance.GetSkillValue(SkillName.PLAYER_X);
             var playerY = World.Instance.GetSkillValue(SkillName.PLAYER_Y);
             Locate(playerX, playerY);
@@ -268,6 +278,9 @@ namespace Acknex
             World.Instance.UpdateSkillValue(SkillName.FLOOR_HGT, floorHgt);
             World.Instance.UpdateSkillValue(SkillName.CEIL_HGT, ceilHgt);
             World.Instance.UpdateSkillValue(SkillName.PLAYER_SIZE, playerSize);
+            Shader.SetGlobalFloat("_CEILHGT", ceilHgt);//newRegion.GetRealCeilHeight());
+            Shader.SetGlobalFloat("_FLOORHGT", floorHgt);//newRegion.GetRealFloorHeight());
+            Shader.SetGlobalFloat("_PLAYERZ", playerZ);
         }
 
         private void Awake()
@@ -279,6 +292,10 @@ namespace Acknex
 
         private void Update()
         {
+            if (World.Instance.GetRuntime() == null)
+            {
+                return;
+            }
             UpdateObject();
         }
 

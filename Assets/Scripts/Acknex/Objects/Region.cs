@@ -213,9 +213,13 @@ namespace Acknex
             _allUVs = new List<Vector2>();
             _allTriangles = new Dictionary<int, List<int>>();
             _floorMesh = new Mesh();
+            World.Instance.CreatedObjects.Add(_floorMesh);
             _ceilMesh = new Mesh();
+            World.Instance.CreatedObjects.Add(_ceilMesh);
             _invertedCeilMesh = new Mesh();
+            World.Instance.CreatedObjects.Add(_invertedCeilMesh);
             _invertedFloorMesh = new Mesh();
+            World.Instance.CreatedObjects.Add(_invertedFloorMesh);
             _floorGameObject = new GameObject("Floor");
             _floorGameObject.transform.SetParent(transform, false);
             _floorGameObject.layer = World.Instance.RegionFloorLayer.LayerIndex;
@@ -468,7 +472,6 @@ namespace Acknex
                 material.mainTexture = World.Instance.NullTexture;
                 material.SetInt("_TRANSPARENT", 1);
             }
-            //_floorOffsetMeshCollider.sharedMesh =_floorMesh
             _floorCollider.sharedMesh = _floorMesh;
             _floorCollider.enabled = false;
             _invertedFloorCollider.sharedMesh = _invertedFloorMesh;
@@ -558,6 +561,7 @@ namespace Acknex
             }
             else
             {
+#if MERGE_OUTER_AREAS
                 var biggestArea = 0f;
                 IList<ContourVertex> biggestContour = null;
                 if (ContouredRegion == null)
@@ -582,6 +586,16 @@ namespace Acknex
                 {
                     View.Instance.AddMapRegion(this, biggestContour);
                 }
+#else
+                foreach (var contouredList in ContouredRegion)
+                {
+                    tess.AddContour(contouredList);
+                    if (!ceil)
+                    {
+                        View.Instance.AddMapRegion(this, contouredList);
+                    }
+                }
+#endif
             }
             tess.Tessellate(WindingRule.EvenOdd, ElementType.Polygons, 3, CombineCallback);
             var floorVertices = new Vector3[tess.VertexCount];

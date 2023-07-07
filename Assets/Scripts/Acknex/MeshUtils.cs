@@ -9,6 +9,7 @@ namespace Acknex
         public static Mesh CreateCappedCylinder(float radius, int segments, float height)
         {
             Mesh mesh = new Mesh();
+            World.Instance.CreatedObjects.Add(mesh);
 
             int numVertices = (segments + 1) * 4; // 4 vertices per segment
             int numTriangles = segments * 4 * 2; // 2 triangles per segment
@@ -126,6 +127,7 @@ namespace Acknex
         public static Mesh CreateQuadMesh(bool pivotAtLeft = false)
         {
             var mesh = new Mesh();
+            World.Instance.CreatedObjects.Add(mesh);
             Vector3[] vertices;
             if (pivotAtLeft)
             {

@@ -173,6 +173,12 @@ public class WorldEditor : AcknexObjectEditor
     {
         var world = target as World;
         base.OnInspectorGUI();
+        EditorGUILayout.BeginFoldoutHeaderGroup(true, "Unity Objects");
+        foreach (var item in world.CreatedObjects)
+        {
+            EditorGUILayout.ObjectField(item, typeof(Object));
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
         EditorGUILayout.BeginFoldoutHeaderGroup(true, "Strings");
         foreach (var kvp in world.StringsByName)
         {

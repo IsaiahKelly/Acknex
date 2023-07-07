@@ -93,6 +93,14 @@ namespace Acknex
                 if (lowerInvariant.EndsWith("pcx"))
                 {
                     textureAndPalette = PcxReader.Load(filename, false, paletteOnly);
+                    if (textureAndPalette.Palette != null)
+                    {
+                        World.Instance.CreatedObjects.Add(textureAndPalette.Palette);
+                    }
+                    if (textureAndPalette.Texture != null)
+                    {
+                        World.Instance.CreatedObjects.Add(textureAndPalette.Texture);
+                    }
                     if (!paletteOnly)
                     {
                         World.Instance.TextureCache.Add(filename, textureAndPalette);
@@ -102,6 +110,13 @@ namespace Acknex
                 {
                     var parser = new IffReader();
                     textureAndPalette = parser.Read(filename, paletteOnly);
+                    {
+                        World.Instance.CreatedObjects.Add(textureAndPalette.Palette);
+                    }
+                    if (textureAndPalette.Texture != null)
+                    {
+                        World.Instance.CreatedObjects.Add(textureAndPalette.Texture);
+                    }
                     if (!paletteOnly)
                     {
                         World.Instance.TextureCache.Add(filename, textureAndPalette);
@@ -127,9 +142,11 @@ namespace Acknex
             if (!paletteOnly && textureAndPalette?.Texture != null && width > 0f && height > 0f)
             {
                 var bitmapTexture2D = new Texture2D(width, height, textureAndPalette.Texture.graphicsFormat, TextureCreationFlags.MipChain);
+                World.Instance.CreatedObjects.Add(bitmapTexture2D);
                 TextureUtils.CopyTextureCPU(textureAndPalette.Texture, bitmapTexture2D, true, false, x, y, width, height);
                 TextureUtils.Dilate(bitmapTexture2D);
                 var paletteTexture2D = new Texture2D(width, height, textureAndPalette.Palette.graphicsFormat, TextureCreationFlags.None);
+                World.Instance.CreatedObjects.Add(paletteTexture2D);
                 paletteTexture2D.filterMode = FilterMode.Point;
                 TextureUtils.CopyTextureCPU(textureAndPalette.Palette, paletteTexture2D, true, false, x, y, width, height);
                 cropTexture = new TextureAndPalette(bitmapTexture2D, paletteTexture2D);
@@ -244,7 +261,9 @@ namespace Acknex
                     {
                         var bitmapCount = texture.BMaps.Count;
                         _skyboxTexture2DArray = new Texture2DArray((int)Width, (int)Height, bitmapCount, CropTexture.Texture.graphicsFormat, TextureCreationFlags.MipChain);
+                        World.Instance.CreatedObjects.Add(_skyboxTexture2DArray);
                         _skyboxPalette2DArray = new Texture2DArray((int)Width, (int)Height, bitmapCount, CropTexture.Palette.graphicsFormat, TextureCreationFlags.None);
+                        World.Instance.CreatedObjects.Add(_skyboxPalette2DArray);
                         _skyboxPalette2DArray.filterMode = FilterMode.Point;
                         for (var i = 0; i < bitmapCount; i++)
                         {
@@ -299,9 +318,11 @@ namespace Acknex
         public static TextureAndPalette ExtractBitmap(TextureAndPalette texture, int x, int y, int w, int h)
         {
             var bitmapTexture2D = new Texture2D(w, h, texture.Texture.graphicsFormat, TextureCreationFlags.MipChain);
+            World.Instance.CreatedObjects.Add(bitmapTexture2D);
             TextureUtils.CopyTextureCPU(texture.Texture, bitmapTexture2D, true, false, x, y, w, h);
             TextureUtils.Dilate(bitmapTexture2D);
             var paletteTexture2D = new Texture2D(w, h, texture.Palette.graphicsFormat, TextureCreationFlags.None);
+            World.Instance.CreatedObjects.Add(paletteTexture2D);
             paletteTexture2D.filterMode = FilterMode.Point;
             TextureUtils.CopyTextureCPU(texture.Palette, paletteTexture2D, true, false, x, y, w, h);
             return new TextureAndPalette(bitmapTexture2D, paletteTexture2D);

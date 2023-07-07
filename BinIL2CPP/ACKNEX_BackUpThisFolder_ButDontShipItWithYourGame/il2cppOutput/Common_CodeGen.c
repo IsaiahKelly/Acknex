@@ -1,0 +1,117 @@
+﻿#include "pch-c.h"
+#ifndef _MSC_VER
+# include <alloca.h>
+#else
+# include <malloc.h>
+#endif
+
+
+#include "codegen/il2cpp-codegen-metadata.h"
+
+
+
+
+
+extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_m29D8A5F36789CF8A37C6B96D331F5B812D00CA73 (void);
+extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_mFD57CE3357E166E4E5528B4CD46EFB48C7EAF661 (void);
+extern void BigEndianBinaryReader__ctor_mEE87F2623DA820DCDD60595CF873C068467F9555 (void);
+extern void BigEndianBinaryReader__ctor_mCBC2C4CF8A0C1A6B2038D29615666F00A7F78EDE (void);
+extern void BigEndianBinaryReader_ReadInt32_m489217AC450806F4945B4765B56C6C803F708EE5 (void);
+extern void BigEndianBinaryReader_ReadInt16_mE0D439CE39C7D7DADCDE7B1EC007236CD13D5932 (void);
+extern void BigEndianBinaryReader_ReadInt64_m1CFCD0E9AA4FD3F6311C810352E77D701D40F19F (void);
+extern void BigEndianBinaryReader_ReadUInt32_mEADE32F9EEFEAA3B37F517BC429AA1CFEED7B4AC (void);
+extern void BigEndianBinaryReader_ReadSingle_m74727CC28E8776A0FCFEDE6261A54F90E63196F4 (void);
+extern void BigEndianBinaryReader_ReadDouble_mC7175A165C48163E680AB84FBC2CE02B70052D1E (void);
+extern void FileManager_OpenRead_m354AE27D6971E7F9FCF7940092FCA31B35352C7E (void);
+extern void FileManager_ReadFile_m4908F515F2830909C4DC0DD3B006BBBF8825397A (void);
+extern void FilenameConverter_ConvertToShortPath_mEE1084D426E6DED9497AD4140D9A7A011EA7E4D7 (void);
+extern void FilenameConverter_GetValidShortName_m2A2C17DE4D727521E9DEFF4C5C4822C8515B9E8A (void);
+extern void FilenameConverter_GetValidShortExtension_mB0FF7B69018FB3D01BA44C4AB795321CFE287516 (void);
+extern void FilenameConverter__ctor_mFD40A9E98A3D706C15B7E115507FC07B82ECF0EB (void);
+extern void PathUtils_SanitizePath_mE8306285C35A141DDF9E90097C83ACE75981618E (void);
+extern void PathUtils_GetFileExtension_mD0D83CA575CC53BE815E286972E9237A891BB590 (void);
+extern void PathUtils_GetFileDirectory_mFA5477A901B3C956AF2DFE634915867243BF3684 (void);
+static Il2CppMethodPointer s_methodPointers[20] = 
+{
+	UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_m29D8A5F36789CF8A37C6B96D331F5B812D00CA73,
+	UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_mFD57CE3357E166E4E5528B4CD46EFB48C7EAF661,
+	BigEndianBinaryReader__ctor_mEE87F2623DA820DCDD60595CF873C068467F9555,
+	BigEndianBinaryReader__ctor_mCBC2C4CF8A0C1A6B2038D29615666F00A7F78EDE,
+	BigEndianBinaryReader_ReadInt32_m489217AC450806F4945B4765B56C6C803F708EE5,
+	BigEndianBinaryReader_ReadInt16_mE0D439CE39C7D7DADCDE7B1EC007236CD13D5932,
+	BigEndianBinaryReader_ReadInt64_m1CFCD0E9AA4FD3F6311C810352E77D701D40F19F,
+	BigEndianBinaryReader_ReadUInt32_mEADE32F9EEFEAA3B37F517BC429AA1CFEED7B4AC,
+	BigEndianBinaryReader_ReadSingle_m74727CC28E8776A0FCFEDE6261A54F90E63196F4,
+	BigEndianBinaryReader_ReadDouble_mC7175A165C48163E680AB84FBC2CE02B70052D1E,
+	FileManager_OpenRead_m354AE27D6971E7F9FCF7940092FCA31B35352C7E,
+	FileManager_ReadFile_m4908F515F2830909C4DC0DD3B006BBBF8825397A,
+	FilenameConverter_ConvertToShortPath_mEE1084D426E6DED9497AD4140D9A7A011EA7E4D7,
+	FilenameConverter_GetValidShortName_m2A2C17DE4D727521E9DEFF4C5C4822C8515B9E8A,
+	FilenameConverter_GetValidShortExtension_mB0FF7B69018FB3D01BA44C4AB795321CFE287516,
+	FilenameConverter__ctor_mFD40A9E98A3D706C15B7E115507FC07B82ECF0EB,
+	NULL,
+	PathUtils_SanitizePath_mE8306285C35A141DDF9E90097C83ACE75981618E,
+	PathUtils_GetFileExtension_mD0D83CA575CC53BE815E286972E9237A891BB590,
+	PathUtils_GetFileDirectory_mFA5477A901B3C956AF2DFE634915867243BF3684,
+};
+static const int32_t s_InvokerIndices[20] = 
+{
+	7189,
+	4908,
+	3945,
+	1171,
+	4775,
+	4774,
+	4776,
+	4893,
+	4844,
+	4745,
+	6898,
+	6898,
+	6898,
+	6898,
+	6898,
+	4908,
+	0,
+	6898,
+	6429,
+	6898,
+};
+static const Il2CppTokenRangePair s_rgctxIndices[1] = 
+{
+	{ 0x06000011, { 0, 5 } },
+};
+extern const uint32_t g_rgctx_TU5BU5DU26_t578B7CDAEDCF076061CFBCAB60D6CD2F10DAFB09;
+extern const uint32_t g_rgctx_T_t3A815FE2E7DF234B2B54BC4A2C22FDA8C5FEED39;
+extern const uint32_t g_rgctx_Array_IndexOf_TisT_t3A815FE2E7DF234B2B54BC4A2C22FDA8C5FEED39_m495ED19243B66FF3D5820C90D0AF70EBCA0B61E7;
+extern const uint32_t g_rgctx_TU5BU5D_tC7676C1084E0605A20B3A748E9CC447E9FEDEA2E;
+extern const uint32_t g_rgctx_Array_Resize_TisT_t3A815FE2E7DF234B2B54BC4A2C22FDA8C5FEED39_m39290BD484FC942E82BF8CFC2C5D74BEFC25086B;
+static const Il2CppRGCTXDefinition s_rgctxValues[5] = 
+{
+	{ (Il2CppRGCTXDataType)2, (const void *)&g_rgctx_TU5BU5DU26_t578B7CDAEDCF076061CFBCAB60D6CD2F10DAFB09 },
+	{ (Il2CppRGCTXDataType)2, (const void *)&g_rgctx_T_t3A815FE2E7DF234B2B54BC4A2C22FDA8C5FEED39 },
+	{ (Il2CppRGCTXDataType)3, (const void *)&g_rgctx_Array_IndexOf_TisT_t3A815FE2E7DF234B2B54BC4A2C22FDA8C5FEED39_m495ED19243B66FF3D5820C90D0AF70EBCA0B61E7 },
+	{ (Il2CppRGCTXDataType)2, (const void *)&g_rgctx_TU5BU5D_tC7676C1084E0605A20B3A748E9CC447E9FEDEA2E },
+	{ (Il2CppRGCTXDataType)3, (const void *)&g_rgctx_Array_Resize_TisT_t3A815FE2E7DF234B2B54BC4A2C22FDA8C5FEED39_m39290BD484FC942E82BF8CFC2C5D74BEFC25086B },
+};
+IL2CPP_EXTERN_C const Il2CppCodeGenModule g_Common_CodeGenModule;
+const Il2CppCodeGenModule g_Common_CodeGenModule = 
+{
+	"Common.dll",
+	20,
+	s_methodPointers,
+	0,
+	NULL,
+	s_InvokerIndices,
+	0,
+	NULL,
+	1,
+	s_rgctxIndices,
+	5,
+	s_rgctxValues,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+};

@@ -67,8 +67,10 @@ namespace Acknex
             var cols = Texture.Texture.width / width;
             var charCount = rows * cols;
             GlyphsTexture = new Texture2DArray(width, height, 256, Texture.Texture.graphicsFormat, TextureCreationFlags.None);
+            World.Instance.CreatedObjects.Add(GlyphsTexture);
             GlyphsTexture.wrapMode = TextureWrapMode.Clamp;
             GlyphsPalette = new Texture2DArray(width, height, 256, Texture.Palette.graphicsFormat, TextureCreationFlags.None);
+            World.Instance.CreatedObjects.Add(GlyphsPalette);
             GlyphsPalette.wrapMode = TextureWrapMode.Clamp;
             GlyphsPalette.filterMode = FilterMode.Point;
             for (var row = 0; row < rows; row++)

@@ -5,6 +5,26 @@ namespace Common
 {
     public static class PathUtils
     {
+        public static string GetFilenameWithoutExtension(string filename)
+        {
+            if (string.IsNullOrWhiteSpace(filename))
+            {
+                return null;
+            }
+            filename = SanitizePath(filename);
+            var indexOfDot = filename.LastIndexOf('.');
+            if (indexOfDot < 0)
+            {
+                return filename;
+            }
+            var indexOfSlash = filename.LastIndexOf("/", StringComparison.Ordinal);
+            if (indexOfSlash >= 0)
+            {
+                return filename.Substring(indexOfSlash + 1, indexOfDot - indexOfSlash - 1);
+            }
+            return filename.Substring(0, indexOfDot).ToUpperInvariant();
+        }
+
         public static void Remove<T>(ref T[] arr, T item)
         {
             var index = Array.IndexOf(arr, item);
@@ -63,6 +83,21 @@ namespace Common
             }
 
             return null;
+        }
+
+        public static string GetShortFilename(string filename)
+        {
+            if (string.IsNullOrWhiteSpace(filename))
+            {
+                return null;
+            }
+            filename = SanitizePath(filename);
+            var indexOfSlash = filename.LastIndexOf("/");
+            if (indexOfSlash >= 0)
+            {
+                return filename.Substring(indexOfSlash + 1);
+            }
+            return filename;
         }
     }
 }

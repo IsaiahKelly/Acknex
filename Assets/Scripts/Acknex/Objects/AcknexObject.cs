@@ -38,6 +38,10 @@ namespace Acknex
         public IDictionary<NameId, object> ObjectProperties = new Dictionary<NameId, object>();
 
         public bool NoDirtyFlag { get; set; }
+        public void Destroy()
+        {
+            
+        }
 
         public AcknexObject(Func<NameId, IAcknexObject> getTemplateCallback, ObjectType type)
         {

@@ -4,12 +4,42 @@ using NameId = System.UInt32;
 using System.IO;
 using System.Text;
 using Acknex.Interfaces;
+using Common;
 using UnityEngine;
 
 namespace Acknex
 {
     public partial class World
     {
+        private const string GameTamplate = @"
+        using System;
+        using Acknex.Interfaces;
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        using Random = UnityEngine.Random;
+        using PropertyName = Acknex.Interfaces.PropertyName;
+        namespace Game {{
+            public static class Game {{
+                public static WaitForEndOfFrame WaitForEndOfFrame = new WaitForEndOfFrame();
+                public static bool CheckEquals(float a, float b) {{
+                    return MathUtils.CheckEquals(a, b);
+                }}
+                public static bool CheckEquals(IAcknexObject a, IAcknexObject b)
+                {{
+                    return  a == b;
+                }}
+                public static IAcknexRuntime GetRuntime(string className)
+                {{
+                    switch(className) {{
+                        {0}
+                    }}
+                    return null;
+                }}
+            }}
+        }}
+        ";
+
         private const string HeaderTemplate = @"
         using System;
         using Acknex.Interfaces;
@@ -18,20 +48,12 @@ namespace Acknex
         using UnityEngine;
         using Random = UnityEngine.Random;
         using PropertyName = Acknex.Interfaces.PropertyName;
-        namespace Tests {
-            public class Game : IAcknexRuntime {
-                public static WaitForEndOfFrame WaitForEndOfFrame = new WaitForEndOfFrame();
+        namespace Game {{
+            public class {0} : IAcknexRuntime {{
                 private IAcknexWorld _world;
-                public void SetWorld(IAcknexWorld world) {
+                public void SetWorld(IAcknexWorld world) {{
                     _world = world;
-                }
-                private static bool CheckEquals(float a, float b) {
-                    return MathUtils.CheckEquals(a, b);
-                }
-                private static bool CheckEquals(IAcknexObject a, IAcknexObject b)
-                {
-                    return  a == b;
-                }
+                }}
         ";
 
         private const string MethodCallTemplate = @"
@@ -88,14 +110,15 @@ namespace Acknex
                         }
                     }
                     yield break;
-        }";
+                    }";
 
-        private void ConvertActionsToCS()
+        private void ConvertActionsToCS(string wdlPath)
         {
+            var className = PathUtils.GetFilenameWithoutExtension(wdlPath);
             var sourceStringBuilder = new StringBuilder();
-            sourceStringBuilder.Append(HeaderTemplate);
+            sourceStringBuilder.AppendFormat(HeaderTemplate, className);
             sourceStringBuilder.Append(CustomStateMachines ? CustomMethodCallTemplate : MethodCallTemplate);
-            sourceStringBuilder.Append("public Game() {");
+            sourceStringBuilder.AppendFormat("public {0}() {{", className);
             foreach (var kvp in ActionsByName)
             {
                 sourceStringBuilder.AppendLine(CustomStateMachines
@@ -112,7 +135,7 @@ namespace Acknex
             }
             sourceStringBuilder.AppendLine("    }");
             sourceStringBuilder.AppendLine("}");
-            File.WriteAllText(Application.dataPath + "/Scripts/Tests/Game.cs.new", sourceStringBuilder.ToString());
+            File.WriteAllText($"{Application.dataPath}/Scripts/Game/{className}.cs", sourceStringBuilder.ToString());
         }
     }
 }
