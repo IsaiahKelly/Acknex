@@ -17,13 +17,7 @@ namespace Acknex
             return AcknexObject.ToString();
         }
 
-        public bool CyllinderCast(Ray ray, out RaycastHit raycastHit, float maxDistance, LayerMask layerMask)
-        {
-            return Physics.BoxCast(ray.origin + new Vector3(0f, 0.1f, 0f), new Vector3(_characterController.radius, 0.1f, _characterController.radius), ray.direction, out raycastHit, Quaternion.identity, maxDistance, layerMask);
-            //_cyllinderCollider.includeLayers = layerMask;
-            //return _cyllinderRigidbody.SweepTest(ray.direction, out raycastHit, maxDistance);
-        }
-
+        [field:SerializeField]
         private CharacterController _characterController;
         private bool _soundTriggered;
         private float _walkTime;
@@ -34,10 +28,21 @@ namespace Acknex
 
         public void Disable()
         {
+            View.Instance.Disable();
+            enabled = false;
         }
 
         public void Enable()
         {
+            if (World.Instance.GetRuntime() == null)
+            {
+                return;
+            }
+            View.Instance.Enable();
+            enabled = true;
+            var playerX = World.Instance.GetSkillValue(SkillName.PLAYER_X);
+            var playerY = World.Instance.GetSkillValue(SkillName.PLAYER_Y);
+            Locate(playerX, playerY);
         }
 
         public GameObject GameObject => gameObject;
@@ -160,22 +165,6 @@ namespace Acknex
             return null;
         }
 
-        private void Start()
-        {
-            Reset();
-        }
-
-        public void Reset()
-        {
-            if (World.Instance.GetRuntime() == null)
-            {
-                return;
-            }
-            var playerX = World.Instance.GetSkillValue(SkillName.PLAYER_X);
-            var playerY = World.Instance.GetSkillValue(SkillName.PLAYER_Y);
-            Locate(playerX, playerY);
-        }
-
         private void OnGUI()
         {
             if (!World.Instance.DebugSkills)
@@ -277,8 +266,8 @@ namespace Acknex
             World.Instance.UpdateSkillValue(SkillName.FLOOR_HGT, floorHgt);
             World.Instance.UpdateSkillValue(SkillName.CEIL_HGT, ceilHgt);
             World.Instance.UpdateSkillValue(SkillName.PLAYER_SIZE, playerSize);
-            Shader.SetGlobalFloat("_CEILHGT", ceilHgt);//newRegion.GetRealCeilHeight());
-            Shader.SetGlobalFloat("_FLOORHGT", floorHgt);//newRegion.GetRealFloorHeight());
+            Shader.SetGlobalFloat("_CEILHGT", ceilHgt);
+            Shader.SetGlobalFloat("_FLOORHGT", floorHgt);
             Shader.SetGlobalFloat("_PLAYERZ", playerZ);
         }
 
@@ -286,7 +275,6 @@ namespace Acknex
         {
             Instance = this;
             AcknexObject.Container = this;
-            _characterController = GetComponent<CharacterController>();
         }
 
         private void Update()

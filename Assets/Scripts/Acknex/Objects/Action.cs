@@ -10,7 +10,6 @@ using NameId = System.UInt32;
 
 namespace Acknex
 {
-    //TODO: missing keywords
     public class Action : IAcknexObjectContainer
     {
         private const string CallCoroutine = @"{{
@@ -77,8 +76,9 @@ namespace Acknex
         private int _ifStack;
         private int _tokenIndex;
         private int _varCounter;
-        public List<string> Tokens = new List<string>();
 
+        public List<string> Tokens = new List<string>();
+        public string WDLFilename;
         public StringBuilder CodeStringBuilder = new StringBuilder();
         public StringBuilder JumpTableStringBuilder = new StringBuilder();
         public StringBuilder VariablesStringBuilder = new StringBuilder();
@@ -443,6 +443,29 @@ namespace Acknex
                                 ReadUntilSemiColon();
                                 break;
                             }
+                        case "MAP":
+                        {
+                            //TODO: this is hacky, as there is no way to pass a string directly here, or I'm just to tired to remember
+                            if (labelOrStatement != ";")
+                            {
+                                var filename = labelOrStatement == "<" ? GetNextToken() : labelOrStatement;
+                                var next = GetValue();
+                                if (next == "<")
+                                {
+                                    next = GetValue();
+                                }
+                                if (next == ">")
+                                {
+                                    next = GetValue();
+                                }
+                                MethodBodyStringBuilder.Append("_world.LoadLevel(\"").Append(filename).AppendLine("\");");
+                            }
+                            else
+                            {
+                                MethodBodyStringBuilder.Append("_world.LoadLevel(\"").Append(WDLFilename).AppendLine("\");");
+                            }
+                            break;
+                        }
                         case "PLAY_SONG":
                             {
                                 var volume = GetValue();

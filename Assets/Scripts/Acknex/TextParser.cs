@@ -314,6 +314,7 @@ namespace Acknex
                                     {
                                         _openObject = _world.CreateObjectTemplate(ObjectType.Action, GetNextToken(tokens));
                                         _openObject.NoDirtyFlag = true;
+                                        ((Action)_openObject.Container).WDLFilename = wdlFilename;
                                         CheckCurlyOpen(tokens);
                                         //var action = (Action)_openObject.Container;
                                         continue;

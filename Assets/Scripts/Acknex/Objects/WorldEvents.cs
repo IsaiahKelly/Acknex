@@ -233,19 +233,16 @@ namespace Acknex
             }
         }
 
-        private void IfStart()
+        private IEnumerator SetupEvents()
         {
+            yield return new WaitForSeconds(StartDelay);
+            WaitForSecond = new WaitForSeconds(1f);
+            WaitForTick = new WaitForSeconds(TimeUtils.TicksToTime(1));
             TriggerEvent(PropertyName.IF_START, AcknexObject, null, null);
             StartManagedCoroutine(this, TriggerTickEvents(AcknexObject));
             StartManagedCoroutine(this, TriggerSecEvents(AcknexObject));
             StartManagedCoroutine(this, UpdateEvents());
-        }
-
-        private void SetupEvents()
-        {
-            WaitForSecond = new WaitForSeconds(1f);
-            WaitForTick = new WaitForSeconds(TimeUtils.TicksToTime(1));
-            IfStart();
+            Player.Instance.Enable();
         }
 
         private IEnumerator UpdateEvents()

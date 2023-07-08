@@ -16,16 +16,19 @@ namespace Acknex
         public bool MainView;
         public static View Instance { get; private set; }
 
+        [field:SerializeField]
         public Camera ViewCamera { get; set; }
 
         public IAcknexObject AcknexObject { get; set; } = new AcknexObject(GetTemplateCallback, ObjectType.View);
 
         public void Disable()
         {
+            enabled = ViewCamera.enabled = false;
         }
 
         public void Enable()
         {
+            enabled = ViewCamera.enabled = true;
         }
 
         public GameObject GameObject => gameObject;
@@ -51,11 +54,6 @@ namespace Acknex
             {
                 return;
             }
-            //if (_audioSource.clip == soundContainer.AudioClip && _audioSource.isPlaying)
-            //{
-            //    return;
-            //}
-            //_audioSource.Stop();
             _audioSource.clip = soundContainer.AudioClip;
             _audioSource.maxDistance = Mathf.Max(sDist, svDist);
             _audioSource.volume = volume;
@@ -129,7 +127,6 @@ namespace Acknex
 
         private void Start()
         {
-            ViewCamera = GetComponent<Camera>();
             ViewCamera.transparencySortMode = TransparencySortMode.Perspective;
         }
 

@@ -401,6 +401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainView: 1
+  <ViewCamera>k__BackingField: {fileID: 963194227}
 --- !u!82 &963194231
 AudioSource:
   m_ObjectHideFlags: 0
@@ -750,6 +751,7 @@ MonoBehaviour:
   TimeScale: 100
   UsePalettes: 0
   Volume: 1
+  StartDelay: 1
   IgnoreRaycastLayer:
     m_LayerIndex: 2
   RegionFloorLayer:
@@ -1035,6 +1037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d15f27722fbe5d42b74b91933d8d826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterController: {fileID: 1477033084}
 --- !u!4 &1477033082
 Transform:
   m_ObjectHideFlags: 0

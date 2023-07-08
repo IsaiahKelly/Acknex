@@ -3987,7 +3987,7 @@ PLAYER_HEALTH_31.SetFloat(231,100f);
         
 PLAYER_HEALTH_34 = _world.GetObject(ObjectType.Skill,1469755439);
 PLAYER_HEALTH_34.SetFloat(231,100f);
-//Unknown keyword: MAP
+_world.LoadLevel("CONTATO.WDL");
 //Unknown keyword: LOCATE
 _world.AcknexObject.SetAcknexObject(145,null);
 _world.AcknexObject.SetAcknexObject(129,null);

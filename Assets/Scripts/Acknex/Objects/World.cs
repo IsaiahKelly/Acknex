@@ -86,6 +86,7 @@ namespace Acknex
         public float TimeScale = 100f;
         public bool UsePalettes;
         public float Volume = 1f;
+        public float StartDelay = 1f;
 
         public IAcknexObject BulletString;
         public IAcknexObject FollowString;
@@ -183,35 +184,34 @@ namespace Acknex
 
         private void OnGUI()
         {
-            if (!DebugCoroutines)
+            if (DebugCoroutines)
             {
-                return;
-            }
-            var rect = new Rect(0f, 0f, 320f, Screen.height);
-            var count = 0;
-            foreach (var coroutine in ActiveCoroutines)
-            {
-                if (coroutine.Key.Current == null)
-                {
-                    continue;
-                }
-                count++;
-            }
-            GUI.Window(0, rect, delegate
-            {
-                _scrollPos = GUILayout.BeginScrollView(_scrollPos);
-                GUILayout.BeginVertical();
+                var rect = new Rect(0f, 0f, 320f, Screen.height);
+                var count = 0;
                 foreach (var coroutine in ActiveCoroutines)
                 {
                     if (coroutine.Key.Current == null)
                     {
                         continue;
                     }
-                    GUILayout.Label(coroutine.Value);
+                    count++;
                 }
-                GUILayout.EndVertical();
-                GUILayout.EndScrollView();
-            }, "Coroutines:" + count);
+                GUI.Window(0, rect, delegate
+                {
+                    _scrollPos = GUILayout.BeginScrollView(_scrollPos);
+                    GUILayout.BeginVertical();
+                    foreach (var coroutine in ActiveCoroutines)
+                    {
+                        if (coroutine.Key.Current == null)
+                        {
+                            continue;
+                        }
+                        GUILayout.Label(coroutine.Value);
+                    }
+                    GUILayout.EndVertical();
+                    GUILayout.EndScrollView();
+                }, "Coroutines:" + count);
+            }
         }
 
         public override string ToString()
@@ -267,9 +267,8 @@ namespace Acknex
             CreateDefaultSkills();
             _textParser.ParseInitialWDL(wdlFilename);
             SetupTextures();
-            SetupEvents();
             SetupPhysics();
-            Player.Instance.Reset();
+            StartCoroutine(SetupEvents());
         }
 
         private void SetupTextures()
@@ -292,6 +291,8 @@ namespace Acknex
 
         public void UnloadLevel()
         {
+            Player.Instance.Disable();
+            StopAllCoroutines();
             _contouredRegions.Clear();
             ContourVertices.Clear();
             RegionWalls.Clear();
