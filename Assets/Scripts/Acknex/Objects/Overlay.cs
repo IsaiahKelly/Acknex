@@ -39,6 +39,11 @@ namespace Acknex
             return default;
         }
 
+        public Vector3 GetEyeLevel()
+        {
+            return GetCenter();
+        }
+
         public IAcknexObject GetRegion()
         {
             return null;
@@ -156,6 +161,7 @@ namespace Acknex
             overlayGraphic.rectTransform.anchorMax = new Vector3(0f, 1f);
             overlayGraphic.rectTransform.pivot = new Vector3(0f, 1f);
             overlayGraphic.material = new Material(Shader.Find("Acknex/UI"));
+            World.Instance.CreatedObjects.Add(overlayGraphic.material);
             Materials = new List<Material> { OverlayGraphic.material };
         }
     }

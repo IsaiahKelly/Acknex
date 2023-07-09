@@ -2,6 +2,7 @@
 using Acknex.Interfaces;
 using LibTessDotNet;
 using UnityEngine;
+using Utils;
 using NameId = System.UInt32;
 
 namespace Acknex
@@ -14,6 +15,7 @@ namespace Acknex
         //public Transform LinesCanvas;
 
         public bool MainView;
+
         public static View Instance { get; private set; }
 
         [field:SerializeField]
@@ -36,6 +38,10 @@ namespace Acknex
         public Vector3 GetCenter()
         {
             return ViewCamera.transform.position;
+        }
+        public Vector3 GetEyeLevel()
+        {
+            return GetCenter();
         }
 
         public IAcknexObject GetRegion()
@@ -99,6 +105,7 @@ namespace Acknex
                 }
             }
         }
+
 
         public override string ToString()
         {

@@ -24,6 +24,7 @@ Shader "Acknex/Model"
         struct Input
         {
             float2 uv_MainTex;
+            float3 worldPos;
         };
 
         UNITY_INSTANCING_BUFFER_START(Props)
@@ -34,6 +35,7 @@ Shader "Acknex/Model"
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex);
             ApplyPalette(c);
             o.Albedo = c.rgb;
+            clipPlanes(o.Albedo, IN.worldPos);
             o.Alpha = c.a;
         }
         ENDCG

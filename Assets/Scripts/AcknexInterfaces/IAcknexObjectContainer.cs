@@ -48,6 +48,11 @@ namespace Acknex.Interfaces
         Vector3 GetCenter();
 
         /// <summary>
+        /// Gets the container eye level position in Unity scene.
+        /// </summary>
+        Vector3 GetEyeLevel();
+
+        /// <summary>
         /// Gets the container region.
         /// </summary>
         IAcknexObject GetRegion();

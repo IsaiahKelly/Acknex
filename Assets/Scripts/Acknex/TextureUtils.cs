@@ -28,19 +28,17 @@ namespace Acknex
             innerGameObject.transform.SetParent(parent, false);
             meshFilter = innerGameObject.AddComponent<MeshFilter>();
             meshRenderer = innerGameObject.AddComponent<MeshRenderer>();
-            //if (bitmap != null)
-            //{
-                var mesh = MeshUtils.CreateQuadMesh(pivotAtLeft);
-                meshFilter.mesh = mesh;
-                meshRenderer.material = new Material(Shader.Find("Acknex/Sprite"));
-            //}
+            var mesh = MeshUtils.CreateQuadMesh(pivotAtLeft);
+            meshFilter.mesh = mesh;
+            meshRenderer.material = new Material(Shader.Find("Acknex/Sprite"));
+            World.Instance.CreatedObjects.Add(meshRenderer.material);
             return innerGameObject;
         }
 
         public static void CopyTextureCPU(UnityEngine.Texture from, Texture2D to, bool updateMipMaps, bool makeNoLongerReadable, int x, int y, int width, int height)
         {
             var renderTexture = RenderTexture.GetTemporary(from.width, from.height, 0, from.graphicsFormat);
-            Graphics.CopyTexture(from, 0,0, renderTexture,0,0);
+            Graphics.CopyTexture(from, 0, 0, renderTexture, 0, 0);
             RenderTexture.active = renderTexture;
             to.ReadPixels(new Rect(x, y, width, height), 0, 0);
             to.Apply(updateMipMaps, makeNoLongerReadable);

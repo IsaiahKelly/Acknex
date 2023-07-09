@@ -51,6 +51,10 @@ namespace Acknex
         {
             return transform.position + new Vector3(0f, World.Instance.GetSkillValue(SkillName.PLAYER_SIZE) * 0.5f, 0f);
         }
+        public Vector3 GetEyeLevel()
+        {
+            return transform.position + new Vector3(0f, World.Instance.GetSkillValue(SkillName.PLAYER_SIZE), 0f);
+        }
 
         public IAcknexObject GetRegion()
         {
@@ -266,9 +270,11 @@ namespace Acknex
             World.Instance.UpdateSkillValue(SkillName.FLOOR_HGT, floorHgt);
             World.Instance.UpdateSkillValue(SkillName.CEIL_HGT, ceilHgt);
             World.Instance.UpdateSkillValue(SkillName.PLAYER_SIZE, playerSize);
-            Shader.SetGlobalFloat("_CEILHGT", ceilHgt);
-            Shader.SetGlobalFloat("_FLOORHGT", floorHgt);
-            Shader.SetGlobalFloat("_PLAYERZ", playerZ);
+            Shader.SetGlobalFloat("_CEIL_HGT", ceilHgt);
+            Shader.SetGlobalFloat("_FLOOR_HGT", floorHgt);
+            Shader.SetGlobalFloat("_PLAYER_Z", playerZ);
+            Shader.SetGlobalInt("_IF_DIVE", newRegion.AcknexObject.TryGetAcknexObject(PropertyName.IF_DIVE, out _) ? 1 : 0);
+            Shader.SetGlobalInt("_IF_ARISE", newRegion.Above != null && newRegion.Above.AcknexObject.TryGetAcknexObject(PropertyName.IF_ARISE, out _) ? 1 : 0);
         }
 
         private void Awake()

@@ -134,6 +134,10 @@ namespace Acknex
         {
             return default;
         }
+        public Vector3 GetEyeLevel()
+        {
+            return GetCenter();
+        }
 
         public IAcknexObject GetRegion()
         {

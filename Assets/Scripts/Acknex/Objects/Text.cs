@@ -47,6 +47,11 @@ namespace Acknex
             return default;
         }
 
+        public Vector3 GetEyeLevel()
+        {
+            return GetCenter();
+        }
+
         public IAcknexObject GetRegion()
         {
             return null;
@@ -107,6 +112,7 @@ namespace Acknex
         {
             base.Start();
             material = new Material(Shader.Find("Acknex/Font"));
+            World.Instance.CreatedObjects.Add(material);
             rectTransform.anchorMin = new Vector3(0f, 1f);
             rectTransform.anchorMax = new Vector3(0f, 1f);
             rectTransform.pivot = new Vector3(0f, 1f);

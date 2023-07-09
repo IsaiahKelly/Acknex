@@ -64,6 +64,8 @@ namespace Acknex
         public Matrix4x4 TopUV;
         private bool _triggered;
         private int _attachmentCount;
+        private VisibilityCallback _gapMeshRendererVisibilityCallback;
+        private VisibilityCallback _meshRendererVisibilityCallback;
 
         public MeshFilter Filter { get; set; }
         public MeshFilter GapFilter { get; set; }
@@ -102,6 +104,20 @@ namespace Acknex
                 return (GapQuad.GetColumn(0) + GapQuad.GetColumn(1) + GapQuad.GetColumn(2) + GapQuad.GetColumn(3)) / 4f;
             }
             return (BottomQuad.GetColumn(0) + BottomQuad.GetColumn(1) + BottomQuad.GetColumn(2) + BottomQuad.GetColumn(3)) / 4f;
+        }
+
+        public Vector3 GetSize()
+        {
+            if (HasGap)
+            {
+                return (GapQuad.GetColumn(0) + GapQuad.GetColumn(1) + GapQuad.GetColumn(2) + GapQuad.GetColumn(3));
+            }
+            return (BottomQuad.GetColumn(0) + BottomQuad.GetColumn(1) + BottomQuad.GetColumn(2) + BottomQuad.GetColumn(3));
+        }
+
+        public Vector3 GetEyeLevel()
+        {
+            return GetCenter();
         }
 
         public IAcknexObject GetRegion()
@@ -200,6 +216,9 @@ namespace Acknex
             _gameObject = new GameObject("Wall") { layer = World.Instance.WallsLayer.LayerIndex };
             _gameObject.transform.SetParent(transform, false);
             _meshRenderer = _gameObject.AddComponent<MeshRenderer>();
+            _meshRendererVisibilityCallback = _meshRenderer.gameObject.AddComponent<VisibilityCallback>();
+            _meshRendererVisibilityCallback.OnBecomeVisibleCallback += OnBecomeVisibleCallback;
+            _meshRendererVisibilityCallback.OnBecomeInvisibleCallback += OnBecomeInvisibleCallback;
             _meshRendererMaterials = _meshRenderer.materials;
             _collider = _gameObject.AddComponent<MeshCollider>();
             _collider.enabled = false;
@@ -213,6 +232,9 @@ namespace Acknex
             _gapGameObject = new GameObject("Gap") { layer = World.Instance.WallsLayer.LayerIndex };
             _gapGameObject.transform.SetParent(transform, false);
             _gapMeshRenderer = _gapGameObject.AddComponent<MeshRenderer>();
+            _gapMeshRendererVisibilityCallback = _gapMeshRenderer.gameObject.AddComponent<VisibilityCallback>();
+            _gapMeshRendererVisibilityCallback.OnBecomeVisibleCallback += OnBecomeVisibleCallback;
+            _gapMeshRendererVisibilityCallback.OnBecomeInvisibleCallback += OnBecomeInvisibleCallback;
             _gapMeshRendererMaterials = _gapMeshRenderer.materials;
             _gapCollider = _gapGameObject.AddComponent<MeshCollider>();
             _gapCollider.enabled = false;
@@ -250,6 +272,16 @@ namespace Acknex
             _audioSource.rolloffMode = AudioRolloffMode.Linear;
             World.Instance.StartManagedCoroutine(this, TriggerTickEvents());
             World.Instance.StartManagedCoroutine(this, TriggerSecEvents());
+        }
+
+        private void OnBecomeInvisibleCallback()
+        {
+            AcknexObject.SetInteger(PropertyName.VISIBLE, 0);
+        }
+
+        private void OnBecomeVisibleCallback()
+        {
+            AcknexObject.SetInteger(PropertyName.VISIBLE, 1);
         }
 
         public void SetupTemplate()
@@ -290,9 +322,6 @@ namespace Acknex
             {
                 return;
             }
-            //AcknexObject.NoDirtyFlag = true;
-            //AcknexObject.SetFloat(PropertyName.DISTANCE, distance);
-            //AcknexObject.NoDirtyFlag = false;
             if (!AcknexObject.IsDirty)
             {
                 return;
@@ -302,8 +331,6 @@ namespace Acknex
             _vertexGameObjectB.transform.position = (HasGap ? GapQuad : BottomQuad).GetColumn(2);
             _audioSourceGameObject.transform.position = GetCenter();
             _meshRenderer.enabled = !DisableRender;
-            var invisible = AcknexObject.GetFloat(PropertyName.INVISIBLE);
-            AcknexObject.SetFloat(PropertyName.VISIBLE, invisible > 0f ? 0f : 1f);
             _meshRenderer.shadowCastingMode = TextureObject != null && TextureObject.AcknexObject.HasFlag(PropertyName.SKY) ? ShadowCastingMode.Off : ShadowCastingMode.TwoSided;
             var impassable = AcknexObject.HasFlag(PropertyName.IMPASSABLE);
             var passable = AcknexObject.HasFlag(PropertyName.PASSABLE);
@@ -312,7 +339,7 @@ namespace Acknex
             _vertexTriggerB.radius = _vertexTriggerA.radius = dist;
             var fence = AcknexObject.HasFlag(PropertyName.FENCE);
             _gapInvertedCollider.enabled = _gapCollider.enabled = !passable && ((HasGap && (fence || !impassable)) || (!HasGap && impassable));
-            if (invisible == 1f)
+            if (AcknexObject.HasFlag(PropertyName.INVISIBLE))
             {
                 _gapMeshRenderer.enabled = _meshRenderer.enabled = false;
                 return;

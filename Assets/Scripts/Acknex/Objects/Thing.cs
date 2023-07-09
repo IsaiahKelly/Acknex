@@ -2,6 +2,7 @@
 using Acknex.Interfaces;
 using UnityEngine;
 using Utils;
+using static Game.CONTATO;
 using NameId = System.UInt32;
 using PropertyName = Acknex.Interfaces.PropertyName;
 
@@ -31,6 +32,8 @@ namespace Acknex
         private MeshFilter _modelMeshFilter;
         private MeshRenderer _modelMeshRenderer;
         private MeshCollider _modelMeshCollider;
+        private bool _visible;
+        private VisibilityCallback _meshRendererVisibilityCallback;
 
         public Texture TextureObject => AcknexObject.TryGetAcknexObject(PropertyName.TEXTURE, out var textureObject) ? textureObject?.Container as Texture : null;
         public Bitmap BitmapImage => TextureObject?.GetBitmapAt();
@@ -56,13 +59,18 @@ namespace Acknex
         {
             var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
             ambient += World.Instance.AcknexObject.GetFloat(PropertyName.AMBIENT);
-            ambient *= ((IGraphicObject)GetRegion().Container).GetAmbient();
+            //ambient *= ((IGraphicObject)GetRegion().Container).GetAmbient();
             return ambient;
         }
 
         public Vector3 GetCenter()
         {
             return transform.position + new Vector3(0f, _innerGameObject.transform.localScale.y * 0.5f, 0f);
+        }
+
+        public Vector3 GetEyeLevel()
+        {
+            return transform.position + new Vector3(0f, GetSize(), 0f);
         }
 
         public IAcknexObject GetRegion()
@@ -125,6 +133,9 @@ namespace Acknex
             AcknexObject.IsInstance = true;
             _lastGround = AcknexObject.HasFlag(PropertyName.GROUND);
             _innerGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
+            _meshRendererVisibilityCallback = _meshRenderer.gameObject.AddComponent<VisibilityCallback>();
+            _meshRendererVisibilityCallback.OnBecomeVisibleCallback += OnBecomeVisibleCallback;
+            _meshRendererVisibilityCallback.OnBecomeInvisibleCallback += OnBecomeInvisibleCallback;
             _meshRendererMaterials = _meshRenderer.materials;
             foreach (var material in _meshRendererMaterials)
             {
@@ -162,6 +173,7 @@ namespace Acknex
             _modelGameObject.layer = World.Instance.ThingsAndActorsLayer.LayerIndex;
             _modelMeshRenderer = _modelGameObject.AddComponent<MeshRenderer>();
             _modelMeshRenderer.material = new Material(Shader.Find("Acknex/Model"));
+            //World.Instance.CreatedObjects.Add(_modelMeshRenderer.material);
             _modelMaterials = _modelMeshRenderer.materials;
             _modelMeshFilter = _modelGameObject.AddComponent<MeshFilter>();
             _modelMeshFilter.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
@@ -171,12 +183,23 @@ namespace Acknex
             World.Instance.StartManagedCoroutine(this, TriggerSecEvents());
         }
 
+        private void OnBecomeVisibleCallback()
+        {
+            AcknexObject.SetInteger(PropertyName.VISIBLE, 1);
+        }
+
+        private void OnBecomeInvisibleCallback()
+        {
+            AcknexObject.SetInteger(PropertyName.VISIBLE, 0);
+        }
+
         public void SetupTemplate()
         {
         }
 
         public virtual void UpdateObject()
         {
+            var colliderRadius = GetRadius();
             var thingX = AcknexObject.GetFloat(PropertyName.X);
             var thingY = AcknexObject.GetFloat(PropertyName.Y);
             var thingZ = AcknexObject.GetFloat(PropertyName.HEIGHT);
@@ -216,24 +239,13 @@ namespace Acknex
             int side;
             if (sides > 1 && activeCamera != null)
             {
-                var halfStep = 180f / sides;
-                //for (var i = 0; i < sides; i++)
-                //{
-                //    Debug.DrawRay(GetCenter(), Quaternion.Euler(0f, (i * halfStep * 2f) - halfStep, 0f) * Vector3.forward * 2f, Color.cyan);
-                //}
                 var thingToCameraDirection = AngleUtils.To2D(activeCamera.transform.position - GetCenter()).normalized;
-                //DebugExtension.DebugArrow(GetCenter(), thingToCameraDirection * 2f, Color.magenta);
                 var thingAngle = AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat(PropertyName.ANGLE));
                 var thingDirection = Quaternion.Euler(0f, thingAngle, 0f) * Vector3.forward;
-                //DebugExtension.DebugArrow(GetCenter(), thingDirection * 2f, Color.blue);
                 var angle = Vector3.SignedAngle(thingToCameraDirection, thingDirection, Vector3.up);
                 var normalizedAngle = (angle + 360f) % 360f;
                 var spanSize = 360 / sides;
                 var span = Mathf.FloorToInt((normalizedAngle + spanSize / 2f) / spanSize % sides);
-                //if (AcknexObject.DebugMarked)
-                //{
-                //    Debug.Log(angle + ":" + span);
-                //}
                 side =  span % sides;
             }
             else
@@ -275,40 +287,28 @@ namespace Acknex
             }
             transform.position = new Vector3(thingX, thingZ, thingY);
             _positionSet = true;
-            AcknexObject.SetFloat(PropertyName.VISIBLE, AcknexObject.GetFloat(PropertyName.INVISIBLE) > 0f ? 0f : 1f);
             var invisible = AcknexObject.HasFlag(PropertyName.INVISIBLE);
             if (invisible)
             {
                 _meshRenderer.enabled = false;
-                _triggerCollider.enabled = /*_collider.enabled =*/ _characterController.enabled = false;
+                _triggerCollider.enabled = _characterController.enabled = false;
                 return;
             }
             _characterController.enabled = true;
-            //_spriteCollider.enabled = _collider.enabled = _characterController.enabled = true;
             _meshRenderer.enabled = true;
-            //var height = _innerGameObject.transform.localPosition.y + _innerGameObject.transform.localScale.y * 0.5f;
-            //_collider.center = _characterController.center = new Vector3(0f, height, 0f);
             var actorClimb = World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB);
-            var actorRadius = GetColliderRadius();
+            var actorRadius = colliderRadius;
             var possibleClimb = Mathf.Min(actorRadius, actorClimb);
-            /*_collider.height = */_characterController.height = _innerGameObject.transform.localScale.y - possibleClimb;
-            /*_collider.center = */_characterController.center = new Vector3(0f, _characterController.height * 0.5f + possibleClimb, 0f);
-            /*_collider.radius = */_characterController.radius = actorRadius;
-            //var carefully = AcknexObject.HasFlag(PropertyName.CAREFULLY);
-            //_characterController.includeLayers = carefully ? World.Instance.WallsWaterRegionsOffsetAndThings : default;
+            _characterController.height = _innerGameObject.transform.localScale.y - possibleClimb;
+            _characterController.center = new Vector3(0f, GetSize() * 0.5f + possibleClimb, 0f);
+            _characterController.radius = actorRadius;
             if (AcknexObject.HasFlag(PropertyName.PASSABLE))
             {
-                //_spriteCollider.enabled = _collider.enabled = false;
                 _characterController.includeLayers = 0;
-                //if (target == null)
-                //{
-                //    _characterController.enabled = false;
-                //}
             }
             else
             {
                 _characterController.includeLayers = World.Instance.PlayerMask;
-                /*_spriteCollider.enabled = _collider.enabled = _characterController.enabled =true;*/
             }
             _triggerCollider.center = _characterController.center;
             _triggerCollider.radius = AcknexObject.GetFloat(PropertyName.DIST);
@@ -345,6 +345,16 @@ namespace Acknex
                     }
                 }
             }
+        }
+
+        private float GetRadius()
+        {
+            return _characterController.radius;
+        }
+
+        private float GetSize()
+        {
+            return _characterController.height;
         }
 
         public override string ToString()
@@ -391,18 +401,9 @@ namespace Acknex
             }
         }
 
-        private void OnCollisionExit(Collision obj)
-        {
-        }
-
         private void OnControllerColliderHit(ControllerColliderHit controllerColliderHit)
         {
             ProcessCollision(controllerColliderHit);
-        }
-
-        private void OnCollisionEnter(Collision collision)
-        {
-
         }
 
         private void ProcessCollision(ControllerColliderHit controllerColliderHit)
@@ -565,20 +566,6 @@ namespace Acknex
         {
             //todo: implement
             yield break;
-            //for (; ; )
-            //{
-            //    AcknexObject.IsDirty = true;
-            //    var pos = new Vector2(AcknexObject.GetFloat(PropertyName.X), AcknexObject.GetFloat("y"));
-            //    var playerPos = new Vector2(World.Instance.GetSkillValue("PLAYER_X"), World.Instance.GetSkillValue("PLAYER_Y"));
-            //    var targetPos = pos + (pos - playerPos).normalized * 1000f;
-            //    Debug.DrawLine(pos, targetPos, Color.yellow, 10f);
-            //    if (MoveToPointStep(targetPos, World.Instance.GetSkillValue("PLAYER_SIZE") * 2f))
-            //    {
-            //        AcknexObject.SetAcknexObject(PropertyName.TARGET, null);
-            //        yield break;
-            //    }
-            //    yield return null;
-            //}
         }
 
         private IEnumerator MoveToAngle()
@@ -731,18 +718,19 @@ namespace Acknex
 
         private bool WontDrop(Vector3 delta)
         {
-            if (AcknexObject.HasFlag(PropertyName.GROUND))
-            {
-                return true;
-            }
-            delta.y = 0f;
-            var actorClimb = World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB);
-            var finalPos = _characterController.transform.position + delta + new Vector3(0f, actorClimb, 0f);
-            if (Physics.Raycast(finalPos, Vector3.down, out var raycastHit, World.Instance.WallsWaterAndRegions) && raycastHit.collider.gameObject.layer != World.Instance.WaterLayer.LayerIndex && raycastHit.distance < actorClimb * 2f)
-            {
-                return true;
-            }
-            return false;
+            return true;
+            //if (AcknexObject.HasFlag(PropertyName.GROUND))
+            //{
+            //    return true;
+            //}
+            //delta.y = 0f;
+            //var actorClimb = World.Instance.GetSkillValue(SkillName.ACTOR_CLIMB);
+            //var finalPos = _characterController.transform.position + delta + new Vector3(0f, actorClimb, 0f);
+            //if (Physics.Raycast(finalPos, Vector3.down, out var raycastHit, World.Instance.WallsWaterAndRegions) && raycastHit.collider.gameObject.layer != World.Instance.WaterLayer.LayerIndex && raycastHit.distance < actorClimb * 2f)
+            //{
+            //    return true;
+            //}
+            //return false;
         }
 
         public bool MoveToPointStep(Vector2 nextPoint, float? minDistance = null)

@@ -526,7 +526,6 @@ namespace Acknex
             {
                 case Wall wall:
                     {
-                        //var name = acknexObject.Name;
                         if (!AllWallsByName.TryGetValue(nameId, out var list))
                         {
                             list = new HashSet<Wall>();
@@ -542,7 +541,6 @@ namespace Acknex
                     }
                 case Region region:
                     {
-                        //var name = acknexObject.Name;
                         if (!AllRegionsByName.TryGetValue(nameId, out var list))
                         {
                             list = new HashSet<Region>();
@@ -558,7 +556,6 @@ namespace Acknex
                     }
                 case Actor actor:
                     {
-                        //var name = acknexObject.Name;
                         if (!AllActorsByName.TryGetValue(nameId, out var list))
                         {
                             list = new HashSet<Actor>();
@@ -574,7 +571,6 @@ namespace Acknex
                     }
                 case Thing thing:
                     {
-                        //var name = acknexObject.Name;
                         if (!AllThingsByName.TryGetValue(nameId, out var list))
                         {
                             list = new HashSet<Thing>();
@@ -590,7 +586,6 @@ namespace Acknex
                     }
                 case Way way:
                     {
-                        //var name = acknexObject.Name;
                         if (!AllWaysByName.TryGetValue(nameId, out var list))
                         {
                             list = new HashSet<Way>();
@@ -640,7 +635,6 @@ namespace Acknex
             var region = acknexObject.Container as Region;
             if (region != null)
             {
-                //var regionName = region.AcknexObject.Name;
                 var nameInt = region.AcknexObject.NameId;
                 foreach (var instance in AllRegionsByName[nameInt])
                 {
@@ -699,7 +693,7 @@ namespace Acknex
             }
             else
             {
-                ray = new Ray(View.Instance.ViewCamera.transform.position, (acknexObject.Container.GetCenter() - View.Instance.ViewCamera.transform.position).normalized);
+                ray = new Ray(View.Instance.ViewCamera.transform.position, (acknexObject.Container.GetEyeLevel() - View.Instance.ViewCamera.transform.position).normalized);
             }
             var shootFac = GetSkillValue(SkillName.SHOOT_FAC);
             var shootRange = GetSkillValue(SkillName.SHOOT_RANGE);
@@ -762,7 +756,7 @@ namespace Acknex
             UpdateSkillValue(SkillName.SHOOT_ANGLE, 0f);
             SetSynonymObject(SynonymName.HIT, null);
             Array.Clear(_raycastResults, 0, MaxHits);
-            Physics.RaycastNonAlloc(ray, _raycastResults, shootRange, WallsWaterRegionsAndSprites, QueryTriggerInteraction.Collide);
+            Physics.RaycastNonAlloc(ray, _raycastResults, shootRange, WallsWaterRegionsAndSprites, QueryTriggerInteraction.Ignore);
             Array.Sort(_raycastResults, (a, b) => a.distance.CompareTo(b.distance));
             for (var i = 0; i < MaxHits; i++)
             {

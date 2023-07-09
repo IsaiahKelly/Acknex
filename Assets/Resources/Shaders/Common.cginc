@@ -30,9 +30,11 @@ int _PORTCULLIS;
 int _TRANSPARENT;
 int _DIAPHANOUS;
 
-float _PLAYERZ;
-float _FLOORHGT;
-float _CEILHGT;
+float _PLAYER_Z;
+float _FLOOR_HGT;
+float _CEIL_HGT;
+int _IF_DIVE;
+int _IF_ARISE;
 
 void ApplyPalette(inout float4 color)
 {
@@ -61,11 +63,11 @@ void EmulatePalette(inout float4 color) {
 
 void clipPlanes(inout float3 c, float3 worldPos)
 {
-	if (_PLAYERZ <= _FLOORHGT + 0.5) {
-		c *= smoothstep(_FLOORHGT, _FLOORHGT + 0.5, worldPos.y);
+	if (!_IF_DIVE && _PLAYER_Z <= _FLOOR_HGT + 0.5) {
+		c *= smoothstep(_FLOOR_HGT, _FLOOR_HGT + 0.5, worldPos.y);
 	}
-	if (_PLAYERZ >= _CEILHGT - 0.5) {
-		c *= smoothstep(_CEILHGT, _CEILHGT - 0.5, worldPos.y);
+	if (!_IF_ARISE && _PLAYER_Z >= _CEIL_HGT - 0.5) {
+		c *= smoothstep(_CEIL_HGT, _CEIL_HGT - 0.5, worldPos.y);
 	}
 }
 

@@ -46,6 +46,10 @@ namespace Acknex
         {
             return transform.position;
         }
+        public Vector3 GetEyeLevel()
+        {
+            return GetCenter();
+        }
 
         public IAcknexObject GetRegion()
         {
