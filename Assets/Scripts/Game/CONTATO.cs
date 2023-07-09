@@ -1,5 +1,6 @@
 
         using System;
+        using Common;
         using Acknex.Interfaces;
         using System.Collections;
         using System.Collections.Generic;
@@ -12,14 +13,14 @@
                 public void SetWorld(IAcknexWorld world) {
                     _world = world;
                 }
-        
-                private Dictionary<string, ICompiledAction> _callbacks = new Dictionary<string, ICompiledAction>();
+        //
+                private Dictionary<string, Type> _callbacks = new Dictionary<string, Type>();
                 public IEnumerator CallAction(string name, IAcknexObject MY, IAcknexObject THERE)
                 {
                     reset:
                     if (name != null) {
                         if (_callbacks.TryGetValue(name, out var callback)) {
-                            var enumerator = callback;
+                            var enumerator = (ICompiledAction)CoroutinePool.Get(callback);
                             enumerator.Reset();
                             enumerator.MY = MY;
                             enumerator.THERE = THERE;
@@ -40,282 +41,558 @@
                         }
                     }
                     yield break;
-                    }public CONTATO() {_callbacks.Add("DISPLAYMESSAGE", new DISPLAYMESSAGE());
-_callbacks.Add("CONTROLMESSAGEDISPLAY", new CONTROLMESSAGEDISPLAY());
-_callbacks.Add("CONTROLUNDERWATERTIME", new CONTROLUNDERWATERTIME());
-_callbacks.Add("VANISHSTOP", new VANISHSTOP());
-_callbacks.Add("VANISHFORGOOD", new VANISHFORGOOD());
-_callbacks.Add("LOCATEACTOR", new LOCATEACTOR());
-_callbacks.Add("LOOKPLAYER", new LOOKPLAYER());
-_callbacks.Add("PROBE", new PROBE());
-_callbacks.Add("FOLLOWANGLE", new FOLLOWANGLE());
-_callbacks.Add("REPELANGLE", new REPELANGLE());
-_callbacks.Add("ACTORJUMP", new ACTORJUMP());
-_callbacks.Add("ACTORJUMPSTOP", new ACTORJUMPSTOP());
-_callbacks.Add("TURNLEFT", new TURNLEFT());
-_callbacks.Add("TURNRIGHT", new TURNRIGHT());
-_callbacks.Add("SHOWAMMO", new SHOWAMMO());
-_callbacks.Add("DECAMMO", new DECAMMO());
-_callbacks.Add("INNOCENTKILLED", new INNOCENTKILLED());
-_callbacks.Add("DRILLHOLE", new DRILLHOLE());
-_callbacks.Add("SHOWMAINMENU", new SHOWMAINMENU());
-_callbacks.Add("SHOWSAVEMENU", new SHOWSAVEMENU());
-_callbacks.Add("SHOWLOADMENU", new SHOWLOADMENU());
-_callbacks.Add("SHOWSOUNDVOLUMEMENU", new SHOWSOUNDVOLUMEMENU());
-_callbacks.Add("HIDEMENU", new HIDEMENU());
-_callbacks.Add("MENUUP", new MENUUP());
-_callbacks.Add("MENUDOWN", new MENUDOWN());
-_callbacks.Add("SUBMENUUP", new SUBMENUUP());
-_callbacks.Add("SUBMENUDOWN", new SUBMENUDOWN());
-_callbacks.Add("VOLUMEUP", new VOLUMEUP());
-_callbacks.Add("VOLUMEDOWN", new VOLUMEDOWN());
-_callbacks.Add("HIDEWEAPON", new HIDEWEAPON());
-_callbacks.Add("SHOWWEAPON", new SHOWWEAPON());
-_callbacks.Add("TYPEGAME", new TYPEGAME());
-_callbacks.Add("CHOOSEGAME", new CHOOSEGAME());
-_callbacks.Add("CHOOSESUBMENU", new CHOOSESUBMENU());
-_callbacks.Add("SAVEERRORMESSAGE", new SAVEERRORMESSAGE());
-_callbacks.Add("EXITGAME", new EXITGAME());
-_callbacks.Add("RESETANSWER", new RESETANSWER());
-_callbacks.Add("ASKFOREXIT", new ASKFOREXIT());
-_callbacks.Add("ENDOFLEVEL", new ENDOFLEVEL());
-_callbacks.Add("EXPLOSIONSTART", new EXPLOSIONSTART());
-_callbacks.Add("EXPLOSIONSMOKE", new EXPLOSIONSMOKE());
-_callbacks.Add("EXPLOSIONEND", new EXPLOSIONEND());
-_callbacks.Add("EXPLODETARGET", new EXPLODETARGET());
-_callbacks.Add("EXPLODEMISSILE", new EXPLODEMISSILE());
-_callbacks.Add("AIMMISSILE", new AIMMISSILE());
-_callbacks.Add("IMPLOSIONSTART", new IMPLOSIONSTART());
-_callbacks.Add("IMPLOSIONCRUSH", new IMPLOSIONCRUSH());
-_callbacks.Add("IMPLOSIONFLARE", new IMPLOSIONFLARE());
-_callbacks.Add("IMPLOSIONEND", new IMPLOSIONEND());
-_callbacks.Add("IMPLODEPARTICLE", new IMPLODEPARTICLE());
-_callbacks.Add("BEAMREACT", new BEAMREACT());
-_callbacks.Add("LOCATEPARTICLE", new LOCATEPARTICLE());
-_callbacks.Add("LOCATEPLAYERPARTICLE", new LOCATEPLAYERPARTICLE());
-_callbacks.Add("TIMEOUTPARTICLE", new TIMEOUTPARTICLE());
-_callbacks.Add("CHOOSEGRANADE", new CHOOSEGRANADE());
-_callbacks.Add("CHOOSEMISSILE", new CHOOSEMISSILE());
-_callbacks.Add("CHOOSEPARTICLE", new CHOOSEPARTICLE());
-_callbacks.Add("CASTBLOOD", new CASTBLOOD());
-_callbacks.Add("PICKUPMEDKIT", new PICKUPMEDKIT());
-_callbacks.Add("PICKUPARMOUR", new PICKUPARMOUR());
-_callbacks.Add("PICKUPMP5", new PICKUPMP5());
-_callbacks.Add("PICKUPSTINGER", new PICKUPSTINGER());
-_callbacks.Add("PICKUPQUANTUM", new PICKUPQUANTUM());
-_callbacks.Add("PICKAMMO", new PICKAMMO());
-_callbacks.Add("PICKGRANADE", new PICKGRANADE());
-_callbacks.Add("PICKSTINGERAMMO", new PICKSTINGERAMMO());
-_callbacks.Add("PICKQUANTUMAMMO", new PICKQUANTUMAMMO());
-_callbacks.Add("FLASHREGION", new FLASHREGION());
-_callbacks.Add("IMPLODELIGHT", new IMPLODELIGHT());
-_callbacks.Add("BOUNCE", new BOUNCE());
-_callbacks.Add("FREEFALL", new FREEFALL());
-_callbacks.Add("EXPLOSIONTIMER", new EXPLOSIONTIMER());
-_callbacks.Add("INIT_MOVE", new INIT_MOVE());
-_callbacks.Add("MOVE_ME", new MOVE_ME());
-_callbacks.Add("SET_WALKING", new SET_WALKING());
-_callbacks.Add("SET_SWIMMING", new SET_SWIMMING());
-_callbacks.Add("SET_DIVING", new SET_DIVING());
-_callbacks.Add("SET_DEATH", new SET_DEATH());
-_callbacks.Add("SET_MOVING", new SET_MOVING());
-_callbacks.Add("STOP_MOVING", new STOP_MOVING());
-_callbacks.Add("SET_BLUE", new SET_BLUE());
-_callbacks.Add("RESET_BLUE", new RESET_BLUE());
-_callbacks.Add("ENTER_WATER", new ENTER_WATER());
-_callbacks.Add("LEAVE_WATER", new LEAVE_WATER());
-_callbacks.Add("DIVE_UP", new DIVE_UP());
-_callbacks.Add("REGIO_DIVE", new REGIO_DIVE());
-_callbacks.Add("REGIO_ARISE", new REGIO_ARISE());
-_callbacks.Add("HITPLAYER", new HITPLAYER());
-_callbacks.Add("REDOUT", new REDOUT());
-_callbacks.Add("REDIN", new REDIN());
-_callbacks.Add("FLASHPLAYER", new FLASHPLAYER());
-_callbacks.Add("FLASHOUT", new FLASHOUT());
-_callbacks.Add("FLASHIN", new FLASHIN());
-_callbacks.Add("HITPLAYERDELAY", new HITPLAYERDELAY());
-_callbacks.Add("KILLPLAYER", new KILLPLAYER());
-_callbacks.Add("FINISHPLAYER", new FINISHPLAYER());
-_callbacks.Add("TOGGLEGODMODE", new TOGGLEGODMODE());
-_callbacks.Add("SETCKEY", new SETCKEY());
-_callbacks.Add("SETGKEY", new SETGKEY());
-_callbacks.Add("SETOKEY", new SETOKEY());
-_callbacks.Add("SETDKEY", new SETDKEY());
-_callbacks.Add("FIRE", new FIRE());
-_callbacks.Add("BURST", new BURST());
-_callbacks.Add("THROW", new THROW());
-_callbacks.Add("LAUNCH", new LAUNCH());
-_callbacks.Add("BEAM", new BEAM());
-_callbacks.Add("RAISE", new RAISE());
-_callbacks.Add("LOWER", new LOWER());
-_callbacks.Add("TARGETON", new TARGETON());
-_callbacks.Add("TARGETOFF", new TARGETOFF());
-_callbacks.Add("SELECTNONE", new SELECTNONE());
-_callbacks.Add("SELECTTRICORDER", new SELECTTRICORDER());
-_callbacks.Add("SELECTMP5", new SELECTMP5());
-_callbacks.Add("SELECTMP5BURST", new SELECTMP5BURST());
-_callbacks.Add("SELECTGRANADE", new SELECTGRANADE());
-_callbacks.Add("SELECTSTINGER", new SELECTSTINGER());
-_callbacks.Add("SELECTQUANTUM", new SELECTQUANTUM());
-_callbacks.Add("ZOOMMAPIN", new ZOOMMAPIN());
-_callbacks.Add("ZOOMMAPOUT", new ZOOMMAPOUT());
-_callbacks.Add("SHOWPDABRIEFING", new SHOWPDABRIEFING());
-_callbacks.Add("SHOWPDAGAMEOVER", new SHOWPDAGAMEOVER());
-_callbacks.Add("PDAMESSAGEOFF", new PDAMESSAGEOFF());
-_callbacks.Add("REPEATMUSIC", new REPEATMUSIC());
-_callbacks.Add("SETSOUNDVOL", new SETSOUNDVOL());
-_callbacks.Add("MOUSE_TOGGLE", new MOUSE_TOGGLE());
-_callbacks.Add("SCAN_OBJ", new SCAN_OBJ());
-_callbacks.Add("PICKKEY1", new PICKKEY1());
-_callbacks.Add("PICKKEY2", new PICKKEY2());
-_callbacks.Add("PICKUPLOCALMP5", new PICKUPLOCALMP5());
-_callbacks.Add("ENDPHASE", new ENDPHASE());
-_callbacks.Add("DRKLTURN", new DRKLTURN());
-_callbacks.Add("DRKLWAIT", new DRKLWAIT());
-_callbacks.Add("DRKLWANDER", new DRKLWANDER());
-_callbacks.Add("DRKLSEARCH", new DRKLSEARCH());
-_callbacks.Add("DRKLHIDE", new DRKLHIDE());
-_callbacks.Add("DRKLLISTEN", new DRKLLISTEN());
-_callbacks.Add("DRKLJUMP", new DRKLJUMP());
-_callbacks.Add("DRKLLOOKFOR", new DRKLLOOKFOR());
-_callbacks.Add("DRKLHEAR", new DRKLHEAR());
-_callbacks.Add("DRKLDOWN", new DRKLDOWN());
-_callbacks.Add("DRKLFOLLOWATTACK", new DRKLFOLLOWATTACK());
-_callbacks.Add("DRKLSHOOT", new DRKLSHOOT());
-_callbacks.Add("DRKLESCAPE", new DRKLESCAPE());
-_callbacks.Add("DRKLDEAD", new DRKLDEAD());
-_callbacks.Add("DRKLDIE", new DRKLDIE());
-_callbacks.Add("DRKLIMPLODE", new DRKLIMPLODE());
-_callbacks.Add("DRKLHIT", new DRKLHIT());
-_callbacks.Add("CYCLEDRKLATTACK", new CYCLEDRKLATTACK());
-_callbacks.Add("CYCLEDRKLHIDE", new CYCLEDRKLHIDE());
-_callbacks.Add("CYCLEDRKLSHOOT", new CYCLEDRKLSHOOT());
-_callbacks.Add("DRKLTALK", new DRKLTALK());
-_callbacks.Add("TROPTURN", new TROPTURN());
-_callbacks.Add("TROPBACKOFF", new TROPBACKOFF());
-_callbacks.Add("TROPWAIT", new TROPWAIT());
-_callbacks.Add("TROPWANDER", new TROPWANDER());
-_callbacks.Add("TROPSEARCH", new TROPSEARCH());
-_callbacks.Add("TROPHIDE", new TROPHIDE());
-_callbacks.Add("TROPLISTEN", new TROPLISTEN());
-_callbacks.Add("TROPWARNING", new TROPWARNING());
-_callbacks.Add("TROPLOOKFOR", new TROPLOOKFOR());
-_callbacks.Add("TROPFOLLOW", new TROPFOLLOW());
-_callbacks.Add("TROPFOLLOWATTACK", new TROPFOLLOWATTACK());
-_callbacks.Add("TROPFOLLOWWARNING", new TROPFOLLOWWARNING());
-_callbacks.Add("TROPAIM", new TROPAIM());
-_callbacks.Add("TROPSHOOT", new TROPSHOOT());
-_callbacks.Add("TROPESCAPE", new TROPESCAPE());
-_callbacks.Add("TROPDEAD", new TROPDEAD());
-_callbacks.Add("TROPDIE", new TROPDIE());
-_callbacks.Add("TROPIMPLODE", new TROPIMPLODE());
-_callbacks.Add("TROPHIT", new TROPHIT());
-_callbacks.Add("TROPDROPKEY", new TROPDROPKEY());
-_callbacks.Add("CYCLETROPATTACK", new CYCLETROPATTACK());
-_callbacks.Add("CYCLETROPHIDE", new CYCLETROPHIDE());
-_callbacks.Add("CYCLETROPBACK", new CYCLETROPBACK());
-_callbacks.Add("CYCLETROPSHOOT", new CYCLETROPSHOOT());
-_callbacks.Add("CYCLETROPWARNING", new CYCLETROPWARNING());
-_callbacks.Add("TROPTALK", new TROPTALK());
-_callbacks.Add("TROPSHOUT", new TROPSHOUT());
-_callbacks.Add("PICKTROPAMMO", new PICKTROPAMMO());
-_callbacks.Add("PICKTROPARMOUR", new PICKTROPARMOUR());
-_callbacks.Add("HUMMERHIT", new HUMMERHIT());
-_callbacks.Add("LNCHTURN", new LNCHTURN());
-_callbacks.Add("LNCHBACKOFF", new LNCHBACKOFF());
-_callbacks.Add("LNCHWAIT", new LNCHWAIT());
-_callbacks.Add("LNCHWANDER", new LNCHWANDER());
-_callbacks.Add("LNCHSEARCH", new LNCHSEARCH());
-_callbacks.Add("LNCHHIDE", new LNCHHIDE());
-_callbacks.Add("LNCHLISTEN", new LNCHLISTEN());
-_callbacks.Add("LNCHLOOKFOR", new LNCHLOOKFOR());
-_callbacks.Add("LNCHFOLLOW", new LNCHFOLLOW());
-_callbacks.Add("LNCHFOLLOWATTACK", new LNCHFOLLOWATTACK());
-_callbacks.Add("LNCHAIM", new LNCHAIM());
-_callbacks.Add("LNCHSHOOT", new LNCHSHOOT());
-_callbacks.Add("LNCHESCAPE", new LNCHESCAPE());
-_callbacks.Add("LNCHDEAD", new LNCHDEAD());
-_callbacks.Add("LNCHDIE", new LNCHDIE());
-_callbacks.Add("LNCHIMPLODE", new LNCHIMPLODE());
-_callbacks.Add("LNCHHIT", new LNCHHIT());
-_callbacks.Add("LNCHDROPKEY", new LNCHDROPKEY());
-_callbacks.Add("CYCLELNCHATTACK", new CYCLELNCHATTACK());
-_callbacks.Add("CYCLELNCHHIDE", new CYCLELNCHHIDE());
-_callbacks.Add("CYCLELNCHBACK", new CYCLELNCHBACK());
-_callbacks.Add("CYCLELNCHSHOOT", new CYCLELNCHSHOOT());
-_callbacks.Add("LNCHTALK", new LNCHTALK());
-_callbacks.Add("LNCHSHOUT", new LNCHSHOUT());
-_callbacks.Add("REPTTURN", new REPTTURN());
-_callbacks.Add("REPTWAIT", new REPTWAIT());
-_callbacks.Add("REPTWANDER", new REPTWANDER());
-_callbacks.Add("REPTSEARCH", new REPTSEARCH());
-_callbacks.Add("REPTHIDE", new REPTHIDE());
-_callbacks.Add("REPTLISTEN", new REPTLISTEN());
-_callbacks.Add("REPTJUMP", new REPTJUMP());
-_callbacks.Add("REPTLOOKFOR", new REPTLOOKFOR());
-_callbacks.Add("REPTHEAR", new REPTHEAR());
-_callbacks.Add("REPTDOWN", new REPTDOWN());
-_callbacks.Add("REPTFOLLOWATTACK", new REPTFOLLOWATTACK());
-_callbacks.Add("REPTSHOOT", new REPTSHOOT());
-_callbacks.Add("REPTESCAPE", new REPTESCAPE());
-_callbacks.Add("REPTDEAD", new REPTDEAD());
-_callbacks.Add("REPTDIE", new REPTDIE());
-_callbacks.Add("REPTIMPLODE", new REPTIMPLODE());
-_callbacks.Add("REPTHIT", new REPTHIT());
-_callbacks.Add("CYCLEREPTATTACK", new CYCLEREPTATTACK());
-_callbacks.Add("CYCLEREPTHIDE", new CYCLEREPTHIDE());
-_callbacks.Add("CYCLEREPTSHOOT", new CYCLEREPTSHOOT());
-_callbacks.Add("REPTTALK", new REPTTALK());
-_callbacks.Add("NURSTURN", new NURSTURN());
-_callbacks.Add("NURSWAIT", new NURSWAIT());
-_callbacks.Add("NURSWANDER", new NURSWANDER());
-_callbacks.Add("NURSHIDE", new NURSHIDE());
-_callbacks.Add("NURSDEAD", new NURSDEAD());
-_callbacks.Add("NURSDIE", new NURSDIE());
-_callbacks.Add("NURSIMPLODE", new NURSIMPLODE());
-_callbacks.Add("NURSHIT", new NURSHIT());
-_callbacks.Add("NURSCYCLE", new NURSCYCLE());
-_callbacks.Add("NURSSCREAM", new NURSSCREAM());
-_callbacks.Add("NURSTALK", new NURSTALK());
-_callbacks.Add("DOCTTURN", new DOCTTURN());
-_callbacks.Add("DOCTWAIT", new DOCTWAIT());
-_callbacks.Add("DOCTWANDER", new DOCTWANDER());
-_callbacks.Add("DOCTHIDE", new DOCTHIDE());
-_callbacks.Add("DOCTDEAD", new DOCTDEAD());
-_callbacks.Add("DOCTDIE", new DOCTDIE());
-_callbacks.Add("DOCTIMPLODE", new DOCTIMPLODE());
-_callbacks.Add("DOCTHIT", new DOCTHIT());
-_callbacks.Add("DOCTCYCLE", new DOCTCYCLE());
-_callbacks.Add("DOCTSCREAM", new DOCTSCREAM());
-_callbacks.Add("DOCTTALK", new DOCTTALK());
-_callbacks.Add("SETFORCE1", new SETFORCE1());
-_callbacks.Add("TROPASSAULT", new TROPASSAULT());
-_callbacks.Add("WAYGUARD2", new WAYGUARD2());
-_callbacks.Add("DROPTROOPS2", new DROPTROOPS2());
-_callbacks.Add("WARNPLAYER", new WARNPLAYER());
-_callbacks.Add("RESETWARN", new RESETWARN());
-_callbacks.Add("SELECTOR", new SELECTOR());
-_callbacks.Add("RESETTOUCH", new RESETTOUCH());
-_callbacks.Add("SETTOUCH1", new SETTOUCH1());
-_callbacks.Add("SETTOUCH2", new SETTOUCH2());
-_callbacks.Add("SETTOUCH4", new SETTOUCH4());
-_callbacks.Add("SETTOUCH5", new SETTOUCH5());
-_callbacks.Add("SETTOUCH6", new SETTOUCH6());
-_callbacks.Add("SETTOUCH7", new SETTOUCH7());
-_callbacks.Add("SETTOUCH8", new SETTOUCH8());
-_callbacks.Add("OPENDOOR1", new OPENDOOR1());
-_callbacks.Add("OPENDOOR2", new OPENDOOR2());
-_callbacks.Add("OPENHATCH", new OPENHATCH());
-_callbacks.Add("OPENHATCHA", new OPENHATCHA());
-_callbacks.Add("OPENHATCHB", new OPENHATCHB());
-_callbacks.Add("OPENMJ3", new OPENMJ3());
-_callbacks.Add("OPENBLASTDOOR", new OPENBLASTDOOR());
-_callbacks.Add("NOTOPEN", new NOTOPEN());
-_callbacks.Add("DEFENSE1", new DEFENSE1());
-_callbacks.Add("STARTLEVEL", new STARTLEVEL());
-_callbacks.Add("LAUNCHMISSILES", new LAUNCHMISSILES());
-_callbacks.Add("STARTASSAULT", new STARTASSAULT());
-_callbacks.Add("FADEIN", new FADEIN());
+                    }public CONTATO() {_callbacks.Add("DISPLAYMESSAGE", typeof(DISPLAYMESSAGE));
+CoroutinePool.TryToRegister<DISPLAYMESSAGE>(out _, out _);
+_callbacks.Add("CONTROLMESSAGEDISPLAY", typeof(CONTROLMESSAGEDISPLAY));
+CoroutinePool.TryToRegister<CONTROLMESSAGEDISPLAY>(out _, out _);
+_callbacks.Add("CONTROLUNDERWATERTIME", typeof(CONTROLUNDERWATERTIME));
+CoroutinePool.TryToRegister<CONTROLUNDERWATERTIME>(out _, out _);
+_callbacks.Add("VANISHSTOP", typeof(VANISHSTOP));
+CoroutinePool.TryToRegister<VANISHSTOP>(out _, out _);
+_callbacks.Add("VANISHFORGOOD", typeof(VANISHFORGOOD));
+CoroutinePool.TryToRegister<VANISHFORGOOD>(out _, out _);
+_callbacks.Add("LOCATEACTOR", typeof(LOCATEACTOR));
+CoroutinePool.TryToRegister<LOCATEACTOR>(out _, out _);
+_callbacks.Add("LOOKPLAYER", typeof(LOOKPLAYER));
+CoroutinePool.TryToRegister<LOOKPLAYER>(out _, out _);
+_callbacks.Add("PROBE", typeof(PROBE));
+CoroutinePool.TryToRegister<PROBE>(out _, out _);
+_callbacks.Add("FOLLOWANGLE", typeof(FOLLOWANGLE));
+CoroutinePool.TryToRegister<FOLLOWANGLE>(out _, out _);
+_callbacks.Add("REPELANGLE", typeof(REPELANGLE));
+CoroutinePool.TryToRegister<REPELANGLE>(out _, out _);
+_callbacks.Add("ACTORJUMP", typeof(ACTORJUMP));
+CoroutinePool.TryToRegister<ACTORJUMP>(out _, out _);
+_callbacks.Add("ACTORJUMPSTOP", typeof(ACTORJUMPSTOP));
+CoroutinePool.TryToRegister<ACTORJUMPSTOP>(out _, out _);
+_callbacks.Add("TURNLEFT", typeof(TURNLEFT));
+CoroutinePool.TryToRegister<TURNLEFT>(out _, out _);
+_callbacks.Add("TURNRIGHT", typeof(TURNRIGHT));
+CoroutinePool.TryToRegister<TURNRIGHT>(out _, out _);
+_callbacks.Add("SHOWAMMO", typeof(SHOWAMMO));
+CoroutinePool.TryToRegister<SHOWAMMO>(out _, out _);
+_callbacks.Add("DECAMMO", typeof(DECAMMO));
+CoroutinePool.TryToRegister<DECAMMO>(out _, out _);
+_callbacks.Add("INNOCENTKILLED", typeof(INNOCENTKILLED));
+CoroutinePool.TryToRegister<INNOCENTKILLED>(out _, out _);
+_callbacks.Add("DRILLHOLE", typeof(DRILLHOLE));
+CoroutinePool.TryToRegister<DRILLHOLE>(out _, out _);
+_callbacks.Add("SHOWMAINMENU", typeof(SHOWMAINMENU));
+CoroutinePool.TryToRegister<SHOWMAINMENU>(out _, out _);
+_callbacks.Add("SHOWSAVEMENU", typeof(SHOWSAVEMENU));
+CoroutinePool.TryToRegister<SHOWSAVEMENU>(out _, out _);
+_callbacks.Add("SHOWLOADMENU", typeof(SHOWLOADMENU));
+CoroutinePool.TryToRegister<SHOWLOADMENU>(out _, out _);
+_callbacks.Add("SHOWSOUNDVOLUMEMENU", typeof(SHOWSOUNDVOLUMEMENU));
+CoroutinePool.TryToRegister<SHOWSOUNDVOLUMEMENU>(out _, out _);
+_callbacks.Add("HIDEMENU", typeof(HIDEMENU));
+CoroutinePool.TryToRegister<HIDEMENU>(out _, out _);
+_callbacks.Add("MENUUP", typeof(MENUUP));
+CoroutinePool.TryToRegister<MENUUP>(out _, out _);
+_callbacks.Add("MENUDOWN", typeof(MENUDOWN));
+CoroutinePool.TryToRegister<MENUDOWN>(out _, out _);
+_callbacks.Add("SUBMENUUP", typeof(SUBMENUUP));
+CoroutinePool.TryToRegister<SUBMENUUP>(out _, out _);
+_callbacks.Add("SUBMENUDOWN", typeof(SUBMENUDOWN));
+CoroutinePool.TryToRegister<SUBMENUDOWN>(out _, out _);
+_callbacks.Add("VOLUMEUP", typeof(VOLUMEUP));
+CoroutinePool.TryToRegister<VOLUMEUP>(out _, out _);
+_callbacks.Add("VOLUMEDOWN", typeof(VOLUMEDOWN));
+CoroutinePool.TryToRegister<VOLUMEDOWN>(out _, out _);
+_callbacks.Add("HIDEWEAPON", typeof(HIDEWEAPON));
+CoroutinePool.TryToRegister<HIDEWEAPON>(out _, out _);
+_callbacks.Add("SHOWWEAPON", typeof(SHOWWEAPON));
+CoroutinePool.TryToRegister<SHOWWEAPON>(out _, out _);
+_callbacks.Add("TYPEGAME", typeof(TYPEGAME));
+CoroutinePool.TryToRegister<TYPEGAME>(out _, out _);
+_callbacks.Add("CHOOSEGAME", typeof(CHOOSEGAME));
+CoroutinePool.TryToRegister<CHOOSEGAME>(out _, out _);
+_callbacks.Add("CHOOSESUBMENU", typeof(CHOOSESUBMENU));
+CoroutinePool.TryToRegister<CHOOSESUBMENU>(out _, out _);
+_callbacks.Add("SAVEERRORMESSAGE", typeof(SAVEERRORMESSAGE));
+CoroutinePool.TryToRegister<SAVEERRORMESSAGE>(out _, out _);
+_callbacks.Add("EXITGAME", typeof(EXITGAME));
+CoroutinePool.TryToRegister<EXITGAME>(out _, out _);
+_callbacks.Add("RESETANSWER", typeof(RESETANSWER));
+CoroutinePool.TryToRegister<RESETANSWER>(out _, out _);
+_callbacks.Add("ASKFOREXIT", typeof(ASKFOREXIT));
+CoroutinePool.TryToRegister<ASKFOREXIT>(out _, out _);
+_callbacks.Add("ENDOFLEVEL", typeof(ENDOFLEVEL));
+CoroutinePool.TryToRegister<ENDOFLEVEL>(out _, out _);
+_callbacks.Add("EXPLOSIONSTART", typeof(EXPLOSIONSTART));
+CoroutinePool.TryToRegister<EXPLOSIONSTART>(out _, out _);
+_callbacks.Add("EXPLOSIONSMOKE", typeof(EXPLOSIONSMOKE));
+CoroutinePool.TryToRegister<EXPLOSIONSMOKE>(out _, out _);
+_callbacks.Add("EXPLOSIONEND", typeof(EXPLOSIONEND));
+CoroutinePool.TryToRegister<EXPLOSIONEND>(out _, out _);
+_callbacks.Add("EXPLODETARGET", typeof(EXPLODETARGET));
+CoroutinePool.TryToRegister<EXPLODETARGET>(out _, out _);
+_callbacks.Add("EXPLODEMISSILE", typeof(EXPLODEMISSILE));
+CoroutinePool.TryToRegister<EXPLODEMISSILE>(out _, out _);
+_callbacks.Add("AIMMISSILE", typeof(AIMMISSILE));
+CoroutinePool.TryToRegister<AIMMISSILE>(out _, out _);
+_callbacks.Add("IMPLOSIONSTART", typeof(IMPLOSIONSTART));
+CoroutinePool.TryToRegister<IMPLOSIONSTART>(out _, out _);
+_callbacks.Add("IMPLOSIONCRUSH", typeof(IMPLOSIONCRUSH));
+CoroutinePool.TryToRegister<IMPLOSIONCRUSH>(out _, out _);
+_callbacks.Add("IMPLOSIONFLARE", typeof(IMPLOSIONFLARE));
+CoroutinePool.TryToRegister<IMPLOSIONFLARE>(out _, out _);
+_callbacks.Add("IMPLOSIONEND", typeof(IMPLOSIONEND));
+CoroutinePool.TryToRegister<IMPLOSIONEND>(out _, out _);
+_callbacks.Add("IMPLODEPARTICLE", typeof(IMPLODEPARTICLE));
+CoroutinePool.TryToRegister<IMPLODEPARTICLE>(out _, out _);
+_callbacks.Add("BEAMREACT", typeof(BEAMREACT));
+CoroutinePool.TryToRegister<BEAMREACT>(out _, out _);
+_callbacks.Add("LOCATEPARTICLE", typeof(LOCATEPARTICLE));
+CoroutinePool.TryToRegister<LOCATEPARTICLE>(out _, out _);
+_callbacks.Add("LOCATEPLAYERPARTICLE", typeof(LOCATEPLAYERPARTICLE));
+CoroutinePool.TryToRegister<LOCATEPLAYERPARTICLE>(out _, out _);
+_callbacks.Add("TIMEOUTPARTICLE", typeof(TIMEOUTPARTICLE));
+CoroutinePool.TryToRegister<TIMEOUTPARTICLE>(out _, out _);
+_callbacks.Add("CHOOSEGRANADE", typeof(CHOOSEGRANADE));
+CoroutinePool.TryToRegister<CHOOSEGRANADE>(out _, out _);
+_callbacks.Add("CHOOSEMISSILE", typeof(CHOOSEMISSILE));
+CoroutinePool.TryToRegister<CHOOSEMISSILE>(out _, out _);
+_callbacks.Add("CHOOSEPARTICLE", typeof(CHOOSEPARTICLE));
+CoroutinePool.TryToRegister<CHOOSEPARTICLE>(out _, out _);
+_callbacks.Add("CASTBLOOD", typeof(CASTBLOOD));
+CoroutinePool.TryToRegister<CASTBLOOD>(out _, out _);
+_callbacks.Add("PICKUPMEDKIT", typeof(PICKUPMEDKIT));
+CoroutinePool.TryToRegister<PICKUPMEDKIT>(out _, out _);
+_callbacks.Add("PICKUPARMOUR", typeof(PICKUPARMOUR));
+CoroutinePool.TryToRegister<PICKUPARMOUR>(out _, out _);
+_callbacks.Add("PICKUPMP5", typeof(PICKUPMP5));
+CoroutinePool.TryToRegister<PICKUPMP5>(out _, out _);
+_callbacks.Add("PICKUPSTINGER", typeof(PICKUPSTINGER));
+CoroutinePool.TryToRegister<PICKUPSTINGER>(out _, out _);
+_callbacks.Add("PICKUPQUANTUM", typeof(PICKUPQUANTUM));
+CoroutinePool.TryToRegister<PICKUPQUANTUM>(out _, out _);
+_callbacks.Add("PICKAMMO", typeof(PICKAMMO));
+CoroutinePool.TryToRegister<PICKAMMO>(out _, out _);
+_callbacks.Add("PICKGRANADE", typeof(PICKGRANADE));
+CoroutinePool.TryToRegister<PICKGRANADE>(out _, out _);
+_callbacks.Add("PICKSTINGERAMMO", typeof(PICKSTINGERAMMO));
+CoroutinePool.TryToRegister<PICKSTINGERAMMO>(out _, out _);
+_callbacks.Add("PICKQUANTUMAMMO", typeof(PICKQUANTUMAMMO));
+CoroutinePool.TryToRegister<PICKQUANTUMAMMO>(out _, out _);
+_callbacks.Add("FLASHREGION", typeof(FLASHREGION));
+CoroutinePool.TryToRegister<FLASHREGION>(out _, out _);
+_callbacks.Add("IMPLODELIGHT", typeof(IMPLODELIGHT));
+CoroutinePool.TryToRegister<IMPLODELIGHT>(out _, out _);
+_callbacks.Add("BOUNCE", typeof(BOUNCE));
+CoroutinePool.TryToRegister<BOUNCE>(out _, out _);
+_callbacks.Add("FREEFALL", typeof(FREEFALL));
+CoroutinePool.TryToRegister<FREEFALL>(out _, out _);
+_callbacks.Add("EXPLOSIONTIMER", typeof(EXPLOSIONTIMER));
+CoroutinePool.TryToRegister<EXPLOSIONTIMER>(out _, out _);
+_callbacks.Add("INIT_MOVE", typeof(INIT_MOVE));
+CoroutinePool.TryToRegister<INIT_MOVE>(out _, out _);
+_callbacks.Add("MOVE_ME", typeof(MOVE_ME));
+CoroutinePool.TryToRegister<MOVE_ME>(out _, out _);
+_callbacks.Add("SET_WALKING", typeof(SET_WALKING));
+CoroutinePool.TryToRegister<SET_WALKING>(out _, out _);
+_callbacks.Add("SET_SWIMMING", typeof(SET_SWIMMING));
+CoroutinePool.TryToRegister<SET_SWIMMING>(out _, out _);
+_callbacks.Add("SET_DIVING", typeof(SET_DIVING));
+CoroutinePool.TryToRegister<SET_DIVING>(out _, out _);
+_callbacks.Add("SET_DEATH", typeof(SET_DEATH));
+CoroutinePool.TryToRegister<SET_DEATH>(out _, out _);
+_callbacks.Add("SET_MOVING", typeof(SET_MOVING));
+CoroutinePool.TryToRegister<SET_MOVING>(out _, out _);
+_callbacks.Add("STOP_MOVING", typeof(STOP_MOVING));
+CoroutinePool.TryToRegister<STOP_MOVING>(out _, out _);
+_callbacks.Add("SET_BLUE", typeof(SET_BLUE));
+CoroutinePool.TryToRegister<SET_BLUE>(out _, out _);
+_callbacks.Add("RESET_BLUE", typeof(RESET_BLUE));
+CoroutinePool.TryToRegister<RESET_BLUE>(out _, out _);
+_callbacks.Add("ENTER_WATER", typeof(ENTER_WATER));
+CoroutinePool.TryToRegister<ENTER_WATER>(out _, out _);
+_callbacks.Add("LEAVE_WATER", typeof(LEAVE_WATER));
+CoroutinePool.TryToRegister<LEAVE_WATER>(out _, out _);
+_callbacks.Add("DIVE_UP", typeof(DIVE_UP));
+CoroutinePool.TryToRegister<DIVE_UP>(out _, out _);
+_callbacks.Add("REGIO_DIVE", typeof(REGIO_DIVE));
+CoroutinePool.TryToRegister<REGIO_DIVE>(out _, out _);
+_callbacks.Add("REGIO_ARISE", typeof(REGIO_ARISE));
+CoroutinePool.TryToRegister<REGIO_ARISE>(out _, out _);
+_callbacks.Add("HITPLAYER", typeof(HITPLAYER));
+CoroutinePool.TryToRegister<HITPLAYER>(out _, out _);
+_callbacks.Add("REDOUT", typeof(REDOUT));
+CoroutinePool.TryToRegister<REDOUT>(out _, out _);
+_callbacks.Add("REDIN", typeof(REDIN));
+CoroutinePool.TryToRegister<REDIN>(out _, out _);
+_callbacks.Add("FLASHPLAYER", typeof(FLASHPLAYER));
+CoroutinePool.TryToRegister<FLASHPLAYER>(out _, out _);
+_callbacks.Add("FLASHOUT", typeof(FLASHOUT));
+CoroutinePool.TryToRegister<FLASHOUT>(out _, out _);
+_callbacks.Add("FLASHIN", typeof(FLASHIN));
+CoroutinePool.TryToRegister<FLASHIN>(out _, out _);
+_callbacks.Add("HITPLAYERDELAY", typeof(HITPLAYERDELAY));
+CoroutinePool.TryToRegister<HITPLAYERDELAY>(out _, out _);
+_callbacks.Add("KILLPLAYER", typeof(KILLPLAYER));
+CoroutinePool.TryToRegister<KILLPLAYER>(out _, out _);
+_callbacks.Add("FINISHPLAYER", typeof(FINISHPLAYER));
+CoroutinePool.TryToRegister<FINISHPLAYER>(out _, out _);
+_callbacks.Add("TOGGLEGODMODE", typeof(TOGGLEGODMODE));
+CoroutinePool.TryToRegister<TOGGLEGODMODE>(out _, out _);
+_callbacks.Add("SETCKEY", typeof(SETCKEY));
+CoroutinePool.TryToRegister<SETCKEY>(out _, out _);
+_callbacks.Add("SETGKEY", typeof(SETGKEY));
+CoroutinePool.TryToRegister<SETGKEY>(out _, out _);
+_callbacks.Add("SETOKEY", typeof(SETOKEY));
+CoroutinePool.TryToRegister<SETOKEY>(out _, out _);
+_callbacks.Add("SETDKEY", typeof(SETDKEY));
+CoroutinePool.TryToRegister<SETDKEY>(out _, out _);
+_callbacks.Add("FIRE", typeof(FIRE));
+CoroutinePool.TryToRegister<FIRE>(out _, out _);
+_callbacks.Add("BURST", typeof(BURST));
+CoroutinePool.TryToRegister<BURST>(out _, out _);
+_callbacks.Add("THROW", typeof(THROW));
+CoroutinePool.TryToRegister<THROW>(out _, out _);
+_callbacks.Add("LAUNCH", typeof(LAUNCH));
+CoroutinePool.TryToRegister<LAUNCH>(out _, out _);
+_callbacks.Add("BEAM", typeof(BEAM));
+CoroutinePool.TryToRegister<BEAM>(out _, out _);
+_callbacks.Add("RAISE", typeof(RAISE));
+CoroutinePool.TryToRegister<RAISE>(out _, out _);
+_callbacks.Add("LOWER", typeof(LOWER));
+CoroutinePool.TryToRegister<LOWER>(out _, out _);
+_callbacks.Add("TARGETON", typeof(TARGETON));
+CoroutinePool.TryToRegister<TARGETON>(out _, out _);
+_callbacks.Add("TARGETOFF", typeof(TARGETOFF));
+CoroutinePool.TryToRegister<TARGETOFF>(out _, out _);
+_callbacks.Add("SELECTNONE", typeof(SELECTNONE));
+CoroutinePool.TryToRegister<SELECTNONE>(out _, out _);
+_callbacks.Add("SELECTTRICORDER", typeof(SELECTTRICORDER));
+CoroutinePool.TryToRegister<SELECTTRICORDER>(out _, out _);
+_callbacks.Add("SELECTMP5", typeof(SELECTMP5));
+CoroutinePool.TryToRegister<SELECTMP5>(out _, out _);
+_callbacks.Add("SELECTMP5BURST", typeof(SELECTMP5BURST));
+CoroutinePool.TryToRegister<SELECTMP5BURST>(out _, out _);
+_callbacks.Add("SELECTGRANADE", typeof(SELECTGRANADE));
+CoroutinePool.TryToRegister<SELECTGRANADE>(out _, out _);
+_callbacks.Add("SELECTSTINGER", typeof(SELECTSTINGER));
+CoroutinePool.TryToRegister<SELECTSTINGER>(out _, out _);
+_callbacks.Add("SELECTQUANTUM", typeof(SELECTQUANTUM));
+CoroutinePool.TryToRegister<SELECTQUANTUM>(out _, out _);
+_callbacks.Add("ZOOMMAPIN", typeof(ZOOMMAPIN));
+CoroutinePool.TryToRegister<ZOOMMAPIN>(out _, out _);
+_callbacks.Add("ZOOMMAPOUT", typeof(ZOOMMAPOUT));
+CoroutinePool.TryToRegister<ZOOMMAPOUT>(out _, out _);
+_callbacks.Add("SHOWPDABRIEFING", typeof(SHOWPDABRIEFING));
+CoroutinePool.TryToRegister<SHOWPDABRIEFING>(out _, out _);
+_callbacks.Add("SHOWPDAGAMEOVER", typeof(SHOWPDAGAMEOVER));
+CoroutinePool.TryToRegister<SHOWPDAGAMEOVER>(out _, out _);
+_callbacks.Add("PDAMESSAGEOFF", typeof(PDAMESSAGEOFF));
+CoroutinePool.TryToRegister<PDAMESSAGEOFF>(out _, out _);
+_callbacks.Add("REPEATMUSIC", typeof(REPEATMUSIC));
+CoroutinePool.TryToRegister<REPEATMUSIC>(out _, out _);
+_callbacks.Add("SETSOUNDVOL", typeof(SETSOUNDVOL));
+CoroutinePool.TryToRegister<SETSOUNDVOL>(out _, out _);
+_callbacks.Add("MOUSE_TOGGLE", typeof(MOUSE_TOGGLE));
+CoroutinePool.TryToRegister<MOUSE_TOGGLE>(out _, out _);
+_callbacks.Add("SCAN_OBJ", typeof(SCAN_OBJ));
+CoroutinePool.TryToRegister<SCAN_OBJ>(out _, out _);
+_callbacks.Add("PICKKEY1", typeof(PICKKEY1));
+CoroutinePool.TryToRegister<PICKKEY1>(out _, out _);
+_callbacks.Add("PICKKEY2", typeof(PICKKEY2));
+CoroutinePool.TryToRegister<PICKKEY2>(out _, out _);
+_callbacks.Add("PICKUPLOCALMP5", typeof(PICKUPLOCALMP5));
+CoroutinePool.TryToRegister<PICKUPLOCALMP5>(out _, out _);
+_callbacks.Add("ENDPHASE", typeof(ENDPHASE));
+CoroutinePool.TryToRegister<ENDPHASE>(out _, out _);
+_callbacks.Add("DRKLTURN", typeof(DRKLTURN));
+CoroutinePool.TryToRegister<DRKLTURN>(out _, out _);
+_callbacks.Add("DRKLWAIT", typeof(DRKLWAIT));
+CoroutinePool.TryToRegister<DRKLWAIT>(out _, out _);
+_callbacks.Add("DRKLWANDER", typeof(DRKLWANDER));
+CoroutinePool.TryToRegister<DRKLWANDER>(out _, out _);
+_callbacks.Add("DRKLSEARCH", typeof(DRKLSEARCH));
+CoroutinePool.TryToRegister<DRKLSEARCH>(out _, out _);
+_callbacks.Add("DRKLHIDE", typeof(DRKLHIDE));
+CoroutinePool.TryToRegister<DRKLHIDE>(out _, out _);
+_callbacks.Add("DRKLLISTEN", typeof(DRKLLISTEN));
+CoroutinePool.TryToRegister<DRKLLISTEN>(out _, out _);
+_callbacks.Add("DRKLJUMP", typeof(DRKLJUMP));
+CoroutinePool.TryToRegister<DRKLJUMP>(out _, out _);
+_callbacks.Add("DRKLLOOKFOR", typeof(DRKLLOOKFOR));
+CoroutinePool.TryToRegister<DRKLLOOKFOR>(out _, out _);
+_callbacks.Add("DRKLHEAR", typeof(DRKLHEAR));
+CoroutinePool.TryToRegister<DRKLHEAR>(out _, out _);
+_callbacks.Add("DRKLDOWN", typeof(DRKLDOWN));
+CoroutinePool.TryToRegister<DRKLDOWN>(out _, out _);
+_callbacks.Add("DRKLFOLLOWATTACK", typeof(DRKLFOLLOWATTACK));
+CoroutinePool.TryToRegister<DRKLFOLLOWATTACK>(out _, out _);
+_callbacks.Add("DRKLSHOOT", typeof(DRKLSHOOT));
+CoroutinePool.TryToRegister<DRKLSHOOT>(out _, out _);
+_callbacks.Add("DRKLESCAPE", typeof(DRKLESCAPE));
+CoroutinePool.TryToRegister<DRKLESCAPE>(out _, out _);
+_callbacks.Add("DRKLDEAD", typeof(DRKLDEAD));
+CoroutinePool.TryToRegister<DRKLDEAD>(out _, out _);
+_callbacks.Add("DRKLDIE", typeof(DRKLDIE));
+CoroutinePool.TryToRegister<DRKLDIE>(out _, out _);
+_callbacks.Add("DRKLIMPLODE", typeof(DRKLIMPLODE));
+CoroutinePool.TryToRegister<DRKLIMPLODE>(out _, out _);
+_callbacks.Add("DRKLHIT", typeof(DRKLHIT));
+CoroutinePool.TryToRegister<DRKLHIT>(out _, out _);
+_callbacks.Add("CYCLEDRKLATTACK", typeof(CYCLEDRKLATTACK));
+CoroutinePool.TryToRegister<CYCLEDRKLATTACK>(out _, out _);
+_callbacks.Add("CYCLEDRKLHIDE", typeof(CYCLEDRKLHIDE));
+CoroutinePool.TryToRegister<CYCLEDRKLHIDE>(out _, out _);
+_callbacks.Add("CYCLEDRKLSHOOT", typeof(CYCLEDRKLSHOOT));
+CoroutinePool.TryToRegister<CYCLEDRKLSHOOT>(out _, out _);
+_callbacks.Add("DRKLTALK", typeof(DRKLTALK));
+CoroutinePool.TryToRegister<DRKLTALK>(out _, out _);
+_callbacks.Add("TROPTURN", typeof(TROPTURN));
+CoroutinePool.TryToRegister<TROPTURN>(out _, out _);
+_callbacks.Add("TROPBACKOFF", typeof(TROPBACKOFF));
+CoroutinePool.TryToRegister<TROPBACKOFF>(out _, out _);
+_callbacks.Add("TROPWAIT", typeof(TROPWAIT));
+CoroutinePool.TryToRegister<TROPWAIT>(out _, out _);
+_callbacks.Add("TROPWANDER", typeof(TROPWANDER));
+CoroutinePool.TryToRegister<TROPWANDER>(out _, out _);
+_callbacks.Add("TROPSEARCH", typeof(TROPSEARCH));
+CoroutinePool.TryToRegister<TROPSEARCH>(out _, out _);
+_callbacks.Add("TROPHIDE", typeof(TROPHIDE));
+CoroutinePool.TryToRegister<TROPHIDE>(out _, out _);
+_callbacks.Add("TROPLISTEN", typeof(TROPLISTEN));
+CoroutinePool.TryToRegister<TROPLISTEN>(out _, out _);
+_callbacks.Add("TROPWARNING", typeof(TROPWARNING));
+CoroutinePool.TryToRegister<TROPWARNING>(out _, out _);
+_callbacks.Add("TROPLOOKFOR", typeof(TROPLOOKFOR));
+CoroutinePool.TryToRegister<TROPLOOKFOR>(out _, out _);
+_callbacks.Add("TROPFOLLOW", typeof(TROPFOLLOW));
+CoroutinePool.TryToRegister<TROPFOLLOW>(out _, out _);
+_callbacks.Add("TROPFOLLOWATTACK", typeof(TROPFOLLOWATTACK));
+CoroutinePool.TryToRegister<TROPFOLLOWATTACK>(out _, out _);
+_callbacks.Add("TROPFOLLOWWARNING", typeof(TROPFOLLOWWARNING));
+CoroutinePool.TryToRegister<TROPFOLLOWWARNING>(out _, out _);
+_callbacks.Add("TROPAIM", typeof(TROPAIM));
+CoroutinePool.TryToRegister<TROPAIM>(out _, out _);
+_callbacks.Add("TROPSHOOT", typeof(TROPSHOOT));
+CoroutinePool.TryToRegister<TROPSHOOT>(out _, out _);
+_callbacks.Add("TROPESCAPE", typeof(TROPESCAPE));
+CoroutinePool.TryToRegister<TROPESCAPE>(out _, out _);
+_callbacks.Add("TROPDEAD", typeof(TROPDEAD));
+CoroutinePool.TryToRegister<TROPDEAD>(out _, out _);
+_callbacks.Add("TROPDIE", typeof(TROPDIE));
+CoroutinePool.TryToRegister<TROPDIE>(out _, out _);
+_callbacks.Add("TROPIMPLODE", typeof(TROPIMPLODE));
+CoroutinePool.TryToRegister<TROPIMPLODE>(out _, out _);
+_callbacks.Add("TROPHIT", typeof(TROPHIT));
+CoroutinePool.TryToRegister<TROPHIT>(out _, out _);
+_callbacks.Add("TROPDROPKEY", typeof(TROPDROPKEY));
+CoroutinePool.TryToRegister<TROPDROPKEY>(out _, out _);
+_callbacks.Add("CYCLETROPATTACK", typeof(CYCLETROPATTACK));
+CoroutinePool.TryToRegister<CYCLETROPATTACK>(out _, out _);
+_callbacks.Add("CYCLETROPHIDE", typeof(CYCLETROPHIDE));
+CoroutinePool.TryToRegister<CYCLETROPHIDE>(out _, out _);
+_callbacks.Add("CYCLETROPBACK", typeof(CYCLETROPBACK));
+CoroutinePool.TryToRegister<CYCLETROPBACK>(out _, out _);
+_callbacks.Add("CYCLETROPSHOOT", typeof(CYCLETROPSHOOT));
+CoroutinePool.TryToRegister<CYCLETROPSHOOT>(out _, out _);
+_callbacks.Add("CYCLETROPWARNING", typeof(CYCLETROPWARNING));
+CoroutinePool.TryToRegister<CYCLETROPWARNING>(out _, out _);
+_callbacks.Add("TROPTALK", typeof(TROPTALK));
+CoroutinePool.TryToRegister<TROPTALK>(out _, out _);
+_callbacks.Add("TROPSHOUT", typeof(TROPSHOUT));
+CoroutinePool.TryToRegister<TROPSHOUT>(out _, out _);
+_callbacks.Add("PICKTROPAMMO", typeof(PICKTROPAMMO));
+CoroutinePool.TryToRegister<PICKTROPAMMO>(out _, out _);
+_callbacks.Add("PICKTROPARMOUR", typeof(PICKTROPARMOUR));
+CoroutinePool.TryToRegister<PICKTROPARMOUR>(out _, out _);
+_callbacks.Add("HUMMERHIT", typeof(HUMMERHIT));
+CoroutinePool.TryToRegister<HUMMERHIT>(out _, out _);
+_callbacks.Add("LNCHTURN", typeof(LNCHTURN));
+CoroutinePool.TryToRegister<LNCHTURN>(out _, out _);
+_callbacks.Add("LNCHBACKOFF", typeof(LNCHBACKOFF));
+CoroutinePool.TryToRegister<LNCHBACKOFF>(out _, out _);
+_callbacks.Add("LNCHWAIT", typeof(LNCHWAIT));
+CoroutinePool.TryToRegister<LNCHWAIT>(out _, out _);
+_callbacks.Add("LNCHWANDER", typeof(LNCHWANDER));
+CoroutinePool.TryToRegister<LNCHWANDER>(out _, out _);
+_callbacks.Add("LNCHSEARCH", typeof(LNCHSEARCH));
+CoroutinePool.TryToRegister<LNCHSEARCH>(out _, out _);
+_callbacks.Add("LNCHHIDE", typeof(LNCHHIDE));
+CoroutinePool.TryToRegister<LNCHHIDE>(out _, out _);
+_callbacks.Add("LNCHLISTEN", typeof(LNCHLISTEN));
+CoroutinePool.TryToRegister<LNCHLISTEN>(out _, out _);
+_callbacks.Add("LNCHLOOKFOR", typeof(LNCHLOOKFOR));
+CoroutinePool.TryToRegister<LNCHLOOKFOR>(out _, out _);
+_callbacks.Add("LNCHFOLLOW", typeof(LNCHFOLLOW));
+CoroutinePool.TryToRegister<LNCHFOLLOW>(out _, out _);
+_callbacks.Add("LNCHFOLLOWATTACK", typeof(LNCHFOLLOWATTACK));
+CoroutinePool.TryToRegister<LNCHFOLLOWATTACK>(out _, out _);
+_callbacks.Add("LNCHAIM", typeof(LNCHAIM));
+CoroutinePool.TryToRegister<LNCHAIM>(out _, out _);
+_callbacks.Add("LNCHSHOOT", typeof(LNCHSHOOT));
+CoroutinePool.TryToRegister<LNCHSHOOT>(out _, out _);
+_callbacks.Add("LNCHESCAPE", typeof(LNCHESCAPE));
+CoroutinePool.TryToRegister<LNCHESCAPE>(out _, out _);
+_callbacks.Add("LNCHDEAD", typeof(LNCHDEAD));
+CoroutinePool.TryToRegister<LNCHDEAD>(out _, out _);
+_callbacks.Add("LNCHDIE", typeof(LNCHDIE));
+CoroutinePool.TryToRegister<LNCHDIE>(out _, out _);
+_callbacks.Add("LNCHIMPLODE", typeof(LNCHIMPLODE));
+CoroutinePool.TryToRegister<LNCHIMPLODE>(out _, out _);
+_callbacks.Add("LNCHHIT", typeof(LNCHHIT));
+CoroutinePool.TryToRegister<LNCHHIT>(out _, out _);
+_callbacks.Add("LNCHDROPKEY", typeof(LNCHDROPKEY));
+CoroutinePool.TryToRegister<LNCHDROPKEY>(out _, out _);
+_callbacks.Add("CYCLELNCHATTACK", typeof(CYCLELNCHATTACK));
+CoroutinePool.TryToRegister<CYCLELNCHATTACK>(out _, out _);
+_callbacks.Add("CYCLELNCHHIDE", typeof(CYCLELNCHHIDE));
+CoroutinePool.TryToRegister<CYCLELNCHHIDE>(out _, out _);
+_callbacks.Add("CYCLELNCHBACK", typeof(CYCLELNCHBACK));
+CoroutinePool.TryToRegister<CYCLELNCHBACK>(out _, out _);
+_callbacks.Add("CYCLELNCHSHOOT", typeof(CYCLELNCHSHOOT));
+CoroutinePool.TryToRegister<CYCLELNCHSHOOT>(out _, out _);
+_callbacks.Add("LNCHTALK", typeof(LNCHTALK));
+CoroutinePool.TryToRegister<LNCHTALK>(out _, out _);
+_callbacks.Add("LNCHSHOUT", typeof(LNCHSHOUT));
+CoroutinePool.TryToRegister<LNCHSHOUT>(out _, out _);
+_callbacks.Add("REPTTURN", typeof(REPTTURN));
+CoroutinePool.TryToRegister<REPTTURN>(out _, out _);
+_callbacks.Add("REPTWAIT", typeof(REPTWAIT));
+CoroutinePool.TryToRegister<REPTWAIT>(out _, out _);
+_callbacks.Add("REPTWANDER", typeof(REPTWANDER));
+CoroutinePool.TryToRegister<REPTWANDER>(out _, out _);
+_callbacks.Add("REPTSEARCH", typeof(REPTSEARCH));
+CoroutinePool.TryToRegister<REPTSEARCH>(out _, out _);
+_callbacks.Add("REPTHIDE", typeof(REPTHIDE));
+CoroutinePool.TryToRegister<REPTHIDE>(out _, out _);
+_callbacks.Add("REPTLISTEN", typeof(REPTLISTEN));
+CoroutinePool.TryToRegister<REPTLISTEN>(out _, out _);
+_callbacks.Add("REPTJUMP", typeof(REPTJUMP));
+CoroutinePool.TryToRegister<REPTJUMP>(out _, out _);
+_callbacks.Add("REPTLOOKFOR", typeof(REPTLOOKFOR));
+CoroutinePool.TryToRegister<REPTLOOKFOR>(out _, out _);
+_callbacks.Add("REPTHEAR", typeof(REPTHEAR));
+CoroutinePool.TryToRegister<REPTHEAR>(out _, out _);
+_callbacks.Add("REPTDOWN", typeof(REPTDOWN));
+CoroutinePool.TryToRegister<REPTDOWN>(out _, out _);
+_callbacks.Add("REPTFOLLOWATTACK", typeof(REPTFOLLOWATTACK));
+CoroutinePool.TryToRegister<REPTFOLLOWATTACK>(out _, out _);
+_callbacks.Add("REPTSHOOT", typeof(REPTSHOOT));
+CoroutinePool.TryToRegister<REPTSHOOT>(out _, out _);
+_callbacks.Add("REPTESCAPE", typeof(REPTESCAPE));
+CoroutinePool.TryToRegister<REPTESCAPE>(out _, out _);
+_callbacks.Add("REPTDEAD", typeof(REPTDEAD));
+CoroutinePool.TryToRegister<REPTDEAD>(out _, out _);
+_callbacks.Add("REPTDIE", typeof(REPTDIE));
+CoroutinePool.TryToRegister<REPTDIE>(out _, out _);
+_callbacks.Add("REPTIMPLODE", typeof(REPTIMPLODE));
+CoroutinePool.TryToRegister<REPTIMPLODE>(out _, out _);
+_callbacks.Add("REPTHIT", typeof(REPTHIT));
+CoroutinePool.TryToRegister<REPTHIT>(out _, out _);
+_callbacks.Add("CYCLEREPTATTACK", typeof(CYCLEREPTATTACK));
+CoroutinePool.TryToRegister<CYCLEREPTATTACK>(out _, out _);
+_callbacks.Add("CYCLEREPTHIDE", typeof(CYCLEREPTHIDE));
+CoroutinePool.TryToRegister<CYCLEREPTHIDE>(out _, out _);
+_callbacks.Add("CYCLEREPTSHOOT", typeof(CYCLEREPTSHOOT));
+CoroutinePool.TryToRegister<CYCLEREPTSHOOT>(out _, out _);
+_callbacks.Add("REPTTALK", typeof(REPTTALK));
+CoroutinePool.TryToRegister<REPTTALK>(out _, out _);
+_callbacks.Add("NURSTURN", typeof(NURSTURN));
+CoroutinePool.TryToRegister<NURSTURN>(out _, out _);
+_callbacks.Add("NURSWAIT", typeof(NURSWAIT));
+CoroutinePool.TryToRegister<NURSWAIT>(out _, out _);
+_callbacks.Add("NURSWANDER", typeof(NURSWANDER));
+CoroutinePool.TryToRegister<NURSWANDER>(out _, out _);
+_callbacks.Add("NURSHIDE", typeof(NURSHIDE));
+CoroutinePool.TryToRegister<NURSHIDE>(out _, out _);
+_callbacks.Add("NURSDEAD", typeof(NURSDEAD));
+CoroutinePool.TryToRegister<NURSDEAD>(out _, out _);
+_callbacks.Add("NURSDIE", typeof(NURSDIE));
+CoroutinePool.TryToRegister<NURSDIE>(out _, out _);
+_callbacks.Add("NURSIMPLODE", typeof(NURSIMPLODE));
+CoroutinePool.TryToRegister<NURSIMPLODE>(out _, out _);
+_callbacks.Add("NURSHIT", typeof(NURSHIT));
+CoroutinePool.TryToRegister<NURSHIT>(out _, out _);
+_callbacks.Add("NURSCYCLE", typeof(NURSCYCLE));
+CoroutinePool.TryToRegister<NURSCYCLE>(out _, out _);
+_callbacks.Add("NURSSCREAM", typeof(NURSSCREAM));
+CoroutinePool.TryToRegister<NURSSCREAM>(out _, out _);
+_callbacks.Add("NURSTALK", typeof(NURSTALK));
+CoroutinePool.TryToRegister<NURSTALK>(out _, out _);
+_callbacks.Add("DOCTTURN", typeof(DOCTTURN));
+CoroutinePool.TryToRegister<DOCTTURN>(out _, out _);
+_callbacks.Add("DOCTWAIT", typeof(DOCTWAIT));
+CoroutinePool.TryToRegister<DOCTWAIT>(out _, out _);
+_callbacks.Add("DOCTWANDER", typeof(DOCTWANDER));
+CoroutinePool.TryToRegister<DOCTWANDER>(out _, out _);
+_callbacks.Add("DOCTHIDE", typeof(DOCTHIDE));
+CoroutinePool.TryToRegister<DOCTHIDE>(out _, out _);
+_callbacks.Add("DOCTDEAD", typeof(DOCTDEAD));
+CoroutinePool.TryToRegister<DOCTDEAD>(out _, out _);
+_callbacks.Add("DOCTDIE", typeof(DOCTDIE));
+CoroutinePool.TryToRegister<DOCTDIE>(out _, out _);
+_callbacks.Add("DOCTIMPLODE", typeof(DOCTIMPLODE));
+CoroutinePool.TryToRegister<DOCTIMPLODE>(out _, out _);
+_callbacks.Add("DOCTHIT", typeof(DOCTHIT));
+CoroutinePool.TryToRegister<DOCTHIT>(out _, out _);
+_callbacks.Add("DOCTCYCLE", typeof(DOCTCYCLE));
+CoroutinePool.TryToRegister<DOCTCYCLE>(out _, out _);
+_callbacks.Add("DOCTSCREAM", typeof(DOCTSCREAM));
+CoroutinePool.TryToRegister<DOCTSCREAM>(out _, out _);
+_callbacks.Add("DOCTTALK", typeof(DOCTTALK));
+CoroutinePool.TryToRegister<DOCTTALK>(out _, out _);
+_callbacks.Add("SETFORCE1", typeof(SETFORCE1));
+CoroutinePool.TryToRegister<SETFORCE1>(out _, out _);
+_callbacks.Add("TROPASSAULT", typeof(TROPASSAULT));
+CoroutinePool.TryToRegister<TROPASSAULT>(out _, out _);
+_callbacks.Add("WAYGUARD2", typeof(WAYGUARD2));
+CoroutinePool.TryToRegister<WAYGUARD2>(out _, out _);
+_callbacks.Add("DROPTROOPS2", typeof(DROPTROOPS2));
+CoroutinePool.TryToRegister<DROPTROOPS2>(out _, out _);
+_callbacks.Add("WARNPLAYER", typeof(WARNPLAYER));
+CoroutinePool.TryToRegister<WARNPLAYER>(out _, out _);
+_callbacks.Add("RESETWARN", typeof(RESETWARN));
+CoroutinePool.TryToRegister<RESETWARN>(out _, out _);
+_callbacks.Add("SELECTOR", typeof(SELECTOR));
+CoroutinePool.TryToRegister<SELECTOR>(out _, out _);
+_callbacks.Add("RESETTOUCH", typeof(RESETTOUCH));
+CoroutinePool.TryToRegister<RESETTOUCH>(out _, out _);
+_callbacks.Add("SETTOUCH1", typeof(SETTOUCH1));
+CoroutinePool.TryToRegister<SETTOUCH1>(out _, out _);
+_callbacks.Add("SETTOUCH2", typeof(SETTOUCH2));
+CoroutinePool.TryToRegister<SETTOUCH2>(out _, out _);
+_callbacks.Add("SETTOUCH4", typeof(SETTOUCH4));
+CoroutinePool.TryToRegister<SETTOUCH4>(out _, out _);
+_callbacks.Add("SETTOUCH5", typeof(SETTOUCH5));
+CoroutinePool.TryToRegister<SETTOUCH5>(out _, out _);
+_callbacks.Add("SETTOUCH6", typeof(SETTOUCH6));
+CoroutinePool.TryToRegister<SETTOUCH6>(out _, out _);
+_callbacks.Add("SETTOUCH7", typeof(SETTOUCH7));
+CoroutinePool.TryToRegister<SETTOUCH7>(out _, out _);
+_callbacks.Add("SETTOUCH8", typeof(SETTOUCH8));
+CoroutinePool.TryToRegister<SETTOUCH8>(out _, out _);
+_callbacks.Add("OPENDOOR1", typeof(OPENDOOR1));
+CoroutinePool.TryToRegister<OPENDOOR1>(out _, out _);
+_callbacks.Add("OPENDOOR2", typeof(OPENDOOR2));
+CoroutinePool.TryToRegister<OPENDOOR2>(out _, out _);
+_callbacks.Add("OPENHATCH", typeof(OPENHATCH));
+CoroutinePool.TryToRegister<OPENHATCH>(out _, out _);
+_callbacks.Add("OPENHATCHA", typeof(OPENHATCHA));
+CoroutinePool.TryToRegister<OPENHATCHA>(out _, out _);
+_callbacks.Add("OPENHATCHB", typeof(OPENHATCHB));
+CoroutinePool.TryToRegister<OPENHATCHB>(out _, out _);
+_callbacks.Add("OPENMJ3", typeof(OPENMJ3));
+CoroutinePool.TryToRegister<OPENMJ3>(out _, out _);
+_callbacks.Add("OPENBLASTDOOR", typeof(OPENBLASTDOOR));
+CoroutinePool.TryToRegister<OPENBLASTDOOR>(out _, out _);
+_callbacks.Add("NOTOPEN", typeof(NOTOPEN));
+CoroutinePool.TryToRegister<NOTOPEN>(out _, out _);
+_callbacks.Add("DEFENSE1", typeof(DEFENSE1));
+CoroutinePool.TryToRegister<DEFENSE1>(out _, out _);
+_callbacks.Add("STARTLEVEL", typeof(STARTLEVEL));
+CoroutinePool.TryToRegister<STARTLEVEL>(out _, out _);
+_callbacks.Add("LAUNCHMISSILES", typeof(LAUNCHMISSILES));
+CoroutinePool.TryToRegister<LAUNCHMISSILES>(out _, out _);
+_callbacks.Add("STARTASSAULT", typeof(STARTASSAULT));
+CoroutinePool.TryToRegister<STARTASSAULT>(out _, out _);
+_callbacks.Add("FADEIN", typeof(FADEIN));
+CoroutinePool.TryToRegister<FADEIN>(out _, out _);
     }
 public class DISPLAYMESSAGE : ICompiledAction {
   private int _cursor;
@@ -411,7 +688,7 @@ if (Game.CheckEquals(temp_20 , null))
 goto CONT;
 }
 {
-            var enumerator = new REGIO_ARISE();
+            var enumerator = CoroutinePool.Get<REGIO_ARISE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -578,7 +855,7 @@ return false;
 PLAYER_RESULT_10 = _world.GetObject(ObjectType.Skill,1861765784);
 PLAYER_RESULT_10.SetFloat(231,2f);
 {
-            var enumerator = new HITPLAYER();
+            var enumerator = CoroutinePool.Get<HITPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -873,6 +1150,7 @@ public class PROBE : ICompiledAction {
   public bool MoveNext() {
      switch (_cursor){
      }
+return false;
 MY_2 = MY;
 temp_3 =MY_2.GetFloat(168);
 if (MathUtils.CheckLower(temp_3 , 0.05f))
@@ -908,7 +1186,7 @@ temp_25 =WATER_REGION_24.GetFloat(182);
 if (Game.CheckEquals(temp_25 , 1f))
 {
 {
-            var enumerator = new VANISHFORGOOD();
+            var enumerator = CoroutinePool.Get<VANISHFORGOOD>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -1274,7 +1552,7 @@ public class REPELANGLE : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new FOLLOWANGLE();
+            var enumerator = CoroutinePool.Get<FOLLOWANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -1459,7 +1737,7 @@ temp_3 =MY_2.GetFloat(194);
 MY_5 = MY;
 MY_5.SetFloat(194,temp_3 + 0.524f);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -1497,7 +1775,7 @@ temp_3 =MY_2.GetFloat(194);
 MY_5 = MY;
 MY_5.SetFloat(194,temp_3 + -0.524f);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -1751,7 +2029,7 @@ CONT:
 END01STR_12 = _world.AcknexObject.GetAcknexObject(1070587678);
 _world.SetSynonymObject(3892409159,END01STR_12);
 {
-            var enumerator = new SHOWPDAGAMEOVER();
+            var enumerator = CoroutinePool.Get<SHOWPDAGAMEOVER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -2409,7 +2687,7 @@ _world.AcknexObject.SetAcknexObject(107,MENUUP_20);
 MENUDOWN_22 = _world.AcknexObject.GetAcknexObject(118349530);
 _world.AcknexObject.SetAcknexObject(108,MENUDOWN_22);
 {
-            var enumerator = new HIDEWEAPON();
+            var enumerator = CoroutinePool.Get<HIDEWEAPON>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -2424,7 +2702,7 @@ _world.AcknexObject.SetAcknexObject(129,MAINMENUTEXT_29);
 HLP01STR_32 = _world.AcknexObject.GetAcknexObject(2258553803);
 _world.SetSynonymObject(361798934,HLP01STR_32);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -2539,7 +2817,7 @@ _world.AcknexObject.SetAcknexObject(129,LOADSAVETEXT_45);
 HLP01STR_48 = _world.AcknexObject.GetAcknexObject(2258553803);
 _world.SetSynonymObject(361798934,HLP01STR_48);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -2668,7 +2946,7 @@ _world.AcknexObject.SetAcknexObject(129,LOADSAVETEXT_45);
 HLP01STR_48 = _world.AcknexObject.GetAcknexObject(2258553803);
 _world.SetSynonymObject(361798934,HLP01STR_48);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -2754,7 +3032,7 @@ _world.AcknexObject.SetAcknexObject(129,SOUNDVOLUMETEXT_21);
 HLP01STR_24 = _world.AcknexObject.GetAcknexObject(2258553803);
 _world.SetSynonymObject(361798934,HLP01STR_24);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -2810,7 +3088,7 @@ if (Game.CheckEquals(UNDERWATER_17_val , 0f))
 goto NOWATER;
 }
 {
-            var enumerator = new SET_BLUE();
+            var enumerator = CoroutinePool.Get<SET_BLUE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -2822,7 +3100,7 @@ BLACK_18 = _world.AcknexObject.GetAcknexObject(215228298);
 _world.FadePal(BLACK_18,0f);
 CONT:
 {
-            var enumerator = new SHOWWEAPON();
+            var enumerator = CoroutinePool.Get<SHOWWEAPON>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -3458,7 +3736,7 @@ RESULT_37_val = RESULT_37.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckLower(RESULT_37_val , 0f))
 {
 {
-            var enumerator = new SAVEERRORMESSAGE();
+            var enumerator = CoroutinePool.Get<SAVEERRORMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -3610,7 +3888,7 @@ BIP02SND_4 = _world.AcknexObject.GetAcknexObject(371565519);
 _world.PlaySound(BIP02SND_4,0.5f, null);
 _world.AcknexObject.SetAcknexObject(81,null);
 {
-            var enumerator = new HIDEMENU();
+            var enumerator = CoroutinePool.Get<HIDEMENU>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -3681,7 +3959,7 @@ MENUITEM_7_val = MENUITEM_7.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(MENUITEM_7_val , 1f))
 {
 {
-            var enumerator = new SHOWSOUNDVOLUMEMENU();
+            var enumerator = CoroutinePool.Get<SHOWSOUNDVOLUMEMENU>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -3694,7 +3972,7 @@ MENUITEM_9_val = MENUITEM_9.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(MENUITEM_9_val , 2f))
 {
 {
-            var enumerator = new SHOWSAVEMENU();
+            var enumerator = CoroutinePool.Get<SHOWSAVEMENU>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -3707,7 +3985,7 @@ MENUITEM_11_val = MENUITEM_11.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(MENUITEM_11_val , 3f))
 {
 {
-            var enumerator = new SHOWLOADMENU();
+            var enumerator = CoroutinePool.Get<SHOWLOADMENU>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -3720,7 +3998,7 @@ MENUITEM_13_val = MENUITEM_13.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(MENUITEM_13_val , 4f))
 {
 {
-            var enumerator = new ASKFOREXIT();
+            var enumerator = CoroutinePool.Get<ASKFOREXIT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -3851,7 +4129,7 @@ _world.PlaySound(BIP02SND_0,0.5f, null);
 _world.AcknexObject.SetAcknexObject(37,null);
 _world.AcknexObject.SetAcknexObject(66,null);
 {
-            var enumerator = new HIDEMENU();
+            var enumerator = CoroutinePool.Get<HIDEMENU>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -3898,7 +4176,7 @@ _world.AcknexObject.SetAcknexObject(61,RESETANSWER_17);
 HLP02STR_19 = _world.AcknexObject.GetAcknexObject(2258589740);
 _world.SetSynonymObject(361798934,HLP02STR_19);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -3965,7 +4243,7 @@ goto CONT;
 LOAD08STR_28 = _world.AcknexObject.GetAcknexObject(2634792366);
 _world.SetSynonymObject(361798934,LOAD08STR_28);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -3996,7 +4274,7 @@ CONT:
 LOAD_STRING_41 = _world.GetSynonymObject(1876859747);
 _world.SetSynonymObject(361798934,LOAD_STRING_41);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -4061,7 +4339,7 @@ EXPLOSIONSMOKE_3 = _world.AcknexObject.GetAcknexObject(277450317);
 MY_5 = MY;
 MY_5.SetAcknexObject(190,EXPLOSIONSMOKE_3);
 {
-            var enumerator = new FLASHREGION();
+            var enumerator = CoroutinePool.Get<FLASHREGION>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -4189,7 +4467,7 @@ if (MathUtils.CheckGreater(SQRTARGETDIST_50_val , 64f))
 return false;
 }
 {
-            var enumerator = new EXPLODEMISSILE();
+            var enumerator = CoroutinePool.Get<EXPLODEMISSILE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -4245,7 +4523,7 @@ public class EXPLODEMISSILE : ICompiledAction {
                 goto _coroutine1;
      }
 {
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -4299,7 +4577,7 @@ if (Game.CheckEquals(HIT_DIST_39_val , 0f))
 goto CONT;
 }
 {
-            var enumerator = new HITPLAYERDELAY();
+            var enumerator = CoroutinePool.Get<HITPLAYERDELAY>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -4424,7 +4702,7 @@ if (Game.CheckEquals(temp_20 , 1f))
 return false;
 }
 {
-            var enumerator = new VANISHSTOP();
+            var enumerator = CoroutinePool.Get<VANISHSTOP>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -4482,7 +4760,7 @@ MY_11.SetFloat(221,1f);
 MY_14 = MY;
 MY_14.SetFloat(213,0f);
 {
-            var enumerator = new FLASHREGION();
+            var enumerator = CoroutinePool.Get<FLASHREGION>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -4777,7 +5055,7 @@ public class BEAMREACT : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new CHOOSEPARTICLE();
+            var enumerator = CoroutinePool.Get<CHOOSEPARTICLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -4997,7 +5275,7 @@ temp_90 =MY_89.GetFloat(205);
 if (Game.CheckEquals(temp_90 , 0f))
 {
 {
-            var enumerator = new VANISHSTOP();
+            var enumerator = CoroutinePool.Get<VANISHSTOP>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5103,7 +5381,7 @@ PLAYER_RESULT_10 = _world.GetObject(ObjectType.Skill,1861765784);
 PLAYER_RESULT_10_val = PLAYER_RESULT_10.GetFloat(PropertyName.VAL);
 PLAYER_RESULT_9.SetFloat(231,10f*(UnityEngine.Random.value+0.5f));
 {
-            var enumerator = new FLASHPLAYER();
+            var enumerator = CoroutinePool.Get<FLASHPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5112,7 +5390,7 @@ PLAYER_RESULT_9.SetFloat(231,10f*(UnityEngine.Random.value+0.5f));
         }QGUN04SND_18 = _world.AcknexObject.GetAcknexObject(2622058161);
 _world.PlaySound(QGUN04SND_18,0.7f, null);
 {
-            var enumerator = new VANISHSTOP();
+            var enumerator = CoroutinePool.Get<VANISHSTOP>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5166,7 +5444,7 @@ return false;
 MY_12 = MY;
 MY_12.SetFloat(173,0f);
 {
-            var enumerator = new IMPLODEPARTICLE();
+            var enumerator = CoroutinePool.Get<IMPLODEPARTICLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5597,7 +5875,7 @@ _world.PlaySound(MP_501SND_8,0.5f, null);
 GET11STR_10 = _world.AcknexObject.GetAcknexObject(2297170088);
 _world.SetSynonymObject(361798934,GET11STR_10);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5651,7 +5929,7 @@ _world.PlaySound(ARMO01SND_8,0.5f, null);
 GET10STR_10 = _world.AcknexObject.GetAcknexObject(2297134151);
 _world.SetSynonymObject(361798934,GET10STR_10);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5699,7 +5977,7 @@ WEAPONSEL_6_val = WEAPONSEL_6.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckLower(WEAPONSEL_6_val , 2f))
 {
 {
-            var enumerator = new SELECTMP5();
+            var enumerator = CoroutinePool.Get<SELECTMP5>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5714,7 +5992,7 @@ AMMO01SND_9 = _world.AcknexObject.GetAcknexObject(2022635869);
 _world.PlaySound(AMMO01SND_9,0.3f, null);
 }
 {
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5725,7 +6003,7 @@ MY_13.SetFloat(204,1f);
 GET02STR_14 = _world.AcknexObject.GetAcknexObject(2296020104);
 _world.SetSynonymObject(361798934,GET02STR_14);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5776,7 +6054,7 @@ WEAPONSEL_6_val = WEAPONSEL_6.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckLower(WEAPONSEL_6_val , 4f))
 {
 {
-            var enumerator = new SELECTSTINGER();
+            var enumerator = CoroutinePool.Get<SELECTSTINGER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5784,7 +6062,7 @@ if (MathUtils.CheckLower(WEAPONSEL_6_val , 4f))
             _world.StartManagedCoroutine(null, enumerator);
         }}
 {
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5795,7 +6073,7 @@ MY_9.SetFloat(204,1f);
 GET08STR_10 = _world.AcknexObject.GetAcknexObject(2296235726);
 _world.SetSynonymObject(361798934,GET08STR_10);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5843,7 +6121,7 @@ WEAPONSEL_6_val = WEAPONSEL_6.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckLower(WEAPONSEL_6_val , 5f))
 {
 {
-            var enumerator = new SELECTQUANTUM();
+            var enumerator = CoroutinePool.Get<SELECTQUANTUM>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5851,7 +6129,7 @@ if (MathUtils.CheckLower(WEAPONSEL_6_val , 5f))
             _world.StartManagedCoroutine(null, enumerator);
         }}
 {
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5862,7 +6140,7 @@ MY_9.SetFloat(204,1f);
 GET09STR_10 = _world.AcknexObject.GetAcknexObject(2296271663);
 _world.SetSynonymObject(361798934,GET09STR_10);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5904,7 +6182,7 @@ AMMO_MP5_1_val = AMMO_MP5_1.GetFloat(PropertyName.VAL);
 AMMO_MP5_2 = _world.GetObject(ObjectType.Skill,1494668136);
 AMMO_MP5_2.SetFloat(231,AMMO_MP5_1_val + 30f);
 {
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5917,7 +6195,7 @@ _world.PlaySound(AMMO01SND_6,0.3f, null);
 GET01STR_8 = _world.AcknexObject.GetAcknexObject(2295984167);
 _world.SetSynonymObject(361798934,GET01STR_8);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5960,7 +6238,7 @@ AMMO_GRANADE_3_val = AMMO_GRANADE_3.GetFloat(PropertyName.VAL);
 AMMO_GRANADE_4 = _world.GetObject(ObjectType.Skill,3603202376);
 AMMO_GRANADE_4.SetFloat(231,AMMO_GRANADE_3_val + 1f);
 {
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -5973,7 +6251,7 @@ _world.PlaySound(GRAN01SND_8,0.5f, null);
 GET05STR_10 = _world.AcknexObject.GetAcknexObject(2296127915);
 _world.SetSynonymObject(361798934,GET05STR_10);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -6015,7 +6293,7 @@ AMMO_STINGER_1_val = AMMO_STINGER_1.GetFloat(PropertyName.VAL);
 AMMO_STINGER_2 = _world.GetObject(ObjectType.Skill,2008713554);
 AMMO_STINGER_2.SetFloat(231,AMMO_STINGER_1_val + 10f);
 {
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -6028,7 +6306,7 @@ _world.PlaySound(AMMO01SND_6,0.5f, null);
 GET06STR_8 = _world.AcknexObject.GetAcknexObject(2296163852);
 _world.SetSynonymObject(361798934,GET06STR_8);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -6069,7 +6347,7 @@ AMMO_QUANTUM_1_val = AMMO_QUANTUM_1.GetFloat(PropertyName.VAL);
 AMMO_QUANTUM_2 = _world.GetObject(ObjectType.Skill,3750407617);
 AMMO_QUANTUM_2.SetFloat(231,AMMO_QUANTUM_1_val + 1f);
 {
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -6082,7 +6360,7 @@ _world.PlaySound(QGUN01SND_6,0.2f, null);
 GET07STR_8 = _world.AcknexObject.GetAcknexObject(2296199789);
 _world.SetSynonymObject(361798934,GET07STR_8);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -7048,7 +7326,7 @@ MODE_GEHEN_0_val = MODE_GEHEN_0.GetFloat(PropertyName.VAL);
 MOVING_1 = _world.GetObject(ObjectType.Skill,3242343005);
 MOVING_1.SetFloat(231,MODE_GEHEN_0_val);
 {
-            var enumerator = new SET_MOVING();
+            var enumerator = CoroutinePool.Get<SET_MOVING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -7164,7 +7442,7 @@ if (MathUtils.CheckGreater(PLAYER_DEPTH_40_val , 1.5f))
 goto NO_WATER;
 }
 {
-            var enumerator = new SET_WALKING();
+            var enumerator = CoroutinePool.Get<SET_WALKING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -7187,7 +7465,7 @@ if (MathUtils.CheckLower(PLAYER_DEPTH_44_val , 2.5f))
 goto NO_WATER;
 }
 {
-            var enumerator = new SET_SWIMMING();
+            var enumerator = CoroutinePool.Get<SET_SWIMMING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -7454,7 +7732,7 @@ PLAYER_RESULT_247_val = PLAYER_RESULT_247.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckGreater(PLAYER_RESULT_247_val , 0f))
 {
 {
-            var enumerator = new HITPLAYER();
+            var enumerator = CoroutinePool.Get<HITPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -8580,7 +8858,7 @@ MOVING_3_val = MOVING_3.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(MOVING_3_val , MODE_GEHEN_2_val))
 {
 {
-            var enumerator = new SET_WALKING();
+            var enumerator = CoroutinePool.Get<SET_WALKING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -8595,7 +8873,7 @@ MOVING_5_val = MOVING_5.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(MOVING_5_val , MODE_SCHWIMMEN_4_val))
 {
 {
-            var enumerator = new SET_SWIMMING();
+            var enumerator = CoroutinePool.Get<SET_SWIMMING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -8610,7 +8888,7 @@ MOVING_7_val = MOVING_7.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(MOVING_7_val , MODE_TAUCHEN_6_val))
 {
 {
-            var enumerator = new SET_DIVING();
+            var enumerator = CoroutinePool.Get<SET_DIVING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -8745,7 +9023,7 @@ public class ENTER_WATER : ICompiledAction {
 FWT01SND_0 = _world.AcknexObject.GetAcknexObject(103833604);
 _world.PlaySound(FWT01SND_0,0.8f, null);
 {
-            var enumerator = new SET_SWIMMING();
+            var enumerator = CoroutinePool.Get<SET_SWIMMING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -8776,7 +9054,7 @@ public class LEAVE_WATER : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new SET_WALKING();
+            var enumerator = CoroutinePool.Get<SET_WALKING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -8808,7 +9086,7 @@ public class DIVE_UP : ICompiledAction {
 PLAYERINSPSND_0 = _world.AcknexObject.GetAcknexObject(3374192921);
 _world.PlaySound(PLAYERINSPSND_0,0.8f, null);
 {
-            var enumerator = new RESET_BLUE();
+            var enumerator = CoroutinePool.Get<RESET_BLUE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -8880,7 +9158,7 @@ PLAYER_LIGHT_28.SetFloat(231,PLAYER_LIGHT_27_val + 0.2f);
             var enumerator = _world.CallSynonymAction(1342576697, MY, THERE);
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new SET_DIVING();
+            var enumerator = CoroutinePool.Get<SET_DIVING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -8976,14 +9254,14 @@ PLAYER_LIGHT_26.SetFloat(231,PLAYER_LIGHT_25_val + -0.2f);
             var enumerator = _world.CallSynonymAction(1917066007, MY, THERE);
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new SET_SWIMMING();
+            var enumerator = CoroutinePool.Get<SET_SWIMMING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new DIVE_UP();
+            var enumerator = CoroutinePool.Get<DIVE_UP>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -9351,7 +9629,7 @@ if (Game.CheckEquals(UNDERWATER_15_val , 0f))
 goto NOWATER;
 }
 {
-            var enumerator = new SET_BLUE();
+            var enumerator = CoroutinePool.Get<SET_BLUE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -9627,7 +9905,7 @@ UNDERWATER_12_val = UNDERWATER_12.GetFloat(PropertyName.VAL);
 if (!Game.CheckEquals(UNDERWATER_12_val , 0f))
 {
 {
-            var enumerator = new SET_BLUE();
+            var enumerator = CoroutinePool.Get<SET_BLUE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -9689,7 +9967,7 @@ public class HITPLAYERDELAY : ICompiledAction {
             Current = null;
         
 {
-            var enumerator = new HITPLAYER();
+            var enumerator = CoroutinePool.Get<HITPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -9737,7 +10015,7 @@ _world.FadePal(PAL_RED_7,0.5f);
 DEATH00SND_9 = _world.AcknexObject.GetAcknexObject(2555225272);
 _world.PlaySound(DEATH00SND_9,1f, null);
 {
-            var enumerator = new SET_DEATH();
+            var enumerator = CoroutinePool.Get<SET_DEATH>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -9867,7 +10145,7 @@ goto GODMODE;
 HLP06STR_6 = _world.AcknexObject.GetAcknexObject(2258733488);
 _world.SetSynonymObject(361798934,HLP06STR_6);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -9880,7 +10158,7 @@ GODMODE:
 HLP05STR_10 = _world.AcknexObject.GetAcknexObject(2258697551);
 _world.SetSynonymObject(361798934,HLP05STR_10);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -9915,7 +10193,7 @@ KEY3_37.SetFloat(231,1f);
 KEY4_39 = _world.GetObject(ObjectType.Skill,2089248010);
 KEY4_39.SetFloat(231,1f);
 {
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -10129,7 +10407,7 @@ TOUGHNESS_16 = _world.GetObject(ObjectType.Skill,1295621997);
 TOUGHNESS_16_val = TOUGHNESS_16.GetFloat(PropertyName.VAL);
 AMMO_12.SetFloat(231,AMMO_14_val-TOUGHNESS_16_val);
 {
-            var enumerator = new DECAMMO();
+            var enumerator = CoroutinePool.Get<DECAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -10289,7 +10567,7 @@ goto NOHIT;
 }
 CONTHIT:
 {
-            var enumerator = new CASTBLOOD();
+            var enumerator = CoroutinePool.Get<CASTBLOOD>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -10549,7 +10827,7 @@ AMMO_1_val = AMMO_1.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckLower(AMMO_1_val , 3f))
 {
 {
-            var enumerator = new FIRE();
+            var enumerator = CoroutinePool.Get<FIRE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -10598,7 +10876,7 @@ AMMO_24 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_24.SetFloat(231,0f);
 }
 {
-            var enumerator = new DECAMMO();
+            var enumerator = CoroutinePool.Get<DECAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -10681,7 +10959,7 @@ temp_75 =HIT_74.GetFloat(208);
 if (Game.CheckEquals(temp_75 , 1f))
 {
 {
-            var enumerator = new CASTBLOOD();
+            var enumerator = CoroutinePool.Get<CASTBLOOD>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -10707,7 +10985,7 @@ temp_88 =HIT_87.GetFloat(208);
 if (Game.CheckEquals(temp_88 , 1f))
 {
 {
-            var enumerator = new CASTBLOOD();
+            var enumerator = CoroutinePool.Get<CASTBLOOD>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -10735,7 +11013,7 @@ temp_101 =HIT_100.GetFloat(208);
 if (Game.CheckEquals(temp_101 , 1f))
 {
 {
-            var enumerator = new CASTBLOOD();
+            var enumerator = CoroutinePool.Get<CASTBLOOD>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -10991,7 +11269,7 @@ AMMO_1_val = AMMO_1.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(AMMO_1_val , 0f))
 {
 {
-            var enumerator = new SELECTNONE();
+            var enumerator = CoroutinePool.Get<SELECTNONE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -11000,7 +11278,7 @@ if (Game.CheckEquals(AMMO_1_val , 0f))
         }return false;
 }
 {
-            var enumerator = new CHOOSEGRANADE();
+            var enumerator = CoroutinePool.Get<CHOOSEGRANADE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -11188,7 +11466,7 @@ AMMO_127_val = AMMO_127.GetFloat(PropertyName.VAL);
 AMMO_128 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_128.SetFloat(231,AMMO_127_val + -1f);
 {
-            var enumerator = new DECAMMO();
+            var enumerator = CoroutinePool.Get<DECAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -11228,7 +11506,7 @@ _world.SetSynonymObject(3254523708,null);
 GUNFIRING_147 = _world.GetObject(ObjectType.Skill,3478808598);
 GUNFIRING_147.SetFloat(231,0f);
 {
-            var enumerator = new SELECTNONE();
+            var enumerator = CoroutinePool.Get<SELECTNONE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -11399,7 +11677,7 @@ public class LAUNCH : ICompiledAction {
                 goto _coroutine6;
      }
 {
-            var enumerator = new CHOOSEMISSILE();
+            var enumerator = CoroutinePool.Get<CHOOSEMISSILE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -11440,7 +11718,7 @@ AMMO_15_val = AMMO_15.GetFloat(PropertyName.VAL);
 AMMO_16 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_16.SetFloat(231,AMMO_15_val + -1f);
 {
-            var enumerator = new DECAMMO();
+            var enumerator = CoroutinePool.Get<DECAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -11896,7 +12174,7 @@ public class BEAM : ICompiledAction {
                 goto _coroutine4;
      }
 {
-            var enumerator = new CHOOSEPARTICLE();
+            var enumerator = CoroutinePool.Get<CHOOSEPARTICLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -11937,7 +12215,7 @@ AMMO_15_val = AMMO_15.GetFloat(PropertyName.VAL);
 AMMO_16 = _world.GetObject(ObjectType.Skill,2088896983);
 AMMO_16.SetFloat(231,AMMO_15_val + -1f);
 {
-            var enumerator = new DECAMMO();
+            var enumerator = CoroutinePool.Get<DECAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13126,14 +13404,14 @@ goto WAITFIRE;
 }
 NOGUN:
 {
-            var enumerator = new TARGETOFF();
+            var enumerator = CoroutinePool.Get<TARGETOFF>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13152,7 +13430,7 @@ goto CONT;
 MY_GUN_43 = _world.GetSynonymObject(3254523708);
 MY_GUN_43.SetFloat(204,0f);
 {
-            var enumerator = new LOWER();
+            var enumerator = CoroutinePool.Get<LOWER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13268,7 +13546,7 @@ MAP_MODE_3_val = MAP_MODE_3.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckGreater(MAP_MODE_3_val , 0f))
 {
 {
-            var enumerator = new SELECTNONE();
+            var enumerator = CoroutinePool.Get<SELECTNONE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13285,7 +13563,7 @@ goto HASGOT;
 WRN04STR_6 = _world.AcknexObject.GetAcknexObject(665781601);
 _world.SetSynonymObject(361798934,WRN04STR_6);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13337,14 +13615,14 @@ goto WAITFIRE;
 }
 NOGUN:
 {
-            var enumerator = new TARGETOFF();
+            var enumerator = CoroutinePool.Get<TARGETOFF>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13363,7 +13641,7 @@ goto CONT;
 MY_GUN_52 = _world.GetSynonymObject(3254523708);
 MY_GUN_52.SetFloat(204,0f);
 {
-            var enumerator = new LOWER();
+            var enumerator = CoroutinePool.Get<LOWER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13394,7 +13672,7 @@ _world.SetSynonymObject(3254523708,TRICACT_58);
 MY_GUN_62 = _world.GetSynonymObject(3254523708);
 MY_GUN_62.SetFloat(204,0f);
 {
-            var enumerator = new RAISE();
+            var enumerator = CoroutinePool.Get<RAISE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13551,7 +13829,7 @@ goto HASGOT;
 WRN03STR_6 = _world.AcknexObject.GetAcknexObject(665745664);
 _world.SetSynonymObject(361798934,WRN03STR_6);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13601,14 +13879,14 @@ goto WAITFIRE;
 }
 NOGUN:
 {
-            var enumerator = new TARGETON();
+            var enumerator = CoroutinePool.Get<TARGETON>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13625,7 +13903,7 @@ goto CONT;
 MY_GUN_44 = _world.GetSynonymObject(3254523708);
 MY_GUN_44.SetFloat(204,0f);
 {
-            var enumerator = new LOWER();
+            var enumerator = CoroutinePool.Get<LOWER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13656,7 +13934,7 @@ _world.SetSynonymObject(3254523708,MP5ACT_50);
 MY_GUN_54 = _world.GetSynonymObject(3254523708);
 MY_GUN_54.SetFloat(204,0f);
 {
-            var enumerator = new RAISE();
+            var enumerator = CoroutinePool.Get<RAISE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13801,7 +14079,7 @@ goto HASGOT;
 WRN03STR_6 = _world.AcknexObject.GetAcknexObject(665745664);
 _world.SetSynonymObject(361798934,WRN03STR_6);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13853,14 +14131,14 @@ goto WAITFIRE;
 }
 NOGUN:
 {
-            var enumerator = new TARGETON();
+            var enumerator = CoroutinePool.Get<TARGETON>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13877,7 +14155,7 @@ goto CONT;
 MY_GUN_48 = _world.GetSynonymObject(3254523708);
 MY_GUN_48.SetFloat(204,0f);
 {
-            var enumerator = new LOWER();
+            var enumerator = CoroutinePool.Get<LOWER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -13908,7 +14186,7 @@ _world.SetSynonymObject(3254523708,MP5ACT_54);
 MY_GUN_58 = _world.GetSynonymObject(3254523708);
 MY_GUN_58.SetFloat(204,0f);
 {
-            var enumerator = new RAISE();
+            var enumerator = CoroutinePool.Get<RAISE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14053,7 +14331,7 @@ goto HASGOT;
 WRN03STR_6 = _world.AcknexObject.GetAcknexObject(665745664);
 _world.SetSynonymObject(361798934,WRN03STR_6);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14111,14 +14389,14 @@ goto WAITFIRE;
 }
 NOGUN:
 {
-            var enumerator = new TARGETOFF();
+            var enumerator = CoroutinePool.Get<TARGETOFF>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14135,7 +14413,7 @@ goto CONT;
 MY_GUN_50 = _world.GetSynonymObject(3254523708);
 MY_GUN_50.SetFloat(204,0f);
 {
-            var enumerator = new LOWER();
+            var enumerator = CoroutinePool.Get<LOWER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14166,7 +14444,7 @@ _world.SetSynonymObject(3254523708,GRANACT_56);
 MY_GUN_60 = _world.GetSynonymObject(3254523708);
 MY_GUN_60.SetFloat(204,0f);
 {
-            var enumerator = new RAISE();
+            var enumerator = CoroutinePool.Get<RAISE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14314,7 +14592,7 @@ goto HASGOT;
 WRN03STR_6 = _world.AcknexObject.GetAcknexObject(665745664);
 _world.SetSynonymObject(361798934,WRN03STR_6);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14366,7 +14644,7 @@ goto WAITFIRE;
 }
 NOGUN:
 {
-            var enumerator = new TARGETON();
+            var enumerator = CoroutinePool.Get<TARGETON>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14375,7 +14653,7 @@ NOGUN:
         }WEAPONSEL_40 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_40.SetFloat(231,4f);
 {
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14392,7 +14670,7 @@ goto CONT;
 MY_GUN_50 = _world.GetSynonymObject(3254523708);
 MY_GUN_50.SetFloat(204,0f);
 {
-            var enumerator = new LOWER();
+            var enumerator = CoroutinePool.Get<LOWER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14423,7 +14701,7 @@ _world.SetSynonymObject(3254523708,STNGACT_56);
 MY_GUN_60 = _world.GetSynonymObject(3254523708);
 MY_GUN_60.SetFloat(204,0f);
 {
-            var enumerator = new RAISE();
+            var enumerator = CoroutinePool.Get<RAISE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14569,7 +14847,7 @@ goto HASGOT;
 WRN03STR_6 = _world.AcknexObject.GetAcknexObject(665745664);
 _world.SetSynonymObject(361798934,WRN03STR_6);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14621,7 +14899,7 @@ goto WAITFIRE;
 }
 NOGUN:
 {
-            var enumerator = new TARGETON();
+            var enumerator = CoroutinePool.Get<TARGETON>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14630,7 +14908,7 @@ NOGUN:
         }WEAPONSEL_40 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_40.SetFloat(231,5f);
 {
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14647,7 +14925,7 @@ goto CONT;
 MY_GUN_50 = _world.GetSynonymObject(3254523708);
 MY_GUN_50.SetFloat(204,0f);
 {
-            var enumerator = new LOWER();
+            var enumerator = CoroutinePool.Get<LOWER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14678,7 +14956,7 @@ _world.SetSynonymObject(3254523708,QGUNACT_56);
 MY_GUN_60 = _world.GetSynonymObject(3254523708);
 MY_GUN_60.SetFloat(204,0f);
 {
-            var enumerator = new RAISE();
+            var enumerator = CoroutinePool.Get<RAISE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14954,7 +15232,7 @@ public class SHOWPDABRIEFING : ICompiledAction {
                 goto _coroutine4;
      }
 {
-            var enumerator = new SELECTNONE();
+            var enumerator = CoroutinePool.Get<SELECTNONE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14985,7 +15263,7 @@ if (Game.CheckEquals(GUNFIRING_5_val , 1f))
 goto WAITING0;
 }
 {
-            var enumerator = new HIDEWEAPON();
+            var enumerator = CoroutinePool.Get<HIDEWEAPON>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -14994,7 +15272,7 @@ goto WAITING0;
         }WEAPONSEL_7 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_7.SetFloat(231,1f);
 {
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15024,7 +15302,7 @@ _world.SetSynonymObject(3254523708,TRICACT_22);
 MY_GUN_26 = _world.GetSynonymObject(3254523708);
 MY_GUN_26.SetFloat(204,0f);
 {
-            var enumerator = new RAISE();
+            var enumerator = CoroutinePool.Get<RAISE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15070,7 +15348,7 @@ _world.SetSynonymObject(361798934,HLP03STR_47);
 BLACK_49 = _world.AcknexObject.GetAcknexObject(215228298);
 _world.FadePal(BLACK_49,0.4f);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15156,7 +15434,7 @@ public class SHOWPDAGAMEOVER : ICompiledAction {
 ALARM03SND_0 = _world.AcknexObject.GetAcknexObject(759955234);
 _world.PlaySound(ALARM03SND_0,0.7f, null);
 {
-            var enumerator = new SELECTNONE();
+            var enumerator = CoroutinePool.Get<SELECTNONE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15187,7 +15465,7 @@ if (Game.CheckEquals(GUNFIRING_7_val , 1f))
 goto WAITING0;
 }
 {
-            var enumerator = new HIDEWEAPON();
+            var enumerator = CoroutinePool.Get<HIDEWEAPON>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15196,7 +15474,7 @@ goto WAITING0;
         }WEAPONSEL_9 = _world.GetObject(ObjectType.Skill,2181903739);
 WEAPONSEL_9.SetFloat(231,1f);
 {
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15225,7 +15503,7 @@ _world.SetSynonymObject(3254523708,TRICACT_22);
 MY_GUN_26 = _world.GetSynonymObject(3254523708);
 MY_GUN_26.SetFloat(204,0f);
 {
-            var enumerator = new RAISE();
+            var enumerator = CoroutinePool.Get<RAISE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15272,7 +15550,7 @@ _world.SetSynonymObject(361798934,HLP04STR_49);
 BLACK_51 = _world.AcknexObject.GetAcknexObject(215228298);
 _world.FadePal(BLACK_51,0.4f);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15370,7 +15648,7 @@ SELECTQUANTUM_19 = _world.AcknexObject.GetAcknexObject(824580280);
 _world.AcknexObject.SetAcknexObject(44,SELECTQUANTUM_19);
 _world.AcknexObject.SetAcknexObject(145,null);
 {
-            var enumerator = new SELECTNONE();
+            var enumerator = CoroutinePool.Get<SELECTNONE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15379,28 +15657,28 @@ _world.AcknexObject.SetAcknexObject(145,null);
         }BLANKSTR_24 = _world.AcknexObject.GetAcknexObject(3695414798);
 _world.SetSynonymObject(361798934,BLANKSTR_24);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new SHOWWEAPON();
+            var enumerator = CoroutinePool.Get<SHOWWEAPON>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new SELECTNONE();
+            var enumerator = CoroutinePool.Get<SELECTNONE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new ENDOFLEVEL();
+            var enumerator = CoroutinePool.Get<ENDOFLEVEL>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15594,7 +15872,7 @@ KEY1_6.SetFloat(231,1f);
 GET03STR_7 = _world.AcknexObject.GetAcknexObject(2296056041);
 _world.SetSynonymObject(361798934,GET03STR_7);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15637,7 +15915,7 @@ KEY2_6.SetFloat(231,1f);
 GET04STR_7 = _world.AcknexObject.GetAcknexObject(2296091978);
 _world.SetSynonymObject(361798934,GET04STR_7);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15672,7 +15950,7 @@ public class PICKUPLOCALMP5 : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new PICKUPMP5();
+            var enumerator = CoroutinePool.Get<PICKUPMP5>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15719,7 +15997,7 @@ if (MathUtils.CheckGreater(SHOT_SOUND_ON_11_val , 0f))
 return false;
 }
 {
-            var enumerator = new SHOWPDABRIEFING();
+            var enumerator = CoroutinePool.Get<SHOWPDABRIEFING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15762,7 +16040,7 @@ WAITTIME_0.SetFloat(231,64f*UnityEngine.Random.value+16f);
 if (MathUtils.CheckLower(UnityEngine.Random.value , 0.07f))
 {
 {
-            var enumerator = new DRKLLISTEN();
+            var enumerator = CoroutinePool.Get<DRKLLISTEN>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15786,7 +16064,7 @@ RIGHTTURNDRKL_24_val = RIGHTTURNDRKL_24.GetFloat(PropertyName.VAL);
 if (RIGHTTURNDRKL_24_val > RIGHTTURNDRKL_24.GetFloat(PropertyName.MAX))
 {
 {
-            var enumerator = new TURNRIGHT();
+            var enumerator = CoroutinePool.Get<TURNRIGHT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15795,7 +16073,7 @@ if (RIGHTTURNDRKL_24_val > RIGHTTURNDRKL_24.GetFloat(PropertyName.MAX))
         }return false;
 }
 {
-            var enumerator = new TURNLEFT();
+            var enumerator = CoroutinePool.Get<TURNLEFT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -15948,7 +16226,7 @@ BULLET_27 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_29 = MY;
 MY_29.SetAcknexObject(199,BULLET_27);
 {
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -16006,14 +16284,14 @@ MY_11.SetAcknexObject(209,DRKLHIT_9);
 MY_14 = MY;
 MY_14.SetFloat(213,0f);
 {
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -16024,7 +16302,7 @@ temp_18 =MY_17.GetFloat(181);
 if (Game.CheckEquals(temp_18 , 0f))
 {
 {
-            var enumerator = new DRKLWAIT();
+            var enumerator = CoroutinePool.Get<DRKLWAIT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -16033,7 +16311,7 @@ if (Game.CheckEquals(temp_18 , 0f))
         }return false;
 }
 {
-            var enumerator = new DRKLFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<DRKLFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -16091,7 +16369,7 @@ MY_17.SetAcknexObject(209,DRKLHIT_15);
 MY_20 = MY;
 MY_20.SetFloat(213,0f);
 {
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -16144,7 +16422,7 @@ temp_62 =MY_61.GetFloat(173);
 MY_64 = MY;
 MY_64.SetFloat(173,temp_62 + -2f);
 {
-            var enumerator = new DRKLWANDER();
+            var enumerator = CoroutinePool.Get<DRKLWANDER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -16301,7 +16579,7 @@ temp_47 =MY_46.GetFloat(173);
 if (MathUtils.CheckLower(temp_47 , 9f))
 {
 {
-            var enumerator = new DRKLWANDER();
+            var enumerator = CoroutinePool.Get<DRKLWANDER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -16363,7 +16641,7 @@ if (Game.CheckEquals(temp_3 , 1f))
 goto BLOODSMELL;
 }
 {
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -16474,7 +16752,7 @@ temp_15 =MY_14.GetFloat(182);
 if (Game.CheckEquals(temp_15 , 1f))
 {
 {
-            var enumerator = new DRKLFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<DRKLFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -16706,14 +16984,14 @@ BULLET_24 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_26 = MY;
 MY_26.SetAcknexObject(199,BULLET_24);
 {
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new FOLLOWANGLE();
+            var enumerator = CoroutinePool.Get<FOLLOWANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -16831,7 +17109,7 @@ MY_11.SetAcknexObject(209,DRKLHIT_9);
 MY_14 = MY;
 MY_14.SetFloat(213,0f);
 {
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -16850,7 +17128,7 @@ BULLET_27 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_29 = MY;
 MY_29.SetAcknexObject(199,BULLET_27);
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17049,7 +17327,7 @@ DISTX_53_val = DISTX_53.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckGreater(DISTX_53_val , 10f))
 {
 {
-            var enumerator = new BEAMREACT();
+            var enumerator = CoroutinePool.Get<BEAMREACT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17210,7 +17488,7 @@ temp_58 =MY_57.GetFloat(205);
 if (Game.CheckEquals(temp_58 , 1f))
 {
 {
-            var enumerator = new DRKLIMPLODE();
+            var enumerator = CoroutinePool.Get<DRKLIMPLODE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17272,7 +17550,7 @@ temp_109 =MY_108.GetFloat(173);
 if (MathUtils.CheckGreater(temp_109 , 4f))
 {
 {
-            var enumerator = new DRKLHIDE();
+            var enumerator = CoroutinePool.Get<DRKLHIDE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17285,7 +17563,7 @@ temp_113 =MY_112.GetFloat(176);
 if (!Game.CheckEquals(temp_113 , 4f))
 {
 {
-            var enumerator = new DRKLFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<DRKLFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17298,7 +17576,7 @@ DIE:
 MY_116 = MY;
 MY_116.SetFloat(173,10f);
 {
-            var enumerator = new DRKLDIE();
+            var enumerator = CoroutinePool.Get<DRKLDIE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17308,7 +17586,7 @@ MY_116.SetFloat(173,10f);
 return false;
 OBSTACLE:
 {
-            var enumerator = new DRKLTURN();
+            var enumerator = CoroutinePool.Get<DRKLTURN>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17400,7 +17678,7 @@ public class CYCLEDRKLATTACK : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17415,7 +17693,7 @@ MY_8.SetFloat(169,0f);
 MY_11 = MY;
 MY_11.SetAcknexObject(189,null);
 {
-            var enumerator = new DRKLTALK();
+            var enumerator = CoroutinePool.Get<DRKLTALK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17428,7 +17706,7 @@ if (Game.CheckEquals(SHOT_SOUND_ON_13_val , 0f))
 goto CONT;
 }
 {
-            var enumerator = new DRKLLOOKFOR();
+            var enumerator = CoroutinePool.Get<DRKLLOOKFOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17436,7 +17714,7 @@ goto CONT;
             _world.StartManagedCoroutine(null, enumerator);
         }CONT:
 {
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17461,7 +17739,7 @@ MY_27 = MY;
 _world.PlaySound(DRKL02SND_25,0.7f,MY_27);
 CONT1:
 {
-            var enumerator = new DRKLFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<DRKLFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17505,7 +17783,7 @@ public class CYCLEDRKLHIDE : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17531,7 +17809,7 @@ BULLET_19 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_21 = MY;
 MY_21.SetAcknexObject(199,BULLET_19);
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17586,7 +17864,7 @@ public class CYCLEDRKLSHOOT : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17597,7 +17875,7 @@ temp_3 =MY_2.GetFloat(173);
 if (MathUtils.CheckGreater(temp_3 , 9f))
 {
 {
-            var enumerator = new DRKLDIE();
+            var enumerator = CoroutinePool.Get<DRKLDIE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17614,7 +17892,7 @@ MY_12.SetFloat(169,0f);
 MY_15 = MY;
 MY_15.SetAcknexObject(189,null);
 {
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17635,7 +17913,7 @@ if (Game.CheckEquals(temp_23 , 1f))
 goto ATTACK;
 }
 {
-            var enumerator = new DRKLWAIT();
+            var enumerator = CoroutinePool.Get<DRKLWAIT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17682,7 +17960,7 @@ DRKLDELTA_80_val = DRKLDELTA_80.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckLower(DRKLDELTA_80_val , 0.25f))
 {
 {
-            var enumerator = new DRKLJUMP();
+            var enumerator = CoroutinePool.Get<DRKLJUMP>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17704,14 +17982,14 @@ DRKLSHOOTFACTOR_87 = _world.GetObject(ObjectType.Skill,3769297958);
 DRKLSHOOTFACTOR_87_val = DRKLSHOOTFACTOR_87.GetFloat(PropertyName.VAL);
 PLAYER_RESULT_85.SetFloat(231,DRKLSHOOTFACTOR_87_val*(1f+UnityEngine.Random.value));
 {
-            var enumerator = new HITPLAYERDELAY();
+            var enumerator = CoroutinePool.Get<HITPLAYERDELAY>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new DRKLSHOOT();
+            var enumerator = CoroutinePool.Get<DRKLSHOOT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17720,7 +17998,7 @@ PLAYER_RESULT_85.SetFloat(231,DRKLSHOOTFACTOR_87_val*(1f+UnityEngine.Random.valu
         }return false;
 ATTACK:
 {
-            var enumerator = new DRKLFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<DRKLFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17842,7 +18120,7 @@ WAITTIME_0.SetFloat(231,64f*UnityEngine.Random.value+16f);
 if (MathUtils.CheckLower(UnityEngine.Random.value , 0.07f))
 {
 {
-            var enumerator = new TROPLISTEN();
+            var enumerator = CoroutinePool.Get<TROPLISTEN>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17866,7 +18144,7 @@ RIGHTTURNTROP_24_val = RIGHTTURNTROP_24.GetFloat(PropertyName.VAL);
 if (RIGHTTURNTROP_24_val > RIGHTTURNTROP_24.GetFloat(PropertyName.MAX))
 {
 {
-            var enumerator = new TURNRIGHT();
+            var enumerator = CoroutinePool.Get<TURNRIGHT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17875,7 +18153,7 @@ if (RIGHTTURNTROP_24_val > RIGHTTURNTROP_24.GetFloat(PropertyName.MAX))
         }return false;
 }
 {
-            var enumerator = new TURNLEFT();
+            var enumerator = CoroutinePool.Get<TURNLEFT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17944,7 +18222,7 @@ BULLET_27 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_29 = MY;
 MY_29.SetAcknexObject(199,BULLET_27);
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17957,7 +18235,7 @@ MY_36 = MY;
 temp_37 =MY_36.GetFloat(194);
 MY_31.SetFloat(194,temp_37+UnityEngine.Random.value-0.5f);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17976,7 +18254,7 @@ MY_31.SetFloat(194,temp_37+UnityEngine.Random.value-0.5f);
             Current = null;
         
 {
-            var enumerator = new FOLLOWANGLE();
+            var enumerator = CoroutinePool.Get<FOLLOWANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -17989,7 +18267,7 @@ if (MathUtils.CheckGreater(temp_46 , 5f))
 return false;
 }
 {
-            var enumerator = new TROPWAIT();
+            var enumerator = CoroutinePool.Get<TROPWAIT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -18154,14 +18432,14 @@ BULLET_33 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_35 = MY;
 MY_35.SetAcknexObject(199,BULLET_33);
 {
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -18234,14 +18512,14 @@ BULLET_30 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_32 = MY;
 MY_32.SetAcknexObject(199,BULLET_30);
 {
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -18314,7 +18592,7 @@ goto HIDDING;
 MY_27 = MY;
 MY_27.SetFloat(176,4f);
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -18337,14 +18615,14 @@ BULLET_53 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_55 = MY;
 MY_55.SetAcknexObject(199,BULLET_53);
 {
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -18373,7 +18651,7 @@ temp_64 =MY_63.GetFloat(173);
 MY_66 = MY;
 MY_66.SetFloat(173,temp_64 + -2f);
 {
-            var enumerator = new TROPFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<TROPFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -18382,7 +18660,7 @@ MY_66.SetFloat(173,temp_64 + -2f);
         }return false;
 HIDDING:
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -18405,7 +18683,7 @@ BULLET_92 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_94 = MY;
 MY_94.SetAcknexObject(199,BULLET_92);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -18546,7 +18824,7 @@ temp_50 =MY_49.GetFloat(173);
 if (MathUtils.CheckLower(temp_50 , 9f))
 {
 {
-            var enumerator = new TROPWANDER();
+            var enumerator = CoroutinePool.Get<TROPWANDER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -18695,7 +18973,7 @@ temp_70 =MY_69.GetFloat(194);
 MY_64.SetFloat(194,temp_70-2f);
 }
 {
-            var enumerator = new TROPBACKOFF();
+            var enumerator = CoroutinePool.Get<TROPBACKOFF>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -18783,7 +19061,7 @@ temp_11 =MY_10.GetFloat(182);
 if (Game.CheckEquals(temp_11 , 1f))
 {
 {
-            var enumerator = new TROPFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<TROPFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -18910,21 +19188,21 @@ MY_23.SetAcknexObject(164,TROP1TEX_21);
 MY_26 = MY;
 MY_26.SetFloat(168,0.4f);
 {
-            var enumerator = new FOLLOWANGLE();
+            var enumerator = CoroutinePool.Get<FOLLOWANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -18991,21 +19269,21 @@ BULLET_27 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_29 = MY;
 MY_29.SetAcknexObject(199,BULLET_27);
 {
-            var enumerator = new FOLLOWANGLE();
+            var enumerator = CoroutinePool.Get<FOLLOWANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19074,21 +19352,21 @@ BULLET_27 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_29 = MY;
 MY_29.SetAcknexObject(199,BULLET_27);
 {
-            var enumerator = new FOLLOWANGLE();
+            var enumerator = CoroutinePool.Get<FOLLOWANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19154,14 +19432,14 @@ MY_23.SetAcknexObject(164,TROP3ATEX_21);
 MY_26 = MY;
 MY_26.SetFloat(168,0f);
 {
-            var enumerator = new FOLLOWANGLE();
+            var enumerator = CoroutinePool.Get<FOLLOWANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new TROPSHOUT();
+            var enumerator = CoroutinePool.Get<TROPSHOUT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19225,7 +19503,7 @@ MY_23.SetAcknexObject(164,TROP3TEX_21);
 MY_26 = MY;
 MY_26.SetFloat(168,0f);
 {
-            var enumerator = new FOLLOWANGLE();
+            var enumerator = CoroutinePool.Get<FOLLOWANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19254,7 +19532,7 @@ RESULT_38_val = RESULT_38.GetFloat(PropertyName.VAL);
 PLAYER_RESULT_39 = _world.GetObject(ObjectType.Skill,1861765784);
 PLAYER_RESULT_39.SetFloat(231,RESULT_38_val);
 {
-            var enumerator = new HITPLAYERDELAY();
+            var enumerator = CoroutinePool.Get<HITPLAYERDELAY>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19263,7 +19541,7 @@ PLAYER_RESULT_39.SetFloat(231,RESULT_38_val);
         }return false;
 MISS:
 {
-            var enumerator = new TROPFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<TROPFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19342,7 +19620,7 @@ MY_26.SetFloat(172,30f);
 MY_29 = MY;
 MY_29.SetFloat(168,0.4f);
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19358,14 +19636,14 @@ BULLET_46 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_48 = MY;
 MY_48.SetAcknexObject(199,BULLET_46);
 {
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19519,7 +19797,7 @@ temp_18 =MY_17.GetFloat(184);
 if (!Game.CheckEquals(temp_18 , 0f))
 {
 {
-            var enumerator = new TROPDROPKEY();
+            var enumerator = CoroutinePool.Get<TROPDROPKEY>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19608,7 +19886,7 @@ DISTX_53_val = DISTX_53.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckGreater(DISTX_53_val , 10f))
 {
 {
-            var enumerator = new BEAMREACT();
+            var enumerator = CoroutinePool.Get<BEAMREACT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19643,7 +19921,7 @@ temp_87 =MY_86.GetFloat(184);
 if (!Game.CheckEquals(temp_87 , 0f))
 {
 {
-            var enumerator = new TROPDROPKEY();
+            var enumerator = CoroutinePool.Get<TROPDROPKEY>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19780,7 +20058,7 @@ temp_56 =MY_55.GetFloat(205);
 if (Game.CheckEquals(temp_56 , 1f))
 {
 {
-            var enumerator = new TROPIMPLODE();
+            var enumerator = CoroutinePool.Get<TROPIMPLODE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19878,7 +20156,7 @@ temp_142 =MY_141.GetFloat(173);
 if (MathUtils.CheckGreater(temp_142 , 4f))
 {
 {
-            var enumerator = new TROPHIDE();
+            var enumerator = CoroutinePool.Get<TROPHIDE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19891,7 +20169,7 @@ temp_146 =MY_145.GetFloat(176);
 if (!Game.CheckEquals(temp_146 , 4f))
 {
 {
-            var enumerator = new TROPFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<TROPFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19904,7 +20182,7 @@ DIE:
 MY_149 = MY;
 MY_149.SetFloat(173,10f);
 {
-            var enumerator = new TROPDIE();
+            var enumerator = CoroutinePool.Get<TROPDIE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -19914,7 +20192,7 @@ MY_149.SetFloat(173,10f);
 return false;
 OBSTACLE:
 {
-            var enumerator = new TROPTURN();
+            var enumerator = CoroutinePool.Get<TROPTURN>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20091,7 +20369,7 @@ public class CYCLETROPATTACK : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20110,7 +20388,7 @@ if (Game.CheckEquals(SHOT_SOUND_ON_5_val , 0f))
 goto CONT;
 }
 {
-            var enumerator = new TROPLOOKFOR();
+            var enumerator = CoroutinePool.Get<TROPLOOKFOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20118,7 +20396,7 @@ goto CONT;
             _world.StartManagedCoroutine(null, enumerator);
         }CONT:
 {
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20141,7 +20419,7 @@ temp_15 =MY_14.GetFloat(202);
 if (MathUtils.CheckLower(temp_15 , 20f))
 {
 {
-            var enumerator = new TROPFOLLOWWARNING();
+            var enumerator = CoroutinePool.Get<TROPFOLLOWWARNING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20154,7 +20432,7 @@ ATTACK:
 MY_18 = MY;
 MY_18.SetFloat(182,1f);
 {
-            var enumerator = new TROPTALK();
+            var enumerator = CoroutinePool.Get<TROPTALK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20165,7 +20443,7 @@ temp_22 =MY_21.GetFloat(202);
 if (MathUtils.CheckLower(temp_22 , 200f))
 {
 {
-            var enumerator = new TROPFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<TROPFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20210,7 +20488,7 @@ public class CYCLETROPHIDE : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20223,7 +20501,7 @@ MY_6 = MY;
 temp_7 =MY_6.GetFloat(194);
 MY_1.SetFloat(194,temp_7+(UnityEngine.Random.value-0.5f)*2f);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20236,7 +20514,7 @@ if (Game.CheckEquals(temp_19 , 1f))
 return false;
 }
 {
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20297,7 +20575,7 @@ public class CYCLETROPBACK : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20327,7 +20605,7 @@ public class CYCLETROPSHOOT : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20338,7 +20616,7 @@ temp_3 =MY_2.GetFloat(173);
 if (MathUtils.CheckGreater(temp_3 , 9f))
 {
 {
-            var enumerator = new TROPDIE();
+            var enumerator = CoroutinePool.Get<TROPDIE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20351,7 +20629,7 @@ temp_7 =MY_6.GetFloat(202);
 if (MathUtils.CheckGreater(temp_7 , 300f))
 {
 {
-            var enumerator = new TROPWAIT();
+            var enumerator = CoroutinePool.Get<TROPWAIT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20366,14 +20644,14 @@ if (MathUtils.CheckGreater(temp_11 , 100f))
 goto ATTACK;
 }
 {
-            var enumerator = new FOLLOWANGLE();
+            var enumerator = CoroutinePool.Get<FOLLOWANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20393,7 +20671,7 @@ SHOTSECCOUNT_19.SetFloat(231,0f);
 if (MathUtils.CheckGreater(UnityEngine.Random.value , 0.8f))
 {
 {
-            var enumerator = new TROPAIM();
+            var enumerator = CoroutinePool.Get<TROPAIM>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20402,7 +20680,7 @@ if (MathUtils.CheckGreater(UnityEngine.Random.value , 0.8f))
         }return false;
 }
 {
-            var enumerator = new TROPSHOOT();
+            var enumerator = CoroutinePool.Get<TROPSHOOT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20411,7 +20689,7 @@ if (MathUtils.CheckGreater(UnityEngine.Random.value , 0.8f))
         }return false;
 ATTACK:
 {
-            var enumerator = new TROPFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<TROPFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20452,7 +20730,7 @@ public class CYCLETROPWARNING : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20463,7 +20741,7 @@ GUN_ON_1_val = GUN_ON_1.GetFloat(PropertyName.VAL);
 if (!Game.CheckEquals(GUN_ON_1_val , 0f))
 {
 {
-            var enumerator = new TROPFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<TROPFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20480,7 +20758,7 @@ goto CONT;
 MY_8 = MY;
 MY_8.SetAcknexObject(190,null);
 {
-            var enumerator = new TROPWARNING();
+            var enumerator = CoroutinePool.Get<TROPWARNING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20493,7 +20771,7 @@ temp_12 =MY_11.GetFloat(202);
 if (MathUtils.CheckGreater(temp_12 , 40f))
 {
 {
-            var enumerator = new TROPWAIT();
+            var enumerator = CoroutinePool.Get<TROPWAIT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20502,7 +20780,7 @@ if (MathUtils.CheckGreater(temp_12 , 40f))
         }return false;
 }
 {
-            var enumerator = new FOLLOWANGLE();
+            var enumerator = CoroutinePool.Get<FOLLOWANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20683,7 +20961,7 @@ AMMO_MP5_1_val = AMMO_MP5_1.GetFloat(PropertyName.VAL);
 AMMO_MP5_2 = _world.GetObject(ObjectType.Skill,1494668136);
 AMMO_MP5_2.SetFloat(231,AMMO_MP5_1_val + 30f);
 {
-            var enumerator = new SHOWAMMO();
+            var enumerator = CoroutinePool.Get<SHOWAMMO>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20696,7 +20974,7 @@ _world.PlaySound(AMMO01SND_6,0.3f, null);
 GET01STR_8 = _world.AcknexObject.GetAcknexObject(2295984167);
 _world.SetSynonymObject(361798934,GET01STR_8);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20749,7 +21027,7 @@ _world.PlaySound(ARMO01SND_8,0.5f, null);
 GET10STR_10 = _world.AcknexObject.GetAcknexObject(2297134151);
 _world.SetSynonymObject(361798934,GET10STR_10);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20930,7 +21208,7 @@ WAITTIME_0.SetFloat(231,64f*UnityEngine.Random.value+16f);
 if (MathUtils.CheckLower(UnityEngine.Random.value , 0.07f))
 {
 {
-            var enumerator = new LNCHLISTEN();
+            var enumerator = CoroutinePool.Get<LNCHLISTEN>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20954,7 +21232,7 @@ RIGHTTURNLNCH_24_val = RIGHTTURNLNCH_24.GetFloat(PropertyName.VAL);
 if (RIGHTTURNLNCH_24_val > RIGHTTURNLNCH_24.GetFloat(PropertyName.MAX))
 {
 {
-            var enumerator = new TURNRIGHT();
+            var enumerator = CoroutinePool.Get<TURNRIGHT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -20963,7 +21241,7 @@ if (RIGHTTURNLNCH_24_val > RIGHTTURNLNCH_24.GetFloat(PropertyName.MAX))
         }return false;
 }
 {
-            var enumerator = new TURNLEFT();
+            var enumerator = CoroutinePool.Get<TURNLEFT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21034,7 +21312,7 @@ BULLET_27 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_29 = MY;
 MY_29.SetAcknexObject(199,BULLET_27);
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21047,7 +21325,7 @@ MY_36 = MY;
 temp_37 =MY_36.GetFloat(194);
 MY_31.SetFloat(194,temp_37+UnityEngine.Random.value-0.5f);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21072,14 +21350,14 @@ if (MathUtils.CheckGreater(temp_46 , 5f))
 return false;
 }
 {
-            var enumerator = new LNCHWANDER();
+            var enumerator = CoroutinePool.Get<LNCHWANDER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21104,7 +21382,7 @@ if (MathUtils.CheckGreater(temp_51 , 5f))
 return false;
 }
 {
-            var enumerator = new LNCHFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<LNCHFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21253,7 +21531,7 @@ BULLET_30 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_32 = MY;
 MY_32.SetAcknexObject(199,BULLET_30);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21323,7 +21601,7 @@ BULLET_27 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_29 = MY;
 MY_29.SetAcknexObject(199,BULLET_27);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21405,7 +21683,7 @@ BULLET_47 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_49 = MY;
 MY_49.SetAcknexObject(199,BULLET_47);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21428,7 +21706,7 @@ temp_54 =MY_53.GetFloat(173);
 if (MathUtils.CheckLower(temp_54 , 9f))
 {
 {
-            var enumerator = new LNCHWANDER();
+            var enumerator = CoroutinePool.Get<LNCHWANDER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21527,7 +21805,7 @@ temp_34 =MY_33.GetFloat(173);
 if (MathUtils.CheckLower(temp_34 , 9f))
 {
 {
-            var enumerator = new LNCHWANDER();
+            var enumerator = CoroutinePool.Get<LNCHWANDER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21702,7 +21980,7 @@ FOLLOW_27 = _world.AcknexObject.GetAcknexObject(2968039200);
 MY_29 = MY;
 MY_29.SetAcknexObject(199,FOLLOW_27);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21771,7 +22049,7 @@ FOLLOW_27 = _world.AcknexObject.GetAcknexObject(2968039200);
 MY_29 = MY;
 MY_29.SetAcknexObject(199,FOLLOW_27);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21840,7 +22118,7 @@ FOLLOW_27 = _world.AcknexObject.GetAcknexObject(2968039200);
 MY_29 = MY;
 MY_29.SetAcknexObject(199,FOLLOW_27);
 {
-            var enumerator = new LNCHSHOUT();
+            var enumerator = CoroutinePool.Get<LNCHSHOUT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21898,7 +22176,7 @@ MY_14.SetFloat(207,0f);
 MY_17 = MY;
 MY_17.SetFloat(219,0f);
 {
-            var enumerator = new CHOOSEMISSILE();
+            var enumerator = CoroutinePool.Get<CHOOSEMISSILE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21917,7 +22195,7 @@ MY_25.SetAcknexObject(164,LNCH3TEX_23);
 MY_28 = MY;
 MY_28.SetFloat(168,0f);
 {
-            var enumerator = new FOLLOWANGLE();
+            var enumerator = CoroutinePool.Get<FOLLOWANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -21927,7 +22205,7 @@ MY_28.SetFloat(168,0f);
 MY_31 = MY;
 MY_31.SetAcknexObject(199,FOLLOW_29);
 {
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22010,7 +22288,7 @@ MISSILE_114.SetFloat(206,1f);
 return false;
 MISS:
 {
-            var enumerator = new LNCHFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<LNCHFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22132,7 +22410,7 @@ REPEL_30 = _world.AcknexObject.GetAcknexObject(233967877);
 MY_32 = MY;
 MY_32.SetAcknexObject(199,REPEL_30);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22252,7 +22530,7 @@ temp_18 =MY_17.GetFloat(184);
 if (!Game.CheckEquals(temp_18 , 0f))
 {
 {
-            var enumerator = new LNCHDROPKEY();
+            var enumerator = CoroutinePool.Get<LNCHDROPKEY>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22341,7 +22619,7 @@ DISTX_53_val = DISTX_53.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckGreater(DISTX_53_val , 10f))
 {
 {
-            var enumerator = new BEAMREACT();
+            var enumerator = CoroutinePool.Get<BEAMREACT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22376,7 +22654,7 @@ temp_87 =MY_86.GetFloat(184);
 if (!Game.CheckEquals(temp_87 , 0f))
 {
 {
-            var enumerator = new LNCHDROPKEY();
+            var enumerator = CoroutinePool.Get<LNCHDROPKEY>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22513,7 +22791,7 @@ temp_56 =MY_55.GetFloat(205);
 if (Game.CheckEquals(temp_56 , 1f))
 {
 {
-            var enumerator = new LNCHIMPLODE();
+            var enumerator = CoroutinePool.Get<LNCHIMPLODE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22594,7 +22872,7 @@ temp_121 =MY_120.GetFloat(173);
 if (MathUtils.CheckGreater(temp_121 , 4f))
 {
 {
-            var enumerator = new LNCHHIDE();
+            var enumerator = CoroutinePool.Get<LNCHHIDE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22607,7 +22885,7 @@ temp_125 =MY_124.GetFloat(176);
 if (!Game.CheckEquals(temp_125 , 4f))
 {
 {
-            var enumerator = new LNCHFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<LNCHFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22620,7 +22898,7 @@ DIE:
 MY_128 = MY;
 MY_128.SetFloat(173,10f);
 {
-            var enumerator = new LNCHDIE();
+            var enumerator = CoroutinePool.Get<LNCHDIE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22630,7 +22908,7 @@ MY_128.SetFloat(173,10f);
 return false;
 OBSTACLE:
 {
-            var enumerator = new LNCHTURN();
+            var enumerator = CoroutinePool.Get<LNCHTURN>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22796,7 +23074,7 @@ public class CYCLELNCHATTACK : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22809,7 +23087,7 @@ if (Game.CheckEquals(SHOT_SOUND_ON_1_val , 0f))
 goto CONT;
 }
 {
-            var enumerator = new LNCHLOOKFOR();
+            var enumerator = CoroutinePool.Get<LNCHLOOKFOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22817,7 +23095,7 @@ goto CONT;
             _world.StartManagedCoroutine(null, enumerator);
         }CONT:
 {
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22846,14 +23124,14 @@ ATTACK:
 MY_14 = MY;
 MY_14.SetFloat(182,1f);
 {
-            var enumerator = new LNCHTALK();
+            var enumerator = CoroutinePool.Get<LNCHTALK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new LNCHFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<LNCHFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22899,7 +23177,7 @@ if (Game.CheckEquals(temp_3 , 0f))
 goto STOP;
 }
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22917,7 +23195,7 @@ BULLET_23 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_25 = MY;
 MY_25.SetAcknexObject(199,BULLET_23);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22965,7 +23243,7 @@ public class CYCLELNCHBACK : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -22995,7 +23273,7 @@ public class CYCLELNCHSHOOT : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23006,7 +23284,7 @@ temp_3 =MY_2.GetFloat(173);
 if (MathUtils.CheckGreater(temp_3 , 9f))
 {
 {
-            var enumerator = new LNCHDIE();
+            var enumerator = CoroutinePool.Get<LNCHDIE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23019,7 +23297,7 @@ temp_7 =MY_6.GetFloat(202);
 if (MathUtils.CheckLower(temp_7 , 25f))
 {
 {
-            var enumerator = new LNCHBACKOFF();
+            var enumerator = CoroutinePool.Get<LNCHBACKOFF>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23028,7 +23306,7 @@ if (MathUtils.CheckLower(temp_7 , 25f))
         }return false;
 }
 {
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23046,7 +23324,7 @@ SHOT_SOUND_ON_13.SetFloat(231,1f);
 SHOTSECCOUNT_15 = _world.GetObject(ObjectType.Skill,733093231);
 SHOTSECCOUNT_15.SetFloat(231,0f);
 {
-            var enumerator = new LNCHAIM();
+            var enumerator = CoroutinePool.Get<LNCHAIM>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23055,7 +23333,7 @@ SHOTSECCOUNT_15.SetFloat(231,0f);
         }return false;
 ATTACK:
 {
-            var enumerator = new LNCHFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<LNCHFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23184,7 +23462,7 @@ WAITTIME_0.SetFloat(231,64f*UnityEngine.Random.value+16f);
 if (MathUtils.CheckLower(UnityEngine.Random.value , 0.07f))
 {
 {
-            var enumerator = new REPTLISTEN();
+            var enumerator = CoroutinePool.Get<REPTLISTEN>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23208,7 +23486,7 @@ RIGHTTURNREPT_24_val = RIGHTTURNREPT_24.GetFloat(PropertyName.VAL);
 if (RIGHTTURNREPT_24_val > RIGHTTURNREPT_24.GetFloat(PropertyName.MAX))
 {
 {
-            var enumerator = new TURNRIGHT();
+            var enumerator = CoroutinePool.Get<TURNRIGHT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23217,7 +23495,7 @@ if (RIGHTTURNREPT_24_val > RIGHTTURNREPT_24.GetFloat(PropertyName.MAX))
         }return false;
 }
 {
-            var enumerator = new TURNLEFT();
+            var enumerator = CoroutinePool.Get<TURNLEFT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23397,7 +23675,7 @@ REPTHIT_9 = _world.AcknexObject.GetAcknexObject(1387396781);
 MY_11 = MY;
 MY_11.SetAcknexObject(209,REPTHIT_9);
 {
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23408,7 +23686,7 @@ temp_15 =MY_14.GetFloat(181);
 if (Game.CheckEquals(temp_15 , 0f))
 {
 {
-            var enumerator = new REPTWAIT();
+            var enumerator = CoroutinePool.Get<REPTWAIT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23417,7 +23695,7 @@ if (Game.CheckEquals(temp_15 , 0f))
         }return false;
 }
 {
-            var enumerator = new REPTFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<REPTFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23473,7 +23751,7 @@ MY_17.SetAcknexObject(209,REPTHIT_15);
 MY_20 = MY;
 MY_20.SetFloat(176,4f);
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23518,7 +23796,7 @@ temp_57 =MY_56.GetFloat(173);
 MY_59 = MY;
 MY_59.SetFloat(173,temp_57 + -2f);
 {
-            var enumerator = new REPTWANDER();
+            var enumerator = CoroutinePool.Get<REPTWANDER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23613,7 +23891,7 @@ temp_28 =MY_27.GetFloat(173);
 if (MathUtils.CheckLower(temp_28 , 9f))
 {
 {
-            var enumerator = new REPTWANDER();
+            var enumerator = CoroutinePool.Get<REPTWANDER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23666,7 +23944,7 @@ if (Game.CheckEquals(temp_3 , 1f))
 goto BLOODSMELL;
 }
 {
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -23680,7 +23958,7 @@ return false;
 }
 BLOODSMELL:
 {
-            var enumerator = new REPTTALK();
+            var enumerator = CoroutinePool.Get<REPTTALK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24255,7 +24533,7 @@ DISTX_53_val = DISTX_53.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckGreater(DISTX_53_val , 10f))
 {
 {
-            var enumerator = new BEAMREACT();
+            var enumerator = CoroutinePool.Get<BEAMREACT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24383,7 +24661,7 @@ temp_11 =MY_10.GetFloat(205);
 if (Game.CheckEquals(temp_11 , 1f))
 {
 {
-            var enumerator = new REPTIMPLODE();
+            var enumerator = CoroutinePool.Get<REPTIMPLODE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24442,7 +24720,7 @@ REPT02SND_47 = _world.AcknexObject.GetAcknexObject(3311198511);
 MY_49 = MY;
 _world.PlaySound(REPT02SND_47,0.7f,MY_49);
 {
-            var enumerator = new REPTHIDE();
+            var enumerator = CoroutinePool.Get<REPTHIDE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24453,7 +24731,7 @@ DIE:
 MY_52 = MY;
 MY_52.SetFloat(173,10f);
 {
-            var enumerator = new REPTDIE();
+            var enumerator = CoroutinePool.Get<REPTDIE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24463,14 +24741,14 @@ MY_52.SetFloat(173,10f);
 return false;
 OBSTACLE:
 {
-            var enumerator = new REPTTALK();
+            var enumerator = CoroutinePool.Get<REPTTALK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new REPTTURN();
+            var enumerator = CoroutinePool.Get<REPTTURN>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24534,7 +24812,7 @@ public class CYCLEREPTATTACK : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24549,7 +24827,7 @@ MY_8.SetFloat(169,0f);
 MY_11 = MY;
 MY_11.SetAcknexObject(189,null);
 {
-            var enumerator = new REPTTALK();
+            var enumerator = CoroutinePool.Get<REPTTALK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24562,7 +24840,7 @@ if (Game.CheckEquals(SHOT_SOUND_ON_13_val , 0f))
 goto CONT;
 }
 {
-            var enumerator = new REPTLOOKFOR();
+            var enumerator = CoroutinePool.Get<REPTLOOKFOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24570,7 +24848,7 @@ goto CONT;
             _world.StartManagedCoroutine(null, enumerator);
         }CONT:
 {
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24595,7 +24873,7 @@ MY_27 = MY;
 _world.PlaySound(REPT02SND_25,0.7f,MY_27);
 CONT1:
 {
-            var enumerator = new REPTFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<REPTFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24639,7 +24917,7 @@ public class CYCLEREPTHIDE : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24705,7 +24983,7 @@ public class CYCLEREPTSHOOT : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new LOCATEACTOR();
+            var enumerator = CoroutinePool.Get<LOCATEACTOR>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24716,7 +24994,7 @@ temp_3 =MY_2.GetFloat(173);
 if (MathUtils.CheckGreater(temp_3 , 9f))
 {
 {
-            var enumerator = new REPTDIE();
+            var enumerator = CoroutinePool.Get<REPTDIE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24733,7 +25011,7 @@ MY_12.SetFloat(169,0f);
 MY_15 = MY;
 MY_15.SetAcknexObject(189,null);
 {
-            var enumerator = new LOOKPLAYER();
+            var enumerator = CoroutinePool.Get<LOOKPLAYER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24754,7 +25032,7 @@ if (Game.CheckEquals(temp_23 , 1f))
 goto ATTACK;
 }
 {
-            var enumerator = new REPTWAIT();
+            var enumerator = CoroutinePool.Get<REPTWAIT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24772,7 +25050,7 @@ if (MathUtils.CheckGreater(temp_30 , 10f))
 goto ATTACK;
 }
 {
-            var enumerator = new REPTSHOOT();
+            var enumerator = CoroutinePool.Get<REPTSHOOT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24781,7 +25059,7 @@ goto ATTACK;
         }return false;
 ATTACK:
 {
-            var enumerator = new REPTFOLLOWATTACK();
+            var enumerator = CoroutinePool.Get<REPTFOLLOWATTACK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24883,7 +25161,7 @@ RIGHTTURNNURS_22_val = RIGHTTURNNURS_22.GetFloat(PropertyName.VAL);
 if (RIGHTTURNNURS_22_val > RIGHTTURNNURS_22.GetFloat(PropertyName.MAX))
 {
 {
-            var enumerator = new TURNRIGHT();
+            var enumerator = CoroutinePool.Get<TURNRIGHT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -24892,7 +25170,7 @@ if (RIGHTTURNNURS_22_val > RIGHTTURNNURS_22.GetFloat(PropertyName.MAX))
         }return false;
 }
 {
-            var enumerator = new TURNLEFT();
+            var enumerator = CoroutinePool.Get<TURNLEFT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25026,7 +25304,7 @@ BULLET_27 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_29 = MY;
 MY_29.SetAcknexObject(199,BULLET_27);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25089,7 +25367,7 @@ NURSHIT_15 = _world.AcknexObject.GetAcknexObject(1144994394);
 MY_17 = MY;
 MY_17.SetAcknexObject(209,NURSHIT_15);
 {
-            var enumerator = new NURSSCREAM();
+            var enumerator = CoroutinePool.Get<NURSSCREAM>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25112,7 +25390,7 @@ BULLET_41 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_43 = MY;
 MY_43.SetAcknexObject(199,BULLET_41);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25137,7 +25415,7 @@ temp_51 =MY_50.GetFloat(173);
 if (MathUtils.CheckLower(temp_51 , 2f))
 {
 {
-            var enumerator = new NURSWANDER();
+            var enumerator = CoroutinePool.Get<NURSWANDER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25201,7 +25479,7 @@ MY_8.SetAcknexObject(209,null);
 MY_11 = MY;
 MY_11.SetAcknexObject(190,null);
 {
-            var enumerator = new INNOCENTKILLED();
+            var enumerator = CoroutinePool.Get<INNOCENTKILLED>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25356,7 +25634,7 @@ DISTX_53_val = DISTX_53.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckGreater(DISTX_53_val , 10f))
 {
 {
-            var enumerator = new BEAMREACT();
+            var enumerator = CoroutinePool.Get<BEAMREACT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25511,7 +25789,7 @@ temp_56 =MY_55.GetFloat(205);
 if (Game.CheckEquals(temp_56 , 1f))
 {
 {
-            var enumerator = new NURSIMPLODE();
+            var enumerator = CoroutinePool.Get<NURSIMPLODE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25571,7 +25849,7 @@ NURSE_TEX_95 = _world.GetSynonymObject(1354526442);
 MY_97 = MY;
 MY_97.SetAcknexObject(164,NURSE_TEX_95);
 {
-            var enumerator = new NURSHIDE();
+            var enumerator = CoroutinePool.Get<NURSHIDE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25582,7 +25860,7 @@ DIE:
 MY_100 = MY;
 MY_100.SetFloat(173,10f);
 {
-            var enumerator = new NURSDIE();
+            var enumerator = CoroutinePool.Get<NURSDIE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25605,7 +25883,7 @@ _world.PlaySound(NURS02SND_107,0.3f,MY_109);
 }
 JUMP:
 {
-            var enumerator = new NURSTURN();
+            var enumerator = CoroutinePool.Get<NURSTURN>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25703,7 +25981,7 @@ if (!Game.CheckEquals(temp_3 , 4f))
 goto CONT;
 }
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25716,7 +25994,7 @@ MY_10 = MY;
 temp_11 =MY_10.GetFloat(194);
 MY_5.SetFloat(194,temp_11+UnityEngine.Random.value-0.5f);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25737,7 +26015,7 @@ if (Game.CheckEquals(temp_23 , 0f))
 goto CONT1;
 }
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25769,7 +26047,7 @@ if (!Game.CheckEquals(EXPLOSION_ON_41_val , 0f))
 goto HIDE;
 }
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -25778,14 +26056,14 @@ goto HIDE;
         }return false;
 HIDE:
 {
-            var enumerator = new NURSSCREAM();
+            var enumerator = CoroutinePool.Get<NURSSCREAM>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new NURSHIDE();
+            var enumerator = CoroutinePool.Get<NURSHIDE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26009,7 +26287,7 @@ RIGHTTURNDOCT_22_val = RIGHTTURNDOCT_22.GetFloat(PropertyName.VAL);
 if (RIGHTTURNDOCT_22_val > RIGHTTURNDOCT_22.GetFloat(PropertyName.MAX))
 {
 {
-            var enumerator = new TURNRIGHT();
+            var enumerator = CoroutinePool.Get<TURNRIGHT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26018,7 +26296,7 @@ if (RIGHTTURNDOCT_22_val > RIGHTTURNDOCT_22.GetFloat(PropertyName.MAX))
         }return false;
 }
 {
-            var enumerator = new TURNLEFT();
+            var enumerator = CoroutinePool.Get<TURNLEFT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26152,7 +26430,7 @@ BULLET_27 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_29 = MY;
 MY_29.SetAcknexObject(199,BULLET_27);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26215,7 +26493,7 @@ DOCTHIT_15 = _world.AcknexObject.GetAcknexObject(862651356);
 MY_17 = MY;
 MY_17.SetAcknexObject(209,DOCTHIT_15);
 {
-            var enumerator = new DOCTSCREAM();
+            var enumerator = CoroutinePool.Get<DOCTSCREAM>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26238,7 +26516,7 @@ BULLET_41 = _world.AcknexObject.GetAcknexObject(2818612821);
 MY_43 = MY;
 MY_43.SetAcknexObject(199,BULLET_41);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26263,7 +26541,7 @@ temp_51 =MY_50.GetFloat(173);
 if (MathUtils.CheckLower(temp_51 , 2f))
 {
 {
-            var enumerator = new DOCTWANDER();
+            var enumerator = CoroutinePool.Get<DOCTWANDER>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26327,7 +26605,7 @@ MY_8.SetAcknexObject(209,null);
 MY_11 = MY;
 MY_11.SetAcknexObject(190,null);
 {
-            var enumerator = new INNOCENTKILLED();
+            var enumerator = CoroutinePool.Get<INNOCENTKILLED>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26482,7 +26760,7 @@ DISTX_53_val = DISTX_53.GetFloat(PropertyName.VAL);
 if (MathUtils.CheckGreater(DISTX_53_val , 10f))
 {
 {
-            var enumerator = new BEAMREACT();
+            var enumerator = CoroutinePool.Get<BEAMREACT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26637,7 +26915,7 @@ temp_56 =MY_55.GetFloat(205);
 if (Game.CheckEquals(temp_56 , 1f))
 {
 {
-            var enumerator = new DOCTIMPLODE();
+            var enumerator = CoroutinePool.Get<DOCTIMPLODE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26697,7 +26975,7 @@ DOCTE_TEX_95 = _world.GetSynonymObject(3120603372);
 MY_97 = MY;
 MY_97.SetAcknexObject(164,DOCTE_TEX_95);
 {
-            var enumerator = new DOCTHIDE();
+            var enumerator = CoroutinePool.Get<DOCTHIDE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26708,7 +26986,7 @@ DIE:
 MY_100 = MY;
 MY_100.SetFloat(173,10f);
 {
-            var enumerator = new DOCTDIE();
+            var enumerator = CoroutinePool.Get<DOCTDIE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26731,7 +27009,7 @@ _world.PlaySound(DOCT02SND_107,0.3f,MY_109);
 }
 JUMP:
 {
-            var enumerator = new DOCTTURN();
+            var enumerator = CoroutinePool.Get<DOCTTURN>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26829,7 +27107,7 @@ if (!Game.CheckEquals(temp_3 , 4f))
 goto CONT;
 }
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26842,7 +27120,7 @@ MY_10 = MY;
 temp_11 =MY_10.GetFloat(194);
 MY_5.SetFloat(194,temp_11+UnityEngine.Random.value-0.5f);
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26863,7 +27141,7 @@ if (Game.CheckEquals(temp_23 , 0f))
 goto CONT1;
 }
 {
-            var enumerator = new REPELANGLE();
+            var enumerator = CoroutinePool.Get<REPELANGLE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26895,7 +27173,7 @@ if (!Game.CheckEquals(EXPLOSION_ON_41_val , 0f))
 goto HIDE;
 }
 {
-            var enumerator = new PROBE();
+            var enumerator = CoroutinePool.Get<PROBE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -26904,14 +27182,14 @@ goto HIDE;
         }return false;
 HIDE:
 {
-            var enumerator = new DOCTSCREAM();
+            var enumerator = CoroutinePool.Get<DOCTSCREAM>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new DOCTHIDE();
+            var enumerator = CoroutinePool.Get<DOCTHIDE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -27193,7 +27471,7 @@ public class WAYGUARD2 : ICompiledAction {
      switch (_cursor){
      }
 {
-            var enumerator = new TROPTALK();
+            var enumerator = CoroutinePool.Get<TROPTALK>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -27342,7 +27620,7 @@ MY_2.SetFloat(172,20f);
 WRN22STR_3 = _world.AcknexObject.GetAcknexObject(668081569);
 _world.SetSynonymObject(361798934,WRN22STR_3);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -27404,7 +27682,7 @@ TOUCHKEY_1_val = TOUCHKEY_1.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(TOUCHKEY_1_val , 1f))
 {
 {
-            var enumerator = new OPENDOOR1();
+            var enumerator = CoroutinePool.Get<OPENDOOR1>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -27417,7 +27695,7 @@ TOUCHKEY_3_val = TOUCHKEY_3.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(TOUCHKEY_3_val , 2f))
 {
 {
-            var enumerator = new OPENDOOR2();
+            var enumerator = CoroutinePool.Get<OPENDOOR2>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -27430,7 +27708,7 @@ TOUCHKEY_5_val = TOUCHKEY_5.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(TOUCHKEY_5_val , 4f))
 {
 {
-            var enumerator = new OPENHATCH();
+            var enumerator = CoroutinePool.Get<OPENHATCH>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -27443,7 +27721,7 @@ TOUCHKEY_7_val = TOUCHKEY_7.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(TOUCHKEY_7_val , 5f))
 {
 {
-            var enumerator = new OPENMJ3();
+            var enumerator = CoroutinePool.Get<OPENMJ3>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -27456,7 +27734,7 @@ TOUCHKEY_9_val = TOUCHKEY_9.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(TOUCHKEY_9_val , 6f))
 {
 {
-            var enumerator = new NOTOPEN();
+            var enumerator = CoroutinePool.Get<NOTOPEN>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -27469,7 +27747,7 @@ TOUCHKEY_11_val = TOUCHKEY_11.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(TOUCHKEY_11_val , 7f))
 {
 {
-            var enumerator = new OPENHATCHA();
+            var enumerator = CoroutinePool.Get<OPENHATCHA>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -27482,7 +27760,7 @@ TOUCHKEY_13_val = TOUCHKEY_13.GetFloat(PropertyName.VAL);
 if (Game.CheckEquals(TOUCHKEY_13_val , 8f))
 {
 {
-            var enumerator = new OPENHATCHB();
+            var enumerator = CoroutinePool.Get<OPENHATCHB>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -27757,7 +28035,7 @@ TROPASSAULT1ACT_22.SetFloatAll(204,0f);
 WRN15STR_23 = _world.AcknexObject.GetAcknexObject(667003459);
 _world.SetSynonymObject(361798934,WRN15STR_23);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -27827,7 +28105,7 @@ TROPASSAULT3ACT_28.SetFloatAll(204,0f);
 WRN23STR_29 = _world.AcknexObject.GetAcknexObject(668117506);
 _world.SetSynonymObject(361798934,WRN23STR_29);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -28121,7 +28399,7 @@ DOCTUACT_26.SetFloatAll(204,0f);
 WRN15STR_27 = _world.AcknexObject.GetAcknexObject(667003459);
 _world.SetSynonymObject(361798934,WRN15STR_27);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -28235,7 +28513,7 @@ public class NOTOPEN : ICompiledAction {
 WRN18STR_0 = _world.AcknexObject.GetAcknexObject(667111270);
 _world.SetSynonymObject(361798934,WRN18STR_0);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -28330,7 +28608,7 @@ _world.AcknexObject.SetAcknexObject(144,INFOPANEL_32);
 PNLMSKOVL_35 = _world.AcknexObject.GetAcknexObject(3908987603);
 _world.AcknexObject.SetAcknexObject(160,PNLMSKOVL_35);
 {
-            var enumerator = new SET_WALKING();
+            var enumerator = CoroutinePool.Get<SET_WALKING>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -28383,14 +28661,14 @@ _world.SetSynonymObject(1697496190,STARTASSAULT_80);
 GOLCOUNTER_83 = _world.GetObject(ObjectType.Skill,1317141647);
 GOLCOUNTER_83.SetFloat(231,0f);
 {
-            var enumerator = new STARTASSAULT();
+            var enumerator = CoroutinePool.Get<STARTASSAULT>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
             compiledAction._world = _world;
             _world.StartManagedCoroutine(null, enumerator);
         }{
-            var enumerator = new FADEIN();
+            var enumerator = CoroutinePool.Get<FADEIN>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;
@@ -28619,7 +28897,7 @@ MISSILE_156.SetFloat(204,0f);
 WRN17STR_157 = _world.AcknexObject.GetAcknexObject(667075333);
 _world.SetSynonymObject(361798934,WRN17STR_157);
 {
-            var enumerator = new DISPLAYMESSAGE();
+            var enumerator = CoroutinePool.Get<DISPLAYMESSAGE>();
             var compiledAction = (ICompiledAction)enumerator;
             compiledAction.MY = MY;
             compiledAction.THERE = THERE;

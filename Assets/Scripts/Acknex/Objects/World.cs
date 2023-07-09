@@ -72,7 +72,7 @@ namespace Acknex
         public RectTransform CanvasView;
         public float CanvasWidthRatio;
         public List<ContourVertex> ContourVertices;
-        public bool CustomStateMachines;
+        //public bool CustomStateMachines;
         public bool DebugCoroutines;
         public bool DebugSkills;
         public bool DisableCompilation;
@@ -295,7 +295,9 @@ namespace Acknex
 
         public void UnloadLevel()
         {
+            //todo: global skills can't be reseted
             Player.Instance.Disable();
+            CoroutinePool.Clear();
             StopAllCoroutines();
             _contouredRegions.Clear();
             ContourVertices.Clear();

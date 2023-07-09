@@ -145,8 +145,8 @@ namespace Acknex
         {
             var name = AcknexObject.Name;
             var sanitizedName = Sanitize(name);
-            if (World.Instance.CustomStateMachines)
-            {
+            //if (World.Instance.CustomStateMachines)
+            //{
                 CodeStringBuilder.AppendLine($"public class {sanitizedName} : ICompiledAction {{");
                 CodeStringBuilder.AppendLine("  private int _cursor;");
                 CodeStringBuilder.AppendLine("  public IAcknexObject MY {get; set;}");
@@ -165,11 +165,11 @@ namespace Acknex
                 CodeStringBuilder.AppendLine("  }");
                 CodeStringBuilder.AppendLine("  public bool MoveNext() {");
                 JumpTableStringBuilder.AppendLine("     switch (_cursor){");
-            }
-            else
-            {
-                CodeStringBuilder.Append("public IEnumerator ").Append(sanitizedName).AppendLine("(IAcknexObject MY, IAcknexObject THERE){");
-            }
+            //}
+            //else
+            //{
+            //    CodeStringBuilder.Append("public IEnumerator ").Append(sanitizedName).AppendLine("(IAcknexObject MY, IAcknexObject THERE){");
+            //}
         }
 
         public override string ToString()
@@ -179,23 +179,23 @@ namespace Acknex
 
         public void WriteFooter()
         {
-            if (World.Instance.CustomStateMachines)
-            {
+            //if (World.Instance.CustomStateMachines)
+            //{
                 JumpTableStringBuilder.AppendLine("     }");
-            }
+            //}
             CodeStringBuilder.Append(JumpTableStringBuilder);
             CodeStringBuilder.Append(MethodBodyStringBuilder);
-            if (World.Instance.CustomStateMachines)
-            {
+            //if (World.Instance.CustomStateMachines)
+            //{
                 CodeStringBuilder.AppendLine("      return false;");
                 CodeStringBuilder.AppendLine("  }");
                 CodeStringBuilder.Append(VariablesStringBuilder);
                 CodeStringBuilder.AppendLine("}");
-            }
-            else
-            {
-                CodeStringBuilder.AppendLine("yield break;").AppendLine("}");
-            }
+            //}
+            //else
+            //{
+            //    CodeStringBuilder.AppendLine("yield break;").AppendLine("}");
+            //}
         }
 
         public void ParseAllStatements()
@@ -353,18 +353,18 @@ namespace Acknex
                                 }
                                 VariablesStringBuilder.AppendLine($"float startTime{_coroutineCounter};");
                                 VariablesStringBuilder.AppendLine($"float endTime{_coroutineCounter};");
-                                if (World.Instance.CustomStateMachines)
-                                {
+                                //if (World.Instance.CustomStateMachines)
+                                //{
                                     JumpTableStringBuilder.AppendLine($"            case {_coroutineCounter}:");
                                     JumpTableStringBuilder.AppendLine($"                goto _coroutine{_coroutineCounter};");
-                                }
+                                //}
                                 if (keyword == "WAIT")
                                 {
-                                    MethodBodyStringBuilder.AppendFormat(World.Instance.CustomStateMachines ? CustomWaitTicks : WaitTicks, rhs.property, _coroutineCounter++).AppendLine();
+                                    MethodBodyStringBuilder.AppendFormat(/*World.Instance.CustomStateMachines ?*/ CustomWaitTicks  /*:WaitTicks*/, rhs.property, _coroutineCounter++).AppendLine();
                                 }
                                 else
                                 {
-                                    MethodBodyStringBuilder.AppendFormat(World.Instance.CustomStateMachines ? CustomWaitCycles : WaitCycles, rhs.property, _coroutineCounter++).AppendLine();
+                                    MethodBodyStringBuilder.AppendFormat(/*World.Instance.CustomStateMachines ?*/ CustomWaitCycles  /*:WaitCycles*/, rhs.property, _coroutineCounter++).AppendLine();
                                 }
                                 HandleIfStack();
                                 ReadUntilSemiColon();
@@ -380,7 +380,7 @@ namespace Acknex
                         case "BRANCH":
                             {
                                 HandleCall(labelOrStatement);
-                                MethodBodyStringBuilder.AppendLine(World.Instance.CustomStateMachines ? "return false;" : "yield break;");
+                                MethodBodyStringBuilder.AppendLine(/*World.Instance.CustomStateMachines ?*/ "return false;" /*: "yield break;"*/);
                                 HandleIfStack();
                                 ReadUntilSemiColon();
                                 break;
@@ -409,7 +409,7 @@ namespace Acknex
                             }
                         case "END":
                             {
-                                MethodBodyStringBuilder.AppendLine(World.Instance.CustomStateMachines ? "return false;" : "yield break;");
+                                MethodBodyStringBuilder.AppendLine(/*World.Instance.CustomStateMachines ?*/ "return false;" /*: "yield break;"*/);
                                 HandleIfStack();
                                 ReadUntilSemiColon();
                                 break;
@@ -653,30 +653,20 @@ namespace Acknex
             var nameId = NameUtils.ToNameId(labelOrStatement, false, false);
             if (!World.Instance.SynonymsByName.ContainsKey(nameId))
             {
-                if (World.Instance.CustomStateMachines)
-                {
-                    MethodBodyStringBuilder.AppendFormat(CustomCallCoroutine, $"new {Sanitize(labelOrStatement)}()");
-                }
-                else
-                {
-                    MethodBodyStringBuilder.AppendFormat(CallCoroutine, $"{Sanitize(labelOrStatement)}(MY, THERE)");
-                }
+                //if (World.Instance.CustomStateMachines)
+                //{
+                    MethodBodyStringBuilder.AppendFormat(CustomCallCoroutine, $"CoroutinePool.Get<{Sanitize(labelOrStatement)}>()");
+                //}
+                //else
+                //{
+                //    MethodBodyStringBuilder.AppendFormat(CallCoroutine, $"{Sanitize(labelOrStatement)}(MY, THERE)");
+                //}
             }
             else
             {
                 string actionGetter;
                 actionGetter = $"_world.CallSynonymAction({nameId}, MY, THERE)";
                 MethodBodyStringBuilder.AppendFormat(CallCoroutine, actionGetter);
-                //if (World.Instance.CustomStateMachines)
-                //{
-                //    actionGetter = $"_world.CallSynonymAction({nameId}, MY, THERE)";
-                //    MethodBodyStringBuilder.AppendFormat(CallCoroutine, actionGetter);
-                //}
-                //else
-                //{
-                //    actionGetter = $"_world.CallSynonymAction({nameId}, MY, THERE)";
-                //    MethodBodyStringBuilder.AppendFormat(CallCoroutine, actionGetter);
-                //}
             }
         }
 

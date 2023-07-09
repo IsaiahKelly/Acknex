@@ -124,7 +124,7 @@ namespace Acknex
             indices.Add(baseIndex + d);
         }
 
-        public static Mesh CreateQuadMesh(bool pivotAtLeft = false)
+        public static Mesh CreateQuadMesh(bool pivotAtLeft = false, bool inverted = false)
         {
             var mesh = new Mesh();
             World.Instance.CreatedObjects.Add(mesh);
@@ -150,7 +150,12 @@ namespace Acknex
                 };
             }
             mesh.vertices = vertices;
-            var tris = new int[6]
+            var tris = inverted ? new int[6]
+            {
+                1, 3, 2,
+                1, 2 ,0
+            } :
+                new int[6]
             {
                 0, 2, 1,
                 2, 3, 1

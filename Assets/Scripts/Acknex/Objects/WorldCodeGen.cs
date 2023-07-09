@@ -11,7 +11,7 @@ namespace Acknex
 {
     public partial class World
     {
-        private const string GameTamplate = @"
+        private const string GameTemplate = @"
         using System;
         using Acknex.Interfaces;
         using System.Collections;
@@ -42,6 +42,7 @@ namespace Acknex
 
         private const string HeaderTemplate = @"
         using System;
+        using Common;
         using Acknex.Interfaces;
         using System.Collections;
         using System.Collections.Generic;
@@ -54,42 +55,43 @@ namespace Acknex
                 public void SetWorld(IAcknexWorld world) {{
                     _world = world;
                 }}
-        ";
+        //";
 
-        private const string MethodCallTemplate = @"
-                private Dictionary<string, Func<IAcknexObject, IAcknexObject, IEnumerator>> _callbacks = new Dictionary<string, Func<IAcknexObject, IAcknexObject, IEnumerator>>();
-                public IEnumerator CallAction(string name, IAcknexObject MY, IAcknexObject THERE)
-                {
-                    reset:
-                    if (name != null) {
-                        if (_callbacks.TryGetValue(name, out var callback)) {
-                            var enumerator = callback(MY, THERE);
-                            var next = true;
-                            while (next) {
-                                try {
-                                    next = enumerator.MoveNext();
-                                }
-                                catch (Exception e) {
-                                    Debug.LogError(""ACK Runtime Error:"" + e + ""("" + Environment.StackTrace + "")"");
-                                    goto reset;
-                                }
-                                if (next) {
-                                    yield return enumerator.Current;
-                                }
-                            }
-                        }
-                    }
-                    yield break;
-        }";
+        //private const string MethodCallTemplate = @"
+        //        private Dictionary<string, Type> _callbacks = new Dictionary<string, Type>();
+        //        public IEnumerator CallAction(string name, IAcknexObject MY, IAcknexObject THERE)
+        //        {
+        //            reset:
+        //            if (name != null) {
+        //                if (_callbacks.TryGetValue(name, out var callback)) {
+        //                    var enumerator = CoroutinePool.Get<Callback>();
+                            
+        //                    var next = true;
+        //                    while (next) {
+        //                        try {
+        //                            next = enumerator.MoveNext();
+        //                        }
+        //                        catch (Exception e) {
+        //                            Debug.LogError(""ACK Runtime Error:"" + e + ""("" + Environment.StackTrace + "")"");
+        //                            goto reset;
+        //                        }
+        //                        if (next) {
+        //                            yield return enumerator.Current;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            yield break;
+        //}";
 
         private const string CustomMethodCallTemplate = @"
-                private Dictionary<string, ICompiledAction> _callbacks = new Dictionary<string, ICompiledAction>();
+                private Dictionary<string, Type> _callbacks = new Dictionary<string, Type>();
                 public IEnumerator CallAction(string name, IAcknexObject MY, IAcknexObject THERE)
                 {
                     reset:
                     if (name != null) {
                         if (_callbacks.TryGetValue(name, out var callback)) {
-                            var enumerator = callback;
+                            var enumerator = (ICompiledAction)CoroutinePool.Get(callback);
                             enumerator.Reset();
                             enumerator.MY = MY;
                             enumerator.THERE = THERE;
@@ -117,13 +119,16 @@ namespace Acknex
             var className = PathUtils.GetFilenameWithoutExtension(wdlPath);
             var sourceStringBuilder = new StringBuilder();
             sourceStringBuilder.AppendFormat(HeaderTemplate, className);
-            sourceStringBuilder.Append(CustomStateMachines ? CustomMethodCallTemplate : MethodCallTemplate);
+            sourceStringBuilder.Append(/*CustomStateMachines ?*/ CustomMethodCallTemplate /*: MethodCallTemplate*/);
             sourceStringBuilder.AppendFormat("public {0}() {{", className);
             foreach (var kvp in ActionsByName)
             {
-                sourceStringBuilder.AppendLine(CustomStateMachines
-                    ? $"_callbacks.Add(\"{kvp.Value.AcknexObject.Name}\", new {kvp.Value.AcknexObject.Name}());"
-                    : $"_callbacks.Add(\"{kvp.Value.AcknexObject.Name}\", {kvp.Value.AcknexObject.Name});");
+                sourceStringBuilder.AppendLine( /*CustomStateMachines*/
+                    /* ?*/ $"_callbacks.Add(\"{kvp.Value.AcknexObject.Name}\", typeof({kvp.Value.AcknexObject.Name}));"
+                    /*: $"_callbacks.Add(\"{kvp.Value.AcknexObject.Name}\", {kvp.Value.AcknexObject.Name});"*/);
+                sourceStringBuilder.AppendLine(
+                    $"CoroutinePool.TryToRegister<{kvp.Value.AcknexObject.Name}>(out _, out _);"
+                    );
             }
             sourceStringBuilder.AppendLine("    }");
             foreach (var kvp in ActionsByName)

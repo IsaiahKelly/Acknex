@@ -24,6 +24,7 @@ namespace Acknex
         private Material[] _modelMaterials;
         private IEnumerator _movingCoroutine;
         private MeshCollider _spriteCollider;
+        private MeshCollider _invertedSpriteCollider;
         private SphereCollider _triggerCollider;
         private CollisionCallback _triggerCollisionCallback;
         private GameObject _triggerGameObject;
@@ -132,7 +133,7 @@ namespace Acknex
             }
             AcknexObject.IsInstance = true;
             _lastGround = AcknexObject.HasFlag(PropertyName.GROUND);
-            _innerGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer);
+            _innerGameObject = TextureUtils.BuildTextureGameObject(transform, "Thing", BitmapImage, out _meshFilter, out _meshRenderer, out var mesh, out var invertedMesh);
             _meshRendererVisibilityCallback = _meshRenderer.gameObject.AddComponent<VisibilityCallback>();
             _meshRendererVisibilityCallback.OnBecomeVisibleCallback += OnBecomeVisibleCallback;
             _meshRendererVisibilityCallback.OnBecomeInvisibleCallback += OnBecomeInvisibleCallback;
@@ -149,7 +150,9 @@ namespace Acknex
             //_collider = gameObject.AddComponent<CapsuleCollider>();
             //_collider.hasModifiableContacts = true;
             _spriteCollider = _innerGameObject.AddComponent<MeshCollider>();
-            _spriteCollider.sharedMesh = _meshFilter.mesh;
+            _spriteCollider.sharedMesh = mesh;
+            _invertedSpriteCollider = _innerGameObject.AddComponent<MeshCollider>();
+            _invertedSpriteCollider.sharedMesh = invertedMesh;
             _triggerGameObject = new GameObject("Trigger");
             _triggerGameObject.layer = World.Instance.TriggersLayer.LayerIndex;
             _triggerGameObject.transform.SetParent(transform, false);
@@ -216,15 +219,15 @@ namespace Acknex
                 AcknexObject.SetFloat(PropertyName.DISTANCE, distance);
                 AcknexObject.NoDirtyFlag = false;
             }
+            var activeCamera = CameraExtensions.GetLastActiveCamera();
             if (TextureObject == null || !TextureObject.HasModel(out _))
             {
-                var camera = CameraExtensions.GetLastActiveCamera();
-                if (camera == null)
+                if (activeCamera == null)
                 {
                     return;
                 }
                 var eulerAngles = transform.eulerAngles;
-                eulerAngles.y = camera.transform.eulerAngles.y;
+                eulerAngles.y = activeCamera.transform.eulerAngles.y;
                 transform.eulerAngles = eulerAngles;
             }
             else
@@ -235,7 +238,6 @@ namespace Acknex
                 transform.eulerAngles = eulerAngles;
             }
             var sides = Mathf.Max(1, TextureObject.AcknexObject.GetInteger(PropertyName.SIDES));
-            var activeCamera = CameraExtensions.GetLastActiveCamera();
             int side;
             if (sides > 1 && activeCamera != null)
             {

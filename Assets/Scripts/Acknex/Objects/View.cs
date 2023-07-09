@@ -86,7 +86,7 @@ namespace Acknex
                 var transformLocalRotation = transform.localRotation;
                 transformLocalRotation.eulerAngles = new Vector3(World.Instance.GetSkillValue(SkillName.PLAYER_TILT) * Mathf.Rad2Deg, 0f, 0f);
                 transform.localRotation = transformLocalRotation;
-                Shader.SetGlobalFloat("_CAMERA_PITCH", Mathf.DeltaAngle(CameraExtensions.GetLastActiveCamera().transform.localEulerAngles.x, 0f));
+                Shader.SetGlobalFloat("_CAMERA_PITCH", Mathf.DeltaAngle(ViewCamera.transform.localEulerAngles.x, 0f));
             }
             var ray = ViewCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hitInfo))

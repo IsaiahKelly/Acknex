@@ -7,6 +7,7 @@ using AudioSynthesis.Midi;
 using Common;
 using LibTessDotNet;
 using UnityEngine;
+using Utils;
 using PropertyName = Acknex.Interfaces.PropertyName;
 using Resolution = Acknex.Interfaces.Resolution;
 
@@ -132,8 +133,7 @@ namespace Acknex
                     }
                 case ObjectType.Skill:
                     {
-                        //var nameInt = NameUtils.NameToInt(name, true);
-                        var skill = CreateSkill(name, /*nameInt,*/ 0f, Mathf.NegativeInfinity, Mathf.Infinity);
+                        var skill = CreateSkill(name, 0f, Mathf.NegativeInfinity, Mathf.Infinity);
                         return skill.AcknexObject;
                     }
                 case ObjectType.Synonym:
@@ -666,7 +666,6 @@ namespace Acknex
             var region = acknexObject.Container as Region;
             if (region != null)
             {
-                //var regionName = region.AcknexObject.Name;
                 var nameInt = region.AcknexObject.NameId;
                 foreach (var instance in AllRegionsByName[nameInt])
                 {
@@ -693,7 +692,7 @@ namespace Acknex
             }
             else
             {
-                ray = new Ray(View.Instance.ViewCamera.transform.position, (acknexObject.Container.GetEyeLevel() - View.Instance.ViewCamera.transform.position).normalized);
+                ray = new Ray(View.Instance.ViewCamera.transform.position, (acknexObject.Container.GetCenter() - View.Instance.ViewCamera.transform.position).normalized);
             }
             var shootFac = GetSkillValue(SkillName.SHOOT_FAC);
             var shootRange = GetSkillValue(SkillName.SHOOT_RANGE);
@@ -725,9 +724,12 @@ namespace Acknex
                 var distance = acknexObject != null ? Vector3.Distance(acknexObject.Container.GetCenter(), ray.origin) : raycastResult.distance;
                 UpdateSkillValue(SkillName.HIT_DIST, distance);
                 UpdateSkillValue(SkillName.RESULT, shootFac * (1.0f - distance / shootRange));
-                UpdateSkillValue(SkillName.SHOOT_ANGLE, AngleUtils.ConvertUnityToAcknexAngle(AngleUtils.Angle(AngleUtils.To2D(raycastResult.point), AngleUtils.To2D(ray.origin))));
+                UpdateSkillValue(SkillName.SHOOT_ANGLE, Mathf.Atan2(raycastResult.point.z - ray.origin.z, raycastResult.point.x - ray.origin.x) * Mathf.Rad2Deg);
                 SetSynonymObject(SynonymName.HIT, hitAcknexObject);
-                //Debug.DrawLine(ray.origin, raycastResult.point, Color.green, 5f);
+                //if (AcknexObject != null && AcknexObject.DebugMarked)
+                //{
+                //    Debug.DrawLine(ray.origin, raycastResult.point, Color.green, 5f);
+                //}
                 if (acknexObject == null)
                 {
                     TriggerEvent(PropertyName.IF_HIT, hitAcknexObject, hitAcknexObject, hitAcknexObject.Container.GetRegion());
@@ -750,7 +752,11 @@ namespace Acknex
                 DebugExtension.DebugPoint(raycastResult.point, color, 1f, 1f);
 #endif
             }
-            //DebugExtension.DebugArrow(ray.origin, ray.direction * 10f, Color.red, 5f);
+
+            //if (AcknexObject != null && AcknexObject.DebugMarked)
+            //{
+            //    DebugExtension.DebugArrow(ray.origin, ray.direction * 10f, Color.red, 5f);
+            //}
             UpdateSkillValue(SkillName.HIT_DIST, 0f);
             UpdateSkillValue(SkillName.RESULT, 0f);
             UpdateSkillValue(SkillName.SHOOT_ANGLE, 0f);

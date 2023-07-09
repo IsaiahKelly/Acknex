@@ -317,11 +317,11 @@ namespace Acknex
             var pos2D = new Vector2(center.x, center.z);
             var playerPos2D = new Vector2(World.Instance.GetSkillValue(SkillName.PLAYER_X), World.Instance.GetSkillValue(SkillName.PLAYER_Y));
             var distance = Vector2.Distance(playerPos2D, pos2D);
-            ProcessAttachments();
             if (!AcknexObject.HasFlag(PropertyName.LIBER) && distance > World.Instance.AcknexObject.GetFloat(PropertyName.CLIP_DIST))
             {
                 return;
             }
+            ProcessAttachments();
             if (!AcknexObject.IsDirty)
             {
                 return;
