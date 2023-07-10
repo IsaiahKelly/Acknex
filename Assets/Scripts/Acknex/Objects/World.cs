@@ -46,6 +46,8 @@ namespace Acknex
         public readonly IDictionary<uint, Synonym> SynonymsByName = new Dictionary<uint, Synonym>();
         public readonly IDictionary<uint, Text> TextsByName = new Dictionary<uint, Text>();
         public readonly IDictionary<string, TextureAndPalette> TextureCache = new Dictionary<string, TextureAndPalette>();
+        public readonly IDictionary<string, Bitmap> BitmapCache = new Dictionary<string, Bitmap>();
+        public readonly IDictionary<string, Mesh> ModelCache = new Dictionary<string, Mesh>();
         public readonly IDictionary<uint, Texture> TexturesByName = new Dictionary<uint, Texture>();
         public readonly IDictionary<uint, Thing> ThingsByName = new Dictionary<uint, Thing>();
         public readonly List<Wall> Walls = new List<Wall>();
@@ -53,6 +55,7 @@ namespace Acknex
         public readonly IDictionary<uint, Way> WaysByName = new Dictionary<uint, Way>();
 
         private bool _culled;
+        private Texture2D _originalPalette;
         private Texture2D _palette;
         private Color[] _palettePixels;
         private Vector2 _scrollPos;
@@ -159,7 +162,7 @@ namespace Acknex
         public IEnumerator StartManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator)
         {
             behaviour = behaviour ?? this;
-            behaviour.StartCoroutine(enumerator);
+            StartCoroutine(enumerator);
             if (DebugCoroutines)
             {
                 if (enumerator == null)
@@ -174,7 +177,7 @@ namespace Acknex
         public void StopManagedCoroutine(MonoBehaviour behaviour, IEnumerator enumerator)
         {
             behaviour ??= this;
-            behaviour.StopCoroutine(enumerator);
+            StopCoroutine(enumerator);
             if (DebugCoroutines)
             {
                 ActiveCoroutines.Remove(enumerator);
@@ -234,6 +237,8 @@ namespace Acknex
             AcknexObject.Container = this;
             AcknexObject.Name = "__WORLD__";
             _textParser = new TextParser(this, BaseDirectory, OldAckVersion);
+            _originalPalette = new Texture2D(256, 1, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.None);
+            _originalPalette.filterMode = FilterMode.Point;
             _palette = new Texture2D(256, 1, GraphicsFormat.R8G8B8A8_UNorm, TextureCreationFlags.None);
             _palette.filterMode = FilterMode.Point;
             _palettePixels = new Color[256];
@@ -244,12 +249,14 @@ namespace Acknex
             _contouredRegions = new ContouredRegions();
             ContourVertices = new List<ContourVertex>();
             RegionWalls = new RegionWalls();
+            Shader.SetGlobalTexture("_OriginalAcknexPalette", _originalPalette);
             Shader.SetGlobalTexture("_AcknexPalette", _palette);
             FileManager.BaseDirectory = BaseDirectory;
         }
 
         private void Start()
         {
+            ParseCommandLine();
             if (!DebugCoroutines)
             {
                 Cursor.lockState = CursorLockMode.Locked;
@@ -257,6 +264,24 @@ namespace Acknex
             AudioListener.volume = Volume;
             CreatePropertyDescriptors();
             LoadLevel(WDLFilename, WRSFilename);
+        }
+
+        private void ParseCommandLine()
+        {
+            var args = System.Environment.GetCommandLineArgs();
+            for (var i = 0; i < args.Length; i++)
+            {
+                var arg = args[i];
+                switch (arg)
+                {
+                    case "-wdl":
+                        WDLFilename = args[++i];
+                        break;
+                    case "-wrs":
+                        WRSFilename = args[++i];
+                        break;
+                }
+            }
         }
 
         public void LoadLevel(string wdlFilename, string wrsFilename)
@@ -272,7 +297,15 @@ namespace Acknex
             _textParser.ParseInitialWDL(wdlFilename);
             SetupTextures();
             SetupPhysics();
+            SetupPalette();
             StartCoroutine(SetupEvents());
+        }
+
+        private void SetupPalette()
+        {
+            var backgroundPixels = Palette.Instance.GetPixels();
+            _originalPalette.SetPixels(backgroundPixels);
+            _originalPalette.Apply(false, false);
         }
 
         private void SetupTextures()
@@ -297,8 +330,8 @@ namespace Acknex
         {
             //todo: global skills can't be reseted
             Player.Instance.Disable();
-            CoroutinePool.Clear();
             StopAllCoroutines();
+            CoroutinePool.Clear();
             _contouredRegions.Clear();
             ContourVertices.Clear();
             RegionWalls.Clear();
@@ -329,6 +362,8 @@ namespace Acknex
             SynonymsByName.Clear();
             TextsByName.Clear();
             TextureCache.Clear();
+            ModelCache.Clear();
+            BitmapCache.Clear();
             TexturesByName.Clear();
             ThingsByName.Clear();
             Walls.Clear();

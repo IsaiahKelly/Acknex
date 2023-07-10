@@ -3,6 +3,7 @@
 	Properties
 	{
 		_MainTex("Albedo (RGB)", 2D) = "white" {}
+		_MainTex_Pal("Palette", 2D) = "black" {}
 		_AMBIENT("_AMBIENT", Float) = 1.0
 		_ALBEDO("_ALBEDO", Float) = 0.0
 		_RADIANCE("_RADIANCE", Float) = 1.0
@@ -33,33 +34,32 @@
 			LOD 100
 
 			CGPROGRAM
-			#pragma surface surf Acknex vertex:vert noambient novertexlights nolightmap noshadow 
+			#pragma surface surf Acknex vertex:CustomVert noambient novertexlights nolightmap noshadow 
 
 			#pragma target 3.0
 
 			sampler2D _MainTex;
+			sampler2D _MainTex_Pal;
+
 			#include "Common.cginc"
 			#include "Lighting.cginc"
 
 			struct Input
 			{
 				float2 uv_MainTex;
-				float3 worldPos;
+				float3 worldPos;   
+				float4 screenPos;
+				float eyeDepth;
 			};
+			#include "CommonSurface.cginc"
 
 			UNITY_INSTANCING_BUFFER_START(Props)
 			UNITY_INSTANCING_BUFFER_END(Props)
 
-			void vert(inout appdata_full v) {
-				float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
-				float3 worldNorm = UnityObjectToWorldNormal(v.normal);
-				float3 viewDir = worldPos - _WorldSpaceCameraPos;
-				v.normal *= dot(viewDir, worldNorm) > 0 ? -1 : 1;
-			}
-
 			int _attachCount;
 			float4 _attachPos[256];
 			UNITY_DECLARE_TEX2DARRAY(_ATTACH);
+			UNITY_DECLARE_TEX2DARRAY(_ATTACH_Pal);
 			float4 _ATTACH_TexelSize;
 
 			float _TESTX;
@@ -82,7 +82,8 @@
 				float2 uv = lerp(rectMin, rectMax, IN.uv_MainTex);
 				uv *= _MainTex_TexelSize.xy;
 				fixed4 c = tex2D(_MainTex, uv);
-				ApplyPalette(c);
+				fixed p = tex2D(_MainTex_Pal, uv).x;
+				ApplyPalette(c, p);
 				float2 attachUV;
 				[loop]
 				for (int i = 0; i < _attachCount; i++) {
@@ -95,12 +96,15 @@
 					if (any(attachUV < 0.0) || any(attachUV > 1.0)) {
 						continue;
 					}
-					fixed4 ac = UNITY_SAMPLE_TEX2DARRAY(_ATTACH, float3(attachUV, i));
-					ApplyPalette(ac);
+					float3 uv3 = float3(attachUV, i);
+					fixed4 ac = UNITY_SAMPLE_TEX2DARRAY(_ATTACH, uv3);
+					fixed ap = UNITY_SAMPLE_TEX2DARRAY(_ATTACH_Pal, uv3).x;
+					ApplyPalette(ac, ap);
 					c = AlphaBlend(c, ac);
 				}
 				o.Albedo = c.rgb;
-				clipPlanes(o.Albedo, IN.worldPos);
+				ClipPlanes(o.Albedo, IN.worldPos);
+				ApplyDist(IN, o.Albedo);
 				o.Alpha = c.a;
 				if (_TRANSPARENT && o.Alpha < 0.5) {
 					discard;

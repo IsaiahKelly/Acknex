@@ -734,7 +734,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AmbientLight: {fileID: 705507994}
   AudioSource: {fileID: 1477033083}
-  BilinearFilter: 0
+  BilinearFilter: 1
   Canvas: {fileID: 1116186326}
   CanvasScaler: {fileID: 1116186325}
   CanvasView: {fileID: 1520209880}
@@ -749,7 +749,7 @@ MonoBehaviour:
   NullTexture: {fileID: 2800000, guid: da40acbc9325ea9438512fe4fee1f7fc, type: 3}
   OldAckVersion: 0
   TimeScale: 100
-  UsePalettes: 1
+  UsePalettes: 0
   Volume: 1
   StartDelay: 1
   IgnoreRaycastLayer:

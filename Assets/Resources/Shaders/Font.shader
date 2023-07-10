@@ -22,6 +22,7 @@
             #include "Common.cginc"
 
             UNITY_DECLARE_TEX2DARRAY(_MainTex);
+            UNITY_DECLARE_TEX2DARRAY(_MainTex_Pal);
 
             struct appdata
             {
@@ -48,9 +49,11 @@
 
             fixed4 frag(v2f i) : SV_Target
             {
-                fixed4 col = UNITY_SAMPLE_TEX2DARRAY(_MainTex, float3(i.uv.x, i.uv.y, i.uv1.x));
-                ApplyPalette(col);
-                return col;
+                float3 uv3 = float3(i.uv.x, i.uv.y, i.uv1.x);
+                fixed4 c = UNITY_SAMPLE_TEX2DARRAY(_MainTex, uv3);
+                fixed p = UNITY_SAMPLE_TEX2DARRAY(_MainTex_Pal, uv3).x;
+                ApplyPalette(c, p);
+                return c;
             }
             ENDCG
         }

@@ -2,6 +2,8 @@
 sampler2D _AcknexPalette;
 float4 _AcknexPalette_TexelSize;
 
+sampler2D _OriginalAcknexPalette;
+
 float4 _MainTex_TexelSize;
 
 fixed4 _Color;
@@ -36,32 +38,23 @@ float _CEIL_HGT;
 int _IF_DIVE;
 int _IF_ARISE;
 
-void ApplyPalette(inout float4 color)
+void ApplyPalette(inout float4 color, float paletteIndex)
 {
 	if (_AcknexUsePalettes) {
-		float alpha = color.x != 0;
-		color = tex2D(_AcknexPalette, float2(color.x, 0));
+		float alpha = paletteIndex != 0;
+		color = tex2D(_AcknexPalette, float2(paletteIndex, 0));
 		color.w = alpha;
 	}
-}
-
-void EmulatePalette(inout float4 color) {
-	float4 matchColor = color;
-	float matchDist = 1.0 / 0.0;
-	if (_AcknexUsePalettes) {
-		for (float u = 0.0; u < 1.0; u += _AcknexPalette_TexelSize.x) {
-			float4 palette = tex2D(_AcknexPalette, float2(u, 0));
-			float dist = distance(palette.xyz, color.xyz);
-			if (dist < matchDist) {
-				matchDist = dist;
-				matchColor = palette;
-			}
-		}
+	else
+	{
+		float3 a = tex2D(_OriginalAcknexPalette, float2(paletteIndex, 0));
+		float3 b = tex2D(_AcknexPalette, float2(paletteIndex, 0));
+		float3 delta = b - a;
+		color.xyz += delta;
 	}
-	color = matchColor;
 }
 
-void clipPlanes(inout float3 c, float3 worldPos)
+void ClipPlanes(inout float3 c, float3 worldPos)
 {
 	if (!_IF_DIVE && _PLAYER_Z <= _FLOOR_HGT + 0.5) {
 		c *= smoothstep(_FLOOR_HGT, _FLOOR_HGT + 0.5, worldPos.y);

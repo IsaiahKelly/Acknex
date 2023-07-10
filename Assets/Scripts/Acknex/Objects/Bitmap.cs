@@ -282,7 +282,8 @@ namespace Acknex
                     {
                         var material = materials[i];
                         material.SetInt("_SIDES", sides);
-                        material.SetTexture("_BMAPS", World.Instance.UsePalettes ? _skyboxPalette2DArray : _skyboxTexture2DArray);
+                        material.SetTexture("_BMAPS", _skyboxTexture2DArray);
+                        material.SetTexture("_BMAPS_Pal", _skyboxPalette2DArray);
                     }
                     //todo: SKY_OFFS_Y
                 }
@@ -309,7 +310,8 @@ namespace Acknex
                 material.SetInt("_TRANSPARENT", transparent ? 1 : 0);
                 material.SetInt("_DIAPHANOUS", diaphanous ? 1 : 0);
                 material.SetInt("_CullMode", (int)cullMode);
-                material.mainTexture = World.Instance.UsePalettes ? CropTexture.Palette : CropTexture.Texture;
+                material.SetTexture("_MainTex", CropTexture.Texture);
+                material.SetTexture("_MainTex_Pal", CropTexture.Palette);
             }
             if (graphicObject != null)
             {

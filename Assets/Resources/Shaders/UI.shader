@@ -20,6 +20,7 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            sampler2D _MainTex_Pal;
 
             #include "UnityCG.cginc"
             #include "Common.cginc"
@@ -53,9 +54,10 @@
                 float2 coord1 = float2(_X1, _Y1);
                 float2 uv = lerp(coord0, coord1, float2(i.uv.x, 1.0 - i.uv.y));
                 uv *= _MainTex_TexelSize.xy;
-                fixed4 col = tex2D(_MainTex, i.uv);
-                ApplyPalette(col);
-                return col;
+                fixed4 c = tex2D(_MainTex, i.uv);
+                fixed p = tex2D(_MainTex_Pal, i.uv).x;
+                ApplyPalette(c, p);
+                return c;
             }
             ENDCG
         }

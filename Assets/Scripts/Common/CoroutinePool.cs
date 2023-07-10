@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using System.Collections;
+using UnityEngine;
 
 namespace Common
 {
@@ -38,7 +39,11 @@ namespace Common
 
         public static IEnumerator Get(Type type)
         {
-            var array = Pool[type];
+            if (!Pool.TryGetValue(type, out var array))
+            {
+                Debug.LogError("No coroutine pool for [" + type + "]");
+                return null;
+            }
             for (var i = 0; i < MaxItems; i++)
             {
                 var enumerator = array[i];
@@ -48,7 +53,7 @@ namespace Common
                     return enumerator;
                 }
             }
-            throw new Exception("No coroutine pool for [" + type + "]");
+            throw new Exception("No coroutine pool left for [" + type + "]");
         }
     }
 }

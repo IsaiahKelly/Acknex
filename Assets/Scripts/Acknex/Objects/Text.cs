@@ -131,7 +131,8 @@ namespace Acknex
             //todo: better way
             if (_hasToDisplay)
             {
-                materialForRendering.SetTexture("_MainTex", World.Instance.UsePalettes ? Font.GlyphsPalette : Font.GlyphsTexture);
+                materialForRendering.SetTexture("_MainTex",Font.GlyphsTexture);
+                materialForRendering.SetTexture("_MainTex_Pal", Font.GlyphsPalette);
                 var stringIndex = AcknexObject.GetInteger(PropertyName.INDEX) - 1;
                 if (!AcknexObject.TryGetObject<List<IAcknexObject>>(PropertyName.STRING, out var strings) || stringIndex < 0 || stringIndex >= strings.Count)
                 {

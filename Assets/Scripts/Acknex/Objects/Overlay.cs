@@ -116,6 +116,7 @@ namespace Acknex
                 {
                     var material = Materials[i];
                     material.SetTexture("_MainTex", World.Instance.NullTexture);
+                    material.SetTexture("_MainTex_Pal", World.Instance.NullTexture);
                     material.SetInt("_TRANSPARENT", 1);
                 }
             }

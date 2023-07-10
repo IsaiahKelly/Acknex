@@ -37,7 +37,8 @@ namespace Acknex
             vh.Clear();
             if (Panel != null && Panel.OverlayGraphic.enabled)
             {
-                materialForRendering.SetTexture("_MainTex", World.Instance.UsePalettes ? Font.GlyphsPalette : Font.GlyphsTexture);
+                materialForRendering.SetTexture("_MainTex", Font.GlyphsTexture);
+                materialForRendering.SetTexture("_MainTex_Pal", Font.GlyphsPalette);
                 if (AcknexObject.TryGetAcknexObject(PropertyName.SKILL, out var skill))
                 {
                     var len = AcknexObject.GetFloat(PropertyName.LEN);

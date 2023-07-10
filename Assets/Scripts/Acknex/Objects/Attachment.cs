@@ -13,7 +13,7 @@ namespace Acknex
         public static int ProcessAttachments(
             Texture[] tempAttachments,
             ref Texture2DArray attachmentsTexture,
-            ref Texture2DArray palettesTexture, 
+            ref Texture2DArray palettesTexture,
             Vector4[] positions,
             Texture texture,
             IList<Material> materials)
@@ -70,7 +70,7 @@ namespace Acknex
                 var bitmap = texture.GetBitmapAt(0);
                 attachmentsTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, MaxAttachments, bitmap.CropTexture.Texture.format, bitmap.CropTexture.Texture.mipmapCount > 1);
                 World.Instance.CreatedObjects.Add(attachmentsTexture);
-                attachmentsTexture.filterMode =  World.Instance.UsePalettes ? FilterMode.Point : World.Instance.BilinearFilter ? FilterMode.Bilinear : FilterMode.Point;
+                attachmentsTexture.filterMode = World.Instance.UsePalettes ? FilterMode.Point : World.Instance.BilinearFilter ? FilterMode.Bilinear : FilterMode.Point;
                 palettesTexture = new Texture2DArray((int)bitmap.Width, (int)bitmap.Height, MaxAttachments, bitmap.CropTexture.Palette.format, bitmap.CropTexture.Palette.mipmapCount > 1);
                 World.Instance.CreatedObjects.Add(palettesTexture);
                 palettesTexture.filterMode = FilterMode.Point;
@@ -90,7 +90,8 @@ namespace Acknex
                 Material material = materials[i];
                 if (material != null)
                 {
-                    material.SetTexture("_ATTACH", World.Instance.UsePalettes ? palettesTexture : attachmentsTexture);
+                    material.SetTexture("_ATTACH", attachmentsTexture);
+                    material.SetTexture("_ATTACH_Pal", palettesTexture);
                     material.SetInt("_attachCount", attachmentCount);
                     material.SetVectorArray("_attachPos", positions);
                 }

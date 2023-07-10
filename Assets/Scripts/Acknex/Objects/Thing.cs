@@ -147,8 +147,6 @@ namespace Acknex
             _characterController.detectCollisions = false;
             _characterController.stepOffset = 0f;
             //_characterController.hasModifiableContacts = true;
-            //_collider = gameObject.AddComponent<CapsuleCollider>();
-            //_collider.hasModifiableContacts = true;
             _spriteCollider = _innerGameObject.AddComponent<MeshCollider>();
             _spriteCollider.sharedMesh = mesh;
             _invertedSpriteCollider = _innerGameObject.AddComponent<MeshCollider>();
@@ -176,7 +174,7 @@ namespace Acknex
             _modelGameObject.layer = World.Instance.ThingsAndActorsLayer.LayerIndex;
             _modelMeshRenderer = _modelGameObject.AddComponent<MeshRenderer>();
             _modelMeshRenderer.material = new Material(Shader.Find("Acknex/Model"));
-            //World.Instance.CreatedObjects.Add(_modelMeshRenderer.material);
+            World.Instance.CreatedObjects.Add(_modelMeshRenderer.material);
             _modelMaterials = _modelMeshRenderer.materials;
             _modelMeshFilter = _modelGameObject.AddComponent<MeshFilter>();
             _modelMeshFilter.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);

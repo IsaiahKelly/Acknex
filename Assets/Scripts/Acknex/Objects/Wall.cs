@@ -602,7 +602,8 @@ namespace Acknex
                 {
                     var materials = new Material[1];
                     materials[0] = World.Instance.BuildMaterial(TextureObject.AcknexObject);
-                    _meshRenderer.sharedMaterials = materials;
+                    _meshRenderer.materials = materials;
+                    World.Instance.CreatedObjects.Add(materials[0]);
                 }
                 _meshRendererMaterials = _meshRenderer.materials;
                 foreach (var material in _meshRendererMaterials)
@@ -636,7 +637,8 @@ namespace Acknex
                 {
                     var materials = new Material[1];
                     materials[0] = World.Instance.BuildMaterial(TextureObject.AcknexObject);
-                    _gapMeshRenderer.sharedMaterials = materials;
+                    _gapMeshRenderer.materials = materials;
+                    World.Instance.CreatedObjects.Add(materials[0]);
                 }
                 _gapMeshRendererMaterials = _gapMeshRenderer.materials;
                 foreach (var material in _gapMeshRendererMaterials)

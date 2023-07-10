@@ -44,6 +44,8 @@
             UNITY_DECLARE_TEX2DARRAY(_BMAPS);
             float4 _BMAPS_TexelSize;
 
+            UNITY_DECLARE_TEX2DARRAY(_BMAPS_Pal);
+
             int _SIDES;
             float _CAMERA_PITCH;
             float _SKY_OFFS_Y;
@@ -69,11 +71,13 @@
                 v -= _SKY_OFFS_Y;
                 v = clamp(v, _BMAPS_TexelSize.y, 1.0 - _BMAPS_TexelSize.y);
                 int textureIndex = yaw == 0.0 ? 0.0 : yaw / anglesPerSide;
-                fixed4 col = UNITY_SAMPLE_TEX2DARRAY(_BMAPS, float3(u, v, textureIndex));
-                ApplyPalette(col);
-                UNITY_APPLY_FOG(i.fogCoord, col);
-                clipPlanes(col.xyz, i.worldPos);
-                return col;
+                float3 uv3 = float3(u, v, textureIndex);
+                fixed4 c = UNITY_SAMPLE_TEX2DARRAY(_BMAPS, uv3);
+                fixed p = UNITY_SAMPLE_TEX2DARRAY(_BMAPS_Pal, uv3).x;
+                ApplyPalette(c, p);
+                UNITY_APPLY_FOG(i.fogCoord, c);
+                ClipPlanes(c.xyz, i.worldPos);
+                return c;
             }
             ENDCG
         }

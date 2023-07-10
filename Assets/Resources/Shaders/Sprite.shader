@@ -3,6 +3,7 @@
     Properties
     {
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
+        _MainTex_Pal("Palette", 2D) = "black" {}
         _AMBIENT("_AMBIENT", Float) = 1.0
         _ALBEDO("_ALBEDO", Float) = 0.0
         _RADIANCE("_RADIANCE", Float) = 1.0
@@ -22,11 +23,12 @@
         LOD 100
 
         CGPROGRAM
-        #pragma surface surf Acknex alpha:blend noambient novertexlights nolightmap noshadow
+        #pragma surface surf Acknex vertex:CustomVert alpha:blend noambient novertexlights nolightmap noshadow
 
         #pragma target 3.0
                     
         sampler2D _MainTex;
+        sampler2D _MainTex_Pal;
         #include "Common.cginc"
         #include "Lighting.cginc"
         
@@ -34,7 +36,11 @@
         {
             float2 uv_MainTex;
             float3 worldPos;
+            float4 screenPos;
+            float eyeDepth;
         };
+        #include "CommonSurface.cginc"
+
 
         UNITY_INSTANCING_BUFFER_START(Props)
         UNITY_INSTANCING_BUFFER_END(Props)
@@ -48,9 +54,11 @@
             float2 uv = lerp(coord0, coord1, float2(IN.uv_MainTex.x, 1.0-IN.uv_MainTex.y));
             uv *= _MainTex_TexelSize.xy;
             fixed4 c = tex2D(_MainTex, uv);
-            ApplyPalette(c);
+            fixed p = tex2D(_MainTex_Pal, uv).x;
+            ApplyPalette(c, p);
             o.Albedo = c.rgb;
-            clipPlanes(o.Albedo, IN.worldPos);
+            ClipPlanes(o.Albedo, IN.worldPos);
+            ApplyDist(IN, o.Albedo);
             o.Alpha = c.a < 0.5 ? c.a : (_DIAPHANOUS ? 0.5 : c.a);
         }
         ENDCG

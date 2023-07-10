@@ -469,7 +469,8 @@ namespace Acknex
             if (!_materialsCreated)
             {
                 _floorMaterial = World.Instance.BuildMaterial(floorTexture.AcknexObject);
-                _floorMeshRenderer.sharedMaterial = _floorMaterial;
+                _floorMeshRenderer.material = _floorMaterial;
+                World.Instance.CreatedObjects.Add(_floorMeshRenderer.material);
             }
             _floorMeshRendererMaterials = _floorMeshRenderer.materials;
             foreach (var material in _floorMeshRendererMaterials)
@@ -503,7 +504,8 @@ namespace Acknex
             if (!_materialsCreated)
             {
                 _ceilMaterial = World.Instance.BuildMaterial(ceilTexture.AcknexObject, true);
-                _ceilMeshRenderer.sharedMaterial = _ceilMaterial;
+                _ceilMeshRenderer.material = _ceilMaterial;
+                World.Instance.CreatedObjects.Add(_ceilMeshRenderer.material);
             }
             _ceilMeshRendererMaterials = _ceilMeshRenderer.materials;
             foreach (var material in _ceilMeshRendererMaterials)

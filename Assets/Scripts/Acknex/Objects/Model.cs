@@ -12,6 +12,9 @@ namespace Acknex
 {
     public class Model : IAcknexObjectContainer
     {
+        private Mesh _mesh;
+        private Bitmap _bitmap;
+
         public void NotifyPropertyChanged(uint propertyName)
         {
 
@@ -34,10 +37,20 @@ namespace Acknex
             return null;
         }
 
-        public Mesh Mesh { get; private set; }
+        public Mesh Mesh
+        {
+            get => _mesh;
+            private set => _mesh = value;
+        }
+
         public Texture2D Texture2D { get; private set; }
         public Texture2D PaletteTexture2D { get; private set; }
-        public Bitmap Bitmap { get; private set; }
+
+        public Bitmap Bitmap
+        {
+            get => _bitmap;
+            private set => _bitmap = value;
+        }
 
         private struct mdl_skin_t
         {
@@ -86,7 +99,7 @@ namespace Acknex
 
         public void LoadFromFile(string filename)
         {
-            if (!File.Exists(filename))
+            if (!FileManager.Exists(filename))
             {
                 return;
             }
@@ -151,70 +164,82 @@ namespace Acknex
                         frames[i].vertices[j] = ReadQuakeVertex(binaryReader);
                     }
                 }
-                Mesh = new Mesh();
-                World.Instance.CreatedObjects.Add(Mesh);
-                Mesh.subMeshCount = 1;
-                Mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt16;
-                var meshVertices = new List<Vector3>();
-                var meshTexcoords = new List<Vector2>();
-                var meshTris = new List<int>();
-                for (var o = 0; o < num_tris; o++)
+                if (!World.Instance.ModelCache.TryGetValue(filename, out _mesh))
                 {
-                    var triangle = triangles[o];
-                    for (var v = 0; v < 3; v++)
+                    _mesh = new Mesh();
+                    World.Instance.CreatedObjects.Add(_mesh);
+                    World.Instance.ModelCache.Add(filename, _mesh);
+                    _mesh.subMeshCount = 1;
+                    _mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt16;
+                    var meshVertices = new List<Vector3>();
+                    var meshTexcoords = new List<Vector2>();
+                    var meshTris = new List<int>();
+                    for (var o = 0; o < num_tris; o++)
                     {
-                        var vertexIndex = triangle.vertices[v];
-                        var vertex = frames[0].vertices[vertexIndex];
-                        var s = (float)texcoords[vertexIndex].s;
-                        var t = (float)texcoords[vertexIndex].t;
-                        var onSeam = texcoords[vertexIndex].onseam;
-                        var facesFront = triangle.facesfront;
-                        s = (s + (onSeam > 0 && facesFront < 1 ? skinWidth * 0.5f : 0.0f) + 0.5f) / skinWidth;
-                        t = (t + 0.5f) / skinHeight;
-                        meshTexcoords.Add(new Vector2(s, t));
-                        var x = scale[0] * vertex.v[0] + translate[0];
-                        var y = scale[1] * vertex.v[1] + translate[1];
-                        var z = scale[2] * vertex.v[2] + translate[2];
-                        meshVertices.Add(new Vector3(x, y, z));
+                        var triangle = triangles[o];
+                        for (var v = 0; v < 3; v++)
+                        {
+                            var vertexIndex = triangle.vertices[v];
+                            var vertex = frames[0].vertices[vertexIndex];
+                            var s = (float)texcoords[vertexIndex].s;
+                            var t = (float)texcoords[vertexIndex].t;
+                            var onSeam = texcoords[vertexIndex].onseam;
+                            var facesFront = triangle.facesfront;
+                            s = (s + (onSeam > 0 && facesFront < 1 ? skinWidth * 0.5f : 0.0f) + 0.5f) / skinWidth;
+                            t = (t + 0.5f) / skinHeight;
+                            meshTexcoords.Add(new Vector2(s, t));
+                            var x = scale[0] * vertex.v[0] + translate[0];
+                            var y = scale[1] * vertex.v[1] + translate[1];
+                            var z = scale[2] * vertex.v[2] + translate[2];
+                            meshVertices.Add(new Vector3(x, y, z));
+                        }
+                        meshTris.Add(meshTris.Count);
+                        meshTris.Add(meshTris.Count);
+                        meshTris.Add(meshTris.Count);
                     }
-                    meshTris.Add(meshTris.Count);
-                    meshTris.Add(meshTris.Count);
-                    meshTris.Add(meshTris.Count);
+                    meshTris.Reverse();
+                    _mesh.SetVertices(meshVertices);
+                    _mesh.SetUVs(0, meshTexcoords);
+                    _mesh.SetTriangles(meshTris, 0);
+                    _mesh.RecalculateNormals();
+                    _mesh.UploadMeshData(false);
                 }
-                meshTris.Reverse();
-                Mesh.SetVertices(meshVertices);
-                Mesh.SetUVs(0, meshTexcoords);
-                Mesh.SetTriangles(meshTris, 0);
-                Mesh.RecalculateNormals();
-                Mesh.UploadMeshData(false);
-                var skin = new Color32[skinWidth * skinHeight];
-                for (var i = 0; i < skin.Length; ++i)
+                if (!World.Instance.TextureCache.TryGetValue(filename, out var textureAndPalette))
                 {
-                    skin[i][0] = MDLColorMap.Colormap[skins[0].data[i], 0];
-                    skin[i][1] = MDLColorMap.Colormap[skins[0].data[i], 1];
-                    skin[i][2] = MDLColorMap.Colormap[skins[0].data[i], 2];
-                    skin[i][3] = 255;
+                    var skin = new Color32[skinWidth * skinHeight];
+                    for (var i = 0; i < skin.Length; ++i)
+                    {
+                        skin[i][0] = MDLColorMap.Colormap[skins[0].data[i], 0];
+                        skin[i][1] = MDLColorMap.Colormap[skins[0].data[i], 1];
+                        skin[i][2] = MDLColorMap.Colormap[skins[0].data[i], 2];
+                        skin[i][3] = 255;
+                    }
+                    skin = FlipPixelsVertically(skin, skinWidth, skinHeight);
+                    Texture2D = new Texture2D(skinWidth, skinHeight, UnityEngine.Experimental.Rendering.GraphicsFormat.R8G8B8A8_UNorm, UnityEngine.Experimental.Rendering.TextureCreationFlags.MipChain);
+                    World.Instance.CreatedObjects.Add(Texture2D);
+                    Texture2D.SetPixels32(skin, 0);
+                    Texture2D.Apply(true, true);
+                    Texture2D.filterMode = World.Instance.UsePalettes ? FilterMode.Point : World.Instance.BilinearFilter ? FilterMode.Bilinear : FilterMode.Point;
+                    PaletteTexture2D = new Texture2D(skinWidth, skinHeight, UnityEngine.Experimental.Rendering.GraphicsFormat.R8_UNorm, UnityEngine.Experimental.Rendering.TextureCreationFlags.None);
+                    World.Instance.CreatedObjects.Add(PaletteTexture2D);
+                    PaletteTexture2D.LoadRawTextureData(skins[0].data);
+                    PaletteTexture2D.Apply(true, true);
+                    PaletteTexture2D.filterMode = FilterMode.Point;
+                    textureAndPalette = new TextureAndPalette(Texture2D, PaletteTexture2D);
+                    World.Instance.TextureCache.Add(filename, textureAndPalette);
                 }
-                skin = FlipPixelsVertically(skin, skinWidth, skinHeight);
-                Texture2D = new Texture2D(skinWidth, skinHeight, UnityEngine.Experimental.Rendering.GraphicsFormat.R8G8B8A8_UNorm, UnityEngine.Experimental.Rendering.TextureCreationFlags.MipChain);
-                World.Instance.CreatedObjects.Add(Texture2D);
-                Texture2D.SetPixels32(skin, 0);
-                Texture2D.Apply(true, true);
-                Texture2D.filterMode = World.Instance.UsePalettes ? FilterMode.Point : World.Instance.BilinearFilter ? FilterMode.Bilinear : FilterMode.Point;
-                PaletteTexture2D = new Texture2D(skinWidth, skinHeight, UnityEngine.Experimental.Rendering.GraphicsFormat.R8_UNorm, UnityEngine.Experimental.Rendering.TextureCreationFlags.None);
-                World.Instance.CreatedObjects.Add(PaletteTexture2D);
-                PaletteTexture2D.LoadRawTextureData(skins[0].data);
-                PaletteTexture2D.Apply(true, true);
-                PaletteTexture2D.filterMode = FilterMode.Point;
-                Bitmap = new Bitmap();
-                Bitmap.AcknexObject.SetFloat(PropertyName.X, 0f);
-                Bitmap.AcknexObject.SetFloat(PropertyName.Y, 0f);
-                Bitmap.AcknexObject.SetFloat(PropertyName.WIDTH, skinWidth);
-                Bitmap.AcknexObject.SetFloat(PropertyName.HEIGHT, skinHeight);
-                Bitmap.OriginalTexture = Bitmap.CropTexture = new TextureAndPalette(Texture2D, PaletteTexture2D);
+                if (!World.Instance.BitmapCache.TryGetValue(filename, out _bitmap))
+                {
+                    _bitmap = new Bitmap();
+                    _bitmap.AcknexObject.SetFloat(PropertyName.X, 0f);
+                    _bitmap.AcknexObject.SetFloat(PropertyName.Y, 0f);
+                    _bitmap.AcknexObject.SetFloat(PropertyName.WIDTH, skinWidth);
+                    _bitmap.AcknexObject.SetFloat(PropertyName.HEIGHT, skinHeight);
+                    _bitmap.OriginalTexture = _bitmap.CropTexture = textureAndPalette;
+                    World.Instance.BitmapCache.Add(filename, _bitmap);
+                }
             }
         }
-
 
         public void SetupTemplate()
         {
