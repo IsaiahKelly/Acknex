@@ -3,7 +3,6 @@
     Properties
     {
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
-        _MainTex_Pal("Palette", 2D) = "black" {}
         _AMBIENT("_AMBIENT", Float) = 1.0
         _ALBEDO("_ALBEDO", Float) = 0.0
         _RADIANCE("_RADIANCE", Float) = 1.0

@@ -6,7 +6,9 @@ using System.Text;
 using Acknex.Interfaces;
 using Common;
 using UnityEngine;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 namespace Acknex
 {
     public partial class World
@@ -65,7 +67,7 @@ namespace Acknex
         //            if (name != null) {
         //                if (_callbacks.TryGetValue(name, out var callback)) {
         //                    var enumerator = CoroutinePool.Get<Callback>();
-                            
+
         //                    var next = true;
         //                    while (next) {
         //                        try {
@@ -141,6 +143,9 @@ namespace Acknex
             sourceStringBuilder.AppendLine("    }");
             sourceStringBuilder.AppendLine("}");
             File.WriteAllText($"{Application.dataPath}/Scripts/Game/{className}.cs", sourceStringBuilder.ToString());
+#if UNITY_EDITOR
+            EditorUtility.DisplayDialog("ACKNEX", "Scripts have been compiled.\nPlease exit the playmode, disable scripts compilation on the world instance (Disable Compilation), and hit play again.", "OK");
+#endif
         }
     }
 }
