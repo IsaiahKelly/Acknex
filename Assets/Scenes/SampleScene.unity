@@ -747,7 +747,7 @@ MonoBehaviour:
   MeshBatch: 0
   MidiPlayer: {fileID: 1246573634}
   NullTexture: {fileID: 2800000, guid: da40acbc9325ea9438512fe4fee1f7fc, type: 3}
-  OldAckVersion: 0
+  OldAckVersion: 1
   TimeScale: 100
   UsePalettes: 0
   Volume: 1
@@ -793,9 +793,9 @@ MonoBehaviour:
   MouseAcceleration: 0
   MouseMultiplier: 0.1
   MouseSmoothTime: 10
-  BaseDirectory: C:\games\acknex\varginha2
+  BaseDirectory: C:\games\acknex\DEMO
   WRSFilename: 
-  WDLFilename: INTRO01.WDL
+  WDLFilename: VRDEMO.WDL
 --- !u!114 &1246573633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1077,7 +1077,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Acknex Remastered - https://rickomax.github.io
+  m_Text: ACKNEX Remastered - https://rickomax.github.io
 --- !u!222 &1392333253
 CanvasRenderer:
   m_ObjectHideFlags: 0

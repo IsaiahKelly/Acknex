@@ -14,13 +14,17 @@ namespace Game
         }
         public static IAcknexRuntime GetRuntime(string className)
         {
-            switch (className)
+            if (className == "VRDEMO")
             {
-                case "CONTATO":
-                    return new CONTATO();
-                case "INTRO01":
-                    return new INTRO01();
+                return new VRDEMO();
             }
+            //switch (className)
+            //{
+            //    case "CONTATO":
+            //        return new CONTATO();
+            //    case "INTRO01":
+            //        return new INTRO01();
+            //}
             return null;
         }
     }

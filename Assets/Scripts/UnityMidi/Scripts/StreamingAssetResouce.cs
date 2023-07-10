@@ -32,7 +32,7 @@ namespace UnityMidi
 
         public Stream OpenResourceForRead()
         {
-            return FileManager.OpenRead(Path.Combine(Application.streamingAssetsPath, streamingAssetPath));
+            return File.OpenRead(Path.Combine(Application.streamingAssetsPath, streamingAssetPath));
         }
 
         public Stream OpenResourceForWrite()

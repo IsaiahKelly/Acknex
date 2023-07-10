@@ -12,13 +12,13 @@ namespace Common
 
         public static Stream OpenRead(string filename)
         {
-            return string.IsNullOrEmpty(WRSFilename) ? File.OpenRead($"{BaseDirectory}/{filename}") : ReadFile(filename);
+            return string.IsNullOrEmpty(WRSFilename) ? File.OpenRead(PathUtils.SanitizePath($"{BaseDirectory}/{filename}")) : ReadFile(filename);
         }
 
         private static MemoryStream ReadFile(string filename)
         {
             var shortFilename = FilenameConverter.ConvertToShortPath(filename);
-            using (var binaryReader = new BigEndianBinaryReader(File.OpenRead($"{BaseDirectory}/{WRSFilename}")))
+            using (var binaryReader = new BigEndianBinaryReader(File.OpenRead(PathUtils.SanitizePath($"{BaseDirectory}/{WRSFilename}"))))
             {
                 var nameBuffer = new byte[13];
                 var asize = binaryReader.BaseStream.Length;
@@ -51,16 +51,16 @@ namespace Common
         {
             if (string.IsNullOrEmpty(WRSFilename))
             {
-                return File.Exists($"{BaseDirectory}/{filename}");
+                return File.Exists(PathUtils.SanitizePath($"{BaseDirectory}/{filename}"));
             }
             return true;
         }
 
         public static byte[] ReadAllBytes(string fileName)
         {
-            using (var stream = ReadFile(fileName))
+            using (var stream = OpenRead(fileName))
             {
-                return stream.ToArray();
+                return stream.ReadBytes();
             }
         }
     }

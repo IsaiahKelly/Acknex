@@ -47,8 +47,6 @@ namespace Acknex
         public bool DisableCeilRender;
         public bool DisableFloorRender;
         public HashSet<Wall> Walls = new HashSet<Wall>();
-        //private MeshCollider _floorOffsetMeshCollider;
-        //private GameObject _floorOffsetGameObject;
 
         public Texture FloorTexture
         {
@@ -120,14 +118,11 @@ namespace Acknex
         public float GetAmbient()
         {
             var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
+            ambient += World.Instance.AcknexObject.GetFloat(PropertyName.AMBIENT);
             if (IsUnderwater)
             {
                 ambient += 1f;
             }
-            //if (AcknexObject.HasFlag(PropertyName.HERE))
-            //{
-            //    ambient += World.Instance.GetSkillValue("PLAYER_LIGHT") * Mathf.InverseLerp(World.Instance.GetSkillValue(PropertyName.CLIP_DIST), 0f, AcknexObject.GetFloat(PropertyName.DISTANCE));
-            //}
             return ambient;
         }
 

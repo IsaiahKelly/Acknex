@@ -60,7 +60,6 @@ namespace Acknex
         {
             var ambient = AcknexObject.GetFloat(PropertyName.AMBIENT);
             ambient += World.Instance.AcknexObject.GetFloat(PropertyName.AMBIENT);
-            //ambient *= ((IGraphicObject)GetRegion().Container).GetAmbient();
             return ambient;
         }
 

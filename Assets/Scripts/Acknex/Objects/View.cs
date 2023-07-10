@@ -114,6 +114,10 @@ namespace Acknex
 
         private float CalculateFOV()
         {
+            if (World.Instance.OldAckVersion)
+            {
+                return 60f;
+            }
             var playerArc = World.Instance.GetSkillValue(SkillName.PLAYER_ARC);
             var m = (120f - 0f) / (2.0f - 0.2f);
             var b = 0f - m * 0.2f;

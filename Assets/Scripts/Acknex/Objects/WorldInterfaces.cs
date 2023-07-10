@@ -815,6 +815,7 @@ namespace Acknex
         {
             CanvasWidthRatio = CanvasScaler.referenceResolution.x * (CanvasScaler.referenceResolution.x / Screen.width);
             Shader.SetGlobalInt("_AcknexUsePalettes", UsePalettes ? 1 : 0);
+            Shader.SetGlobalInt("_AcknexOldVersion", OldAckVersion ? 1 : 0);
             AmbientLight.shadows = DrawShadows ? LightShadows.Hard : LightShadows.None;
             AmbientLight.transform.rotation = Quaternion.Euler(0f, AngleUtils.ConvertAcknexToUnityAngle(AcknexObject.GetFloat(PropertyName.LIGHT_ANGLE), true), 0f) * Quaternion.Euler(45f, 0f, 0f);
             UpdateSkills();

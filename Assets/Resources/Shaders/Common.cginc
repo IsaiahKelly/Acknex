@@ -1,4 +1,6 @@
 ﻿int _AcknexUsePalettes;
+int _AcknexOldVersion;
+
 sampler2D _AcknexPalette;
 float4 _AcknexPalette_TexelSize;
 
@@ -45,7 +47,7 @@ void ApplyPalette(inout float4 color, float paletteIndex)
 		color = tex2D(_AcknexPalette, float2(paletteIndex, 0));
 		color.w = alpha;
 	}
-	else
+	else if (!_AcknexOldVersion)
 	{
 		float3 a = tex2D(_OriginalAcknexPalette, float2(paletteIndex, 0));
 		float3 b = tex2D(_AcknexPalette, float2(paletteIndex, 0));
