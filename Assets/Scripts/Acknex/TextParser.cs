@@ -673,7 +673,7 @@ namespace Acknex
             if (tokens.MoveNext())
             {
                 var value = tokens.Current;
-                if (value != null && _definitions.TryGetValue(value, out var defined))
+                if (value != null && _definitions.TryGetValue(value, out var defined) && defined.Value != null)
                 {
                     return defined.Value;
                 }
