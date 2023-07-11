@@ -92,6 +92,7 @@ namespace Acknex
                 switch (CurrentGame)
                 {
                     case AcknexGame.Demo:
+                    case AcknexGame.SaintsOfVirtue:
                         return true;
                     case AcknexGame.IncidenteEmVarginha:
                         return false;

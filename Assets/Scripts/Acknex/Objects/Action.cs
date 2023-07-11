@@ -145,31 +145,24 @@ namespace Acknex
         {
             var name = AcknexObject.Name;
             var sanitizedName = Sanitize(name);
-            //if (World.Instance.CustomStateMachines)
-            //{
-                CodeStringBuilder.AppendLine($"public class {sanitizedName} : ICompiledAction {{");
-                CodeStringBuilder.AppendLine("  private int _cursor;");
-                CodeStringBuilder.AppendLine("  public IAcknexObject MY {get; set;}");
-                CodeStringBuilder.AppendLine("  public IAcknexObject THERE {get; set;}");
-                CodeStringBuilder.AppendLine("  public IAcknexWorld _world {get; set;}");
-                CodeStringBuilder.AppendLine("  public object Current { get; set; }");
-                CodeStringBuilder.AppendLine("  public void Reset() {");
-                CodeStringBuilder.AppendLine("      _cursor = 0;");
-                CodeStringBuilder.AppendLine("  }");
-                CodeStringBuilder.AppendLine($" public {sanitizedName}() {{");
-                CodeStringBuilder.AppendLine("  }");
-                CodeStringBuilder.AppendLine($" public {sanitizedName}(IAcknexObject MY, IAcknexObject THERE, IAcknexWorld world) {{");
-                CodeStringBuilder.AppendLine("      this.MY = MY;");
-                CodeStringBuilder.AppendLine("      this.THERE = THERE;");
-                CodeStringBuilder.AppendLine("      this._world = world;");
-                CodeStringBuilder.AppendLine("  }");
-                CodeStringBuilder.AppendLine("  public bool MoveNext() {");
-                JumpTableStringBuilder.AppendLine("     switch (_cursor){");
-            //}
-            //else
-            //{
-            //    CodeStringBuilder.Append("public IEnumerator ").Append(sanitizedName).AppendLine("(IAcknexObject MY, IAcknexObject THERE){");
-            //}
+            CodeStringBuilder.AppendLine($"public class {sanitizedName} : ICompiledAction {{");
+            CodeStringBuilder.AppendLine("  private int _cursor;");
+            CodeStringBuilder.AppendLine("  public IAcknexObject MY {get; set;}");
+            CodeStringBuilder.AppendLine("  public IAcknexObject THERE {get; set;}");
+            CodeStringBuilder.AppendLine("  public IAcknexWorld _world {get; set;}");
+            CodeStringBuilder.AppendLine("  public object Current { get; set; }");
+            CodeStringBuilder.AppendLine("  public void Reset() {");
+            CodeStringBuilder.AppendLine("      _cursor = 0;");
+            CodeStringBuilder.AppendLine("  }");
+            CodeStringBuilder.AppendLine($" public {sanitizedName}() {{");
+            CodeStringBuilder.AppendLine("  }");
+            CodeStringBuilder.AppendLine($" public {sanitizedName}(IAcknexObject MY, IAcknexObject THERE, IAcknexWorld world) {{");
+            CodeStringBuilder.AppendLine("      this.MY = MY;");
+            CodeStringBuilder.AppendLine("      this.THERE = THERE;");
+            CodeStringBuilder.AppendLine("      this._world = world;");
+            CodeStringBuilder.AppendLine("  }");
+            CodeStringBuilder.AppendLine("  public bool MoveNext() {");
+            JumpTableStringBuilder.AppendLine("     switch (_cursor){");
         }
 
         public override string ToString()
@@ -179,23 +172,13 @@ namespace Acknex
 
         public void WriteFooter()
         {
-            //if (World.Instance.CustomStateMachines)
-            //{
-                JumpTableStringBuilder.AppendLine("     }");
-            //}
+            JumpTableStringBuilder.AppendLine("     }");
             CodeStringBuilder.Append(JumpTableStringBuilder);
             CodeStringBuilder.Append(MethodBodyStringBuilder);
-            //if (World.Instance.CustomStateMachines)
-            //{
-                CodeStringBuilder.AppendLine("      return false;");
-                CodeStringBuilder.AppendLine("  }");
-                CodeStringBuilder.Append(VariablesStringBuilder);
-                CodeStringBuilder.AppendLine("}");
-            //}
-            //else
-            //{
-            //    CodeStringBuilder.AppendLine("yield break;").AppendLine("}");
-            //}
+            CodeStringBuilder.AppendLine("      return false;");
+            CodeStringBuilder.AppendLine("  }");
+            CodeStringBuilder.Append(VariablesStringBuilder);
+            CodeStringBuilder.AppendLine("}");
         }
 
         public void ParseAllStatements()
@@ -353,18 +336,17 @@ namespace Acknex
                                 }
                                 VariablesStringBuilder.AppendLine($"float startTime{_coroutineCounter};");
                                 VariablesStringBuilder.AppendLine($"float endTime{_coroutineCounter};");
-                                //if (World.Instance.CustomStateMachines)
-                                //{
-                                    JumpTableStringBuilder.AppendLine($"            case {_coroutineCounter}:");
-                                    JumpTableStringBuilder.AppendLine($"                goto _coroutine{_coroutineCounter};");
-                                //}
+
+                                JumpTableStringBuilder.AppendLine($"            case {_coroutineCounter}:");
+                                JumpTableStringBuilder.AppendLine($"                goto _coroutine{_coroutineCounter};");
+
                                 if (keyword == "WAIT")
                                 {
-                                    MethodBodyStringBuilder.AppendFormat(/*World.Instance.CustomStateMachines ?*/ CustomWaitTicks  /*:WaitTicks*/, rhs.property, _coroutineCounter++).AppendLine();
+                                    MethodBodyStringBuilder.AppendFormat(CustomWaitTicks, rhs.property, _coroutineCounter++).AppendLine();
                                 }
                                 else
                                 {
-                                    MethodBodyStringBuilder.AppendFormat(/*World.Instance.CustomStateMachines ?*/ CustomWaitCycles  /*:WaitCycles*/, rhs.property, _coroutineCounter++).AppendLine();
+                                    MethodBodyStringBuilder.AppendFormat(CustomWaitCycles, rhs.property, _coroutineCounter++).AppendLine();
                                 }
                                 HandleIfStack();
                                 ReadUntilSemiColon();
@@ -380,7 +362,7 @@ namespace Acknex
                         case "BRANCH":
                             {
                                 HandleCall(labelOrStatement);
-                                MethodBodyStringBuilder.AppendLine(/*World.Instance.CustomStateMachines ?*/ "return false;" /*: "yield break;"*/);
+                                MethodBodyStringBuilder.AppendLine("return false;");
                                 HandleIfStack();
                                 ReadUntilSemiColon();
                                 break;
@@ -409,7 +391,7 @@ namespace Acknex
                             }
                         case "END":
                             {
-                                MethodBodyStringBuilder.AppendLine(/*World.Instance.CustomStateMachines ?*/ "return false;" /*: "yield break;"*/);
+                                MethodBodyStringBuilder.AppendLine("return false;");
                                 HandleIfStack();
                                 ReadUntilSemiColon();
                                 break;
@@ -447,28 +429,28 @@ namespace Acknex
                                 break;
                             }
                         case "MAP":
-                        {
-                            //TODO: this is hacky, as there is no way to pass a string directly here, or I'm just to tired to remember
-                            if (labelOrStatement != ";")
                             {
-                                var filename = labelOrStatement == "<" ? GetNextToken() : labelOrStatement;
-                                var next = GetValue();
-                                if (next == "<")
+                                //TODO: this is hacky, as there is no way to pass a string directly here, or I'm just to tired to remember
+                                if (labelOrStatement != ";")
                                 {
-                                    next = GetValue();
+                                    var filename = labelOrStatement == "<" ? GetNextToken() : labelOrStatement;
+                                    var next = GetValue();
+                                    if (next == "<")
+                                    {
+                                        next = GetValue();
+                                    }
+                                    if (next == ">")
+                                    {
+                                        next = GetValue();
+                                    }
+                                    MethodBodyStringBuilder.Append("_world.LoadLevel(\"").Append(filename).AppendLine("\");");
                                 }
-                                if (next == ">")
+                                else
                                 {
-                                    next = GetValue();
+                                    MethodBodyStringBuilder.Append("_world.LoadLevel(\"").Append(WDLFilename).AppendLine("\");");
                                 }
-                                MethodBodyStringBuilder.Append("_world.LoadLevel(\"").Append(filename).AppendLine("\");");
+                                break;
                             }
-                            else
-                            {
-                                MethodBodyStringBuilder.Append("_world.LoadLevel(\"").Append(WDLFilename).AppendLine("\");");
-                            }
-                            break;
-                        }
                         case "PLAY_SONG":
                             {
                                 var volume = GetValue();
@@ -653,14 +635,7 @@ namespace Acknex
             var nameId = NameUtils.ToNameId(labelOrStatement, false, false);
             if (!World.Instance.SynonymsByName.ContainsKey(nameId))
             {
-                //if (World.Instance.CustomStateMachines)
-                //{
-                    MethodBodyStringBuilder.AppendFormat(CustomCallCoroutine, $"CoroutinePool.Get<{Sanitize(labelOrStatement)}>()");
-                //}
-                //else
-                //{
-                //    MethodBodyStringBuilder.AppendFormat(CallCoroutine, $"{Sanitize(labelOrStatement)}(MY, THERE)");
-                //}
+                MethodBodyStringBuilder.AppendFormat(CustomCallCoroutine, $"CoroutinePool.Get<{Sanitize(labelOrStatement)}>()");
             }
             else
             {
@@ -916,7 +891,7 @@ namespace Acknex
             if (valueIndexOfDot > -1)
             {
                 var valueObjectName = objectOrPropertyOrValue.Substring(0, valueIndexOfDot);
-                var objectAssignmentVariable = Sanitize(valueObjectName); //$"acknexObject_{_varCounter}";
+                var objectAssignmentVariable = Sanitize(valueObjectName);
                 objectAssignmentVariable += $"_{_varCounter++}";
                 HandleObject(valueObjectName, objectAssignmentVariable, true, out var innerObjectDeclaration);
                 var valueProperty = objectOrPropertyOrValue.Substring(valueIndexOfDot + 1);
@@ -995,7 +970,6 @@ namespace Acknex
 
         private bool HandleObject(string objectName, string assignmentVariable, bool outputGetter, out (string property, PropertyType propertyType, ObjectType objectType, string source) valueAndType)
         {
-            //objectName = string.Intern(objectName);
             var nameId = NameUtils.ToNameId(objectName);
 
             void HandleDroppedObjects()
@@ -1184,8 +1158,6 @@ namespace Acknex
                         VariablesStringBuilder.AppendLine($"IAcknexObject temp_{_varCounter};");
                         VariablesStringBuilder.AppendLine($"List<IAcknexObject> temp_{_varCounter}_array;");
                         VariablesStringBuilder.AppendLine($"int temp_{_varCounter}_index;");
-                        /*!!!*/
-                        //MethodBodyStringBuilder.AppendLine($"temp_{_varCounter};");
                         /*!!!*/
                         MethodBodyStringBuilder.Append($"temp_{_varCounter}_array =").Append($"{(objectType == ObjectType.World ? "_world.AcknexObject" : assignmentVariable)}?.GetObject<List<IAcknexObject>>(").Append(propertyNameId).AppendLine(");");
                         MethodBodyStringBuilder.AppendLine($"if (temp_{_varCounter}_array == null || temp_{_varCounter}_array.Count == 0) {{");
