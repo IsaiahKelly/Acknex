@@ -14,24 +14,7 @@ namespace Acknex
 {
     public class TextParser
     {
-        public struct Definition
-        {
-            public string Name;
-            public string Value;
-
-            public Definition(string name, string value) 
-            {
-                Name = name;
-                Value = value;
-            }
-
-            public override int GetHashCode()
-            {
-                return Name.GetHashCode();
-            }
-        }
-
-        private readonly Dictionary<string, Definition> _definitions = new Dictionary<string, Definition>();
+        private readonly Dictionary<string, string> _definitions = new Dictionary<string, string>();
         private readonly Stack<bool> _directivesStack = new Stack<bool>();
         private readonly bool _oldAckVersion;
         private readonly StringBuilder _tokenStringBuilder = new StringBuilder();
@@ -503,16 +486,21 @@ namespace Acknex
                                         return;
                                     }
                                 default:
-                                    {
-                                        var property = Mappings.MapProperty(keyword);
-                                        var propertyType = _world.GetPropertyType(ObjectType.World, property, wdlFilename, binaryReader.LineCount);
-                                        if (!HandleProperty(_world.AcknexObject, tokens, keyword, propertyType, binaryReader, wdlFilename))
+                                {
+                                        var character = binaryReader.ReadChar();
+                                        while (character != '\n')
                                         {
-                                            while (keyword != ";" && keyword != null)
-                                            {
-                                                keyword = GetNextToken(tokens);
-                                            }
+                                            character = binaryReader.ReadChar();
                                         }
+                                        //var property = Mappings.MapProperty(keyword);
+                                        //var propertyType = _world.GetPropertyType(ObjectType.World, property, wdlFilename, binaryReader.LineCount);
+                                        //if (!HandleProperty(_world.AcknexObject, tokens, keyword, propertyType, binaryReader, wdlFilename))
+                                        //{
+                                        //    while (keyword != ";" && keyword != null)
+                                        //    {
+                                        //        keyword = GetNextToken(tokens);
+                                        //    }
+                                        //}
                                         break;
                                     }
                             }
@@ -531,11 +519,11 @@ namespace Acknex
             }
             if (!canContinue)
             {
-                while (keyword != "DEFINE" && 
-                       keyword != "UNDEF" && 
-                       keyword != "IFDEF" && 
+                while (keyword != "DEFINE" &&
+                       keyword != "UNDEF" &&
+                       keyword != "IFDEF" &&
                        keyword != "IFNDEF" &&
-                       keyword != "IFELSE" && 
+                       keyword != "IFELSE" &&
                        keyword != "ENDIF"
                        )
                 {
@@ -562,14 +550,13 @@ namespace Acknex
                         {
                             definitionValue = null;
                         }
-                        if (_definitions.TryGetValue(definitionName, out var defined))
+                        if (_definitions.ContainsKey(definitionName))
                         {
-                            defined.Value = definitionValue;
-                            _definitions[definitionName] = defined;
+                            _definitions[definitionName] = definitionValue;
                         }
                         else
                         {
-                            _definitions.Add(definitionName, new Definition(definitionName, definitionValue));
+                            _definitions.Add(definitionName, definitionValue);
                         }
                         return true;
                     }
@@ -681,9 +668,9 @@ namespace Acknex
             if (tokens.MoveNext())
             {
                 var value = tokens.Current;
-                if (value != null && _definitions.TryGetValue(value, out var defined) && defined.Value != null)
+                if (value != null && _definitions.TryGetValue(value, out var definitionValue) && definitionValue != null)
                 {
-                    return defined.Value;
+                    return definitionValue;
                 }
                 return value;
             }

@@ -59,6 +59,14 @@ _callbacks.Add("SET_BLUE", typeof(SET_BLUE));
 CoroutinePool.TryToRegister<SET_BLUE>(out _, out _);
 _callbacks.Add("RESET_BLUE", typeof(RESET_BLUE));
 CoroutinePool.TryToRegister<RESET_BLUE>(out _, out _);
+_callbacks.Add("REGIO_DIVE", typeof(REGIO_DIVE));
+CoroutinePool.TryToRegister<REGIO_DIVE>(out _, out _);
+_callbacks.Add("REGIO_ARISE", typeof(REGIO_ARISE));
+CoroutinePool.TryToRegister<REGIO_ARISE>(out _, out _);
+_callbacks.Add("START_QUAKE", typeof(START_QUAKE));
+CoroutinePool.TryToRegister<START_QUAKE>(out _, out _);
+_callbacks.Add("QUAKE", typeof(QUAKE));
+CoroutinePool.TryToRegister<QUAKE>(out _, out _);
 _callbacks.Add("TUNIX", typeof(TUNIX));
 CoroutinePool.TryToRegister<TUNIX>(out _, out _);
 _callbacks.Add("SET_MENU", typeof(SET_MENU));
@@ -1524,6 +1532,357 @@ _world.FadePal(PAL_BLUE_0,0f);
       return false;
   }
 IAcknexObject PAL_BLUE_0;
+}
+public class REGIO_DIVE : ICompiledAction {
+  private int _cursor;
+  public IAcknexObject MY {get; set;}
+  public IAcknexObject THERE {get; set;}
+  public IAcknexWorld _world {get; set;}
+  public object Current { get; set; }
+  public void Reset() {
+      _cursor = 0;
+  }
+ public REGIO_DIVE() {
+  }
+ public REGIO_DIVE(IAcknexObject MY, IAcknexObject THERE, IAcknexWorld world) {
+      this.MY = MY;
+      this.THERE = THERE;
+      this._world = world;
+  }
+  public bool MoveNext() {
+     switch (_cursor){
+     }
+UNDERWATER_1 = _world.GetObject(ObjectType.Skill,1369167822);
+UNDERWATER_1_val = UNDERWATER_1.GetFloat(PropertyName.VAL);
+if (Game.CheckEquals(UNDERWATER_1_val , 1f))
+{
+return false;
+}
+UNDERWATER_3 = _world.GetObject(ObjectType.Skill,1369167822);
+UNDERWATER_3.SetFloat(231,1f);
+PLAYER_ARC_4 = _world.GetObject(ObjectType.Skill,436);
+PLAYER_ARC_5 = _world.GetObject(ObjectType.Skill,436);
+PLAYER_ARC_5_val = PLAYER_ARC_5.GetFloat(PropertyName.VAL);
+PLAYER_ARC_6 = _world.GetObject(ObjectType.Skill,436);
+PLAYER_ARC_6_val = PLAYER_ARC_6.GetFloat(PropertyName.VAL);
+PLAYER_ARC_4.SetFloat(231,PLAYER_ARC_6_val+0.3f);
+MY_SIZE_9 = _world.GetObject(ObjectType.Skill,25486605);
+MY_SIZE_10 = _world.GetObject(ObjectType.Skill,25486605);
+MY_SIZE_10_val = MY_SIZE_10.GetFloat(PropertyName.VAL);
+MY_SIZE_11 = _world.GetObject(ObjectType.Skill,25486605);
+MY_SIZE_11_val = MY_SIZE_11.GetFloat(PropertyName.VAL);
+MY_SIZE_9.SetFloat(231,MY_SIZE_11_val-0.2f);
+PLAYER_SIZE_14 = _world.GetObject(ObjectType.Skill,422);
+PLAYER_SIZE_15 = _world.GetObject(ObjectType.Skill,422);
+PLAYER_SIZE_15_val = PLAYER_SIZE_15.GetFloat(PropertyName.VAL);
+PLAYER_SIZE_16 = _world.GetObject(ObjectType.Skill,422);
+PLAYER_SIZE_16_val = PLAYER_SIZE_16.GetFloat(PropertyName.VAL);
+PLAYER_SIZE_14.SetFloat(231,PLAYER_SIZE_16_val-0.2f);
+PLAYER_Z_19 = _world.GetObject(ObjectType.Skill,461);
+PLAYER_Z_20 = _world.GetObject(ObjectType.Skill,461);
+PLAYER_Z_20_val = PLAYER_Z_20.GetFloat(PropertyName.VAL);
+PLAYER_Z_21 = _world.GetObject(ObjectType.Skill,461);
+PLAYER_Z_21_val = PLAYER_Z_21.GetFloat(PropertyName.VAL);
+PLAYER_Z_19.SetFloat(231,PLAYER_Z_21_val-0.2f);
+{
+            var enumerator = _world.CallSynonymAction(1342576697, MY, THERE);
+            _world.StartManagedCoroutine(null, enumerator);
+        }{
+            var enumerator = CoroutinePool.Get<SET_DIVING>();
+            var compiledAction = (ICompiledAction)enumerator;
+            compiledAction.MY = MY;
+            compiledAction.THERE = THERE;
+            compiledAction._world = _world;
+            _world.StartManagedCoroutine(null, enumerator);
+        }//Unknown keyword: 
+      return false;
+  }
+IAcknexObject UNDERWATER_1;
+float UNDERWATER_1_val;
+IAcknexObject UNDERWATER_3;
+IAcknexObject PLAYER_ARC_4;
+IAcknexObject PLAYER_ARC_5;
+float PLAYER_ARC_5_val;
+IAcknexObject PLAYER_ARC_6;
+float PLAYER_ARC_6_val;
+IAcknexObject MY_SIZE_9;
+IAcknexObject MY_SIZE_10;
+float MY_SIZE_10_val;
+IAcknexObject MY_SIZE_11;
+float MY_SIZE_11_val;
+IAcknexObject PLAYER_SIZE_14;
+IAcknexObject PLAYER_SIZE_15;
+float PLAYER_SIZE_15_val;
+IAcknexObject PLAYER_SIZE_16;
+float PLAYER_SIZE_16_val;
+IAcknexObject PLAYER_Z_19;
+IAcknexObject PLAYER_Z_20;
+float PLAYER_Z_20_val;
+IAcknexObject PLAYER_Z_21;
+float PLAYER_Z_21_val;
+}
+public class REGIO_ARISE : ICompiledAction {
+  private int _cursor;
+  public IAcknexObject MY {get; set;}
+  public IAcknexObject THERE {get; set;}
+  public IAcknexWorld _world {get; set;}
+  public object Current { get; set; }
+  public void Reset() {
+      _cursor = 0;
+  }
+ public REGIO_ARISE() {
+  }
+ public REGIO_ARISE(IAcknexObject MY, IAcknexObject THERE, IAcknexWorld world) {
+      this.MY = MY;
+      this.THERE = THERE;
+      this._world = world;
+  }
+  public bool MoveNext() {
+     switch (_cursor){
+     }
+UNDERWATER_1 = _world.GetObject(ObjectType.Skill,1369167822);
+UNDERWATER_1_val = UNDERWATER_1.GetFloat(PropertyName.VAL);
+if (Game.CheckEquals(UNDERWATER_1_val , 0f))
+{
+return false;
+}
+UNDERWATER_3 = _world.GetObject(ObjectType.Skill,1369167822);
+UNDERWATER_3.SetFloat(231,0f);
+PLAYER_ARC_4 = _world.GetObject(ObjectType.Skill,436);
+PLAYER_ARC_5 = _world.GetObject(ObjectType.Skill,436);
+PLAYER_ARC_5_val = PLAYER_ARC_5.GetFloat(PropertyName.VAL);
+PLAYER_ARC_6 = _world.GetObject(ObjectType.Skill,436);
+PLAYER_ARC_6_val = PLAYER_ARC_6.GetFloat(PropertyName.VAL);
+PLAYER_ARC_4.SetFloat(231,PLAYER_ARC_6_val-0.3f);
+MY_SIZE_9 = _world.GetObject(ObjectType.Skill,25486605);
+MY_SIZE_10 = _world.GetObject(ObjectType.Skill,25486605);
+MY_SIZE_10_val = MY_SIZE_10.GetFloat(PropertyName.VAL);
+MY_SIZE_11 = _world.GetObject(ObjectType.Skill,25486605);
+MY_SIZE_11_val = MY_SIZE_11.GetFloat(PropertyName.VAL);
+MY_SIZE_9.SetFloat(231,MY_SIZE_11_val+0.2f);
+PLAYER_SIZE_14 = _world.GetObject(ObjectType.Skill,422);
+PLAYER_SIZE_15 = _world.GetObject(ObjectType.Skill,422);
+PLAYER_SIZE_15_val = PLAYER_SIZE_15.GetFloat(PropertyName.VAL);
+PLAYER_SIZE_16 = _world.GetObject(ObjectType.Skill,422);
+PLAYER_SIZE_16_val = PLAYER_SIZE_16.GetFloat(PropertyName.VAL);
+PLAYER_SIZE_14.SetFloat(231,PLAYER_SIZE_16_val+0.2f);
+PLAYER_Z_19 = _world.GetObject(ObjectType.Skill,461);
+PLAYER_Z_20 = _world.GetObject(ObjectType.Skill,461);
+PLAYER_Z_20_val = PLAYER_Z_20.GetFloat(PropertyName.VAL);
+PLAYER_Z_21 = _world.GetObject(ObjectType.Skill,461);
+PLAYER_Z_21_val = PLAYER_Z_21.GetFloat(PropertyName.VAL);
+PLAYER_Z_19.SetFloat(231,PLAYER_Z_21_val+0.2f);
+{
+            var enumerator = _world.CallSynonymAction(1917066007, MY, THERE);
+            _world.StartManagedCoroutine(null, enumerator);
+        }{
+            var enumerator = CoroutinePool.Get<SET_SWIMMING>();
+            var compiledAction = (ICompiledAction)enumerator;
+            compiledAction.MY = MY;
+            compiledAction.THERE = THERE;
+            compiledAction._world = _world;
+            _world.StartManagedCoroutine(null, enumerator);
+        }//Unknown keyword: 
+      return false;
+  }
+IAcknexObject UNDERWATER_1;
+float UNDERWATER_1_val;
+IAcknexObject UNDERWATER_3;
+IAcknexObject PLAYER_ARC_4;
+IAcknexObject PLAYER_ARC_5;
+float PLAYER_ARC_5_val;
+IAcknexObject PLAYER_ARC_6;
+float PLAYER_ARC_6_val;
+IAcknexObject MY_SIZE_9;
+IAcknexObject MY_SIZE_10;
+float MY_SIZE_10_val;
+IAcknexObject MY_SIZE_11;
+float MY_SIZE_11_val;
+IAcknexObject PLAYER_SIZE_14;
+IAcknexObject PLAYER_SIZE_15;
+float PLAYER_SIZE_15_val;
+IAcknexObject PLAYER_SIZE_16;
+float PLAYER_SIZE_16_val;
+IAcknexObject PLAYER_Z_19;
+IAcknexObject PLAYER_Z_20;
+float PLAYER_Z_20_val;
+IAcknexObject PLAYER_Z_21;
+float PLAYER_Z_21_val;
+}
+public class START_QUAKE : ICompiledAction {
+  private int _cursor;
+  public IAcknexObject MY {get; set;}
+  public IAcknexObject THERE {get; set;}
+  public IAcknexWorld _world {get; set;}
+  public object Current { get; set; }
+  public void Reset() {
+      _cursor = 0;
+  }
+ public START_QUAKE() {
+  }
+ public START_QUAKE(IAcknexObject MY, IAcknexObject THERE, IAcknexWorld world) {
+      this.MY = MY;
+      this.THERE = THERE;
+      this._world = world;
+  }
+  public bool MoveNext() {
+     switch (_cursor){
+     }
+{
+            var enumerator = CoroutinePool.Get<QUAKE>();
+            var compiledAction = (ICompiledAction)enumerator;
+            compiledAction.MY = MY;
+            compiledAction.THERE = THERE;
+            compiledAction._world = _world;
+            _world.StartManagedCoroutine(null, enumerator);
+        }return false;
+//Unknown keyword: 
+      return false;
+  }
+}
+public class QUAKE : ICompiledAction {
+  private int _cursor;
+  public IAcknexObject MY {get; set;}
+  public IAcknexObject THERE {get; set;}
+  public IAcknexWorld _world {get; set;}
+  public object Current { get; set; }
+  public void Reset() {
+      _cursor = 0;
+  }
+ public QUAKE() {
+  }
+ public QUAKE(IAcknexObject MY, IAcknexObject THERE, IAcknexWorld world) {
+      this.MY = MY;
+      this.THERE = THERE;
+      this._world = world;
+  }
+  public bool MoveNext() {
+     switch (_cursor){
+            case 1:
+                goto _coroutine1;
+            case 2:
+                goto _coroutine2;
+            case 3:
+                goto _coroutine3;
+            case 4:
+                goto _coroutine4;
+            case 5:
+                goto _coroutine5;
+            case 6:
+                goto _coroutine6;
+     }
+QUAKE_0 = _world.AcknexObject.GetAcknexObject(233340804);
+_world.AcknexObject.SetAcknexObject(12,QUAKE_0);
+RICHTER_4 = _world.GetObject(ObjectType.Skill,1528103070);
+RICHTER_4.SetFloat(231,0.1f);
+
+            startTime1 = Time.time;
+            endTime1 = startTime1 + TimeUtils.FramesToTime((int)16f);
+            _cursor = 1;
+            _coroutine1:
+            while (Time.time  < endTime1)
+            {
+                Current = Game.WaitForEndOfFrame;
+                return true;
+            }
+            Current = null;
+        
+RICHTER_7 = _world.GetObject(ObjectType.Skill,1528103070);
+RICHTER_7.SetFloat(231,0.3f);
+
+            startTime2 = Time.time;
+            endTime2 = startTime2 + TimeUtils.FramesToTime((int)32f);
+            _cursor = 2;
+            _coroutine2:
+            while (Time.time  < endTime2)
+            {
+                Current = Game.WaitForEndOfFrame;
+                return true;
+            }
+            Current = null;
+        
+RICHTER_10 = _world.GetObject(ObjectType.Skill,1528103070);
+RICHTER_10.SetFloat(231,0.5f);
+
+            startTime3 = Time.time;
+            endTime3 = startTime3 + TimeUtils.FramesToTime((int)48f);
+            _cursor = 3;
+            _coroutine3:
+            while (Time.time  < endTime3)
+            {
+                Current = Game.WaitForEndOfFrame;
+                return true;
+            }
+            Current = null;
+        
+RICHTER_13 = _world.GetObject(ObjectType.Skill,1528103070);
+RICHTER_13.SetFloat(231,0.2f);
+
+            startTime4 = Time.time;
+            endTime4 = startTime4 + TimeUtils.FramesToTime((int)80f);
+            _cursor = 4;
+            _coroutine4:
+            while (Time.time  < endTime4)
+            {
+                Current = Game.WaitForEndOfFrame;
+                return true;
+            }
+            Current = null;
+        
+RICHTER_16 = _world.GetObject(ObjectType.Skill,1528103070);
+RICHTER_16.SetFloat(231,0.6f);
+
+            startTime5 = Time.time;
+            endTime5 = startTime5 + TimeUtils.FramesToTime((int)32f);
+            _cursor = 5;
+            _coroutine5:
+            while (Time.time  < endTime5)
+            {
+                Current = Game.WaitForEndOfFrame;
+                return true;
+            }
+            Current = null;
+        
+RICHTER_19 = _world.GetObject(ObjectType.Skill,1528103070);
+RICHTER_19.SetFloat(231,0.1f);
+
+            startTime6 = Time.time;
+            endTime6 = startTime6 + TimeUtils.FramesToTime((int)16f);
+            _cursor = 6;
+            _coroutine6:
+            while (Time.time  < endTime6)
+            {
+                Current = Game.WaitForEndOfFrame;
+                return true;
+            }
+            Current = null;
+        
+RICHTER_22 = _world.GetObject(ObjectType.Skill,1528103070);
+RICHTER_22.SetFloat(231,0f);
+_world.AcknexObject.SetAcknexObject(12,null);
+//Unknown keyword: 
+      return false;
+  }
+IAcknexObject QUAKE_0;
+IAcknexObject RICHTER_4;
+float startTime1;
+float endTime1;
+IAcknexObject RICHTER_7;
+float startTime2;
+float endTime2;
+IAcknexObject RICHTER_10;
+float startTime3;
+float endTime3;
+IAcknexObject RICHTER_13;
+float startTime4;
+float endTime4;
+IAcknexObject RICHTER_16;
+float startTime5;
+float endTime5;
+IAcknexObject RICHTER_19;
+float startTime6;
+float endTime6;
+IAcknexObject RICHTER_22;
 }
 public class TUNIX : ICompiledAction {
   private int _cursor;
@@ -6336,7 +6695,7 @@ _world.PlaySong(DEMOSONG_0,1f);
         }MY_SIZE_3 = _world.GetObject(ObjectType.Skill,25486605);
 MY_SIZE_3.SetFloat(231,5f);
 DIVE_UP_4 = _world.AcknexObject.GetAcknexObject(649857881);
-//Unknown Property Type: World.SET_OVERWATER
+_world.SetSynonymObject(1917066007,DIVE_UP_4);
 //Unknown keyword: 
       return false;
   }
