@@ -1,9 +1,13 @@
 using Acknex.Interfaces;
+using Common;
 using UnityEngine;
 
 namespace Game
 {
-    public static class Game {
+    public static class Game
+    {
+        public static AcknexGame CurrentGame;
+
         public static WaitForEndOfFrame WaitForEndOfFrame = new WaitForEndOfFrame();
         public static bool CheckEquals(float a, float b) {
             return MathUtils.CheckEquals(a, b);
@@ -14,17 +18,24 @@ namespace Game
         }
         public static IAcknexRuntime GetRuntime(string className)
         {
-            if (className == "VRDEMO")
+            switch (CurrentGame)
             {
-                return new VRDEMO();
+                case AcknexGame.Demo:
+                    if (className == "VRDEMO")
+                    {
+                        return new VRDEMO();
+                    }
+                    break;
+                case AcknexGame.IncidenteEmVarginha:
+                    switch (className)
+                    {
+                        case "CONTATO":
+                            return new CONTATO();
+                        case "INTRO01":
+                            return new INTRO01();
+                    }
+                    break;
             }
-            //switch (className)
-            //{
-            //    case "CONTATO":
-            //        return new CONTATO();
-            //    case "INTRO01":
-            //        return new INTRO01();
-            //}
             return null;
         }
     }

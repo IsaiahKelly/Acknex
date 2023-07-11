@@ -53,6 +53,7 @@ namespace Acknex
         public readonly List<Wall> Walls = new List<Wall>();
         public readonly IDictionary<uint, Wall> WallsByName = new Dictionary<uint, Wall>();
         public readonly IDictionary<uint, Way> WaysByName = new Dictionary<uint, Way>();
+        public readonly Dictionary<IEnumerator, string> ActiveCoroutines = new Dictionary<IEnumerator, string>();
 
         private bool _culled;
         private Texture2D _originalPalette;
@@ -66,7 +67,7 @@ namespace Acknex
         private ContouredRegions _contouredRegions;
         private string _currentDirectory;
 
-        public Dictionary<IEnumerator, string> ActiveCoroutines = new Dictionary<IEnumerator, string>();
+        public AcknexGame CurrentGame;
         public Light AmbientLight;
         public AudioSource AudioSource;
         public bool BilinearFilter = true;
@@ -252,6 +253,7 @@ namespace Acknex
             Shader.SetGlobalTexture("_OriginalAcknexPalette", _originalPalette);
             Shader.SetGlobalTexture("_AcknexPalette", _palette);
             FileManager.BaseDirectory = BaseDirectory;
+            Game.Game.CurrentGame = CurrentGame;
         }
 
         private void Start()
