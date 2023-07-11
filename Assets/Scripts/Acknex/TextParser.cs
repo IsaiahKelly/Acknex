@@ -562,7 +562,14 @@ namespace Acknex
                         {
                             definitionValue = null;
                         }
-                        _definitions.Add(definitionName, new Definition(definitionName, definitionValue));
+                        if (_definitions.TryGetValue(definitionName, out var defined))
+                        {
+                            defined.Value = definitionValue;
+                        }
+                        else
+                        {
+                            _definitions.Add(definitionName, new Definition(definitionName, definitionValue));
+                        }
                         return true;
                     }
                 case "UNDEF":
