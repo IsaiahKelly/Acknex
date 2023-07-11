@@ -497,7 +497,6 @@ namespace Acknex
                                             {
                                                 character = binaryReader.ReadChar();
                                             }
-                                            break;
                                         }
                                         break;
                                     }
