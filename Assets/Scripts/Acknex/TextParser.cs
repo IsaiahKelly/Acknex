@@ -565,6 +565,7 @@ namespace Acknex
                         if (_definitions.TryGetValue(definitionName, out var defined))
                         {
                             defined.Value = definitionValue;
+                            _definitions[definitionName] = defined;
                         }
                         else
                         {
