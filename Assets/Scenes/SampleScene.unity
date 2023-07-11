@@ -748,7 +748,6 @@ MonoBehaviour:
   MeshBatch: 0
   MidiPlayer: {fileID: 1246573634}
   NullTexture: {fileID: 2800000, guid: da40acbc9325ea9438512fe4fee1f7fc, type: 3}
-  OldAckVersion: 1
   TimeScale: 100
   UsePalettes: 0
   Volume: 1
@@ -794,9 +793,9 @@ MonoBehaviour:
   MouseAcceleration: 0
   MouseMultiplier: 0.1
   MouseSmoothTime: 10
-  BaseDirectory: C:\games\acknex\DEMO
+  BaseDirectory: C:\games\acknex\demo
   WRSFilename: 
-  WDLFilename: VRDEMO.WDL
+  WDLFilename: vrdemo.wdl
 --- !u!114 &1246573633
 MonoBehaviour:
   m_ObjectHideFlags: 0

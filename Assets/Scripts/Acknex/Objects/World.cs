@@ -76,7 +76,6 @@ namespace Acknex
         public RectTransform CanvasView;
         public float CanvasWidthRatio;
         public List<ContourVertex> ContourVertices;
-        //public bool CustomStateMachines;
         public bool DebugCoroutines;
         public bool DebugSkills;
         public bool DisableCompilation;
@@ -85,7 +84,21 @@ namespace Acknex
         public bool MeshBatch;
         public MidiPlayer MidiPlayer;
         public Texture2D NullTexture;
-        public bool OldAckVersion;
+
+        public bool OldAckVersion
+        {
+            get
+            {
+                switch (CurrentGame)
+                {
+                    case AcknexGame.Demo:
+                        return true;
+                    case AcknexGame.IncidenteEmVarginha:
+                        return false;
+                }
+                throw new ArgumentOutOfRangeException();
+            }
+        }
         public RegionWalls RegionWalls;
         public float TimeScale = 100f;
         public bool UsePalettes;

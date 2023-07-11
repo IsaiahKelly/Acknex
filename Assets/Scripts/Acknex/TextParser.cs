@@ -14,7 +14,24 @@ namespace Acknex
 {
     public class TextParser
     {
-        private readonly HashSet<string> _definitions = new HashSet<string>();
+        public struct Definition
+        {
+            public string Name;
+            public string Value;
+
+            public Definition(string name, string value) 
+            {
+                Name = name;
+                Value = value;
+            }
+
+            public override int GetHashCode()
+            {
+                return Name.GetHashCode();
+            }
+        }
+
+        private readonly Dictionary<string, Definition> _definitions = new Dictionary<string, Definition>();
         private readonly Stack<bool> _directivesStack = new Stack<bool>();
         private readonly bool _oldAckVersion;
         private readonly StringBuilder _tokenStringBuilder = new StringBuilder();
@@ -533,36 +550,46 @@ namespace Acknex
             {
                 case "DEFINE":
                     {
-                        var definition = GetNextToken(tokens);
-                        _definitions.Add(definition);
-                        CheckSemiColon(tokens);
+                        var definitionName = GetNextToken(tokens);
+                        var nextValue = GetNextToken(tokens);
+                        string definitionValue;
+                        if (nextValue != ";")
+                        {
+                            definitionValue = nextValue;
+                            CheckSemiColon(tokens);
+                        }
+                        else
+                        {
+                            definitionValue = null;
+                        }
+                        _definitions.Add(definitionName, new Definition(definitionName, definitionValue));
                         return true;
                     }
                 case "UNDEF":
                     {
-                        var definition = GetNextToken(tokens);
-                        _definitions.Remove(definition);
+                        var definitionName = GetNextToken(tokens);
+                        _definitions.Remove(definitionName);
                         CheckSemiColon(tokens);
                         return true;
                     }
                 case "IFDEF":
                     {
-                        var definition = GetNextToken(tokens);
-                        _directivesStack.Push(_definitions.Contains(definition));
+                        var definitionName = GetNextToken(tokens);
+                        _directivesStack.Push(_definitions.ContainsKey(definitionName));
                         CheckSemiColon(tokens);
                         return true;
                     }
                 case "IFNDEF":
                     {
-                        var definition = GetNextToken(tokens);
-                        _directivesStack.Push(!_definitions.Contains(definition));
+                        var definitionName = GetNextToken(tokens);
+                        _directivesStack.Push(!_definitions.ContainsKey(definitionName));
                         CheckSemiColon(tokens);
                         return true;
                     }
                 case "IFELSE":
                     {
-                        var definition = _directivesStack.Pop();
-                        _directivesStack.Push(!definition);
+                        var defined = _directivesStack.Pop();
+                        _directivesStack.Push(!defined);
                         CheckSemiColon(tokens);
                         return true;
                     }
@@ -645,7 +672,12 @@ namespace Acknex
         {
             if (tokens.MoveNext())
             {
-                return tokens.Current;
+                var value = tokens.Current;
+                if (value != null && _definitions.TryGetValue(value, out var defined))
+                {
+                    return defined.Value;
+                }
+                return value;
             }
             return null;
         }
