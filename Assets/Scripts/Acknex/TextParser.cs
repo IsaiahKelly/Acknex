@@ -492,8 +492,8 @@ namespace Acknex
                                         if (!HandleProperty(_world.AcknexObject, tokens, keyword, propertyType, binaryReader, wdlFilename))
                                         {
                                             Debug.LogWarning($"{wdlFilename}:{binaryReader.LineCount} Unknown WDL keyword: {keyword}");
-                                            var character = binaryReader.ReadChar();
-                                            while (character != '\n')
+                                            var character = 0;
+                                            while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length && character != '\n')
                                             {
                                                 character = binaryReader.ReadChar();
                                             }

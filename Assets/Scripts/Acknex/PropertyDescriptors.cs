@@ -388,7 +388,9 @@ namespace Acknex
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, PropertyName.SVDIST);
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, PropertyName.SDIST);
             AddObjectProperty(ObjectType.Texture, PropertyType.FloatList, PropertyName.SCYCLES);
-            AddObjectProperty(ObjectType.Texture, PropertyType.ObjectReference, PropertyName.BMAP);
+            //todo: fixed for Saints of Virtue, might have broken other games
+            AddObjectProperty(ObjectType.Texture, PropertyType.ObjectReferenceList, PropertyName.BMAP);
+            //AddObjectProperty(ObjectType.Texture, PropertyType.ObjectReference, PropertyName.BMAP);
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, PropertyName.RANDOM);
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, PropertyName.NO_CLIP);
             AddObjectProperty(ObjectType.Texture, PropertyType.Float, PropertyName.CLIP);

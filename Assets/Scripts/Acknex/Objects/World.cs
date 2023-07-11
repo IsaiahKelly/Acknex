@@ -92,14 +92,15 @@ namespace Acknex
                 switch (CurrentGame)
                 {
                     case AcknexGame.Demo:
-                    case AcknexGame.SaintsOfVirtue:
                         return true;
+                    case AcknexGame.SaintsOfVirtue:
                     case AcknexGame.IncidenteEmVarginha:
                         return false;
                 }
                 throw new ArgumentOutOfRangeException();
             }
         }
+
         public RegionWalls RegionWalls;
         public float TimeScale = 100f;
         public bool UsePalettes;
@@ -473,7 +474,8 @@ namespace Acknex
                     }
                     var rightRegion = _contouredRegions.GetContouredRegion(kvp.Key);
                     var allContourVertices = rightRegion.GetNew();
-                    wall.ProcessWall(allContourVertices, wall, kvp, ref vertexCount, wall.AcknexObject.GetAcknexObject(PropertyName.REGION2, true, false) == kvp.Key);
+                    var depth = 0;
+                    wall.ProcessWall(allContourVertices, wall, kvp, ref vertexCount, ref depth, wall.AcknexObject.GetAcknexObject(PropertyName.REGION2, true, false) == kvp.Key);
                 }
             }
             foreach (var kvp in _contouredRegions)

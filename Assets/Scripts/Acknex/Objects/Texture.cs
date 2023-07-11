@@ -21,19 +21,22 @@ namespace Acknex
         {
             get
             {
-                if (AcknexObject.TryGetObject(PropertyName.BMAPS, out List<IAcknexObject> bmaps))
+
+                //todo: fixed for Saints of Virtue, might have broken other games
+                if (AcknexObject.TryGetObject(PropertyName.BMAPS, out List<IAcknexObject> bmaps) ||
+                    AcknexObject.TryGetObject(PropertyName.BMAP, out bmaps))
                 {
                     return bmaps;
                 }
-                if (AcknexObject.TryGetAcknexObject(PropertyName.BMAP, out var bmap))
-                {
-                    bmaps = new List<IAcknexObject>();
-                    bmaps.Add(bmap);
-                }
-                else
-                {
-                    bmaps = new List<IAcknexObject>();
-                }
+                //if (AcknexObject.TryGetAcknexObject(PropertyName.BMAP, out var bmap))
+                //{
+                //    bmaps = new List<IAcknexObject>();
+                //    bmaps.Add(bmap);
+                //}
+                //else
+                //{
+                //    bmaps = new List<IAcknexObject>();
+                //}
                 AcknexObject.SetObject(PropertyName.BMAPS, bmaps);
                 return bmaps;
             }
@@ -108,10 +111,10 @@ namespace Acknex
 
         public Bitmap GetBitmapAt(int index = 0)
         {
-            var bMaps = BMaps;
-            if (bMaps.Count > index)
+            var bmaps = BMaps;
+            if (bmaps != null && bmaps.Count > index)
             {
-                var bmap = bMaps[index];
+                var bmap = bmaps[index];
                 if (bmap != null)
                 {
                     return bmap.Container as Bitmap;

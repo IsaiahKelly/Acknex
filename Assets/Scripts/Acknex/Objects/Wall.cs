@@ -515,47 +515,55 @@ namespace Acknex
             World.Instance.TriggerEvent(PropertyName.DO, AcknexObject, AcknexObject, GetRegion());
         }
 
-        public void ProcessWall(List<ContourVertex> allContourVertices, Wall wallA, KeyValuePair<IAcknexObject, RegionWall> kvp, ref int vertexCount, bool inverted = false)
+        public void ProcessWall(List<ContourVertex> allContourVertices, Wall wallA, KeyValuePair<IAcknexObject, RegionWall> regionWalls, ref int vertexCount, ref int depth, bool inverted = false)
         {
+            var wallAVertex1 = wallA.AcknexObject.GetInteger(PropertyName.VERTEX1);
+            var wallAVertex2 = wallA.AcknexObject.GetInteger(PropertyName.VERTEX2);
+            if (wallAVertex2 == wallAVertex1)
+            {
+                return;
+            }
             var contourVertices = World.Instance.ContourVertices;
             vertexCount++;
-            var initialVertex = contourVertices[inverted ? wallA.AcknexObject.GetInteger(PropertyName.VERTEX2) : wallA.AcknexObject.GetInteger(PropertyName.VERTEX1)];
+            var initialVertex = contourVertices[inverted ? wallAVertex2 : wallAVertex1];
             initialVertex = new ContourVertex(initialVertex.Position, new WallWithSide(wallA, inverted));
             allContourVertices.Add(initialVertex);
             wallA.Processed = true;
             var foundPair = false;
-            foreach (var wallB in kvp.Value)
+            foreach (var wallB in regionWalls.Value)
             {
                 if (wallB.Processed)
                 {
                     continue;
                 }
+                var wallBVertex1 = wallB.AcknexObject.GetInteger(PropertyName.VERTEX1);
+                var wallBVertex2 = wallB.AcknexObject.GetInteger(PropertyName.VERTEX2);
                 if (inverted)
                 {
-                    if (wallB.AcknexObject.GetInteger(PropertyName.VERTEX2) == wallA.AcknexObject.GetInteger(PropertyName.VERTEX1))
+                    if (wallBVertex2 == wallAVertex1)
                     {
-                        ProcessWall(allContourVertices, wallB, kvp, ref vertexCount, true);
+                        ProcessWall(allContourVertices, wallB, regionWalls, ref vertexCount, ref depth, true);
                         foundPair = true;
                         break;
                     }
-                    if (wallB.AcknexObject.GetInteger(PropertyName.VERTEX1) == wallA.AcknexObject.GetInteger(PropertyName.VERTEX1))
+                    if (wallBVertex1 == wallAVertex1)
                     {
-                        ProcessWall(allContourVertices, wallB, kvp, ref vertexCount);
+                        ProcessWall(allContourVertices, wallB, regionWalls, ref vertexCount, ref depth, false);
                         foundPair = true;
                         break;
                     }
                 }
                 else
                 {
-                    if (wallB.AcknexObject.GetInteger(PropertyName.VERTEX1) == wallA.AcknexObject.GetInteger(PropertyName.VERTEX2))
+                    if (wallBVertex1 == wallAVertex2)
                     {
-                        ProcessWall(allContourVertices, wallB, kvp, ref vertexCount);
+                        ProcessWall(allContourVertices, wallB, regionWalls, ref vertexCount, ref depth, false);
                         foundPair = true;
                         break;
                     }
-                    if (wallB.AcknexObject.GetInteger(PropertyName.VERTEX2) == wallA.AcknexObject.GetInteger(PropertyName.VERTEX2))
+                    if (wallBVertex2 == wallAVertex2)
                     {
-                        ProcessWall(allContourVertices, wallB, kvp, ref vertexCount, true);
+                        ProcessWall(allContourVertices, wallB, regionWalls, ref vertexCount, ref depth, true);
                         foundPair = true;
                         break;
                     }
@@ -563,7 +571,7 @@ namespace Acknex
             }
             if (!foundPair)
             {
-                var endingVertex = contourVertices[inverted ? wallA.AcknexObject.GetInteger(PropertyName.VERTEX1) : wallA.AcknexObject.GetInteger(PropertyName.VERTEX2)];
+                var endingVertex = contourVertices[inverted ? wallAVertex1 : wallAVertex2];
                 endingVertex = new ContourVertex(endingVertex.Position, new WallWithSide(wallA, inverted));
                 allContourVertices.Add(endingVertex);
                 vertexCount++;
