@@ -486,21 +486,19 @@ namespace Acknex
                                         return;
                                     }
                                 default:
-                                {
-                                        var character = binaryReader.ReadChar();
-                                        while (character != '\n')
+                                    {
+                                        var property = Mappings.MapProperty(keyword);
+                                        var propertyType = _world.GetPropertyType(ObjectType.World, property, wdlFilename, binaryReader.LineCount);
+                                        if (!HandleProperty(_world.AcknexObject, tokens, keyword, propertyType, binaryReader, wdlFilename))
                                         {
-                                            character = binaryReader.ReadChar();
+                                            Debug.LogWarning($"{wdlFilename}:{binaryReader.LineCount} Unknown WDL keyword: {keyword}");
+                                            var character = binaryReader.ReadChar();
+                                            while (character != '\n')
+                                            {
+                                                character = binaryReader.ReadChar();
+                                            }
+                                            break;
                                         }
-                                        //var property = Mappings.MapProperty(keyword);
-                                        //var propertyType = _world.GetPropertyType(ObjectType.World, property, wdlFilename, binaryReader.LineCount);
-                                        //if (!HandleProperty(_world.AcknexObject, tokens, keyword, propertyType, binaryReader, wdlFilename))
-                                        //{
-                                        //    while (keyword != ";" && keyword != null)
-                                        //    {
-                                        //        keyword = GetNextToken(tokens);
-                                        //    }
-                                        //}
                                         break;
                                     }
                             }
