@@ -40,8 +40,14 @@ float _CEIL_HGT;
 int _IF_DIVE;
 int _IF_ARISE;
 
+int _AcknexDisableGraphicFeatures;
+
 void ApplyPalette(inout float4 color, float paletteIndex)
 {
+	if (_AcknexDisableGraphicFeatures)
+	{
+		return;
+	}
 	if (_AcknexUsePalettes) {
 		float alpha = paletteIndex != 0;
 		color = tex2D(_AcknexPalette, float2(paletteIndex, 0));
@@ -58,6 +64,10 @@ void ApplyPalette(inout float4 color, float paletteIndex)
 
 void ClipPlanes(inout float3 c, float3 worldPos)
 {
+	if (_AcknexDisableGraphicFeatures)
+	{
+		return;
+	}
 	if (!_IF_DIVE && _PLAYER_Z <= _FLOOR_HGT + 0.5) {
 		c *= smoothstep(_FLOOR_HGT, _FLOOR_HGT + 0.5, worldPos.y);
 	}

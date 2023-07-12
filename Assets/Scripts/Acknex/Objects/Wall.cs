@@ -515,7 +515,7 @@ namespace Acknex
             World.Instance.TriggerEvent(PropertyName.DO, AcknexObject, AcknexObject, GetRegion());
         }
 
-        public void ProcessWall(List<ContourVertex> allContourVertices, Wall wallA, KeyValuePair<IAcknexObject, RegionWall> regionWalls, ref int vertexCount, ref int depth, bool inverted = false)
+        public void ProcessWall(List<ContourVertex> allContourVertices, Wall wallA, KeyValuePair<IAcknexObject, RegionWall> regionWalls, ref int vertexCount, bool inverted = false)
         {
             var wallAVertex1 = wallA.AcknexObject.GetInteger(PropertyName.VERTEX1);
             var wallAVertex2 = wallA.AcknexObject.GetInteger(PropertyName.VERTEX2);
@@ -523,8 +523,8 @@ namespace Acknex
             {
                 return;
             }
-            var contourVertices = World.Instance.ContourVertices;
             vertexCount++;
+            var contourVertices = World.Instance.ContourVertices;
             var initialVertex = contourVertices[inverted ? wallAVertex2 : wallAVertex1];
             initialVertex = new ContourVertex(initialVertex.Position, new WallWithSide(wallA, inverted));
             allContourVertices.Add(initialVertex);
@@ -542,13 +542,13 @@ namespace Acknex
                 {
                     if (wallBVertex2 == wallAVertex1)
                     {
-                        ProcessWall(allContourVertices, wallB, regionWalls, ref vertexCount, ref depth, true);
+                        ProcessWall(allContourVertices, wallB, regionWalls, ref vertexCount, true);
                         foundPair = true;
                         break;
                     }
                     if (wallBVertex1 == wallAVertex1)
                     {
-                        ProcessWall(allContourVertices, wallB, regionWalls, ref vertexCount, ref depth, false);
+                        ProcessWall(allContourVertices, wallB, regionWalls, ref vertexCount, false);
                         foundPair = true;
                         break;
                     }
@@ -557,13 +557,13 @@ namespace Acknex
                 {
                     if (wallBVertex1 == wallAVertex2)
                     {
-                        ProcessWall(allContourVertices, wallB, regionWalls, ref vertexCount, ref depth, false);
+                        ProcessWall(allContourVertices, wallB, regionWalls, ref vertexCount, false);
                         foundPair = true;
                         break;
                     }
                     if (wallBVertex2 == wallAVertex2)
                     {
-                        ProcessWall(allContourVertices, wallB, regionWalls, ref vertexCount, ref depth, true);
+                        ProcessWall(allContourVertices, wallB, regionWalls, ref vertexCount, true);
                         foundPair = true;
                         break;
                     }

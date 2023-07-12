@@ -6,6 +6,9 @@ using Acknex.Interfaces;
 using Common;
 using LibTessDotNet;
 using Unity.Collections;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
@@ -80,6 +83,7 @@ namespace Acknex
         public bool DebugSkills;
         public bool DisableCompilation;
         public bool DisableMaterials;
+        public bool DisableGraphicFeatures;
         public bool DrawShadows;
         public bool MeshBatch;
         public MidiPlayer MidiPlayer;
@@ -267,8 +271,12 @@ namespace Acknex
             RegionWalls = new RegionWalls();
             Shader.SetGlobalTexture("_OriginalAcknexPalette", _originalPalette);
             Shader.SetGlobalTexture("_AcknexPalette", _palette);
+            Shader.SetGlobalInt("_AcknexDisableGraphicFeatures", DisableGraphicFeatures ? 1 : 0);
             FileManager.BaseDirectory = BaseDirectory;
             Game.Game.CurrentGame = CurrentGame;
+#if UNITY_EDITOR
+            Selection.activeGameObject = null;
+#endif
         }
 
         private void Start()
@@ -462,6 +470,12 @@ namespace Acknex
             }
             foreach (var kvp in RegionWalls)
             {
+                //todo: hack to allow Saints map loading
+                //if we have a more reliable way to detect the border region, we can skip that entirely
+                if (kvp.Key.Name == "BORDER" || kvp.Key.Name == "BORDERRGN")
+                {
+                    continue;
+                }
                 foreach (var wall in kvp.Value)
                 {
                     wall.Processed = false;
@@ -472,10 +486,11 @@ namespace Acknex
                     {
                         continue;
                     }
-                    var rightRegion = _contouredRegions.GetContouredRegion(kvp.Key);
-                    var allContourVertices = rightRegion.GetNew();
-                    var depth = 0;
-                    wall.ProcessWall(allContourVertices, wall, kvp, ref vertexCount, ref depth, wall.AcknexObject.GetAcknexObject(PropertyName.REGION2, true, false) == kvp.Key);
+                    var rightRegion = kvp.Key;
+                    var rightContouredRegion = _contouredRegions.GetContouredRegion(rightRegion);
+                    var allContourVertices = rightContouredRegion.GetNew();
+                    var wallLeftRegion = wall.AcknexObject.GetAcknexObject(PropertyName.REGION2, true, false);
+                    wall.ProcessWall(allContourVertices, wall, kvp, ref vertexCount, wallLeftRegion == rightRegion);
                 }
             }
             foreach (var kvp in _contouredRegions)

@@ -732,7 +732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b52af5bca98fed4c9690969a13ed559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentGame: 2
+  CurrentGame: 1
   AmbientLight: {fileID: 705507994}
   AudioSource: {fileID: 1477033083}
   BilinearFilter: 1
@@ -744,6 +744,7 @@ MonoBehaviour:
   DebugSkills: 0
   DisableCompilation: 1
   DisableMaterials: 0
+  DisableGraphicFeatures: 1
   DrawShadows: 0
   MeshBatch: 0
   MidiPlayer: {fileID: 1246573634}
@@ -793,9 +794,9 @@ MonoBehaviour:
   MouseAcceleration: 0
   MouseMultiplier: 0.1
   MouseSmoothTime: 10
-  BaseDirectory: C:\games\acknex\varginha2
+  BaseDirectory: C:\games\acknex\saints
   WRSFilename: 
-  WDLFilename: contato.wdl
+  WDLFilename: apathy.wdl
 --- !u!114 &1246573633
 MonoBehaviour:
   m_ObjectHideFlags: 0
